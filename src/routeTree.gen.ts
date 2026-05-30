@@ -9,8 +9,32 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TalentsRouteImport } from './routes/talents'
+import { Route as RadarRouteImport } from './routes/radar'
+import { Route as FlashRouteImport } from './routes/flash'
+import { Route as EspaceRouteImport } from './routes/espace'
 import { Route as IndexRouteImport } from './routes/index'
 
+const TalentsRoute = TalentsRouteImport.update({
+  id: '/talents',
+  path: '/talents',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RadarRoute = RadarRouteImport.update({
+  id: '/radar',
+  path: '/radar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FlashRoute = FlashRouteImport.update({
+  id: '/flash',
+  path: '/flash',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EspaceRoute = EspaceRouteImport.update({
+  id: '/espace',
+  path: '/espace',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +43,72 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/espace': typeof EspaceRoute
+  '/flash': typeof FlashRoute
+  '/radar': typeof RadarRoute
+  '/talents': typeof TalentsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/espace': typeof EspaceRoute
+  '/flash': typeof FlashRoute
+  '/radar': typeof RadarRoute
+  '/talents': typeof TalentsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/espace': typeof EspaceRoute
+  '/flash': typeof FlashRoute
+  '/radar': typeof RadarRoute
+  '/talents': typeof TalentsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/espace' | '/flash' | '/radar' | '/talents'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/espace' | '/flash' | '/radar' | '/talents'
+  id: '__root__' | '/' | '/espace' | '/flash' | '/radar' | '/talents'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  EspaceRoute: typeof EspaceRoute
+  FlashRoute: typeof FlashRoute
+  RadarRoute: typeof RadarRoute
+  TalentsRoute: typeof TalentsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/talents': {
+      id: '/talents'
+      path: '/talents'
+      fullPath: '/talents'
+      preLoaderRoute: typeof TalentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/radar': {
+      id: '/radar'
+      path: '/radar'
+      fullPath: '/radar'
+      preLoaderRoute: typeof RadarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/flash': {
+      id: '/flash'
+      path: '/flash'
+      fullPath: '/flash'
+      preLoaderRoute: typeof FlashRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/espace': {
+      id: '/espace'
+      path: '/espace'
+      fullPath: '/espace'
+      preLoaderRoute: typeof EspaceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,6 +121,10 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  EspaceRoute: EspaceRoute,
+  FlashRoute: FlashRoute,
+  RadarRoute: RadarRoute,
+  TalentsRoute: TalentsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
