@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap");
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
@@ -5,24 +6,55 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Ecosystem 2026 — Foundation tokens
- * Philosophy: "Less but better". Calm, premium, breathing.
- * Primary #6C5CE7 — used sparingly. Surfaces favor air & silence.
- * All colors in oklch. Add semantic tokens here, never raw hex in components.
+ * Ecosystem 2026 — Design System Foundation
+ * Philosophy: "Less but better". Calm, premium, intelligent.
+ *
+ * Rules:
+ *  - Components NEVER use raw hex / arbitrary color classes.
+ *  - All color, spacing, radii, motion, shadow values flow through tokens.
+ *  - Light & dark modes are first-class siblings, not afterthoughts.
+ *  - Motion is a token: durations + easings are shared, never improvised.
  */
 
 @theme inline {
-  --radius-sm: calc(var(--radius) - 8px);
-  --radius-md: calc(var(--radius) - 4px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 8px);
-  --radius-2xl: calc(var(--radius) + 16px);
-  --radius-3xl: calc(var(--radius) + 24px);
+  /* Radii — generous, breathing. 28px base. */
+  --radius-sm: calc(var(--radius) - 20px);   /* 8  */
+  --radius-md: calc(var(--radius) - 16px);   /* 12 */
+  --radius-lg: calc(var(--radius) - 12px);   /* 16 */
+  --radius-xl: calc(var(--radius) - 4px);    /* 24 */
+  --radius-2xl: var(--radius);               /* 28 */
+  --radius-3xl: calc(var(--radius) + 8px);   /* 36 */
+  --radius-full: 9999px;
 
+  /* Typography */
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Instrument Serif", "Inter", serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Type scale — silent sophistication. */
+  --text-2xs: 0.6875rem;  /* 11 */
+  --text-xs:  0.75rem;    /* 12 */
+  --text-sm:  0.8125rem;  /* 13 */
+  --text-base:0.9375rem;  /* 15 */
+  --text-md:  1rem;       /* 16 */
+  --text-lg:  1.125rem;   /* 18 */
+  --text-xl:  1.375rem;   /* 22 */
+  --text-2xl: 1.75rem;    /* 28 */
+  --text-3xl: 2.25rem;    /* 36 */
+  --text-4xl: 3rem;       /* 48 */
+
+  /* Letter spacing — Linear-ish discipline. */
+  --tracking-tight: -0.02em;
+  --tracking-tighter: -0.035em;
+  --tracking-wide: 0.04em;
+  --tracking-eyebrow: 0.2em;
+
+  /* Colors — surface system */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
   --color-surface-elevated: var(--surface-elevated);
+  --color-surface-sunken: var(--surface-sunken);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
@@ -40,71 +72,109 @@
   --color-destructive-foreground: var(--destructive-foreground);
   --color-success: var(--success);
   --color-warning: var(--warning);
+  --color-info: var(--info);
   --color-border: var(--border);
   --color-border-soft: var(--border-soft);
+  --color-border-strong: var(--border-strong);
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  --shadow-soft: 0 1px 2px oklch(0 0 0 / 0.04), 0 2px 8px oklch(0 0 0 / 0.04);
+  /* Elevation — soft, premium, never harsh. */
+  --shadow-none:     none;
+  --shadow-hairline: 0 0 0 1px var(--border-soft);
+  --shadow-soft:     0 1px 2px oklch(0 0 0 / 0.04), 0 2px 8px oklch(0 0 0 / 0.04);
   --shadow-elevated: 0 8px 24px oklch(0 0 0 / 0.06), 0 2px 6px oklch(0 0 0 / 0.04);
-  --shadow-float: 0 16px 48px oklch(0 0 0 / 0.10);
+  --shadow-float:    0 16px 48px oklch(0 0 0 / 0.10);
+  --shadow-glow:     0 0 0 6px color-mix(in oklab, var(--primary) 18%, transparent);
+
+  /* Motion — shared durations & easings. Tokens, not magic numbers. */
+  --duration-instant: 80ms;
+  --duration-fast:    160ms;
+  --duration-base:    220ms;
+  --duration-slow:    360ms;
+  --duration-slower:  520ms;
+  --ease-standard:    cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-emphasized:  cubic-bezier(0.2, 0.9, 0.1, 1);
+  --ease-entrance:    cubic-bezier(0, 0, 0.2, 1);
+  --ease-exit:        cubic-bezier(0.4, 0, 1, 1);
 }
 
+/* ============================================================ */
+/* Light theme — high air, off-white surfaces, silent contrast.  */
+/* ============================================================ */
 :root {
   --radius: 1.75rem; /* 28px */
+
   --background: oklch(1 0 0);                       /* #FFFFFF */
   --foreground: oklch(0.18 0.02 270);
   --surface: oklch(0.975 0.005 260);                /* #F5F7FA */
   --surface-elevated: oklch(1 0 0);
+  --surface-sunken: oklch(0.955 0.006 260);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.18 0.02 270);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.18 0.02 270);
+
   --primary: oklch(0.56 0.20 285);                  /* #6C5CE7 */
   --primary-foreground: oklch(1 0 0);
   --primary-soft: oklch(0.96 0.03 285);
+
   --secondary: oklch(0.975 0.005 260);
   --secondary-foreground: oklch(0.18 0.02 270);
   --muted: oklch(0.96 0.005 260);
   --muted-foreground: oklch(0.50 0.02 270);
   --accent: oklch(0.96 0.03 285);
   --accent-foreground: oklch(0.40 0.18 285);
+
   --destructive: oklch(0.60 0.22 25);
   --destructive-foreground: oklch(1 0 0);
   --success: oklch(0.68 0.16 155);
   --warning: oklch(0.78 0.16 75);
+  --info: oklch(0.66 0.14 230);
+
   --border: oklch(0.92 0.008 260);
   --border-soft: oklch(0.95 0.005 260);
+  --border-strong: oklch(0.86 0.012 260);
   --input: oklch(0.94 0.008 260);
-  --ring: oklch(0.56 0.20 285 / 0.4);
+  --ring: oklch(0.56 0.20 285 / 0.45);
 }
 
+/* ============================================================ */
+/* Dark theme — deep canvas, soft glow, never neon.              */
+/* ============================================================ */
 .dark {
   --background: oklch(0.16 0.015 270);
   --foreground: oklch(0.97 0.005 260);
   --surface: oklch(0.20 0.018 270);
   --surface-elevated: oklch(0.24 0.020 270);
+  --surface-sunken: oklch(0.14 0.014 270);
   --card: oklch(0.22 0.018 270);
   --card-foreground: oklch(0.97 0.005 260);
   --popover: oklch(0.22 0.018 270);
   --popover-foreground: oklch(0.97 0.005 260);
-  --primary: oklch(0.66 0.20 285);
+
+  --primary: oklch(0.70 0.18 285);
   --primary-foreground: oklch(0.12 0.02 270);
   --primary-soft: oklch(0.30 0.08 285);
+
   --secondary: oklch(0.26 0.018 270);
   --secondary-foreground: oklch(0.97 0.005 260);
   --muted: oklch(0.26 0.018 270);
-  --muted-foreground: oklch(0.68 0.015 260);
+  --muted-foreground: oklch(0.70 0.015 260);
   --accent: oklch(0.30 0.08 285);
   --accent-foreground: oklch(0.92 0.04 285);
+
   --destructive: oklch(0.65 0.22 25);
   --destructive-foreground: oklch(0.12 0.02 270);
   --success: oklch(0.72 0.16 155);
   --warning: oklch(0.80 0.16 75);
+  --info: oklch(0.72 0.14 230);
+
   --border: oklch(1 0 0 / 0.08);
   --border-soft: oklch(1 0 0 / 0.04);
+  --border-strong: oklch(1 0 0 / 0.14);
   --input: oklch(1 0 0 / 0.10);
-  --ring: oklch(0.66 0.20 285 / 0.5);
+  --ring: oklch(0.70 0.18 285 / 0.55);
 }
 
 @layer base {
@@ -118,14 +188,30 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    font-feature-settings: "ss01", "cv11";
   }
 
   body {
-    font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.55;
     overscroll-behavior-y: none;
   }
 
-  /* Respect user reduced-motion preference (low-end devices & accessibility) */
+  h1, h2, h3, h4 {
+    font-family: var(--font-sans);
+    letter-spacing: var(--tracking-tight);
+    font-weight: 500;
+  }
+
+  /* Default focus — calm but visible (a11y). */
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Reduced motion — respect user preference + low-end devices. */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
@@ -133,12 +219,69 @@
       transition-duration: 0.01ms !important;
     }
   }
+
+  /* Selection */
+  ::selection {
+    background-color: color-mix(in oklab, var(--primary) 28%, transparent);
+    color: var(--foreground);
+  }
 }
 
-/* Subtle glass utility — used parcimoniously */
+/* ============================================================ */
+/* Utility surfaces — composable, never overused.                */
+/* ============================================================ */
+
+/* Subtle glass — for floating bars, sheets, headers. */
 @utility glass {
   background-color: color-mix(in oklab, var(--surface-elevated) 70%, transparent);
   backdrop-filter: blur(20px) saturate(140%);
   -webkit-backdrop-filter: blur(20px) saturate(140%);
   border: 1px solid var(--border-soft);
+}
+
+/* Stronger glass — for full-bleed overlays. */
+@utility glass-strong {
+  background-color: color-mix(in oklab, var(--surface-elevated) 82%, transparent);
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  border: 1px solid var(--border-soft);
+}
+
+/* Soft glass — barely-there veil. */
+@utility glass-soft {
+  background-color: color-mix(in oklab, var(--surface-elevated) 50%, transparent);
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+}
+
+/* Hairline divider — replaces ugly 1px gray lines. */
+@utility hairline {
+  box-shadow: inset 0 -1px 0 0 var(--border-soft);
+}
+
+/* Display typography (serif accent). Use sparingly. */
+@utility font-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: var(--tracking-tighter);
+}
+
+/* Eyebrow — uppercase mini-label above titles. */
+@utility eyebrow {
+  font-size: var(--text-2xs);
+  font-weight: 500;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+/* Interactive base — shared press feel. */
+@utility tap {
+  transition: transform var(--duration-fast) var(--ease-standard),
+              background-color var(--duration-fast) var(--ease-standard),
+              box-shadow var(--duration-fast) var(--ease-standard),
+              opacity var(--duration-fast) var(--ease-standard);
+}
+@utility tap-press {
+  transform: scale(0.98);
 }
