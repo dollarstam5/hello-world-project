@@ -22,15 +22,20 @@ export const Route = createFileRoute("/")({
 function Index() {
   const { t } = useI18n();
   const net = useNetworkStatus();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   return (
     <section className="flex min-h-[80dvh] flex-col items-center justify-center px-6 text-center">
-      <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border-soft bg-surface px-3 py-1 text-xs text-muted-foreground">
+      <div
+        className="mb-6 inline-flex items-center gap-2 rounded-full border border-border-soft bg-surface px-3 py-1 text-xs text-muted-foreground"
+        suppressHydrationWarning
+      >
         <span
-          className={`h-1.5 w-1.5 rounded-full ${net.online ? "bg-success" : "bg-muted-foreground"}`}
+          className={`h-1.5 w-1.5 rounded-full ${mounted && net.online ? "bg-success" : "bg-muted-foreground"}`}
           aria-hidden
         />
-        {net.online ? t("app.online") : t("app.offline")}
+        {mounted ? (net.online ? t("app.online") : t("app.offline")) : "\u00a0"}
       </div>
       <h1 className="text-balance text-3xl font-medium tracking-tight sm:text-4xl">
         {t("app.name")}
