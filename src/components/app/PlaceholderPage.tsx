@@ -1,4 +1,5 @@
-import { useI18n, type MessageKey } from "@/lib/i18n/useI18n";
+import { useI18n } from "@/lib/i18n/useI18n";
+import type { MessageKey } from "@/lib/i18n/messages";
 
 interface PlaceholderPageProps {
   titleKey: MessageKey;
