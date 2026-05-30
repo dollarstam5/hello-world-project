@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RadarRouteImport } from './routes/radar'
 import { Route as FlashRouteImport } from './routes/flash'
+import { Route as EspaceRouteImport } from './routes/espace'
 import { Route as IndexRouteImport } from './routes/index'
 
 const RadarRoute = RadarRouteImport.update({
@@ -23,6 +24,11 @@ const FlashRoute = FlashRouteImport.update({
   path: '/flash',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EspaceRoute = EspaceRouteImport.update({
+  id: '/espace',
+  path: '/espace',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -31,30 +37,34 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/espace': typeof EspaceRoute
   '/flash': typeof FlashRoute
   '/radar': typeof RadarRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/espace': typeof EspaceRoute
   '/flash': typeof FlashRoute
   '/radar': typeof RadarRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/espace': typeof EspaceRoute
   '/flash': typeof FlashRoute
   '/radar': typeof RadarRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/flash' | '/radar'
+  fullPaths: '/' | '/espace' | '/flash' | '/radar'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/flash' | '/radar'
-  id: '__root__' | '/' | '/flash' | '/radar'
+  to: '/' | '/espace' | '/flash' | '/radar'
+  id: '__root__' | '/' | '/espace' | '/flash' | '/radar'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  EspaceRoute: typeof EspaceRoute
   FlashRoute: typeof FlashRoute
   RadarRoute: typeof RadarRoute
 }
@@ -75,6 +85,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FlashRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/espace': {
+      id: '/espace'
+      path: '/espace'
+      fullPath: '/espace'
+      preLoaderRoute: typeof EspaceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  EspaceRoute: EspaceRoute,
   FlashRoute: FlashRoute,
   RadarRoute: RadarRoute,
 }
