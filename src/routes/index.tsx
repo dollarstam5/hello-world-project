@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AppShell } from "@/components/app/AppShell";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useNetworkStatus } from "@/lib/platform/useNetworkStatus";
 
@@ -13,29 +12,18 @@ export const Route = createFileRoute("/")({
           "Un écosystème vivant qui relie les personnes, les talents et les opportunités, avec calme et intelligence.",
       },
       { property: "og:title", content: "Écosystème — Vivant, calme, intelligent" },
-      {
-        property: "og:description",
-        content: "Foundation core — Phase 1.",
-      },
+      { property: "og:description", content: "Foundation core — Phase 2." },
     ],
   }),
   component: Index,
 });
 
 function Index() {
-  return (
-    <AppShell>
-      <FoundationGreeting />
-    </AppShell>
-  );
-}
-
-function FoundationGreeting() {
   const { t } = useI18n();
   const net = useNetworkStatus();
 
   return (
-    <section className="flex min-h-dvh flex-col items-center justify-center px-6 text-center">
+    <section className="flex min-h-[80dvh] flex-col items-center justify-center px-6 text-center">
       <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border-soft bg-surface px-3 py-1 text-xs text-muted-foreground">
         <span
           className={`h-1.5 w-1.5 rounded-full ${net.online ? "bg-success" : "bg-muted-foreground"}`}
@@ -50,7 +38,7 @@ function FoundationGreeting() {
         {t("app.tagline")}
       </p>
       <p className="mt-10 text-[11px] uppercase tracking-[0.2em] text-muted-foreground/70">
-        Phase 1 · Foundation Core
+        Phase 2 · Navigation Foundation
       </p>
     </section>
   );
