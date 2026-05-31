@@ -1,9 +1,11 @@
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from "react";
-import { motion } from "framer-motion";
+import { motion, type HTMLMotionProps } from "framer-motion";
 import { spring } from "@/lib/design/tokens";
 import { cn } from "@/lib/utils";
 
-interface FloatingButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+type MotionButtonProps = Omit<HTMLMotionProps<"button">, "ref">;
+
+interface FloatingButtonProps extends MotionButtonProps {
   icon: ReactNode;
   label?: string;
   /** Visual position. Anchored is fixed to viewport; inline lets parent place it. */
