@@ -2,8 +2,11 @@
  * Design tokens — JS mirror of CSS custom properties.
  * Used in code that can't read CSS vars (framer-motion configs,
  * canvas/SVG, animation primitives). Keep in sync with styles.css.
+ *
+ * Phase 1/5 — Foundation + Tokens.
  */
 
+/* ----------------------------- Motion ----------------------------- */
 export const duration = {
   instant: 0.08,
   fast: 0.16,
@@ -34,7 +37,7 @@ export const motion = {
   pop:    { duration: duration.fast, ease: easing.emphasized },
 } as const;
 
-/** Icon stroke + size scale — keeps lucide icons consistent. */
+/* ----------------------------- Icons ------------------------------ */
 export const iconSize = {
   xs: 14,
   sm: 16,
@@ -43,3 +46,61 @@ export const iconSize = {
   xl: 24,
 } as const;
 export const iconStroke = 1.6;
+
+/* ----------------------------- Opacity ---------------------------- */
+export const opacity = {
+  veil: 0.04,
+  soft: 0.08,
+  medium: 0.16,
+  strong: 0.28,
+  solid: 0.56,
+} as const;
+
+/* --------------------------- Z-layer system ----------------------- */
+/**
+ * Predictable depth. Use these constants for inline `zIndex` (e.g.
+ * framer-motion overlays, portals) instead of magic numbers.
+ */
+export const zLayer = {
+  base: 0,
+  content: 10,
+  floating: 30,
+  nav: 40,
+  sheet: 50,
+  modal: 60,
+  overlay: 70,
+  assistant: 80,
+  toast: 90,
+} as const;
+
+/* ----------------------- Semantic accent keys --------------------- */
+/**
+ * Stable string keys for the ecosystem's accent families. Components
+ * branch on these to pick the right CSS var (primary/warm/trust/intel).
+ */
+export type AccentKey = "primary" | "warm" | "trust" | "intelligence";
+
+export const accent = {
+  primary: { fg: "var(--primary)", soft: "var(--primary-soft)", glow: "var(--glow-soft)" },
+  warm: { fg: "var(--warm)", soft: "var(--warm-soft)", glow: "var(--glow-warm)" },
+  trust: { fg: "var(--trust)", soft: "var(--trust-soft)", glow: "var(--glow-trust)" },
+  intelligence: {
+    fg: "var(--intelligence)",
+    soft: "var(--intelligence-soft)",
+    glow: "var(--glow-soft)",
+  },
+} as const;
+
+/* ------------------------ Surface ladder keys --------------------- */
+/**
+ * Semantic surface levels mirroring the CSS layered system.
+ * Use via `var(--surface-{level})` or the Surface component.
+ */
+export type SurfaceLevel =
+  | "base"
+  | "sunken"
+  | "elevated"
+  | "floating"
+  | "modal"
+  | "overlay"
+  | "assistant";
