@@ -6,14 +6,22 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Ecosystem 2026 — Design System Foundation
- * Philosophy: "Less but better". Calm, premium, intelligent.
+ * Ecosystem 2026 — Design System (Phase 1/5 · Foundation + Tokens)
  *
- * Rules:
- *  - Components NEVER use raw hex / arbitrary color classes.
- *  - All color, spacing, radii, motion, shadow values flow through tokens.
- *  - Light & dark modes are first-class siblings, not afterthoughts.
- *  - Motion is a token: durations + easings are shared, never improvised.
+ * Philosophy: a calm, intelligent, premium living ecosystem OS.
+ * DARK-FIRST. Light theme exists as a graceful inversion, but the
+ * design is engineered for charcoal canvases with cinematic glow.
+ *
+ * Token families covered here:
+ *  - color atmosphere   (charcoal · electric blue · amber · emerald · violet)
+ *  - layered surfaces   (base → elevated → floating → modal → overlay → assistant)
+ *  - semantic states    (success · warning · destructive · info · trust)
+ *  - glow hierarchy     (whisper · soft · ambient · focal · cinematic)
+ *  - opacity scale      (veil · soft · medium · strong · solid)
+ *  - z-layer system     (base · content · floating · modal · overlay · assistant · toast)
+ *
+ * Spacing, typography, motion are touched lightly here — they get
+ * their dedicated phases (2/5, 3/5).
  */
 
 @theme inline {
@@ -49,30 +57,59 @@
   --tracking-wide: 0.04em;
   --tracking-eyebrow: 0.2em;
 
-  /* Colors — surface system */
+  /* Colors — surface system + semantic + accents */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  /* Layered surfaces */
   --color-surface: var(--surface);
   --color-surface-elevated: var(--surface-elevated);
+  --color-surface-floating: var(--surface-floating);
+  --color-surface-modal: var(--surface-modal);
+  --color-surface-overlay: var(--surface-overlay);
+  --color-surface-assistant: var(--surface-assistant);
   --color-surface-sunken: var(--surface-sunken);
+
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
+
+  /* Primary — electric blue, ecosystem signature */
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary-soft: var(--primary-soft);
+  --color-primary-glow: var(--primary-glow);
+
+  /* Human warmth — amber */
+  --color-warm: var(--warm);
+  --color-warm-foreground: var(--warm-foreground);
+  --color-warm-soft: var(--warm-soft);
+
+  /* Trust — emerald */
+  --color-trust: var(--trust);
+  --color-trust-foreground: var(--trust-foreground);
+  --color-trust-soft: var(--trust-soft);
+
+  /* Intelligence — muted violet */
+  --color-intelligence: var(--intelligence);
+  --color-intelligence-foreground: var(--intelligence-foreground);
+  --color-intelligence-soft: var(--intelligence-soft);
+
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+
+  /* Semantic states */
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-info: var(--info);
+
   --color-border: var(--border);
   --color-border-soft: var(--border-soft);
   --color-border-strong: var(--border-strong);
@@ -82,12 +119,23 @@
   /* Elevation — soft, premium, never harsh. */
   --shadow-none:     none;
   --shadow-hairline: 0 0 0 1px var(--border-soft);
-  --shadow-soft:     0 1px 2px oklch(0 0 0 / 0.04), 0 2px 8px oklch(0 0 0 / 0.04);
-  --shadow-elevated: 0 8px 24px oklch(0 0 0 / 0.06), 0 2px 6px oklch(0 0 0 / 0.04);
-  --shadow-float:    0 16px 48px oklch(0 0 0 / 0.10);
-  --shadow-glow:     0 0 0 6px color-mix(in oklab, var(--primary) 18%, transparent);
+  --shadow-soft:     0 1px 2px oklch(0 0 0 / 0.18), 0 2px 8px oklch(0 0 0 / 0.14);
+  --shadow-elevated: 0 8px 24px oklch(0 0 0 / 0.28), 0 2px 6px oklch(0 0 0 / 0.18);
+  --shadow-float:    0 16px 48px oklch(0 0 0 / 0.40), 0 4px 12px oklch(0 0 0 / 0.20);
+  --shadow-modal:    0 32px 80px oklch(0 0 0 / 0.55), 0 8px 24px oklch(0 0 0 / 0.28);
 
-  /* Motion — shared durations & easings. Tokens, not magic numbers. */
+  /* Glow hierarchy — adaptive cinematic glow. Less is more. */
+  --glow-whisper:   0 0 0 1px color-mix(in oklab, var(--primary) 18%, transparent);
+  --glow-soft:      0 0 24px -6px color-mix(in oklab, var(--primary) 28%, transparent);
+  --glow-ambient:   0 0 48px -8px color-mix(in oklab, var(--primary) 36%, transparent);
+  --glow-focal:     0 0 0 4px color-mix(in oklab, var(--primary) 22%, transparent),
+                    0 0 32px -4px color-mix(in oklab, var(--primary) 40%, transparent);
+  --glow-cinematic: 0 0 80px -12px color-mix(in oklab, var(--primary) 50%, transparent),
+                    0 0 24px -4px color-mix(in oklab, var(--primary) 30%, transparent);
+  --glow-warm:      0 0 32px -6px color-mix(in oklab, var(--warm) 38%, transparent);
+  --glow-trust:     0 0 32px -6px color-mix(in oklab, var(--trust) 38%, transparent);
+
+  /* Motion — tokens, not magic numbers. */
   --duration-instant: 80ms;
   --duration-fast:    160ms;
   --duration-base:    220ms;
@@ -100,81 +148,160 @@
 }
 
 /* ============================================================ */
-/* Light theme — high air, off-white surfaces, silent contrast.  */
+/* GLOBAL TOKENS — opacity scale + z-layer system                */
+/* These are not theme-dependent. They orchestrate depth.        */
+/* ============================================================ */
+:root {
+  /* Opacity scale — breath of visibility. */
+  --opacity-veil:   0.04;
+  --opacity-soft:   0.08;
+  --opacity-medium: 0.16;
+  --opacity-strong: 0.28;
+  --opacity-solid:  0.56;
+
+  /* Layered z-system — predictable depth. */
+  --z-base:       0;
+  --z-content:    10;
+  --z-floating:   30;     /* FAB, floating cards */
+  --z-nav:        40;     /* bottom nav, app bar */
+  --z-sheet:      50;     /* bottom sheets */
+  --z-modal:      60;     /* modal dialogs */
+  --z-overlay:    70;     /* full overlays */
+  --z-assistant:  80;     /* ambient AI layer */
+  --z-toast:      90;     /* ephemeral feedback */
+}
+
+/* ============================================================ */
+/* DARK THEME (DEFAULT) — deep charcoal canvas + electric blue.  */
+/* Dark-first: the ecosystem is designed here. Light inverts it. */
 /* ============================================================ */
 :root {
   --radius: 1.75rem; /* 28px */
 
-  --background: oklch(1 0 0);                       /* #FFFFFF */
-  --foreground: oklch(0.18 0.02 270);
-  --surface: oklch(0.975 0.005 260);                /* #F5F7FA */
-  --surface-elevated: oklch(1 0 0);
-  --surface-sunken: oklch(0.955 0.006 260);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0.02 270);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.02 270);
+  /* Canvas — deep charcoal, never pure black. */
+  --background: oklch(0.16 0.012 260);              /* #1A1C20-ish */
+  --foreground: oklch(0.96 0.005 260);
 
-  --primary: oklch(0.56 0.20 285);                  /* #6C5CE7 */
-  --primary-foreground: oklch(1 0 0);
-  --primary-soft: oklch(0.96 0.03 285);
+  /* Surface ladder — each step ≈ +3–4% L. */
+  --surface:           oklch(0.19 0.014 260);       /* base panels */
+  --surface-sunken:    oklch(0.14 0.012 260);       /* inset wells */
+  --surface-elevated:  oklch(0.22 0.016 260);       /* cards */
+  --surface-floating:  oklch(0.25 0.018 260);       /* FAB, floats */
+  --surface-modal:     oklch(0.27 0.018 260);       /* modal bodies */
+  --surface-overlay:   oklch(0.12 0.012 260 / 0.72);/* scrim */
+  --surface-assistant: oklch(0.24 0.030 270);       /* AI layer tint */
 
-  --secondary: oklch(0.975 0.005 260);
-  --secondary-foreground: oklch(0.18 0.02 270);
-  --muted: oklch(0.96 0.005 260);
-  --muted-foreground: oklch(0.50 0.02 270);
-  --accent: oklch(0.96 0.03 285);
-  --accent-foreground: oklch(0.40 0.18 285);
+  --card: oklch(0.22 0.016 260);
+  --card-foreground: oklch(0.96 0.005 260);
+  --popover: oklch(0.24 0.018 260);
+  --popover-foreground: oklch(0.96 0.005 260);
 
-  --destructive: oklch(0.60 0.22 25);
-  --destructive-foreground: oklch(1 0 0);
-  --success: oklch(0.68 0.16 155);
-  --warning: oklch(0.78 0.16 75);
-  --info: oklch(0.66 0.14 230);
+  /* Primary — soft electric blue. Calm, never neon. */
+  --primary: oklch(0.72 0.16 245);                  /* ~#5BB0FF */
+  --primary-foreground: oklch(0.14 0.02 260);
+  --primary-soft: oklch(0.32 0.08 245);
+  --primary-glow: oklch(0.78 0.18 235);
 
-  --border: oklch(0.92 0.008 260);
-  --border-soft: oklch(0.95 0.005 260);
-  --border-strong: oklch(0.86 0.012 260);
-  --input: oklch(0.94 0.008 260);
-  --ring: oklch(0.56 0.20 285 / 0.45);
+  /* Warmth — amber human highlights. */
+  --warm: oklch(0.82 0.12 70);                      /* ~#F0C58A */
+  --warm-foreground: oklch(0.18 0.04 70);
+  --warm-soft: oklch(0.32 0.06 70);
+
+  /* Trust — emerald, subtle. */
+  --trust: oklch(0.74 0.13 165);                    /* ~#6FD1AE */
+  --trust-foreground: oklch(0.14 0.04 165);
+  --trust-soft: oklch(0.28 0.06 165);
+
+  /* Intelligence — muted violet for AI surfaces. */
+  --intelligence: oklch(0.72 0.13 295);             /* ~#B49BE8 */
+  --intelligence-foreground: oklch(0.14 0.04 295);
+  --intelligence-soft: oklch(0.30 0.07 295);
+
+  --secondary: oklch(0.26 0.016 260);
+  --secondary-foreground: oklch(0.96 0.005 260);
+  --muted: oklch(0.24 0.014 260);
+  --muted-foreground: oklch(0.70 0.012 260);
+  --accent: oklch(0.30 0.08 245);
+  --accent-foreground: oklch(0.92 0.04 245);
+
+  --destructive: oklch(0.68 0.20 22);
+  --destructive-foreground: oklch(0.14 0.02 260);
+  --success: var(--trust);
+  --warning: oklch(0.80 0.14 75);
+  --info: oklch(0.74 0.13 230);
+
+  --border: oklch(1 0 0 / 0.07);
+  --border-soft: oklch(1 0 0 / 0.04);
+  --border-strong: oklch(1 0 0 / 0.13);
+  --input: oklch(1 0 0 / 0.08);
+  --ring: oklch(0.72 0.16 245 / 0.55);
 }
 
 /* ============================================================ */
-/* Dark theme — deep canvas, soft glow, never neon.              */
+/* LIGHT THEME — graceful inversion. Air, off-whites, restraint. */
 /* ============================================================ */
+.light {
+  --background: oklch(0.985 0.003 260);
+  --foreground: oklch(0.18 0.02 260);
+
+  --surface:           oklch(0.965 0.005 260);
+  --surface-sunken:    oklch(0.945 0.006 260);
+  --surface-elevated:  oklch(1 0 0);
+  --surface-floating:  oklch(1 0 0);
+  --surface-modal:     oklch(1 0 0);
+  --surface-overlay:   oklch(0.18 0.02 260 / 0.42);
+  --surface-assistant: oklch(0.96 0.03 270);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.02 260);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0.02 260);
+
+  --primary: oklch(0.56 0.18 245);
+  --primary-foreground: oklch(1 0 0);
+  --primary-soft: oklch(0.94 0.04 245);
+  --primary-glow: oklch(0.64 0.20 235);
+
+  --warm: oklch(0.68 0.14 70);
+  --warm-foreground: oklch(1 0 0);
+  --warm-soft: oklch(0.95 0.04 70);
+
+  --trust: oklch(0.58 0.14 165);
+  --trust-foreground: oklch(1 0 0);
+  --trust-soft: oklch(0.94 0.04 165);
+
+  --intelligence: oklch(0.56 0.16 295);
+  --intelligence-foreground: oklch(1 0 0);
+  --intelligence-soft: oklch(0.95 0.04 295);
+
+  --secondary: oklch(0.96 0.005 260);
+  --secondary-foreground: oklch(0.18 0.02 260);
+  --muted: oklch(0.95 0.005 260);
+  --muted-foreground: oklch(0.50 0.02 260);
+  --accent: oklch(0.94 0.04 245);
+  --accent-foreground: oklch(0.40 0.18 245);
+
+  --destructive: oklch(0.58 0.22 25);
+  --destructive-foreground: oklch(1 0 0);
+  --success: var(--trust);
+  --warning: oklch(0.78 0.16 75);
+  --info: oklch(0.62 0.14 230);
+
+  --border: oklch(0.91 0.008 260);
+  --border-soft: oklch(0.95 0.005 260);
+  --border-strong: oklch(0.84 0.012 260);
+  --input: oklch(0.93 0.008 260);
+  --ring: oklch(0.56 0.18 245 / 0.45);
+}
+
+/* Legacy compatibility — many components reference `.dark .X`.
+   In dark-first, dark IS the root; .dark selector still matches via
+   the @custom-variant when explicitly used. We keep dark tokens at
+   :root, and re-declare here so explicit `class="dark"` works too. */
 .dark {
-  --background: oklch(0.16 0.015 270);
-  --foreground: oklch(0.97 0.005 260);
-  --surface: oklch(0.20 0.018 270);
-  --surface-elevated: oklch(0.24 0.020 270);
-  --surface-sunken: oklch(0.14 0.014 270);
-  --card: oklch(0.22 0.018 270);
-  --card-foreground: oklch(0.97 0.005 260);
-  --popover: oklch(0.22 0.018 270);
-  --popover-foreground: oklch(0.97 0.005 260);
-
-  --primary: oklch(0.70 0.18 285);
-  --primary-foreground: oklch(0.12 0.02 270);
-  --primary-soft: oklch(0.30 0.08 285);
-
-  --secondary: oklch(0.26 0.018 270);
-  --secondary-foreground: oklch(0.97 0.005 260);
-  --muted: oklch(0.26 0.018 270);
-  --muted-foreground: oklch(0.70 0.015 260);
-  --accent: oklch(0.30 0.08 285);
-  --accent-foreground: oklch(0.92 0.04 285);
-
-  --destructive: oklch(0.65 0.22 25);
-  --destructive-foreground: oklch(0.12 0.02 270);
-  --success: oklch(0.72 0.16 155);
-  --warning: oklch(0.80 0.16 75);
-  --info: oklch(0.72 0.14 230);
-
-  --border: oklch(1 0 0 / 0.08);
-  --border-soft: oklch(1 0 0 / 0.04);
-  --border-strong: oklch(1 0 0 / 0.14);
-  --input: oklch(1 0 0 / 0.10);
-  --ring: oklch(0.70 0.18 285 / 0.55);
+  /* Tokens are already on :root in dark-first; this block is a
+     no-op safety net so toggling .dark explicitly never breaks. */
+  color-scheme: dark;
 }
 
 @layer base {
@@ -189,6 +316,11 @@
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     font-feature-settings: "ss01", "cv11";
+    color-scheme: dark;
+  }
+
+  html.light, html.light body {
+    color-scheme: light;
   }
 
   body {
@@ -204,14 +336,12 @@
     font-weight: 500;
   }
 
-  /* Default focus — calm but visible (a11y). */
   :focus-visible {
     outline: 2px solid var(--color-ring);
     outline-offset: 2px;
     border-radius: var(--radius-sm);
   }
 
-  /* Reduced motion — respect user preference + low-end devices. */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
@@ -220,53 +350,54 @@
     }
   }
 
-  /* Selection */
   ::selection {
-    background-color: color-mix(in oklab, var(--primary) 28%, transparent);
+    background-color: color-mix(in oklab, var(--primary) 32%, transparent);
     color: var(--foreground);
   }
 }
 
 /* ============================================================ */
-/* Utility surfaces — composable, never overused.                */
+/* Utility surfaces — composable glass layers.                   */
 /* ============================================================ */
 
-/* Subtle glass — for floating bars, sheets, headers. */
 @utility glass {
-  background-color: color-mix(in oklab, var(--surface-elevated) 70%, transparent);
+  background-color: color-mix(in oklab, var(--surface-elevated) 68%, transparent);
   backdrop-filter: blur(20px) saturate(140%);
   -webkit-backdrop-filter: blur(20px) saturate(140%);
   border: 1px solid var(--border-soft);
 }
 
-/* Stronger glass — for full-bleed overlays. */
 @utility glass-strong {
-  background-color: color-mix(in oklab, var(--surface-elevated) 82%, transparent);
+  background-color: color-mix(in oklab, var(--surface-floating) 82%, transparent);
   backdrop-filter: blur(28px) saturate(160%);
   -webkit-backdrop-filter: blur(28px) saturate(160%);
   border: 1px solid var(--border-soft);
 }
 
-/* Soft glass — barely-there veil. */
 @utility glass-soft {
-  background-color: color-mix(in oklab, var(--surface-elevated) 50%, transparent);
+  background-color: color-mix(in oklab, var(--surface-elevated) 46%, transparent);
   backdrop-filter: blur(12px) saturate(120%);
   -webkit-backdrop-filter: blur(12px) saturate(120%);
 }
 
-/* Hairline divider — replaces ugly 1px gray lines. */
+/* Assistant layer — subtle violet-tinted glass, AI presence. */
+@utility glass-assistant {
+  background-color: color-mix(in oklab, var(--surface-assistant) 76%, transparent);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid color-mix(in oklab, var(--intelligence) 22%, transparent);
+}
+
 @utility hairline {
   box-shadow: inset 0 -1px 0 0 var(--border-soft);
 }
 
-/* Display typography (serif accent). Use sparingly. */
 @utility font-display {
   font-family: var(--font-display);
   font-weight: 400;
   letter-spacing: var(--tracking-tighter);
 }
 
-/* Eyebrow — uppercase mini-label above titles. */
 @utility eyebrow {
   font-size: var(--text-2xs);
   font-weight: 500;
@@ -275,7 +406,6 @@
   color: var(--muted-foreground);
 }
 
-/* Interactive base — shared press feel. */
 @utility tap {
   transition: transform var(--duration-fast) var(--ease-standard),
               background-color var(--duration-fast) var(--ease-standard),
@@ -285,3 +415,9 @@
 @utility tap-press {
   transform: scale(0.98);
 }
+
+/* Glow utilities — apply sparingly. One per screen, max. */
+@utility glow-soft      { box-shadow: var(--glow-soft); }
+@utility glow-ambient   { box-shadow: var(--glow-ambient); }
+@utility glow-focal     { box-shadow: var(--glow-focal); }
+@utility glow-cinematic { box-shadow: var(--glow-cinematic); }
