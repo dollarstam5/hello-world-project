@@ -507,3 +507,149 @@
 @utility glow-ambient   { box-shadow: var(--glow-ambient); }
 @utility glow-focal     { box-shadow: var(--glow-focal); }
 @utility glow-cinematic { box-shadow: var(--glow-cinematic); }
+
+/* ============================================================ */
+/* Phase 2/5 — Typography utilities.                             */
+/* Soft-futuristic hierarchy: weight + tracking + rhythm before  */
+/* size. Display variants borrow the serif for editorial accent. */
+/* ============================================================ */
+
+@utility text-display-lg {
+  font-family: var(--font-display);
+  font-size: var(--text-6xl);
+  line-height: var(--leading-tightest);
+  letter-spacing: var(--tracking-tightest);
+  font-weight: 400;
+  text-wrap: balance;
+}
+@utility text-display-md {
+  font-family: var(--font-display);
+  font-size: var(--text-5xl);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tighter);
+  font-weight: 400;
+  text-wrap: balance;
+}
+@utility text-display-sm {
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tighter);
+  font-weight: 400;
+  text-wrap: balance;
+}
+
+@utility text-title-lg {
+  font-size: var(--text-3xl);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tighter);
+  font-weight: 500;
+}
+@utility text-title-md {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  font-weight: 500;
+}
+@utility text-title-sm {
+  font-size: var(--text-xl);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  font-weight: 500;
+}
+
+@utility text-subtitle {
+  font-size: var(--text-lg);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  font-weight: 400;
+  color: var(--muted-foreground);
+}
+@utility text-body {
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  font-weight: 400;
+}
+@utility text-body-strong {
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  font-weight: 500;
+}
+@utility text-caption {
+  font-size: var(--text-xs);
+  line-height: var(--leading-snug);
+  color: var(--muted-foreground);
+}
+@utility text-meta {
+  font-size: var(--text-2xs);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-wide);
+  color: var(--muted-foreground);
+}
+
+/* Numeric — tabular for stats, counters, wallet. */
+@utility numeric {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum", "ss01";
+  letter-spacing: var(--tracking-tight);
+}
+
+/* ============================================================ */
+/* Phase 2/5 — Spacing rhythm + layout containers.               */
+/* ============================================================ */
+
+/* Vertical rhythm — stack children with calm spacing. */
+@utility stack-1  { display: flex; flex-direction: column; gap: var(--space-1); }
+@utility stack-2  { display: flex; flex-direction: column; gap: var(--space-2); }
+@utility stack-3  { display: flex; flex-direction: column; gap: var(--space-3); }
+@utility stack-4  { display: flex; flex-direction: column; gap: var(--space-4); }
+@utility stack-6  { display: flex; flex-direction: column; gap: var(--space-6); }
+@utility stack-8  { display: flex; flex-direction: column; gap: var(--space-8); }
+@utility stack-10 { display: flex; flex-direction: column; gap: var(--space-10); }
+@utility stack-14 { display: flex; flex-direction: column; gap: var(--space-14); }
+
+/* Inline rhythm — horizontal flow with consistent gap. */
+@utility row-1 { display: flex; align-items: center; gap: var(--space-1); }
+@utility row-2 { display: flex; align-items: center; gap: var(--space-2); }
+@utility row-3 { display: flex; align-items: center; gap: var(--space-3); }
+@utility row-4 { display: flex; align-items: center; gap: var(--space-4); }
+
+/* Section rhythm — cinematic breathing between blocks. */
+@utility section-pad   { padding-block: var(--space-10); }
+@utility section-pad-lg{ padding-block: var(--space-14); }
+@utility section-pad-xl{ padding-block: var(--space-20); }
+
+/* Content containers — mobile-first reading widths.
+   Page gutter scales gently with viewport. */
+@utility container-page {
+  margin-inline: auto;
+  width: 100%;
+  max-width: var(--container-md);
+  padding-inline: var(--space-4);
+}
+@media (min-width: 640px) {
+  .container-page { padding-inline: var(--space-6); }
+}
+@media (min-width: 1024px) {
+  .container-page { max-width: var(--container-lg); padding-inline: var(--space-8); }
+}
+
+@utility container-narrow {
+  margin-inline: auto;
+  width: 100%;
+  max-width: var(--container-sm);
+  padding-inline: var(--space-4);
+}
+@utility container-wide {
+  margin-inline: auto;
+  width: 100%;
+  max-width: var(--container-xl);
+  padding-inline: var(--space-4);
+}
+@media (min-width: 768px) {
+  .container-wide { padding-inline: var(--space-8); }
+}
+
+/* Safe-area helpers — for the thumb zone. */
+@utility safe-bottom { padding-bottom: var(--safe-bottom); }
+@utility safe-top    { padding-top: var(--safe-top); }
