@@ -376,15 +376,51 @@
   body {
     font-family: var(--font-sans);
     font-size: var(--text-base);
-    line-height: 1.55;
+    line-height: var(--leading-normal);
+    letter-spacing: var(--tracking-normal);
     overscroll-behavior-y: none;
+    padding-left: var(--safe-left);
+    padding-right: var(--safe-right);
   }
 
-  h1, h2, h3, h4 {
+  /* Headings — soft-futuristic. Hierarchy comes from rhythm and
+     elevation, NOT only from size. Keep weights modest. */
+  h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-sans);
+    color: var(--foreground);
+    text-wrap: balance;
+  }
+  h1 {
+    font-size: var(--text-3xl);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tighter);
+    font-weight: 500;
+  }
+  h2 {
+    font-size: var(--text-2xl);
+    line-height: var(--leading-tight);
     letter-spacing: var(--tracking-tight);
     font-weight: 500;
   }
+  h3 {
+    font-size: var(--text-xl);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    font-weight: 500;
+  }
+  h4 {
+    font-size: var(--text-lg);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    font-weight: 500;
+  }
+  h5, h6 {
+    font-size: var(--text-md);
+    line-height: var(--leading-snug);
+    font-weight: 500;
+  }
+  p { text-wrap: pretty; }
+
 
   :focus-visible {
     outline: 2px solid var(--color-ring);
