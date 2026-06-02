@@ -4,7 +4,9 @@
  * canvas/SVG, animation primitives). Keep in sync with styles.css.
  *
  * Phase 1/5 — Foundation + Tokens.
+ * Phase 2/5 — Spacing + Typography.
  */
+
 
 /* ----------------------------- Motion ----------------------------- */
 export const duration = {
