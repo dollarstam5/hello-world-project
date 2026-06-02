@@ -4,7 +4,9 @@
  * canvas/SVG, animation primitives). Keep in sync with styles.css.
  *
  * Phase 1/5 — Foundation + Tokens.
+ * Phase 2/5 — Spacing + Typography.
  */
+
 
 /* ----------------------------- Motion ----------------------------- */
 export const duration = {
@@ -104,3 +106,97 @@ export type SurfaceLevel =
   | "modal"
   | "overlay"
   | "assistant";
+
+/* ----------------------------- Spacing ---------------------------- */
+/** 4px-base spacing scale (rem strings). Mirror of --space-* vars. */
+export const space = {
+  0: "0",
+  px: "1px",
+  0.5: "0.125rem",
+  1: "0.25rem",
+  1.5: "0.375rem",
+  2: "0.5rem",
+  3: "0.75rem",
+  4: "1rem",
+  5: "1.25rem",
+  6: "1.5rem",
+  7: "1.75rem",
+  8: "2rem",
+  10: "2.5rem",
+  12: "3rem",
+  14: "3.5rem",
+  16: "4rem",
+  20: "5rem",
+  24: "6rem",
+  32: "8rem",
+} as const;
+export type SpaceKey = keyof typeof space;
+
+/* --------------------------- Typography --------------------------- */
+/** Type scale — rem strings, matches --text-* vars. */
+export const fontSize = {
+  "2xs": "0.6875rem",
+  xs: "0.75rem",
+  sm: "0.8125rem",
+  base: "0.9375rem",
+  md: "1rem",
+  lg: "1.125rem",
+  xl: "1.375rem",
+  "2xl": "1.75rem",
+  "3xl": "2.25rem",
+  "4xl": "3rem",
+  "5xl": "3.75rem",
+  "6xl": "4.5rem",
+} as const;
+export type FontSizeKey = keyof typeof fontSize;
+
+export const lineHeight = {
+  tightest: 1.02,
+  tight: 1.12,
+  snug: 1.28,
+  normal: 1.55,
+  relaxed: 1.7,
+} as const;
+
+export const tracking = {
+  tightest: "-0.045em",
+  tighter: "-0.035em",
+  tight: "-0.02em",
+  normal: "0",
+  wide: "0.04em",
+  eyebrow: "0.2em",
+} as const;
+
+/** Semantic text roles. Map to text-{role} utilities in styles.css. */
+export type TextRole =
+  | "display-lg"
+  | "display-md"
+  | "display-sm"
+  | "title-lg"
+  | "title-md"
+  | "title-sm"
+  | "subtitle"
+  | "body"
+  | "body-strong"
+  | "caption"
+  | "meta";
+
+/* -------------------------- Layout / Container -------------------- */
+export const container = {
+  xs: "22rem",
+  sm: "28rem",
+  md: "36rem",
+  lg: "48rem",
+  xl: "64rem",
+  "2xl": "80rem",
+} as const;
+export type ContainerKey = keyof typeof container;
+
+/** Mobile-first breakpoints (px). For matchMedia + JS-driven layouts. */
+export const breakpoint = {
+  sm: 640,
+  md: 768,
+  lg: 1024,
+  xl: 1280,
+  "2xl": 1536,
+} as const;
