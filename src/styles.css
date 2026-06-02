@@ -649,3 +649,227 @@
 /* Safe-area helpers — for the thumb zone. */
 @utility safe-bottom { padding-bottom: var(--safe-bottom); }
 @utility safe-top    { padding-top: var(--safe-top); }
+
+/* ============================================================ */
+/* Phase 3/5 — MOTION SYSTEM                                     */
+/*                                                               */
+/* Cinematic easing + breathing presence + signature motions     */
+/* (Flash wave, Radar scan, AI presence, shimmer, float).        */
+/* Everything degrades gracefully under prefers-reduced-motion   */
+/* via the global rule in @layer base.                           */
+/* ============================================================ */
+
+@theme inline {
+  /* Cinematic easings — extend Phase 1 set. */
+  --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);   /* long elegant arrival */
+  --ease-soft-out:  cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-soft-in:   cubic-bezier(0.32, 0, 0.67, 0);
+  --ease-spring:    linear(
+                      0, 0.009, 0.035 2.1%, 0.139, 0.302, 0.502 9.9%,
+                      0.717, 0.928, 1.123, 1.291, 1.42, 1.501 26.6%,
+                      1.525, 1.495 32.6%, 1.443 35.4%, 1.219 47%,
+                      1.107 53.2%, 1.013 60.2%, 0.971 67%,
+                      0.955 71%, 0.965 76.5%, 1.012 91.9%, 1
+                    );
+
+  /* Animation durations — alias of duration tokens for keyframes. */
+  --motion-instant: var(--duration-instant);
+  --motion-fast:    var(--duration-fast);
+  --motion-base:    var(--duration-base);
+  --motion-slow:    var(--duration-slow);
+  --motion-slower:  var(--duration-slower);
+  --motion-breathe: 4.8s;
+  --motion-scan:    3.2s;
+  --motion-wave:    1.8s;
+  --motion-shimmer: 2.4s;
+  --motion-presence:5.6s;
+}
+
+/* ----------------- Signature keyframes ----------------- */
+
+/* Breathing — ambient idle for AI/trust/presence indicators. */
+@keyframes breathe {
+  0%, 100% { opacity: 0.62; transform: scale(1); }
+  50%      { opacity: 1;    transform: scale(1.015); }
+}
+
+/* AI presence — slow halo pulse. */
+@keyframes ai-presence {
+  0%, 100% {
+    box-shadow:
+      0 0 0 0 color-mix(in oklab, var(--intelligence) 32%, transparent),
+      0 0 24px -6px color-mix(in oklab, var(--intelligence) 28%, transparent);
+  }
+  50% {
+    box-shadow:
+      0 0 0 6px color-mix(in oklab, var(--intelligence) 12%, transparent),
+      0 0 48px -4px color-mix(in oklab, var(--intelligence) 42%, transparent);
+  }
+}
+
+/* Flash wave — outward ripple for instant feedback / Flash module. */
+@keyframes flash-wave {
+  0%   { transform: scale(0.6); opacity: 0.55; }
+  80%  { opacity: 0.05; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+/* Radar scan — rotating conic sweep for the Radar module. */
+@keyframes radar-scan {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Radar ping — concentric ring expansion. */
+@keyframes radar-ping {
+  0%   { transform: scale(0.4); opacity: 0.7; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* Shimmer — premium skeleton sheen. */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Float — subtle Y drift for FAB / floating cards. */
+@keyframes float-soft {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-3px); }
+}
+
+/* Rise — calm entrance for cards/sections. */
+@keyframes rise-in {
+  0%   { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Fade-soft — opacity only, no movement. */
+@keyframes fade-soft {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Glow pulse — accent-aware focal pulse. */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: var(--glow-soft); }
+  50%      { box-shadow: var(--glow-ambient); }
+}
+
+/* ----------------- Motion utilities ----------------- */
+
+@utility motion-breathe {
+  animation: breathe var(--motion-breathe) var(--ease-standard) infinite;
+}
+@utility motion-presence {
+  animation: ai-presence var(--motion-presence) var(--ease-cinematic) infinite;
+}
+@utility motion-float {
+  animation: float-soft 5s var(--ease-standard) infinite;
+}
+@utility motion-glow-pulse {
+  animation: glow-pulse 3.6s var(--ease-standard) infinite;
+}
+
+/* Rise-in for elements arriving in the viewport. */
+@utility motion-rise-in {
+  animation: rise-in var(--motion-slow) var(--ease-cinematic) both;
+}
+@utility motion-fade-in {
+  animation: fade-soft var(--motion-base) var(--ease-standard) both;
+}
+
+/* Flash + Radar — module-signature motions. Use as decorative
+   overlays inside FlashCard / RadarCard.
+
+   Markup pattern:
+     <span class="motion-flash-wave" />
+     <span class="motion-radar-scan" />
+     <span class="motion-radar-ping" />
+*/
+@utility motion-flash-wave {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid color-mix(in oklab, var(--warm) 55%, transparent);
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--warm) 16%, transparent) 0%,
+    transparent 70%
+  );
+  animation: flash-wave var(--motion-wave) var(--ease-cinematic) infinite;
+  pointer-events: none;
+}
+@utility motion-radar-scan {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    color-mix(in oklab, var(--primary) 28%, transparent) 25deg,
+    transparent 60deg,
+    transparent 360deg
+  );
+  animation: radar-scan var(--motion-scan) linear infinite;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+@utility motion-radar-ping {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid color-mix(in oklab, var(--primary) 38%, transparent);
+  animation: radar-ping 2.4s var(--ease-soft-out) infinite;
+  pointer-events: none;
+}
+
+/* Shimmer — apply on a Skeleton element. */
+@utility motion-shimmer {
+  background-image: linear-gradient(
+    100deg,
+    transparent 30%,
+    color-mix(in oklab, var(--foreground) 6%, transparent) 50%,
+    transparent 70%
+  );
+  background-size: 200% 100%;
+  animation: shimmer var(--motion-shimmer) linear infinite;
+}
+
+/* Interaction-driven motion — hover/press refinements. */
+@utility hover-lift {
+  transition: transform var(--duration-base) var(--ease-standard),
+              box-shadow var(--duration-base) var(--ease-standard);
+}
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-elevated);
+}
+@utility press {
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+.press:active { transform: scale(0.97); }
+
+/* Will-change hint — opt-in for animated layers. */
+@utility motion-layer {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Reduced-motion safety net: turn off signature loops, keep state
+   transitions snappy. The global @media rule already shortens
+   durations; this also kills decorative loops outright so they
+   don't waste a frame budget. */
+@media (prefers-reduced-motion: reduce) {
+  .motion-breathe,
+  .motion-presence,
+  .motion-float,
+  .motion-glow-pulse,
+  .motion-flash-wave,
+  .motion-radar-scan,
+  .motion-radar-ping,
+  .motion-shimmer {
+    animation: none !important;
+  }
+}
