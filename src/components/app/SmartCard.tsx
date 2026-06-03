@@ -1,7 +1,8 @@
 import type { HTMLAttributes, ReactNode } from "react";
 import { motion } from "framer-motion";
 import { Surface } from "./Surface";
-import { motion as motionTokens, spring } from "@/lib/design/tokens";
+import { transition } from "@/lib/design/motion";
+import { useReducedMotion } from "@/lib/design/useReducedMotion";
 import { cn } from "@/lib/utils";
 
 interface SmartCardProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
@@ -18,7 +19,9 @@ interface SmartCardProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
   /** Makes the whole card press-feedback ready. */
   interactive?: boolean;
   /** Visual tone of the card. */
-  tone?: "plain" | "elevated" | "glass" | "sunken";
+  tone?: "plain" | "elevated" | "glass" | "sunken" | "assistant";
+  /** Optional ambient glow halo. */
+  glow?: "none" | "soft" | "ambient";
 }
 
 const toneMap = {
@@ -26,13 +29,12 @@ const toneMap = {
   elevated: "elevated",
   glass: "glass",
   sunken: "sunken",
+  assistant: "assistant",
 } as const;
 
 /**
  * SmartCard — generic, composable card primitive.
- * The base building block for FlashCard / RadarCard / WalletCard / TrustCard.
- *
- *   <SmartCard eyebrow="Today" title="Hello" description="…" trailing={<Badge/>} />
+ * Phase 4/5: uses cinematic motion + interactive utility + reduced-motion fallback.
  */
 export function SmartCard({
   eyebrow,
@@ -43,18 +45,21 @@ export function SmartCard({
   footer,
   interactive = false,
   tone = "elevated",
+  glow = "none",
   className,
   children,
   ...rest
 }: SmartCardProps) {
-  const Wrapper = interactive ? motion.div : "div";
-  const motionProps = interactive
-    ? {
-        whileHover: { y: -1 },
-        whileTap: { scale: 0.985 },
-        transition: spring.smooth,
-      }
-    : {};
+  const reduced = useReducedMotion();
+  const Wrapper = interactive && !reduced ? motion.div : "div";
+  const motionProps =
+    interactive && !reduced
+      ? {
+          whileHover: { y: -2 },
+          whileTap: { scale: 0.985 },
+          transition: transition.spring,
+        }
+      : {};
 
   return (
     <Wrapper {...(motionProps as object)} className="contents">
@@ -62,9 +67,10 @@ export function SmartCard({
         variant={toneMap[tone]}
         padding="md"
         bordered={tone !== "elevated"}
+        glow={glow}
         className={cn(
           "flex flex-col gap-3",
-          interactive && "cursor-pointer tap select-none",
+          interactive && "cursor-pointer tap focus-ring select-none",
           className,
         )}
         {...rest}
@@ -90,6 +96,3 @@ export function SmartCard({
     </Wrapper>
   );
 }
-
-// Re-export motion preset for consumers that need it
-export const smartCardEnter = motionTokens.fadeIn;
