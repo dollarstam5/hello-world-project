@@ -1,7 +1,14 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-type Tone = "neutral" | "primary" | "success" | "warning" | "info" | "destructive";
+type Tone =
+  | "neutral"
+  | "primary"
+  | "success"
+  | "warning"
+  | "info"
+  | "destructive"
+  | "intelligence";
 
 interface IndicatorProps {
   tone?: Tone;
@@ -11,6 +18,8 @@ interface IndicatorProps {
   dot?: boolean;
   /** Render as a tiny solid dot only (no pill). */
   dotOnly?: boolean;
+  /** Pulse the dot — for live / presence / AI states. */
+  pulse?: boolean;
   className?: string;
 }
 
@@ -21,6 +30,8 @@ const toneRing: Record<Tone, string> = {
   warning: "bg-warning/15 text-[oklch(0.45_0.16_75)] dark:text-warning",
   info: "bg-info/15 text-info",
   destructive: "bg-destructive/15 text-destructive",
+  intelligence:
+    "bg-[color-mix(in_oklab,var(--intelligence)_16%,transparent)] text-[var(--intelligence)]",
 };
 
 const toneDot: Record<Tone, string> = {
@@ -30,26 +41,44 @@ const toneDot: Record<Tone, string> = {
   warning: "bg-warning",
   info: "bg-info",
   destructive: "bg-destructive",
+  intelligence: "bg-[var(--intelligence)]",
 };
 
 /**
  * Indicator — generic status pill / dot.
- * Use anywhere a small piece of meta-information needs visual weight.
+ * Phase 4/5 — adds intelligence tone + pulse loop.
  */
 export function Indicator({
   tone = "neutral",
   label,
   dot,
   dotOnly,
+  pulse,
   className,
 }: IndicatorProps) {
+  const dotEl = (
+    <span
+      aria-hidden
+      className={cn(
+        "relative inline-block h-1.5 w-1.5 rounded-full",
+        toneDot[tone],
+        pulse && "motion-glow-pulse",
+      )}
+    >
+      {pulse && (
+        <span
+          aria-hidden
+          className={cn(
+            "absolute inset-0 rounded-full opacity-60 motion-radar-ping",
+            toneDot[tone],
+          )}
+        />
+      )}
+    </span>
+  );
+
   if (dotOnly) {
-    return (
-      <span
-        aria-hidden
-        className={cn("inline-block h-1.5 w-1.5 rounded-full", toneDot[tone], className)}
-      />
-    );
+    return <span className={cn("inline-block", className)}>{dotEl}</span>;
   }
   return (
     <span
@@ -59,10 +88,9 @@ export function Indicator({
         className,
       )}
     >
-      {dot && (
-        <span aria-hidden className={cn("h-1.5 w-1.5 rounded-full", toneDot[tone])} />
-      )}
+      {dot && dotEl}
       {label}
     </span>
   );
 }
+
