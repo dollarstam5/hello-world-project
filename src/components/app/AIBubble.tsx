@@ -2,7 +2,8 @@ import type { ReactNode } from "react";
 import { Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { Icon } from "./Icon";
-import { motion as motionTokens } from "@/lib/design/tokens";
+import { transition } from "@/lib/design/motion";
+import { useReducedMotion } from "@/lib/design/useReducedMotion";
 import { cn } from "@/lib/utils";
 
 type Author = "assistant" | "user";
@@ -17,15 +18,16 @@ interface AIBubbleProps {
 
 /**
  * AIBubble — generic chat bubble for assistant/user messages.
- * Reused anywhere a conversation surface is needed.
+ * Phase 4/5 — assistant glass + breathing avatar presence.
  */
 export function AIBubble({ author = "assistant", children, thinking, className }: AIBubbleProps) {
   const isAssistant = author === "assistant";
+  const reduced = useReducedMotion();
   return (
     <motion.div
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={motionTokens.fadeIn}
+      transition={transition.base}
       className={cn(
         "flex w-full gap-2",
         isAssistant ? "justify-start" : "justify-end",
@@ -33,7 +35,14 @@ export function AIBubble({ author = "assistant", children, thinking, className }
       )}
     >
       {isAssistant && (
-        <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary">
+        <div
+          className={cn(
+            "mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full",
+            "bg-[color-mix(in_oklab,var(--intelligence)_18%,var(--surface-elevated))]",
+            "text-[var(--intelligence)] glow-soft",
+            !reduced && "motion-presence",
+          )}
+        >
           <Icon as={Sparkles} size="xs" />
         </div>
       )}
@@ -41,7 +50,7 @@ export function AIBubble({ author = "assistant", children, thinking, className }
         className={cn(
           "max-w-[78%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed",
           isAssistant
-            ? "bg-surface text-foreground rounded-tl-md"
+            ? "glass-assistant text-foreground rounded-tl-md"
             : "bg-primary text-primary-foreground rounded-tr-md",
         )}
       >

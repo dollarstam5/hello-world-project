@@ -4,7 +4,7 @@ import type { ComponentType, SVGProps } from "react";
 import { Icon } from "./Icon";
 import { cn } from "@/lib/utils";
 
-type Status = "info" | "success" | "warning" | "error";
+type Status = "info" | "success" | "warning" | "error" | "intelligence";
 
 interface StatusBannerProps {
   status?: Status;
@@ -19,6 +19,8 @@ const styles: Record<Status, string> = {
   success: "bg-success/10 text-success",
   warning: "bg-warning/15 text-[oklch(0.42_0.16_75)] dark:text-warning",
   error: "bg-destructive/10 text-destructive",
+  intelligence:
+    "bg-[color-mix(in_oklab,var(--intelligence)_14%,transparent)] text-[var(--intelligence)]",
 };
 
 const icons: Record<Status, ComponentType<SVGProps<SVGSVGElement>>> = {
@@ -26,6 +28,7 @@ const icons: Record<Status, ComponentType<SVGProps<SVGSVGElement>>> = {
   success: CheckCircle2,
   warning: AlertTriangle,
   error: AlertCircle,
+  intelligence: Info,
 };
 
 /**

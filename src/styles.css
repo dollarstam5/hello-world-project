@@ -444,18 +444,42 @@
 
 /* ============================================================ */
 /* Utility surfaces — composable glass layers.                   */
+/* Phase 4/5 — refined: luminous top-edge, layered depth.        */
 /* ============================================================ */
 
 @utility glass {
   background-color: color-mix(in oklab, var(--surface-elevated) 68%, transparent);
   backdrop-filter: blur(20px) saturate(140%);
   border: 1px solid var(--border-soft);
+  position: relative;
+}
+/* Luminous top edge — premium glass highlight. */
+.glass::before,
+.glass-strong::before,
+.glass-assistant::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--foreground) 14%, transparent) 0%,
+    transparent 40%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
 }
 
 @utility glass-strong {
   background-color: color-mix(in oklab, var(--surface-floating) 82%, transparent);
   backdrop-filter: blur(28px) saturate(160%);
   border: 1px solid var(--border-soft);
+  position: relative;
 }
 
 @utility glass-soft {
@@ -468,6 +492,7 @@
   background-color: color-mix(in oklab, var(--surface-assistant) 76%, transparent);
   backdrop-filter: blur(24px) saturate(150%);
   border: 1px solid color-mix(in oklab, var(--intelligence) 22%, transparent);
+  position: relative;
 }
 
 @utility hairline {
@@ -488,14 +513,42 @@
   color: var(--muted-foreground);
 }
 
+/* Interaction primitives — Phase 4/5. */
 @utility tap {
   transition: transform var(--duration-fast) var(--ease-standard),
               background-color var(--duration-fast) var(--ease-standard),
               box-shadow var(--duration-fast) var(--ease-standard),
               opacity var(--duration-fast) var(--ease-standard);
+  -webkit-tap-highlight-color: transparent;
 }
 @utility tap-press {
   transform: scale(0.98);
+}
+
+/* Focus ring — accessibility-first, calm, never harsh. */
+@utility focus-ring {
+  outline: none;
+}
+.focus-ring:focus-visible {
+  box-shadow:
+    0 0 0 2px var(--background),
+    0 0 0 4px color-mix(in oklab, var(--primary) 60%, transparent);
+}
+
+/* Interactive surface — composable hover/press + focus. */
+@utility interactive {
+  cursor: pointer;
+  transition: transform var(--duration-base) var(--ease-standard),
+              box-shadow var(--duration-base) var(--ease-standard),
+              background-color var(--duration-fast) var(--ease-standard);
+  -webkit-tap-highlight-color: transparent;
+}
+.interactive:hover { transform: translateY(-1px); }
+.interactive:active { transform: scale(0.985); }
+.interactive:focus-visible {
+  box-shadow:
+    0 0 0 2px var(--background),
+    0 0 0 4px color-mix(in oklab, var(--primary) 55%, transparent);
 }
 
 /* Glow utilities — apply sparingly. One per screen, max. */
