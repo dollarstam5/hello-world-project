@@ -37,7 +37,8 @@ export function Modal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         className={cn(
-          "border-border-soft rounded-3xl bg-surface-elevated p-6 sm:max-w-md",
+          "border-border-soft rounded-3xl glass-strong p-6 sm:max-w-md",
+          "shadow-[var(--shadow-elevated)]",
           className,
         )}
       >
