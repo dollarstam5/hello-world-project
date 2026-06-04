@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PlaceholderPage } from "@/components/app/PlaceholderPage";
+import { Zap } from "lucide-react";
+import { SectionFoundation } from "@/components/experience/SectionFoundation";
 
 export const Route = createFileRoute("/flash")({
   head: () => ({
@@ -9,6 +10,17 @@ export const Route = createFileRoute("/flash")({
     ],
   }),
   component: () => (
-    <PlaceholderPage titleKey="page.flash.title" descKey="page.flash.desc" />
+    <SectionFoundation
+      eyebrowKey="page.flash.eyebrow"
+      titleKey="page.flash.title"
+      descKey="page.flash.desc"
+      tone="warning"
+      icon={Zap}
+      sections={[
+        { key: "now", titleKey: "page.flash.section.now", perf: "short" },
+        { key: "soon", titleKey: "page.flash.section.soon", perf: "tall" },
+      ]}
+      footer="Foundation · Flash"
+    />
   ),
 });
