@@ -9,20 +9,19 @@ interface PlaceholderPageProps {
 /**
  * Generic placeholder shell for routes that have no business UI yet.
  * Visual continuity with the rest of the shell; no domain logic.
+ *
+ * Phase 5/5: harmonized with semantic typography + safe-area aware
+ * stage-center utility.
  */
 export function PlaceholderPage({ titleKey, descKey }: PlaceholderPageProps) {
   const { t } = useI18n();
   return (
-    <section className="flex min-h-[80dvh] flex-col items-center justify-center px-6 text-center">
-      <span className="mb-4 inline-flex items-center rounded-full border border-border-soft bg-surface px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+    <section className="stage-center text-center">
+      <span className="eyebrow mb-4 inline-flex items-center rounded-full border border-border-soft bg-surface px-3 py-1">
         {t("common.soon")}
       </span>
-      <h1 className="text-balance text-2xl font-medium tracking-tight sm:text-3xl">
-        {t(titleKey)}
-      </h1>
-      <p className="mt-3 max-w-sm text-balance text-sm text-muted-foreground">
-        {t(descKey)}
-      </p>
+      <h1 className="text-fluid-display-sm">{t(titleKey)}</h1>
+      <p className="text-subtitle mt-3 max-w-prose">{t(descKey)}</p>
     </section>
   );
 }
