@@ -9,10 +9,29 @@ import {
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useIdentity } from "@/lib/experience/identity";
 
-function Section({ title, children }: { title: ReactNode; children: ReactNode }) {
+function Section({
+  title,
+  children,
+  perf = "auto",
+}: {
+  title: ReactNode;
+  children: ReactNode;
+  /** content-visibility hint — keeps offscreen sections cheap. */
+  perf?: "auto" | "short" | "tall" | "none";
+}) {
+  const cv =
+    perf === "short"
+      ? "cv-short"
+      : perf === "tall"
+        ? "cv-tall"
+        : perf === "none"
+          ? ""
+          : "cv-auto";
   return (
-    <section className="space-y-3">
-      <h2 className="text-sm font-medium tracking-tight text-foreground/80">{title}</h2>
+    <section className={`stack-3 ${cv}`.trim()}>
+      <h2 className="text-caption font-medium tracking-tight text-foreground/80">
+        {title}
+      </h2>
       {children}
     </section>
   );
@@ -24,6 +43,9 @@ function Section({ title, children }: { title: ReactNode; children: ReactNode })
  * It does NOT implement any domain. It exposes 4 calm slots (Flash,
  * Radar, Feed, Discovery) where domains plug in via registries.
  * Empty by default = calm by default.
+ *
+ * Phase 5/5: harmonized typography (semantic utilities), responsive
+ * page-shell, content-visibility on offscreen sections.
  */
 export function HomeFoundation() {
   const { t } = useI18n();
@@ -43,38 +65,50 @@ export function HomeFoundation() {
         : t("identity.guest");
 
   return (
-    <div className="space-y-8 px-4 pt-6">
-      <header className="space-y-2">
+    <div className="page-shell stack-10">
+      <header className="stack-2 motion-rise-in">
         <Indicator tone="primary" label={identityLabel} dot />
-        <h1 className="font-display text-4xl tracking-tight">{t("home.welcome")}</h1>
-        <p className="text-sm text-muted-foreground">{t("home.subtitle")}</p>
+        <h1 className="text-fluid-display-sm">{t("home.welcome")}</h1>
+        <p className="text-subtitle max-w-prose">{t("home.subtitle")}</p>
       </header>
 
-      <Section title={t("home.section.flash")}>
+      <Section title={t("home.section.flash")} perf="short">
         <Surface variant="sunken" padding="lg" bordered>
-          <EmptyState title={t("common.empty")} description={t("common.empty.desc")} />
+          <EmptyState
+            title={t("common.empty")}
+            description={t("common.empty.desc")}
+          />
         </Surface>
       </Section>
 
-      <Section title={t("home.section.radar")}>
+      <Section title={t("home.section.radar")} perf="short">
         <Surface variant="sunken" padding="lg" bordered>
-          <EmptyState title={t("common.empty")} description={t("common.empty.desc")} />
+          <EmptyState
+            title={t("common.empty")}
+            description={t("common.empty.desc")}
+          />
         </Surface>
       </Section>
 
-      <Section title={t("home.section.feed")}>
+      <Section title={t("home.section.feed")} perf="tall">
         <Surface variant="sunken" padding="lg" bordered>
-          <EmptyState title={t("common.empty")} description={t("common.empty.desc")} />
+          <EmptyState
+            title={t("common.empty")}
+            description={t("common.empty.desc")}
+          />
         </Surface>
       </Section>
 
-      <Section title={t("home.section.discovery")}>
+      <Section title={t("home.section.discovery")} perf="tall">
         {sections.length === 0 ? (
           <Surface variant="sunken" padding="lg" bordered>
-            <EmptyState title={t("common.empty")} description={t("common.empty.desc")} />
+            <EmptyState
+              title={t("common.empty")}
+              description={t("common.empty.desc")}
+            />
           </Surface>
         ) : (
-          <div className="space-y-3">
+          <div className="stack-3">
             {sections.map((s) => (
               <div key={s.key}>{s.render()}</div>
             ))}
@@ -82,7 +116,7 @@ export function HomeFoundation() {
         )}
       </Section>
 
-      <footer className="pt-4 pb-2 text-center text-[11px] uppercase tracking-[0.2em] text-muted-foreground/60">
+      <footer className="pt-4 pb-2 text-center text-meta">
         Phase 5 · Experience Foundation
       </footer>
     </div>

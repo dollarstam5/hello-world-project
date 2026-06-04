@@ -7,6 +7,8 @@ import { useExperienceBoot } from "@/lib/experience/orchestrator";
 import { OfflineBanner } from "@/components/experience/OfflineBanner";
 import { AILayer } from "@/components/experience/AILayer";
 import { OnboardingSheet } from "@/components/experience/OnboardingSheet";
+import { useResponsive } from "@/lib/platform/useResponsive";
+import { duration, easing } from "@/lib/design/tokens";
 
 /**
  * AppShell — single mount-point that boots foundation services
@@ -15,31 +17,47 @@ import { OnboardingSheet } from "@/components/experience/OnboardingSheet";
  *  - ambient AI layer
  *  - offline awareness
  *  - first-run onboarding sheet
- *
- * Pages render through children (root <Outlet />).
+ *  - low-end / reduced-motion gating (Phase 5/5)
  */
 export function AppShell({ children }: { children: ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const responsive = useResponsive();
 
   useExperienceBoot();
+
+  // Apply low-end gating on <html> so the CSS effects fall back.
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    const root = document.documentElement;
+    root.classList.toggle("low-end", responsive.shouldReduceEffects);
+  }, [responsive.shouldReduceEffects]);
 
   // Close menu on route change for clean continuity.
   useEffect(() => {
     setMenuOpen(false);
   }, [pathname]);
 
+  const reduce = responsive.shouldReduceMotion;
+  const pageTransition = reduce
+    ? { duration: 0 }
+    : { duration: duration.base, ease: easing.standard };
+
   return (
     <div className="relative min-h-dvh bg-background text-foreground antialiased">
       <OfflineBanner />
-      <main id="main" className="mx-auto w-full max-w-screen-md pb-28">
+      <main
+        id="main"
+        className="mx-auto w-full max-w-screen-md pb-28"
+        style={{ paddingBottom: "calc(7rem + var(--safe-bottom))" }}
+      >
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={pathname}
-            initial={{ opacity: 0, y: 8 }}
+            initial={reduce ? false : { opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+            exit={reduce ? { opacity: 0 } : { opacity: 0, y: -4 }}
+            transition={pageTransition}
           >
             {children}
           </motion.div>
