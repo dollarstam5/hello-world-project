@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PlaceholderPage } from "@/components/app/PlaceholderPage";
+import { User } from "lucide-react";
+import { SectionFoundation } from "@/components/experience/SectionFoundation";
 
 export const Route = createFileRoute("/espace")({
   head: () => ({
@@ -9,6 +10,17 @@ export const Route = createFileRoute("/espace")({
     ],
   }),
   component: () => (
-    <PlaceholderPage titleKey="page.espace.title" descKey="page.espace.desc" />
+    <SectionFoundation
+      eyebrowKey="page.espace.eyebrow"
+      titleKey="page.espace.title"
+      descKey="page.espace.desc"
+      tone="primary"
+      icon={User}
+      sections={[
+        { key: "you", titleKey: "page.espace.section.you", perf: "short" },
+        { key: "circles", titleKey: "page.espace.section.circles", perf: "tall" },
+      ]}
+      footer="Foundation · Espace"
+    />
   ),
 });
