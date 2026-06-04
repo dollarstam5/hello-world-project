@@ -2,6 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { Home, Zap, Radar, LayoutGrid } from "lucide-react";
 import { motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n/useI18n";
+import { useReducedMotion } from "@/lib/design/useReducedMotion";
 import { cn } from "@/lib/utils";
 
 type Tab = {
@@ -31,6 +32,7 @@ interface BottomNavProps {
 export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
   const { t } = useI18n();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const reduce = useReducedMotion();
 
   return (
     <nav
@@ -56,12 +58,19 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
               )}
             >
               {active && (
-                <motion.span
-                  layoutId="nav-pill"
-                  transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                  className="absolute inset-0 rounded-full bg-primary"
-                  aria-hidden
-                />
+                reduce ? (
+                  <span
+                    className="absolute inset-0 rounded-full bg-primary"
+                    aria-hidden
+                  />
+                ) : (
+                  <motion.span
+                    layoutId="nav-pill"
+                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                    className="absolute inset-0 rounded-full bg-primary"
+                    aria-hidden
+                  />
+                )
               )}
               <Icon className="relative h-5 w-5" aria-hidden />
               <span className="sr-only">{label}</span>
