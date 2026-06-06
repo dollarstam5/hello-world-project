@@ -1,5 +1,6 @@
 /**
  * flash domain — ephemeral signals.
- * Phase 2 placeholder: owns types, store, hooks, UI later.
+ * Owns: FlashCard UI, flash state/types/services (to be added).
  */
 export const FLASH_DOMAIN = "flash" as const;
+export { FlashCard } from "@/components/app/FlashCard";
