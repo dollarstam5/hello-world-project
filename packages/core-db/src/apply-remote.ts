@@ -25,13 +25,13 @@ export async function applyRemoteRecords(
       BaseRecord,
       string
     >;
-    const remote = {
-      ...(envelope.data as BaseRecord),
+    const incoming = envelope.data as unknown as BaseRecord;
+    const remote: BaseRecord = {
+      ...incoming,
       revision: envelope.revision,
-      deletedAt: envelope.deleted
-        ? ((envelope.data as BaseRecord).deletedAt ?? Date.now())
-        : null,
+      deletedAt: envelope.deleted ? (incoming.deletedAt ?? Date.now()) : null,
     };
+
     const local = await table.get(remote.id);
     const fields = await locallyChangedFields(envelope.table, remote.id);
     await table.put(mergeRecords(local, remote, fields));
