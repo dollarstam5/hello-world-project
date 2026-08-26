@@ -14,16 +14,405 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      audit: {
+        Row: {
+          action: string
+          actor_id: string | null
+          created_at: number
+          deleted_at: number | null
+          id: string
+          revision: number
+          server_updated_at: string
+          summary: string
+          target_id: string | null
+          target_table: string
+          updated_at: number
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          created_at?: number
+          deleted_at?: number | null
+          id?: string
+          revision?: number
+          server_updated_at?: string
+          summary?: string
+          target_id?: string | null
+          target_table: string
+          updated_at?: number
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          created_at?: number
+          deleted_at?: number | null
+          id?: string
+          revision?: number
+          server_updated_at?: string
+          summary?: string
+          target_id?: string | null
+          target_table?: string
+          updated_at?: number
+        }
+        Relationships: []
+      }
+      flashes: {
+        Row: {
+          author_id: string
+          body: string
+          created_at: number
+          deleted_at: number | null
+          expires_at: number | null
+          id: string
+          media_ids: string[]
+          revision: number
+          server_updated_at: string
+          status: string
+          title: string
+          updated_at: number
+        }
+        Insert: {
+          author_id: string
+          body?: string
+          created_at?: number
+          deleted_at?: number | null
+          expires_at?: number | null
+          id?: string
+          media_ids?: string[]
+          revision?: number
+          server_updated_at?: string
+          status?: string
+          title?: string
+          updated_at?: number
+        }
+        Update: {
+          author_id?: string
+          body?: string
+          created_at?: number
+          deleted_at?: number | null
+          expires_at?: number | null
+          id?: string
+          media_ids?: string[]
+          revision?: number
+          server_updated_at?: string
+          status?: string
+          title?: string
+          updated_at?: number
+        }
+        Relationships: []
+      }
+      media: {
+        Row: {
+          byte_size: number
+          created_at: number
+          deleted_at: number | null
+          height: number | null
+          id: string
+          kind: string
+          mime_type: string
+          owner_id: string
+          remote_path: string | null
+          revision: number
+          server_updated_at: string
+          state: string
+          updated_at: number
+          width: number | null
+        }
+        Insert: {
+          byte_size?: number
+          created_at?: number
+          deleted_at?: number | null
+          height?: number | null
+          id?: string
+          kind?: string
+          mime_type?: string
+          owner_id: string
+          remote_path?: string | null
+          revision?: number
+          server_updated_at?: string
+          state?: string
+          updated_at?: number
+          width?: number | null
+        }
+        Update: {
+          byte_size?: number
+          created_at?: number
+          deleted_at?: number | null
+          height?: number | null
+          id?: string
+          kind?: string
+          mime_type?: string
+          owner_id?: string
+          remote_path?: string | null
+          revision?: number
+          server_updated_at?: string
+          state?: string
+          updated_at?: number
+          width?: number | null
+        }
+        Relationships: []
+      }
+      missions: {
+        Row: {
+          assignee_id: string | null
+          author_id: string
+          brief: string
+          created_at: number
+          deleted_at: number | null
+          due_at: number | null
+          id: string
+          revision: number
+          reward_amount: number
+          reward_currency: string
+          server_updated_at: string
+          status: string
+          title: string
+          updated_at: number
+        }
+        Insert: {
+          assignee_id?: string | null
+          author_id: string
+          brief?: string
+          created_at?: number
+          deleted_at?: number | null
+          due_at?: number | null
+          id?: string
+          revision?: number
+          reward_amount?: number
+          reward_currency?: string
+          server_updated_at?: string
+          status?: string
+          title?: string
+          updated_at?: number
+        }
+        Update: {
+          assignee_id?: string | null
+          author_id?: string
+          brief?: string
+          created_at?: number
+          deleted_at?: number | null
+          due_at?: number | null
+          id?: string
+          revision?: number
+          reward_amount?: number
+          reward_currency?: string
+          server_updated_at?: string
+          status?: string
+          title?: string
+          updated_at?: number
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          body_key: string
+          channel: string
+          created_at: number
+          deleted_at: number | null
+          id: string
+          params: Json
+          read_at: number | null
+          recipient_id: string
+          revision: number
+          server_updated_at: string
+          title_key: string
+          updated_at: number
+        }
+        Insert: {
+          body_key?: string
+          channel?: string
+          created_at?: number
+          deleted_at?: number | null
+          id?: string
+          params?: Json
+          read_at?: number | null
+          recipient_id: string
+          revision?: number
+          server_updated_at?: string
+          title_key?: string
+          updated_at?: number
+        }
+        Update: {
+          body_key?: string
+          channel?: string
+          created_at?: number
+          deleted_at?: number | null
+          id?: string
+          params?: Json
+          read_at?: number | null
+          recipient_id?: string
+          revision?: number
+          server_updated_at?: string
+          title_key?: string
+          updated_at?: number
+        }
+        Relationships: []
+      }
+      posts: {
+        Row: {
+          author_id: string
+          body: string
+          created_at: number
+          deleted_at: number | null
+          id: string
+          media_ids: string[]
+          reaction_count: number
+          reply_count: number
+          revision: number
+          server_updated_at: string
+          updated_at: number
+          visibility: string
+        }
+        Insert: {
+          author_id: string
+          body?: string
+          created_at?: number
+          deleted_at?: number | null
+          id?: string
+          media_ids?: string[]
+          reaction_count?: number
+          reply_count?: number
+          revision?: number
+          server_updated_at?: string
+          updated_at?: number
+          visibility?: string
+        }
+        Update: {
+          author_id?: string
+          body?: string
+          created_at?: number
+          deleted_at?: number | null
+          id?: string
+          media_ids?: string[]
+          reaction_count?: number
+          reply_count?: number
+          revision?: number
+          server_updated_at?: string
+          updated_at?: number
+          visibility?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_media_id: string | null
+          created_at: number
+          deleted_at: number | null
+          display_name: string
+          handle: string | null
+          id: string
+          locale: string
+          revision: number
+          server_updated_at: string
+          status: string
+          trust_score: number
+          updated_at: number
+        }
+        Insert: {
+          avatar_media_id?: string | null
+          created_at?: number
+          deleted_at?: number | null
+          display_name?: string
+          handle?: string | null
+          id: string
+          locale?: string
+          revision?: number
+          server_updated_at?: string
+          status?: string
+          trust_score?: number
+          updated_at?: number
+        }
+        Update: {
+          avatar_media_id?: string | null
+          created_at?: number
+          deleted_at?: number | null
+          display_name?: string
+          handle?: string | null
+          id?: string
+          locale?: string
+          revision?: number
+          server_updated_at?: string
+          status?: string
+          trust_score?: number
+          updated_at?: number
+        }
+        Relationships: []
+      }
+      udi: {
+        Row: {
+          attributes: Json
+          created_at: number
+          deleted_at: number | null
+          id: string
+          level: string
+          revision: number
+          server_updated_at: string
+          updated_at: number
+          user_id: string
+          verified_at: number | null
+        }
+        Insert: {
+          attributes?: Json
+          created_at?: number
+          deleted_at?: number | null
+          id?: string
+          level?: string
+          revision?: number
+          server_updated_at?: string
+          updated_at?: number
+          user_id: string
+          verified_at?: number | null
+        }
+        Update: {
+          attributes?: Json
+          created_at?: number
+          deleted_at?: number | null
+          id?: string
+          level?: string
+          revision?: number
+          server_updated_at?: string
+          updated_at?: number
+          user_id?: string
+          verified_at?: number | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "member" | "moderator" | "admin" | "owner"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +539,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["member", "moderator", "admin", "owner"],
+    },
   },
 } as const
