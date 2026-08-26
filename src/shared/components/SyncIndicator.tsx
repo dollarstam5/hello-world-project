@@ -26,7 +26,7 @@ export function SyncIndicator({ className }: { className?: string }) {
       aria-live="polite"
       className={cn(
         "inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs",
-        "bg-surface-2/70 text-muted-foreground backdrop-blur",
+        "bg-surface-elevated/70 text-muted-foreground backdrop-blur",
         className,
       )}
     >
