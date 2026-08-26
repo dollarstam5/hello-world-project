@@ -11,7 +11,7 @@ import { isLocalDatabaseAvailable } from "@eco/core-db";
  */
 export function useLocalQuery<T>(
   query: () => Promise<T>,
-  deps: readonly unknown[] = [],
+  deps: unknown[] = [],
 ): T | undefined {
   return useLiveQuery(async () => {
     if (!isLocalDatabaseAvailable()) return undefined as T | undefined;
@@ -23,7 +23,7 @@ export function useLocalQuery<T>(
 export function useLocalQueryWithDefault<T>(
   query: () => Promise<T>,
   fallback: T,
-  deps: readonly unknown[] = [],
+  deps: unknown[] = [],
 ): T {
   return useLocalQuery(query, deps) ?? fallback;
 }
