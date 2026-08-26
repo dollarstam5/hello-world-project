@@ -23,3 +23,4 @@ export {
   SkeletonCard,
   SkeletonList,
 } from "@/components/app/Skeletons";
+export { SyncIndicator } from "./SyncIndicator";
