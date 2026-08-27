@@ -80,11 +80,20 @@ export interface PullResult {
   hasMore: boolean;
 }
 
+/** Anything that survives a round-trip through the sync transport. */
+export type JsonValue =
+  | string
+  | number
+  | boolean
+  | null
+  | JsonValue[]
+  | { [key: string]: JsonValue };
+
 export interface SyncRecordEnvelope {
   table: SyncedTable;
   revision: number;
   deleted: boolean;
-  data: Record<string, unknown>;
+  data: Record<string, JsonValue>;
 }
 
 /** Messages exchanged with the sync worker. */
