@@ -6,7 +6,7 @@
  * No I/O here: this module is imported by both the client and the server.
  */
 
-import type { SyncedTable } from "@eco/core-contracts";
+import type { JsonValue, SyncedTable } from "@eco/core-contracts";
 
 /** Physical table backing each logical synced table. */
 const PHYSICAL_TABLE: Record<SyncedTable, string> = {
@@ -76,11 +76,11 @@ export function toRow(patch: Record<string, unknown>): Record<string, unknown> {
 }
 
 /** snake_case row coming from the backend -> camelCase record for the client. */
-export function toRecord(row: Record<string, unknown>): Record<string, unknown> {
-  const record: Record<string, unknown> = {};
+export function toRecord(row: Record<string, unknown>): Record<string, JsonValue> {
+  const record: Record<string, JsonValue> = {};
   for (const [key, value] of Object.entries(row)) {
     if (key === "server_updated_at") continue;
-    record[toCamelCase(key)] = value;
+    record[toCamelCase(key)] = value as JsonValue;
   }
   return record;
 }
