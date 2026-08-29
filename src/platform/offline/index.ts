@@ -7,6 +7,7 @@
 
 export * from "./live-query";
 export * from "./sync-status";
+export { useSyncEngine, requestSyncNow } from "./sync-controller";
 export {
   isLocalDatabaseAvailable,
   usersRepository,

@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { BottomNav } from "./BottomNav";
 import { MenuSheet } from "./MenuSheet";
 import { useExperienceBoot } from "@/lib/experience/orchestrator";
+import { useSyncEngine } from "@/platform/offline";
 import { OfflineBanner } from "@/components/experience/OfflineBanner";
 import { AILayer } from "@/components/experience/AILayer";
 import { OnboardingSheet } from "@/components/experience/OnboardingSheet";
@@ -25,6 +26,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const responsive = useResponsive();
 
   useExperienceBoot();
+  useSyncEngine();
 
   // Apply low-end gating on <html> so the CSS effects fall back.
   useEffect(() => {
