@@ -93,6 +93,7 @@ export const messages = {
     "sync.pending.one": "1 action en attente",
     "sync.pending.many": "actions en attente",
     "sync.never": "Pas encore synchronisé",
+    "sync.signInNeeded": "Connectez-vous pour synchroniser",
   },
   en: {
     "app.name": "Ecosystem",
@@ -178,6 +179,7 @@ export const messages = {
     "sync.pending.one": "1 action waiting",
     "sync.pending.many": "actions waiting",
     "sync.never": "Not synced yet",
+    "sync.signInNeeded": "Sign in to sync",
   },
 } as const;
 

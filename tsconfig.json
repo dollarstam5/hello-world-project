@@ -24,7 +24,8 @@
       "@/*": ["./src/*"],
       "@eco/core-contracts": ["./packages/core-contracts/src/index.ts"],
       "@eco/core-logic": ["./packages/core-logic/src/index.ts"],
-      "@eco/core-db": ["./packages/core-db/src/index.ts"]
+      "@eco/core-db": ["./packages/core-db/src/index.ts"],
+      "@eco/core-sync": ["./packages/core-sync/src/index.ts"]
     }
   }
 }
