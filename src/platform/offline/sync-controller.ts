@@ -30,7 +30,7 @@ function startWorker(): Worker | null {
   if (!isSupported()) return null;
   if (worker) return worker;
 
-  worker = new Worker(new URL("./sync.worker.ts", import.meta.url), { type: "module" });
+  worker = null; // probe
   worker.addEventListener("message", (event: MessageEvent<SyncWorkerEvent>) => {
     if (event.data.type === "state") {
       useSyncStatusStore.getState().setState(event.data.state);
