@@ -14,6 +14,8 @@ import { Route as RadarRouteImport } from './routes/radar'
 import { Route as FlashRouteImport } from './routes/flash'
 import { Route as EspaceRouteImport } from './routes/espace'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiSyncPushRouteImport } from './routes/api/sync/push'
+import { Route as ApiSyncPullRouteImport } from './routes/api/sync/pull'
 
 const TalentsRoute = TalentsRouteImport.update({
   id: '/talents',
@@ -40,6 +42,16 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiSyncPushRoute = ApiSyncPushRouteImport.update({
+  id: '/api/sync/push',
+  path: '/api/sync/push',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSyncPullRoute = ApiSyncPullRouteImport.update({
+  id: '/api/sync/pull',
+  path: '/api/sync/pull',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +59,8 @@ export interface FileRoutesByFullPath {
   '/flash': typeof FlashRoute
   '/radar': typeof RadarRoute
   '/talents': typeof TalentsRoute
+  '/api/sync/pull': typeof ApiSyncPullRoute
+  '/api/sync/push': typeof ApiSyncPushRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +68,8 @@ export interface FileRoutesByTo {
   '/flash': typeof FlashRoute
   '/radar': typeof RadarRoute
   '/talents': typeof TalentsRoute
+  '/api/sync/pull': typeof ApiSyncPullRoute
+  '/api/sync/push': typeof ApiSyncPushRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,13 +78,37 @@ export interface FileRoutesById {
   '/flash': typeof FlashRoute
   '/radar': typeof RadarRoute
   '/talents': typeof TalentsRoute
+  '/api/sync/pull': typeof ApiSyncPullRoute
+  '/api/sync/push': typeof ApiSyncPushRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/espace' | '/flash' | '/radar' | '/talents'
+  fullPaths:
+    | '/'
+    | '/espace'
+    | '/flash'
+    | '/radar'
+    | '/talents'
+    | '/api/sync/pull'
+    | '/api/sync/push'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/espace' | '/flash' | '/radar' | '/talents'
-  id: '__root__' | '/' | '/espace' | '/flash' | '/radar' | '/talents'
+  to:
+    | '/'
+    | '/espace'
+    | '/flash'
+    | '/radar'
+    | '/talents'
+    | '/api/sync/pull'
+    | '/api/sync/push'
+  id:
+    | '__root__'
+    | '/'
+    | '/espace'
+    | '/flash'
+    | '/radar'
+    | '/talents'
+    | '/api/sync/pull'
+    | '/api/sync/push'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,6 +117,8 @@ export interface RootRouteChildren {
   FlashRoute: typeof FlashRoute
   RadarRoute: typeof RadarRoute
   TalentsRoute: typeof TalentsRoute
+  ApiSyncPullRoute: typeof ApiSyncPullRoute
+  ApiSyncPushRoute: typeof ApiSyncPushRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -116,6 +158,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/sync/push': {
+      id: '/api/sync/push'
+      path: '/api/sync/push'
+      fullPath: '/api/sync/push'
+      preLoaderRoute: typeof ApiSyncPushRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/sync/pull': {
+      id: '/api/sync/pull'
+      path: '/api/sync/pull'
+      fullPath: '/api/sync/pull'
+      preLoaderRoute: typeof ApiSyncPullRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -125,6 +181,8 @@ const rootRouteChildren: RootRouteChildren = {
   FlashRoute: FlashRoute,
   RadarRoute: RadarRoute,
   TalentsRoute: TalentsRoute,
+  ApiSyncPullRoute: ApiSyncPullRoute,
+  ApiSyncPushRoute: ApiSyncPushRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -103,6 +103,13 @@
         "@eco/core-contracts": "workspace:*",
       },
     },
+    "packages/core-sync": {
+      "name": "@eco/core-sync",
+      "version": "1.0.0",
+      "dependencies": {
+        "@eco/core-contracts": "workspace:*",
+      },
+    },
   },
   "packages": {
     "@babel/code-frame": ["@babel/code-frame@7.29.0", "", { "dependencies": { "@babel/helper-validator-identifier": "^7.28.5", "js-tokens": "^4.0.0", "picocolors": "^1.1.1" } }, "sha512-9NhCeYjq9+3uxgdtp20LSiJXJvN0FeCtNGpJxuMFZ1Kv3cWUNb6DOhJwUvcVCzKGR66cw4njwM6hrJLqgOwbcw=="],
@@ -156,6 +163,8 @@
     "@eco/core-db": ["@eco/core-db@workspace:packages/core-db"],
 
     "@eco/core-logic": ["@eco/core-logic@workspace:packages/core-logic"],
+
+    "@eco/core-sync": ["@eco/core-sync@workspace:packages/core-sync"],
 
     "@emnapi/core": ["@emnapi/core@1.11.1", "https://europe-west4-npm.pkg.dev/lovable-core-prod/sandbox-npm-cache/@emnapi/core/-/core-1.11.1.tgz", { "dependencies": { "@emnapi/wasi-threads": "1.2.2", "tslib": "^2.4.0" } }, "sha512-RSvbQmHzdKzNsLYa/wHrbc3KN4sYLKAdPZxqiM2HATqv/SBk2/ENSHpvXGaLOMcsAyz0poEGqkmmKYG3OWiJEQ=="],
 
