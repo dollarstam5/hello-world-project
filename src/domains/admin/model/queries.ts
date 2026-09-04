@@ -16,7 +16,10 @@ export function parseRecordsInput(input: AdminRecordsInput): AdminRecordsQuery {
   return recordsInputSchema.parse(input);
 }
 
-export type AdminRow = Record<string, unknown>;
+/** Values crossing the server-function boundary must stay serializable. */
+export type AdminCellValue = string | number | boolean | null | string[];
+
+export type AdminRow = Record<string, AdminCellValue>;
 
 export interface AdminRecordsResult {
   rows: AdminRow[];
