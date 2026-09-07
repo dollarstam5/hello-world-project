@@ -8,6 +8,8 @@ import { useSyncEngine } from "@/platform/offline";
 import { OfflineBanner } from "@/components/experience/OfflineBanner";
 import { AILayer } from "@/components/experience/AILayer";
 import { OnboardingSheet } from "@/components/experience/OnboardingSheet";
+import { InstallBanner } from "@/components/experience/InstallBanner";
+import { registerServiceWorker } from "@/platform/pwa";
 import { useResponsive } from "@/lib/platform/useResponsive";
 import { duration, easing } from "@/lib/design/tokens";
 
@@ -27,6 +29,10 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   useExperienceBoot();
   useSyncEngine();
+
+  useEffect(() => {
+    registerServiceWorker();
+  }, []);
 
   // Apply low-end gating on <html> so the CSS effects fall back.
   useEffect(() => {
@@ -76,6 +82,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <AILayer />
       <BottomNav onOpenMenu={() => setMenuOpen(true)} menuOpen={menuOpen} />
       <MenuSheet open={menuOpen} onOpenChange={setMenuOpen} />
+      <InstallBanner />
       <OnboardingSheet />
     </div>
   );
