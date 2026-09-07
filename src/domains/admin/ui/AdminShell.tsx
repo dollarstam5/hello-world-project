@@ -69,7 +69,12 @@ export function AdminShell({ role, children }: AdminShellProps) {
                   return (
                     <Link
                       key={module.key}
-                      to={module.path}
+                      {...(module.key === "home"
+                        ? ({ to: "/admin" } as const)
+                        : ({
+                            to: "/admin/$module",
+                            params: { module: module.key },
+                          } as const))}
                       onClick={() => setNavOpen(false)}
                       className={`flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition-colors ${
                         active
