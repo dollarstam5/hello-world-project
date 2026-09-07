@@ -40,10 +40,17 @@ export function AppShell({ children }: { children: ReactNode }) {
     setMenuOpen(false);
   }, [pathname]);
 
+  // Screens that own their own chrome (management dashboard, sign-in).
+  const bareChrome = pathname.startsWith("/admin") || pathname.startsWith("/auth");
+
   const reduce = responsive.shouldReduceMotion;
   const pageTransition = reduce
     ? { duration: 0 }
     : { duration: duration.base, ease: easing.standard };
+
+  if (bareChrome) {
+    return <div className="relative min-h-dvh bg-background text-foreground antialiased">{children}</div>;
+  }
 
   return (
     <div className="relative min-h-dvh bg-background text-foreground antialiased">
