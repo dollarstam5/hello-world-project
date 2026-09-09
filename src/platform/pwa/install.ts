@@ -4,6 +4,8 @@
  */
 import { useEffect, useState } from "react";
 
+import { watchForUpdates } from "./update";
+
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
@@ -30,7 +32,10 @@ export function registerServiceWorker(): void {
   if (!("serviceWorker" in navigator)) return;
   if (!import.meta.env.PROD) return;
   window.addEventListener("load", () => {
-    void navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(() => undefined);
+    void navigator.serviceWorker
+      .register("/sw.js", { scope: "/" })
+      .then((registration) => watchForUpdates(registration))
+      .catch(() => undefined);
   });
 }
 
