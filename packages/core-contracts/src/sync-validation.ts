@@ -104,6 +104,17 @@ function enumValue<T extends string>(
   return value as T;
 }
 
+function numberEnum<T extends number>(
+  value: unknown,
+  allowed: readonly T[],
+  label: string,
+): T {
+  if (typeof value !== "number" || !allowed.includes(value as T)) {
+    fail(`${label} has an unsupported value.`);
+  }
+  return value as T;
+}
+
 function stringArray(value: unknown, label: string, itemsAreUuid = false): string[] {
   if (!Array.isArray(value) || value.length > MAX_ARRAY_LENGTH) {
     fail(`${label} must be an array with at most ${MAX_ARRAY_LENGTH} items.`);
