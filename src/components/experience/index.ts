@@ -6,7 +6,8 @@
  * They do NOT implement any business domain.
  */
 export { HomeFoundation } from "./HomeFoundation";
-export { AILayer } from "./AILayer";
+export { AppHeader } from "./AppHeader";
+export { CommunicationSheet } from "./CommunicationSheet";
 export { OnboardingSheet } from "./OnboardingSheet";
 export { OfflineBanner } from "./OfflineBanner";
 export { SmartStateView } from "./SmartStateView";
