@@ -13,7 +13,7 @@ export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => 
         <span className="text-lg font-semibold tracking-tight">{t("app.name")}</span>
         <div className="flex items-center gap-1">
           <Button asChild variant="ghost" size="icon">
-            <Link to="/profil" aria-label={t("profile.open")}>
+            <Link to="/espace" aria-label={t("profile.open")}>
               <UserRound aria-hidden />
             </Link>
           </Button>

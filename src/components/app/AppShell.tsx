@@ -14,7 +14,6 @@ import { registerServiceWorker } from "@/platform/pwa";
 import { useResponsive } from "@/lib/platform/useResponsive";
 import { duration, easing } from "@/lib/design/tokens";
 import { startWebVitals } from "@/platform/performance";
-import { MemberOnboarding } from "@/features/onboarding";
 
 /**
  * AppShell — single mount-point that boots foundation services
