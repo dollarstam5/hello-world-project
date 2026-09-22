@@ -8,7 +8,5 @@ export * from "./flash";
 export * from "./missions";
 export * from "./trust";
 export * from "./modules";
-export * from "./profile";
-export * from "./onboarding";
 export * from "./scan";
 export * from "./radar";
