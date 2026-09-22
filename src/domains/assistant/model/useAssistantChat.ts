@@ -4,6 +4,7 @@
  */
 import { useCallback, useRef, useState } from "react";
 import { useRouterState } from "@tanstack/react-router";
+import type { AssistantFailure } from "@eco/core-contracts";
 
 import { askAssistant } from "../api/assistant.functions";
 import { useI18n } from "@/lib/i18n/useI18n";
@@ -14,8 +15,6 @@ export interface ChatMessage {
   role: "user" | "assistant";
   content: string;
 }
-
-import type { AssistantFailure } from "@eco/core-contracts";
 
 type Failure = AssistantFailure | "offline";
 
