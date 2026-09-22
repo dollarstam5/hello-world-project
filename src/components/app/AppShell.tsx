@@ -89,7 +89,6 @@ export function AppShell({ children }: { children: ReactNode }) {
       <CommunicationSheet open={communicationOpen} onOpenChange={setCommunicationOpen} />
       <InstallBanner />
       <OnboardingSheet />
-      <MemberOnboarding />
     </div>
   );
 }
