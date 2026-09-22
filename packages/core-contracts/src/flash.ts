@@ -18,7 +18,7 @@ export const FLASH_CATEGORIES = [
 
 export type FlashCategory = (typeof FLASH_CATEGORIES)[number];
 
-export const FLASH_KINDS = ["offer", "request"] as const;
+export const FLASH_KINDS = ["offer", "need"] as const;
 export type FlashKind = (typeof FLASH_KINDS)[number];
 
 export const FLASH_TIME_SLOTS = ["now", "today", "tomorrow", "this_week"] as const;

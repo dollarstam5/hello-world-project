@@ -15,11 +15,11 @@ export function useFlashFeed() {
 
   const offlineRows = useMemo<PublicFlash[]>(() => localRows.map((flash) => ({
     id: flash.id,
-    kind: flash.kind,
-    category: flash.category,
+    kind: flash.kind ?? "offer",
+    category: flash.category ?? "other",
     title: flash.title,
-    timeSlot: flash.timeSlot,
-    areaLabel: flash.areaLabel,
+    timeSlot: flash.timeSlot ?? "now",
+    areaLabel: flash.areaLabel ?? "",
     expiresAt: flash.expiresAt ?? 0,
     createdAt: flash.createdAt,
   })), [localRows]);
