@@ -10,6 +10,7 @@ import { AppHeader } from "@/components/experience/AppHeader";
 import { CommunicationSheet } from "@/components/experience/CommunicationSheet";
 import { OnboardingSheet } from "@/components/experience/OnboardingSheet";
 import { InstallBanner } from "@/components/experience/InstallBanner";
+import { UpdateBanner } from "@/components/experience/UpdateBanner";
 import { registerServiceWorker } from "@/platform/pwa";
 import { useResponsive } from "@/lib/platform/useResponsive";
 import { duration, easing } from "@/lib/design/tokens";
