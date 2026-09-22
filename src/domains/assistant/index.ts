@@ -1,3 +1,4 @@
 export const ASSISTANT_DOMAIN = "assistant" as const;
 export * from "@/platform/ai";
-export { useAssistantChat, type ChatMessage } from "./model/useAssistantChat";
+export { useHybridAssistant, type HybridAssistantState } from "./model/useHybridAssistant";
+export { AssistantTab } from "./ui/AssistantTab";
