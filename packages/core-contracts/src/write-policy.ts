@@ -71,6 +71,23 @@ export const CLIENT_WRITE_POLICY = {
     delete: true,
   },
 
+  radars: {
+    create: true,
+
+    update: [
+      "title",
+      "query",
+      "category",
+      "areaLabel",
+      "radiusKm",
+      "startsAt",
+      "expiresAt",
+    ],
+
+    command: ["status"],
+    delete: true,
+  },
+
   posts: {
     create: true,
     update: [
