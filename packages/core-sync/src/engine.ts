@@ -1,5 +1,6 @@
 import {
   SYNCED_TABLES,
+  SYNC_PROTOCOL_VERSION,
   type OutboxEntry,
   type SyncCursor,
   type SyncRecordEnvelope,
@@ -13,9 +14,15 @@ export interface SyncStore {
   readCursors(): Promise<SyncCursor[]>;
   writeCursor(table: SyncedTable, patch: Partial<Omit<SyncCursor, "table">>): Promise<void>;
   applyRemoteRecords(records: readonly SyncRecordEnvelope[]): Promise<SyncedTable[]>;
+  applyPullPage(
+    records: readonly SyncRecordEnvelope[],
+    cursors: readonly Pick<SyncCursor, "table" | "revision">[],
+  ): Promise<SyncedTable[]>;
   readPending(limit?: number): Promise<OutboxEntry[]>;
   dropAccepted(ids: readonly string[]): Promise<void>;
   markAttemptFailed(id: string, reason: string): Promise<void>;
+  quarantineRejected(rejections: readonly import("@eco/core-contracts").RejectedMutation[]): Promise<void>;
+  quarantineExhausted(maxAttempts: number): Promise<void>;
   countPending(): Promise<number>;
 }
 
@@ -97,24 +104,28 @@ export function createSyncEngine(options: SyncEngineOptions): SyncEngine {
 
   /** Sends pending local writes. Returns the records the backend confirmed. */
   async function push(): Promise<SyncRecordEnvelope[]> {
-    const pending = (await store.readPending(pushBatchSize)).filter(
-      (entry) => entry.attempts < maxAttempts,
-    );
+    await store.quarantineExhausted(maxAttempts);
+    const pending = await store.readPending(pushBatchSize);
     if (pending.length === 0) return [];
 
     emit({ phase: "pushing", messageKey: "sync.sending" });
-    const result = await transport.push({ entries: pending });
+    const result = await transport.push({
+      protocolVersion: SYNC_PROTOCOL_VERSION,
+      entries: pending,
+    });
 
     await store.dropAccepted(result.accepted);
     for (const rejection of result.rejected) {
-      // A rejection is a permanent refusal: it leaves the queue, with a trace.
-      await store.markAttemptFailed(rejection.id, rejection.reason);
+      if (rejection.retryable) {
+        await store.markAttemptFailed(rejection.id, rejection.code);
+      }
     }
+    await store.quarantineRejected(result.rejected);
     return result.records;
   }
 
-  /** Fetches everything newer than the local cursors, page after page. */
-  async function pull(): Promise<SyncRecordEnvelope[]> {
+  /** Fetches and atomically commits everything newer than the local cursors. */
+  async function pull(): Promise<SyncedTable[]> {
     emit({ phase: "pulling", messageKey: "sync.updating" });
 
     const stored = await store.readCursors();
@@ -124,26 +135,24 @@ export function createSyncEngine(options: SyncEngineOptions): SyncEngine {
       revision: byTable.get(table) ?? 0,
     }));
 
-    const collected: SyncRecordEnvelope[] = [];
+    const touched = new Set<SyncedTable>();
     let pages = 0;
     let hasMore = true;
 
     while (hasMore && pages < 20) {
-      const result = await transport.pull({ cursors, limit: pullPageSize });
-      collected.push(...result.records);
-      cursors = result.cursors.length > 0 ? result.cursors : cursors;
+      const result = await transport.pull({
+        protocolVersion: SYNC_PROTOCOL_VERSION,
+        cursors,
+        limit: pullPageSize,
+      });
+      const applied = await store.applyPullPage(result.records, result.cursors);
+      for (const table of applied) touched.add(table);
+      cursors = result.cursors;
       hasMore = result.hasMore;
       pages += 1;
     }
-
-    for (const cursor of cursors) {
-      await store.writeCursor(cursor.table, {
-        revision: cursor.revision,
-        lastPulledAt: Date.now(),
-      });
-    }
-
-    return collected;
+    if (hasMore) throw new Error("Pull page safety limit reached.");
+    return [...touched];
   }
 
   async function pass(): Promise<void> {
@@ -159,13 +168,12 @@ export function createSyncEngine(options: SyncEngineOptions): SyncEngine {
     try {
       // Push first: the local intent must exist upstream before we merge.
       const pushed = await push();
-      const pulled = await pull();
-
-      const envelopes = [...pushed, ...pulled];
-      if (envelopes.length > 0) {
-        const tables = await store.applyRemoteRecords(envelopes);
-        if (tables.length > 0) onApplied?.(tables);
-      }
+      const pushedTables = pushed.length > 0
+        ? await store.applyRemoteRecords(pushed)
+        : [];
+      const pulledTables = await pull();
+      const tables = [...new Set([...pushedTables, ...pulledTables])];
+      if (tables.length > 0) onApplied?.(tables);
 
       consecutiveFailures = 0;
       emit({

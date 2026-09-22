@@ -16,17 +16,25 @@ import type {
 export interface BaseRecord {
   /** Client-generated UUID. Stable across offline creation and server insert. */
   id: string;
+
   /** Milliseconds since epoch, client clock at creation. */
   createdAt: number;
+
   /** Milliseconds since epoch, last local write. Drives conflict resolution. */
   updatedAt: number;
+
   /** Server revision cursor; null while the record has never been pushed. */
   revision: number | null;
+
   /** Soft delete — records are never physically removed before sync confirms. */
   deletedAt: number | null;
 }
 
-export type UserStatus = "active" | "invited" | "suspended" | "closed";
+export type UserStatus =
+  | "active"
+  | "invited"
+  | "suspended"
+  | "closed";
 
 export interface UserRecord extends BaseRecord {
   id: UserId;
@@ -39,18 +47,27 @@ export interface UserRecord extends BaseRecord {
 }
 
 /** UDI — Unique Digital Identity: the progressive identity of a member. */
-export type UdiLevel = "guest" | "identified" | "verified" | "trusted";
+export type UdiLevel =
+  | "guest"
+  | "identified"
+  | "verified"
+  | "trusted";
 
 export interface UdiRecord extends BaseRecord {
   id: UdiId;
   userId: UserId;
   level: UdiLevel;
   verifiedAt: number | null;
+
   /** Verified attributes, never raw documents. Documents live in Storage. */
   attributes: Record<string, string>;
 }
 
-export type FlashStatus = "draft" | "live" | "expired" | "archived";
+export type FlashStatus =
+  | "draft"
+  | "live"
+  | "expired"
+  | "archived";
 
 export interface FlashRecord extends BaseRecord {
   id: FlashId;
@@ -58,12 +75,45 @@ export interface FlashRecord extends BaseRecord {
   title: string;
   body: string;
   status: FlashStatus;
+
   /** Epoch ms after which the flash stops being visible. */
   expiresAt: number | null;
+
   mediaIds: MediaId[];
 }
 
-export type MissionStatus = "open" | "assigned" | "in_progress" | "done" | "cancelled";
+export type MissionStatus =
+  | "open"
+  | "assigned"
+  | "in_progress"
+  | "pending_validation"
+  | "completed"
+  | "disputed"
+  | "cancelled";
+
+export type MissionAction =
+  | {
+      type: "assign";
+      assigneeId: UserId;
+    }
+  | {
+      type: "decline";
+    }
+  | {
+      type: "start";
+    }
+  | {
+      type: "submit_result";
+    }
+  | {
+      type: "validate_result";
+    }
+  | {
+      type: "dispute";
+    }
+  | {
+      type: "cancel";
+    };
 
 export interface MissionRecord extends BaseRecord {
   id: MissionId;
@@ -77,7 +127,10 @@ export interface MissionRecord extends BaseRecord {
   dueAt: number | null;
 }
 
-export type PostVisibility = "public" | "circle" | "private";
+export type PostVisibility =
+  | "public"
+  | "circle"
+  | "private";
 
 export interface PostRecord extends BaseRecord {
   id: PostId;
@@ -89,22 +142,37 @@ export interface PostRecord extends BaseRecord {
   replyCount: number;
 }
 
-export type MediaKind = "image" | "video" | "audio" | "document";
-export type MediaState = "local" | "uploading" | "remote" | "failed";
+export type MediaKind =
+  | "image"
+  | "video"
+  | "audio"
+  | "document";
+
+export type MediaState =
+  | "local"
+  | "uploading"
+  | "remote"
+  | "failed";
 
 export interface MediaRecord extends BaseRecord {
   id: MediaId;
   kind: MediaKind;
   state: MediaState;
+
   /** Storage object path once uploaded. */
   remotePath: string | null;
+
   mimeType: string;
   byteSize: number;
   width: number | null;
   height: number | null;
 }
 
-export type NotificationChannel = "in_app" | "push" | "email" | "sms";
+export type NotificationChannel =
+  | "in_app"
+  | "push"
+  | "email"
+  | "sms";
 
 export interface NotificationRecord extends BaseRecord {
   id: NotificationId;
@@ -122,6 +190,7 @@ export interface AuditEntryRecord extends BaseRecord {
   action: string;
   targetTable: string;
   targetId: string;
+
   /** Human-readable summary, already written in plain language. */
   summary: string;
 }
