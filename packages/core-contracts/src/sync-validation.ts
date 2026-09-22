@@ -176,7 +176,7 @@ function validateField(table: SyncedTable, field: string, value: unknown): unkno
     case "radars.query": return string(value, label, { min: 3, max: 2_000 });
     case "radars.category": return value === null ? null : enumValue(value, ["personal", "professional", "commercial", "home", "transport", "food", "education", "health", "events", "other"], label);
     case "radars.areaLabel": return string(value, label, { min: 2, max: 80 });
-    case "radars.radiusKm": return enumValue(value, [1, 3, 5, 10, 25, 50], label);
+    case "radars.radiusKm": return numberEnum(value, [1, 3, 5, 10, 25, 50], label);
     case "radars.startsAt": return integer(value, label);
     case "radars.expiresAt": return integer(value, label, 1);
     case "radars.status": return enumValue(value, ["draft"], label);
