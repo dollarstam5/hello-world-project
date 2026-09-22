@@ -1,3 +1,4 @@
+import type { FlashCategory, FlashKind, FlashTimeSlot } from "./flash";
 import type {
   AuditEntryId,
   FlashId,
@@ -75,6 +76,12 @@ export interface FlashRecord extends BaseRecord {
   title: string;
   body: string;
   status: FlashStatus;
+
+  /** Public presentation fields; absent on drafts created before they are set. */
+  kind?: FlashKind;
+  category?: FlashCategory;
+  timeSlot?: FlashTimeSlot;
+  areaLabel?: string;
 
   /** Epoch ms after which the flash stops being visible. */
   expiresAt: number | null;
