@@ -15,7 +15,20 @@ export interface ChatMessage {
   content: string;
 }
 
-type Failure = "unavailable" | "rate-limited" | "credits" | "error" | "offline";
+import type { AssistantFailure } from "@eco/core-contracts";
+
+type Failure = AssistantFailure | "offline";
+
+const FAILURE_MESSAGES = {
+  offline: "assistant.error.offline",
+  auth_required: "assistant.error.auth",
+  rate_limited: "assistant.error.busy",
+  daily_limit: "assistant.error.daily",
+  unsafe_request: "assistant.error.sensitive",
+  invalid_request: "assistant.error.generic",
+  unavailable: "assistant.error.generic",
+  provider_error: "assistant.error.generic",
+} as const;
 
 let counter = 0;
 const nextId = () => `m${++counter}`;
@@ -49,6 +62,7 @@ export function useAssistantChat() {
       try {
         const result = await askAssistant({
           data: {
+            requestId: crypto.randomUUID(),
             messages: history.slice(-12).map(({ role, content: text }) => ({ role, content: text })),
             locale: locale === "en" ? "en" : "fr",
             route,
@@ -63,7 +77,7 @@ export function useAssistantChat() {
           setFailure(result.reason);
         }
       } catch {
-        setFailure("error");
+        setFailure("provider_error");
       } finally {
         setPending(false);
         busy.current = false;
@@ -77,19 +91,7 @@ export function useAssistantChat() {
     setFailure(null);
   }, []);
 
-  const failureText = failure
-    ? t(
-        failure === "offline"
-          ? "assistant.error.offline"
-          : failure === "rate-limited"
-            ? "assistant.error.busy"
-            : failure === "credits"
-              ? "assistant.error.credits"
-              : failure === "unavailable"
-                ? "assistant.error.unavailable"
-                : "assistant.error.generic",
-      )
-    : null;
+  const failureText = failure ? t(FAILURE_MESSAGES[failure]) : null;
 
   return { messages, pending, failureText, send, reset };
 }
