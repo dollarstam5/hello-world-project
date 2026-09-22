@@ -1,4 +1,8 @@
-import process from "node:process";
+import {
+  getAiEnvironment,
+  getPublicServerEnvironment,
+  getSupabaseServiceRoleKey,
+} from "@/config/env.server";
 
 // Server-only config. The .server.ts suffix prevents Vite from bundling
 // this file into the client — values here never reach the browser.
@@ -17,10 +21,26 @@ import process from "node:process";
 //     VITE_ prefix. Never put secrets here — they ship to the browser.
 
 export function getServerConfig() {
+  const base = getPublicServerEnvironment();
+  const ai = getAiEnvironment();
   return {
-    nodeEnv: process.env.NODE_ENV,
-    // Add server-only values here, e.g.:
-    //   databaseUrl: process.env.DATABASE_URL,
-    //   stripeSecretKey: process.env.STRIPE_SECRET_KEY,
+    nodeEnv: base.nodeEnv,
+    supabaseUrl: base.supabaseUrl,
+    supabasePublishableKey: base.supabasePublishableKey,
+    get supabaseSecretKey() {
+      return getSupabaseServiceRoleKey();
+    },
+    ai: ai
+      ? {
+          cloudflareAccountId: ai.accountId,
+          cloudflareApiToken: ai.apiToken,
+          gatewayId: ai.gatewayId,
+          primaryModel: ai.primaryModel,
+          fallbackModel: ai.fallbackModel,
+          timeoutMs: ai.timeoutMs,
+          maxOutputTokens: ai.maxOutputTokens,
+          promptVersion: ai.promptVersion,
+        }
+      : null,
   };
 }

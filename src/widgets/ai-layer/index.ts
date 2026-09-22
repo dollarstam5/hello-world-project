@@ -1,1 +1,1 @@
-export { AILayer } from "@/components/experience/AILayer";
+export { CommunicationSheet } from "@/components/experience/CommunicationSheet";

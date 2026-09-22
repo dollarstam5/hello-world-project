@@ -5,6 +5,7 @@
 
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
+import { getPublicServerEnvironment } from "@/config/env.server";
 
 export interface SyncSession {
   supabase: ReturnType<typeof createClient<Database>>;
@@ -17,9 +18,7 @@ function isOpaqueKey(value: string): boolean {
 
 /** Returns the caller's session, or null when the credentials are not valid. */
 export async function readSyncSession(request: Request): Promise<SyncSession | null> {
-  const url = process.env["SUPABASE_URL"];
-  const key = process.env["SUPABASE_PUBLISHABLE_KEY"];
-  if (!url || !key) return null;
+  const { supabaseUrl: url, supabasePublishableKey: key } = getPublicServerEnvironment();
 
   const authHeader = request.headers.get("authorization") ?? "";
   if (!authHeader.startsWith("Bearer ")) return null;

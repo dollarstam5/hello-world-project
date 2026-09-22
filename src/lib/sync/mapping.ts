@@ -6,7 +6,12 @@
  * No I/O here: this module is imported by both the client and the server.
  */
 
-import type { JsonValue, SyncedTable } from "@eco/core-contracts";
+import {
+  CLIENT_WRITE_POLICY,
+  filterClientWritablePatch,
+  type JsonValue,
+  type SyncedTable,
+} from "@eco/core-contracts";
 
 /** Physical table backing each logical synced table. */
 const PHYSICAL_TABLE: Record<SyncedTable, string> = {
@@ -14,6 +19,7 @@ const PHYSICAL_TABLE: Record<SyncedTable, string> = {
   udi: "udi",
   flashes: "flashes",
   missions: "missions",
+  radars: "radars",
   posts: "posts",
   media: "media",
   notifications: "notifications",
@@ -29,20 +35,34 @@ const OWNER_COLUMN: Record<SyncedTable, string | null> = {
   udi: "user_id",
   flashes: "author_id",
   missions: "author_id",
+  radars: "owner_id",
   posts: "author_id",
   media: "owner_id",
   notifications: "recipient_id",
   audit: null,
 };
 
-/** Tables the client is never allowed to push to. */
-const READ_ONLY_TABLES: ReadonlySet<SyncedTable> = new Set<SyncedTable>(["audit"]);
-
 /** Columns the client may never set — the backend owns them. */
 const PROTECTED_COLUMNS: ReadonlySet<string> = new Set([
   "revision",
   "server_updated_at",
 ]);
+
+/** Stable profile mapping documented here because these fields drive P1 UX. */
+export const PROFILE_FIELD_COLUMNS = {
+  displayName: "display_name",
+  avatarMediaId: "avatar_media_id",
+  audienceType: "audience_type",
+  environmentMode: "environment_mode",
+  guidanceMode: "guidance_mode",
+  trustScore: "trust_score",
+} as const;
+export const FLASH_FIELD_COLUMNS = {
+  timeSlot: "time_slot",
+  areaLabel: "area_label",
+  responseLimit: "response_limit",
+  expiresAt: "expires_at",
+} as const;
 
 export function physicalTable(table: SyncedTable): string {
   return PHYSICAL_TABLE[table];
@@ -53,7 +73,8 @@ export function ownerColumn(table: SyncedTable): string | null {
 }
 
 export function isReadOnlyTable(table: SyncedTable): boolean {
-  return READ_ONLY_TABLES.has(table);
+  const policy = CLIENT_WRITE_POLICY[table];
+  return !policy.create && policy.update.length === 0 && !policy.delete;
 }
 
 export function toSnakeCase(key: string): string {
@@ -65,9 +86,13 @@ export function toCamelCase(key: string): string {
 }
 
 /** camelCase patch coming from the outbox -> snake_case row for the backend. */
-export function toRow(patch: Record<string, unknown>): Record<string, unknown> {
+export function toRow(
+  table: SyncedTable,
+  patch: Record<string, unknown>,
+): Record<string, unknown> {
   const row: Record<string, unknown> = {};
-  for (const [key, value] of Object.entries(patch)) {
+  const writable = filterClientWritablePatch(table, patch);
+  for (const [key, value] of Object.entries(writable)) {
     const column = toSnakeCase(key);
     if (PROTECTED_COLUMNS.has(column)) continue;
     row[column] = value;
