@@ -88,6 +88,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <MenuSheet open={menuOpen} onOpenChange={setMenuOpen} />
       <CommunicationSheet open={communicationOpen} onOpenChange={setCommunicationOpen} />
       <InstallBanner />
+      <UpdateBanner />
       <OnboardingSheet />
     </div>
   );
