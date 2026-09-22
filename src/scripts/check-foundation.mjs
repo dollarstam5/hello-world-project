@@ -100,7 +100,7 @@ const requiredFiles = [
   "tests/notifications/radar-notifications.test.ts",
   "packages/core-contracts/src/sync-validation.ts",
   "packages/core-logic/src/missions.ts",
-  "src/config/env.client.ts",
+  "src/config/env.public.ts",
   "src/config/env.server.ts",
   "src/lib/security-headers.server.ts",
   "src/lib/request-context.server.ts",
