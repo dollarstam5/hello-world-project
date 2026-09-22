@@ -10,11 +10,11 @@ import { AppHeader } from "@/components/experience/AppHeader";
 import { CommunicationSheet } from "@/components/experience/CommunicationSheet";
 import { OnboardingSheet } from "@/components/experience/OnboardingSheet";
 import { InstallBanner } from "@/components/experience/InstallBanner";
+import { UpdateBanner } from "@/components/experience/UpdateBanner";
 import { registerServiceWorker } from "@/platform/pwa";
 import { useResponsive } from "@/lib/platform/useResponsive";
 import { duration, easing } from "@/lib/design/tokens";
 import { startWebVitals } from "@/platform/performance";
-import { MemberOnboarding } from "@/features/onboarding";
 
 /**
  * AppShell — single mount-point that boots foundation services
@@ -89,8 +89,8 @@ export function AppShell({ children }: { children: ReactNode }) {
       <MenuSheet open={menuOpen} onOpenChange={setMenuOpen} />
       <CommunicationSheet open={communicationOpen} onOpenChange={setCommunicationOpen} />
       <InstallBanner />
+      <UpdateBanner />
       <OnboardingSheet />
-      <MemberOnboarding />
     </div>
   );
 }

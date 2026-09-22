@@ -14,106 +14,6 @@ export type Database = {
   }
   public: {
     Tables: {
-      ai_cache: {
-        Row: {
-          answer: string
-          category: string
-          created_at: string
-          distinct_user_count: number
-          hit_count: number
-          id: string
-          is_local: boolean
-          locale: string
-          normalized_question: string
-          prompt_version: number
-          promoted_at: string | null
-          question_hash: string
-          status: string
-          updated_at: string
-        }
-        Insert: {
-          answer: string
-          category: string
-          created_at?: string
-          distinct_user_count?: number
-          hit_count?: number
-          id?: string
-          is_local?: boolean
-          locale?: string
-          normalized_question: string
-          prompt_version?: number
-          promoted_at?: string | null
-          question_hash: string
-          status?: string
-          updated_at?: string
-        }
-        Update: {
-          answer?: string
-          category?: string
-          distinct_user_count?: number
-          hit_count?: number
-          is_local?: boolean
-          locale?: string
-          normalized_question?: string
-          prompt_version?: number
-          promoted_at?: string | null
-          question_hash?: string
-          status?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      ai_cache_hits: {
-        Row: {
-          cache_id: string
-          created_at: string
-          user_id: string
-        }
-        Insert: {
-          cache_id: string
-          created_at?: string
-          user_id: string
-        }
-        Update: {
-          cache_id?: string
-          created_at?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
-      ai_requests: {
-        Row: {
-          completed_at: string | null
-          created_at: string
-          input_chars: number
-          locale: string
-          output_chars: number
-          request_id: string
-          source: string | null
-          status: string
-          user_id: string
-        }
-        Insert: {
-          completed_at?: string | null
-          created_at?: string
-          input_chars?: number
-          locale?: string
-          output_chars?: number
-          request_id: string
-          source?: string | null
-          status?: string
-          user_id: string
-        }
-        Update: {
-          completed_at?: string | null
-          input_chars?: number
-          locale?: string
-          output_chars?: number
-          source?: string | null
-          status?: string
-        }
-        Relationships: []
-      }
       audit: {
         Row: {
           action: string
@@ -158,60 +58,45 @@ export type Database = {
       }
       flashes: {
         Row: {
-          area_label: string
           author_id: string
           body: string
-          category: string
           created_at: number
           deleted_at: number | null
           expires_at: number | null
           id: string
-          kind: string
           media_ids: string[]
           revision: number
-          response_limit: number
           server_updated_at: string
           status: string
           title: string
-          time_slot: string
           updated_at: number
         }
         Insert: {
-          area_label?: string
           author_id: string
           body?: string
-          category?: string
           created_at?: number
           deleted_at?: number | null
           expires_at?: number | null
           id?: string
-          kind?: string
           media_ids?: string[]
           revision?: number
-          response_limit?: number
           server_updated_at?: string
           status?: string
           title?: string
-          time_slot?: string
           updated_at?: number
         }
         Update: {
-          area_label?: string
           author_id?: string
           body?: string
-          category?: string
           created_at?: number
           deleted_at?: number | null
           expires_at?: number | null
           id?: string
-          kind?: string
           media_ids?: string[]
           revision?: number
-          response_limit?: number
           server_updated_at?: string
           status?: string
           title?: string
-          time_slot?: string
           updated_at?: number
         }
         Relationships: []
@@ -318,66 +203,6 @@ export type Database = {
         }
         Relationships: []
       }
-      radars: {
-        Row: {
-          area_label: string
-          category: string | null
-          created_at: number
-          deleted_at: number | null
-          expires_at: number
-          id: string
-          last_reviewed_at: number | null
-          next_review_at: number | null
-          owner_id: string
-          query: string
-          radius_km: number
-          revision: number
-          server_updated_at: string
-          starts_at: number
-          status: string
-          title: string
-          updated_at: number
-        }
-        Insert: {
-          area_label: string
-          category?: string | null
-          created_at?: number
-          deleted_at?: number | null
-          expires_at: number
-          id?: string
-          last_reviewed_at?: number | null
-          next_review_at?: number | null
-          owner_id: string
-          query: string
-          radius_km?: number
-          revision?: number
-          server_updated_at?: string
-          starts_at: number
-          status?: string
-          title: string
-          updated_at?: number
-        }
-        Update: {
-          area_label?: string
-          category?: string | null
-          created_at?: number
-          deleted_at?: number | null
-          expires_at?: number
-          id?: string
-          last_reviewed_at?: number | null
-          next_review_at?: number | null
-          owner_id?: string
-          query?: string
-          radius_km?: number
-          revision?: number
-          server_updated_at?: string
-          starts_at?: number
-          status?: string
-          title?: string
-          updated_at?: number
-        }
-        Relationships: []
-      }
       notifications: {
         Row: {
           body_key: string
@@ -468,48 +293,12 @@ export type Database = {
         }
         Relationships: []
       }
-      member_onboarding: {
-        Row: {
-          completed_at: string | null
-          created_at: string
-          intent: "browse" | "publish" | "search" | "professional" | null
-          step: "welcome" | "intent" | "profile" | "preferences" | "permissions" | "complete"
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          completed_at?: string | null
-          created_at?: string
-          intent?: "browse" | "publish" | "search" | "professional" | null
-          step?: "welcome" | "intent" | "profile" | "preferences" | "permissions" | "complete"
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          completed_at?: string | null
-          created_at?: string
-          intent?: "browse" | "publish" | "search" | "professional" | null
-          step?: "welcome" | "intent" | "profile" | "preferences" | "permissions" | "complete"
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
-      flash_locations: {
-        Row: { accuracy_meters:number; flash_id:string; latitude:number; longitude:number; owner_id:string; updated_at:string }
-        Insert: { accuracy_meters:number; flash_id:string; latitude:number; longitude:number; owner_id:string; updated_at?:string }
-        Update: { accuracy_meters?:number; flash_id?:string; latitude?:number; longitude?:number; owner_id?:string; updated_at?:string }
-        Relationships: []
-      }
       profiles: {
         Row: {
-          audience_type: "individual" | "professional" | "association" | "company"
           avatar_media_id: string | null
           created_at: number
           deleted_at: number | null
           display_name: string
-          environment_mode: "rural" | "urban"
-          guidance_mode: "autonomous" | "guided" | "audio_first"
           handle: string | null
           id: string
           locale: string
@@ -520,13 +309,10 @@ export type Database = {
           updated_at: number
         }
         Insert: {
-          audience_type?: "individual" | "professional" | "association" | "company"
           avatar_media_id?: string | null
           created_at?: number
           deleted_at?: number | null
           display_name?: string
-          environment_mode?: "rural" | "urban"
-          guidance_mode?: "autonomous" | "guided" | "audio_first"
           handle?: string | null
           id: string
           locale?: string
@@ -537,13 +323,10 @@ export type Database = {
           updated_at?: number
         }
         Update: {
-          audience_type?: "individual" | "professional" | "association" | "company"
           avatar_media_id?: string | null
           created_at?: number
           deleted_at?: number | null
           display_name?: string
-          environment_mode?: "rural" | "urban"
-          guidance_mode?: "autonomous" | "guided" | "audio_first"
           handle?: string | null
           id?: string
           locale?: string
@@ -616,83 +399,16 @@ export type Database = {
         Relationships: []
       }
     }
-    Views: Record<string, never>
+    Views: {
+      [_ in never]: never
+    }
     Functions: {
-      command_radar: {
-        Args: { p_radar_id: string; p_action: string }
-        Returns: Database["public"]["Tables"]["radars"]["Row"]
-      }
-      list_public_flashes: {
-        Args: { p_limit?: number }
-        Returns: {
-          id: string
-          kind: string
-          category: string
-          title: string
-          time_slot: string
-          area_label: string
-          expires_at: number
-          created_at: number
-        }[]
-      }
-      scan_flashes: {
-        Args: { p_latitude?:number|null; p_longitude?:number|null; p_radius_km?:number; p_category?:string|null; p_area?:string|null; p_limit?:number }
-        Returns: { id:string;kind:string;category:string;title:string;time_slot:string;area_label:string;expires_at:number;created_at:number;distance_bucket:string }[]
-      }
-      set_flash_location: {
-        Args: { p_flash_id:string;p_latitude:number;p_longitude:number;p_accuracy_meters:number }
-        Returns: boolean
-      }
-      transition_flash: {
-        Args: { p_flash_id: string; p_status: string }
-        Returns: Database["public"]["Tables"]["flashes"]["Row"]
-      }
-      advance_member_onboarding: {
-        Args: { p_step: string; p_intent?: string | null }
-        Returns: Database["public"]["Tables"]["member_onboarding"]["Row"]
-      }
-      claim_assistant_request: {
-        Args: { p_locale: string; p_request_id: string }
-        Returns: Json
-      }
-      complete_assistant_request: {
-        Args: {
-          p_input_chars: number
-          p_output_chars: number
-          p_request_id: string
-          p_source: string
-        }
-        Returns: boolean
-      }
-      fail_assistant_request: {
-        Args: { p_request_id: string }
-        Returns: boolean
-      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
-      }
-      purge_operational_data: {
-        Args: {
-          p_ai_request_days?: number
-          p_receipt_days?: number
-        }
-        Returns: Json
-      }
-      record_ai_cache_candidate: {
-        Args: {
-          p_answer: string
-          p_category: string
-          p_locale: string
-          p_normalized_question: string
-          p_prompt_version: number
-          p_question_hash: string
-          p_user_id: string
-        }
-        Returns: string
       }
     }
     Enums: {

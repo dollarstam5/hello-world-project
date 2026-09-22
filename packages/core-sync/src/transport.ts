@@ -1,4 +1,11 @@
-import type { PullRequest, PullResult, PushRequest, PushResult } from "@eco/core-contracts";
+import {
+  validatePullResult,
+  validatePushResult,
+  type PullRequest,
+  type PullResult,
+  type PushRequest,
+  type PushResult,
+} from "@eco/core-contracts";
 
 /** Network side of the engine. One implementation per runtime. */
 export interface SyncTransport {
@@ -19,6 +26,14 @@ export class SyncNetworkError extends Error {
   constructor(message = "offline") {
     super(message);
     this.name = "SyncNetworkError";
+  }
+}
+
+/** The peer returned a malformed payload or rejected the protocol contract. */
+export class SyncProtocolError extends Error {
+  constructor(message = "invalid_protocol") {
+    super(message);
+    this.name = "SyncProtocolError";
   }
 }
 
@@ -55,14 +70,35 @@ export function createHttpTransport(options: HttpTransportOptions): SyncTranspor
     if (response.status === 401 || response.status === 403) {
       throw new SyncAuthError();
     }
+    if (response.status >= 400 && response.status < 500) {
+      throw new SyncProtocolError(`http_${response.status}`);
+    }
     if (!response.ok) {
       throw new SyncNetworkError(`http_${response.status}`);
     }
-    return (await response.json()) as TResult;
+    try {
+      return (await response.json()) as TResult;
+    } catch {
+      throw new SyncProtocolError("invalid_json_response");
+    }
   }
 
   return {
-    pull: (request: PullRequest) => call<PullRequest, PullResult>("/pull", request),
-    push: (request: PushRequest) => call<PushRequest, PushResult>("/push", request),
+    async pull(request: PullRequest) {
+      const response = await call<PullRequest, unknown>("/pull", request);
+      try {
+        return validatePullResult(response, request);
+      } catch {
+        throw new SyncProtocolError("invalid_pull_response");
+      }
+    },
+    async push(request: PushRequest) {
+      const response = await call<PushRequest, unknown>("/push", request);
+      try {
+        return validatePushResult(response, request);
+      } catch {
+        throw new SyncProtocolError("invalid_push_response");
+      }
+    },
   };
 }
