@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Send, Trash2 } from "lucide-react";
 import { AIBubble } from "@/components/app/AIBubble";
 import { Button } from "@/components/ui/button";
@@ -9,12 +9,20 @@ import { useHybridAssistant } from "../model/useHybridAssistant";
 export function AssistantTab() {
   const { t } = useI18n();
   const [question, setQuestion] = useState("");
-  const { messages, pending, failure, send, reset } = useHybridAssistant();
+  const { messages, pending, streaming, failure, send, reset } = useHybridAssistant();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const endRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!pending && !streaming) inputRef.current?.focus();
+  }, [pending, streaming]);
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ block: "end" });
+  }, [messages, pending]);
 
   async function submit(event: FormEvent) {
     event.preventDefault();
     const value = question.trim();
-    if (!value || pending) return;
+    if (!value || pending || streaming) return;
     setQuestion("");
     await send(value);
   }
@@ -62,19 +70,21 @@ export function AssistantTab() {
         ))}
         {pending && <AIBubble author="assistant" thinking>{t("assistant.thinking")}</AIBubble>}
         {failureKey && <p role="alert" className="px-2 text-sm text-destructive">{t(failureKey)}</p>}
+        <div ref={endRef} />
       </div>
 
       <form onSubmit={submit} className="flex gap-2 border-t border-border-soft pt-3">
         <Input
+          ref={inputRef}
           value={question}
           onChange={(event) => setQuestion(event.target.value)}
           maxLength={600}
-          disabled={pending}
+          readOnly={pending || streaming}
           placeholder={t("assistant.placeholder")}
           aria-label={t("assistant.placeholder")}
           autoComplete="off"
         />
-        <Button type="submit" size="icon" disabled={pending || !question.trim()} aria-label={t("assistant.send")}>
+        <Button type="submit" size="icon" disabled={pending || streaming || !question.trim()} aria-label={t("assistant.send")}>
           <Send aria-hidden />
         </Button>
       </form>
