@@ -8,12 +8,15 @@ import type { AssistantFailure, AssistantMessage, PromotedAssistantAnswer } from
 import { listPromotedAssistantAnswers } from "@eco/core-db";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useNetworkStatus } from "@/lib/platform/useNetworkStatus";
+import { useAuth } from "@/domains/auth";
 import { searchLocalKnowledge } from "../services/localSearch.service";
 import { AssistantStreamError, streamAssistant } from "../services/assistant-stream.service";
 
 const STORAGE_KEY = "eco.assistant.conversation.v1";
 
 export interface HybridAssistantState {
+  signedIn: boolean;
+  authLoading: boolean;
   messages: AssistantMessage[];
   pending: boolean;
   streaming: boolean;
@@ -34,6 +37,8 @@ export function useHybridAssistant(): HybridAssistantState {
   const { locale } = useI18n();
   const language = locale === "en" ? "en" : "fr";
   const online = useNetworkStatus().online;
+  const { session, loading: authLoading } = useAuth();
+  const token = session?.access_token ?? null;
   const route = useRouterState({ select: (state) => state.location.pathname });
   const [messages, setMessages] = useState<AssistantMessage[]>([]);
   const [promoted, setPromoted] = useState<PromotedAssistantAnswer[]>([]);
@@ -92,6 +97,11 @@ export function useHybridAssistant(): HybridAssistantState {
         busy.current = false;
         return;
       }
+      if (!token) {
+        setFailure("auth_required");
+        busy.current = false;
+        return;
+      }
 
       setPending(true);
       const answerId = crypto.randomUUID();
@@ -112,6 +122,7 @@ export function useHybridAssistant(): HybridAssistantState {
                 : [...c, { id: answerId, role: "assistant", content: text, source: "gateway" }];
             });
           },
+          token,
         );
         setMessages((c) => {
           persist(c);
@@ -125,7 +136,7 @@ export function useHybridAssistant(): HybridAssistantState {
         busy.current = false;
       }
     },
-    [language, messages, online, promoted, route, update],
+    [language, messages, online, promoted, route, token, update],
   );
 
   const reset = useCallback(() => {
@@ -133,5 +144,5 @@ export function useHybridAssistant(): HybridAssistantState {
     setFailure(null);
   }, [update]);
 
-  return { messages, pending, streaming, failure, send, reset };
+  return { signedIn: !!token, authLoading, messages, pending, streaming, failure, send, reset };
 }

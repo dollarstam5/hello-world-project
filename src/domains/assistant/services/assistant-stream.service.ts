@@ -13,6 +13,7 @@ export class AssistantStreamError extends Error {
 }
 
 function reasonFor(status: number): AssistantFailure {
+  if (status === 401) return "auth_required";
   if (status === 429) return "rate_limited";
   if (status === 402 || status === 403) return "daily_limit";
   if (status === 400) return "invalid_request";
@@ -23,11 +24,12 @@ function reasonFor(status: number): AssistantFailure {
 export async function streamAssistant(
   request: StreamRequest,
   onDelta: (text: string) => void,
+  accessToken: string,
   signal?: AbortSignal,
 ): Promise<string> {
   const response = await fetch("/api/public/assistant", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
     body: JSON.stringify(request),
     signal,
   });

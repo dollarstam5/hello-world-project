@@ -28,6 +28,10 @@ export const Route = createFileRoute("/api/public/assistant")({
   server: {
     handlers: {
       POST: async ({ request }) => {
+        const { readSyncSession } = await import("@/lib/sync/session.server");
+        const session = await readSyncSession(request);
+        if (!session) return Response.json({ error: "auth_required" }, { status: 401 });
+
         const apiKey = process.env["LOVABLE_API_KEY"];
         if (!apiKey) return Response.json({ error: "unavailable" }, { status: 503 });
 
