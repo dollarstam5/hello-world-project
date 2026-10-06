@@ -11,6 +11,7 @@ import { CommunicationSheet } from "@/components/experience/CommunicationSheet";
 import { OnboardingSheet } from "@/components/experience/OnboardingSheet";
 import { InstallBanner } from "@/components/experience/InstallBanner";
 import { UpdateBanner } from "@/components/experience/UpdateBanner";
+import { AILayer } from "@/components/experience/AILayer";
 import { registerServiceWorker } from "@/platform/pwa";
 import { useResponsive } from "@/lib/platform/useResponsive";
 import { duration, easing } from "@/lib/design/tokens";
@@ -90,6 +91,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <CommunicationSheet open={communicationOpen} onOpenChange={setCommunicationOpen} />
       <InstallBanner />
       <UpdateBanner />
+      <AILayer />
       <OnboardingSheet />
     </div>
   );
