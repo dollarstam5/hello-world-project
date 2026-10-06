@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { Link } from "@tanstack/react-router";
 import { Send, Trash2 } from "lucide-react";
 import { AIBubble } from "@/components/app/AIBubble";
 import { Button } from "@/components/ui/button";
@@ -9,7 +10,7 @@ import { useHybridAssistant } from "../model/useHybridAssistant";
 export function AssistantTab() {
   const { t } = useI18n();
   const [question, setQuestion] = useState("");
-  const { messages, pending, streaming, failure, send, reset } = useHybridAssistant();
+  const { signedIn, authLoading, messages, pending, streaming, failure, send, reset } = useHybridAssistant();
   const inputRef = useRef<HTMLInputElement>(null);
   const endRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -40,6 +41,17 @@ export function AssistantTab() {
             : failure
               ? "assistant.error.generic"
               : null;
+
+  if (!authLoading && !signedIn) {
+    return (
+      <div className="space-y-4 py-4">
+        <AIBubble author="assistant">{t("assistant.signInRequired")}</AIBubble>
+        <Button asChild className="w-full">
+          <Link to="/auth">{t("auth.signIn")}</Link>
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-[min(68dvh,38rem)] flex-col">
