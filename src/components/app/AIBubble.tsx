@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Sparkles } from "lucide-react";
+import { Compass } from "lucide-react";
 import { motion } from "framer-motion";
 import { Icon } from "./Icon";
 import { transition } from "@/lib/design/motion";
@@ -43,7 +43,7 @@ export function AIBubble({ author = "assistant", children, thinking, className }
             !reduced && "motion-presence",
           )}
         >
-          <Icon as={Sparkles} size="xs" />
+          <Icon as={Compass} size="xs" />
         </div>
       )}
       <div
