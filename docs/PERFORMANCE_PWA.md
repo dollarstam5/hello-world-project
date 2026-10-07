@@ -46,3 +46,10 @@ Les tests doivent vérifier : navigation principale, débordement horizontal, li
 P0.10.1 formalise uniquement les contrats et seuils. La collecte Web Vitals, les budgets automatisés, la PWA installable et les parcours E2E seront traités dans les sous-milestones suivants.
 
 L'authentification n'est pas modifiée par P0.10.1.
+
+
+## P0.10.3 — socle PWA/installabilité
+
+Le dépôt fournit désormais un service worker enregistré côté navigateur, un manifeste PWA cohérent avec les icônes versionnées et une commande de validation dédiée. Le service worker utilise le réseau en priorité pour les navigations et conserve un shell de secours ; les routes API et les Server Functions ne sont pas interceptées. Les données métier restent sous la responsabilité de Dexie et du moteur de synchronisation.
+
+La validation d'installabilité réelle sur appareils représentatifs reste un contrôle E2E de sous-milestone ultérieur.
