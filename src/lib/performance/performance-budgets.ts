@@ -28,9 +28,30 @@ export function measurePerformanceBudgets(clientDirectory: string): PerformanceB
   }
 
   const assets = filesUnder(clientDirectory);
-  const javascript = assets.filter((path) => path.endsWith(".js"));
-  const css = assets.filter((path) => path.endsWith(".css"));
-  const critical = assets.filter((path) => /\.(?:js|css|woff2?|ttf|webp|png|svg)$/i.test(path));
+  const htmlFiles = assets.filter((path) => path.endsWith(".html"));
+  const referenced = new Set<string>();
+
+  for (const htmlPath of htmlFiles) {
+    const html = readFileSync(htmlPath, "utf8");
+    for (const match of html.matchAll(/(?:src|href)="([^"]+)"/g)) {
+      const reference = match[1];
+      if (!reference || reference.startsWith("http") || reference.startsWith("//")) {
+        continue;
+      }
+      const relative = reference.replace(/^\//, "");
+      const candidate = join(clientDirectory, relative);
+      if (assets.includes(candidate)) {
+        referenced.add(candidate);
+      }
+    }
+  }
+
+  const initial = referenced.size > 0 ? [...referenced] : assets;
+  const javascript = initial.filter((path) => path.endsWith(".js"));
+  const css = initial.filter((path) => path.endsWith(".css"));
+  const critical = initial.filter((path) =>
+    /\.(?:js|css|woff2?|ttf|webp|png|svg)$/i.test(path),
+  );
 
   return {
     initialJavaScriptGzipKb: javascript.reduce((sum, path) => sum + gzipKb(path), 0),
