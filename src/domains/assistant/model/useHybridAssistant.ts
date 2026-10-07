@@ -16,7 +16,13 @@ import { useAuth } from "@/domains/auth";
 import { searchLocalKnowledge } from "../services/localSearch.service";
 import { AssistantStreamError, streamAssistant } from "../services/assistant-stream.service";
 
-const STORAGE_KEY = "eco.assistant.conversation.v1";
+const LEGACY_STORAGE_KEY = "eco.assistant.conversation.v1";
+const STORAGE_KEY_PREFIX = "eco.assistant.conversation.v2";
+
+export function assistantConversationStorageKey(userId: string | null): string | null {
+  if (!userId) return null;
+  return `${STORAGE_KEY_PREFIX}:${userId}`;
+}
 
 export interface HybridAssistantState {
   signedIn: boolean;
@@ -29,9 +35,10 @@ export interface HybridAssistantState {
   reset: () => void;
 }
 
-function persist(messages: AssistantMessage[]) {
+function persist(storageKey: string | null, messages: AssistantMessage[]) {
+  if (!storageKey) return;
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(messages.slice(-40)));
+    localStorage.setItem(storageKey, JSON.stringify(messages.slice(-40)));
   } catch {
     /* storage full or unavailable */
   }
@@ -43,6 +50,8 @@ export function useHybridAssistant(): HybridAssistantState {
   const online = useNetworkStatus().online;
   const { session, loading: authLoading } = useAuth();
   const token = session?.access_token ?? null;
+  const userId = session?.user?.id ?? null;
+  const storageKey = assistantConversationStorageKey(userId);
   const route = useRouterState({ select: (state) => state.location.pathname });
   const [messages, setMessages] = useState<AssistantMessage[]>([]);
   const [promoted, setPromoted] = useState<PromotedAssistantAnswer[]>([]);
@@ -52,13 +61,16 @@ export function useHybridAssistant(): HybridAssistantState {
   const busy = useRef(false);
 
   useEffect(() => {
+    setMessages([]);
     try {
-      const saved = localStorage.getItem(STORAGE_KEY);
+      localStorage.removeItem(LEGACY_STORAGE_KEY);
+      if (!storageKey) return;
+      const saved = localStorage.getItem(storageKey);
       if (saved) setMessages(JSON.parse(saved) as AssistantMessage[]);
     } catch {
       /* ignore corrupt storage */
     }
-  }, []);
+  }, [storageKey]);
 
   useEffect(() => {
     let active = true;
@@ -73,7 +85,7 @@ export function useHybridAssistant(): HybridAssistantState {
   const update = useCallback((next: (current: AssistantMessage[]) => AssistantMessage[]) => {
     setMessages((current) => {
       const value = next(current);
-      persist(value);
+      persist(storageKey, value);
       return value;
     });
   }, []);
@@ -141,7 +153,7 @@ export function useHybridAssistant(): HybridAssistantState {
           token,
         );
         setMessages((c) => {
-          persist(c);
+          persist(storageKey, c);
           return c;
         });
       } catch (error) {
@@ -152,7 +164,7 @@ export function useHybridAssistant(): HybridAssistantState {
         busy.current = false;
       }
     },
-    [language, messages, online, promoted, route, token, update],
+    [language, messages, online, promoted, route, storageKey, token, update],
   );
 
   const reset = useCallback(() => {
