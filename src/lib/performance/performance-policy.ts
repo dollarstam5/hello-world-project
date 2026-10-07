@@ -19,9 +19,7 @@ export interface WebVitalsObservation {
   cls: number;
 }
 
-export function classifyWebVitals(
-  observation: WebVitalsObservation,
-): PerformanceHealthLevel {
+export function classifyWebVitals(observation: WebVitalsObservation): PerformanceHealthLevel {
   const { lcpMs, inpMs, cls } = observation;
 
   if (
