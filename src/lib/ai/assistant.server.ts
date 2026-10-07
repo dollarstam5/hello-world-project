@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import type { AssistantRequest, AssistantResult } from "@eco/core-contracts";
 import { getServerConfig } from "@/lib/config.server";
 import {
@@ -18,10 +18,7 @@ import {
   normalizeAssistantText,
 } from "@/domains/assistant/services/mapping.service";
 
-type SupabaseLike = {
-  from: (table: string) => any;
-  rpc: (name: string, args: Record<string, unknown>) => any;
-};
+type SupabaseLike = SupabaseClient;
 
 const SYSTEM_FR = `Tu es Vita, le guide de l'application Vitala, une application d'entraide locale.
 Tu accueilles, guides et suggères sans prendre de décision à la place de l'utilisateur.
