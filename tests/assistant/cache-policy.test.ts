@@ -8,15 +8,17 @@ import {
 
 const now = 1_800_000_000_000;
 
-function promoted(overrides: Partial<{
-  id: string;
-  normalizedQuestion: string;
-  answer: string;
-  locale: "fr" | "en";
-  category: string;
-  version: number;
-  updatedAt: number;
-}>) {
+function promoted(
+  overrides: Partial<{
+    id: string;
+    normalizedQuestion: string;
+    answer: string;
+    locale: "fr" | "en";
+    category: string;
+    version: number;
+    updatedAt: number;
+  }>,
+) {
   return {
     id: "promoted-01",
     normalizedQuestion: "comment activer ma veille",
@@ -36,10 +38,7 @@ describe("règles du cache local de Vita", () => {
 
   it("refuse une réponse promue plus ancienne que le TTL", () => {
     expect(
-      isPromotedAssistantAnswerFresh(
-        promoted({ updatedAt: now - PROMOTED_CACHE_TTL_MS - 1 }),
-        now,
-      ),
+      isPromotedAssistantAnswerFresh(promoted({ updatedAt: now - PROMOTED_CACHE_TTL_MS - 1 }), now),
     ).toBe(false);
   });
 
@@ -58,11 +57,9 @@ describe("règles du cache local de Vita", () => {
   });
 
   it("n'utilise pas une réponse promue obsolète pour répondre localement", () => {
-    const result = searchLocalKnowledge(
-      "Comment activer ma veille ?",
-      "fr",
-      [promoted({ updatedAt: now - PROMOTED_CACHE_TTL_MS - 1 })],
-    );
+    const result = searchLocalKnowledge("Comment activer ma veille ?", "fr", [
+      promoted({ updatedAt: now - PROMOTED_CACHE_TTL_MS - 1 }),
+    ]);
 
     expect(result).toBeNull();
   });
