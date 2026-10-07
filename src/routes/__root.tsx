@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -11,6 +12,7 @@ import {
 import appCss from "../styles.css?url";
 import { AppShell } from "@/components/app/AppShell";
 import { registerServiceWorker } from "@/platform/pwa";
+import { startWebVitalsMonitoring } from "@/lib/performance/web-vitals";
 
 function NotFoundComponent() {
   return (
@@ -120,6 +122,7 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
+  useEffect(() => startWebVitalsMonitoring(() => undefined), []);
   registerServiceWorker();
   const { queryClient } = Route.useRouteContext();
 
