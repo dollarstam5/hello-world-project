@@ -1,11 +1,7 @@
 let registrationScheduled = false;
 
 export function registerServiceWorker(): void {
-  if (
-    registrationScheduled ||
-    typeof window === "undefined" ||
-    !("serviceWorker" in navigator)
-  ) {
+  if (registrationScheduled || typeof window === "undefined" || !("serviceWorker" in navigator)) {
     return;
   }
   registrationScheduled = true;
