@@ -17,21 +17,21 @@ La CI utilise ensuite `bun install --frozen-lockfile`. Elle doit échouer si `pa
 
 | Commande | Rôle | Bloquante |
 | --- | --- | --- |
-| `bun run check:foundation` | vérifie les fichiers P0, migrations et 50 réponses locales minimum | oui |
-| `bun run security:secrets` | détecte les signatures de clés et clés privées | oui |
+| `bun run check:foundation` | lint + tests Vitest du socle actuellement implémenté | oui |
+| `bun run security:secrets` | bloque la présence d’un `.env` local suivi par le dépôt | oui |
 | `bun run lint` | contrôle statique du code | oui |
 | `bun run test:run` | exécute une fois les tests Vitest | oui |
 | `bun run test` | mode interactif local | non |
 | `bun run test:coverage` | produit le rapport de couverture | revue |
-| `bun run test:offline` | teste déconnexion, reconnexion et conflits | oui |
-| `bun run test:db` | exécute les assertions RLS pgTAP avec Supabase local | oui en CI |
-| `bun run check:pwa` | valide manifeste, icônes et stratégie offline | oui |
-| `bun run check:release` | vérifie les portes de sortie P0 et la cohérence du verrou | oui |
-| `bun run build:check` | construit puis applique les budgets compressés | oui |
-| `bun run test:e2e` | valide les écrans mobiles et le parcours offline | oui en CI |
+
+
+
+| `bun run check:release` | lint + tests + build de la fondation actuelle | oui |
+| `bun run build:check` | construit l’application de production | oui |
+
 | `bun run build` | construit l’artefact de production | oui |
 | `bun run check` | enchaîne tous les contrôles bloquants | oui |
-| `bun run certify:p0` | ajoute les parcours offline, RLS et navigateur au contrôle complet | oui avant release |
+
 
 ## Matrice P0
 
@@ -53,9 +53,9 @@ La CI utilise ensuite `bun install --frozen-lockfile`. Elle doit échouer si `pa
 | P1.4.1 | projection publique bornée, limite de réponses uniforme et cycle Realtime stable | `tests/flash/public-flash-feed.test.ts`, `tests/scan/scan-realtime-stability.test.ts`, `supabase/tests/database/110_public_flash_feed_security.test.sql` |
 | P1.5.1 | contrat Radar, durée 3–90 jours, cycle de vie privé et commandes protégées | `tests/radar/`, `supabase/tests/database/120_radar_lifecycle_rls.test.sql` |
 
-Les politiques RLS PostgreSQL restent la frontière de sécurité. Avant production, compléter ces tests unitaires par des tests d’intégration Supabase exécutés avec des utilisateurs distincts sur une base éphémère ou de préproduction.
+Les politiques RLS PostgreSQL restent la frontière de sécurité. Leur couverture d’intégration sera ajoutée avant toute certification P0.
 
-Les suites correspondantes sont maintenant disponibles. Leur installation et leur modèle d’isolation sont décrits dans [`INTEGRATION_TESTING.md`](INTEGRATION_TESTING.md).
+Les suites d’intégration RLS, offline et navigateur seront ajoutées dans les étapes P0 suivantes. Elles ne sont pas encore considérées comme disponibles.
 
 Les incidents, seuils d’alerte et objectifs de service sont définis dans [`OPERATIONS.md`](OPERATIONS.md).
 
