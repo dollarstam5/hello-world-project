@@ -7,7 +7,6 @@ import {
   savePromotedAssistantAnswer,
 } from "@eco/core-db";
 
-
 describe("isolation des conversations locales de Vita", () => {
   afterEach(() => {
     closeLocalDatabase();
