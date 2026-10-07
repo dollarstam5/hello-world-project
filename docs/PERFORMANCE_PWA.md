@@ -53,3 +53,16 @@ L'authentification n'est pas modifiée par P0.10.1.
 Le dépôt fournit désormais un service worker enregistré côté navigateur, un manifeste PWA cohérent avec les icônes versionnées et une commande de validation dédiée. Le service worker utilise le réseau en priorité pour les navigations et conserve un shell de secours ; les routes API et les Server Functions ne sont pas interceptées. Les données métier restent sous la responsabilité de Dexie et du moteur de synchronisation.
 
 La validation d'installabilité réelle sur appareils représentatifs reste un contrôle E2E de sous-milestone ultérieur.
+
+## P0.10.4 — mesure réelle des Web Vitals
+
+Le navigateur collecte désormais les signaux réels **LCP, INP et CLS** via PerformanceObserver lorsqu'ils sont disponibles. Les mesures sont conservées en mémoire côté client, sans contenu de page, URL complète, identifiant utilisateur ou donnée d'authentification.
+
+- **LCP** : dernière observation largest-contentful-paint.
+- **INP** : maximum observé sur les événements avec interactionId.
+- **CLS** : score de session selon les fenêtres de 1 seconde / 5 secondes.
+- Chaque mesure conserve aussi le type de navigation.
+- Les API non disponibles sont ignorées sans bloquer l'application.
+- Le point d'intégration démarre automatiquement au niveau de la racine de l'application.
+- La collecte fournit des observations réelles ; l'agrégation **p75** et le contrôle automatique des budgets restent les objectifs de P0.10.5.
+
