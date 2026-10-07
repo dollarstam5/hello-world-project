@@ -223,11 +223,13 @@ select is(
 update public.udi
 set level = 'verified'
 where user_id = '00000000-0000-0000-0000-000000000001';
+reset role;
 select is(
   (select level from public.udi where user_id = '00000000-0000-0000-0000-000000000001'),
   'verified',
   'user B cannot change user A identity'
 );
+set local role authenticated;
 
 -- Assignee B is allowed to advance A's mission, but cannot edit an unassigned mission.
 update public.missions
@@ -249,12 +251,13 @@ select is(
 );
 
 -- A member cannot grant itself a role.
-insert into public.user_roles (user_id, role)
-values ('00000000-0000-0000-0000-000000000002', 'admin')
-on conflict do nothing;
-select is(
-  (select count(*) from public.user_roles where user_id = '00000000-0000-0000-0000-000000000002' and role = 'admin'),
-  0::bigint,
+select throws_ok(
+  $
+    insert into public.user_roles (user_id, role)
+    values ('00000000-0000-0000-0000-000000000002', 'admin')
+  $,
+  '42501',
+  'new row violates row-level security policy for table "user_roles"',
   'member cannot self-grant admin role'
 );
 
