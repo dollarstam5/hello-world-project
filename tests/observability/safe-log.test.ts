@@ -9,9 +9,7 @@ describe("safe server logging", () => {
 
     logServerError(
       "request.failed",
-      new Error(
-        "Bearer abc.def.ghi password=hunter2 token=secret-value " + "x".repeat(2000),
-      ),
+      new Error("Bearer abc.def.ghi password=hunter2 token=secret-value " + "x".repeat(2000)),
       {
         requestId: "req-123",
         method: "POST",
