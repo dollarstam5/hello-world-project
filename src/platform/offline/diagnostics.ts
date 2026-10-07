@@ -19,3 +19,49 @@ export function getOfflineDiagnostics(
     quarantinedCount: quarantined.length,
   };
 }
+
+export const OFFLINE_WARNING_AGE_MS = 15 * 60 * 1000;
+export const OFFLINE_CRITICAL_AGE_MS = 24 * 60 * 60 * 1000;
+
+export interface OfflineHealthThresholds {
+  warningAgeMs: number;
+  criticalAgeMs: number;
+}
+
+export type OfflineHealthLevel = "healthy" | "warning" | "critical";
+
+export const DEFAULT_OFFLINE_HEALTH_THRESHOLDS: OfflineHealthThresholds = {
+  warningAgeMs: OFFLINE_WARNING_AGE_MS,
+  criticalAgeMs: OFFLINE_CRITICAL_AGE_MS,
+};
+
+export function classifyOfflineHealth(
+  pendingCount: number,
+  oldestPendingAgeMs: number | null,
+  quarantinedCount: number,
+  thresholds: OfflineHealthThresholds = DEFAULT_OFFLINE_HEALTH_THRESHOLDS,
+): OfflineHealthLevel {
+  if (
+    !Number.isInteger(pendingCount) ||
+    pendingCount < 0 ||
+    !Number.isInteger(quarantinedCount) ||
+    quarantinedCount < 0 ||
+    (oldestPendingAgeMs !== null && (!Number.isFinite(oldestPendingAgeMs) || oldestPendingAgeMs < 0)) ||
+    !Number.isFinite(thresholds.warningAgeMs) ||
+    !Number.isFinite(thresholds.criticalAgeMs) ||
+    thresholds.warningAgeMs < 0 ||
+    thresholds.criticalAgeMs < thresholds.warningAgeMs
+  ) {
+    throw new Error("Invalid offline health diagnostics.");
+  }
+
+  if (quarantinedCount > 0 || (oldestPendingAgeMs !== null && oldestPendingAgeMs >= thresholds.criticalAgeMs)) {
+    return "critical";
+  }
+
+  if (pendingCount > 0 || (oldestPendingAgeMs !== null && oldestPendingAgeMs >= thresholds.warningAgeMs)) {
+    return "warning";
+  }
+
+  return "healthy";
+}
