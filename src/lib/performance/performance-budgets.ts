@@ -49,9 +49,7 @@ export function measurePerformanceBudgets(clientDirectory: string): PerformanceB
   const initial = referenced.size > 0 ? [...referenced] : assets;
   const javascript = initial.filter((path) => path.endsWith(".js"));
   const css = initial.filter((path) => path.endsWith(".css"));
-  const critical = initial.filter((path) =>
-    /\.(?:js|css|woff2?|ttf|webp|png|svg)$/i.test(path),
-  );
+  const critical = initial.filter((path) => /\.(?:js|css|woff2?|ttf|webp|png|svg)$/i.test(path));
 
   return {
     initialJavaScriptGzipKb: javascript.reduce((sum, path) => sum + gzipKb(path), 0),
