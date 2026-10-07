@@ -12,7 +12,14 @@
     "format": "prettier --write .",
     "test": "vitest run --config tests/vitest.config.ts",
     "test:run": "vitest run --config tests/vitest.config.ts",
-    "test:watch": "vitest --config tests/vitest.config.ts"
+    "test:watch": "vitest --config tests/vitest.config.ts",
+    "check:foundation": "bun run lint && bun run test:run",
+    "security:secrets": "bun run check:tracked-env",
+    "check:tracked-env": "test ! -f .env",
+    "check:db-tests": "test -d supabase/tests/database && find supabase/tests/database -type f -name '*.test.sql' | grep -q .",
+    "build:check": "bun run build",
+    "check:release": "bun run lint && bun run test:run && bun run build:check",
+    "check": "bun run check:foundation && bun run security:secrets && bun run check:release"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
