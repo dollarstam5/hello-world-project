@@ -19,6 +19,41 @@ describe("configuration serveur", () => {
     });
   });
 
+  it("refuse une URL Supabase HTTP en production", () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("SUPABASE_URL", "http://project.supabase.co");
+    vi.stubEnv("SUPABASE_PUBLISHABLE_KEY", "sb_publishable_public_test_value");
+
+    expect(() => getPublicServerEnvironment()).toThrow("SUPABASE_URL must use HTTPS.");
+  });
+
+  it("autorise localhost en environnement non production", () => {
+    vi.stubEnv("NODE_ENV", "development");
+    vi.stubEnv("SUPABASE_URL", "http://localhost:54321");
+    vi.stubEnv("SUPABASE_PUBLISHABLE_KEY", "sb_publishable_public_test_value");
+
+    expect(getPublicServerEnvironment()).toMatchObject({
+      nodeEnv: "development",
+      supabaseUrl: "http://localhost:54321",
+    });
+  });
+
+  it("refuse un environnement runtime inconnu", () => {
+    vi.stubEnv("NODE_ENV", "staging");
+
+    expect(() => getPublicServerEnvironment()).toThrow(
+      "NODE_ENV must be development, test or production.",
+    );
+  });
+
+  it("refuse une clé service role trop courte", () => {
+    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "too-short");
+
+    expect(() => getSupabaseServiceRoleKey()).toThrow(
+      "SUPABASE_SERVICE_ROLE_KEY is too short.",
+    );
+  });
+
   it("refuse un secret Supabase déclaré comme clé publique", () => {
     vi.stubEnv("SUPABASE_URL", "https://project.supabase.co");
     vi.stubEnv(
