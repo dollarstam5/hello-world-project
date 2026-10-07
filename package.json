@@ -23,7 +23,8 @@
     "test:db": "supabase test db",
     "check:protocol": "bun run test:run -- tests/sync/engine.test.ts",
     "check:performance": "bun run test:run -- tests/performance-policy.test.ts",
-    "check:pwa": "bun run test:run -- tests/pwa.test.ts"
+    "check:pwa": "bun run test:run -- tests/pwa.test.ts",
+    "check:web-vitals": "bun run test:run -- tests/web-vitals.test.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
