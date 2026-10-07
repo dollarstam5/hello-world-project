@@ -1,8 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  classifyWebVitals,
-  PERFORMANCE_BUDGETS,
-} from "@/lib/performance/performance-policy";
+import { classifyWebVitals, PERFORMANCE_BUDGETS } from "@/lib/performance/performance-policy";
 
 describe("performance policy", () => {
   it("keeps the healthy Web Vitals budgets explicit", () => {
