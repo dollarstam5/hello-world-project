@@ -8,11 +8,7 @@ interface BeforeInstallPromptEvent extends Event {
 let registrationScheduled = false;
 
 export function registerServiceWorker(): void {
-  if (
-    registrationScheduled ||
-    typeof window === "undefined" ||
-    !("serviceWorker" in navigator)
-  ) {
+  if (registrationScheduled || typeof window === "undefined" || !("serviceWorker" in navigator)) {
     return;
   }
   registrationScheduled = true;
@@ -26,8 +22,7 @@ export function useInstallPrompt(): {
   available: boolean;
   install: () => Promise<void>;
 } {
-  const [deferredPrompt, setDeferredPrompt] =
-    useState<BeforeInstallPromptEvent | null>(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") {
