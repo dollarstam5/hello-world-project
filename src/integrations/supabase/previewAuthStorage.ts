@@ -47,7 +47,6 @@ export function brokeredPreviewStorage() {
     new Promise((resolve) => {
       const requestId = newId();
       let done = false;
-      const timer: ReturnType<typeof setTimeout> = setTimeout(() => finish(null), TIMEOUT);
       const finish = (r: { ok: boolean; value?: string | null } | null) => {
         if (done) return;
         done = true;
@@ -61,6 +60,7 @@ export function brokeredPreviewStorage() {
         if (d && d.type === RESULT && d.requestId === requestId) finish(d);
       };
       window.addEventListener("message", onMessage);
+      const timer = setTimeout(() => finish(null), TIMEOUT);
       const msg: Record<string, unknown> = { type, requestId, projectId, key };
       if (value !== undefined) msg["value"] = value;
       for (const origin of editorOrigins) window.parent.postMessage(msg, origin);
