@@ -21,7 +21,9 @@ export interface SyncStore {
   readPending(limit?: number): Promise<OutboxEntry[]>;
   dropAccepted(ids: readonly string[]): Promise<void>;
   markAttemptFailed(id: string, reason: string): Promise<void>;
-  quarantineRejected(rejections: readonly import("@eco/core-contracts").RejectedMutation[]): Promise<void>;
+  quarantineRejected(
+    rejections: readonly import("@eco/core-contracts").RejectedMutation[],
+  ): Promise<void>;
   quarantineExhausted(maxAttempts: number): Promise<void>;
   countPending(): Promise<number>;
 }
@@ -168,9 +170,7 @@ export function createSyncEngine(options: SyncEngineOptions): SyncEngine {
     try {
       // Push first: the local intent must exist upstream before we merge.
       const pushed = await push();
-      const pushedTables = pushed.length > 0
-        ? await store.applyRemoteRecords(pushed)
-        : [];
+      const pushedTables = pushed.length > 0 ? await store.applyRemoteRecords(pushed) : [];
       const pulledTables = await pull();
       const tables = [...new Set([...pushedTables, ...pulledTables])];
       if (tables.length > 0) onApplied?.(tables);

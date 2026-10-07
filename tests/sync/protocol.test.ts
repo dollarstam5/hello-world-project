@@ -23,8 +23,15 @@ const mutation = {
 };
 
 const cursors = [
-  "users", "udi", "flashes", "missions", "radars",
-  "posts", "media", "notifications", "audit",
+  "users",
+  "udi",
+  "flashes",
+  "missions",
+  "radars",
+  "posts",
+  "media",
+  "notifications",
+  "audit",
 ].map((table) => ({ table, revision: 0 }));
 
 describe("sync protocol validation", () => {
@@ -38,9 +45,9 @@ describe("sync protocol validation", () => {
   });
 
   it("rejects an unsupported protocol version", () => {
-    expect(() =>
-      validatePushRequest({ protocolVersion: 1, entries: [mutation] }),
-    ).toThrow(SyncValidationError);
+    expect(() => validatePushRequest({ protocolVersion: 1, entries: [mutation] })).toThrow(
+      SyncValidationError,
+    );
   });
 
   it("rejects unknown mutation fields", () => {
@@ -62,13 +69,16 @@ describe("sync protocol validation", () => {
     });
 
     expect(() =>
-      validatePullResult({
-        records: [],
-        cursors: cursors.map((cursor) =>
-          cursor.table === "flashes" ? { ...cursor, revision: 9 } : cursor,
-        ),
-        hasMore: false,
-      }, request),
+      validatePullResult(
+        {
+          records: [],
+          cursors: cursors.map((cursor) =>
+            cursor.table === "flashes" ? { ...cursor, revision: 9 } : cursor,
+          ),
+          hasMore: false,
+        },
+        request,
+      ),
     ).toThrow(SyncValidationError);
   });
 });

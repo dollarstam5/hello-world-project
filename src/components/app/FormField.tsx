@@ -11,7 +11,11 @@ interface FormFieldProps {
   error?: ReactNode;
   /** Optional inline help shown next to the label. */
   optional?: boolean;
-  children: (props: { id: string; "aria-invalid": boolean; "aria-describedby"?: string }) => ReactNode;
+  children: (props: {
+    id: string;
+    "aria-invalid": boolean;
+    "aria-describedby"?: string;
+  }) => ReactNode;
   className?: string;
 }
 
@@ -23,14 +27,7 @@ interface FormFieldProps {
  *     {(p) => <Input {...p} />}
  *   </FormField>
  */
-export function FormField({
-  label,
-  hint,
-  error,
-  optional,
-  children,
-  className,
-}: FormFieldProps) {
+export function FormField({ label, hint, error, optional, children, className }: FormFieldProps) {
   const id = useId();
   const hintId = hint ? `${id}-hint` : undefined;
   const errorId = error ? `${id}-error` : undefined;
@@ -43,9 +40,7 @@ export function FormField({
           <Label htmlFor={id} className="text-sm font-medium">
             {label}
           </Label>
-          {optional && (
-            <span className="text-2xs text-muted-foreground">optional</span>
-          )}
+          {optional && <span className="text-2xs text-muted-foreground">optional</span>}
         </div>
       )}
       {children({ id, "aria-invalid": !!error, "aria-describedby": describedBy })}

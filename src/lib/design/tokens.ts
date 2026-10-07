@@ -7,7 +7,6 @@
  * Phase 2/5 — Spacing + Typography.
  */
 
-
 /* ----------------------------- Motion ----------------------------- */
 export const duration = {
   instant: 0.08,
@@ -36,7 +35,7 @@ export const spring = {
 export const motion = {
   fadeIn: { duration: duration.base, ease: easing.standard },
   riseIn: { duration: duration.slow, ease: easing.standard },
-  pop:    { duration: duration.fast, ease: easing.emphasized },
+  pop: { duration: duration.fast, ease: easing.emphasized },
 } as const;
 
 /* ----------------------------- Icons ------------------------------ */

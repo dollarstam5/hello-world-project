@@ -1,20 +1,9 @@
-import type {
-  MissionAction,
-  MissionRecord,
-  UserId,
-} from "@eco/core-contracts";
+import type { MissionAction, MissionRecord, UserId } from "@eco/core-contracts";
 
-export type MissionTransitionPatch = Pick<
-  MissionRecord,
-  "status" | "assigneeId"
->;
+export type MissionTransitionPatch = Pick<MissionRecord, "status" | "assigneeId">;
 
-function denied(
-  action: MissionAction["type"],
-): never {
-  throw new Error(
-    `Mission action is not allowed: ${action}.`,
-  );
+function denied(action: MissionAction["type"]): never {
+  throw new Error(`Mission action is not allowed: ${action}.`);
 }
 
 /**
@@ -26,11 +15,9 @@ export function missionTransition(
   action: MissionAction,
   actorId: UserId,
 ): MissionTransitionPatch {
-  const isAuthor =
-    mission.authorId === actorId;
+  const isAuthor = mission.authorId === actorId;
 
-  const isAssignee =
-    mission.assigneeId === actorId;
+  const isAssignee = mission.assigneeId === actorId;
 
   switch (action.type) {
     case "assign": {
@@ -40,27 +27,18 @@ export function missionTransition(
         mission.assigneeId !== null ||
         action.assigneeId === actorId
       ) {
-        return denied(
-          action.type,
-        );
+        return denied(action.type);
       }
 
       return {
         status: "assigned",
-        assigneeId:
-          action.assigneeId,
+        assigneeId: action.assigneeId,
       };
     }
 
     case "decline": {
-      if (
-        !isAssignee ||
-        mission.status !==
-          "assigned"
-      ) {
-        return denied(
-          action.type,
-        );
+      if (!isAssignee || mission.status !== "assigned") {
+        return denied(action.type);
       }
 
       return {
@@ -70,145 +48,82 @@ export function missionTransition(
     }
 
     case "start": {
-      if (
-        !isAssignee ||
-        mission.status !==
-          "assigned"
-      ) {
-        return denied(
-          action.type,
-        );
+      if (!isAssignee || mission.status !== "assigned") {
+        return denied(action.type);
       }
 
       return {
         status: "in_progress",
-        assigneeId:
-          mission.assigneeId,
+        assigneeId: mission.assigneeId,
       };
     }
 
     case "submit_result": {
-      if (
-        !isAssignee ||
-        mission.status !==
-          "in_progress"
-      ) {
-        return denied(
-          action.type,
-        );
+      if (!isAssignee || mission.status !== "in_progress") {
+        return denied(action.type);
       }
 
       return {
-        status:
-          "pending_validation",
-        assigneeId:
-          mission.assigneeId,
+        status: "pending_validation",
+        assigneeId: mission.assigneeId,
       };
     }
 
     case "validate_result": {
-      if (
-        !isAuthor ||
-        mission.status !==
-          "pending_validation"
-      ) {
-        return denied(
-          action.type,
-        );
+      if (!isAuthor || mission.status !== "pending_validation") {
+        return denied(action.type);
       }
 
       return {
         status: "completed",
-        assigneeId:
-          mission.assigneeId,
+        assigneeId: mission.assigneeId,
       };
     }
 
     case "dispute": {
       if (
-        (
-          !isAuthor &&
-          !isAssignee
-        ) ||
-        (
-          mission.status !==
-            "in_progress" &&
-          mission.status !==
-            "pending_validation"
-        )
+        (!isAuthor && !isAssignee) ||
+        (mission.status !== "in_progress" && mission.status !== "pending_validation")
       ) {
-        return denied(
-          action.type,
-        );
+        return denied(action.type);
       }
 
       return {
         status: "disputed",
-        assigneeId:
-          mission.assigneeId,
+        assigneeId: mission.assigneeId,
       };
     }
 
     case "cancel": {
-      if (
-        !isAuthor ||
-        (
-          mission.status !==
-            "open" &&
-          mission.status !==
-            "assigned"
-        )
-      ) {
-        return denied(
-          action.type,
-        );
+      if (!isAuthor || (mission.status !== "open" && mission.status !== "assigned")) {
+        return denied(action.type);
       }
 
       return {
         status: "cancelled",
-        assigneeId:
-          mission.assigneeId,
+        assigneeId: mission.assigneeId,
       };
     }
   }
 }
 
-export function canEditMissionDetails(
-  mission: MissionRecord,
-  actorId: UserId,
-): boolean {
-  return (
-    mission.authorId === actorId &&
-    mission.status === "open" &&
-    mission.assigneeId === null
-  );
+export function canEditMissionDetails(mission: MissionRecord, actorId: UserId): boolean {
+  return mission.authorId === actorId && mission.status === "open" && mission.assigneeId === null;
 }
 
-export function canRemoveMission(
-  mission: MissionRecord,
-  actorId: UserId,
-): boolean {
-  return (
-    mission.authorId === actorId &&
-    mission.status === "open"
-  );
+export function canRemoveMission(mission: MissionRecord, actorId: UserId): boolean {
+  return mission.authorId === actorId && mission.status === "open";
 }
 
-export function isMissionOverdue(
-  mission: MissionRecord,
-  now = Date.now(),
-): boolean {
+export function isMissionOverdue(mission: MissionRecord, now = Date.now()): boolean {
   if (mission.dueAt === null) {
     return false;
   }
 
   if (
-    mission.status ===
-      "completed" ||
-    mission.status ===
-      "cancelled" ||
-    mission.status ===
-      "disputed"
+    mission.status === "completed" ||
+    mission.status === "cancelled" ||
+    mission.status === "disputed"
   ) {
     return false;
   }
@@ -217,20 +132,12 @@ export function isMissionOverdue(
 }
 
 /** Missions still requiring attention, most urgent first. */
-export function sortMissionsByUrgency(
-  missions: MissionRecord[],
-): MissionRecord[] {
-  return [...missions].sort(
-    (a, b) => {
-      const aDue =
-        a.dueAt ??
-        Number.MAX_SAFE_INTEGER;
+export function sortMissionsByUrgency(missions: MissionRecord[]): MissionRecord[] {
+  return [...missions].sort((a, b) => {
+    const aDue = a.dueAt ?? Number.MAX_SAFE_INTEGER;
 
-      const bDue =
-        b.dueAt ??
-        Number.MAX_SAFE_INTEGER;
+    const bDue = b.dueAt ?? Number.MAX_SAFE_INTEGER;
 
-      return aDue - bDue;
-    },
-  );
+    return aDue - bDue;
+  });
 }

@@ -15,7 +15,10 @@ export function StateBlock({ loading, error, empty, onRetry }: StateBlockProps) 
     return (
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-busy="true">
         {Array.from({ length: 8 }).map((_, index) => (
-          <div key={index} className="h-20 animate-pulse rounded-2xl border border-border/50 bg-muted/40" />
+          <div
+            key={index}
+            className="h-20 animate-pulse rounded-2xl border border-border/50 bg-muted/40"
+          />
         ))}
       </div>
     );

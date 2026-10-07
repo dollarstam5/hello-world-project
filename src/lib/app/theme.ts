@@ -13,7 +13,9 @@ function apply(mode: ThemeMode) {
   if (typeof window === "undefined") return;
   const effective =
     mode === "system"
-      ? matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+      ? matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light"
       : mode;
   // Dark-first: dark tokens live on :root. Toggle `.light` for light mode,
   // keep `.dark` as a no-op safety class so existing `dark:` variants match.

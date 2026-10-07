@@ -45,27 +45,35 @@ Toute mutation utilisateur écrit d'abord dans Dexie + une file `outbox`, l'écr
 ## Étapes
 
 ### Étape 1 — Socle monorepo
+
 Workspaces Bun, création des packages vides mais réels (`ui`, `core-contracts`, `core-logic`, `core-db`, `core-sync`), alias TypeScript `@eco/*`, déplacement de l'app dans `apps/web`, migration du code existant vers `packages/ui` et `apps/web` sans régression. Build et typecheck verts à la fin.
 
 ### Étape 2 — Couche données offline-first
+
 Schéma Dexie complet (users, udi, flash, missions, social, trust, media, notifications, audit…), repositories typés, hooks de lecture live, table `outbox` et `sync_state`. L'UI branchée sur Dexie uniquement.
 
 ### Étape 3 — Backend séparé
+
 Activation de Lovable Cloud, migrations SQL avec GRANT + RLS par table, rôles utilisateurs dans une table dédiée, storage pour les médias, server functions pour la logique lourde. Aucun accès direct depuis l'UI.
 
 ### Étape 4 — Worker de sync
+
 Web Worker dédié : push de l'outbox, pull incrémental par curseur, résolution de conflits (last-write-wins par champ + journal), backoff réseau, état de sync exposé calmement à l'UI (jamais anxiogène).
 
 ### Étape 5 — Dashboard de gestion
+
 Shell d'administration + les 20 modules demandés (Home, Users, UDI, Flash, Missions, Social, Trust, Intelligence, Media, Notifications, Sync, Analytics, Security, Audit, Configuration, Database, API, Infrastructure, Support, Administration). Chaque module : route, hook de domaine, vues liste/détail/action, protégé par rôle côté serveur.
 
 ### Étape 6 — Responsive + langage humain
+
 Grille adaptative testée de 320 px à ultra-wide, ergonomie pouce, foldables, tablettes, desktop. Passage complet des textes FR/EN en langage humain (« Vos échanges en attente » plutôt que « Sync queue: 3 pending »).
 
 ### Étape 7 — PWA installable standards 2026
+
 Manifest complet, icônes maskable, service worker (précache app shell, runtime cache, background sync branché sur l'outbox), prompt d'installation natif, splash, mode standalone, raccourcis, share target. Aucune techno obsolète.
 
 ### Étape 8 — Documentation de gouvernance
+
 `docs/PROJECT_BIBLE.md` : mission, architecture, sens des dépendances, règles absolues, flux de données, conventions de nommage, checklist de contribution, ce qui est interdit. Annexes : `DATA_MODEL.md`, `SYNC_PROTOCOL.md`, `DESIGN_LANGUAGE.md`, `BACKEND_RULES.md`, `CONTRIBUTING_AI.md` (instructions destinées aux agents IA). Mémoire projet mise à jour pour que toute future génération applique ces règles automatiquement.
 
 ## Ordre d'exécution

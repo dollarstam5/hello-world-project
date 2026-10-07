@@ -90,10 +90,7 @@ function assertScope(scope: LocalDataScope): void {
  */
 export function configureLocalDatabase(scope: LocalDataScope): void {
   assertScope(scope);
-  if (
-    activeScope?.ownerId === scope.ownerId &&
-    activeScope.databaseName === scope.databaseName
-  ) {
+  if (activeScope?.ownerId === scope.ownerId && activeScope.databaseName === scope.databaseName) {
     return;
   }
 

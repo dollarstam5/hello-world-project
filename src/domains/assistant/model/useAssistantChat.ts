@@ -62,7 +62,9 @@ export function useAssistantChat() {
         const result = await askAssistant({
           data: {
             requestId: crypto.randomUUID(),
-            messages: history.slice(-12).map(({ role, content: text }) => ({ role, content: text })),
+            messages: history
+              .slice(-12)
+              .map(({ role, content: text }) => ({ role, content: text })),
             locale: locale === "en" ? "en" : "fr",
             route,
           },

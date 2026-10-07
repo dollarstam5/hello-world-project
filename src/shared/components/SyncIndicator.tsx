@@ -12,13 +12,7 @@ export function SyncIndicator({ className }: { className?: string }) {
   const { phase, messageKey, pendingCount, isSettled } = useSyncStatus();
 
   const Icon =
-    phase === "offline"
-      ? CloudOff
-      : phase === "error"
-        ? RefreshCw
-        : isSettled
-          ? Check
-          : Loader2;
+    phase === "offline" ? CloudOff : phase === "error" ? RefreshCw : isSettled ? Check : Loader2;
 
   return (
     <div
@@ -42,9 +36,7 @@ export function SyncIndicator({ className }: { className?: string }) {
       <span>{t(messageKey)}</span>
       {pendingCount > 0 && (
         <span className="tabular-nums">
-          {pendingCount === 1
-            ? t("sync.pending.one")
-            : `${pendingCount} ${t("sync.pending.many")}`}
+          {pendingCount === 1 ? t("sync.pending.one") : `${pendingCount} ${t("sync.pending.many")}`}
         </span>
       )}
     </div>

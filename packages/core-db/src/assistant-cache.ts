@@ -7,9 +7,7 @@ export function listPromotedAssistantAnswers(
   return getDb().assistantKnowledge.where("locale").equals(locale).toArray();
 }
 
-export async function savePromotedAssistantAnswer(
-  answer: PromotedAssistantAnswer,
-): Promise<void> {
+export async function savePromotedAssistantAnswer(answer: PromotedAssistantAnswer): Promise<void> {
   await getDb().assistantKnowledge.put(answer);
 }
 

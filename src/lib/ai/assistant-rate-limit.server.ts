@@ -38,9 +38,6 @@ export async function completeAssistantRequest(
   });
 }
 
-export async function failAssistantRequest(
-  db: SupabaseLike,
-  requestId: string,
-): Promise<void> {
+export async function failAssistantRequest(db: SupabaseLike, requestId: string): Promise<void> {
   await db.rpc("fail_assistant_request", { p_request_id: requestId });
 }

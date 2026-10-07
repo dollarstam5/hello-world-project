@@ -18,12 +18,16 @@ export function startWebVitals() {
   };
 
   observe("largest-contentful-paint", (entry) => {
-    window.dispatchEvent(new CustomEvent("eco:web-vital", { detail: { name: "LCP", value: entry.startTime } }));
+    window.dispatchEvent(
+      new CustomEvent("eco:web-vital", { detail: { name: "LCP", value: entry.startTime } }),
+    );
   });
 
   observe("layout-shift", (entry) => {
     const shift = entry as PerformanceEntry & { value?: number; hadRecentInput?: boolean };
     if (shift.hadRecentInput) return;
-    window.dispatchEvent(new CustomEvent("eco:web-vital", { detail: { name: "CLS", value: shift.value ?? 0 } }));
+    window.dispatchEvent(
+      new CustomEvent("eco:web-vital", { detail: { name: "CLS", value: shift.value ?? 0 } }),
+    );
   });
 }

@@ -39,8 +39,7 @@ export function useResponsive(): ResponsiveInfo {
   const device = useDevice();
   const network = useNetworkStatus();
   const shouldReduceMotion = device.reducedMotion;
-  const shouldReduceEffects =
-    device.isLowEnd || network.isLowBandwidth || shouldReduceMotion;
+  const shouldReduceEffects = device.isLowEnd || network.isLowBandwidth || shouldReduceMotion;
   return {
     ...device,
     network,

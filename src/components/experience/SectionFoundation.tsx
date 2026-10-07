@@ -82,18 +82,13 @@ export function SectionFoundation({
             s.render()
           ) : (
             <Surface variant="sunken" padding="lg" bordered>
-              <EmptyState
-                title={t("common.empty")}
-                description={t("common.empty.desc")}
-              />
+              <EmptyState title={t("common.empty")} description={t("common.empty.desc")} />
             </Surface>
           )}
         </section>
       ))}
 
-      {footer ? (
-        <footer className="pt-4 pb-2 text-center text-meta">{footer}</footer>
-      ) : null}
+      {footer ? <footer className="pt-4 pb-2 text-center text-meta">{footer}</footer> : null}
     </div>
   );
 }

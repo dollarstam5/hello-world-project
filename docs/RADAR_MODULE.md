@@ -8,22 +8,22 @@ Un Radar est une veille susceptible de produire plusieurs correspondances. Une m
 
 ## Cycle de vie
 
-| Ã‰tat | Signification | Sorties autorisÃ©es |
-| --- | --- | --- |
-| `draft` | CritÃ¨res modifiables, veille inactive | activation, annulation |
-| `active` | Veille activÃ©e et planifiÃ©e | surveillance, pause, revalidation, expiration, annulation |
-| `watching` | Moteur en recherche | correspondance, pause, revalidation, expiration, annulation |
-| `matched` | Au moins une correspondance disponible | pause, revalidation, expiration, annulation |
-| `paused` | Veille suspendue par le membre | reprise, expiration, annulation |
-| `expired` | Ã‰chÃ©ance atteinte | terminal |
-| `cancelled` | ArrÃªt volontaire | terminal |
+| Ã‰tat       | Signification                          | Sorties autorisÃ©es                                         |
+| ----------- | -------------------------------------- | ----------------------------------------------------------- |
+| `draft`     | CritÃ¨res modifiables, veille inactive | activation, annulation                                      |
+| `active`    | Veille activÃ©e et planifiÃ©e          | surveillance, pause, revalidation, expiration, annulation   |
+| `watching`  | Moteur en recherche                    | correspondance, pause, revalidation, expiration, annulation |
+| `matched`   | Au moins une correspondance disponible | pause, revalidation, expiration, annulation                 |
+| `paused`    | Veille suspendue par le membre         | reprise, expiration, annulation                             |
+| `expired`   | Ã‰chÃ©ance atteinte                    | terminal                                                    |
+| `cancelled` | ArrÃªt volontaire                      | terminal                                                    |
 
-Lâ€™activation et la reprise calculent `next_review_at` Ã  sept jours au maximum, sans dÃ©passer lâ€™expiration. La revalidation renseigne `last_reviewed_at` et programme la suivante.
+Lâ€™activation et la reprise calculent `next_review_at` Ã sept jours au maximum, sans dÃ©passer lâ€™expiration. La revalidation renseigne `last_reviewed_at` et programme la suivante.
 
 ## SÃ©curitÃ©
 
 - RLS limite la lecture et la crÃ©ation au propriÃ©taire.
-- Les critÃ¨res ne sont modifiables directement quâ€™Ã  lâ€™Ã©tat `draft`.
+- Les critÃ¨res ne sont modifiables directement quâ€™Ã lâ€™Ã©tat `draft`.
 - `status`, les Ã©chÃ©ances de revue, lâ€™identitÃ© du propriÃ©taire, la rÃ©vision et les dates systÃ¨me sont protÃ©gÃ©s.
 - `command_radar` verrouille la ligne et applique les commandes propriÃ©taire cÃ´tÃ© PostgreSQL.
 - Les visiteurs anonymes ne peuvent ni lire ni commander une veille.

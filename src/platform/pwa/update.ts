@@ -29,9 +29,12 @@ export function watchForUpdates(registration: ServiceWorkerRegistration): void {
   });
 
   // Periodic check so long-lived sessions still learn about new releases.
-  const interval = window.setInterval(() => {
-    void registration.update().catch(() => undefined);
-  }, 60 * 60 * 1000);
+  const interval = window.setInterval(
+    () => {
+      void registration.update().catch(() => undefined);
+    },
+    60 * 60 * 1000,
+  );
   window.addEventListener("pagehide", () => window.clearInterval(interval), { once: true });
 }
 

@@ -18,13 +18,15 @@ describe("politique de sécurité Vita", () => {
   });
 
   it("refuse deux messages consécutifs du même rôle", () => {
-    expect(validateConversation({
-      requestId: "00000000-0000-4000-8000-000000000001",
-      locale: "fr",
-      messages: [
-        { role: "user", content: "Bonjour" },
-        { role: "user", content: "Où est Radar ?" },
-      ],
-    })).toBe("invalid_role_order");
+    expect(
+      validateConversation({
+        requestId: "00000000-0000-4000-8000-000000000001",
+        locale: "fr",
+        messages: [
+          { role: "user", content: "Bonjour" },
+          { role: "user", content: "Où est Radar ?" },
+        ],
+      }),
+    ).toBe("invalid_role_order");
   });
 });

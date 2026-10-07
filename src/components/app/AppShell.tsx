@@ -61,7 +61,9 @@ export function AppShell({ children }: { children: ReactNode }) {
     : { duration: duration.base, ease: easing.standard };
 
   if (bareChrome) {
-    return <div className="relative min-h-dvh bg-background text-foreground antialiased">{children}</div>;
+    return (
+      <div className="relative min-h-dvh bg-background text-foreground antialiased">{children}</div>
+    );
   }
 
   return (

@@ -9,10 +9,7 @@ export * from "./live-query";
 export * from "./sync-status";
 export * from "./local-scope";
 
-export {
-  useSyncEngine,
-  requestSyncNow,
-} from "./sync-controller";
+export { useSyncEngine, requestSyncNow } from "./sync-controller";
 
 export {
   isLocalDatabaseAvailable,

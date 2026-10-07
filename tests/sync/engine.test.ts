@@ -40,7 +40,11 @@ function record(table: SyncedTable, revision: number): SyncRecordEnvelope {
 }
 
 function storeWith(pending: OutboxEntry[]) {
-  const state = { pending: [...pending], applied: [] as SyncRecordEnvelope[], cursors: [] as SyncCursor[] };
+  const state = {
+    pending: [...pending],
+    applied: [] as SyncRecordEnvelope[],
+    cursors: [] as SyncCursor[],
+  };
   return {
     state,
     readCursors: async () => state.cursors,
@@ -49,7 +53,10 @@ function storeWith(pending: OutboxEntry[]) {
       state.applied.push(...records);
       return [...new Set(records.map((r) => r.table))];
     },
-    applyPullPage: async (records: readonly SyncRecordEnvelope[], cursors: readonly Pick<SyncCursor, "table" | "revision">[]) => {
+    applyPullPage: async (
+      records: readonly SyncRecordEnvelope[],
+      cursors: readonly Pick<SyncCursor, "table" | "revision">[],
+    ) => {
       state.applied.push(...records);
       state.cursors = cursors.map((c) => cursor(c.table, c.revision));
       return [...new Set(records.map((r) => r.table))];
@@ -69,8 +76,15 @@ function pullResult(): PullResult {
   return {
     records: [],
     cursors: [
-      cursor("users"), cursor("udi"), cursor("flashes"), cursor("missions"),
-      cursor("radars"), cursor("posts"), cursor("media"), cursor("notifications"), cursor("audit"),
+      cursor("users"),
+      cursor("udi"),
+      cursor("flashes"),
+      cursor("missions"),
+      cursor("radars"),
+      cursor("posts"),
+      cursor("media"),
+      cursor("notifications"),
+      cursor("audit"),
     ],
     hasMore: false,
   };
@@ -103,8 +117,12 @@ describe("sync engine", () => {
   it("does not hit the transport while offline", async () => {
     const store = storeWith([entry()]);
     const transport = {
-      push: async () => { throw new Error("must not push"); },
-      pull: async () => { throw new Error("must not pull"); },
+      push: async () => {
+        throw new Error("must not push");
+      },
+      pull: async () => {
+        throw new Error("must not pull");
+      },
     };
 
     const engine = createSyncEngine({

@@ -10,14 +10,14 @@ shared → platform → features → domains → widgets → pages(routes)
 
 Higher layers may import lower layers. Lower layers **must never** import higher layers.
 
-| Layer | Owns | Forbidden |
-|---|---|---|
-| `shared/` | generic primitives (Button, Card, Modal, Skeleton, utils, validators, generic types) | any business-specific code (WalletCard, RadarCard, TrustCard…) |
-| `platform/` | cross-app infra (AI, realtime, offline, pwa, analytics, trust infra, notifications, permissions, device, a11y) | UI screens, domain pages, business flows |
-| `features/` | reusable user flows (onboarding, search, settings, i18n, notifications) | business domains, large pages |
-| `domains/<name>/` | business: components, hooks, types, services, state, mocks | leaking domain code into shared/widgets/pages |
-| `widgets/` | composition of multiple domains | owning state, services, business logic |
-| `routes/` (= pages) | route entry points; layout + widget composition only | business logic, API calls, heavy state |
+| Layer               | Owns                                                                                                           | Forbidden                                                      |
+| ------------------- | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| `shared/`           | generic primitives (Button, Card, Modal, Skeleton, utils, validators, generic types)                           | any business-specific code (WalletCard, RadarCard, TrustCard…) |
+| `platform/`         | cross-app infra (AI, realtime, offline, pwa, analytics, trust infra, notifications, permissions, device, a11y) | UI screens, domain pages, business flows                       |
+| `features/`         | reusable user flows (onboarding, search, settings, i18n, notifications)                                        | business domains, large pages                                  |
+| `domains/<name>/`   | business: components, hooks, types, services, state, mocks                                                     | leaking domain code into shared/widgets/pages                  |
+| `widgets/`          | composition of multiple domains                                                                                | owning state, services, business logic                         |
+| `routes/` (= pages) | route entry points; layout + widget composition only                                                           | business logic, API calls, heavy state                         |
 
 > **Routing note:** This project uses TanStack Start file-based routing under `src/routes/`. `src/routes/` IS the `pages/` layer in the governance doc — same rules apply.
 

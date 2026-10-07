@@ -26,8 +26,7 @@ const sizes = {
 } as const;
 
 const positions = {
-  "bottom-right":
-    "fixed right-4 bottom-[max(calc(env(safe-area-inset-bottom)+5.5rem),6rem)] z-40",
+  "bottom-right": "fixed right-4 bottom-[max(calc(env(safe-area-inset-bottom)+5.5rem),6rem)] z-40",
   "bottom-center":
     "fixed left-1/2 -translate-x-1/2 bottom-[max(calc(env(safe-area-inset-bottom)+5.5rem),6rem)] z-40",
   inline: "",

@@ -1,14 +1,7 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-type Tone =
-  | "neutral"
-  | "primary"
-  | "success"
-  | "warning"
-  | "info"
-  | "destructive"
-  | "intelligence";
+type Tone = "neutral" | "primary" | "success" | "warning" | "info" | "destructive" | "intelligence";
 
 interface IndicatorProps {
   tone?: Tone;
@@ -93,4 +86,3 @@ export function Indicator({
     </span>
   );
 }
-

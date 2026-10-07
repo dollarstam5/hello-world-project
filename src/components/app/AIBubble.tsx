@@ -28,11 +28,7 @@ export function AIBubble({ author = "assistant", children, thinking, className }
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       transition={transition.base}
-      className={cn(
-        "flex w-full gap-2",
-        isAssistant ? "justify-start" : "justify-end",
-        className,
-      )}
+      className={cn("flex w-full gap-2", isAssistant ? "justify-start" : "justify-end", className)}
     >
       {isAssistant && (
         <div

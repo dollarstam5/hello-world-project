@@ -73,6 +73,7 @@ export function classifyAssistantQuestion(
   if (/\b(?:ou|où|ouvrir|trouver|aller|page|onglet)\b/i.test(question)) return "navigation";
   if (/\b(?:compte|profil|inscri|connexion|identite)\b/i.test(question)) return "account";
   if (/\b(?:secur|fraude|abus|signaler|danger|confident)\b/i.test(question)) return "safety";
-  if (/\b(?:flash|scan|radar|mission|notification|offline|hors ligne)\b/i.test(question)) return "feature";
+  if (/\b(?:flash|scan|radar|mission|notification|offline|hors ligne)\b/i.test(question))
+    return "feature";
   return "other";
 }

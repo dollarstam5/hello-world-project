@@ -20,7 +20,12 @@ export function AILayer() {
         size="md"
         onClick={() => setOpen(true)}
       />
-      <Sheet open={open} onOpenChange={setOpen} title={t("assistant.cta")} description={t("app.tagline")}>
+      <Sheet
+        open={open}
+        onOpenChange={setOpen}
+        title={t("assistant.cta")}
+        description={t("app.tagline")}
+      >
         {open && <AssistantTab />}
       </Sheet>
     </>

@@ -12,7 +12,8 @@ export function InstallBanner() {
   if (!available || dismissed) return null;
 
   return (
-    <div className="fixed inset-x-3 z-40 rounded-2xl border border-border/60 bg-background/90 p-3 shadow-lg backdrop-blur"
+    <div
+      className="fixed inset-x-3 z-40 rounded-2xl border border-border/60 bg-background/90 p-3 shadow-lg backdrop-blur"
       style={{ bottom: "calc(6.5rem + var(--safe-bottom))" }}
     >
       <div className="flex items-start gap-3">

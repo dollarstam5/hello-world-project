@@ -16,10 +16,7 @@ export function useLiveFlashes(now = Date.now()) {
 }
 
 export function useFlash(id: string) {
-  return useLocalQuery<FlashRecord | undefined>(
-    () => flashesRepository.get(id),
-    [id],
-  );
+  return useLocalQuery<FlashRecord | undefined>(() => flashesRepository.get(id), [id]);
 }
 
 export interface NewFlashInput {

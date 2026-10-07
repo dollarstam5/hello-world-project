@@ -45,9 +45,7 @@ export function MenuSheet({ open, onOpenChange }: MenuSheetProps) {
       >
         <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-border" aria-hidden />
         <SheetHeader className="text-left">
-          <SheetTitle className="text-xl font-medium tracking-tight">
-            {t("menu.title")}
-          </SheetTitle>
+          <SheetTitle className="text-xl font-medium tracking-tight">{t("menu.title")}</SheetTitle>
           <SheetDescription className="text-sm text-muted-foreground">
             {t("menu.subtitle")}
           </SheetDescription>
@@ -68,9 +66,7 @@ export function MenuSheet({ open, onOpenChange }: MenuSheetProps) {
                 </span>
                 <span className="flex-1">
                   <span className="block text-base font-medium">{c.title}</span>
-                  <span className="mt-0.5 block text-xs text-muted-foreground">
-                    {c.desc}
-                  </span>
+                  <span className="mt-0.5 block text-xs text-muted-foreground">{c.desc}</span>
                 </span>
                 <ArrowUpRight
                   className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"

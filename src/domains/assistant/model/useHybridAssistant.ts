@@ -4,7 +4,11 @@
  */
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouterState } from "@tanstack/react-router";
-import type { AssistantFailure, AssistantMessage, PromotedAssistantAnswer } from "@eco/core-contracts";
+import type {
+  AssistantFailure,
+  AssistantMessage,
+  PromotedAssistantAnswer,
+} from "@eco/core-contracts";
 import { listPromotedAssistantAnswers } from "@eco/core-db";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useNetworkStatus } from "@/lib/platform/useNetworkStatus";
@@ -81,13 +85,25 @@ export function useHybridAssistant(): HybridAssistantState {
       busy.current = true;
       setFailure(null);
 
-      const userMessage: AssistantMessage = { id: crypto.randomUUID(), role: "user", content: question };
+      const userMessage: AssistantMessage = {
+        id: crypto.randomUUID(),
+        role: "user",
+        content: question,
+      };
       const history = [...messages, userMessage];
       update(() => history);
 
       const local = searchLocalKnowledge(question, language, promoted);
       if (local) {
-        update((c) => [...c, { id: crypto.randomUUID(), role: "assistant", content: local.answer, source: local.source }]);
+        update((c) => [
+          ...c,
+          {
+            id: crypto.randomUUID(),
+            role: "assistant",
+            content: local.answer,
+            source: local.source,
+          },
+        ]);
         busy.current = false;
         return;
       }

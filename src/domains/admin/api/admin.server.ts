@@ -1,12 +1,13 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import {
-  roleAtLeast,
-  type AppRole,
-  type ManagementModuleKey,
-} from "@eco/core-contracts";
+import { roleAtLeast, type AppRole, type ManagementModuleKey } from "@eco/core-contracts";
 import { moduleByKey } from "@eco/core-logic";
 import type { Database } from "@/integrations/supabase/types";
-import { ADMIN_PAGE_SIZE, ADMIN_TABLES, datasetForModule, type AdminTable } from "../model/datasets";
+import {
+  ADMIN_PAGE_SIZE,
+  ADMIN_TABLES,
+  datasetForModule,
+  type AdminTable,
+} from "../model/datasets";
 import type {
   AdminOverview,
   AdminRecordsQuery,

@@ -65,7 +65,9 @@ export function AdminOverviewView({ module, overview, loading, error, onRetry }:
               <ul className="divide-y divide-border/60 overflow-hidden rounded-2xl border border-border/60 bg-card/40">
                 {overview.recentAudit.map((entry) => (
                   <li key={entry.id} className="flex flex-wrap items-baseline gap-x-3 gap-y-1 p-3">
-                    <span className="rounded-full bg-muted px-2 py-0.5 text-xs">{entry.action}</span>
+                    <span className="rounded-full bg-muted px-2 py-0.5 text-xs">
+                      {entry.action}
+                    </span>
                     <span className="text-sm">{entry.summary || entry.targetTable}</span>
                     <span className="ml-auto text-xs text-muted-foreground">
                       {formatDate(entry.createdAt, locale)}

@@ -1,10 +1,5 @@
 import Dexie from "dexie";
-import type {
-  MutationKind,
-  OutboxEntry,
-  RejectedMutation,
-  SyncedTable,
-} from "@eco/core-contracts";
+import type { MutationKind, OutboxEntry, RejectedMutation, SyncedTable } from "@eco/core-contracts";
 import { newId } from "@eco/core-contracts";
 import { getDb, requireLocalDataOwnerId } from "./schema";
 
@@ -38,8 +33,8 @@ export async function enqueueMutation(input: {
 /** Oldest pending writes first — order matters for causal consistency. */
 export function readPending(limit = 50): Promise<OutboxEntry[]> {
   const ownerId = requireLocalDataOwnerId();
-  return getDb().outbox
-    .where("[ownerId+mutatedAt]")
+  return getDb()
+    .outbox.where("[ownerId+mutatedAt]")
     .between([ownerId, Dexie.minKey], [ownerId, Dexie.maxKey])
     .limit(limit)
     .toArray();
@@ -75,9 +70,7 @@ export async function markAttemptFailed(id: string, reason: string): Promise<voi
 }
 
 /** Removes permanent failures from the active queue while keeping a local trace. */
-export async function quarantineRejected(
-  rejections: readonly RejectedMutation[],
-): Promise<void> {
+export async function quarantineRejected(rejections: readonly RejectedMutation[]): Promise<void> {
   const permanent = rejections.filter((rejection) => !rejection.retryable);
   if (permanent.length === 0) return;
   const db = getDb();
@@ -128,10 +121,7 @@ export async function locallyChangedFields(
   const entries = await getDb()
     .outbox.where("recordId")
     .equals(recordId)
-    .filter(
-      (entry) =>
-        entry.table === table && entry.ownerId === requireLocalDataOwnerId(),
-    )
+    .filter((entry) => entry.table === table && entry.ownerId === requireLocalDataOwnerId())
     .toArray();
   const fields = new Set<string>();
   for (const entry of entries) {

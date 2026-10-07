@@ -6,7 +6,12 @@ const bodySchema = z.object({
   locale: z.enum(["fr", "en"]).default("fr"),
   route: z.string().max(120).optional(),
   messages: z
-    .array(z.object({ role: z.enum(["user", "assistant"]), content: z.string().trim().min(1).max(1200) }))
+    .array(
+      z.object({
+        role: z.enum(["user", "assistant"]),
+        content: z.string().trim().min(1).max(1200),
+      }),
+    )
     .min(1)
     .max(12),
 });
@@ -44,7 +49,10 @@ export const Route = createFileRoute("/api/public/assistant")({
 
         const route = body.route?.replace(/[^\w/-]/g, "") ?? "";
         const input = [
-          { role: "system", content: `${SYSTEM[body.locale]}${route ? `\nÉcran actuel : ${route}` : ""}` },
+          {
+            role: "system",
+            content: `${SYSTEM[body.locale]}${route ? `\nÉcran actuel : ${route}` : ""}`,
+          },
           ...body.messages,
         ];
 

@@ -7,11 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 export function subscribeToFlashChanges(onChange: () => void): () => void {
   const channel = supabase
     .channel("scan-flashes")
-    .on(
-      "postgres_changes",
-      { event: "*", schema: "public", table: "flashes" },
-      () => onChange(),
-    )
+    .on("postgres_changes", { event: "*", schema: "public", table: "flashes" }, () => onChange())
     .subscribe();
 
   return () => {

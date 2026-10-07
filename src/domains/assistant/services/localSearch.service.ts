@@ -56,8 +56,7 @@ export function searchLocalKnowledge(
   }
 
   const exactMatch = documents.find(
-    (document) =>
-      document.entry.locale === locale && document.exactQuestions.includes(exact),
+    (document) => document.entry.locale === locale && document.exactQuestions.includes(exact),
   );
   if (exactMatch) {
     return {
@@ -86,9 +85,7 @@ export function searchLocalKnowledge(
       source: "local_exact",
     };
   }
-  const match = fuse
-    .search(query)
-    .find((result) => result.item.entry.locale === locale);
+  const match = fuse.search(query).find((result) => result.item.entry.locale === locale);
   if (!match) return null;
   const confidence = Math.max(0, Math.min(1, 1 - (match.score ?? 1)));
   if (confidence < MIN_FUZZY_CONFIDENCE) return null;

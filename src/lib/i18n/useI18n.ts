@@ -31,6 +31,7 @@ export function initI18n() {
 
 export function useI18n() {
   const { locale, setLocale } = useI18nStore();
-  const t = (key: MessageKey): string => messages[locale][key] ?? messages[defaultLocale][key] ?? key;
+  const t = (key: MessageKey): string =>
+    messages[locale][key] ?? messages[defaultLocale][key] ?? key;
   return { locale, setLocale, t };
 }
