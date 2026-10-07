@@ -49,9 +49,7 @@ describe("configuration serveur", () => {
   it("refuse une clé service role trop courte", () => {
     vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "too-short");
 
-    expect(() => getSupabaseServiceRoleKey()).toThrow(
-      "SUPABASE_SERVICE_ROLE_KEY is too short.",
-    );
+    expect(() => getSupabaseServiceRoleKey()).toThrow("SUPABASE_SERVICE_ROLE_KEY is too short.");
   });
 
   it("refuse un secret Supabase déclaré comme clé publique", () => {
