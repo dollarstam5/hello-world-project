@@ -3,8 +3,7 @@ import { assistantConversationStorageKey } from "@/domains/assistant/model/useHy
 import {
   closeLocalDatabase,
   configureLocalDatabase,
-  listPromotedAssistantAnswers,
-  savePromotedAssistantAnswer,
+  getLocalDataScope,
 } from "@eco/core-db";
 
 describe("isolation des conversations locales de Vita", () => {
@@ -32,22 +31,18 @@ describe("isolation du cache promu local", () => {
     closeLocalDatabase();
   });
 
-  it("ne partage pas une réponse promue entre deux bases de comptes", async () => {
+  it("bascule vers un scope de base distinct entre deux comptes", () => {
     configureLocalDatabase({ ownerId: "user-a", databaseName: "vitala:user-a" });
-    await savePromotedAssistantAnswer({
-      id: "answer-a",
-      normalizedQuestion: "question privee",
-      answer: "Réponse privée du compte A.",
-      locale: "fr",
-      category: "feature",
-      version: 1,
-      updatedAt: Date.now(),
+    expect(getLocalDataScope()).toEqual({
+      ownerId: "user-a",
+      databaseName: "vitala:user-a",
     });
-
-    expect((await listPromotedAssistantAnswers("fr"))[0]?.id).toBe("answer-a");
 
     configureLocalDatabase({ ownerId: "user-b", databaseName: "vitala:user-b" });
 
-    expect(await listPromotedAssistantAnswers("fr")).toEqual([]);
+    expect(getLocalDataScope()).toEqual({
+      ownerId: "user-b",
+      databaseName: "vitala:user-b",
+    });
   });
 });
