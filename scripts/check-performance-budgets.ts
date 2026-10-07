@@ -9,9 +9,7 @@ const candidates = ["dist/client", "dist", ".output/public"];
 const clientDirectory = candidates.find((path) => existsSync(path));
 
 if (!clientDirectory) {
-  throw new Error(
-    `No client build output found. Expected one of: ${candidates.join(", ")}`,
-  );
+  throw new Error(`No client build output found. Expected one of: ${candidates.join(", ")}`);
 }
 
 const result = measurePerformanceBudgets(clientDirectory);
