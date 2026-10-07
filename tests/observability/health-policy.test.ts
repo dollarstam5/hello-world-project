@@ -48,7 +48,7 @@ describe("service health thresholds", () => {
         httpStatus: 200,
         latencyMs: SERVICE_HEALTH_CRITICAL_LATENCY_MS,
       }),
-    ).toBe("warning");
+    ).toBe("critical");
 
     expect(
       classifyServiceHealth({
@@ -77,14 +77,8 @@ describe("service health thresholds", () => {
   });
 
   it("rejects invalid observations", () => {
-    expect(() =>
-      classifyServiceHealth({ httpStatus: 99, latencyMs: 10 }),
-    ).toThrow();
-
-    expect(() =>
-      classifyServiceHealth({ httpStatus: 200, latencyMs: -1 }),
-    ).toThrow();
-
+    expect(() => classifyServiceHealth({ httpStatus: 99, latencyMs: 10 })).toThrow();
+    expect(() => classifyServiceHealth({ httpStatus: 200, latencyMs: -1 })).toThrow();
     expect(() =>
       classifyServiceHealth({ httpStatus: 200, latencyMs: Number.NaN }),
     ).toThrow();
