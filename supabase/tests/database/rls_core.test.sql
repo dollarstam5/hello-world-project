@@ -252,10 +252,7 @@ select is(
 
 -- A member cannot grant itself a role.
 select throws_ok(
-  $
-    insert into public.user_roles (user_id, role)
-    values ('00000000-0000-0000-0000-000000000002', 'admin')
-  $,
+  'insert into public.user_roles (user_id, role) values (''00000000-0000-0000-0000-000000000002'', ''admin'')',
   '42501',
   'new row violates row-level security policy for table "user_roles"',
   'member cannot self-grant admin role'
