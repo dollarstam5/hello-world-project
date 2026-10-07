@@ -66,3 +66,17 @@ Le navigateur collecte désormais les signaux réels **LCP, INP et CLS** via Per
 - Le point d'intégration démarre automatiquement au niveau de la racine de l'application.
 - La collecte fournit des observations réelles ; l'agrégation **p75** et le contrôle automatique des budgets restent les objectifs de P0.10.5.
 
+## P0.10.5 — budgets de performance automatisés
+
+Le build de production est maintenant contrôlé automatiquement après compilation. Le contrôle mesure en gzip les ressources JavaScript, CSS et critiques réellement référencées par le HTML initial ; si aucun HTML exploitable n'est trouvé, il utilise les assets du build comme repli conservateur.
+
+Les seuils sont ceux du contrat P0.10.1 :
+
+- JavaScript initial : ≤ 250 kB gzip.
+- CSS initial : ≤ 75 kB gzip.
+- Ressources critiques initiales : ≤ 500 kB gzip.
+
+Le script `check:performance-budget` échoue avec le détail du budget dépassé et est intégré à `check:release`, donc une régression de budget bloque automatiquement le contrôle Quality.
+
+L'agrégation p75 des mesures LCP/INP/CLS reste distincte de ces budgets de fichiers et sera traitée avec les données de mesure réelles.
+
