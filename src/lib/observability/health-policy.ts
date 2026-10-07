@@ -11,9 +11,7 @@ export interface HealthObservation {
   offlineLevel?: OfflineHealthLevel;
 }
 
-export function classifyServiceHealth(
-  observation: HealthObservation,
-): ServiceHealthLevel {
+export function classifyServiceHealth(observation: HealthObservation): ServiceHealthLevel {
   const { httpStatus, latencyMs, offlineLevel = "healthy" } = observation;
 
   if (
