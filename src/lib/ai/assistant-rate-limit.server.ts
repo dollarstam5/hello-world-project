@@ -1,6 +1,7 @@
 import type { AssistantFailure } from "@eco/core-contracts";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
-type SupabaseLike = { rpc: (name: string, args: Record<string, unknown>) => any };
+type SupabaseLike = SupabaseClient;
 
 export async function claimAssistantRequest(
   db: SupabaseLike,
