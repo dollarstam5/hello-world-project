@@ -39,8 +39,8 @@ La CI utilise ensuite `bun install --frozen-lockfile`. Elle doit échouer si `pa
 | --- | --- | --- |
 | P0.1 | validation des mutations synchronisées par utilisateur | `tests/sync/` |
 | P0.2 | refus des champs système et secrets publics | `tests/sync/`, `tests/config/` |
-| P0.3 | rôles et transitions des missions | `tests/missions/` |
-| P0.4 | structure, version et champs stricts du protocole | `tests/sync/` |
+| P0.3 | RLS Supabase sur les tables synchronisées + politiques exactes | `supabase/tests/database/rls_core.test.sql` |
+| P0.4 | ordre push→pull, offline safety et limite de pagination | `tests/sync/engine.test.ts` |
 | P0.5 | connaissance locale et règles de cache Vita | `tests/assistant/`, `tests/security/` |
 | P0.6 | environnement et en-têtes HTTP | `tests/config/`, `tests/security/` |
 | P0.9 | corrélation, health, rétention et diagnostic offline | `tests/observability/`, `tests/offline/` |
@@ -53,9 +53,9 @@ La CI utilise ensuite `bun install --frozen-lockfile`. Elle doit échouer si `pa
 | P1.4.1 | projection publique bornée, limite de réponses uniforme et cycle Realtime stable | `tests/flash/public-flash-feed.test.ts`, `tests/scan/scan-realtime-stability.test.ts`, `supabase/tests/database/110_public_flash_feed_security.test.sql` |
 | P1.5.1 | contrat Radar, durée 3–90 jours, cycle de vie privé et commandes protégées | `tests/radar/`, `supabase/tests/database/120_radar_lifecycle_rls.test.sql` |
 
-Les politiques RLS PostgreSQL restent la frontière de sécurité. Leur couverture d’intégration sera ajoutée avant toute certification P0.
+Les politiques RLS PostgreSQL restent la frontière de sécurité. P0.3 vérifie désormais que les tables synchronisées ont RLS activé et que leur ensemble exact de politiques reste stable via pgTAP et `supabase test db`.
 
-Les suites d’intégration RLS, offline et navigateur seront ajoutées dans les étapes P0 suivantes. Elles ne sont pas encore considérées comme disponibles.
+P0.4 couvre les invariants critiques du moteur de synchronisation : push avant pull, conservation des écritures hors ligne et arrêt sur la limite de sécurité de pagination. Les tests restent exécutables sans secret de production.
 
 Les incidents, seuils d’alerte et objectifs de service sont définis dans [`OPERATIONS.md`](OPERATIONS.md).
 
