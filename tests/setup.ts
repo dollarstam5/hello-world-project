@@ -3,6 +3,8 @@ import { afterEach, vi } from "vitest";
 afterEach(() => {
   vi.unstubAllEnvs();
   vi.unstubAllGlobals();
-  window.localStorage.clear();
-  window.sessionStorage.clear();
+  if (typeof window !== "undefined") {
+    window.localStorage.clear();
+    window.sessionStorage.clear();
+  }
 });
