@@ -5,6 +5,8 @@
  * the caller's session, so the access rules (RLS) are the real boundary.
  */
 
+import type { SupabaseClient } from "@supabase/supabase-js";
+
 import {
   isClientMutationAllowed,
   type OutboxEntry,
@@ -17,7 +19,7 @@ import {
 } from "@eco/core-contracts";
 import { isReadOnlyTable, ownerColumn, physicalTable, toRecord, toRow } from "./mapping";
 
-export type SyncClient = { from: (table: string) => any };
+export type SyncClient = SupabaseClient;
 
 function envelope(table: OutboxEntry["table"], row: Record<string, unknown>): SyncRecordEnvelope {
   return {
