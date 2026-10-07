@@ -67,7 +67,6 @@ describe("offline diagnostics", () => {
   });
 });
 
-
 describe("offline health thresholds", () => {
   it("is healthy when there is no backlog or quarantine", async () => {
     const { classifyOfflineHealth } = await import("@/platform/offline/diagnostics");
@@ -76,17 +75,18 @@ describe("offline health thresholds", () => {
   });
 
   it("warns for pending work and at the warning boundary", async () => {
-    const { classifyOfflineHealth, OFFLINE_WARNING_AGE_MS } = await import("@/platform/offline/diagnostics");
+    const {
+      classifyOfflineHealth,
+      OFFLINE_WARNING_AGE_MS,
+    } = await import("@/platform/offline/diagnostics");
 
     expect(classifyOfflineHealth(1, 1_000, 0)).toBe("warning");
     expect(classifyOfflineHealth(0, OFFLINE_WARNING_AGE_MS, 0)).toBe("warning");
   });
 
   it("becomes critical at the critical boundary or with quarantine", async () => {
-    const {
-      classifyOfflineHealth,
-      OFFLINE_CRITICAL_AGE_MS,
-    } = await import("@/platform/offline/diagnostics");
+    const { classifyOfflineHealth, OFFLINE_CRITICAL_AGE_MS } =
+      await import("@/platform/offline/diagnostics");
 
     expect(classifyOfflineHealth(0, OFFLINE_CRITICAL_AGE_MS, 0)).toBe("critical");
     expect(classifyOfflineHealth(0, null, 1)).toBe("critical");
