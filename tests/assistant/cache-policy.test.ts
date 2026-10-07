@@ -61,6 +61,7 @@ describe("règles du cache local de Vita", () => {
       promoted({ updatedAt: now - PROMOTED_CACHE_TTL_MS - 1 }),
     ]);
 
-    expect(result).toBeNull();
+    expect(result?.entryId).toBe("radar-01");
+    expect(result?.answer).not.toBe("Ouvre Radar puis active la veille.");
   });
 });
