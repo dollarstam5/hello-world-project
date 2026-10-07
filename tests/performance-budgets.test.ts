@@ -22,8 +22,6 @@ describe("performance budgets", () => {
       criticalResourcesGzipKb: 250,
     };
 
-    expect(() => assertPerformanceBudgets(result)).toThrow(
-      /initial JavaScript gzip/,
-    );
+    expect(() => assertPerformanceBudgets(result)).toThrow(/initial JavaScript gzip/);
   });
 });
