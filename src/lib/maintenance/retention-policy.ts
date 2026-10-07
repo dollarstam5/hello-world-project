@@ -11,9 +11,6 @@ export function retentionCutoff(now: number, days: number): number {
   return now - days * 24 * 60 * 60 * 1000;
 }
 
-export function isOlderThanRetention(
-  createdAt: number,
-  cutoff: number,
-): boolean {
+export function isOlderThanRetention(createdAt: number, cutoff: number): boolean {
   return Number.isFinite(createdAt) && createdAt < cutoff;
 }
