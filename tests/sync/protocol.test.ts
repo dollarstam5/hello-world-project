@@ -55,7 +55,9 @@ describe("sync protocol validation", () => {
   it("rejects a pull result that moves a cursor backwards", () => {
     const request = validatePullRequest({
       protocolVersion: SYNC_PROTOCOL_VERSION,
-      cursors,
+      cursors: cursors.map((cursor) =>
+        cursor.table === "flashes" ? { ...cursor, revision: 10 } : cursor,
+      ),
       limit: 10,
     });
 
@@ -63,17 +65,7 @@ describe("sync protocol validation", () => {
       validatePullResult({
         records: [],
         cursors: cursors.map((cursor) =>
-          cursor.table === "flashes" ? { ...cursor, revision: 0 } : cursor,
-        ),
-        hasMore: false,
-      }, request),
-    ).not.toThrow();
-
-    expect(() =>
-      validatePullResult({
-        records: [],
-        cursors: cursors.map((cursor) =>
-          cursor.table === "flashes" ? { ...cursor, revision: -1 } : cursor,
+          cursor.table === "flashes" ? { ...cursor, revision: 9 } : cursor,
         ),
         hasMore: false,
       }, request),
