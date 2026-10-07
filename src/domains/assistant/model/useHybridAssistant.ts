@@ -82,13 +82,16 @@ export function useHybridAssistant(): HybridAssistantState {
     };
   }, [language]);
 
-  const update = useCallback((next: (current: AssistantMessage[]) => AssistantMessage[]) => {
-    setMessages((current) => {
-      const value = next(current);
-      persist(storageKey, value);
-      return value;
-    });
-  }, [storageKey]);
+  const update = useCallback(
+    (next: (current: AssistantMessage[]) => AssistantMessage[]) => {
+      setMessages((current) => {
+        const value = next(current);
+        persist(storageKey, value);
+        return value;
+      });
+    },
+    [storageKey],
+  );
 
   const send = useCallback(
     async (raw: string) => {
