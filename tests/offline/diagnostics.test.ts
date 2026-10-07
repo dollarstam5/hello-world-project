@@ -75,7 +75,10 @@ describe("offline health thresholds", () => {
   });
 
   it("warns for pending work and at the warning boundary", async () => {
-    const { classifyOfflineHealth, OFFLINE_WARNING_AGE_MS } = await import("@/platform/offline/diagnostics");
+    const {
+      classifyOfflineHealth,
+      OFFLINE_WARNING_AGE_MS,
+    } = await import("@/platform/offline/diagnostics");
 
     expect(classifyOfflineHealth(1, 1_000, 0)).toBe("warning");
     expect(classifyOfflineHealth(0, OFFLINE_WARNING_AGE_MS, 0)).toBe("warning");
