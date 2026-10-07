@@ -8,6 +8,8 @@ import type {
 import { mapAssistantVocabulary, normalizeAssistantText } from "./mapping.service";
 
 const MIN_FUZZY_CONFIDENCE = 0.72;
+export const CURRENT_ASSISTANT_CACHE_VERSION = 1;
+export const PROMOTED_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 const entries = knowledge.entries as AssistantKnowledgeEntry[];
 
 interface SearchDocument {
@@ -35,6 +37,16 @@ const fuse = new Fuse(documents, {
   shouldSort: true,
 });
 
+export function isPromotedAssistantAnswerFresh(
+  answer: PromotedAssistantAnswer,
+  now: number = Date.now(),
+): boolean {
+  if (answer.version !== CURRENT_ASSISTANT_CACHE_VERSION) return false;
+  if (!Number.isFinite(answer.updatedAt) || answer.updatedAt <= 0) return false;
+  const age = now - answer.updatedAt;
+  return age >= 0 && age <= PROMOTED_CACHE_TTL_MS;
+}
+
 export function searchLocalKnowledge(
   question: string,
   locale: "fr" | "en" = "fr",
@@ -44,7 +56,10 @@ export function searchLocalKnowledge(
   if (!exact) return null;
 
   const promotedMatch = promoted.find(
-    (item) => item.locale === locale && item.normalizedQuestion === exact,
+    (item) =>
+      item.locale === locale &&
+      item.normalizedQuestion === exact &&
+      isPromotedAssistantAnswerFresh(item),
   );
   if (promotedMatch) {
     return {
