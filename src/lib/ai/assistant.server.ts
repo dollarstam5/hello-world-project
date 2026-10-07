@@ -4,6 +4,7 @@ import { getServerConfig } from "@/lib/config.server";
 import {
   classifyAssistantQuestion,
   containsSensitiveSecret,
+  isSharedCacheAnswerEligible,
   isSharedCacheEligible,
   MAX_ASSISTANT_OUTPUT_CHARS,
   safeAssistantRoute,
@@ -212,7 +213,7 @@ export async function runPaidAssistant(
     inputChars: request.messages.reduce((sum, message) => sum + message.content.length, 0),
     outputChars: answer.length,
   });
-  if (cacheEligible) {
+  if (cacheEligible && isSharedCacheAnswerEligible(answer)) {
     await recordCandidate({
       userId,
       hash,
