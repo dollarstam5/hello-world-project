@@ -1,6 +1,6 @@
 begin;
 
-select plan(35);
+select plan(40);
 
 -- The test runner is a database owner/superuser. Create two real auth users
 -- first, then execute the assertions as the authenticated role.
