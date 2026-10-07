@@ -30,14 +30,14 @@ describe("request correlation", () => {
   });
 
   it("echoes the correlation id without changing the response", () => {
-    const response = withRequestContext(new Response("ok", { status: 204 }), {
+    const response = withRequestContext(new Response("ok", { status: 200 }), {
       requestId: "req-123",
       method: "GET",
       path: "/",
       startedAt: Date.now(),
     });
 
-    expect(response.status).toBe(204);
+    expect(response.status).toBe(200);
     expect(response.headers.get("x-request-id")).toBe("req-123");
   });
 
