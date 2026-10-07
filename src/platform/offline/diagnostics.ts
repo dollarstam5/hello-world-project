@@ -15,8 +15,7 @@ export function getOfflineDiagnostics(
 
   return {
     pendingCount: pending.length,
-    oldestPendingAgeMs:
-      oldestPendingAt === null ? null : Math.max(0, now - oldestPendingAt),
+    oldestPendingAgeMs: oldestPendingAt === null ? null : Math.max(0, now - oldestPendingAt),
     quarantinedCount: quarantined.length,
   };
 }
