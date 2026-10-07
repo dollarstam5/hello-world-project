@@ -10,6 +10,7 @@ import {
 
 import appCss from "../styles.css?url";
 import { AppShell } from "@/components/app/AppShell";
+import { registerServiceWorker } from "@/platform/pwa";
 
 function NotFoundComponent() {
   return (
@@ -119,6 +120,7 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
+  registerServiceWorker();
   const { queryClient } = Route.useRouteContext();
 
   return (
