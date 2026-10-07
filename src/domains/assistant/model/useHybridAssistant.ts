@@ -88,7 +88,7 @@ export function useHybridAssistant(): HybridAssistantState {
       persist(storageKey, value);
       return value;
     });
-  }, []);
+  }, [storageKey]);
 
   const send = useCallback(
     async (raw: string) => {
