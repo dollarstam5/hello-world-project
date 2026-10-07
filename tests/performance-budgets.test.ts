@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   assertPerformanceBudgets,
   type PerformanceBudgetResult,
-} from "@/lib/performance/performance-budgets";
+} from "@/lib/performance/performance-budget-policy";
 
 describe("performance budgets", () => {
   it("accepts measurements inside all budgets", () => {
