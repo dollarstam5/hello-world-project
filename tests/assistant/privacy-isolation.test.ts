@@ -1,10 +1,6 @@
 import { afterEach, describe, expect, it } from "vitest";
 import { assistantConversationStorageKey } from "@/domains/assistant/model/useHybridAssistant";
-import {
-  closeLocalDatabase,
-  configureLocalDatabase,
-  getLocalDataScope,
-} from "@eco/core-db";
+import { closeLocalDatabase, configureLocalDatabase, getLocalDataScope } from "@eco/core-db";
 
 describe("isolation des conversations locales de Vita", () => {
   afterEach(() => {
