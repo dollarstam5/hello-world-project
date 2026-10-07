@@ -56,11 +56,17 @@ export function classifyOfflineHealth(
     throw new Error("Invalid offline health diagnostics.");
   }
 
-  if (quarantinedCount > 0 || (oldestPendingAgeMs !== null && oldestPendingAgeMs >= thresholds.criticalAgeMs)) {
+  if (
+    quarantinedCount > 0 ||
+    (oldestPendingAgeMs !== null && oldestPendingAgeMs >= thresholds.criticalAgeMs)
+  ) {
     return "critical";
   }
 
-  if (pendingCount > 0 || (oldestPendingAgeMs !== null && oldestPendingAgeMs >= thresholds.warningAgeMs)) {
+  if (
+    pendingCount > 0 ||
+    (oldestPendingAgeMs !== null && oldestPendingAgeMs >= thresholds.warningAgeMs)
+  ) {
     return "warning";
   }
 
