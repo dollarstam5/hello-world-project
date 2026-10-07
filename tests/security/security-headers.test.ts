@@ -42,10 +42,7 @@ describe("en-têtes HTTP de sécurité", () => {
   });
 
   it("réserve HSTS et X-Frame-Options aux origines HTTPS non preview", () => {
-    const result = withSecurityHeaders(
-      response(),
-      new Request("http://localhost:3000/"),
-    );
+    const result = withSecurityHeaders(response(), new Request("http://localhost:3000/"));
 
     expect(result.headers.get("Strict-Transport-Security")).toBeNull();
     expect(result.headers.get("X-Frame-Options")).toBe("DENY");
