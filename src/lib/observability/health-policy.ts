@@ -31,15 +31,11 @@ export function classifyServiceHealth(
   }
 
   if (
-    httpStatus >= 400 ||
     offlineLevel === "warning" ||
-    latencyMs >= SERVICE_HEALTH_CRITICAL_LATENCY_MS
+    httpStatus >= 400 ||
+    latencyMs >= SERVICE_HEALTH_WARNING_LATENCY_MS
   ) {
-    return "warning";
-  }
-
-  if (latencyMs >= SERVICE_HEALTH_WARNING_LATENCY_MS) {
-    return "warning";
+    return latencyMs >= SERVICE_HEALTH_CRITICAL_LATENCY_MS ? "critical" : "warning";
   }
 
   return "healthy";
