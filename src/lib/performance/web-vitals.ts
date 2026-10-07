@@ -27,7 +27,9 @@ export function resetWebVitalsSnapshot(): void {
 }
 
 function navigationType(): string {
-  const navigation = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
+  const navigation = performance.getEntriesByType("navigation")[0] as
+    | PerformanceNavigationTiming
+    | undefined;
   return navigation?.type ?? "unknown";
 }
 
@@ -79,7 +81,11 @@ export function startWebVitalsMonitoring(sink: WebVitalsSink): () => void {
       }
 
       const timestamp = entry.startTime;
-      if (clsSessionStart === 0 || timestamp - clsSessionLast > 1_000 || timestamp - clsSessionStart > 5_000) {
+      if (
+        clsSessionStart === 0 ||
+        timestamp - clsSessionLast > 1_000 ||
+        timestamp - clsSessionStart > 5_000
+      ) {
         clsSessionStart = timestamp;
         clsSessionValue = 0;
       }
