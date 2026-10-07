@@ -13,10 +13,7 @@ function response(status = 200): Response {
 
 describe("en-têtes HTTP de sécurité", () => {
   it("applique les protections principales sur une réponse HTTPS de production", () => {
-    const result = withSecurityHeaders(
-      response(),
-      new Request("https://vitala.example.com/"),
-    );
+    const result = withSecurityHeaders(response(), new Request("https://vitala.example.com/"));
 
     expect(result.headers.get("Content-Security-Policy")).toContain("default-src 'self'");
     expect(result.headers.get("Content-Security-Policy")).toContain("frame-ancestors 'none'");
@@ -58,10 +55,7 @@ describe("en-têtes HTTP de sécurité", () => {
   });
 
   it("autorise explicitement les frames nécessaires en preview sans activer HSTS", () => {
-    const result = withSecurityHeaders(
-      response(),
-      new Request("https://preview.lovable.app/"),
-    );
+    const result = withSecurityHeaders(response(), new Request("https://preview.lovable.app/"));
     const csp = result.headers.get("Content-Security-Policy") ?? "";
 
     expect(csp).toContain("frame-ancestors 'self' https://*.lovable.app");
