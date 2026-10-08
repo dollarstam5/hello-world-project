@@ -53,9 +53,7 @@ function measurePerformanceBudgets(clientDirectory: string): PerformanceBudgetRe
       }
     }
 
-    for (const match of html.matchAll(
-      /<link[^>]+rel="stylesheet"[^>]+href="([^"]+)"/gi,
-    )) {
+    for (const match of html.matchAll(/<link[^>]+rel="stylesheet"[^>]+href="([^"]+)"/gi)) {
       const resolved = resolveReference(clientDirectory, assets, match[1]);
       if (resolved?.endsWith(".css")) {
         initialCss.add(resolved);
