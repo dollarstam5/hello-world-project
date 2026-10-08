@@ -49,9 +49,7 @@ function measurePerformanceBudgets(clientDirectory: string): PerformanceBudgetRe
       : assets.filter((path) => path.endsWith(".js") || path.endsWith(".css"));
   const javascript = initial.filter((path) => path.endsWith(".js"));
   const css = initial.filter((path) => path.endsWith(".css"));
-  const critical = initial.filter((path) =>
-    /\.(?:js|css|woff2?|ttf|webp|png|svg)$/i.test(path),
-  );
+  const critical = initial.filter((path) => /\.(?:js|css|woff2?|ttf|webp|png|svg)$/i.test(path));
 
   return {
     initialJavaScriptGzipKb: javascript.reduce((sum, path) => sum + gzipKb(path), 0),
