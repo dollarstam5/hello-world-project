@@ -85,7 +85,7 @@ L'agrégation p75 des mesures LCP/INP/CLS reste distincte de ces budgets de fich
 
 Une validation navigateur automatisée couvre désormais les quatre viewports de référence : **360×800**, **390×844**, **412×915** et **768×1024**.
 
-Le script `test:e2e` construit puis sert le build de production localement et utilise Chromium/Playwright pour vérifier que le point d'entrée principal et les parcours P0 `/flash`, `/radar`, `/talents` et `/espace` rendent bien leur conteneur principal `#main`.
+Le script `test:e2e` reconstruit d'abord l'application puis démarre son runtime local pour le smoke navigateur et utilise Chromium/Playwright pour vérifier que le point d'entrée principal et les parcours P0 `/flash`, `/radar`, `/talents` et `/espace` rendent bien leur conteneur principal `#main`.
 
 Cette validation est un smoke E2E mobile : elle détecte les erreurs de build, de démarrage, de routage et de rendu initial aux dimensions ciblées. Les contrôles manuels restent nécessaires pour les zones tactiles, l'absence de débordement horizontal et les scénarios offline/online réels sur appareils représentatifs.
 
