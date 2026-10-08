@@ -25,6 +25,7 @@
     "check:performance": "bun run test:run -- tests/performance-policy.test.ts",
     "check:pwa": "bun run test:run -- tests/pwa.test.ts",
     "check:web-vitals": "bun run test:run -- tests/web-vitals.test.ts",
+    "check:mobile-e2e": "bun run test:run -- tests/mobile-e2e-contract.test.ts",
     "check:performance-budget": "bun run scripts/check-performance-budgets.ts",
     "test:e2e": "bash scripts/test-mobile-e2e.sh"
   },
