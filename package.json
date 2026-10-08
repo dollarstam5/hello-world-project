@@ -18,7 +18,7 @@
     "check:tracked-env": "test ! -f .env",
     "check:db-tests": "test -d supabase/tests/database && find supabase/tests/database -type f -name '*.test.sql' | grep -q .",
     "build:check": "bun run build",
-    "check:release": "bun run lint && bun run test:run && bun run build:check && bun run check:performance-budget && bun run check:global-audit && bun run check:reproducibility",
+    "check:release": "bun run lint && bun run test:run && bun run build:check && bun run check:performance-budget && bun run check:global-audit && bun run check:reproducibility && bun run check:go-no-go",
     "check": "bun run check:foundation && bun run security:secrets && bun run check:release",
     "test:db": "supabase test db",
     "check:protocol": "bun run test:run -- tests/sync/engine.test.ts",
@@ -28,7 +28,8 @@
     "check:performance-budget": "bun run scripts/check-performance-budgets.ts",
     "test:e2e": "bash scripts/test-mobile-e2e.sh",
     "check:global-audit": "bun run scripts/check-global-audit.ts",
-    "check:reproducibility": "bun run scripts/check-reproducibility.ts"
+    "check:reproducibility": "bun run scripts/check-reproducibility.ts",
+    "check:go-no-go": "bun run scripts/check-go-no-go.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
