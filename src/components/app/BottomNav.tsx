@@ -57,12 +57,9 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
                 active && "text-primary-foreground",
               )}
             >
-              {active && (
-                reduce ? (
-                  <span
-                    className="absolute inset-0 rounded-full bg-primary"
-                    aria-hidden
-                  />
+              {active &&
+                (reduce ? (
+                  <span className="absolute inset-0 rounded-full bg-primary" aria-hidden />
                 ) : (
                   <motion.span
                     layoutId="nav-pill"
@@ -70,8 +67,7 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
                     className="absolute inset-0 rounded-full bg-primary"
                     aria-hidden
                   />
-                )
-              )}
+                ))}
               <Icon className="relative h-5 w-5" aria-hidden />
               <span className="sr-only">{label}</span>
             </span>

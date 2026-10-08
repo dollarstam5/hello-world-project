@@ -26,23 +26,37 @@ export function CommunicationSheet({
     >
       <Tabs defaultValue="assistant">
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger className="px-1 text-[11px] sm:text-sm" value="notifications">{t("communication.notifications")}</TabsTrigger>
-          <TabsTrigger className="px-1 text-[11px] sm:text-sm" value="assistant">{t("communication.assistant")}</TabsTrigger>
-          <TabsTrigger className="px-1 text-[11px] sm:text-sm" value="conversations">{t("communication.conversations")}</TabsTrigger>
+          <TabsTrigger className="px-1 text-[11px] sm:text-sm" value="notifications">
+            {t("communication.notifications")}
+          </TabsTrigger>
+          <TabsTrigger className="px-1 text-[11px] sm:text-sm" value="assistant">
+            {t("communication.assistant")}
+          </TabsTrigger>
+          <TabsTrigger className="px-1 text-[11px] sm:text-sm" value="conversations">
+            {t("communication.conversations")}
+          </TabsTrigger>
         </TabsList>
-        <TabsContent value="notifications" className="py-8 text-center text-sm text-muted-foreground">
+        <TabsContent
+          value="notifications"
+          className="py-8 text-center text-sm text-muted-foreground"
+        >
           {t("communication.notifications.empty")}
         </TabsContent>
         <TabsContent value="assistant">
-          <Suspense fallback={
-            <p role="status" className="py-8 text-center text-sm text-muted-foreground">
-              {t("app.loading")}
-            </p>
-          }>
+          <Suspense
+            fallback={
+              <p role="status" className="py-8 text-center text-sm text-muted-foreground">
+                {t("app.loading")}
+              </p>
+            }
+          >
             <AssistantTab />
           </Suspense>
         </TabsContent>
-        <TabsContent value="conversations" className="py-8 text-center text-sm text-muted-foreground">
+        <TabsContent
+          value="conversations"
+          className="py-8 text-center text-sm text-muted-foreground"
+        >
           {t("communication.conversations.empty")}
         </TabsContent>
       </Tabs>

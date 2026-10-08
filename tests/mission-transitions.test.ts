@@ -34,16 +34,16 @@ describe("transitions métier des missions", () => {
   });
 
   it("interdit à un tiers de démarrer la mission", () => {
-    expect(() => missionTransition(
-      mission({ status: "assigned", assigneeId }),
-      { type: "start" },
-      strangerId,
-    )).toThrow("Mission action is not allowed");
+    expect(() =>
+      missionTransition(mission({ status: "assigned", assigneeId }), { type: "start" }, strangerId),
+    ).toThrow("Mission action is not allowed");
   });
 
   it("réserve la validation finale à l'auteur", () => {
     const pending = mission({ status: "pending_validation", assigneeId });
     expect(() => missionTransition(pending, { type: "validate_result" }, assigneeId)).toThrow();
-    expect(missionTransition(pending, { type: "validate_result" }, authorId).status).toBe("completed");
+    expect(missionTransition(pending, { type: "validate_result" }, authorId).status).toBe(
+      "completed",
+    );
   });
 });

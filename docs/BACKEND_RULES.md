@@ -4,12 +4,12 @@ Le backend est **séparé** de l'application. Il ne connaît pas les écrans.
 
 ## Répartition
 
-| Élément | Responsabilité |
-|---|---|
-| Tables | données brutes, rien d'autre |
-| RLS | qui voit quoi, qui écrit quoi |
+| Élément          | Responsabilité                          |
+| ---------------- | --------------------------------------- |
+| Tables           | données brutes, rien d'autre            |
+| RLS              | qui voit quoi, qui écrit quoi           |
 | Server functions | logique lourde, opérations privilégiées |
-| Storage | photos et fichiers (buckets privés) |
+| Storage          | photos et fichiers (buckets privés)     |
 
 ## Toute nouvelle table publique
 

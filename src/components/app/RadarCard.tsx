@@ -31,7 +31,8 @@ export function RadarCard({ title, distance, description, trailing, onOpen }: Ra
       title={title}
       description={description}
       trailing={
-        trailing ?? (distance ? <span className="text-xs text-muted-foreground">{distance}</span> : undefined)
+        trailing ??
+        (distance ? <span className="text-xs text-muted-foreground">{distance}</span> : undefined)
       }
     />
   );

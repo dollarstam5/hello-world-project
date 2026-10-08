@@ -30,10 +30,14 @@ export function useScan() {
     }
   }, []);
 
-  useEffect(() => subscribeToFlashChanges(() => {
-    const query = queryRef.current;
-    if (query) void execute(query);
-  }), [execute]);
+  useEffect(
+    () =>
+      subscribeToFlashChanges(() => {
+        const query = queryRef.current;
+        if (query) void execute(query);
+      }),
+    [execute],
+  );
 
   return { rows, busy, execute };
 }

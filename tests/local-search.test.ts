@@ -17,15 +17,17 @@ describe("connaissance locale de Vita", () => {
   });
 
   it("utilise une réponse promue avant la recherche fuzzy", () => {
-    const result = searchLocalKnowledge("Comment activer ma veille ?", "fr", [{
-      id: "promoted-01",
-      normalizedQuestion: "comment activer ma veille",
-      answer: "Ouvre Radar puis active la veille.",
-      locale: "fr",
-      category: "feature",
-      version: 1,
-      updatedAt: Date.now(),
-    }]);
+    const result = searchLocalKnowledge("Comment activer ma veille ?", "fr", [
+      {
+        id: "promoted-01",
+        normalizedQuestion: "comment activer ma veille",
+        answer: "Ouvre Radar puis active la veille.",
+        locale: "fr",
+        category: "feature",
+        version: 1,
+        updatedAt: Date.now(),
+      },
+    ]);
 
     expect(result?.entryId).toBe("promoted-01");
     expect(result?.source).toBe("local_exact");

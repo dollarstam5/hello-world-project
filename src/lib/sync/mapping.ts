@@ -43,10 +43,7 @@ const OWNER_COLUMN: Record<SyncedTable, string | null> = {
 };
 
 /** Columns the client may never set — the backend owns them. */
-const PROTECTED_COLUMNS: ReadonlySet<string> = new Set([
-  "revision",
-  "server_updated_at",
-]);
+const PROTECTED_COLUMNS: ReadonlySet<string> = new Set(["revision", "server_updated_at"]);
 
 /** Stable profile mapping documented here because these fields drive P1 UX. */
 export const PROFILE_FIELD_COLUMNS = {
@@ -86,10 +83,7 @@ export function toCamelCase(key: string): string {
 }
 
 /** camelCase patch coming from the outbox -> snake_case row for the backend. */
-export function toRow(
-  table: SyncedTable,
-  patch: Record<string, unknown>,
-): Record<string, unknown> {
+export function toRow(table: SyncedTable, patch: Record<string, unknown>): Record<string, unknown> {
   const row: Record<string, unknown> = {};
   const writable = filterClientWritablePatch(table, patch);
   for (const [key, value] of Object.entries(writable)) {

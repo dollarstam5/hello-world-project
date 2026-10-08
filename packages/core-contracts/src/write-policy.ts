@@ -1,7 +1,4 @@
-import type {
-  MutationKind,
-  SyncedTable,
-} from "./sync";
+import type { MutationKind, SyncedTable } from "./sync";
 
 export interface ClientWritePolicy {
   create: boolean;
@@ -22,12 +19,7 @@ export interface ClientWritePolicy {
 export const CLIENT_WRITE_POLICY = {
   users: {
     create: false,
-    update: [
-      "displayName",
-      "handle",
-      "avatarMediaId",
-      "locale",
-    ],
+    update: ["displayName", "handle", "avatarMediaId", "locale"],
     command: [],
     delete: false,
   },
@@ -41,13 +33,7 @@ export const CLIENT_WRITE_POLICY = {
 
   flashes: {
     create: true,
-    update: [
-      "title",
-      "body",
-      "status",
-      "expiresAt",
-      "mediaIds",
-    ],
+    update: ["title", "body", "status", "expiresAt", "mediaIds"],
     command: [],
     delete: true,
   },
@@ -55,18 +41,9 @@ export const CLIENT_WRITE_POLICY = {
   missions: {
     create: true,
 
-    update: [
-      "title",
-      "brief",
-      "rewardAmount",
-      "rewardCurrency",
-      "dueAt",
-    ],
+    update: ["title", "brief", "rewardAmount", "rewardCurrency", "dueAt"],
 
-    command: [
-      "status",
-      "assigneeId",
-    ],
+    command: ["status", "assigneeId"],
 
     delete: true,
   },
@@ -74,15 +51,7 @@ export const CLIENT_WRITE_POLICY = {
   radars: {
     create: true,
 
-    update: [
-      "title",
-      "query",
-      "category",
-      "areaLabel",
-      "radiusKm",
-      "startsAt",
-      "expiresAt",
-    ],
+    update: ["title", "query", "category", "areaLabel", "radiusKm", "startsAt", "expiresAt"],
 
     command: ["status"],
     delete: true,
@@ -90,11 +59,7 @@ export const CLIENT_WRITE_POLICY = {
 
   posts: {
     create: true,
-    update: [
-      "body",
-      "visibility",
-      "mediaIds",
-    ],
+    update: ["body", "visibility", "mediaIds"],
     command: [],
     delete: true,
   },
@@ -102,15 +67,7 @@ export const CLIENT_WRITE_POLICY = {
   media: {
     create: true,
 
-    update: [
-      "kind",
-      "state",
-      "remotePath",
-      "mimeType",
-      "byteSize",
-      "width",
-      "height",
-    ],
+    update: ["kind", "state", "remotePath", "mimeType", "byteSize", "width", "height"],
 
     command: [],
     delete: true,
@@ -129,17 +86,10 @@ export const CLIENT_WRITE_POLICY = {
     command: [],
     delete: false,
   },
-} as const satisfies Record<
-  SyncedTable,
-  ClientWritePolicy
->;
+} as const satisfies Record<SyncedTable, ClientWritePolicy>;
 
-export function isClientMutationAllowed(
-  table: SyncedTable,
-  kind: MutationKind,
-): boolean {
-  const policy =
-    CLIENT_WRITE_POLICY[table];
+export function isClientMutationAllowed(table: SyncedTable, kind: MutationKind): boolean {
+  const policy = CLIENT_WRITE_POLICY[table];
 
   if (kind === "create") {
     return policy.create;
@@ -149,71 +99,38 @@ export function isClientMutationAllowed(
     return policy.delete;
   }
 
-  return (
-    policy.update.length > 0 ||
-    policy.command.length > 0
-  );
+  return policy.update.length > 0 || policy.command.length > 0;
 }
 
 /**
  * All fields accepted by the sync transport, including fields produced by a
  * controlled domain command.
  */
-export function clientWritableFields(
-  table: SyncedTable,
-): readonly string[] {
-  const policy =
-    CLIENT_WRITE_POLICY[table];
+export function clientWritableFields(table: SyncedTable): readonly string[] {
+  const policy = CLIENT_WRITE_POLICY[table];
 
-  return [
-    ...policy.update,
-    ...policy.command,
-  ];
+  return [...policy.update, ...policy.command];
 }
 
 /** Fields accepted by the ordinary generic repository only. */
-export function clientDirectWritableFields(
-  table: SyncedTable,
-): readonly string[] {
-  return CLIENT_WRITE_POLICY[
-    table
-  ].update;
+export function clientDirectWritableFields(table: SyncedTable): readonly string[] {
+  return CLIENT_WRITE_POLICY[table].update;
 }
 
 export function protectedClientFields(
   table: SyncedTable,
   patch: Record<string, unknown>,
 ): string[] {
-  const allowed =
-    new Set<string>(
-      clientDirectWritableFields(
-        table,
-      ),
-    );
+  const allowed = new Set<string>(clientDirectWritableFields(table));
 
-  return Object.keys(
-    patch,
-  ).filter(
-    (field) =>
-      !allowed.has(field),
-  );
+  return Object.keys(patch).filter((field) => !allowed.has(field));
 }
 
 export function filterClientWritablePatch(
   table: SyncedTable,
   patch: Record<string, unknown>,
 ): Record<string, unknown> {
-  const allowed =
-    new Set<string>(
-      clientWritableFields(table),
-    );
+  const allowed = new Set<string>(clientWritableFields(table));
 
-  return Object.fromEntries(
-    Object.entries(
-      patch,
-    ).filter(
-      ([field]) =>
-        allowed.has(field),
-    ),
-  );
+  return Object.fromEntries(Object.entries(patch).filter(([field]) => allowed.has(field)));
 }

@@ -30,17 +30,21 @@ describe("validation du protocole de synchronisation", () => {
   });
 
   it("rejette l'écriture d'un champ système", () => {
-    expect(() => validatePushRequest({
-      protocolVersion: SYNC_PROTOCOL_VERSION,
-      entries: [{ ...mutation, patch: { trustLevel: "recommended" } }],
-    })).toThrow(SyncValidationError);
+    expect(() =>
+      validatePushRequest({
+        protocolVersion: SYNC_PROTOCOL_VERSION,
+        entries: [{ ...mutation, patch: { trustLevel: "recommended" } }],
+      }),
+    ).toThrow(SyncValidationError);
   });
 
   it("rejette les champs de protocole inconnus", () => {
-    expect(() => validatePushRequest({
-      protocolVersion: SYNC_PROTOCOL_VERSION,
-      entries: [mutation],
-      administrativeOverride: true,
-    })).toThrow("unknown fields");
+    expect(() =>
+      validatePushRequest({
+        protocolVersion: SYNC_PROTOCOL_VERSION,
+        entries: [mutation],
+        administrativeOverride: true,
+      }),
+    ).toThrow("unknown fields");
   });
 });

@@ -33,9 +33,9 @@ describe("public Flash feed contract", () => {
   });
 
   it("keeps the response limit aligned with the Flash contract", () => {
-    expect(validateMutationPatch("flashes", "update", { responseLimit: 12 }))
-      .toEqual({ responseLimit: 12 });
-    expect(() => validateMutationPatch("flashes", "update", { responseLimit: 13 }))
-      .toThrow();
+    expect(validateMutationPatch("flashes", "update", { responseLimit: 12 })).toEqual({
+      responseLimit: 12,
+    });
+    expect(() => validateMutationPatch("flashes", "update", { responseLimit: 13 })).toThrow();
   });
 });

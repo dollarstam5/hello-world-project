@@ -1,18 +1,9 @@
 import { useEffect } from "react";
-import type {
-  SyncWorkerCommand,
-  SyncWorkerEvent,
-} from "@eco/core-contracts";
+import type { SyncWorkerCommand, SyncWorkerEvent } from "@eco/core-contracts";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
-import {
-  resetSyncStatus,
-  useSyncStatusStore,
-} from "./sync-status";
-import {
-  activateLocalDataScope,
-  deactivateLocalDataScope,
-} from "./local-scope";
+import { resetSyncStatus, useSyncStatusStore } from "./sync-status";
+import { activateLocalDataScope, deactivateLocalDataScope } from "./local-scope";
 
 /**
  * Bridge between the application and the synchronisation worker.
@@ -25,10 +16,7 @@ let worker: Worker | null = null;
 let activeOwnerId: string | null = null;
 
 function isSupported(): boolean {
-  return (
-    typeof window !== "undefined" &&
-    typeof Worker !== "undefined"
-  );
+  return typeof window !== "undefined" && typeof Worker !== "undefined";
 }
 
 function send(command: SyncWorkerCommand): void {
@@ -45,23 +33,15 @@ export function requestSyncNow(): void {
 function createWorker(): Worker | null {
   if (!isSupported()) return null;
 
-  const created = new Worker(
-    new URL("./sync.worker.ts", import.meta.url),
-    {
-      type: "module",
-    },
-  );
+  const created = new Worker(new URL("./sync.worker.ts", import.meta.url), {
+    type: "module",
+  });
 
-  created.addEventListener(
-    "message",
-    (event: MessageEvent<SyncWorkerEvent>) => {
-      if (event.data.type === "state") {
-        useSyncStatusStore
-          .getState()
-          .setState(event.data.state);
-      }
-    },
-  );
+  created.addEventListener("message", (event: MessageEvent<SyncWorkerEvent>) => {
+    if (event.data.type === "state") {
+      useSyncStatusStore.getState().setState(event.data.state);
+    }
+  });
 
   worker = created;
 
@@ -79,18 +59,12 @@ function stopWorker(): void {
   worker = null;
 }
 
-function applySession(
-  session: Session | null,
-): void {
+function applySession(session: Session | null): void {
   const userId = session?.user.id ?? null;
   const scope = activateLocalDataScope(userId);
-  const accessToken =
-    session?.access_token ?? null;
+  const accessToken = session?.access_token ?? null;
 
-  if (
-    worker &&
-    activeOwnerId === scope.ownerId
-  ) {
+  if (worker && activeOwnerId === scope.ownerId) {
     send({
       type: "token",
       ownerId: scope.ownerId,
@@ -125,66 +99,47 @@ export function useSyncEngine(): void {
     let cancelled = false;
     let receivedAuthEvent = false;
 
-    void supabase.auth
-      .getSession()
-      .then(({ data }) => {
-        /*
-         * An auth event may have arrived while getSession was resolving.
-         * Never restore the older snapshot over a newer account state.
-         */
-        if (
-          cancelled ||
-          receivedAuthEvent
-        ) {
-          return;
-        }
+    void supabase.auth.getSession().then(({ data }) => {
+      /*
+       * An auth event may have arrived while getSession was resolving.
+       * Never restore the older snapshot over a newer account state.
+       */
+      if (cancelled || receivedAuthEvent) {
+        return;
+      }
 
-        applySession(data.session);
-      });
+      applySession(data.session);
+    });
 
-    const { data: subscription } =
-      supabase.auth.onAuthStateChange(
-        (_event, session) => {
-          receivedAuthEvent = true;
+    const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
+      receivedAuthEvent = true;
 
-          if (!cancelled) {
-            applySession(session);
-          }
-        },
-      );
+      if (!cancelled) {
+        applySession(session);
+      }
+    });
 
     const wake = () => {
       requestSyncNow();
     };
 
     const onVisible = () => {
-      if (
-        document.visibilityState === "visible"
-      ) {
+      if (document.visibilityState === "visible") {
         requestSyncNow();
       }
     };
 
     window.addEventListener("online", wake);
-    document.addEventListener(
-      "visibilitychange",
-      onVisible,
-    );
+    document.addEventListener("visibilitychange", onVisible);
 
     return () => {
       cancelled = true;
 
       subscription.subscription.unsubscribe();
 
-      window.removeEventListener(
-        "online",
-        wake,
-      );
+      window.removeEventListener("online", wake);
 
-      document.removeEventListener(
-        "visibilitychange",
-        onVisible,
-      );
+      document.removeEventListener("visibilitychange", onVisible);
 
       stopWorker();
       activeOwnerId = null;

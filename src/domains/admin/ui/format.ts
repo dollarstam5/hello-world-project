@@ -34,7 +34,11 @@ export function shortId(value: unknown): string {
   return raw.length > 10 ? `${raw.slice(0, 8)}…` : raw;
 }
 
-export function formatCell(value: unknown, format: AdminCellFormat | undefined, locale: string): string {
+export function formatCell(
+  value: unknown,
+  format: AdminCellFormat | undefined,
+  locale: string,
+): string {
   switch (format) {
     case "date":
       return formatDate(value, locale);

@@ -13,16 +13,20 @@ export function useFlashFeed() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>();
 
-  const offlineRows = useMemo<PublicFlash[]>(() => localRows.map((flash) => ({
-    id: flash.id,
-    kind: flash.kind ?? "offer",
-    category: flash.category ?? "other",
-    title: flash.title,
-    timeSlot: flash.timeSlot ?? "now",
-    areaLabel: flash.areaLabel ?? "",
-    expiresAt: flash.expiresAt ?? 0,
-    createdAt: flash.createdAt,
-  })), [localRows]);
+  const offlineRows = useMemo<PublicFlash[]>(
+    () =>
+      localRows.map((flash) => ({
+        id: flash.id,
+        kind: flash.kind ?? "offer",
+        category: flash.category ?? "other",
+        title: flash.title,
+        timeSlot: flash.timeSlot ?? "now",
+        areaLabel: flash.areaLabel ?? "",
+        expiresAt: flash.expiresAt ?? 0,
+        createdAt: flash.createdAt,
+      })),
+    [localRows],
+  );
 
   useEffect(() => {
     let active = true;
@@ -53,7 +57,7 @@ export function useFlashFeed() {
 
   return {
     rows: remoteRows ?? offlineRows,
-    source: remoteRows ? "remote" as const : "offline" as const,
+    source: remoteRows ? ("remote" as const) : ("offline" as const),
     loading,
     error,
   };

@@ -42,7 +42,10 @@ function validUrl(value: string, name: string, nodeEnv: RuntimeEnvironment): str
   } catch {
     throw new Error(`${name} must be a valid URL.`);
   }
-  if (parsed.protocol !== "https:" && !(nodeEnv !== "production" && parsed.hostname === "localhost")) {
+  if (
+    parsed.protocol !== "https:" &&
+    !(nodeEnv !== "production" && parsed.hostname === "localhost")
+  ) {
     throw new Error(`${name} must use HTTPS.`);
   }
   return parsed.toString().replace(/\/$/, "");

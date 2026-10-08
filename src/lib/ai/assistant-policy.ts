@@ -4,6 +4,7 @@ export const MAX_ASSISTANT_MESSAGES = 8;
 export const MAX_ASSISTANT_MESSAGE_CHARS = 600;
 export const MAX_ASSISTANT_INPUT_CHARS = 4_000;
 export const MAX_ASSISTANT_OUTPUT_CHARS = 2_000;
+export const MAX_SHARED_CACHE_ANSWER_CHARS = 2_000;
 
 const SAFE_ROUTES = new Set([
   "/",
@@ -58,6 +59,15 @@ export function containsSensitiveSecret(content: string): boolean {
   return SENSITIVE_PATTERNS.some((pattern) => pattern.test(content));
 }
 
+export function isSharedCacheAnswerEligible(answer: string): boolean {
+  return (
+    answer.length >= 3 &&
+    answer.length <= MAX_SHARED_CACHE_ANSWER_CHARS &&
+    !containsSensitiveSecret(answer) &&
+    !PERSONAL_PATTERNS.some((pattern) => pattern.test(answer))
+  );
+}
+
 export function isSharedCacheEligible(question: string): boolean {
   return (
     question.length >= 3 &&
@@ -73,6 +83,7 @@ export function classifyAssistantQuestion(
   if (/\b(?:ou|où|ouvrir|trouver|aller|page|onglet)\b/i.test(question)) return "navigation";
   if (/\b(?:compte|profil|inscri|connexion|identite)\b/i.test(question)) return "account";
   if (/\b(?:secur|fraude|abus|signaler|danger|confident)\b/i.test(question)) return "safety";
-  if (/\b(?:flash|scan|radar|mission|notification|offline|hors ligne)\b/i.test(question)) return "feature";
+  if (/\b(?:flash|scan|radar|mission|notification|offline|hors ligne)\b/i.test(question))
+    return "feature";
   return "other";
 }

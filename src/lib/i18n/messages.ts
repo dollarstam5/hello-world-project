@@ -38,7 +38,8 @@ export const messages = {
     "assistant.cta": "Demander à l'assistant",
     "assistant.send": "Envoyer la question",
     "assistant.reset": "Effacer la conversation",
-    "assistant.privacy": "Ne partagez jamais de mot de passe, code secret ou document confidentiel.",
+    "assistant.privacy":
+      "Ne partagez jamais de mot de passe, code secret ou document confidentiel.",
     "assistant.source.instant": "⚡ Réponse instantanée",
     "assistant.source.ai": "🤖 IA",
     "update.title": "Une nouvelle version est prête",
@@ -47,10 +48,13 @@ export const messages = {
     "update.dismiss": "Plus tard",
     "assistant.error.offline": "Cette réponse n'est pas encore disponible hors ligne.",
     "assistant.error.auth": "Connectez-vous pour discuter avec Vita.",
-    "assistant.signInRequired": "Bonjour, je suis Vita ! Connectez-vous pour discuter avec moi : je vous répondrai en direct.",
+    "assistant.signInRequired":
+      "Bonjour, je suis Vita ! Connectez-vous pour discuter avec moi : je vous répondrai en direct.",
     "assistant.error.busy": "Vita reçoit beaucoup de demandes. Réessayez dans un instant.",
-    "assistant.error.daily": "Votre limite IA du jour est atteinte. Les réponses locales restent disponibles.",
-    "assistant.error.sensitive": "Pour votre sécurité, retirez les codes ou informations confidentielles.",
+    "assistant.error.daily":
+      "Votre limite IA du jour est atteinte. Les réponses locales restent disponibles.",
+    "assistant.error.sensitive":
+      "Pour votre sécurité, retirez les codes ou informations confidentielles.",
     "assistant.error.generic": "Vita ne peut pas répondre maintenant. Réessayez plus tard.",
     "communication.open": "Ouvrir les notifications et Vita",
     "communication.title": "Communications",
@@ -116,7 +120,8 @@ export const messages = {
     "profile.saved": "Votre profil est enregistré.",
     "profile.error": "Impossible d’enregistrer. Vérifiez les informations et réessayez.",
     "profile.error.title": "Votre profil n’est pas disponible pour le moment",
-    "profile.systemFields": "Le niveau d’identité et la confiance sont vérifiés par Vitala et ne peuvent pas être modifiés ici.",
+    "profile.systemFields":
+      "Le niveau d’identité et la confiance sont vérifiés par Vitala et ne peuvent pas être modifiés ici.",
     "page.flash.title": "Flash",
     "page.flash.desc": "Moments éphémères. À venir.",
     "page.flash.eyebrow": "En direct",
@@ -179,7 +184,8 @@ export const messages = {
     "admin.audit.recent": "Derniers gestes",
     "admin.audit.empty": "Aucun geste enregistré pour l'instant.",
     "install.title": "Gardez l'app sous la main",
-    "install.subtitle": "Installez-la sur votre écran d'accueil : elle s'ouvre en un geste, même sans réseau.",
+    "install.subtitle":
+      "Installez-la sur votre écran d'accueil : elle s'ouvre en un geste, même sans réseau.",
     "install.action": "Installer",
     "install.dismiss": "Plus tard",
     "admin.kpi.tables": "Tables",
@@ -207,7 +213,8 @@ export const messages = {
     "memberOnboarding.intent.desc": "Dites-nous ce que vous souhaitez faire en premier.",
     "memberOnboarding.profile.desc": "Ajoutez les informations minimales pour être reconnu.",
     "memberOnboarding.preferences.desc": "Choisissez votre environnement et votre accompagnement.",
-    "memberOnboarding.permissions.desc": "Les autorisations restent facultatives et seront demandées au bon moment.",
+    "memberOnboarding.permissions.desc":
+      "Les autorisations restent facultatives et seront demandées au bon moment.",
     "memberOnboarding.complete.desc": "Votre espace est prêt.",
     "memberOnboarding.intent.question": "Que souhaitez-vous faire ?",
     "memberOnboarding.intent.browse": "Découvrir ce qui se passe autour de moi",
@@ -215,7 +222,8 @@ export const messages = {
     "memberOnboarding.intent.search": "Chercher une aide précise",
     "memberOnboarding.intent.professional": "Proposer mes services professionnels",
     "memberOnboarding.openProfile": "Compléter mon profil",
-    "memberOnboarding.permissions.optional": "GPS, notifications et microphone ne seront activés qu’après votre accord. Vous pourrez continuer même en cas de refus.",
+    "memberOnboarding.permissions.optional":
+      "GPS, notifications et microphone ne seront activés qu’après votre accord. Vous pourrez continuer même en cas de refus.",
     "memberOnboarding.finish": "Terminer",
     "admin.kpi.people": "Personnes",
     "admin.kpi.identities": "Identités",
@@ -339,10 +347,12 @@ export const messages = {
     "update.dismiss": "Later",
     "assistant.error.offline": "This answer is not available offline yet.",
     "assistant.error.auth": "Sign in to chat with Vita.",
-    "assistant.signInRequired": "Hi, I am Vita! Sign in to chat with me and I will answer you live.",
+    "assistant.signInRequired":
+      "Hi, I am Vita! Sign in to chat with me and I will answer you live.",
     "assistant.error.busy": "Vita is receiving many requests. Try again shortly.",
     "assistant.error.daily": "Your daily AI limit is reached. Local answers remain available.",
-    "assistant.error.sensitive": "For your safety, remove secret codes or confidential information.",
+    "assistant.error.sensitive":
+      "For your safety, remove secret codes or confidential information.",
     "assistant.error.generic": "Vita cannot answer right now. Try again later.",
     "communication.open": "Open notifications and Vita",
     "communication.title": "Communications",
@@ -408,7 +418,8 @@ export const messages = {
     "profile.saved": "Your profile is saved.",
     "profile.error": "Unable to save. Check the information and try again.",
     "profile.error.title": "Your profile is not available right now",
-    "profile.systemFields": "Identity and trust levels are verified by Vitala and cannot be changed here.",
+    "profile.systemFields":
+      "Identity and trust levels are verified by Vitala and cannot be changed here.",
     "page.flash.title": "Flash",
     "page.flash.desc": "Ephemeral moments. Coming soon.",
     "page.flash.eyebrow": "Live",
@@ -499,7 +510,8 @@ export const messages = {
     "memberOnboarding.intent.desc": "Tell us what you want to do first.",
     "memberOnboarding.profile.desc": "Add the minimum details needed to be recognized.",
     "memberOnboarding.preferences.desc": "Choose your environment and guidance mode.",
-    "memberOnboarding.permissions.desc": "Permissions stay optional and are requested only when useful.",
+    "memberOnboarding.permissions.desc":
+      "Permissions stay optional and are requested only when useful.",
     "memberOnboarding.complete.desc": "Your space is ready.",
     "memberOnboarding.intent.question": "What would you like to do?",
     "memberOnboarding.intent.browse": "Discover what is happening nearby",
@@ -507,7 +519,8 @@ export const messages = {
     "memberOnboarding.intent.search": "Search for specific help",
     "memberOnboarding.intent.professional": "Offer professional services",
     "memberOnboarding.openProfile": "Complete my profile",
-    "memberOnboarding.permissions.optional": "Location, notifications and microphone are enabled only with your consent. You can continue if you decline.",
+    "memberOnboarding.permissions.optional":
+      "Location, notifications and microphone are enabled only with your consent. You can continue if you decline.",
     "memberOnboarding.finish": "Finish",
     "admin.kpi.people": "People",
     "admin.kpi.identities": "Identities",

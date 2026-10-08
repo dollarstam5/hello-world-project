@@ -30,22 +30,20 @@ export interface SafeLogContext {
 }
 
 /** Emits a bounded, structured event; request bodies and stack traces are never logged. */
-export function logServerError(
-  event: string,
-  error: unknown,
-  context: SafeLogContext = {},
-): void {
+export function logServerError(event: string, error: unknown, context: SafeLogContext = {}): void {
   const detail = describe(error);
-  console.error(JSON.stringify({
-    level: "error",
-    event: redact(event),
-    error: detail,
-    ...(context.requestId ? { requestId: redact(context.requestId) } : {}),
-    ...(context.method ? { method: redact(context.method) } : {}),
-    ...(context.path ? { path: redact(context.path.split("?", 1)[0] ?? "/") } : {}),
-    ...(Number.isFinite(context.durationMs)
-      ? { durationMs: Math.max(0, Math.min(300_000, context.durationMs!)) }
-      : {}),
-    at: new Date().toISOString(),
-  }));
+  console.error(
+    JSON.stringify({
+      level: "error",
+      event: redact(event),
+      error: detail,
+      ...(context.requestId ? { requestId: redact(context.requestId) } : {}),
+      ...(context.method ? { method: redact(context.method) } : {}),
+      ...(context.path ? { path: redact(context.path.split("?", 1)[0] ?? "/") } : {}),
+      ...(Number.isFinite(context.durationMs)
+        ? { durationMs: Math.max(0, Math.min(300_000, context.durationMs!)) }
+        : {}),
+      at: new Date().toISOString(),
+    }),
+  );
 }

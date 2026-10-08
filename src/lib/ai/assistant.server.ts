@@ -1,9 +1,10 @@
-import { createClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import type { AssistantRequest, AssistantResult } from "@eco/core-contracts";
 import { getServerConfig } from "@/lib/config.server";
 import {
   classifyAssistantQuestion,
   containsSensitiveSecret,
+  isSharedCacheAnswerEligible,
   isSharedCacheEligible,
   MAX_ASSISTANT_OUTPUT_CHARS,
   safeAssistantRoute,
@@ -13,12 +14,12 @@ import {
   completeAssistantRequest,
   failAssistantRequest,
 } from "./assistant-rate-limit.server";
-import { mapAssistantVocabulary, normalizeAssistantText } from "@/domains/assistant/services/mapping.service";
+import {
+  mapAssistantVocabulary,
+  normalizeAssistantText,
+} from "@/domains/assistant/services/mapping.service";
 
-type SupabaseLike = {
-  from: (table: string) => any;
-  rpc: (name: string, args: Record<string, unknown>) => any;
-};
+type SupabaseLike = SupabaseClient;
 
 const SYSTEM_FR = `Tu es Vita, le guide de l'application Vitala, une application d'entraide locale.
 Tu accueilles, guides et suggères sans prendre de décision à la place de l'utilisateur.
@@ -36,9 +37,7 @@ confidential files. If you do not know, say so plainly.`;
 async function sha256(value: string): Promise<string> {
   const bytes = new TextEncoder().encode(value);
   const digest = await crypto.subtle.digest("SHA-256", bytes);
-  return [...new Uint8Array(digest)]
-    .map((byte) => byte.toString(16).padStart(2, "0"))
-    .join("");
+  return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
 }
 
 async function findPromoted(
@@ -46,7 +45,13 @@ async function findPromoted(
   hash: string,
   locale: "fr" | "en",
   promptVersion: number,
-): Promise<{ id: string; answer: string; normalized_question: string; category: string; updated_at: string } | null> {
+): Promise<{
+  id: string;
+  answer: string;
+  normalized_question: string;
+  category: string;
+  updated_at: string;
+} | null> {
   const { data, error } = await db
     .from("ai_cache")
     .select("id, answer, normalized_question, category, updated_at")
@@ -91,7 +96,10 @@ async function recordCandidate(input: {
   });
 }
 
-async function callGateway(request: AssistantRequest, cacheHash: string | null): Promise<string | null> {
+async function callGateway(
+  request: AssistantRequest,
+  cacheHash: string | null,
+): Promise<string | null> {
   const config = getServerConfig().ai;
   if (!config) return null;
   const models = [config.primaryModel, config.fallbackModel].filter(Boolean) as string[];
@@ -109,7 +117,8 @@ async function callGateway(request: AssistantRequest, cacheHash: string | null):
           "cf-aig-gateway-id": config.gatewayId,
         };
         if (cacheHash) {
-          headers["cf-aig-cache-key"] = `vitala:${config.promptVersion}:${request.locale}:${cacheHash}`;
+          headers["cf-aig-cache-key"] =
+            `vitala:${config.promptVersion}:${request.locale}:${cacheHash}`;
           headers["cf-aig-cache-ttl"] = "86400";
         } else {
           headers["cf-aig-skip-cache"] = "true";
@@ -204,7 +213,7 @@ export async function runPaidAssistant(
     inputChars: request.messages.reduce((sum, message) => sum + message.content.length, 0),
     outputChars: answer.length,
   });
-  if (cacheEligible) {
+  if (cacheEligible && isSharedCacheAnswerEligible(answer)) {
     await recordCandidate({
       userId,
       hash,

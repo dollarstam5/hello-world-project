@@ -61,10 +61,13 @@ export default {
         ...requestContext,
         durationMs: requestDurationMs(requestContext),
       });
-      const response = withSecurityHeaders(new Response(renderErrorPage(), {
-        status: 500,
-        headers: { "content-type": "text/html; charset=utf-8" },
-      }), request);
+      const response = withSecurityHeaders(
+        new Response(renderErrorPage(), {
+          status: 500,
+          headers: { "content-type": "text/html; charset=utf-8" },
+        }),
+        request,
+      );
       return withRequestContext(response, requestContext);
     }
   },

@@ -19,8 +19,33 @@
     "vita": ["assistant", "guide", "aide", "conseiller"]
   },
   "stopWords": [
-    "a", "alors", "au", "aux", "avec", "ce", "ces", "comment", "dans", "de",
-    "des", "du", "est", "et", "faire", "je", "la", "le", "les", "ma", "mes",
-    "mon", "pour", "que", "qui", "sur", "un", "une"
+    "a",
+    "alors",
+    "au",
+    "aux",
+    "avec",
+    "ce",
+    "ces",
+    "comment",
+    "dans",
+    "de",
+    "des",
+    "du",
+    "est",
+    "et",
+    "faire",
+    "je",
+    "la",
+    "le",
+    "les",
+    "ma",
+    "mes",
+    "mon",
+    "pour",
+    "que",
+    "qui",
+    "sur",
+    "un",
+    "une"
   ]
 }

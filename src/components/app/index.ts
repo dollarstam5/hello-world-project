@@ -23,9 +23,4 @@ export { Indicator } from "./Indicator";
 export { EmptyState } from "./EmptyState";
 export { StatusBanner } from "./StatusBanner";
 export { FormField } from "./FormField";
-export {
-  SkeletonLine,
-  SkeletonText,
-  SkeletonCard,
-  SkeletonList,
-} from "./Skeletons";
+export { SkeletonLine, SkeletonText, SkeletonCard, SkeletonList } from "./Skeletons";

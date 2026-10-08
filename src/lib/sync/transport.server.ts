@@ -5,6 +5,8 @@
  * the caller's session, so the access rules (RLS) are the real boundary.
  */
 
+import type { SupabaseClient } from "@supabase/supabase-js";
+
 import {
   isClientMutationAllowed,
   type OutboxEntry,
@@ -17,7 +19,7 @@ import {
 } from "@eco/core-contracts";
 import { isReadOnlyTable, ownerColumn, physicalTable, toRecord, toRow } from "./mapping";
 
-export type SyncClient = { from: (table: string) => any };
+export type SyncClient = SupabaseClient;
 
 function envelope(table: OutboxEntry["table"], row: Record<string, unknown>): SyncRecordEnvelope {
   return {
@@ -44,10 +46,7 @@ function classifyDatabaseError(error: { code?: string }): {
   return { code: "server_error", retryable: true };
 }
 
-export async function runPull(
-  db: SyncClient,
-  request: PullRequest,
-): Promise<PullResult> {
+export async function runPull(db: SyncClient, request: PullRequest): Promise<PullResult> {
   const records: SyncRecordEnvelope[] = [];
   const cursors: PullResult["cursors"] = [];
   let hasMore = false;
@@ -139,18 +138,13 @@ async function recoverAppliedMutation(
   table: string,
   expectedRow: Record<string, unknown>,
 ): Promise<SyncRecordEnvelope | null> {
-  const { data, error } = await db
-    .from(table)
-    .select("*")
-    .eq("id", entry.recordId)
-    .maybeSingle();
+  const { data, error } = await db.from(table).select("*").eq("id", entry.recordId).maybeSingle();
   if (error || !data) return null;
   const current = data as Record<string, unknown>;
-  const matches = entry.kind === "delete"
-    ? current["deleted_at"] != null
-    : Object.entries(expectedRow).every(([key, value]) =>
-        sameDatabaseValue(current[key], value),
-      );
+  const matches =
+    entry.kind === "delete"
+      ? current["deleted_at"] != null
+      : Object.entries(expectedRow).every(([key, value]) => sameDatabaseValue(current[key], value));
   return matches ? envelope(entry.table, current) : null;
 }
 
@@ -169,10 +163,7 @@ export async function runPush(
       continue;
     }
 
-    if (
-      isReadOnlyTable(entry.table) ||
-      !isClientMutationAllowed(entry.table, entry.kind)
-    ) {
+    if (isReadOnlyTable(entry.table) || !isClientMutationAllowed(entry.table, entry.kind)) {
       rejected.push({ id: entry.id, code: "operation_not_allowed", retryable: false });
       continue;
     }
@@ -203,7 +194,12 @@ export async function runPush(
       } else {
         delete row["id"];
         if (owner) delete row[owner];
-        result = await db.from(table).update(row).eq("id", entry.recordId).select("*").maybeSingle();
+        result = await db
+          .from(table)
+          .update(row)
+          .eq("id", entry.recordId)
+          .select("*")
+          .maybeSingle();
       }
 
       if (result.error) {

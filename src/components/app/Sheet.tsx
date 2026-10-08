@@ -46,9 +46,7 @@ export function Sheet({
         {(title || description) && (
           <SheetHeader className="space-y-1 pb-2">
             {title && <SheetTitle className="text-xl tracking-tight">{title}</SheetTitle>}
-            {description && (
-              <SheetDescription className="text-sm">{description}</SheetDescription>
-            )}
+            {description && <SheetDescription className="text-sm">{description}</SheetDescription>}
           </SheetHeader>
         )}
         {side === "bottom" && (

@@ -17,10 +17,5 @@ export { Indicator } from "@/components/app/Indicator";
 export { EmptyState } from "@/components/app/EmptyState";
 export { StatusBanner } from "@/components/app/StatusBanner";
 export { FormField } from "@/components/app/FormField";
-export {
-  SkeletonLine,
-  SkeletonText,
-  SkeletonCard,
-  SkeletonList,
-} from "@/components/app/Skeletons";
+export { SkeletonLine, SkeletonText, SkeletonCard, SkeletonList } from "@/components/app/Skeletons";
 export { SyncIndicator } from "./SyncIndicator";

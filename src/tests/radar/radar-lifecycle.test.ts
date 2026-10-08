@@ -48,14 +48,20 @@ describe("Radar lifecycle", () => {
 
   it("supports watching, matching, pause and resume", () => {
     expect(radarTransition(radar({ status: "active" }), "begin_watch", 0).status).toBe("watching");
-    expect(radarTransition(radar({ status: "watching" }), "mark_matched", 0).status).toBe("matched");
+    expect(radarTransition(radar({ status: "watching" }), "mark_matched", 0).status).toBe(
+      "matched",
+    );
     expect(radarTransition(radar({ status: "matched" }), "pause", 0).status).toBe("paused");
     expect(radarTransition(radar({ status: "paused" }), "resume", 0).status).toBe("active");
   });
 
   it("detects review deadlines and terminal expiration", () => {
-    expect(radarNeedsReview(radar({ status: "watching", nextReviewAt: DAY_MS }), DAY_MS)).toBe(true);
-    expect(radarTransition(radar({ status: "paused", expiresAt: DAY_MS }), "resume", DAY_MS).status).toBe("expired");
+    expect(radarNeedsReview(radar({ status: "watching", nextReviewAt: DAY_MS }), DAY_MS)).toBe(
+      true,
+    );
+    expect(
+      radarTransition(radar({ status: "paused", expiresAt: DAY_MS }), "resume", DAY_MS).status,
+    ).toBe("expired");
     expect(() => radarTransition(radar({ status: "cancelled" }), "resume", 0)).toThrow();
   });
 });

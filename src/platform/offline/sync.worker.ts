@@ -8,11 +8,7 @@
  * large backlog of offline work is being sent.
  */
 
-import type {
-  LocalDataScope,
-  SyncWorkerCommand,
-  SyncWorkerEvent,
-} from "@eco/core-contracts";
+import type { LocalDataScope, SyncWorkerCommand, SyncWorkerEvent } from "@eco/core-contracts";
 import {
   applyRemoteRecords,
   applyPullPage,
@@ -27,11 +23,7 @@ import {
   configureLocalDatabase,
   closeLocalDatabase,
 } from "@eco/core-db";
-import {
-  createHttpTransport,
-  createSyncEngine,
-  type SyncEngine,
-} from "@eco/core-sync";
+import { createHttpTransport, createSyncEngine, type SyncEngine } from "@eco/core-sync";
 
 const scope = self as unknown as DedicatedWorkerGlobalScope;
 

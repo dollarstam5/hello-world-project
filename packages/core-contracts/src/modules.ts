@@ -29,12 +29,7 @@ export const MANAGEMENT_MODULES = [
 
 export type ManagementModuleKey = (typeof MANAGEMENT_MODULES)[number];
 
-export type ManagementModuleGroup =
-  | "overview"
-  | "people"
-  | "activity"
-  | "system"
-  | "governance";
+export type ManagementModuleGroup = "overview" | "people" | "activity" | "system" | "governance";
 
 export interface ManagementModuleDefinition {
   key: ManagementModuleKey;

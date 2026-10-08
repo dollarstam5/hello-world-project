@@ -1,33 +1,25 @@
 import { create } from "zustand";
-import type {
-  SyncPhase,
-  SyncState,
-} from "@eco/core-contracts";
-import type {
-  MessageKey,
-} from "@/lib/i18n/messages";
+import type { SyncPhase, SyncState } from "@eco/core-contracts";
+import type { MessageKey } from "@/lib/i18n/messages";
 
 /**
  * Single source of truth for "is my work saved?" in the interface.
  * The sync worker pushes its state here; components only read it.
  */
 interface SyncStatusStore extends SyncState {
-  setState: (
-    state: Partial<SyncState>,
-  ) => void;
+  setState: (state: Partial<SyncState>) => void;
 }
 
-export const useSyncStatusStore =
-  create<SyncStatusStore>((set) => ({
-    phase: "idle",
-    pendingCount: 0,
-    lastSyncedAt: null,
-    messageKey: null,
+export const useSyncStatusStore = create<SyncStatusStore>((set) => ({
+  phase: "idle",
+  pendingCount: 0,
+  lastSyncedAt: null,
+  messageKey: null,
 
-    setState: (state) => {
-      set(state);
-    },
-  }));
+  setState: (state) => {
+    set(state);
+  },
+}));
 
 export function resetSyncStatus(): void {
   useSyncStatusStore.setState({
@@ -39,14 +31,13 @@ export function resetSyncStatus(): void {
 }
 
 /** Plain-language message for each situation. */
-const PHASE_MESSAGES:
-  Record<SyncPhase, MessageKey> = {
-    idle: "sync.saved",
-    pulling: "sync.updating",
-    pushing: "sync.sending",
-    offline: "sync.offlineSaved",
-    error: "sync.retrying",
-  };
+const PHASE_MESSAGES: Record<SyncPhase, MessageKey> = {
+  idle: "sync.saved",
+  pulling: "sync.updating",
+  pushing: "sync.sending",
+  offline: "sync.offlineSaved",
+  error: "sync.retrying",
+};
 
 export interface SyncStatusView {
   phase: SyncPhase;
@@ -57,30 +48,17 @@ export interface SyncStatusView {
 }
 
 export function useSyncStatus(): SyncStatusView {
-  const {
-    phase,
-    pendingCount,
-    lastSyncedAt,
-    messageKey,
-  } = useSyncStatusStore();
+  const { phase, pendingCount, lastSyncedAt, messageKey } = useSyncStatusStore();
 
-  const resolved =
-    (messageKey as MessageKey | null) ??
-    PHASE_MESSAGES[phase];
+  const resolved = (messageKey as MessageKey | null) ?? PHASE_MESSAGES[phase];
 
   return {
     phase,
     pendingCount,
     lastSyncedAt,
 
-    messageKey:
-      pendingCount > 0 &&
-      phase !== "pushing"
-        ? "sync.waiting"
-        : resolved,
+    messageKey: pendingCount > 0 && phase !== "pushing" ? "sync.waiting" : resolved,
 
-    isSettled:
-      phase === "idle" &&
-      pendingCount === 0,
+    isSettled: phase === "idle" && pendingCount === 0,
   };
 }

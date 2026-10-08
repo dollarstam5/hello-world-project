@@ -18,8 +18,9 @@ export function validateRadarSchedule(
     return false;
   }
   const duration = input.expiresAt - input.startsAt;
-  return duration >= RADAR_MIN_DURATION_DAYS * DAY_MS
-    && duration <= RADAR_MAX_DURATION_DAYS * DAY_MS;
+  return (
+    duration >= RADAR_MIN_DURATION_DAYS * DAY_MS && duration <= RADAR_MAX_DURATION_DAYS * DAY_MS
+  );
 }
 
 export function nextRadarReview(now: number, expiresAt: number): number | null {
@@ -34,9 +35,7 @@ export function radarTransition(
 ): RadarTransitionPatch {
   const patch = (status: RadarStatus): RadarTransitionPatch => ({
     status,
-    nextReviewAt: status === "expired" || status === "cancelled"
-      ? null
-      : radar.nextReviewAt,
+    nextReviewAt: status === "expired" || status === "cancelled" ? null : radar.nextReviewAt,
     lastReviewedAt: radar.lastReviewedAt,
   });
 
@@ -47,12 +46,17 @@ export function radarTransition(
   switch (action) {
     case "activate":
       if (radar.status !== "draft") throw new Error("Radar action is not allowed: activate.");
-      return { status: "active", nextReviewAt: nextRadarReview(now, radar.expiresAt), lastReviewedAt: null };
+      return {
+        status: "active",
+        nextReviewAt: nextRadarReview(now, radar.expiresAt),
+        lastReviewedAt: null,
+      };
     case "begin_watch":
       if (radar.status !== "active") throw new Error("Radar action is not allowed: begin_watch.");
       return patch("watching");
     case "mark_matched":
-      if (radar.status !== "watching") throw new Error("Radar action is not allowed: mark_matched.");
+      if (radar.status !== "watching")
+        throw new Error("Radar action is not allowed: mark_matched.");
       return patch("matched");
     case "pause":
       if (!["active", "watching", "matched"].includes(radar.status)) {
@@ -61,7 +65,11 @@ export function radarTransition(
       return { status: "paused", nextReviewAt: null, lastReviewedAt: radar.lastReviewedAt };
     case "resume":
       if (radar.status !== "paused") throw new Error("Radar action is not allowed: resume.");
-      return { status: "active", nextReviewAt: nextRadarReview(now, radar.expiresAt), lastReviewedAt: radar.lastReviewedAt };
+      return {
+        status: "active",
+        nextReviewAt: nextRadarReview(now, radar.expiresAt),
+        lastReviewedAt: radar.lastReviewedAt,
+      };
     case "revalidate":
       if (!["active", "watching", "matched"].includes(radar.status)) {
         throw new Error("Radar action is not allowed: revalidate.");
@@ -88,7 +96,9 @@ export function radarNeedsReview(
   radar: Pick<RadarRecord, "status" | "nextReviewAt">,
   now = Date.now(),
 ): boolean {
-  return ["active", "watching", "matched"].includes(radar.status)
-    && radar.nextReviewAt !== null
-    && radar.nextReviewAt <= now;
+  return (
+    ["active", "watching", "matched"].includes(radar.status) &&
+    radar.nextReviewAt !== null &&
+    radar.nextReviewAt <= now
+  );
 }

@@ -1,8 +1,4 @@
-const PREVIEW_HOST_SUFFIXES = [
-  ".lovable.app",
-  ".lovableproject.com",
-  ".chatgpt.com",
-];
+const PREVIEW_HOST_SUFFIXES = [".lovable.app", ".lovableproject.com", ".chatgpt.com"];
 
 function isPreviewHost(hostname: string): boolean {
   return PREVIEW_HOST_SUFFIXES.some(

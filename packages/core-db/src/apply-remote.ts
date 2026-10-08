@@ -1,10 +1,5 @@
 import type { Table } from "dexie";
-import type {
-  BaseRecord,
-  SyncCursor,
-  SyncRecordEnvelope,
-  SyncedTable,
-} from "@eco/core-contracts";
+import type { BaseRecord, SyncCursor, SyncRecordEnvelope, SyncedTable } from "@eco/core-contracts";
 import { mergeRecords } from "@eco/core-logic";
 import { locallyChangedFields } from "./outbox";
 import { getDb, type EcosystemDatabase } from "./schema";

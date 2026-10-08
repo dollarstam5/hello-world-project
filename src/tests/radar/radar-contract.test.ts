@@ -22,7 +22,13 @@ describe("Radar contract", () => {
 
   it("defines all lifecycle states and bounded radii", () => {
     expect(RADAR_STATUSES).toEqual([
-      "draft", "active", "watching", "matched", "paused", "expired", "cancelled",
+      "draft",
+      "active",
+      "watching",
+      "matched",
+      "paused",
+      "expired",
+      "cancelled",
     ]);
     expect(RADAR_RADII_KM).toEqual([1, 3, 5, 10, 25, 50]);
   });
@@ -32,13 +38,17 @@ describe("Radar contract", () => {
   });
 
   it("rejects durations outside three to ninety days", () => {
-    expect(() => radarDraftSchema.parse({
-      ...valid,
-      expiresAt: valid.startsAt + (RADAR_MIN_DURATION_DAYS - 1) * DAY_MS,
-    })).toThrow();
-    expect(() => radarDraftSchema.parse({
-      ...valid,
-      expiresAt: valid.startsAt + (RADAR_MAX_DURATION_DAYS + 1) * DAY_MS,
-    })).toThrow();
+    expect(() =>
+      radarDraftSchema.parse({
+        ...valid,
+        expiresAt: valid.startsAt + (RADAR_MIN_DURATION_DAYS - 1) * DAY_MS,
+      }),
+    ).toThrow();
+    expect(() =>
+      radarDraftSchema.parse({
+        ...valid,
+        expiresAt: valid.startsAt + (RADAR_MAX_DURATION_DAYS + 1) * DAY_MS,
+      }),
+    ).toThrow();
   });
 });

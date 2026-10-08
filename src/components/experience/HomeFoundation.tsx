@@ -2,10 +2,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { Surface } from "@/components/app/Surface";
 import { Indicator } from "@/components/app/Indicator";
 import { EmptyState } from "@/components/app/EmptyState";
-import {
-  getDiscoverySections,
-  type DiscoverySection,
-} from "@/lib/experience/discovery";
+import { getDiscoverySections, type DiscoverySection } from "@/lib/experience/discovery";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useIdentity } from "@/lib/experience/identity";
 
@@ -20,18 +17,10 @@ function Section({
   perf?: "auto" | "short" | "tall" | "none";
 }) {
   const cv =
-    perf === "short"
-      ? "cv-short"
-      : perf === "tall"
-        ? "cv-tall"
-        : perf === "none"
-          ? ""
-          : "cv-auto";
+    perf === "short" ? "cv-short" : perf === "tall" ? "cv-tall" : perf === "none" ? "" : "cv-auto";
   return (
     <section className={`stack-3 ${cv}`.trim()}>
-      <h2 className="text-caption font-medium tracking-tight text-foreground/80">
-        {title}
-      </h2>
+      <h2 className="text-caption font-medium tracking-tight text-foreground/80">{title}</h2>
       {children}
     </section>
   );
@@ -74,38 +63,26 @@ export function HomeFoundation() {
 
       <Section title={t("home.section.flash")} perf="short">
         <Surface variant="sunken" padding="lg" bordered>
-          <EmptyState
-            title={t("common.empty")}
-            description={t("common.empty.desc")}
-          />
+          <EmptyState title={t("common.empty")} description={t("common.empty.desc")} />
         </Surface>
       </Section>
 
       <Section title={t("home.section.radar")} perf="short">
         <Surface variant="sunken" padding="lg" bordered>
-          <EmptyState
-            title={t("common.empty")}
-            description={t("common.empty.desc")}
-          />
+          <EmptyState title={t("common.empty")} description={t("common.empty.desc")} />
         </Surface>
       </Section>
 
       <Section title={t("home.section.feed")} perf="tall">
         <Surface variant="sunken" padding="lg" bordered>
-          <EmptyState
-            title={t("common.empty")}
-            description={t("common.empty.desc")}
-          />
+          <EmptyState title={t("common.empty")} description={t("common.empty.desc")} />
         </Surface>
       </Section>
 
       <Section title={t("home.section.discovery")} perf="tall">
         {sections.length === 0 ? (
           <Surface variant="sunken" padding="lg" bordered>
-            <EmptyState
-              title={t("common.empty")}
-              description={t("common.empty.desc")}
-            />
+            <EmptyState title={t("common.empty")} description={t("common.empty.desc")} />
           </Surface>
         ) : (
           <div className="stack-3">
@@ -116,9 +93,7 @@ export function HomeFoundation() {
         )}
       </Section>
 
-      <footer className="pt-4 pb-2 text-center text-meta">
-        Phase 5 · Experience Foundation
-      </footer>
+      <footer className="pt-4 pb-2 text-center text-meta">Phase 5 · Experience Foundation</footer>
     </div>
   );
 }

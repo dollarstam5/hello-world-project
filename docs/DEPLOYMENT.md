@@ -13,22 +13,22 @@ Ce guide décrit une mise en production reproductible. Les secrets ne doivent ja
 
 Copier `.env.example` vers un fichier local ignoré par Git, puis renseigner les valeurs dans le coffre-fort de l’hébergeur.
 
-| Variable | Portée | Requise | Usage |
-| --- | --- | --- | --- |
-| `VITE_SUPABASE_URL` | navigateur | oui | URL publique Supabase |
-| `VITE_SUPABASE_PUBLISHABLE_KEY` | navigateur | oui | clé publiable, jamais une clé secrète |
-| `SUPABASE_URL` | serveur | oui | URL Supabase côté serveur |
-| `SUPABASE_PUBLISHABLE_KEY` | serveur | oui | validation des sessions utilisateur |
-| `SUPABASE_SERVICE_ROLE_KEY` | serveur | oui | opérations administratives protégées par RLS |
-| `CLOUDFLARE_ACCOUNT_ID` | serveur | non | assistant IA externe |
-| `CLOUDFLARE_AI_API_TOKEN` | serveur | non | jeton Cloudflare, toujours avec l’identifiant de compte |
-| `CLOUDFLARE_AI_GATEWAY_ID` | serveur | non | passerelle, valeur par défaut `vitala` |
-| `AI_PRIMARY_MODEL` | serveur | non | modèle principal compatible avec la passerelle |
-| `AI_FALLBACK_MODEL` | serveur | non | modèle de secours |
-| `LOVABLE_CRON_SECRET` | serveur | selon usage | authentification des tâches planifiées |
-| `LOVABLE_CRON_SECRET_PREVIOUS` | serveur | non | rotation sans interruption |
-| `SYNC_RECEIPT_RETENTION_DAYS` | serveur | non | conservation des reçus, 30 jours par défaut |
-| `AI_REQUEST_RETENTION_DAYS` | serveur | non | conservation des métadonnées IA, 30 jours par défaut |
+| Variable                        | Portée     | Requise     | Usage                                                   |
+| ------------------------------- | ---------- | ----------- | ------------------------------------------------------- |
+| `VITE_SUPABASE_URL`             | navigateur | oui         | URL publique Supabase                                   |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | navigateur | oui         | clé publiable, jamais une clé secrète                   |
+| `SUPABASE_URL`                  | serveur    | oui         | URL Supabase côté serveur                               |
+| `SUPABASE_PUBLISHABLE_KEY`      | serveur    | oui         | validation des sessions utilisateur                     |
+| `SUPABASE_SERVICE_ROLE_KEY`     | serveur    | oui         | opérations administratives protégées par RLS            |
+| `CLOUDFLARE_ACCOUNT_ID`         | serveur    | non         | assistant IA externe                                    |
+| `CLOUDFLARE_AI_API_TOKEN`       | serveur    | non         | jeton Cloudflare, toujours avec l’identifiant de compte |
+| `CLOUDFLARE_AI_GATEWAY_ID`      | serveur    | non         | passerelle, valeur par défaut `vitala`                  |
+| `AI_PRIMARY_MODEL`              | serveur    | non         | modèle principal compatible avec la passerelle          |
+| `AI_FALLBACK_MODEL`             | serveur    | non         | modèle de secours                                       |
+| `LOVABLE_CRON_SECRET`           | serveur    | selon usage | authentification des tâches planifiées                  |
+| `LOVABLE_CRON_SECRET_PREVIOUS`  | serveur    | non         | rotation sans interruption                              |
+| `SYNC_RECEIPT_RETENTION_DAYS`   | serveur    | non         | conservation des reçus, 30 jours par défaut             |
+| `AI_REQUEST_RETENTION_DAYS`     | serveur    | non         | conservation des métadonnées IA, 30 jours par défaut    |
 
 Sans configuration IA, Vita continue de répondre avec sa connaissance locale hors ligne. Ne préfixer aucun secret avec `VITE_`.
 

@@ -12,6 +12,7 @@ Planned domains (Phase 1 reserves the slots, implementation comes later):
 - search · recommendations · realtime · offline · admin · analytics
 
 Rules:
+
 - No domain imports another domain's internals — only its `index.ts`.
 - No domain talks to network/storage directly — go through `src/lib/platform/*`.
 - All user-facing strings go through `src/lib/i18n`.

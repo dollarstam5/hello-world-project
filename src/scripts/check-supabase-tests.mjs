@@ -39,9 +39,11 @@ for (const test of tests) {
   const content = await readFile(resolve(testsDirectory, test), "utf8");
   if (!/^BEGIN;/m.test(content)) failures.push(`${test}: missing BEGIN`);
   if (!/SELECT\s+plan\s*\(/i.test(content)) failures.push(`${test}: missing pgTAP plan`);
-  if (!/SELECT\s+\*\s+FROM\s+finish\s*\(\s*\)/i.test(content)) failures.push(`${test}: missing finish()`);
+  if (!/SELECT\s+\*\s+FROM\s+finish\s*\(\s*\)/i.test(content))
+    failures.push(`${test}: missing finish()`);
   if (!/ROLLBACK;/i.test(content)) failures.push(`${test}: missing ROLLBACK`);
-  if (/\bsb_secret_[A-Za-z0-9_-]{20,}\b/.test(content)) failures.push(`${test}: embedded secret signature`);
+  if (/\bsb_secret_[A-Za-z0-9_-]{20,}\b/.test(content))
+    failures.push(`${test}: embedded secret signature`);
 }
 
 if (failures.length) {

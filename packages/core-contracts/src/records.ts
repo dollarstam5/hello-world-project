@@ -31,11 +31,7 @@ export interface BaseRecord {
   deletedAt: number | null;
 }
 
-export type UserStatus =
-  | "active"
-  | "invited"
-  | "suspended"
-  | "closed";
+export type UserStatus = "active" | "invited" | "suspended" | "closed";
 
 export interface UserRecord extends BaseRecord {
   id: UserId;
@@ -48,11 +44,7 @@ export interface UserRecord extends BaseRecord {
 }
 
 /** UDI — Unique Digital Identity: the progressive identity of a member. */
-export type UdiLevel =
-  | "guest"
-  | "identified"
-  | "verified"
-  | "trusted";
+export type UdiLevel = "guest" | "identified" | "verified" | "trusted";
 
 export interface UdiRecord extends BaseRecord {
   id: UdiId;
@@ -64,11 +56,7 @@ export interface UdiRecord extends BaseRecord {
   attributes: Record<string, string>;
 }
 
-export type FlashStatus =
-  | "draft"
-  | "live"
-  | "expired"
-  | "archived";
+export type FlashStatus = "draft" | "live" | "expired" | "archived";
 
 export interface FlashRecord extends BaseRecord {
   id: FlashId;
@@ -134,10 +122,7 @@ export interface MissionRecord extends BaseRecord {
   dueAt: number | null;
 }
 
-export type PostVisibility =
-  | "public"
-  | "circle"
-  | "private";
+export type PostVisibility = "public" | "circle" | "private";
 
 export interface PostRecord extends BaseRecord {
   id: PostId;
@@ -149,17 +134,9 @@ export interface PostRecord extends BaseRecord {
   replyCount: number;
 }
 
-export type MediaKind =
-  | "image"
-  | "video"
-  | "audio"
-  | "document";
+export type MediaKind = "image" | "video" | "audio" | "document";
 
-export type MediaState =
-  | "local"
-  | "uploading"
-  | "remote"
-  | "failed";
+export type MediaState = "local" | "uploading" | "remote" | "failed";
 
 export interface MediaRecord extends BaseRecord {
   id: MediaId;
@@ -175,11 +152,7 @@ export interface MediaRecord extends BaseRecord {
   height: number | null;
 }
 
-export type NotificationChannel =
-  | "in_app"
-  | "push"
-  | "email"
-  | "sms";
+export type NotificationChannel = "in_app" | "push" | "email" | "sms";
 
 export interface NotificationRecord extends BaseRecord {
   id: NotificationId;

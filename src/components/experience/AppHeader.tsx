@@ -18,7 +18,13 @@ export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => 
             </Link>
           </Button>
           {user ? (
-            <Button type="button" variant="ghost" size="icon" aria-label={t("auth.signOut")} onClick={() => void signOut().then(() => window.location.assign("/"))}>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              aria-label={t("auth.signOut")}
+              onClick={() => void signOut().then(() => window.location.assign("/"))}
+            >
               <LogOut aria-hidden />
             </Button>
           ) : null}
