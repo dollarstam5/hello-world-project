@@ -4,10 +4,10 @@ set -euo pipefail
 HOST="127.0.0.1"
 PORT="4173"
 BASE_URL="http://${HOST}:${PORT}"
-SERVER_LOG="${TMPDIR:-/tmp}/vitala-preview.log"
+SERVER_LOG="${TMPDIR:-/tmp}/vitala-e2e.log"
 
 bun run build:check >/dev/null
-bun run preview --host "$HOST" --port "$PORT" >"$SERVER_LOG" 2>&1 &
+bun run dev --host "$HOST" --port "$PORT" >"$SERVER_LOG" 2>&1 &
 SERVER_PID=$!
 trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
 
