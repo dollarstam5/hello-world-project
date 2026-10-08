@@ -34,4 +34,15 @@ for viewport in "360,800" "390,844" "412,915" "768,1024"; do
   test -s "$output"
 done
 
-echo "Mobile E2E smoke validation passed for 360x800, 390x844, 412x915 and 768x1024."
+for route in "/flash" "/radar" "/talents" "/espace"; do
+  output="/tmp/vitala-route-${route#/}.png"
+  bunx playwright screenshot \
+    --browser=chromium \
+    --viewport-size="390,844" \
+    --wait-for-selector="#main" \
+    "$BASE_URL$route" \
+    "$output" >/dev/null
+  test -s "$output"
+done
+
+echo "Mobile E2E smoke validation passed for four target viewports and core routes."
