@@ -1,6 +1,6 @@
-import { gzipSync } from "node:zlib";
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
+import { gzipSync } from "node:zlib";
 import {
   assertPerformanceBudgets,
   type PerformanceBudgetResult,
@@ -17,6 +17,11 @@ function filesUnder(directory: string): string[] {
 
 function gzipKb(path: string): number {
   return gzipSync(readFileSync(path), { level: 9 }).length / 1024;
+}
+
+function attribute(tag: string, name: string): string | undefined {
+  const match = tag.match(new RegExp(`\\b${name}\\s*=\\s*["']([^"']+)["']`, "i"));
+  return match?.[1];
 }
 
 function resolveReference(
@@ -42,28 +47,42 @@ function measurePerformanceBudgets(clientDirectory: string): PerformanceBudgetRe
   const htmlFiles = assets.filter((path) => path.endsWith(".html"));
   const initialJavaScript = new Set<string>();
   const initialCss = new Set<string>();
+  const criticalResources = new Set<string>();
 
   for (const htmlPath of htmlFiles) {
     const html = readFileSync(htmlPath, "utf8");
 
-    for (const match of html.matchAll(/<script[^>]+src="([^"]+)"/gi)) {
-      const resolved = resolveReference(clientDirectory, assets, match[1]);
+    for (const match of html.matchAll(/<script\b[^>]*>/gi)) {
+      const resolved = resolveReference(clientDirectory, assets, attribute(match[0], "src"));
       if (resolved?.endsWith(".js")) {
         initialJavaScript.add(resolved);
+        criticalResources.add(resolved);
       }
     }
 
-    for (const match of html.matchAll(/<link[^>]+rel="stylesheet"[^>]+href="([^"]+)"/gi)) {
-      const resolved = resolveReference(clientDirectory, assets, match[1]);
-      if (resolved?.endsWith(".css")) {
+    for (const match of html.matchAll(/<link\b[^>]*>/gi)) {
+      const tag = match[0];
+      const resolved = resolveReference(clientDirectory, assets, attribute(tag, "href"));
+      const rel = attribute(tag, "rel")?.toLowerCase() ?? "";
+
+      if (resolved?.endsWith(".css") && rel.split(/\s+/).includes("stylesheet")) {
         initialCss.add(resolved);
+        criticalResources.add(resolved);
+      }
+
+      if (
+        resolved &&
+        /(?:modulepreload|preload)/i.test(rel) &&
+        /\.(?:js|css|woff2?|ttf|webp|png|svg)$/i.test(resolved)
+      ) {
+        criticalResources.add(resolved);
       }
     }
   }
 
   const javascript = [...initialJavaScript];
   const css = [...initialCss];
-  const critical = [...initialJavaScript, ...initialCss];
+  const critical = [...criticalResources];
 
   return {
     initialJavaScriptGzipKb: javascript.reduce((sum, path) => sum + gzipKb(path), 0),
