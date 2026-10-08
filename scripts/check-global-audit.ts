@@ -1,5 +1,5 @@
-import { existsSync, readFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
+import { existsSync, readFileSync } from "node:fs";
 
 const requiredFiles = [
   "docs/PROJECT_BIBLE.md",
@@ -15,12 +15,7 @@ const requiredFiles = [
 ];
 
 const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
-const requiredScripts = [
-  "check:pwa",
-  "check:web-vitals",
-  "check:performance-budget",
-  "test:e2e",
-];
+const requiredScripts = ["check:pwa", "check:web-vitals", "check:performance-budget", "test:e2e"];
 
 const missingFiles = requiredFiles.filter((path) => !existsSync(path));
 const missingScripts = requiredScripts.filter((name) => !packageJson.scripts?.[name]);
@@ -37,11 +32,9 @@ if (existsSync(".env")) {
   throw new Error("Global audit failed: tracked/local .env must not exist in CI.");
 }
 
-const changedFiles = execFileSync(
-  "git",
-  ["diff", "--name-only", "main...HEAD"],
-  { encoding: "utf8" },
-)
+const changedFiles = execFileSync("git", ["diff", "--name-only", "main...HEAD"], {
+  encoding: "utf8",
+})
   .split("\n")
   .map((path) => path.trim())
   .filter(Boolean);
