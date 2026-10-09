@@ -1,4 +1,4 @@
-import type { SupabaseClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import type { AssistantRequest, AssistantResult } from "@eco/core-contracts";
 import { getServerConfig } from "@/lib/config.server";
 import {
