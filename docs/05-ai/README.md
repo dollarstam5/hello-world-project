@@ -6,9 +6,9 @@ This section is the canonical entry point for AI-assisted work on the project.
 
 Before any code change, AI agents should follow this order:
 
-1. AI constitution
-2. AI decision tree
-3. AI development manual
+1. [constitution.md](./constitution.md)
+2. [decision-tree.md](./decision-tree.md)
+3. [development-manual.md](./development-manual.md)
 4. architecture rules
 5. coding standards
 6. security rules
@@ -46,8 +46,10 @@ An AI must not:
 
 ## Canonical AI files
 
-- [ai-rulebook.md](./ai-rulebook.md)
 - [constitution.md](./constitution.md)
+- [decision-tree.md](./decision-tree.md)
+- [development-manual.md](./development-manual.md)
+- [ai-rulebook.md](./ai-rulebook.md)
 - [coding-standards.md](./coding-standards.md)
 - [security-rules.md](./security-rules.md)
 - [testing-standards.md](./testing-standards.md)
@@ -62,4 +64,4 @@ An AI must not:
 - `docs/13-AI-SECURITY-RULES.md`
 - `docs/14-AI-TESTING-STANDARDS.md`
 
-These legacy files are still preserved as historical references, while the canonical folder above is the active source for AI process guidance.
+These legacy files remain as historical references; the canonical AI folder above is the active source for guidance.
