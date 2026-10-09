@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { SignInView } from "@/domains/admin/ui/SignInView";
+import { SignInView } from "@/domains/auth/ui/SignInView";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
