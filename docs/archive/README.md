@@ -1,6 +1,6 @@
 # Documentation Archive
 
-Ce dossier documentaire répertorie les sources historiques conservées pour la traçabilité et la migration. Les fichiers restent à leur emplacement actuel ; ils ne sont pas supprimés ni déplacés par le simple fait d'être répertoriés ici.
+Ce dossier documentaire répertorie les sources historiques conservées pour la traçabilité et la migration. Les fichiers restent à leur emplacement actuel ; ils ne sont pas supprimés ni déplacés du simple fait d'être répertoriés ici.
 
 ## Purpose
 
@@ -15,10 +15,15 @@ La documentation active vit dans :
 - `docs/06-operations/`
 - `docs/07-annexes/`
 
-## Sources historiques des lots 1 et 2
+## Sources historiques conservées
+
+### Vision, produit et personas
 
 - `docs/01-VITALA - VISION PRODUIT V1.md`
 - `docs/02-VITALA - PERSONAS V1.md`
+
+### Identité et confiance
+
 - `docs/03-VITALA-TRUST-LEVELS-V1.md Mise � jour 1.md` (nom encodé de façon imparfaite dans GitHub)
 - `docs/03-VITALA-TRUST-LEVELS-V1.md Mise � jour 2.md` (nom encodé de façon imparfaite dans GitHub)
 - `docs/03A-VITALA-TRUST-A LEVELS-V1 Partie 0.md`
@@ -29,6 +34,25 @@ La documentation active vit dans :
 - `docs/14-VITALA-VEILLE-ENGINE. Model - Unified Digital Identity (UDI).md`
 - `docs/5. Unified Digital Identity API.md`
 - `docs/8. Trust API.md`
+
+### Architecture, API et données
+
+- `docs/18-VITALA-ARCHITECTURE-V1 Partie 1.md`
+- `docs/18-VITALA-ARCHITECTURE-V1 Partie 2.md`
+- `docs/18-VITALA-ARCHITECTURE-V1 Partie 3.md`
+- `docs/16. Settings API(1).md`
+- `docs/BUILD-API.md 2. Principes communs.md`
+- `docs/Database Architecture.md`
+- `docs/DATA_MODEL.md`
+
+### IA et règles du projet
+
+- `docs/00-AI-README.md.md`
+- `docs/AI-RULEBOOK.md`
+- `docs/PROJECT_BIBLE.md`
+
+### Expérience, design et performance
+
 - `docs/17-Vitala Experience System Partie 1.md`
 - `docs/DESIGN_LANGUAGE.md`
 - `docs/PERFORMANCE_ISSUES.md`
