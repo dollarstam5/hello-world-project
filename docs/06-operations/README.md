@@ -7,6 +7,7 @@ Cette section documente les opérations runtime, le déploiement, les budgets de
 - [Deployment](./deployment.md)
 - [Operations](./operations.md)
 - [Release readiness and Go/No-Go](./release-readiness.md)
+- [Disaster recovery and business continuity](./disaster-recovery.md)
 - [Performance PWA](./performance-pwa.md)
 - [Performance issue register](./performance-issues.md)
 - [Technical issue register](./technical-issues.md)
