@@ -2,6 +2,11 @@
 
 Ce dossier documentaire répertorie les sources historiques conservées pour la traçabilité et la migration. Les fichiers restent à leur emplacement actuel ; ils ne sont pas supprimés ni déplacés du simple fait d'être répertoriés ici.
 
+## Outils de migration documentaire
+
+- [Cartographie de migration documentaire](../documentation-migration-map.md) — associe les références canoniques aux sources historiques recensées et liste les vérifications restantes.
+- [Candidats aux suppressions proposées](../proposed-document-removals.md) — liste distincte de candidats, sans autorisation de suppression.
+
 ## Purpose
 
 La documentation active vit dans :
@@ -80,5 +85,6 @@ Les documents historiques mentionnent aussi UJ-08 Flash, UJ-09 Radar et UJ-10 Ve
 - Les travaux actifs doivent pointer vers les documents canoniques.
 - Les fichiers historiques ne sont ni modifiés ni supprimés, sauf réindexation nécessaire et autorisée.
 - Une source historique reste conservée tant que sa référence canonique n'a pas été validée techniquement et que la migration n'a pas reçu d'autorisation explicite.
+- La cartographie et la liste des candidats au retrait ne valent ni validation technique ni autorisation destructive.
 - Éviter d'ajouter de nouveaux fragments numérotés ou redondants.
 - Les références canoniques distinguent explicitement les exigences cibles de l'implémentation vérifiée.
