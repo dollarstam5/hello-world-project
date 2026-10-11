@@ -19,13 +19,13 @@ La documentation active vit dans :
 
 - `docs/01-VITALA - VISION PRODUIT V1.md`
 - `docs/02-VITALA - PERSONAS V1.md`
-- `docs/03-VITALA-TRUST-LEVELS-V1.md Mise à jour 1.md` (nom encodé de façon imparfaite dans GitHub)
-- `docs/03-VITALA-TRUST-LEVELS-V1.md Mise à jour 2.md` (nom encodé de façon imparfaite dans GitHub)
+- `docs/03-VITALA-TRUST-LEVELS-V1.md Mise � jour 1.md` (nom encodé de façon imparfaite dans GitHub)
+- `docs/03-VITALA-TRUST-LEVELS-V1.md Mise � jour 2.md` (nom encodé de façon imparfaite dans GitHub)
 - `docs/03A-VITALA-TRUST-A LEVELS-V1 Partie 0.md`
 - `docs/03A-VITALA-TRUST-ENGINE-V1 Partie 1.md`
 - `docs/03A-VITALA-TRUST-ENGINE-V1 Partie 2.md`
 - `docs/03A-VITALA-TRUST-ENGINE-V1 Partie 3.md`
-- `docs/03A-VITALA-TRUST-ENGINE-V1.md Mise à jour.md` (nom encodé de façon imparfaite dans GitHub)
+- `docs/03A-VITALA-TRUST-ENGINE-V1.md Mise � jour.md` (nom encodé de façon imparfaite dans GitHub)
 - `docs/14-VITALA-VEILLE-ENGINE. Model - Unified Digital Identity (UDI).md`
 - `docs/5. Unified Digital Identity API.md`
 - `docs/8. Trust API.md`
