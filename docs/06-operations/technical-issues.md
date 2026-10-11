@@ -41,6 +41,15 @@
 - **Risque :** une fusion automatique peut ne pas correspondre aux invariants métier, notamment pour les transitions de statut ou les données dépendantes.
 - **Vérification requise :** définir des règles par domaine, tester deux appareils modifiant les mêmes champs et les champs distincts, couvrir suppressions et transitions de statut, et définir une récupération visible des mutations en quarantaine.
 
+## TECH-006 — Voies d'intégration IA divergentes
+
+- **Priorité :** à clarifier avant toute évolution fonctionnelle, coût ou sécurité de l'assistant.
+- **Constat :** le chemin relié à `AssistantTab` passe par `useHybridAssistant` et `POST /api/public/assistant`, dont le handler appelle la passerelle Lovable. Le dépôt contient aussi `askAssistant` / `runPaidAssistant`, qui utilisent la validation partagée, les quotas SQL, le cache promu et la passerelle Cloudflare AI, ainsi qu'une abstraction `AssistantProvider` mock.
+- **Risque :** les limites de conversation, les filtres de contenu sensible, les quotas, la gestion des erreurs et les paramètres fournisseur ne sont pas identiques par construction. La présence d'un chemin dans le dépôt ne prouve pas qu'il est actif ni qu'il est utilisé par l'interface.
+- **Vérification requise :** inventorier les appelants de chaque voie, confirmer le chemin réellement déployé, choisir une voie canonique ou définir leurs responsabilités, comparer les protections et les budgets, puis ajouter des tests d'intégration.
+- **Garde-fou :** ce constat ne justifie pas une modification de code, de fournisseur, de secrets ou de base de données dans le lot documentaire. Vérifier également TECH-001 avant de s'appuyer sur les tables/fonctions IA.
+- **Référence :** [Architecture IA et intégrations](../02-architecture/ai-architecture-integrations.md).
+
 ## Méthode de triage
 
 Pour chaque entrée, consigner le commit et l'environnement examinés, les fichiers et tests concernés, le comportement attendu et observé, la preuve reproductible, le risque utilisateur, le propriétaire de la décision et les critères de clôture.
