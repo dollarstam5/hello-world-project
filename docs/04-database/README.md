@@ -1,26 +1,29 @@
 # Database
 
-This section documents the database architecture and design for the platform.
+This section documents the repository-backed PostgreSQL model, migrations, grants, and Row Level Security (RLS). It distinguishes schema present in the standard migration path from later candidate SQL artifacts.
 
-## Contents
+## Canonical references
 
-- [data-dictionary.md](./data-dictionary.md)
-- [schema-design.md](./schema-design.md)
+- [Data dictionary](./data-dictionary.md) — baseline tables, relationships, fields, and sync metadata.
+- [Schema design, grants, and RLS](./schema-design.md) — baseline access matrix, test coverage, and reconciliation work.
+- [Database architecture](../02-architecture/database-architecture.md) — Auth, persistence, synchronization, and migration-source boundaries.
 
-## PostgreSQL Standards
+## PostgreSQL standards
 
-All database work must follow:
-- RLS (Row Level Security) policies
-- Performance budgets (see ANNEXE E)
-- Transaction isolation levels
-- Backup and recovery procedures
+- Define table grants and RLS policies together in a reviewed migration.
+- Keep ownership checks in the database; do not rely on UI visibility as authorization.
+- Treat `service_role` as privileged and bypassing RLS.
+- Use explicit, safe `search_path` values for privileged functions and review their execute grants.
+- Keep server-assigned revision fields authoritative.
+- Test both positive access and cross-user denial, including field-level restrictions and privileged transitions.
+- Verify the actual migration runner and applied database schema before declaring a table or policy deployed.
 
-## Legacy references
+## Historical references retained
 
 - `docs/DATABASE-DICTIONARY Partie 1.md`
 - `docs/DATABASE-DICTIONARY Partie 2.md`
-- `docs/DATABASE-RLS-MATRIX.md`
 - `docs/Database Architecture.md`
 - `docs/Vitala Database Architecture.md`
+- `docs/DATA_MODEL.md`
 
-These files remain as historical references; consult the canonical folder for active guidance.
+These references remain historical context. Their intended architecture is not proof of the current SQL schema. No historical document is deleted or moved as part of this lot.
