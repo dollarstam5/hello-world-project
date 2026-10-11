@@ -1,10 +1,11 @@
 # Architecture
 
-Cette section rassemble les documents d'architecture technique et les frontières des domaines métier.
+Cette section rassemble les documents d'architecture technique, les frontières des domaines métier et les conventions du front-end.
 
 ## Contents
 
 - [System architecture](./system-architecture.md)
+- [Front-end and experience architecture](./frontend-experience.md)
 - [Database architecture](./database-architecture.md)
 - [Unified Digital Identity model](./identity-model.md)
 - [Trust domain and Trust Engine](./trust-domain.md)
