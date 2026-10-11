@@ -8,6 +8,7 @@ Cette section rassemble les documents d'architecture technique, les frontières 
 - [Front-end and experience architecture](./frontend-experience.md)
 - [Backend and API architecture](./backend-api.md)
 - [Database architecture](./database-architecture.md)
+- [Synchronization, offline mode and realtime](./synchronization-offline-realtime.md)
 - [Unified Digital Identity model](./identity-model.md)
 - [Trust domain and Trust Engine](./trust-domain.md)
 
