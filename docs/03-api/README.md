@@ -1,6 +1,6 @@
 # API reference
 
-This section centralizes the contract documentation for the platform APIs.
+This section centralizes the contract documentation for the platform APIs. The runtime inventory and cross-cutting server boundaries are documented in [Backend and API architecture](../02-architecture/backend-api.md).
 
 ## Contents
 
@@ -9,6 +9,8 @@ This section centralizes the contract documentation for the platform APIs.
 - [trust-api.md](./trust-api.md)
 - [radar-api.md](./radar-api.md)
 - [sync-api.md](./sync-api.md)
+
+These pages are canonical entry points, but some remain link-only references. Their presence does not by itself prove that a matching runtime endpoint is implemented.
 
 ## Legacy references
 
