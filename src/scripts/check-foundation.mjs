@@ -123,7 +123,7 @@ const requiredFiles = [
   "playwright.config.ts",
   "tests/e2e/mobile-foundation.spec.ts",
   "tests/performance/web-vitals.test.ts",
-  "docs/PERFORMANCE_PWA.md",
+  "docs/06-operations/performance-pwa.md",
   "src/lib/maintenance.server.ts",
   "src/routes/api/cron/maintenance.ts",
   "src/data/knowledge.json",
