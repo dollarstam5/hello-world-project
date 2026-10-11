@@ -18,7 +18,7 @@ The initial schema migration creates these nine `public` tables.
 | `notifications` | Per-recipient notifications | `id`; `recipient_id → auth.users.id` | `channel`, translation keys, `params jsonb`, `read_at` |
 | `audit` | Sensitive-action audit entries | `id`; nullable `actor_id → auth.users.id` | `action`, `target_table`, `target_id`, `summary` |
 
-The migration also defines the `app_role` enum (`member`, `moderator`, `admin`, `owner`), the global `sync_revision_seq` sequence, and the `assign_sync_revision()` trigger function.
+The migration also defines the `app_role` enum (`member`, `moderator`, `admin`, `owner`), the global `sync_revision_seq` sequence, and the `assign_sync_revision()` trigger function. In the baseline grants, authenticated has only `SELECT` on `user_roles`; the `owners manage roles` RLS policy does not independently grant role-management writes.
 
 ## Common persistence envelope
 
