@@ -115,4 +115,4 @@ Ne déclarer le service rétabli que lorsque les critères applicables sont vér
 
 ## Référence historique
 
-Le document historique [Plan de reprise d'activité — Annexe G](../ANNEXE%20G%20%E2%80%94%20Plan%20de%20reprise%20d'activit%C3%A9%20(Disaster%20Recovery%20%26%20Business%20Continuity).md) est conservé pour la traçabilité. Cette référence canonique précise les preuves opérationnelles attendues ; elle ne certifie pas que les sauvegardes, restaurations, responsables ou objectifs RTO/RPO sont déjà configurés et validés.
+Le document historique [Plan de reprise d'activité — Annexe G](../ANNEXE%20G%20%E2%80%94%20Plan%20de%20reprise%20d'activit%C3%A9%20(Disaster%20Recovery%20%26%20Business%20Continuity%29.md) est conservé pour la traçabilité. Cette référence canonique précise les preuves opérationnelles attendues ; elle ne certifie pas que les sauvegardes, restaurations, responsables ou objectifs RTO/RPO sont déjà configurés et validés.
