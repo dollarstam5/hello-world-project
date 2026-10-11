@@ -36,13 +36,19 @@ Ce répertoire suit une structure canonique pour la documentation active.
 - [Préparation de release et décision Go/No-Go](./06-operations/release-readiness.md)
 - [Reprise après incident et continuité d'activité](./06-operations/disaster-recovery.md)
 
+## Migration documentaire
+
+- [Cartographie des références canoniques et historiques](./documentation-migration-map.md) — correspondances par domaine et vérifications restantes.
+- [Candidats aux suppressions documentaires](./proposed-document-removals.md) — propositions uniquement, en attente d'approbation explicite.
+
 ## Archives
 
-Les sources historiques sont conservées dans [l'index des archives](./archive/README.md) pour assurer la traçabilité. Une entrée dans l'archive ne signifie pas que le fichier a été supprimé ni que la migration est approuvée.
+Les sources historiques sont répertoriées dans [l'index des archives](./archive/README.md). Être répertorié ne signifie pas qu'un fichier a été déplacé, supprimé ou que sa migration est approuvée.
 
 ## Convention
 
 - Les nouvelles modifications doivent viser les références canoniques.
 - Les sources historiques ne sont ni supprimées ni déplacées avant validation technique et autorisation explicite.
+- Une candidature au retrait ne constitue pas une autorisation de suppression.
 - Éviter de créer de nouveaux fragments numérotés lorsque le contenu peut être intégré à une référence canonique.
 - Une référence documentaire décrit l'intention et les règles ; elle ne certifie pas à elle seule l'implémentation courante.
