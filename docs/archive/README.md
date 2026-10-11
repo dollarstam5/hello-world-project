@@ -1,6 +1,6 @@
 # Documentation Archive
 
-Ce dossier conserve les sources historiques pour la traçabilité et la migration. Elles ne sont plus destinées à être la source active de vérité pour les travaux d'ingénierie.
+Ce dossier documentaire répertorie les sources historiques conservées pour la traçabilité et la migration. Les fichiers restent à leur emplacement actuel ; ils ne sont pas supprimés ni déplacés par le simple fait d'être répertoriés ici.
 
 ## Purpose
 
@@ -15,24 +15,24 @@ La documentation active vit dans :
 - `docs/06-operations/`
 - `docs/07-annexes/`
 
-## Références historiques conservées
+## Sources historiques des lots 1 et 2
 
-- `docs/00-AI-README.md.md`
 - `docs/01-VITALA - VISION PRODUIT V1.md`
-- `docs/03-VITALA-TRUST-LEVELS-V1.md ...`
+- `docs/02-VITALA - PERSONAS V1.md`
+- `docs/03-VITALA-TRUST-LEVELS-V1.md Mise à jour 1.md` (nom encodé de façon imparfaite dans GitHub)
+- `docs/03-VITALA-TRUST-LEVELS-V1.md Mise à jour 2.md` (nom encodé de façon imparfaite dans GitHub)
+- `docs/03A-VITALA-TRUST-A LEVELS-V1 Partie 0.md`
 - `docs/03A-VITALA-TRUST-ENGINE-V1 Partie 1.md`
-- `docs/14-VITALA-VEILLE-ENGINE.md Partie 1.md`
-- `docs/16. Settings API(1).md`
+- `docs/03A-VITALA-TRUST-ENGINE-V1 Partie 2.md`
+- `docs/03A-VITALA-TRUST-ENGINE-V1 Partie 3.md`
+- `docs/03A-VITALA-TRUST-ENGINE-V1.md Mise à jour.md` (nom encodé de façon imparfaite dans GitHub)
+- `docs/14-VITALA-VEILLE-ENGINE. Model - Unified Digital Identity (UDI).md`
+- `docs/5. Unified Digital Identity API.md`
+- `docs/8. Trust API.md`
 - `docs/17-Vitala Experience System Partie 1.md`
-- `docs/18-VITALA-ARCHITECTURE-V1 Partie 1.md`
-- `docs/AI-RULEBOOK.md`
-- `docs/BUILD-API.md 2. Principes communs.md`
-- `docs/Database Architecture.md`
-- `docs/DATA_MODEL.md`
 - `docs/DESIGN_LANGUAGE.md`
 - `docs/PERFORMANCE_ISSUES.md`
 - `docs/PERFORMANCE_PWA.md`
-- `docs/PROJECT_BIBLE.md`
 
 ## Policy
 
@@ -40,3 +40,4 @@ La documentation active vit dans :
 - Les fichiers historiques ne sont ni modifiés ni supprimés, sauf réindexation nécessaire et autorisée.
 - Une source historique reste conservée tant que sa référence canonique n'a pas été validée techniquement et que la migration n'a pas reçu d'autorisation explicite.
 - Éviter d'ajouter de nouveaux fragments numérotés ou redondants.
+- Les références canoniques distinguent explicitement les exigences cibles de l'implémentation vérifiée.
