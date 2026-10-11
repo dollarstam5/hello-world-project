@@ -33,6 +33,7 @@ Ce répertoire suit une structure canonique pour la documentation active.
 - [Performance PWA](./06-operations/performance-pwa.md)
 - [Registre des problèmes de performance](./06-operations/performance-issues.md)
 - [Registre des problèmes techniques](./06-operations/technical-issues.md)
+- [Préparation de release et décision Go/No-Go](./06-operations/release-readiness.md)
 
 ## Archives
 
