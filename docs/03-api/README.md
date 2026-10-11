@@ -10,7 +10,7 @@ This section centralizes the contract documentation for the platform APIs. The r
 - [radar-api.md](./radar-api.md)
 - [sync-api.md](./sync-api.md)
 
-These pages are canonical entry points, but some remain link-only references. Their presence does not by itself prove that a matching runtime endpoint is implemented.
+See [API contract status and runtime mapping](./contract-runtime-status.md) for the distinction between historical target contracts and routes confirmed in the repository. These pages are canonical entry points, but some remain link-only references. Their presence does not by itself prove that a matching runtime endpoint is implemented.
 
 ## Legacy references
 
