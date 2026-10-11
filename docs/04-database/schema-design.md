@@ -17,9 +17,9 @@ The matrix below describes policies and grants in the initial SQL migration unde
 
 | Table | Authenticated SQL grants in baseline | RLS policies in baseline | Intended boundary expressed by policy |
 |---|---|---|---|
-| `user_roles` | `SELECT` | `own roles are readable`; `owners manage roles` | Read own role rows; owner role can manage rows |
+| `user_roles` | `SELECT` | `own roles are readable`; `owners manage roles` | Read own role rows; an owner-management policy is present, but authenticated has no DML grant in this baseline |
 | `profiles` | `SELECT, INSERT, UPDATE` | `profiles readable by members`; `own profile insert`; `own profile update` | Signed-in members can read non-deleted profiles; insert/update own profile |
-| `udi` | `SELECT, INSERT, UPDATE` | `own identity readable`; `own identity insert`; `own identity update` | Owner/admin visibility in initial policy; owner writes |
+| `udi` | `SELECT, INSERT, UPDATE` | `own identity readable`; `own identity insert`; `own identity update` | Own-row access plus admin read access in the initial policy; owner writes |
 | `media` | `SELECT, INSERT, UPDATE, DELETE` | `media readable by members`; `own media write` | Signed-in members can read non-deleted metadata; writes require ownership |
 | `flashes` | `SELECT, INSERT, UPDATE, DELETE` | `flashes readable by members`; `own flashes write`; `moderators moderate flashes` | Draft visibility is limited by author; author writes; moderator/admin update path |
 | `missions` | `SELECT, INSERT, UPDATE, DELETE` | `missions readable by members`; `own missions write`; `assignee advances mission` | Authenticated reads of non-deleted rows; author and assignee write paths |
@@ -27,7 +27,7 @@ The matrix below describes policies and grants in the initial SQL migration unde
 | `notifications` | `SELECT, UPDATE` | `own notifications readable`; `own notifications update` | Recipient reads and updates own notifications |
 | `audit` | `SELECT` | `audit readable by admins` | Admin/owner role required to read audit rows |
 
-The baseline grants `ALL` to `service_role` on these tables. That role bypasses RLS; use it only in trusted server code after authorization, never as a substitute for checking the caller.
+The `user_roles` policy named `owners manage roles` does not itself grant write privileges: authenticated has only `SELECT` on this table in the baseline, so that policy alone does not enable owner DML. The baseline grants `ALL` to `service_role` on these tables. That role bypasses RLS; use it only in trusted server code after authorization, never as a substitute for checking the caller.
 
 The initial storage migration defines separate policies on `storage.objects`: avatar objects are readable by authenticated members and writable/deletable only under the caller's folder; media objects are restricted to the caller's folder for select/insert/update/delete. Bucket existence/configuration and deployed Storage policy state are not proven by the policy file alone.
 
