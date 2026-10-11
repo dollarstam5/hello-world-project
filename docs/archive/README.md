@@ -58,6 +58,10 @@ Les documents historiques mentionnent aussi UJ-08 Flash, UJ-09 Radar et UJ-10 Ve
 - `docs/Database Architecture.md`
 - `docs/DATA_MODEL.md`
 
+### Exploitation et continuité
+
+- `docs/ANNEXE G — Plan de reprise d'activité (Disaster Recovery & Business Continuity).md`
+
 ### IA et règles du projet
 
 - `docs/00-AI-README.md.md`

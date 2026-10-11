@@ -34,6 +34,7 @@ Ce répertoire suit une structure canonique pour la documentation active.
 - [Registre des problèmes de performance](./06-operations/performance-issues.md)
 - [Registre des problèmes techniques](./06-operations/technical-issues.md)
 - [Préparation de release et décision Go/No-Go](./06-operations/release-readiness.md)
+- [Reprise après incident et continuité d'activité](./06-operations/disaster-recovery.md)
 
 ## Archives
 
