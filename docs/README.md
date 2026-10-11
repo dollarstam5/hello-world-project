@@ -1,28 +1,31 @@
 # Documentation
 
-This directory now follows a canonical topology for active project documentation.
+Ce répertoire suit une structure canonique pour la documentation active.
 
-## Active structure
+## Structure active
 
-- `00-foundation/` — build rules, architecture baseline, project conventions
-- `01-product/` — vision, personas, trust, experience
-- `02-architecture/` — system and database architecture
-- `03-api/` — API references and contracts
-- `04-database/` — schemas, dictionary, RLS, standards
-- `05-ai/` — AI governance and engineering rules
-- `06-operations/` — deployments, performance, release flow
-- `07-annexes/` — references, glossaries, policy material
+- [`00-foundation/`](./00-foundation/README.md) — architecture, conventions et langage de design
+- [`01-product/`](./01-product/README.md) — vision, personas, confiance et expérience
+- [`02-architecture/`](./02-architecture/README.md) — architecture système
+- [`03-api/`](./03-api/README.md) — contrats et références API
+- [`04-database/`](./04-database/README.md) — schémas et standards de données
+- [`05-ai/`](./05-ai/README.md) — gouvernance et règles d'ingénierie IA
+- [`06-operations/`](./06-operations/README.md) — déploiement, performance et release
+- [`07-annexes/`](./07-annexes/README.md) — glossaire et références complémentaires
 
-## Archive
+## Références canoniques ajoutées dans le premier lot
 
-Legacy documentation that is no longer used as the active source of truth is kept in:
+- [Langage de design Vitala](./00-foundation/design-language.md)
+- [Vitala Experience System](./01-product/experience-system.md)
+- [Performance PWA](./06-operations/performance-pwa.md)
+- [Registre des problèmes de performance](./06-operations/performance-issues.md)
 
-- [`archive/README.md`](./archive/README.md)
+## Archives
 
-These files are preserved for traceability but are intentionally not used for active engineering work.
+Les sources historiques sont conservées dans [l'index des archives](./archive/README.md) pour assurer la traçabilité. Une entrée dans l'archive ne signifie pas que le fichier a été supprimé ni que la migration est approuvée.
 
-## Recommended usage
+## Convention
 
-- Use the canonical folders for new documentation.
-- Use the archive for legacy content and historical references.
-- Prefer small, deduplicated sources over numbered or split documents.
+- Les nouvelles modifications doivent viser les références canoniques.
+- Les sources historiques ne sont ni supprimées ni déplacées avant validation technique et autorisation explicite.
+- Éviter de créer de nouveaux fragments numérotés lorsque le contenu peut être intégré à une référence canonique.

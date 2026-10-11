@@ -6,7 +6,7 @@ const requiredFiles = [
   "docs/PROJECT_BIBLE.md",
   "docs/QUALITY.md",
   "docs/OPERATIONS.md",
-  "docs/PERFORMANCE_PWA.md",
+  "docs/06-operations/performance-pwa.md",
   "docs/GLOBAL_AUDIT.md",
   "docs/REPRODUCIBILITY.md",
   "src/lib/performance/performance-budget-policy.ts",
