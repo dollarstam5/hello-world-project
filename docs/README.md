@@ -5,7 +5,7 @@ Ce répertoire suit une structure canonique pour la documentation active.
 ## Structure active
 
 - [`00-foundation/`](./00-foundation/README.md) — architecture, conventions et langage de design
-- [`01-product/`](./01-product/README.md) — vision, personas, confiance et expérience
+- [`01-product/`](./01-product/README.md) — vision, personas, parcours, confiance et expérience
 - [`02-architecture/`](./02-architecture/README.md) — architecture système, identité numérique et domaine Trust
 - [`03-api/`](./03-api/README.md) — contrats et références API
 - [`04-database/`](./04-database/README.md) — schémas et standards de données
@@ -18,6 +18,7 @@ Ce répertoire suit une structure canonique pour la documentation active.
 - [Langage de design Vitala](./00-foundation/design-language.md)
 - [Vitala Experience System](./01-product/experience-system.md)
 - [Personas Vitala](./01-product/personas.md)
+- [Parcours utilisateurs](./01-product/user-journeys.md)
 - [Niveaux de confiance](./01-product/trust-levels.md)
 - [Domaine Trust et Trust Engine](./02-architecture/trust-domain.md)
 - [Modèle d'identité numérique unifiée](./02-architecture/identity-model.md)
