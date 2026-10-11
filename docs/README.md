@@ -21,6 +21,7 @@ Ce répertoire suit une structure canonique pour la documentation active.
 - [Architecture backend et API](./02-architecture/backend-api.md)
 - [Architecture de la base de données](./02-architecture/database-architecture.md)
 - [Synchronisation, mode hors ligne et temps réel](./02-architecture/synchronization-offline-realtime.md)
+- [Architecture IA et intégrations](./02-architecture/ai-architecture-integrations.md)
 - [API de synchronisation](./03-api/sync-api.md)
 - [Dictionnaire de données](./04-database/data-dictionary.md)
 - [Schéma, grants et politiques RLS](./04-database/schema-design.md)
