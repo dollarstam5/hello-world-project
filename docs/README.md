@@ -6,11 +6,11 @@ Ce répertoire suit une structure canonique pour la documentation active.
 
 - [`00-foundation/`](./00-foundation/README.md) — architecture, conventions et langage de design
 - [`01-product/`](./01-product/README.md) — vision, personas, parcours, confiance et expérience
-- [`02-architecture/`](./02-architecture/README.md) — architecture système, front-end, backend, base de données et identité numérique
+- [`02-architecture/`](./02-architecture/README.md) — architecture système, front-end, backend, base de données, synchronisation et identité numérique
 - [`03-api/`](./03-api/README.md) — contrats et références API
 - [`04-database/`](./04-database/README.md) — modèle de données, schéma PostgreSQL, grants et politiques RLS
 - [`05-ai/`](./05-ai/README.md) — gouvernance et règles d'ingénierie IA
-- [`06-operations/`](./06-operations/README.md) — déploiement, performance et release
+- [`06-operations/`](./06-operations/README.md) — déploiement, performance, problèmes techniques et release
 - [`07-annexes/`](./07-annexes/README.md) — glossaire et références complémentaires
 
 ## Références canoniques
@@ -20,6 +20,8 @@ Ce répertoire suit une structure canonique pour la documentation active.
 - [Architecture front-end et expérience](./02-architecture/frontend-experience.md)
 - [Architecture backend et API](./02-architecture/backend-api.md)
 - [Architecture de la base de données](./02-architecture/database-architecture.md)
+- [Synchronisation, mode hors ligne et temps réel](./02-architecture/synchronization-offline-realtime.md)
+- [API de synchronisation](./03-api/sync-api.md)
 - [Dictionnaire de données](./04-database/data-dictionary.md)
 - [Schéma, grants et politiques RLS](./04-database/schema-design.md)
 - [Personas Vitala](./01-product/personas.md)
@@ -29,6 +31,7 @@ Ce répertoire suit une structure canonique pour la documentation active.
 - [Modèle d'identité numérique unifiée](./02-architecture/identity-model.md)
 - [Performance PWA](./06-operations/performance-pwa.md)
 - [Registre des problèmes de performance](./06-operations/performance-issues.md)
+- [Registre des problèmes techniques](./06-operations/technical-issues.md)
 
 ## Archives
 
