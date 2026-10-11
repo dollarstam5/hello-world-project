@@ -15,7 +15,7 @@ Le projet se construit dans un ordre stable et guidé par les dépendances. Tout
 
 ## Canonical references
 
-- [Architecture](../ARCHITECTURE.md)
+- [Architecture](../../ARCHITECTURE.md)
 - [Quality](../QUALITY.md)
 - [Go/No-Go](../GO_NO_GO.md)
 - [Reproducibility](../REPRODUCIBILITY.md)
