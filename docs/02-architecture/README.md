@@ -9,6 +9,7 @@ Cette section rassemble les documents d'architecture technique, les frontières 
 - [Backend and API architecture](./backend-api.md)
 - [Database architecture](./database-architecture.md)
 - [Synchronization, offline mode and realtime](./synchronization-offline-realtime.md)
+- [AI architecture and integrations](./ai-architecture-integrations.md)
 - [Unified Digital Identity model](./identity-model.md)
 - [Trust domain and Trust Engine](./trust-domain.md)
 
