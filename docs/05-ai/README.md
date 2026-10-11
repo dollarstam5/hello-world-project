@@ -44,6 +44,10 @@ An AI must not:
 - modify unrelated domains
 - hide errors or skip validation
 
+## Architecture et intégrations IA
+
+- [Architecture IA et intégrations](../02-architecture/ai-architecture-integrations.md) décrit les voies IA présentes dans le runtime, leurs frontières de sécurité et les écarts à résoudre avant évolution.
+
 ## Canonical AI files
 
 - [constitution.md](./constitution.md)
