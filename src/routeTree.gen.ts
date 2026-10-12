@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TalentsRouteImport } from './routes/talents'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RadarRouteImport } from './routes/radar'
 import { Route as FlashRouteImport } from './routes/flash'
 import { Route as EspaceRouteImport } from './routes/espace'
@@ -27,6 +28,11 @@ import { Route as AuthenticatedAdminModuleRouteImport } from './routes/_authenti
 const TalentsRoute = TalentsRouteImport.update({
   id: '/talents',
   path: '/talents',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RadarRoute = RadarRouteImport.update({
@@ -101,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/espace': typeof EspaceRoute
   '/flash': typeof FlashRoute
   '/radar': typeof RadarRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/talents': typeof TalentsRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/api/health': typeof ApiHealthRoute
@@ -116,6 +123,7 @@ export interface FileRoutesByTo {
   '/espace': typeof EspaceRoute
   '/flash': typeof FlashRoute
   '/radar': typeof RadarRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/talents': typeof TalentsRoute
   '/api/health': typeof ApiHealthRoute
   '/admin/$module': typeof AuthenticatedAdminModuleRoute
@@ -132,6 +140,7 @@ export interface FileRoutesById {
   '/espace': typeof EspaceRoute
   '/flash': typeof FlashRoute
   '/radar': typeof RadarRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/talents': typeof TalentsRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/api/health': typeof ApiHealthRoute
@@ -149,6 +158,7 @@ export interface FileRouteTypes {
     | '/espace'
     | '/flash'
     | '/radar'
+    | '/reset-password'
     | '/talents'
     | '/admin'
     | '/api/health'
@@ -164,6 +174,7 @@ export interface FileRouteTypes {
     | '/espace'
     | '/flash'
     | '/radar'
+    | '/reset-password'
     | '/talents'
     | '/api/health'
     | '/admin/$module'
@@ -179,6 +190,7 @@ export interface FileRouteTypes {
     | '/espace'
     | '/flash'
     | '/radar'
+    | '/reset-password'
     | '/talents'
     | '/_authenticated/admin'
     | '/api/health'
@@ -196,6 +208,7 @@ export interface RootRouteChildren {
   EspaceRoute: typeof EspaceRoute
   FlashRoute: typeof FlashRoute
   RadarRoute: typeof RadarRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   TalentsRoute: typeof TalentsRoute
   ApiHealthRoute: typeof ApiHealthRoute
   ApiPublicAssistantRoute: typeof ApiPublicAssistantRoute
@@ -210,6 +223,13 @@ declare module '@tanstack/react-router' {
       path: '/talents'
       fullPath: '/talents'
       preLoaderRoute: typeof TalentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/radar': {
@@ -337,6 +357,7 @@ const rootRouteChildren: RootRouteChildren = {
   EspaceRoute: EspaceRoute,
   FlashRoute: FlashRoute,
   RadarRoute: RadarRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   TalentsRoute: TalentsRoute,
   ApiHealthRoute: ApiHealthRoute,
   ApiPublicAssistantRoute: ApiPublicAssistantRoute,
