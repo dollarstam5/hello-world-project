@@ -3,6 +3,8 @@
 **Lot 12 — Étape 2 : liste de propositions uniquement.**  
 **Statut : AUCUNE suppression autorisée par ce document.** Aucun fichier historique n'est supprimé, déplacé ou renommé dans le Lot 12.
 
+Avant de décider du sort d'un candidat, consulter l'[audit préliminaire de couverture du contenu](./documentation-content-coverage.md). Cette première passe relève des blocages manifestes et n'est pas une validation exhaustive de chaque fichier.
+
 Cette liste sert à préparer une décision explicite. Les candidats ci-dessous ne sont pas déclarés redondants par simple similarité de nom ou par présence dans un index d'archives.
 
 ## Candidats à évaluer après comparaison de contenu

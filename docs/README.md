@@ -39,6 +39,7 @@ Ce répertoire suit une structure canonique pour la documentation active.
 ## Migration documentaire
 
 - [Cartographie des références canoniques et historiques](./documentation-migration-map.md) — correspondances par domaine et vérifications restantes.
+- [Audit préliminaire de couverture du contenu](./documentation-content-coverage.md) — premiers constats de comparaison ; aucun retrait n'est autorisé par cet audit.
 - [Candidats aux suppressions documentaires](./proposed-document-removals.md) — propositions uniquement, en attente d'approbation explicite.
 
 ## Archives
