@@ -28,6 +28,7 @@ Les contrats historiques décrivent des chemins REST métier. Les pages canoniqu
 | Veille | `GET /veille`, `GET /veille/{id}`, `POST /veille/{id}/read` | Contrat cible historique ; route runtime non confirmée ici |
 | Recommendation | `GET /recommendations`, `GET /recommendations/{id}` | Contrat cible historique ; route runtime non confirmée ici |
 | Auth | Les contrats historiques décrivent inscription, connexion, renouvellement et récupération de compte | Inventaire runtime distinct à mener avant toute conclusion sur les routes disponibles |
+| UDI | Le contrat historique propose `GET /me`, des `PATCH /me/...` et des lectures de vues (`/me/trust`, `/me/radar`, `/me/veille`, etc.) | Contrat cible historique ; routes runtime non confirmées par l'inventaire courant |
 
 Les chemins ci-dessus sont des exemples tirés des documents historiques, non une liste exhaustive et non des endpoints garantis. Ne pas générer de client, d'intégration ou de test d'acceptation en supposant leur disponibilité.
 
@@ -56,7 +57,7 @@ Les garanties liées aux reçus d'idempotence et au schéma distant restent non 
 - [Répertoire des contrats API](./README.md)
 - [Contrat API de synchronisation](./sync-api.md)
 - [Registre des problèmes techniques](../06-operations/technical-issues.md)
-- Sources historiques conservées : [`docs/03-engines/flash/6. Flash API.md`](<../03-engines/flash/6. Flash API.md>), [`docs/03-engines/trust/8. Trust API.md`](<../03-engines/trust/8. Trust API.md>), [`docs/03-engines/radar/9. Radar API.md`](<../03-engines/radar/9. Radar API.md>), [`docs/03-engines/veille/10. Veille API.md`](<../03-engines/veille/10. Veille API.md>), [`docs/03-engines/recommendation/11._Recommendation_API.md`](<../03-engines/recommendation/11._Recommendation_API.md>), `docs/4. Auth API.md`. L'UDI API demeure à `docs/5. Unified Digital Identity API.md` en tant que contrat transversal historique.
+- Sources historiques conservées : [`docs/03-engines/flash/6. Flash API.md`](<../03-engines/flash/6. Flash API.md>), [`docs/03-engines/trust/8. Trust API.md`](<../03-engines/trust/8. Trust API.md>), [`docs/03-engines/radar/9. Radar API.md`](<../03-engines/radar/9. Radar API.md>), [`docs/03-engines/veille/10. Veille API.md`](<../03-engines/veille/10. Veille API.md>), [`docs/03-engines/recommendation/11._Recommendation_API.md`](<../03-engines/recommendation/11._Recommendation_API.md>), `docs/03-api/4. Auth API.md`, `docs/03-api/5. Unified Digital Identity API.md`. L'UDI API demeure un contrat transversal historique ; ses routes ne sont pas confirmées par l'inventaire runtime.
 
 ## 6. Limites
 
