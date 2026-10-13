@@ -38,4 +38,4 @@ Cette liste sert à préparer une décision explicite. Les candidats ci-dessous 
 
 Pour chaque fichier, la décision doit identifier explicitement le chemin exact et choisir l'une des options suivantes : **conserver**, **conserver en archive**, **déplacer vers une archive approuvée** ou **supprimer**. Toute action destructive nécessite une autorisation explicite distincte après comparaison du contenu, vérification des liens entrants et validation de la traçabilité.
 
-Jusqu'à une décision propre à chaque candidat, aucune suppression n'est autorisée. Les déplacements déjà effectués dans la branche Lot 12 sont documentés dans `docs/03-engines/README.md` et `docs/documentation-migration-map.md` ; `main` n'est pas modifiée.
+Jusqu'à une décision propre à chaque candidat, aucune suppression n'est autorisée. Les déplacements déjà effectués dans la branche Lot 12 sont documentés dans `docs/03-engines/README.md` et `docs/07-annexes/documentation-migration-map.md` ; les déplacements et dédoublonnages exacts de la PR #25 sont déjà fusionnés dans `main`. La PR #26 reste une proposition documentaire distincte et non fusionnée.
