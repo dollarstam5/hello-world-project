@@ -25,8 +25,8 @@ La documentation active vit dans :
 
 ### Vision, produit et personas
 
-- `docs/01-VITALA - VISION PRODUIT V1.md`
-- `docs/02-VITALA - PERSONAS V1.md`
+- `docs/01-product/01-VITALA - VISION PRODUIT V1.md`
+- `docs/01-product/02-VITALA - PERSONAS V1.md`
 
 ### Parcours utilisateurs (User Journeys)
 
@@ -45,13 +45,13 @@ Les documents historiques mentionnent aussi UJ-08 Flash, UJ-09 Radar et UJ-10 Ve
 
 - `docs/03-VITALA-TRUST-LEVELS-V1.md Mise � jour 1.md` (nom encodé de façon imparfaite dans GitHub)
 - `docs/03-VITALA-TRUST-LEVELS-V1.md Mise � jour 2.md` (nom encodé de façon imparfaite dans GitHub)
-- `docs/03A-VITALA-TRUST-A LEVELS-V1 Partie 0.md`
+- `docs/01-product/03A-VITALA-TRUST-A LEVELS-V1 Partie 0.md`
 - `docs/03-engines/trust/03A-VITALA-TRUST-ENGINE-V1 Partie 1.md` (classé dans Lot 12)
 - `docs/03-engines/trust/03A-VITALA-TRUST-ENGINE-V1 Partie 2.md` (classé dans Lot 12)
 - `docs/03-engines/trust/03A-VITALA-TRUST-ENGINE-V1 Partie 3.md` (classé dans Lot 12)
 - `docs/03-engines/trust/03A-VITALA-TRUST-ENGINE-V1.md Mise � jour.md` (nom encodé de façon imparfaite ; classé dans Lot 12)
 - `docs/02-architecture/14-VITALA-VEILLE-ENGINE. Model - Unified Digital Identity (UDI).md`
-- `docs/5. Unified Digital Identity API.md` (UDI, non déplacée ; contrat transversal historique)
+- `docs/03-api/5. Unified Digital Identity API.md` (UDI, non déplacée ; contrat transversal historique)
 - `docs/03-engines/trust/8. Trust API.md` (contrat historique classé sous Lot 12)
 
 ### Moteurs Veille et Recommendation
@@ -65,25 +65,25 @@ Les documents historiques mentionnent aussi UJ-08 Flash, UJ-09 Radar et UJ-10 Ve
 
 ### Architecture, API et données
 
-- `docs/18-VITALA-ARCHITECTURE-V1 Partie 1.md`
-- `docs/18-VITALA-ARCHITECTURE-V1 Partie 2.md`
-- `docs/18-VITALA-ARCHITECTURE-V1 Partie 3.md`
-- `docs/16. Settings API(1).md`
+- `docs/02-architecture/18-VITALA-ARCHITECTURE-V1 Partie 1.md`
+- `docs/02-architecture/18-VITALA-ARCHITECTURE-V1 Partie 2.md`
+- `docs/02-architecture/18-VITALA-ARCHITECTURE-V1 Partie 3.md`
+- `docs/03-api/16. Settings API(1).md`
 - `docs/03-engines/flash/6. Flash API.md` (classé dans Lot 12)
 - `docs/03-engines/radar/9. Radar API.md` (classé dans Lot 12)
 - `docs/03-engines/missions/7. Mission API.md` (classé dans Lot 12)
 - `docs/BUILD-API.md 2. Principes communs.md`
-- `docs/Database Architecture.md`
-- `docs/DATA_MODEL.md`
+- `docs/04-database/Database Architecture.md`
+- `docs/04-database/DATA_MODEL.md`
 
 ### Exploitation et continuité
 
-- `docs/ANNEXE G — Plan de reprise d'activité (Disaster Recovery & Business Continuity).md`
+- `docs/06-operations/ANNEXE G — Plan de reprise d'activité (Disaster Recovery & Business Continuity).md`
 
 ### IA et règles du projet
 
-- `docs/00-AI-README.md.md`
-- `docs/AI-RULEBOOK.md`
+- `docs/05-ai/00-AI-README.md.md`
+- `docs/05-ai/AI-RULEBOOK.md`
 - `docs/PROJECT_BIBLE.md`
 
 ### Expérience, design et performance
