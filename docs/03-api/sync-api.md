@@ -85,5 +85,5 @@ Le bus actuel dans `src/lib/platform/realtime.ts` est une abstraction en mémoir
 
 ## Legacy references
 
-- `docs/03-api/15. Sync API.md` (chemin actuel)
+- [`docs/03-api/15. Sync API.md`](<./15. Sync API.md>) (chemin actuel)
 - `docs/SYNC_PROTOCOL.md`
