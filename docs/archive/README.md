@@ -4,8 +4,8 @@ Ce dossier documentaire répertorie les sources historiques conservées pour la 
 
 ## Outils de migration documentaire
 
-- [Cartographie de migration documentaire](../documentation-migration-map.md) — associe les références canoniques aux sources historiques recensées et liste les vérifications restantes.
-- [Candidats aux suppressions proposées](../proposed-document-removals.md) — liste distincte de candidats, sans autorisation de suppression.
+- [Cartographie de migration documentaire](../07-annexes/documentation-migration-map.md) — associe les références canoniques aux sources historiques recensées et liste les vérifications restantes.
+- [Candidats aux suppressions proposées](../07-annexes/proposed-document-removals.md) — liste distincte de candidats, sans autorisation de suppression.
 
 ## Purpose
 
@@ -50,7 +50,7 @@ Les documents historiques mentionnent aussi UJ-08 Flash, UJ-09 Radar et UJ-10 Ve
 - `docs/03-engines/trust/03A-VITALA-TRUST-ENGINE-V1 Partie 2.md` (classé dans Lot 12)
 - `docs/03-engines/trust/03A-VITALA-TRUST-ENGINE-V1 Partie 3.md` (classé dans Lot 12)
 - `docs/03-engines/trust/03A-VITALA-TRUST-ENGINE-V1.md Mise � jour.md` (nom encodé de façon imparfaite ; classé dans Lot 12)
-- `docs/14-VITALA-VEILLE-ENGINE. Model - Unified Digital Identity (UDI).md`
+- `docs/02-architecture/14-VITALA-VEILLE-ENGINE. Model - Unified Digital Identity (UDI).md`
 - `docs/5. Unified Digital Identity API.md` (UDI, non déplacée ; contrat transversal historique)
 - `docs/03-engines/trust/8. Trust API.md` (contrat historique classé sous Lot 12)
 
@@ -60,7 +60,7 @@ Les documents historiques mentionnent aussi UJ-08 Flash, UJ-09 Radar et UJ-10 Ve
 - `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 1.md`
 - `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 2.md`
 - `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 3.md`
-- `docs/14-VITALA-VEILLE-ENGINE.md Partie 1(1).md` (copie de la partie 1 conservée à l'ancien chemin ; décision distincte requise avant retrait)
+- `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 1(1).md` (copie de la partie 1 conservée ; décision distincte requise avant retrait)
 - `docs/03-engines/recommendation/11._Recommendation_API.md`
 
 ### Architecture, API et données
@@ -88,10 +88,10 @@ Les documents historiques mentionnent aussi UJ-08 Flash, UJ-09 Radar et UJ-10 Ve
 
 ### Expérience, design et performance
 
-- `docs/17-Vitala Experience System Partie 1.md`
-- `docs/DESIGN_LANGUAGE.md`
-- `docs/PERFORMANCE_ISSUES.md`
-- `docs/PERFORMANCE_PWA.md`
+- `docs/01-product/17-Vitala Experience System Partie 1.md`
+- `docs/00-foundation/DESIGN_LANGUAGE.md`
+- `docs/06-operations/PERFORMANCE_ISSUES.md`
+- `docs/06-operations/PERFORMANCE_PWA.md`
 
 ## Policy
 
