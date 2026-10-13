@@ -78,3 +78,18 @@
 5. validation distincte des problèmes TECH-001 à TECH-006.
 
 Aucune suppression supplémentaire et aucune fusion de PR ne sont autorisées par ce document.
+
+
+## E. Audit complémentaire — chemins consommés par les scripts
+
+L'inspection des scripts sur la branche Lot 12 révèle des dépendances de chemins supplémentaires qui ne sont pas de simples liens Markdown. L'arborescence a été interrogée directement sur cette branche.
+
+| Consommateur | Chemins déclarés | Constat dans l'arborescence | Suite requise |
+|---|---|---|---|
+| `src/scripts/check-foundation.mjs` | `docs/OPERATIONS.md`, `docs/06-operations/performance-pwa.md`, ainsi que les modules Scan/Radar classés | `docs/OPERATIONS.md` est absent ; `docs/06-operations/operations.md`, `docs/06-operations/OPERATIONS.md` et `docs/06-operations/performance-pwa.md` existent. Les chemins Scan/Radar contrôlés sont classés dans leurs dossiers métier. | Aligner le chemin opérations avec la référence canonique décidée et exécuter le script complet après isolement du blocage lint/formatage. |
+| `scripts/check-go-no-go.ts` | `docs/PROJECT_BIBLE.md`, `docs/QUALITY.md`, `docs/OPERATIONS.md`, `docs/06-operations/performance-pwa.md`, `docs/GLOBAL_AUDIT.md`, `docs/REPRODUCIBILITY.md` | Les cinq chemins historiques sous `docs/` racine sont absents. Des sources proches existent notamment en `docs/07-annexes/PROJECT_BIBLE.md`, `docs/02-architecture/GLOBAL_AUDIT.md` et `docs/06-operations/`, mais elles ne sont pas nécessairement des remplacements sémantiquement équivalents. | Décider document par document quel artefact doit être contrôlé ; adapter le script dans un lot technique séparé et exécuter le contrôle Go/No-Go. |
+| `scripts/check-global-audit.ts` | `docs/PROJECT_BIBLE.md`, `docs/QUALITY.md`, `docs/OPERATIONS.md`, `docs/06-operations/performance-pwa.md` | Les trois premiers chemins historiques sont absents ; le document Performance PWA existe au chemin déclaré. | Même traitement distinct : ne pas remplacer les chemins automatiquement sans confirmer l'intention du contrôle. |
+
+Ces constats signifient que la réussite future du lint ne suffira pas, à elle seule, à certifier les contrôles Foundation, Global Audit ou Go/No-Go. Les scripts peuvent échouer ensuite sur des fichiers requis absents. Aucun script n'a été modifié dans la PR #26 et aucun de ces contrôles n'est déclaré réussi.
+
+Les fichiers absents ne doivent pas être recréés sous leurs anciens noms uniquement pour satisfaire `existsSync` : il faut d'abord décider si le script doit cibler la source canonique actuelle, une véritable procédure consolidée ou un document distinct encore manquant. Cette décision doit préserver le sens du contrôle, pas seulement faire passer le test.
