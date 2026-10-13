@@ -34,6 +34,10 @@
 4. Distinguer les documents remplacés des documents sources encore utiles à la traçabilité, à l'audit ou à l'exploitation.
 5. Faire approuver séparément toute liste de suppression avant d'effectuer des suppressions.
 
+## Réconciliation fichier par fichier
+
+La réconciliation détaillée des 28 chemins modifiés par la PR #25, avec dépendances, contrôles disponibles, tests attendus et corrections proposées, est consignée dans [la réconciliation du Lot 12](./lot12-file-reconciliation.md). Elle couvre le diff de cette PR et ne remplace pas la comparaison exhaustive de toutes les sources historiques du dépôt.
+
 ## Registres techniques liés
 
 La consolidation documentaire ne clôt aucun problème technique. TECH-001 à TECH-006 restent suivis dans [le registre des problèmes techniques](./06-operations/technical-issues.md) jusqu'à résolution et vérification spécifiques.
