@@ -30,21 +30,21 @@ La documentation active vit dans :
 
 ### Parcours utilisateurs (User Journeys)
 
-- `docs/04-VITALA-UJ-01-CONSULTANT-TO-MEMBER.md`
-- `docs/05-VITALA-UJ-02-MEMBER-TO-IDENTIFIED.md`
-- `docs/06-VITALA-UJ-03-PUBLISH-OPPORTUNITY.md`
-- `docs/07-VITALA-UJ-04-RESPOND-OPPORTUNITY.md`
-- `docs/08-VITALA-UJ-05-SELECT-CANDIDATE.md`
-- `docs/09-VITALA-UJ-06-ACTION-VALIDATION.md`
-- `docs/10-VITALA-UJ-07-CONFIDENCE-CREATION.md`
-- `docs/04.0-VITALA-UJ-01-Annexe commune aux User Journeys.md`
+- `docs/01-product/04-VITALA-UJ-01-CONSULTANT-TO-MEMBER.md`
+- `docs/01-product/05-VITALA-UJ-02-MEMBER-TO-IDENTIFIED.md`
+- `docs/01-product/06-VITALA-UJ-03-PUBLISH-OPPORTUNITY.md`
+- `docs/01-product/07-VITALA-UJ-04-RESPOND-OPPORTUNITY.md`
+- `docs/01-product/08-VITALA-UJ-05-SELECT-CANDIDATE.md`
+- `docs/01-product/09-VITALA-UJ-06-ACTION-VALIDATION.md`
+- `docs/01-product/10-VITALA-UJ-07-CONFIDENCE-CREATION.md`
+- `docs/01-product/04.0-VITALA-UJ-01-Annexe commune aux User Journeys.md`
 
 Les documents historiques mentionnent aussi UJ-08 Flash, UJ-09 Radar et UJ-10 Veille. Leurs fichiers primaires n'ont pas été retrouvés sous les chemins attendus lors de la consolidation ; ne pas recréer ni supprimer ces sources avant d'avoir confirmé leur emplacement et leur contenu.
 
 ### Identité et confiance
 
-- `docs/03-VITALA-TRUST-LEVELS-V1.md Mise � jour 1.md` (nom encodé de façon imparfaite dans GitHub)
-- `docs/03-VITALA-TRUST-LEVELS-V1.md Mise � jour 2.md` (nom encodé de façon imparfaite dans GitHub)
+- `docs/01-product/03-VITALA-TRUST-LEVELS-V1.md Mise � jour 1.md` (nom encodé de façon imparfaite dans GitHub)
+- `docs/01-product/03-VITALA-TRUST-LEVELS-V1.md Mise � jour 2.md` (nom encodé de façon imparfaite dans GitHub)
 - `docs/01-product/03A-VITALA-TRUST-A LEVELS-V1 Partie 0.md`
 - `docs/03-engines/trust/03A-VITALA-TRUST-ENGINE-V1 Partie 1.md` (classé dans Lot 12)
 - `docs/03-engines/trust/03A-VITALA-TRUST-ENGINE-V1 Partie 2.md` (classé dans Lot 12)
