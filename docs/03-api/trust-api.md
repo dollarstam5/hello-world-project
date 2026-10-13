@@ -8,4 +8,4 @@ The endpoints in the historical contract are target behavior, not proof of curre
 
 ## Legacy references
 
-- `docs/8. Trust API.md`
+- [`docs/03-engines/trust/8. Trust API.md`](<../03-engines/trust/8. Trust API.md>)

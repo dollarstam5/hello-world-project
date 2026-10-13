@@ -8,4 +8,4 @@ The endpoints in the historical contract are target behavior, not proof of curre
 
 ## Legacy references
 
-- `docs/9. Radar API.md`
+- [`docs/03-engines/radar/9. Radar API.md`](<../03-engines/radar/9. Radar API.md>)

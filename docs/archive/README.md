@@ -4,8 +4,8 @@ Ce dossier documentaire répertorie les sources historiques conservées pour la 
 
 ## Outils de migration documentaire
 
-- [Cartographie de migration documentaire](../documentation-migration-map.md) — associe les références canoniques aux sources historiques recensées et liste les vérifications restantes.
-- [Candidats aux suppressions proposées](../proposed-document-removals.md) — liste distincte de candidats, sans autorisation de suppression.
+- [Cartographie de migration documentaire](../07-annexes/documentation-migration-map.md) — associe les références canoniques aux sources historiques recensées et liste les vérifications restantes.
+- [Candidats aux suppressions proposées](../07-annexes/proposed-document-removals.md) — liste distincte de candidats, sans autorisation de suppression.
 
 ## Purpose
 
@@ -15,6 +15,7 @@ La documentation active vit dans :
 - `docs/01-product/`
 - `docs/02-architecture/`
 - `docs/03-api/`
+- `docs/03-engines/` — classement des sources de moteurs/API en cours dans Lot 12
 - `docs/04-database/`
 - `docs/05-ai/`
 - `docs/06-operations/`
@@ -24,8 +25,8 @@ La documentation active vit dans :
 
 ### Vision, produit et personas
 
-- `docs/01-VITALA - VISION PRODUIT V1.md`
-- `docs/02-VITALA - PERSONAS V1.md`
+- `docs/01-product/01-VITALA - VISION PRODUIT V1.md`
+- `docs/01-product/02-VITALA - PERSONAS V1.md`
 
 ### Parcours utilisateurs (User Journeys)
 
@@ -44,41 +45,53 @@ Les documents historiques mentionnent aussi UJ-08 Flash, UJ-09 Radar et UJ-10 Ve
 
 - `docs/03-VITALA-TRUST-LEVELS-V1.md Mise � jour 1.md` (nom encodé de façon imparfaite dans GitHub)
 - `docs/03-VITALA-TRUST-LEVELS-V1.md Mise � jour 2.md` (nom encodé de façon imparfaite dans GitHub)
-- `docs/03A-VITALA-TRUST-A LEVELS-V1 Partie 0.md`
-- `docs/03A-VITALA-TRUST-ENGINE-V1 Partie 1.md`
-- `docs/03A-VITALA-TRUST-ENGINE-V1 Partie 2.md`
-- `docs/03A-VITALA-TRUST-ENGINE-V1 Partie 3.md`
-- `docs/03A-VITALA-TRUST-ENGINE-V1.md Mise � jour.md` (nom encodé de façon imparfaite dans GitHub)
-- `docs/14-VITALA-VEILLE-ENGINE. Model - Unified Digital Identity (UDI).md`
-- `docs/5. Unified Digital Identity API.md`
-- `docs/8. Trust API.md`
+- `docs/01-product/03A-VITALA-TRUST-A LEVELS-V1 Partie 0.md`
+- `docs/03-engines/trust/03A-VITALA-TRUST-ENGINE-V1 Partie 1.md` (classé dans Lot 12)
+- `docs/03-engines/trust/03A-VITALA-TRUST-ENGINE-V1 Partie 2.md` (classé dans Lot 12)
+- `docs/03-engines/trust/03A-VITALA-TRUST-ENGINE-V1 Partie 3.md` (classé dans Lot 12)
+- `docs/03-engines/trust/03A-VITALA-TRUST-ENGINE-V1.md Mise � jour.md` (nom encodé de façon imparfaite ; classé dans Lot 12)
+- `docs/02-architecture/14-VITALA-VEILLE-ENGINE. Model - Unified Digital Identity (UDI).md`
+- `docs/03-api/5. Unified Digital Identity API.md` (UDI, non déplacée ; contrat transversal historique)
+- `docs/03-engines/trust/8. Trust API.md` (contrat historique classé sous Lot 12)
+
+### Moteurs Veille et Recommendation
+
+- `docs/03-engines/veille/10. Veille API.md`
+- `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 1.md`
+- `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 2.md`
+- `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 3.md`
+- `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 1(1).md` (copie de la partie 1 conservée ; décision distincte requise avant retrait)
+- `docs/03-engines/recommendation/11._Recommendation_API.md`
 
 ### Architecture, API et données
 
-- `docs/18-VITALA-ARCHITECTURE-V1 Partie 1.md`
-- `docs/18-VITALA-ARCHITECTURE-V1 Partie 2.md`
-- `docs/18-VITALA-ARCHITECTURE-V1 Partie 3.md`
-- `docs/16. Settings API(1).md`
+- `docs/02-architecture/18-VITALA-ARCHITECTURE-V1 Partie 1.md`
+- `docs/02-architecture/18-VITALA-ARCHITECTURE-V1 Partie 2.md`
+- `docs/02-architecture/18-VITALA-ARCHITECTURE-V1 Partie 3.md`
+- `docs/03-api/16. Settings API.md` (copie exacte conservée ; la variante `(1)` a été retirée dans Lot 12)
+- `docs/03-engines/flash/6. Flash API.md` (classé dans Lot 12)
+- `docs/03-engines/radar/9. Radar API.md` (classé dans Lot 12)
+- `docs/03-engines/missions/7. Mission API.md` (classé dans Lot 12)
 - `docs/BUILD-API.md 2. Principes communs.md`
-- `docs/Database Architecture.md`
-- `docs/DATA_MODEL.md`
+- `docs/04-database/Database Architecture.md`
+- `docs/04-database/DATA_MODEL.md`
 
 ### Exploitation et continuité
 
-- `docs/ANNEXE G — Plan de reprise d'activité (Disaster Recovery & Business Continuity).md`
+- `docs/06-operations/ANNEXE G — Plan de reprise d'activité (Disaster Recovery & Business Continuity).md`
 
 ### IA et règles du projet
 
-- `docs/00-AI-README.md.md`
-- `docs/AI-RULEBOOK.md`
+- `docs/05-ai/00-AI-README.md.md`
+- `docs/05-ai/AI-RULEBOOK.md`
 - `docs/PROJECT_BIBLE.md`
 
 ### Expérience, design et performance
 
-- `docs/17-Vitala Experience System Partie 1.md`
-- `docs/DESIGN_LANGUAGE.md`
-- `docs/PERFORMANCE_ISSUES.md`
-- `docs/PERFORMANCE_PWA.md`
+- `docs/01-product/17-Vitala Experience System Partie 1.md`
+- `docs/00-foundation/DESIGN_LANGUAGE.md`
+- `docs/06-operations/PERFORMANCE_ISSUES.md`
+- `docs/06-operations/PERFORMANCE_PWA.md`
 
 ## Policy
 

@@ -8,6 +8,7 @@ Ce répertoire suit une structure canonique pour la documentation active.
 - [`01-product/`](./01-product/README.md) — vision, personas, parcours, confiance et expérience
 - [`02-architecture/`](./02-architecture/README.md) — architecture système, front-end, backend, base de données, synchronisation et identité numérique
 - [`03-api/`](./03-api/README.md) — contrats et références API
+- [`03-engines/`](./03-engines/README.md) — documents de domaines métier classés par moteur
 - [`04-database/`](./04-database/README.md) — modèle de données, schéma PostgreSQL, grants et politiques RLS
 - [`05-ai/`](./05-ai/README.md) — gouvernance et règles d'ingénierie IA
 - [`06-operations/`](./06-operations/README.md) — déploiement, performance, problèmes techniques et release
@@ -38,9 +39,10 @@ Ce répertoire suit une structure canonique pour la documentation active.
 
 ## Migration documentaire
 
-- [Cartographie des références canoniques et historiques](./documentation-migration-map.md) — correspondances par domaine et vérifications restantes.
-- [Audit préliminaire de couverture du contenu](./documentation-content-coverage.md) — premiers constats de comparaison ; aucun retrait n'est autorisé par cet audit.
-- [Candidats aux suppressions documentaires](./proposed-document-removals.md) — propositions uniquement, en attente d'approbation explicite.
+- [Cartographie des références canoniques et historiques](./07-annexes/documentation-migration-map.md) — correspondances par domaine et vérifications restantes.
+- [Réconciliation fichier par fichier du Lot 12](./07-annexes/lot12-file-reconciliation.md) — dépendances, contrôles disponibles, corrections proposées et limites de validation de la PR #25.
+- [Audit préliminaire de couverture du contenu](./07-annexes/documentation-content-coverage.md) — premiers constats de comparaison ; aucun retrait n'est autorisé par cet audit.
+- [Candidats aux suppressions documentaires](./07-annexes/proposed-document-removals.md) — propositions uniquement, en attente d'approbation explicite.
 
 ## Archives
 

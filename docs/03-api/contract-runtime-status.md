@@ -56,7 +56,7 @@ Les garanties liées aux reçus d'idempotence et au schéma distant restent non 
 - [Répertoire des contrats API](./README.md)
 - [Contrat API de synchronisation](./sync-api.md)
 - [Registre des problèmes techniques](../06-operations/technical-issues.md)
-- Sources historiques conservées : `docs/6. Flash API.md`, `docs/8. Trust API.md`, `docs/9. Radar API.md`, `docs/10. Veille API.md`, `docs/11._Recommendation_API.md`, `docs/4. Auth API.md`
+- Sources historiques conservées : [`docs/03-engines/flash/6. Flash API.md`](<../03-engines/flash/6. Flash API.md>), [`docs/03-engines/trust/8. Trust API.md`](<../03-engines/trust/8. Trust API.md>), [`docs/03-engines/radar/9. Radar API.md`](<../03-engines/radar/9. Radar API.md>), [`docs/03-engines/veille/10. Veille API.md`](<../03-engines/veille/10. Veille API.md>), [`docs/03-engines/recommendation/11._Recommendation_API.md`](<../03-engines/recommendation/11._Recommendation_API.md>), `docs/4. Auth API.md`. L'UDI API demeure à `docs/5. Unified Digital Identity API.md` en tant que contrat transversal historique.
 
 ## 6. Limites
 
