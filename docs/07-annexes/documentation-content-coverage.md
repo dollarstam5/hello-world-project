@@ -1,6 +1,6 @@
 # Audit préliminaire de couverture documentaire
 
-**Statut :** première passe de comparaison, non exhaustive.  
+**Statut :** première passe de comparaison, non exhaustive ; la comparaison Trust/UDI ciblée est consignée séparément.  
 **Objet :** identifier les candidats qui ne peuvent pas être retirés sans perte d'information ou changement technique.  
 **Portée :** revue documentaire seulement ; aucun code, SQL, migration, configuration ou document historique n'est modifié par cet audit.
 
@@ -16,6 +16,7 @@ Les conclusions « conserver » ou « bloqué » ci-dessous sont des décisions 
 | --- | --- | --- | --- |
 | Vision produit — `docs/01-VITALA - VISION PRODUIT V1.md` | La référence `docs/01-product/vision.md` est principalement une synthèse et recense la source historique ; la reprise complète de toutes les décisions du document V1 n'est pas démontrée. | **Conserver** | Comparer objectifs, périmètre, hypothèses, exclusions et décisions avant de réévaluer. |
 | Personas — `docs/02-VITALA - PERSONAS V1.md` | La référence canonique explicite les intentions d'usage et précise que les personas ne sont ni des rôles d'accès ni une progression obligatoire. | **À comparer** | Vérifier chaque persona, ses exemples, transitions et éléments distinctifs de la V1. |
+| Trust et UDI — mises à jour des niveaux, mise à jour du Trust Engine, modèles UDI et UDI API | La comparaison dédiée indique que les principes centraux sont largement repris, mais relève des détails non arbitrés (notifications Trust, champs UDI, historisation des intentions) et des formulations historiques à ne pas recopier sans validation (UDI « source de vérité » universelle, exposition des preuves Trust). | **Conserver** | Voir `trust-udi-content-reconciliation.md` ; ne retirer aucune source tant que les écarts, les liens entrants et les contrats runtime ne sont pas vérifiés. |
 | Parcours UJ-01 à UJ-07 et annexe commune | Les sources historiques contiennent des étapes, prérequis, états et détails de parcours. La référence canonique apporte des principes et une carte, mais la couverture intégrale de chaque étape n'est pas encore prouvée. Les sources primaires UJ-08/09/10 restent non confirmées aux chemins attendus. | **Conserver en attendant la comparaison** | Comparaison par parcours et résolution séparée des chemins UJ-08/09/10 ; aucune suppression en bloc. |
 | Architecture — trois parties V1 | Les trois sources historiques font chacune plusieurs milliers de caractères. `docs/02-architecture/system-architecture.md` est un résumé très court ; d'autres pages canoniques sont détaillées. | **À comparer** | Associer chaque partie historique aux pages canoniques concernées et vérifier les décisions uniques. Le résumé système seul ne remplace pas les trois parties. |
 | Données — `docs/Database Architecture.md`, `docs/DATA_MODEL.md` | Les sources historiques décrivent le modèle et la persistance. Les pages canoniques de dictionnaire et de schéma sont plus structurées, mais les incertitudes sur les migrations et les reçus d'idempotence restent suivies dans TECH-001/003. | **Conserver pendant la vérification technique** | Comparer champs, relations, règles de suppression, contraintes, grants et RLS ; confronter les constats aux migrations et aux preuves d'environnement. |
@@ -35,6 +36,8 @@ Les conclusions « conserver » ou « bloqué » ci-dessous sont des décisions 
 3. Les documents contenant des contrats API, des schémas, des règles de sécurité, des procédures d'exploitation ou des décisions produit uniques restent conservés jusqu'à comparaison et validation appropriées.
 4. Les références de chemins historiques consommées par les scripts sont des blocages distincts d'une simple consolidation rédactionnelle.
 5. Les problèmes TECH-001 à TECH-006 restent ouverts. Cet audit ne les résout pas et ne modifie aucun artefact technique.
+
+La comparaison ciblée des sources historiques Trust/UDI est consignée dans [trust-udi-content-reconciliation.md](./trust-udi-content-reconciliation.md) ; aucun retrait n'y est autorisé.
 
 ## Critères avant toute nouvelle décision
 
