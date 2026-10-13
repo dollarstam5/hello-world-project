@@ -8,4 +8,4 @@ The endpoints in the historical contract are target behavior, not proof of curre
 
 ## Legacy references
 
-- `docs/6. Flash API.md`
+- [`docs/03-engines/flash/6. Flash API.md`](<../03-engines/flash/6. Flash API.md>)
