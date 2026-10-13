@@ -16,22 +16,22 @@
 
 ## Carte des parcours connus
 
-Les documents historiques accessibles à la date de cette consolidation décrivent les parcours suivants.
+Les documents historiques accessibles à la date de cette consolidation décrivent les parcours suivants. Les liens ci-dessous pointent vers les chemins actuels sous `docs/01-product/`.
 
 | ID | Parcours | Intention principale | Résultat attendu dans la spécification | Source |
 | --- | --- | --- | --- | --- |
-| UJ-01 | Consultant → membre enregistré | Découvrir la valeur de Vitala puis choisir de poursuivre | Compte créé au moment où une continuité ou une action le justifie | [Source historique](../04-VITALA-UJ-01-CONSULTANT-TO-MEMBER.md) |
-| UJ-02 | Membre enregistré → utilisateur identifié | Compléter progressivement les éléments d'identité utiles | Éléments d'identité obtenus et validés selon une politique confirmée | [Source historique](../05-VITALA-UJ-02-MEMBER-TO-IDENTIFIED.md) |
-| UJ-03 | Publier une opportunité | Exprimer un besoin, une offre ou une possibilité en langage naturel | Opportunité structurée, vérifiée par la personne et publiée si elle satisfait les règles | [Source historique](../06-VITALA-UJ-03-PUBLISH-OPPORTUNITY.md) |
-| UJ-04 | Répondre à une opportunité | Manifester un intérêt sans créer une compétition ou une surcharge inutile | Réponse enregistrée et transmise de façon contrôlée à l'auteur | [Source historique](../07-VITALA-UJ-04-RESPOND-OPPORTUNITY.md) |
-| UJ-05 | Sélectionner un candidat | Choisir une ou plusieurs personnes adaptées à l'opportunité | Décision de l'auteur, notifications et mise en relation selon les règles applicables | [Source historique](../08-VITALA-UJ-05-SELECT-CANDIDATE.md) |
-| UJ-06 | Valider une action | Confirmer le résultat d'une mise en relation ou d'une action | Résultat confirmé, en attente ou en désaccord, avec trace des déclarations | [Source historique](../09-VITALA-UJ-06-ACTION-VALIDATION.md) |
-| UJ-07 | Créer de la confiance | Construire des éléments de confiance à partir d'expériences réelles | Éléments de preuve évalués par le domaine Trust, sans score social automatique | [Source historique](../10-VITALA-UJ-07-CONFIDENCE-CREATION.md) |
-| UJ-08 | Flash | Parcours fonctionnel mentionné dans les références historiques | À reconstituer à partir d'une source primaire vérifiée | Source primaire non retrouvée sous le chemin attendu pendant cet audit |
-| UJ-09 | Radar | Parcours fonctionnel mentionné dans les références historiques | À reconstituer à partir d'une source primaire vérifiée | Source primaire non retrouvée sous le chemin attendu pendant cet audit |
-| UJ-10 | Veille | Parcours fonctionnel mentionné dans les références historiques | À reconstituer à partir d'une source primaire vérifiée | Source primaire non retrouvée sous le chemin attendu pendant cet audit |
+| UJ-01 | Consultant → membre enregistré | Découvrir la valeur de Vitala puis choisir de poursuivre | Compte créé au moment où une continuité ou une action le justifie | [Source historique](./04-VITALA-UJ-01-CONSULTANT-TO-MEMBER.md) |
+| UJ-02 | Membre enregistré → utilisateur identifié | Compléter progressivement les éléments d'identité utiles | Éléments d'identité obtenus et validés selon une politique confirmée | [Source historique](./05-VITALA-UJ-02-MEMBER-TO-IDENTIFIED.md) |
+| UJ-03 | Publier une opportunité | Exprimer un besoin, une offre ou une possibilité en langage naturel | Opportunité structurée, vérifiée par la personne et publiée si elle satisfait les règles | [Source historique](./06-VITALA-UJ-03-PUBLISH-OPPORTUNITY.md) |
+| UJ-04 | Répondre à une opportunité | Manifester un intérêt sans créer une compétition ou une surcharge inutile | Réponse enregistrée et transmise de façon contrôlée à l'auteur | [Source historique](./07-VITALA-UJ-04-RESPOND-OPPORTUNITY.md) |
+| UJ-05 | Sélectionner un candidat | Choisir une ou plusieurs personnes adaptées à l'opportunité | Décision de l'auteur, notifications et mise en relation selon les règles applicables | [Source historique](./08-VITALA-UJ-05-SELECT-CANDIDATE.md) |
+| UJ-06 | Valider une action | Confirmer le résultat d'une mise en relation ou d'une action | Résultat confirmé, en attente ou en désaccord, avec trace des déclarations | [Source historique](./09-VITALA-UJ-06-ACTION-VALIDATION.md) |
+| UJ-07 | Créer de la confiance | Construire des éléments de confiance à partir d'expériences réelles | Éléments de preuve évalués par le domaine Trust, sans score social automatique | [Source historique](./10-VITALA-UJ-07-CONFIDENCE-CREATION.md) |
+| UJ-08 | Flash | Parcours fonctionnel mentionné dans les références historiques | À reconstituer à partir d'une source primaire vérifiée | Document moteur associé : [Flash Engine](../03-engines/flash/11-VITALA-UJ-08-FLASH-ENGINE.md) |
+| UJ-09 | Radar | Parcours fonctionnel mentionné dans les références historiques | À reconstituer à partir d'une source primaire vérifiée | Document nommé UJ-09 / Scan Engine : [source historique](../03-engines/scan/12-VITALA-UJ-09-SCAN-ENGINE.md) ; son équivalence avec le parcours Radar reste à confirmer. |
+| UJ-10 | Veille | Parcours fonctionnel mentionné dans les références historiques | À reconstituer à partir d'une source primaire vérifiée | Source primaire distincte non confirmée dans l'arborescence actuelle |
 
-L'annexe historique commune décrit également les frontières entre parcours, UDI et moteurs métier : [Annexe commune aux User Journeys](../04.0-VITALA-UJ-01-Annexe%20commune%20aux%20User%20Journeys.md).
+L'annexe historique commune décrit également les frontières entre parcours, UDI et moteurs métier : [Annexe commune aux User Journeys](./04.0-VITALA-UJ-01-Annexe%20commune%20aux%20User%20Journeys.md).
 
 ## Cycle métier principal
 
@@ -74,7 +74,7 @@ Pour chaque parcours détaillé, documenter au minimum :
 ## Écarts et vérifications restantes
 
 - Les fichiers historiques UJ-01 à UJ-07 et l'annexe commune sont accessibles et conservés ; ils ne sont pas déplacés par cette consolidation.
-- Les fichiers primaires Flash, Radar et Veille mentionnés dans des documents historiques n'ont pas été retrouvés sous les chemins attendus lors de cet audit. Il faut localiser les sources exactes avant de consolider leurs détails.
+- Les sources UJ-08/09/10 doivent être distinguées des documents de moteurs : le dépôt contient un document Flash Engine nommé UJ-08 et un document Scan Engine nommé UJ-09, mais leur équivalence avec des parcours détaillés n'est pas démontrée. Des sources historiques nomment UJ-09 « Radar » et UJ-10 « Veille » ; aucun document primaire distinct UJ-10 n'a été confirmé. Ne pas assimiler Scan à Radar ni un document de moteur à un parcours utilisateur sans vérification.
 - Les exigences de collecte progressive d'identité, les seuils de réponse, les statuts de confiance et les automatismes décrits historiquement doivent être comparés aux schémas, contrats API, politiques et tests actuels.
 - Aucun parcours ne doit être annoncé comme implémenté uniquement parce qu'une source historique le décrit ou le marque « VALIDÉ ».
 
