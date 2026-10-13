@@ -20,6 +20,6 @@ The current project architecture is also described in the repository root file:
 This architecture baseline was previously split across multiple docs and duplicated under different names. The main sources to review are:
 
 - `docs/ARCHITECTURE.md`
-- `docs/18-VITALA-ARCHITECTURE-V1 Partie 1.md`
-- `docs/18-VITALA-ARCHITECTURE-V1 Partie 2.md`
-- `docs/18-VITALA-ARCHITECTURE-V1 Partie 3.md`
+- `docs/02-architecture/18-VITALA-ARCHITECTURE-V1 Partie 1.md`
+- `docs/02-architecture/18-VITALA-ARCHITECTURE-V1 Partie 2.md`
+- `docs/02-architecture/18-VITALA-ARCHITECTURE-V1 Partie 3.md`
