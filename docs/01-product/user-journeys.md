@@ -74,7 +74,7 @@ Pour chaque parcours détaillé, documenter au minimum :
 ## Écarts et vérifications restantes
 
 - Les fichiers historiques UJ-01 à UJ-07 et l'annexe commune sont accessibles et conservés ; ils ne sont pas déplacés par cette consolidation.
-- Les fichiers primaires Flash, Radar et Veille mentionnés dans des documents historiques n'ont pas été retrouvés sous les chemins attendus lors de cet audit. Il faut localiser les sources exactes avant de consolider leurs détails.
+- Les sources UJ-08/09/10 doivent être distinguées des documents de moteurs : le dépôt contient un document Flash Engine nommé UJ-08 et un document Scan Engine nommé UJ-09, mais leur équivalence avec des parcours détaillés n'est pas démontrée. Des sources historiques nomment UJ-09 « Radar » et UJ-10 « Veille » ; aucun document primaire distinct UJ-10 n'a été confirmé. Ne pas assimiler Scan à Radar ni un document de moteur à un parcours utilisateur sans vérification.
 - Les exigences de collecte progressive d'identité, les seuils de réponse, les statuts de confiance et les automatismes décrits historiquement doivent être comparés aux schémas, contrats API, politiques et tests actuels.
 - Aucun parcours ne doit être annoncé comme implémenté uniquement parce qu'une source historique le décrit ou le marque « VALIDÉ ».
 
