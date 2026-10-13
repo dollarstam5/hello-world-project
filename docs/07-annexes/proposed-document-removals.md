@@ -25,7 +25,7 @@ Cette liste sert à préparer une décision explicite. Les candidats ci-dessous 
 | `docs/06-operations/ANNEXE G — Plan de reprise d'activité (Disaster Recovery & Business Continuity).md` | `docs/06-operations/disaster-recovery.md` | Retrait éventuel ou conservation pour historique | Comparer les procédures, seuils et contacts opérationnels ; faire valider par le responsable des opérations. |
 | `docs/03-api/API Error Catalog.md`, `docs/04-database/ANNEXE C — Catalogue officiel des politiques.md`, `docs/04-database/ANNEXE D — Catalogue officiel des objets.md` | `docs/07-annexes/error-handbook.md`, glossaire et références API/données concernées | Retrait éventuel ou conservation | Vérifier l'exhaustivité des erreurs, politiques et objets et les usages par les équipes/outils. |
 | `docs/17-Vitala Experience System Partie 1.md`, `docs/DESIGN_LANGUAGE.md` | `docs/01-product/experience-system.md`, `docs/00-foundation/design-language.md` | Retrait éventuel ou conservation | Vérifier les décisions de design et tokens uniques ; confirmer les liens entrants. |
-| `docs/PROJECT_BIBLE.md` | Index canoniques et règles sous `docs/05-ai/` | Retrait éventuel ou conservation comme document de synthèse historique | Examiner chaque lien et chaque règle unique ; ne pas supposer que les autres index remplacent tout son contenu. |
+| `docs/07-annexes/PROJECT_BIBLE.md` | Index canoniques et règles sous `docs/05-ai/` | Retrait éventuel ou conservation comme document de synthèse historique | Examiner chaque lien et chaque règle unique ; ne pas supposer que les autres index remplacent tout son contenu. |
 
 ## Hors de toute suppression proposée automatiquement
 
