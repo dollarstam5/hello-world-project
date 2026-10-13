@@ -28,7 +28,7 @@ Les documents historiques accessibles à la date de cette consolidation décrive
 | UJ-06 | Valider une action | Confirmer le résultat d'une mise en relation ou d'une action | Résultat confirmé, en attente ou en désaccord, avec trace des déclarations | [Source historique](./09-VITALA-UJ-06-ACTION-VALIDATION.md) |
 | UJ-07 | Créer de la confiance | Construire des éléments de confiance à partir d'expériences réelles | Éléments de preuve évalués par le domaine Trust, sans score social automatique | [Source historique](./10-VITALA-UJ-07-CONFIDENCE-CREATION.md) |
 | UJ-08 | Flash | Parcours fonctionnel mentionné dans les références historiques | À reconstituer à partir d'une source primaire vérifiée | Document moteur associé : [Flash Engine](../03-engines/flash/11-VITALA-UJ-08-FLASH-ENGINE.md) |
-| UJ-09 | Radar | Parcours fonctionnel mentionné dans les références historiques | À reconstituer à partir d'une source primaire vérifiée | Document moteur associé : [Scan Engine](../03-engines/scan/12-VITALA-UJ-09-SCAN-ENGINE.md) |
+| UJ-09 | Radar | Parcours fonctionnel mentionné dans les références historiques | À reconstituer à partir d'une source primaire vérifiée | Document nommé UJ-09 / Scan Engine : [source historique](../03-engines/scan/12-VITALA-UJ-09-SCAN-ENGINE.md) ; son équivalence avec le parcours Radar reste à confirmer. |
 | UJ-10 | Veille | Parcours fonctionnel mentionné dans les références historiques | À reconstituer à partir d'une source primaire vérifiée | Source primaire distincte non confirmée dans l'arborescence actuelle |
 
 L'annexe historique commune décrit également les frontières entre parcours, UDI et moteurs métier : [Annexe commune aux User Journeys](./04.0-VITALA-UJ-01-Annexe%20commune%20aux%20User%20Journeys.md).
