@@ -60,7 +60,6 @@ Les documents liés à UJ-08 et UJ-09 présents dans l'arborescence sont `docs/0
 - `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 1.md`
 - `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 2.md`
 - `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 3.md`
-- `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 1(1).md` — copie exacte retirée dans la PR #25 ; la partie 1 sans suffixe reste conservée.
 - `docs/03-engines/recommendation/11._Recommendation_API.md`
 
 ### Architecture, API et données
