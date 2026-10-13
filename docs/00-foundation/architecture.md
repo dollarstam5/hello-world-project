@@ -13,7 +13,7 @@ This document captures the architecture baseline for the project. It should be t
 
 The current project architecture is also described in the repository root file:
 
-- [`../ARCHITECTURE.md`](../ARCHITECTURE.md)
+- [`../../ARCHITECTURE.md`](../ARCHITECTURE.md)
 
 ## Legacy docs
 
