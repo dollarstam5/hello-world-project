@@ -16,9 +16,9 @@ Le projet se construit dans un ordre stable et guidé par les dépendances. Tout
 ## Canonical references
 
 - [Architecture](../../ARCHITECTURE.md)
-- [Quality](../../QUALITY.md)
+- [Quality](../06-operations/QUALITY.md)
 - [Préparation de release et décision Go/No-Go](../06-operations/release-readiness.md)
-- [Reproducibility](../../REPRODUCIBILITY.md)
+- [Reproducibility](../06-operations/REPRODUCIBILITY.md)
 - [Langage de design](./design-language.md)
 
 Le document historique `docs/GO_NO_GO.md` reste conservé pour traçabilité et figure parmi les candidats à comparer avant toute proposition de retrait.
