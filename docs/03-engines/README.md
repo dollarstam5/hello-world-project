@@ -19,6 +19,15 @@ Ce répertoire regroupe des documents de domaine et des contrats historiques par
 ### Missions
 - [Mission API — contrat historique](<./missions/7. Mission API.md>)
 
+### Veille
+- [Veille API — contrat historique](<./veille/10. Veille API.md>)
+- [Veille Engine — partie 1](<./veille/14-VITALA-VEILLE-ENGINE.md Partie 1.md>)
+- [Veille Engine — partie 2](<./veille/14-VITALA-VEILLE-ENGINE.md Partie 2.md>)
+- [Veille Engine — partie 3](<./veille/14-VITALA-VEILLE-ENGINE.md Partie 3.md>)
+
+### Recommendation
+- [Recommendation API — contrat historique](<./recommendation/11._Recommendation_API.md>)
+
 ### Trust
 - [Trust Engine — partie 1](<./trust/03A-VITALA-TRUST-ENGINE-V1 Partie 1.md>)
 - [Trust Engine — partie 2](<./trust/03A-VITALA-TRUST-ENGINE-V1 Partie 2.md>)
@@ -28,12 +37,10 @@ Ce répertoire regroupe des documents de domaine et des contrats historiques par
 
 ## Documents encore en attente de classement
 
-Les documents Veille, Recommendation et Unified Digital Identity restent à leur chemin historique pour le moment. Ils ne sont pas déplacés ici tant que le déplacement ne peut pas être terminé proprement et que les références entrantes n'ont pas été traitées.
+Les documents Veille et Recommendation classés ci-dessus ont été déplacés dans cette branche. Les sources Unified Digital Identity (UDI) restent à leur chemin historique, car elles relèvent de l'API transversale et du modèle d'identité, pas d'un moteur dédié. Le doublon historique de la partie 1 Veille est conservé en attente de décision distincte.
 
-- `docs/10. Veille API.md`
-- `docs/14-VITALA-VEILLE-ENGINE.md Partie 1(1).md`
+- `docs/14-VITALA-VEILLE-ENGINE.md Partie 1(1).md` — doublon de la partie 1 classée, conservé pour l'instant
 - `docs/14-VITALA-VEILLE-ENGINE. Model - Unified Digital Identity (UDI).md` — malgré son préfixe Veille, son contenu concerne l'UDI ; ne pas le classer comme moteur Veille.
-- `docs/11._Recommendation_API.md`
 - `docs/5. Unified Digital Identity API.md`
 - `docs/Evolution du mod�le de donn�es - Unified Digital Identity (UDI).md`
 
