@@ -37,9 +37,8 @@ Ce répertoire regroupe des documents de domaine et des contrats historiques par
 
 ## Documents encore en attente de classement
 
-Les documents Veille et Recommendation classés ci-dessus ont été déplacés dans cette branche. Les sources Unified Digital Identity (UDI) restent à leur chemin historique, car elles relèvent de l'API transversale et du modèle d'identité, pas d'un moteur dédié. Le doublon historique de la partie 1 Veille est conservé en attente de décision distincte.
+Les documents Veille et Recommendation classés ci-dessus ont été déplacés dans cette branche. Les sources Unified Digital Identity (UDI) restent à leur chemin historique, car elles relèvent de l'API transversale et du modèle d'identité, pas d'un moteur dédié. La copie strictement identique `Partie 1(1)` a été retirée après comparaison du blob Git ; la partie 1 sans suffixe est conservée.
 
-- `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 1(1).md` — doublon de la partie 1 classée, conservé pour l'instant
 - `docs/02-architecture/14-VITALA-VEILLE-ENGINE. Model - Unified Digital Identity (UDI).md` — malgré son préfixe Veille, son contenu concerne l'UDI ; ne pas le classer comme moteur Veille.
 - `docs/03-api/5. Unified Digital Identity API.md`
 - `docs/02-architecture/Evolution du mod�le de donn�es - Unified Digital Identity (UDI).md`
