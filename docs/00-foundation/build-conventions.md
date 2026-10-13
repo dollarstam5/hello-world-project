@@ -12,9 +12,11 @@ This document centralizes the build and engineering conventions that the project
 
 ## Related files
 
-- [`../CONTRIBUTING_AI.md`](../CONTRIBUTING_AI.md)
-- [`../QUALITY.md`](../QUALITY.md)
-- [`../STATE.md`](../STATE.md)
+- [Architecture baseline](../../ARCHITECTURE.md)
+- [Quality and tests](../06-operations/QUALITY.md)
+- [Reproducibility checks](../06-operations/REPRODUCIBILITY.md)
+
+`CONTRIBUTING_AI.md` and `STATE.md` are not present at the referenced paths in this branch; they are not treated as active references until their locations are confirmed.
 
 ## Legacy references
 
