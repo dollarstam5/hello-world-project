@@ -40,6 +40,7 @@ Ce répertoire suit une structure canonique pour la documentation active.
 ## Migration documentaire
 
 - [Cartographie des références canoniques et historiques](./documentation-migration-map.md) — correspondances par domaine et vérifications restantes.
+- [Réconciliation fichier par fichier du Lot 12](./lot12-file-reconciliation.md) — dépendances, contrôles disponibles, corrections proposées et limites de validation de la PR #25.
 - [Audit préliminaire de couverture du contenu](./documentation-content-coverage.md) — premiers constats de comparaison ; aucun retrait n'est autorisé par cet audit.
 - [Candidats aux suppressions documentaires](./proposed-document-removals.md) — propositions uniquement, en attente d'approbation explicite.
 
