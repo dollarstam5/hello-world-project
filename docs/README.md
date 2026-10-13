@@ -8,6 +8,7 @@ Ce répertoire suit une structure canonique pour la documentation active.
 - [`01-product/`](./01-product/README.md) — vision, personas, parcours, confiance et expérience
 - [`02-architecture/`](./02-architecture/README.md) — architecture système, front-end, backend, base de données, synchronisation et identité numérique
 - [`03-api/`](./03-api/README.md) — contrats et références API
+- [`03-engines/`](./03-engines/README.md) — documents de domaines métier classés par moteur
 - [`04-database/`](./04-database/README.md) — modèle de données, schéma PostgreSQL, grants et politiques RLS
 - [`05-ai/`](./05-ai/README.md) — gouvernance et règles d'ingénierie IA
 - [`06-operations/`](./06-operations/README.md) — déploiement, performance, problèmes techniques et release
