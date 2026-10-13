@@ -60,7 +60,7 @@ Les documents liés à UJ-08 et UJ-09 présents dans l'arborescence sont `docs/0
 - `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 1.md`
 - `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 2.md`
 - `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 3.md`
-- `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 1(1).md` (copie de la partie 1 conservée ; décision distincte requise avant retrait)
+- `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 1(1).md` — copie exacte retirée dans la PR #25 ; la partie 1 sans suffixe reste conservée.
 - `docs/03-engines/recommendation/11._Recommendation_API.md`
 
 ### Architecture, API et données
@@ -76,7 +76,7 @@ Les documents liés à UJ-08 et UJ-09 présents dans l'arborescence sont `docs/0
 - `docs/03-engines/flash/6. Flash API.md` (classé dans Lot 12)
 - `docs/03-engines/radar/9. Radar API.md` (classé dans Lot 12)
 - `docs/03-engines/missions/7. Mission API.md` (classé dans Lot 12)
-- `docs/BUILD-API.md 2. Principes communs.md`
+- `docs/03-api/BUILD-API.md 2. Principes communs.md`
 - `docs/04-database/Database Architecture.md`
 - `docs/04-database/DATA_MODEL.md`
 
@@ -88,7 +88,7 @@ Les documents liés à UJ-08 et UJ-09 présents dans l'arborescence sont `docs/0
 
 - `docs/05-ai/00-AI-README.md.md`
 - `docs/05-ai/AI-RULEBOOK.md`
-- `docs/PROJECT_BIBLE.md`
+- `docs/07-annexes/PROJECT_BIBLE.md`
 
 ### Expérience, design et performance
 
