@@ -6,6 +6,7 @@ Ce dossier documentaire répertorie les sources historiques conservées pour la 
 
 - [Cartographie de migration documentaire](../07-annexes/documentation-migration-map.md) — associe les références canoniques aux sources historiques recensées et liste les vérifications restantes.
 - [Candidats aux suppressions proposées](../07-annexes/proposed-document-removals.md) — liste distincte de candidats, sans autorisation de suppression.
+- [Comparaison de couverture Trust et UDI](../07-annexes/trust-udi-content-reconciliation.md) — apports couverts, écarts et contradictions à résoudre avant tout retrait.
 
 ## Purpose
 
