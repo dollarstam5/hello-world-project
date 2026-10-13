@@ -15,6 +15,7 @@ La documentation active vit dans :
 - `docs/01-product/`
 - `docs/02-architecture/`
 - `docs/03-api/`
+- `docs/03-engines/` — classement des sources de moteurs/API en cours dans Lot 12
 - `docs/04-database/`
 - `docs/05-ai/`
 - `docs/06-operations/`
@@ -45,13 +46,13 @@ Les documents historiques mentionnent aussi UJ-08 Flash, UJ-09 Radar et UJ-10 Ve
 - `docs/03-VITALA-TRUST-LEVELS-V1.md Mise � jour 1.md` (nom encodé de façon imparfaite dans GitHub)
 - `docs/03-VITALA-TRUST-LEVELS-V1.md Mise � jour 2.md` (nom encodé de façon imparfaite dans GitHub)
 - `docs/03A-VITALA-TRUST-A LEVELS-V1 Partie 0.md`
-- `docs/03A-VITALA-TRUST-ENGINE-V1 Partie 1.md`
-- `docs/03A-VITALA-TRUST-ENGINE-V1 Partie 2.md`
-- `docs/03A-VITALA-TRUST-ENGINE-V1 Partie 3.md`
-- `docs/03A-VITALA-TRUST-ENGINE-V1.md Mise � jour.md` (nom encodé de façon imparfaite dans GitHub)
+- `docs/03-engines/trust/03A-VITALA-TRUST-ENGINE-V1 Partie 1.md` (classé dans Lot 12)
+- `docs/03-engines/trust/03A-VITALA-TRUST-ENGINE-V1 Partie 2.md` (classé dans Lot 12)
+- `docs/03-engines/trust/03A-VITALA-TRUST-ENGINE-V1 Partie 3.md` (classé dans Lot 12)
+- `docs/03-engines/trust/03A-VITALA-TRUST-ENGINE-V1.md Mise � jour.md` (nom encodé de façon imparfaite ; classé dans Lot 12)
 - `docs/14-VITALA-VEILLE-ENGINE. Model - Unified Digital Identity (UDI).md`
-- `docs/5. Unified Digital Identity API.md`
-- `docs/8. Trust API.md`
+- `docs/5. Unified Digital Identity API.md` (UDI, non déplacée)
+- `docs/8. Trust API.md` (l'original existe encore ; copie classée sous `docs/03-engines/trust/8. Trust API.md`, doublon temporaire à résoudre)
 
 ### Architecture, API et données
 
@@ -59,6 +60,9 @@ Les documents historiques mentionnent aussi UJ-08 Flash, UJ-09 Radar et UJ-10 Ve
 - `docs/18-VITALA-ARCHITECTURE-V1 Partie 2.md`
 - `docs/18-VITALA-ARCHITECTURE-V1 Partie 3.md`
 - `docs/16. Settings API(1).md`
+- `docs/03-engines/flash/6. Flash API.md` (classé dans Lot 12 ; chemin source historique à vérifier)
+- `docs/03-engines/radar/9. Radar API.md` (classé dans Lot 12 ; chemin source historique à vérifier)
+- `docs/03-engines/missions/7. Mission API.md` (classé dans Lot 12)
 - `docs/BUILD-API.md 2. Principes communs.md`
 - `docs/Database Architecture.md`
 - `docs/DATA_MODEL.md`
