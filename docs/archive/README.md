@@ -68,7 +68,7 @@ Les documents historiques mentionnent aussi UJ-08 Flash, UJ-09 Radar et UJ-10 Ve
 - `docs/02-architecture/18-VITALA-ARCHITECTURE-V1 Partie 1.md`
 - `docs/02-architecture/18-VITALA-ARCHITECTURE-V1 Partie 2.md`
 - `docs/02-architecture/18-VITALA-ARCHITECTURE-V1 Partie 3.md`
-- `docs/03-api/16. Settings API(1).md`
+- `docs/03-api/16. Settings API.md` (copie exacte conservée ; la variante `(1)` a été retirée dans Lot 12)
 - `docs/03-engines/flash/6. Flash API.md` (classé dans Lot 12)
 - `docs/03-engines/radar/9. Radar API.md` (classé dans Lot 12)
 - `docs/03-engines/missions/7. Mission API.md` (classé dans Lot 12)
