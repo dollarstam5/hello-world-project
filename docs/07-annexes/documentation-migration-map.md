@@ -40,4 +40,4 @@ La réconciliation détaillée des 28 chemins modifiés par la PR #25, avec dép
 
 ## Registres techniques liés
 
-La consolidation documentaire ne clôt aucun problème technique. TECH-001 à TECH-006 restent suivis dans [le registre des problèmes techniques](./06-operations/technical-issues.md) jusqu'à résolution et vérification spécifiques.
+La consolidation documentaire ne clôt aucun problème technique. TECH-001 à TECH-006 restent suivis dans [le registre des problèmes techniques](../06-operations/technical-issues.md) jusqu'à résolution et vérification spécifiques.
