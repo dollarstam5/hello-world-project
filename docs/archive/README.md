@@ -51,8 +51,17 @@ Les documents historiques mentionnent aussi UJ-08 Flash, UJ-09 Radar et UJ-10 Ve
 - `docs/03-engines/trust/03A-VITALA-TRUST-ENGINE-V1 Partie 3.md` (classé dans Lot 12)
 - `docs/03-engines/trust/03A-VITALA-TRUST-ENGINE-V1.md Mise � jour.md` (nom encodé de façon imparfaite ; classé dans Lot 12)
 - `docs/14-VITALA-VEILLE-ENGINE. Model - Unified Digital Identity (UDI).md`
-- `docs/5. Unified Digital Identity API.md` (UDI, non déplacée)
-- `docs/8. Trust API.md` (l'original existe encore ; copie classée sous `docs/03-engines/trust/8. Trust API.md`, doublon temporaire à résoudre)
+- `docs/5. Unified Digital Identity API.md` (UDI, non déplacée ; contrat transversal historique)
+- `docs/03-engines/trust/8. Trust API.md` (contrat historique classé sous Lot 12)
+
+### Moteurs Veille et Recommendation
+
+- `docs/03-engines/veille/10. Veille API.md`
+- `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 1.md`
+- `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 2.md`
+- `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 3.md`
+- `docs/14-VITALA-VEILLE-ENGINE.md Partie 1(1).md` (copie de la partie 1 conservée à l'ancien chemin ; décision distincte requise avant retrait)
+- `docs/03-engines/recommendation/11._Recommendation_API.md`
 
 ### Architecture, API et données
 
@@ -60,8 +69,8 @@ Les documents historiques mentionnent aussi UJ-08 Flash, UJ-09 Radar et UJ-10 Ve
 - `docs/18-VITALA-ARCHITECTURE-V1 Partie 2.md`
 - `docs/18-VITALA-ARCHITECTURE-V1 Partie 3.md`
 - `docs/16. Settings API(1).md`
-- `docs/03-engines/flash/6. Flash API.md` (classé dans Lot 12 ; chemin source historique à vérifier)
-- `docs/03-engines/radar/9. Radar API.md` (classé dans Lot 12 ; chemin source historique à vérifier)
+- `docs/03-engines/flash/6. Flash API.md` (classé dans Lot 12)
+- `docs/03-engines/radar/9. Radar API.md` (classé dans Lot 12)
 - `docs/03-engines/missions/7. Mission API.md` (classé dans Lot 12)
 - `docs/BUILD-API.md 2. Principes communs.md`
 - `docs/Database Architecture.md`
