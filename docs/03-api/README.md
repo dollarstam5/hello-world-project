@@ -15,8 +15,8 @@ See [API contract status and runtime mapping](./contract-runtime-status.md) for 
 ## Legacy references
 
 - `docs/4. Auth API.md`
-- `docs/6. Flash API.md`
-- `docs/8. Trust API.md`
-- `docs/9. Radar API.md`
+- [`docs/03-engines/flash/6. Flash API.md`](<../03-engines/flash/6. Flash API.md>) — source classée ; l'ancien chemin reste à vérifier avant clôture de la migration
+- [`docs/03-engines/trust/8. Trust API.md`](<../03-engines/trust/8. Trust API.md>) — copie classée ; l'original `docs/8. Trust API.md` existe encore et constitue un doublon temporaire
+- [`docs/03-engines/radar/9. Radar API.md`](<../03-engines/radar/9. Radar API.md>) — source classée ; l'ancien chemin reste à vérifier avant clôture de la migration
 - `docs/15. Sync API.md`
 - `docs/5. Unified Digital Identity API.md`
