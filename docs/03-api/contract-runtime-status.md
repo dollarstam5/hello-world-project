@@ -57,7 +57,7 @@ Les garanties liées aux reçus d'idempotence et au schéma distant restent non 
 - [Répertoire des contrats API](./README.md)
 - [Contrat API de synchronisation](./sync-api.md)
 - [Registre des problèmes techniques](../06-operations/technical-issues.md)
-- Sources historiques conservées : [`docs/03-engines/flash/6. Flash API.md`](<../03-engines/flash/6. Flash API.md>), [`docs/03-engines/trust/8. Trust API.md`](<../03-engines/trust/8. Trust API.md>), [`docs/03-engines/radar/9. Radar API.md`](<../03-engines/radar/9. Radar API.md>), [`docs/03-engines/veille/10. Veille API.md`](<../03-engines/veille/10. Veille API.md>), [`docs/03-engines/recommendation/11._Recommendation_API.md`](<../03-engines/recommendation/11._Recommendation_API.md>), `docs/03-api/4. Auth API.md`, `docs/03-api/5. Unified Digital Identity API.md`. L'UDI API demeure un contrat transversal historique ; ses routes ne sont pas confirmées par l'inventaire runtime.
+- Sources historiques conservées : [`docs/03-engines/flash/6. Flash API.md`](<../03-engines/flash/6. Flash API.md>), [`docs/03-engines/trust/8. Trust API.md`](<../03-engines/trust/8. Trust API.md>), [`docs/03-engines/radar/9. Radar API.md`](<../03-engines/radar/9. Radar API.md>), [`docs/03-engines/veille/10. Veille API.md`](<../03-engines/veille/10. Veille API.md>), [`docs/03-engines/recommendation/11._Recommendation_API.md`](<../03-engines/recommendation/11._Recommendation_API.md>), [`4. Auth API`](<./4. Auth API.md>), [`Unified Digital Identity API`](<./5. Unified Digital Identity API.md>). L'UDI API demeure un contrat transversal historique ; ses routes ne sont pas confirmées par l'inventaire runtime.
 
 ## 6. Limites
 
