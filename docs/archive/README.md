@@ -39,7 +39,7 @@ La documentation active vit dans :
 - `docs/01-product/10-VITALA-UJ-07-CONFIDENCE-CREATION.md`
 - `docs/01-product/04.0-VITALA-UJ-01-Annexe commune aux User Journeys.md`
 
-Les documents historiques mentionnent aussi UJ-08 Flash, UJ-09 Radar et UJ-10 Veille. Leurs fichiers primaires n'ont pas été retrouvés sous les chemins attendus lors de la consolidation ; ne pas recréer ni supprimer ces sources avant d'avoir confirmé leur emplacement et leur contenu.
+Les documents liés à UJ-08 et UJ-09 présents dans l'arborescence sont `docs/03-engines/flash/11-VITALA-UJ-08-FLASH-ENGINE.md` et `docs/03-engines/scan/12-VITALA-UJ-09-SCAN-ENGINE.md`. Ils sont des documents de moteur ; leur équivalence exacte avec des parcours utilisateurs détaillés doit être confirmée. Aucun document primaire distinct UJ-10 n'a été identifié dans l'arborescence actuelle ; cette absence reste à confirmer.
 
 ### Identité et confiance
 
@@ -65,6 +65,10 @@ Les documents historiques mentionnent aussi UJ-08 Flash, UJ-09 Radar et UJ-10 Ve
 
 ### Architecture, API et données
 
+- `docs/04-database/DATABASE-DICTIONARY Partie 1 — Présentation générale.md`
+- `docs/04-database/DATABASE-DICTIONARY Partie 2 — Catalogue des Domaines.md` (reclassé depuis `docs/05-ai/` dans cette PR)
+- `docs/04-database/DATABASE-DICTIONARY Partie 4 — Glossaire.md` (reclassé depuis `docs/05-ai/` dans cette PR)
+- `docs/04-database/DATABASE-DICTIONARY Partie 5 — Annexes.md`
 - `docs/02-architecture/18-VITALA-ARCHITECTURE-V1 Partie 1.md`
 - `docs/02-architecture/18-VITALA-ARCHITECTURE-V1 Partie 2.md`
 - `docs/02-architecture/18-VITALA-ARCHITECTURE-V1 Partie 3.md`
