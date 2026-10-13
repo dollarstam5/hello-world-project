@@ -46,9 +46,9 @@
 | 22 | `docs/03-api/flash-api.md` | Contrat Flash historique, domaine Flash, tests | Lien vers source classée vérifié | Le rôle de page d'entrée doit rester explicite ; ne pas présenter le renvoi comme consolidation complète |
 | 23 | `docs/03-api/trust-api.md` | Contrat Trust classé, domaine Trust, TECH lié | Lien vers source classée vérifié | Garder la distinction Trust Engine / niveaux de confiance / routes runtime |
 | 24 | `docs/03-api/radar-api.md` | Contrat Radar classé, domaine Radar, tests | Lien vers source classée vérifié | Page d'entrée seulement tant que les clauses contractuelles n'ont pas été intégrées et vérifiées |
-| 25 | `docs/documentation-migration-map.md` | Index canonique, index archive, liste de suppressions, TECH-001..006 | Liens ciblés vérifiés | Conserver les statuts « à comparer/non confirmé » ; la cartographie n'est pas une validation de couverture |
+| 25 | `docs/07-annexes/documentation-migration-map.md` | Index canonique, index archive, liste de suppressions, TECH-001..006 | Liens ciblés vérifiés | Conserver les statuts « à comparer/non confirmé » ; la cartographie n'est pas une validation de couverture |
 | 26 | `docs/archive/README.md` | Chemins historiques et liens entrants, encodage des noms | Liens ciblés contrôlés ; certains chemins historiques restent à vérifier exactement | Ne pas corriger les noms encodés à l'aveugle ; faire un inventaire exact avant renommage |
-| 27 | `docs/proposed-document-removals.md` | Audit de couverture, cartographie, liens entrants, approbation utilisateur | Liens ciblés contrôlés | Maintenir les propositions séparées ; aucune suppression additionnelle autorisée |
+| 27 | `docs/07-annexes/proposed-document-removals.md` | Audit de couverture, cartographie, liens entrants, approbation utilisateur | Liens ciblés contrôlés | Maintenir les propositions séparées ; aucune suppression additionnelle autorisée |
 | 28 | `src/scripts/check-foundation.mjs` | Chemins Scan/Radar, contrôle CI Foundation, documents requis | Diff limité aux deux chemins déplacés ; Quality échoue avant la suite à cause d'erreurs format/lint préexistantes sur `main` également | Ne pas lancer de formatage global. Après résolution séparée du blocage CI, vérifier que le script passe et que tous les contrôles aval s'exécutent |
 
 ## C. Dépendances et tests à traiter dans la suite
