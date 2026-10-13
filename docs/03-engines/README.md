@@ -39,6 +39,8 @@ Ce répertoire regroupe des documents de domaine et des contrats historiques par
 
 Les documents Veille et Recommendation classés ci-dessus ont été déplacés dans cette branche. Les sources Unified Digital Identity (UDI) restent à leur chemin historique, car elles relèvent de l'API transversale et du modèle d'identité, pas d'un moteur dédié. La copie strictement identique `Partie 1(1)` a été retirée après comparaison du blob Git ; la partie 1 sans suffixe est conservée.
 
+**Attention sur les User Journeys :** le nom de fichier `12-VITALA-UJ-09-SCAN-ENGINE.md` décrit un moteur Scan dont le contenu le distingue explicitement de Radar ; il ne peut donc pas être traité comme une preuve du parcours UJ-09/Radar. Les références historiques du Trust Engine listent UJ-09-RADAR et UJ-10-VEILLE, mais aucun fichier primaire distinct UJ-10 n'a été confirmé. Les documents Veille Engine présents sont des spécifications de moteur, pas automatiquement le parcours utilisateur UJ-10.
+
 - `docs/02-architecture/14-VITALA-VEILLE-ENGINE. Model - Unified Digital Identity (UDI).md` — malgré son préfixe Veille, son contenu concerne l'UDI ; ne pas le classer comme moteur Veille.
 - `docs/03-api/5. Unified Digital Identity API.md`
 - `docs/02-architecture/Evolution du mod�le de donn�es - Unified Digital Identity (UDI).md`
