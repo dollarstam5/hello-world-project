@@ -1,7 +1,7 @@
 # Réconciliation des chemins requis par Foundation
 
 **Branche de travail :** `fix/lot12-script-documentation-paths`  
-**Contrôle :** `src/scripts/check-foundation.mjs` comparé à l'arborescence Git de la tête de branche `781b224250955ea3b52d755a1d0954c2b7effa31`.  
+**Contrôle :** `src/scripts/check-foundation.mjs` comparé à l'arborescence Git du commit audité `152d4e61339a717c560df0813affb447d22f4255` (avant la présente mise à jour documentaire).  
 **But :** distinguer les déplacements certains des exigences qui nécessitent une décision métier/technique. Ce document ne certifie pas l'exécution des tests.
 
 ## Résultat quantifié
@@ -12,7 +12,7 @@
 - Chemins restant non résolus après ces corrections : **99 dans le calcul historique** ; **95 au contrôle reproductible du head actuel** (liste ci-dessous).
 - Les 95 chemins restants ne sont pas automatiquement déclarés « fonctionnalités absentes » : cela signifie que la cible exacte n'existe pas et que son équivalent n'est pas établi.
 
-> Correction du compte rendu précédent : le chiffre annoncé précédemment de 106 était incomplet. Le recalcul reproductible sur les 145 références du script et l'arborescence de la tête de PR donne 112 avant corrections, puis 95 après 13 déplacements de préfixe et 4 références qui ne sont plus manquantes dans la tête auditée.
+> Correction du compte rendu précédent : le chiffre annoncé précédemment de 106 était incomplet. Le recalcul reproductible sur les 145 références du script et l'arborescence du commit audité `152d4e61339a717c560df0813affb447d22f4255` donne 95 chemins non résolus. Le chiffre de 112 puis 99 appartient à un état antérieur et ne doit pas être utilisé pour décrire l'état courant.
 
 ## A. Déplacements confirmés appliqués
 
