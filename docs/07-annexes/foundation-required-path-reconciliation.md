@@ -9,7 +9,7 @@
 - Références déclarées dans `requiredFiles` : **145**.
 - Chemins initialement non résolus sur la tête auditée avant les corrections de préfixe : **112**.
 - Déplacements de préfixe vérifiés et corrigés dans le script : **13**.
-- Chemins restant non résolus après ces corrections : **99**.
+- Chemins restant non résolus après ces corrections : **99 dans le calcul historique** ; **95 au contrôle reproductible du head actuel** (liste ci-dessous).
 - Les 95 chemins restants ne sont pas automatiquement déclarés « fonctionnalités absentes » : cela signifie que la cible exacte n'existe pas et que son équivalent n'est pas établi.
 
 > Correction du compte rendu précédent : le chiffre annoncé précédemment de 106 était incomplet. Le recalcul reproductible sur les 145 références du script et l'arborescence de la tête de PR donne 112 avant corrections, puis 95 après 13 déplacements de préfixe et 4 références qui ne sont plus manquantes dans la tête auditée.
