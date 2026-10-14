@@ -4,7 +4,7 @@ import { resolve } from "node:path";
 const requiredFiles = [
   "SECURITY.md",
   "CHANGELOG.md",
-  "docs/RELEASE_READINESS.md",
+  "docs/06-operations/release-readiness.md",
   "scripts/check-release-readiness.mjs",
   "tests/smoke/release-readiness.test.ts",
   "packages/core-contracts/src/profile.ts",
@@ -141,7 +141,7 @@ const requiredFiles = [
   "packages/core-db/src/diagnostics.ts",
   "tests/offline/diagnostics.test.ts",
   "tests/observability/maintenance-config.test.ts",
-  "docs/OPERATIONS.md",
+  "docs/06-operations/operations.md",
   "supabase/migrations/20260912000000_protect_identity_trust_system_fields.sql",
   "supabase/migrations/20260912001000_secure_mission_transitions.sql",
   "supabase/migrations/20260912002000_harden_sync_protocol.sql",
