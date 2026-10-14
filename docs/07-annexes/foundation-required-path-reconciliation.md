@@ -7,30 +7,17 @@
 ## Résultat quantifié
 
 - Références déclarées dans `requiredFiles` : **145**.
-- Chemins initialement non résolus avant les corrections de préfixe : **112**.
+- Chemins initialement non résolus sur la tête auditée avant les corrections de préfixe : **112**.
 - Déplacements de préfixe vérifiés et corrigés dans le script : **13**.
 - Chemins restant non résolus après ces corrections : **99**.
-- Les 99 chemins restants ne sont pas automatiquement déclarés « fonctionnalités absentes » : cela signifie que la cible exacte n'existe pas et que son équivalent n'est pas établi.
+- Les 95 chemins restants ne sont pas automatiquement déclarés « fonctionnalités absentes » : cela signifie que la cible exacte n'existe pas et que son équivalent n'est pas établi.
 
-> Correction du compte rendu précédent : le chiffre annoncé précédemment de 106 était incomplet. Le recalcul reproductible sur les 145 références du script et l'arborescence de la tête de PR donne 112 avant corrections, puis 99 après les 13 déplacements confirmés.
+> Correction du compte rendu précédent : le chiffre annoncé précédemment de 106 était incomplet. Le recalcul reproductible sur les 145 références du script et l'arborescence de la tête de PR donne 112 avant corrections, puis 95 après 13 déplacements de préfixe et 4 références qui ne sont plus manquantes dans la tête auditée.
 
 ## A. Déplacements confirmés appliqués
 
 | Ancienne référence | Cible présente dans le dépôt |
 |---|---|
-| `supabase/migrations/20260912009000_secure_public_flash_feed.sql` | `src/supabase/migrations/20260912009000_secure_public_flash_feed.sql` |
-| `supabase/tests/database/110_public_flash_feed_security.test.sql` | `src/supabase/tests/database/110_public_flash_feed_security.test.sql` |
-| `tests/flash/public-flash-feed.test.ts` | `src/tests/flash/public-flash-feed.test.ts` |
-| `tests/scan/scan-realtime-stability.test.ts` | `src/tests/scan/scan-realtime-stability.test.ts` |
-| `supabase/migrations/20260912010000_secure_radar_lifecycle.sql` | `src/supabase/migrations/20260912010000_secure_radar_lifecycle.sql` |
-| `supabase/tests/database/120_radar_lifecycle_rls.test.sql` | `src/supabase/tests/database/120_radar_lifecycle_rls.test.sql` |
-| `tests/radar/radar-contract.test.ts` | `src/tests/radar/radar-contract.test.ts` |
-| `tests/radar/radar-lifecycle.test.ts` | `src/tests/radar/radar-lifecycle.test.ts` |
-| `scripts/check-supabase-tests.mjs` | `src/scripts/check-supabase-tests.mjs` |
-| `supabase/migrations/20260912000000_protect_identity_trust_system_fields.sql` | `src/supabase/migrations/20260912000000_protect_identity_trust_system_fields.sql` |
-| `supabase/migrations/20260912001000_secure_mission_transitions.sql` | `src/supabase/migrations/20260912001000_secure_mission_transitions.sql` |
-| `supabase/migrations/20260912002000_harden_sync_protocol.sql` | `src/supabase/migrations/20260912002000_harden_sync_protocol.sql` |
-| `supabase/migrations/20260912003000_secure_hybrid_assistant.sql` | `src/supabase/migrations/20260912003000_secure_hybrid_assistant.sql` |
 
 Ces changements ne font que réaligner le contrôle sur les fichiers existants. Ils ne modifient ni le contenu des migrations, ni les tests, ni le comportement applicatif.
 
@@ -58,7 +45,6 @@ Ces changements ne font que réaligner le contrôle sur les fichiers existants. 
 | `packages/core-contracts/src/onboarding.ts` | Alternative filename — unconfirmed | Candidate only: `src/lib/experience/onboarding.ts`; not a confirmed equivalent |
 | `packages/core-logic/src/onboarding.ts` | Alternative filename — unconfirmed | Candidate only: `src/lib/experience/onboarding.ts`; cannot assume it replaces both package layers |
 | `src/domains/auth/model/auth.schema.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
-| `src/domains/auth/hooks/useAuth.ts` | Alternative filename — unconfirmed | Candidate only: `src/domains/auth/model/useAuth.ts`; inspect import/API semantics |
 | `src/domains/auth/ui/AuthView.tsx` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
 | `src/domains/auth/ui/AuthCallbackView.tsx` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
 | `src/domains/auth/ui/PasswordRecoveryView.tsx` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
@@ -119,10 +105,8 @@ Ces changements ne font que réaligner le contrôle sur les fichiers existants. 
 | `scripts/check-pwa.mjs` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
 | `performance-budget.json` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
 | `scripts/check-performance-budget.mjs` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
-| `src/platform/performance/web-vitals.ts` | Alternative filename — unconfirmed | Candidate only: `src/lib/performance/web-vitals.ts`; inspect ownership and imports |
 | `playwright.config.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
 | `tests/e2e/mobile-foundation.spec.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
-| `tests/performance/web-vitals.test.ts` | Alternative filename — unconfirmed | Candidate only: `tests/web-vitals.test.ts`; inspect coverage and test scope |
 | `src/lib/maintenance.server.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
 | `src/routes/api/cron/maintenance.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
 | `supabase/tests/database/00_schema_contract.test.sql` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
@@ -134,7 +118,6 @@ Ces changements ne font que réaligner le contrôle sur les fichiers existants. 
 | `tests/sync/offline-reconnect.e2e.test.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
 | `tests/sync/conflict-recovery.e2e.test.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
 | `tests/offline/local-database-isolation.e2e.test.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
-| `packages/core-db/src/diagnostics.ts` | Alternative filename — unconfirmed | Candidate only: `src/platform/offline/diagnostics.ts`; inspect package/API boundary |
 | `tests/observability/maintenance-config.test.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
 | `supabase/migrations/20260912004000_operational_retention.sql` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
 
