@@ -88,8 +88,6 @@ Les documents historiques mentionnent aussi UJ-08 Flash, UJ-09 Radar et UJ-10 Ve
 
 ### Expérience, design et performance
 
-- `docs/01-product/17-Vitala Experience System Partie 1.md`
-- `docs/00-foundation/DESIGN_LANGUAGE.md`
 - `docs/06-operations/PERFORMANCE_ISSUES.md`
 - `docs/06-operations/PERFORMANCE_PWA.md`
 
