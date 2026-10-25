@@ -87,5 +87,3 @@ Toute mutation : écriture locale Dexie + entrée `outbox` → l'écran réagit 
 - [Langage de design canonique](./00-foundation/design-language.md)
 - [BACKEND_RULES.md](./BACKEND_RULES.md)
 - [CONTRIBUTING_AI.md](./CONTRIBUTING_AI.md)
-
-Source historique conservée pendant la migration : [`DESIGN_LANGUAGE.md`](./DESIGN_LANGUAGE.md). Elle ne doit être supprimée qu'après validation et autorisation explicite.
