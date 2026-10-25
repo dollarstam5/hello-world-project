@@ -58,44 +58,65 @@ export type Database = {
       }
       flashes: {
         Row: {
+          accuracy_meters: number | null
+          area_label: string | null
           author_id: string
           body: string
+          category: string | null
           created_at: number
           deleted_at: number | null
           expires_at: number | null
           id: string
+          kind: string | null
+          latitude: number | null
+          longitude: number | null
           media_ids: string[]
           revision: number
           server_updated_at: string
           status: string
+          time_slot: string | null
           title: string
           updated_at: number
         }
         Insert: {
+          accuracy_meters?: number | null
+          area_label?: string | null
           author_id: string
           body?: string
+          category?: string | null
           created_at?: number
           deleted_at?: number | null
           expires_at?: number | null
           id?: string
+          kind?: string | null
+          latitude?: number | null
+          longitude?: number | null
           media_ids?: string[]
           revision?: number
           server_updated_at?: string
           status?: string
+          time_slot?: string | null
           title?: string
           updated_at?: number
         }
         Update: {
+          accuracy_meters?: number | null
+          area_label?: string | null
           author_id?: string
           body?: string
+          category?: string | null
           created_at?: number
           deleted_at?: number | null
           expires_at?: number | null
           id?: string
+          kind?: string | null
+          latitude?: number | null
+          longitude?: number | null
           media_ids?: string[]
           revision?: number
           server_updated_at?: string
           status?: string
+          time_slot?: string | null
           title?: string
           updated_at?: number
         }
@@ -408,6 +429,53 @@ export type Database = {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
+        Returns: boolean
+      }
+      list_public_flashes: {
+        Args: { p_limit?: number }
+        Returns: {
+          area_label: string
+          category: string
+          created_at: number
+          expires_at: number
+          id: string
+          kind: string
+          time_slot: string
+          title: string
+        }[]
+      }
+      scan_public_flashes: {
+        Args: {
+          p_category?: string
+          p_latitude?: number
+          p_limit?: number
+          p_longitude?: number
+          p_radius_km?: number
+          p_text?: string
+        }
+        Returns: {
+          area_label: string
+          category: string
+          created_at: number
+          distance_km: number
+          expires_at: number
+          id: string
+          kind: string
+          time_slot: string
+          title: string
+        }[]
+      }
+      set_flash_location: {
+        Args: {
+          p_accuracy_meters: number
+          p_flash_id: string
+          p_latitude: number
+          p_longitude: number
+        }
+        Returns: boolean
+      }
+      transition_flash: {
+        Args: { p_flash_id: string; p_status: string }
         Returns: boolean
       }
     }
