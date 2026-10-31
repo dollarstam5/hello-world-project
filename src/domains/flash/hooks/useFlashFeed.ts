@@ -1,12 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import type { PublicFlash } from "@eco/core-contracts";
+import { useI18n } from "@/lib/i18n/useI18n";
 import { useLiveFlashes } from "../data";
 import { getPublicFlashFeed } from "../api/flash.functions";
 
 export type FlashFeedSource = "remote" | "offline";
 
 export function useFlashFeed() {
+  const { t } = useI18n();
   const localRows = useLiveFlashes() ?? [];
   const loadRemote = useServerFn(getPublicFlashFeed);
   const [remoteRows, setRemoteRows] = useState<PublicFlash[] | null>(null);
@@ -41,7 +43,7 @@ export function useFlashFeed() {
           setError(undefined);
         }
       } catch {
-        if (active) setError("Flux distant indisponible. Les données hors ligne sont affichées.");
+        if (active) setError(t("flash.feed.error"));
       } finally {
         if (active) setLoading(false);
       }

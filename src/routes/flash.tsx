@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Zap } from "lucide-react";
 import { SectionFoundation } from "@/components/experience/SectionFoundation";
+import { FlashFeed } from "@/domains/flash/ui/FlashFeed";
 
 export const Route = createFileRoute("/flash")({
   head: () => ({
@@ -17,7 +18,7 @@ export const Route = createFileRoute("/flash")({
       tone="warning"
       icon={Zap}
       sections={[
-        { key: "now", titleKey: "page.flash.section.now", perf: "short" },
+        { key: "now", titleKey: "page.flash.section.now", perf: "short", render: () => <FlashFeed /> },
         { key: "soon", titleKey: "page.flash.section.soon", perf: "tall" },
       ]}
       footer="Foundation · Flash"
