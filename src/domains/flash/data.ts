@@ -1,4 +1,10 @@
-import type { FlashRecord, UserId } from "@eco/core-contracts";
+import type {
+  FlashCategory,
+  FlashKind,
+  FlashRecord,
+  FlashTimeSlot,
+  UserId,
+} from "@eco/core-contracts";
 import { newId } from "@eco/core-contracts";
 import { isFlashVisible } from "@eco/core-logic";
 import { flashesRepository, useLocalQuery } from "@/platform/offline";
@@ -23,6 +29,10 @@ export interface NewFlashInput {
   authorId: UserId;
   title: string;
   body: string;
+  kind: FlashKind;
+  category: FlashCategory;
+  timeSlot: FlashTimeSlot;
+  areaLabel?: string;
   expiresAt: number | null;
 }
 
@@ -33,6 +43,10 @@ export function createFlash(input: NewFlashInput) {
     title: input.title,
     body: input.body,
     status: "live",
+    kind: input.kind,
+    category: input.category,
+    timeSlot: input.timeSlot,
+    areaLabel: input.areaLabel,
     expiresAt: input.expiresAt,
     mediaIds: [],
   } as never);
