@@ -1,4 +1,10 @@
-import type { FlashRecord, FlashStatus } from "@eco/core-contracts";
+import type {
+  FlashCategory,
+  FlashKind,
+  FlashRecord,
+  FlashStatus,
+  FlashTimeSlot,
+} from "@eco/core-contracts";
 
 /** A flash is visible when it is live, not deleted and not past its expiry. */
 export function isFlashVisible(flash: FlashRecord, now = Date.now()): boolean {
