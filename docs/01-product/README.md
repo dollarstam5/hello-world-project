@@ -4,6 +4,8 @@ Cette section documente la vision produit, les intentions d'usage, les parcours,
 
 ## Références canoniques
 
+- [Navigation principale V1](./navigation.md)
+
 - [Vision](./vision.md)
 - [Personas](./personas.md)
 - [Parcours utilisateurs](./user-journeys.md)
