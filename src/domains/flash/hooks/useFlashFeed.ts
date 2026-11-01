@@ -57,8 +57,15 @@ export function useFlashFeed() {
     };
   }, [loadRemote]);
 
+  const rows = useMemo<PublicFlash[]>(() => {
+    if (!remoteRows) return offlineRows;
+    const remoteIds = new Set(remoteRows.map((row) => row.id));
+    const pendingLocal = offlineRows.filter((row) => !remoteIds.has(row.id));
+    return [...pendingLocal, ...remoteRows];
+  }, [remoteRows, offlineRows]);
+
   return {
-    rows: remoteRows ?? offlineRows,
+    rows,
     source: remoteRows ? ("remote" as const) : ("offline" as const),
     loading,
     error,
