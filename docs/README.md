@@ -27,6 +27,7 @@ Ce répertoire suit une structure canonique pour la documentation active.
 - [Dictionnaire de données](./04-database/data-dictionary.md)
 - [Schéma, grants et politiques RLS](./04-database/schema-design.md)
 - [Personas Vitala](./01-product/personas.md)
+- [Réel — spécification fonctionnelle V1](./03-engines/reel/reel-engine.md)
 - [Parcours utilisateurs](./01-product/user-journeys.md)
 - [Niveaux de confiance](./01-product/trust-levels.md)
 - [Domaine Trust et Trust Engine](./02-architecture/trust-domain.md)
