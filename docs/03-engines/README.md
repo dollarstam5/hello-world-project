@@ -4,6 +4,9 @@ Ce répertoire regroupe des documents de domaine et des contrats historiques par
 
 ## Domaines
 
+### Réel
+- [Réel — spécification fonctionnelle V1](./reel/reel-engine.md) — décisions validées des Groupes A et B et des parties C-01/C-02 ; C-03/C-04 restent à compléter.
+
 ### Flash
 - [Flash Engine](./flash/11-VITALA-UJ-08-FLASH-ENGINE.md)
 - [Flash API — contrat historique](<./flash/6. Flash API.md>)
