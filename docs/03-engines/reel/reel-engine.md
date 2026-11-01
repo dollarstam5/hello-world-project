@@ -3,7 +3,8 @@
 **Statut :** spécification fonctionnelle en cours de consolidation.  
 **Périmètre :** présence, découverte de personnes à très courte distance, profils, demandes de connexion et interactions Réel.  
 **Référence produit :** Vitalis. Les anciennes sources peuvent encore employer le nom « Vitala ».  
-**Portée de validation :** les règles marquées « Validée » sont des décisions fonctionnelles prises. Elles ne prouvent pas que le comportement est déjà implémenté ou testé.
+**Portée de validation :** les règles marquées « Validée » sont des décisions fonctionnelles prises. Elles ne prouvent pas que le comportement est déjà implémenté ou testé.  
+**Continuité :** [Navigation principale V1](../../01-product/navigation.md) · [Roadmap Réel V1–V3](./roadmap.md) · [Cartographie documentaire](../../07-annexes/reel-navigation-documentation-map.md)
 
 > **Règle de lecture importante :** ce document décrit le comportement attendu de Réel V1. Les contrats API, le schéma de données, les politiques RLS, les permissions mobiles, les tests et le runtime doivent être vérifiés séparément avant toute affirmation d'implémentation.
 
@@ -219,7 +220,9 @@ Les détails de présentation de ces états dans l'interface seront complétés 
 
 ## 9. Conversation après acceptation — C-03
 
-**À arbitrer.** Les règles de base déjà validées concernant la lecture seule et la conservation de l'historique restent applicables en cas de blocage ou de fin de connexion.
+**À arbitrer en détail.** Les décisions antérieures de cadrage V1 posent une conversation textuelle et un partage facultatif de coordonnées après acceptation. Ces orientations sont conservées comme base fonctionnelle, mais le parcours exact, le consentement, le moment du partage, les contrôles et les limites doivent être arbitrés explicitement dans C-03. Elles ne valent pas autorisation d'accès automatique aux coordonnées.
+
+Les règles de base déjà validées concernant la lecture seule et la conservation de l'historique restent applicables en cas de blocage ou de fin de connexion.
 
 Les points suivants restent à définir avant de considérer C-03 comme complet :
 - accès initial à la conversation après acceptation ;
