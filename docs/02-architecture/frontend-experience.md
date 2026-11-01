@@ -23,6 +23,27 @@
 
 Les valeurs de design doivent être modifiées dans leur source exécutable appropriée. Cette documentation explique les responsabilités et les contrôles ; elle ne doit pas devenir une copie manuelle des tokens.
 
+## Navigation et routes — frontière produit/runtime
+
+La décision produit de navigation est définie dans [Navigation principale V1](../01-product/navigation.md). La spécification de la page Réel est définie dans [Réel — spécification fonctionnelle](../03-engines/reel/reel-engine.md). Ces références décrivent la cible produit ; les fichiers runtime restent la source de vérité de ce qui est réellement câblé.
+
+Au contrôle documentaire du 1er novembre 2026 sur `main`, la navigation runtime observée était encore composée de quatre entrées (Accueil, Flash, Radar, Menu), alors que la cible produit validée comporte Réel, Flash, Scan, Radar et 2x2. La route racine affichait `HomeFoundation`, et aucune route `src/routes/scan.tsx` n'était présente dans l'inventaire consulté. Cette divergence doit être traitée dans un lot runtime séparé ; cette référence ne prétend pas que la navigation cible est déjà livrée.
+
+| Responsabilité | Fichier runtime |
+| --- | --- |
+| Shell global et montage de la navigation | `src/components/app/AppShell.tsx` |
+| Barre de navigation principale | `src/components/app/BottomNav.tsx` |
+| Menu secondaire 2x2 | `src/components/app/MenuSheet.tsx` |
+| Route racine / future page Réel | `src/routes/index.tsx` |
+| Routes Flash et Radar | `src/routes/flash.tsx`, `src/routes/radar.tsx` |
+| Route Scan cible à créer | `src/routes/scan.tsx` |
+| Routes du menu secondaire | `src/routes/espace.tsx`, `src/routes/talents.tsx` |
+| Libellés FR/EN | `src/lib/i18n/messages.ts` |
+| Conventions file-based routing | `src/routes/README.md` |
+| Arbre de routes généré | `src/routeTree.gen.ts` — ne jamais éditer manuellement |
+
+La liste fichier par fichier et les statuts sont suivis dans [Cartographie documentaire Navigation/Réel](../07-annexes/reel-navigation-documentation-map.md).
+
 ## Organisation et direction des dépendances
 
 La règle architecturale du dépôt fixe l'ordre suivant, du plus bas au plus haut :
