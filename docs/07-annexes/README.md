@@ -9,6 +9,8 @@ This section stores reference documents that are not primary project guides but 
 
 ## Audit et migration documentaire
 
+- [Cartographie documentaire Navigation et Réel V1–V3](./reel-navigation-documentation-map.md) — décisions, fichiers canoniques, runtime et contrôles attendus.
+
 - [Cartographie de migration](./documentation-migration-map.md)
 - [Réconciliation fichier par fichier — Lot 12](./lot12-file-reconciliation.md)
 - [Audit préliminaire de couverture du contenu](./documentation-content-coverage.md)
