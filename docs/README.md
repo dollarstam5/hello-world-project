@@ -29,6 +29,7 @@ Ce répertoire suit une structure canonique pour la documentation active.
 - [Personas Vitala](./01-product/personas.md)
 - [Navigation principale V1](./01-product/navigation.md)
 - [Réel — spécification fonctionnelle V1](./03-engines/reel/reel-engine.md)
+- [Matrice de traçabilité Réel V1](./03-engines/reel/reel-traceability-matrix.md)
 - [Roadmap Réel V1–V3](./03-engines/reel/roadmap.md)
 - [Cartographie documentaire Navigation/Réel](./07-annexes/reel-navigation-documentation-map.md)
 - [Parcours utilisateurs](./01-product/user-journeys.md)
