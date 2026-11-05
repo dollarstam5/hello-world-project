@@ -216,29 +216,98 @@ Les règles métier suivantes sont déjà validées et constituent les contraint
 - Après déblocage, les interactions peuvent redevenir possibles, mais l'ancienne connexion n'est pas restaurée. L'ancienne conversation reste en lecture seule et son historique reste consultable par les deux personnes.
 - Une nouvelle connexion après déblocage exige une nouvelle demande et une nouvelle acceptation ; tout délai de refus ou de retrait encore applicable continue de s'appliquer.
 
-Les détails de présentation de ces états dans l'interface seront complétés dans C-04.
+Les décisions fonctionnelles C-04 détaillent ci-dessous la présentation et les actions de ces états. Les règles restent des exigences produit ; leur implémentation et leurs tests ne sont pas vérifiés par ce document.
 
 ## 9. Conversation après acceptation — C-03
 
-**À arbitrer en détail.** Les décisions antérieures de cadrage V1 posent une conversation textuelle et un partage facultatif de coordonnées après acceptation. Ces orientations sont conservées comme base fonctionnelle, mais le parcours exact, le consentement, le moment du partage, les contrôles et les limites doivent être arbitrés explicitement dans C-03. Elles ne valent pas autorisation d'accès automatique aux coordonnées.
+**Statut fonctionnel : décisions C-03.1 à C-03.9 validées.** Elles définissent le comportement attendu de la V1, sans certifier l'existence des écrans, API, politiques ou tests correspondants.
 
-Les règles de base déjà validées concernant la lecture seule et la conservation de l'historique restent applicables en cas de blocage ou de fin de connexion.
+### C-03.1 — Création et accès
+- Après acceptation de « Ça m'intéresse », une conversation est créée automatiquement et devient accessible aux deux personnes.
+- Aucun message automatique n'est envoyé lors de sa création.
 
-Les points suivants restent à définir avant de considérer C-03 comme complet :
-- accès initial à la conversation après acceptation ;
-- types de messages autorisés ;
-- pièces jointes, médias et limites éventuelles ;
-- indicateurs d'envoi, de réception et de lecture ;
-- modification ou suppression des messages ;
-- notifications de nouveaux messages ;
-- comportement hors ligne et synchronisation ;
-- règles anti-abus et signalement depuis la conversation.
+### C-03.2 — Premier message
+- Chacun peut envoyer le premier message immédiatement ; aucun participant n'a de priorité.
 
-Aucune de ces options ouvertes ne doit être considérée comme approuvée ou implémentée.
+### C-03.3 — Types de messages
+- V1 autorise uniquement les messages textuels.
+- Photos, vidéos, fichiers, messages vocaux, appels audio et appels vidéo sont exclus du périmètre V1.
+
+### C-03.4 — Partage de localisation
+- Le partage est volontaire, ponctuel et déclenché explicitement par l'utilisateur.
+- Une confirmation explicite est requise avant l'envoi.
+- La localisation transmise est une **zone ou position approximative**, jamais le point GPS exact.
+- Aucun suivi en direct ni actualisation automatique en arrière-plan n'est déclenché.
+- Les coordonnées GPS brutes ne sont pas exposées dans l'interface du destinataire.
+
+### C-03.5 — Notifications
+- Une notification in-app est prévue à la réception d'un nouveau message.
+- Une notification push est envoyée uniquement si le destinataire l'autorise.
+- Aucun rappel automatique de conversation n'est prévu.
+
+### C-03.6 — États des messages
+- **Envoyé** : message transmis au serveur.
+- **Reçu** : message disponible dans la conversation du destinataire.
+- **Lu** : le destinataire ouvre la conversation et le message est affiché.
+- Aucun indicateur de saisie n'est prévu en V1.
+
+### C-03.7 — Modification et retrait d'affichage
+- Un message envoyé n'est pas modifiable.
+- Son auteur peut le retirer de son propre affichage.
+- Cette action ne supprime pas la copie déjà reçue par le destinataire.
+- Aucun effacement « pour tout le monde » n'est prévu.
+- La rétention technique côté serveur reste à définir ; masquer un message dans l'interface ne prouve pas son effacement serveur.
+
+### C-03.8 — Limite et cadence
+- Un message est limité à **1 000 caractères**.
+- Plusieurs messages successifs sont autorisés.
+- Des protections anti-spam et limites de cadence sont nécessaires ; leurs seuils exacts restent ouverts et doivent être spécifiés avant implémentation.
+
+### C-03.9 — Signalement
+- Un utilisateur peut signaler un message ou un comportement depuis la conversation.
+- Le signalement utilise des catégories prédéfinies et est transmis pour examen.
+- Un signalement ne déclenche pas automatiquement un blocage ; le blocage reste une action distincte.
+- Les détails du signalement ne sont pas communiqués à la personne signalée.
 
 ## 10. Fin d'interaction et états de l'interface — C-04
 
-**À compléter.** Les effets métier de la fin de connexion et du blocage énumérés à la section 8 sont déjà validés. C-04 précisera leur traduction dans l'interface, les confirmations, les messages d'état et les actions restantes.
+**Statut fonctionnel : décisions C-04.1 à C-04.5 validées.** Les règles métier et l'expérience attendue sont définies ; le runtime et les contrôles restent à vérifier.
+
+### C-04.1 — Conversation en lecture seule
+Après fin de connexion ou blocage :
+- la conversation reste accessible aux deux personnes ;
+- les messages antérieurs restent consultables ;
+- la zone de saisie est supprimée ou désactivée ;
+- un texte informatif indique que l'envoi n'est plus disponible ;
+- aucune nouvelle prise de contact ne peut être initiée depuis cette ancienne conversation.
+
+### C-04.2 — Fin volontaire d'une connexion
+- L'utilisateur doit confirmer la fin de connexion.
+- La confirmation explique que la connexion prend fin définitivement et que la conversation passe en lecture seule.
+- Après confirmation, l'ancienne connexion ne peut pas être réactivée.
+- Une nouvelle connexion exige une nouvelle demande et une nouvelle acceptation.
+
+### C-04.3 — Blocage
+- Le blocage demande une confirmation.
+- Il annule immédiatement les demandes en attente entre les deux personnes.
+- La conversation passe immédiatement en lecture seule et l'historique reste consultable.
+- Aucun nouveau message ni aucune nouvelle interaction ne sont permis.
+- La personne bloquée ne reçoit pas de notification explicite indiquant qu'elle a été bloquée.
+
+### C-04.4 — Déblocage
+- Le déblocage est effectué depuis la liste des personnes bloquées.
+- Il ne restaure pas l'ancienne connexion.
+- L'ancienne conversation reste en lecture seule et son historique consultable.
+- Une nouvelle demande puis une acceptation sont nécessaires pour recréer une connexion.
+- Tout délai de refus ou de retrait encore applicable continue de s'appliquer.
+
+### C-04.5 — Découverte après fin ou blocage
+- Après fin de connexion ou blocage, les personnes ne figurent plus dans les connexions actives l'une de l'autre ; l'historique reste consultable.
+- L'ancienne connexion ne donne plus accès au statut ou à la présence Réel de l'autre.
+- Une simple fin de connexion n'interdit pas une redécouverte fortuite dans Réel si les deux profils sont de nouveau visibles et éligibles.
+- Un blocage empêche la découverte réciproque et toute interaction tant qu'il reste actif.
+
+**Texte neutre validé après blocage ou fin d'interaction :** « Cette conversation n'est plus disponible pour l'envoi de messages. » Ce texte ne révèle pas explicitement l'existence d'un blocage.
 
 ## 11. Exigences techniques à vérifier
 
@@ -270,8 +339,8 @@ Ces exigences découlent des décisions fonctionnelles ; elles ne sont pas une p
 | Informations avant acceptation | Profil visible, statut et distance approximative | Validées |
 | Notifications de demande | In-app et push si autorisée, sans rappel automatique | Validées |
 | Refus | Pas de notification explicite à l'expéditeur ; délai de 24 h côté serveur | Validé |
-| Conversation | Détails du fonctionnement | À arbitrer (C-03) |
-| Fin d'interaction | Effets métier de base validés ; détails d'interface restants | Partiellement défini (C-04) |
+| Conversation | C-03.1 à C-03.9 : création, texte seul, localisation approximative volontaire, états, limites et signalement | Décisions fonctionnelles validées ; seuils anti-spam et rétention technique ouverts |
+| Fin d'interaction | C-04.1 à C-04.5 : lecture seule, fin, blocage, déblocage et découverte | Décisions fonctionnelles validées ; implémentation non vérifiée |
 | Implémentation et tests | À confronter au code, aux contrats, aux politiques et aux tests | Non vérifiés ici |
 
 ## 13. Historique des décisions
@@ -283,4 +352,7 @@ Ces exigences découlent des décisions fonctionnelles ; elles ne sont pas une p
 - **C-02.2 :** profil visible, statut et distance approximative accessibles au destinataire avant acceptation.
 - **C-02.3 :** notification in-app et push si autorisée ; pas de rappel automatique.
 - **C-02.4 :** aucune notification explicite de refus à l'expéditeur.
-- **C-03 et C-04 :** détails à compléter avant clôture du Groupe C.
+- **C-03.1 à C-03.9 :** conversation textuelle, localisation approximative volontaire, notifications, états, retrait d'affichage, limites et signalement — décisions validées.
+- **C-04.1 à C-04.5 :** lecture seule, fin définitive, blocage, déblocage et règles de découverte — décisions validées.
+- **P-01 à P-04 :** texte neutre, localisation approximative, retrait d'affichage sans effacement global garanti et expiration du statut sans historique visible — décisions validées.
+- **Implémentation et tests :** non vérifiés dans cette spécification.
