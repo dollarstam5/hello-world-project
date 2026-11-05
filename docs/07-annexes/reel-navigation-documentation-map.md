@@ -37,7 +37,7 @@ Direction UI/UX : hybride, premium, simple et vivant.
 - Demande simple « Ça m'intéresse », sans message joint ; destinataire voit le profil autorisé, le statut et la distance approximative ; notification in-app et push si autorisée ; aucun rappel automatique ; pas de notification explicite de refus à l'expéditeur.
 - Cooldown de 24 h unidirectionnel après refus/retrait, horodaté côté serveur.
 - Règles Groupe A sur unicité des demandes en attente, retrait, acceptation/refus, blocage, fin de connexion et historique en lecture seule.
-- Les échanges antérieurs posent le chat textuel et le partage facultatif de coordonnées après acceptation comme orientation produit ; le parcours précis reste à arbitrer dans C-03.
+- C-03.1 à C-03.9 sont validées : conversation créée après acceptation, texte uniquement, partage volontaire ponctuel d'une zone approximative après confirmation, notifications, états, limite de 1 000 caractères, retrait d'affichage côté auteur et signalement. Les seuils anti-spam et la rétention technique restent ouverts.
 
 ### 1.3 État des parties C
 
@@ -46,8 +46,8 @@ Direction UI/UX : hybride, premium, simple et vivant.
 - C-02.2 : profil visible, statut et distance approximative avant acceptation — validé.
 - C-02.3 : notification in-app et push si autorisée, sans rappel automatique — validé.
 - C-02.4 : pas de notification explicite de refus à l'expéditeur — validé.
-- C-03 : chat textuel et partage facultatif de coordonnées sont des orientations antérieures ; détails à arbitrer.
-- C-04 : effets métier principaux déjà définis par Groupe A ; présentation UI à détailler.
+- C-03.1 à C-03.9 : décisions fonctionnelles validées ; détails techniques, seuils anti-spam et rétention restent à spécifier/vérifier.
+- C-04.1 à C-04.5 : décisions fonctionnelles validées, y compris états UI, confirmations, texte neutre et conséquences sur la découverte.
 
 ## 2. Références documentaires canoniques
 
@@ -62,12 +62,16 @@ Direction UI/UX : hybride, premium, simple et vivant.
 | `docs/02-architecture/frontend-experience.md` | Shell, routes et architecture front | Ajouter l'état observé de navigation et pointer vers la spécification produit |
 | `docs/02-architecture/README.md` | Index architecture | Conserver le lien front-end ; ajouter la référence produit liée si utile |
 | `docs/03-engines/README.md` | Index des domaines métier | Indexer Réel |
-| `docs/03-engines/reel/reel-engine.md` | Référence fonctionnelle normative de Réel | Consolider Groupes A/B et C-01/C-02 ; compléter C-03/C-04 |
-| `docs/03-engines/reel/roadmap.md` | Continuité V1/V2/V3 | Nouveau fichier ; V2/V3 restent non engagées tant qu'elles ne sont pas arbitrées |
+| `docs/03-engines/reel/reel-engine.md` | Référence fonctionnelle normative de Réel | Référence normative Groupes A/B et C-01 à C-04 ; maintenir les décisions validées et distinguer les inconnues techniques |
+| `docs/03-engines/reel/roadmap.md` | Continuité V1/V2/V3 | Référence de versionnement ; C-03/C-04 validées en V1, V2/V3 non engagées |
 | `docs/07-annexes/README.md` | Index des annexes | Ajouter la présente cartographie |
 | `docs/07-annexes/reel-navigation-documentation-map.md` | Matrice fichier par fichier et traçabilité des décisions | Nouveau fichier canonique de suivi |
 
-## 3. Fichiers runtime à aligner lors d'un lot distinct
+## 3. Matrice de traçabilité Réel V1
+
+La matrice détaillée des décisions R/A/B/C/P, exigences techniques et scénarios de test est [Réel V1 — matrice de traçabilité](../03-engines/reel/reel-traceability-matrix.md). Elle décrit des exigences et tests attendus ; elle ne certifie ni l'existence des tests ni leur exécution.
+
+## 4. Fichiers runtime à aligner lors d'un lot distinct
 
 Cette liste n'autorise pas une modification immédiate du code. Elle décrit les dépendances identifiées sur `main`.
 
@@ -88,7 +92,7 @@ Cette liste n'autorise pas une modification immédiate du code. Elle décrit les
 | `src/routeTree.gen.ts` | Généré automatiquement ; non éditable à la main | Régénérer par l'outillage après ajout des routes |
 | `src/components/experience/HomeFoundation.tsx` | Cible actuelle de la route racine | Examiner les éléments réutilisables avant remplacement ; ne pas supprimer à l'aveugle |
 
-## 4. Fichiers domaine, contrats, données et tests — à vérifier avant création
+## 5. Fichiers domaine, contrats, données et tests — à vérifier avant création
 
 | Zone | Cible de travail proposée | Statut |
 | --- | --- | --- |
@@ -102,7 +106,7 @@ Cette liste n'autorise pas une modification immédiate du code. Elle décrit les
 | Notifications | plateforme et contrats existants | Vérifier les capacités réellement disponibles |
 | Localisation | permissions Android/iOS et plateforme | Tester les limites OS ; ne pas promettre le suivi continu |
 
-## 5. Sources existantes à conserver et relier
+## 6. Sources existantes à conserver et relier
 
 | Fichier existant | Relation avec Navigation/Réel | Décision |
 | --- | --- | --- |
@@ -116,10 +120,10 @@ Cette liste n'autorise pas une modification immédiate du code. Elle décrit les
 | Sources Radar sous `docs/03-engines/radar/` | Frontière Radar / Réel | Conserver |
 | `docs/05-ai/CONTRIBUTING_AI.md` | Gouvernance des modifications | Conserver ; appliquer ses règles i18n, routes, tests et fichiers générés |
 
-## 6. Séquence documentaire et technique
+## 7. Séquence documentaire et technique
 
-1. Stabiliser les arbitrages fonctionnels Réel, notamment C-03 et C-04.
-2. Finaliser la spécification `reel-engine.md` et les index.
+1. Maintenir les décisions fonctionnelles R/A/B/C/P synchronisées dans la spécification et la matrice de traçabilité.
+2. Valider les index et la cartographie documentaire.
 3. Valider le contrat produit de navigation et les routes cibles.
 4. Effectuer la matrice d'impact runtime, contrats, données, sécurité, coûts et tests.
 5. Faire approuver séparément tout changement de schéma, migration ou permission.
@@ -127,6 +131,6 @@ Cette liste n'autorise pas une modification immédiate du code. Elle décrit les
 7. Vérifier navigation complète, accessibilité, FR/EN, performances, confidentialité, offline et tests.
 8. Conserver les sources historiques ; aucune suppression sans comparaison intégrale et autorisation explicite.
 
-## 7. Règle de continuité V1–V3
+## 8. Règle de continuité V1–V3
 
 La roadmap `docs/03-engines/reel/roadmap.md` est la source de suivi des évolutions. Une proposition V2 ou V3 doit référencer la règle V1 concernée, être explicitement arbitrée, et préciser ses impacts ainsi que ses critères de validation. Les versions futures ne sont pas des promesses de livraison.
