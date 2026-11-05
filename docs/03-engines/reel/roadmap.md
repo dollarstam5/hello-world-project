@@ -25,7 +25,7 @@
 
 ### Fonctionnel Réel
 
-Le détail normatif se trouve dans [Réel — spécification fonctionnelle](./reel-engine.md). Les décisions déjà prises couvrent notamment :
+Le détail normatif se trouve dans [Réel — spécification fonctionnelle](./reel-engine.md) ; les liens entre décisions, exigences et tests attendus figurent dans la [matrice de traçabilité Réel V1](./reel-traceability-matrix.md). Les décisions déjà prises couvrent notamment :
 - présence activée/désactivée manuellement, indépendante du statut ;
 - un seul statut actif, avec durées fixes 30 min, 1 h, 2 h, 3 h, 6 h, 12 h ou 24 h ;
 - remplacement confirmé et atomique du statut ; une modification ne renouvelle pas son expiration ;
