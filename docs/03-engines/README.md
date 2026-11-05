@@ -5,7 +5,8 @@ Ce répertoire regroupe des documents de domaine et des contrats historiques par
 ## Domaines
 
 ### Réel
-- [Réel — spécification fonctionnelle V1](./reel/reel-engine.md) — décisions validées des Groupes A et B et des parties C-01/C-02 ; C-03/C-04 restent à compléter.
+- [Réel — spécification fonctionnelle V1](./reel/reel-engine.md) — règles fonctionnelles validées des Groupes A/B et C-01 à C-04 ; voir la matrice pour les exigences et tests attendus.
+- [Matrice de traçabilité Réel V1](./reel/reel-traceability-matrix.md) — décisions, exigences techniques, scénarios de test et points ouverts.
 - [Roadmap Réel V1–V3](./reel/roadmap.md) — continuité des versions et gouvernance des évolutions.
 
 ### Flash
