@@ -4,7 +4,7 @@
 **Périmètre :** présence, découverte de personnes à très courte distance, profils, demandes de connexion et interactions Réel.  
 **Référence produit :** Vitalis. Les anciennes sources peuvent encore employer le nom « Vitala ».  
 **Portée de validation :** les règles marquées « Validée » sont des décisions fonctionnelles prises. Elles ne prouvent pas que le comportement est déjà implémenté ou testé.  
-**Continuité :** [Navigation principale V1](../../01-product/navigation.md) · [Roadmap Réel V1–V3](./roadmap.md) · [Cartographie documentaire](../../07-annexes/reel-navigation-documentation-map.md)
+**Continuité :** [Navigation principale V1](../../01-product/navigation.md) · [Matrice de traçabilité Réel V1](./reel-traceability-matrix.md) · [Roadmap Réel V1–V3](./roadmap.md) · [Cartographie documentaire](../../07-annexes/reel-navigation-documentation-map.md)
 
 > **Règle de lecture importante :** ce document décrit le comportement attendu de Réel V1. Les contrats API, le schéma de données, les politiques RLS, les permissions mobiles, les tests et le runtime doivent être vérifiés séparément avant toute affirmation d'implémentation.
 
