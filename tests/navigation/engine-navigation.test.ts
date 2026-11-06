@@ -43,7 +43,7 @@ describe("Vitalis engine navigation boundaries", () => {
 
   it("documents the domain ownership and integration boundary", () => {
     const domains = read("src/domains/README.md");
-    expect(domains).toContain("Les domaines ne s'importent pas mutuellement");
+    expect(domains).toContain("Les domaines ne consultent jamais les détails internes");
     expect(domains).toContain("contrats partagés");
   });
 });
