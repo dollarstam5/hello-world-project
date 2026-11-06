@@ -2,6 +2,7 @@ import { Sheet } from "@/components/app/Sheet";
 import { Button } from "@/components/ui/button";
 import { useOnboarding } from "@/lib/experience/onboarding";
 import { useI18n } from "@/lib/i18n/useI18n";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 /**
  * First-run onboarding is a required step before the explanatory Home.
@@ -23,6 +24,9 @@ export function OnboardingSheet() {
       description={t("onboarding.desc")}
     >
       <div className="space-y-4 pt-2">
+        <div className="flex justify-end">
+          <LanguageSwitcher />
+        </div>
         <ol className="space-y-3 text-sm text-muted-foreground">
           <li className="flex items-start gap-3">
             <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary text-xs font-medium">
