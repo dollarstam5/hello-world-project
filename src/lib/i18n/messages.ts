@@ -66,8 +66,10 @@ export const messages = {
     "home.welcome": "Bonjour",
     "home.subtitle": "Voici votre écosystème, posé et vivant.",
     "home.explainer.title": "Découvrez comment Vitalis fonctionne",
-    "home.explainer.description": "Vitalis rassemble des espaces complémentaires. Chaque moteur a son rôle, ses règles et son espace dédié.",
-    "home.explainer.engines": "Réel rapproche les personnes présentes à proximité immédiate. Flash diffuse des intentions utiles. Scan lance une recherche active. Radar suit ce qui évolue autour de vous.",
+    "home.explainer.description":
+      "Vitalis rassemble des espaces complémentaires. Chaque moteur a son rôle, ses règles et son espace dédié.",
+    "home.explainer.engines":
+      "Réel rapproche les personnes présentes à proximité immédiate. Flash diffuse des intentions utiles. Scan lance une recherche active. Radar suit ce qui évolue autour de vous.",
     "home.explainer.cta": "Continuer vers l'identification",
     "home.engines.title": "Vos espaces Vitalis",
     "home.engine.reel": "Réel",
@@ -179,7 +181,8 @@ export const messages = {
     "scan.denied": "Position indisponible. Autorisez la localisation pour scanner.",
     "page.scan.eyebrow": "Proximité",
     "page.scan.title": "Scan",
-    "page.scan.desc": "Repérez les Flash actifs autour de vous, sans jamais révéler votre position.",
+    "page.scan.desc":
+      "Repérez les Flash actifs autour de vous, sans jamais révéler votre position.",
     "page.scan.section.scan": "Scanner",
     "page.radar.title": "Radar",
     "page.radar.desc": "Ce qui se passe autour de vous. À venir.",
@@ -188,7 +191,8 @@ export const messages = {
     "page.radar.section.area": "Dans votre zone",
     "page.reel.eyebrow": "Présence immédiate",
     "page.reel.title": "Réel",
-    "page.reel.desc": "Un espace dédié à la découverte des personnes présentes à proximité physique immédiate.",
+    "page.reel.desc":
+      "Un espace dédié à la découverte des personnes présentes à proximité physique immédiate.",
     "page.reel.section.presence": "Ma présence",
     "page.reel.section.nearby": "Tout près de vous",
     "page.reel.section.connections": "Demandes et connexions",
@@ -430,8 +434,10 @@ export const messages = {
     "home.welcome": "Hello",
     "home.subtitle": "Here is your ecosystem, calm and alive.",
     "home.explainer.title": "Discover how Vitalis works",
-    "home.explainer.description": "Vitalis brings together complementary spaces. Each engine has its own role, rules, and dedicated space.",
-    "home.explainer.engines": "Real helps discover people physically nearby. Flash shares useful intentions. Scan starts an active search. Radar follows what changes around you.",
+    "home.explainer.description":
+      "Vitalis brings together complementary spaces. Each engine has its own role, rules, and dedicated space.",
+    "home.explainer.engines":
+      "Real helps discover people physically nearby. Flash shares useful intentions. Scan starts an active search. Radar follows what changes around you.",
     "home.explainer.cta": "Continue to identification",
     "home.engines.title": "Your Vitalis spaces",
     "home.engine.reel": "Real",
