@@ -67,7 +67,7 @@ Les futures pages et catégories doivent être ajoutées selon leur responsabili
 
 ## 5. État constaté dans le dépôt — inventaire historique
 
-Les constats ci-dessous proviennent de la revue du 1er novembre 2026 sur la branche `main` alors examinée. Ils doivent être revalidés sur la branche runtime avant développement.
+Les constats ci-dessous ont été actualisés le 6 novembre 2026 sur `main` (HEAD `86f4f43cbd6942a8e7df95d3ce53c3db9634a7fb`). Ils décrivent le câblage observé à cette date, pas la conformité au parcours produit attendu.
 
 | Fichier | État constaté | Alignement attendu |
 | --- | --- | --- |
