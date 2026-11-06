@@ -57,6 +57,14 @@ Le comportement dépend de la nature de la notification :
 - Une notification nécessitant du contexte ouvre un aperçu dans une fenêtre, avec une possibilité de poursuivre vers la page concernée.
 - Une notification sensible présente les informations utiles sans exposer inutilement les données personnelles.
 
+### Regroupement intelligent
+
+- Les notifications similaires reçues sur une courte période sont regroupées automatiquement en une seule entrée.
+- Le regroupement présente un résumé compréhensible et le nombre d'activités concernées.
+- L'utilisateur peut ouvrir le groupe pour consulter les éléments individuels.
+- Le regroupement ne doit pas masquer une action urgente, sensible ou nécessitant une décision individuelle.
+- La fenêtre de regroupement et les critères de similarité restent à définir à partir des catégories et événements réels ; aucun seuil arbitraire n'est fixé ici.
+
 ### Lecture, historique et organisation
 
 - Une notification consultée passe automatiquement à l'état « Lue ».
