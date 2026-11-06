@@ -155,7 +155,23 @@
 
 Les identifiants de scénarios sont uniques et stables. Quand un test sera localisé, ajouter son chemin réel et le lien CI/rapport. Un test écrit mais non exécuté reste « à exécuter » ; un résultat sans preuve accessible reste « à confirmer ».
 
-## 9. Conditions de clôture
+## 9. Parcours d'entrée Home et navigation
+
+Cette famille complète la matrice Réel pour couvrir le point d'entrée global de Vitalis. Elle ne modifie pas les règles métier Réel.
+
+| ID exigence | Règle / exigence | Scénarios de test attendus | État |
+| --- | --- | --- | --- |
+| HOME-01 | Première utilisation : onboarding avant Home explicative | T-HOME-01 première ouverture affiche onboarding ; T-HOME-02 onboarding non terminé reste prioritaire au retour | Décision produit clarifiée ; runtime non vérifié |
+| HOME-02 | Home explicative après onboarding | T-HOME-03 fin d'onboarding affiche Home explicative | Décision produit clarifiée ; runtime non vérifié |
+| HOME-03 | L'action de poursuite ouvre l'identification existante | T-HOME-04 CTA ouvre le parcours existant ; T-HOME-05 annulation/échec ne simule pas une identification réussie | À vérifier sans modifier Auth |
+| HOME-04 | Succès d'identification redirige vers Home interactive | T-HOME-06 succès confirmé ouvre Home interactive ; T-HOME-07 état incomplet ou refusé ne l'ouvre pas | Décision produit clarifiée ; runtime non vérifié |
+| HOME-05 | L'icône de l'application ramène à Home selon l'état | T-HOME-08 utilisateur non identifié revient à Home explicative ; T-HOME-09 utilisateur identifié revient à Home interactive | Décision produit clarifiée ; runtime non vérifié |
+| HOME-06 | Home interactive expose les accès Réel, Flash, Scan, Radar et catégories | T-HOME-10 chaque accès ouvre sa destination prévue ; menu 2x2 ouvre les espaces secondaires | Câblage runtime non vérifié |
+| HOME-07 | Home et Réel restent distincts | T-HOME-11 route `/` ne rend pas le moteur Réel ; accès Réel ouvre sa destination dédiée | Route Réel à confirmer ; runtime non vérifié |
+
+**Règles de preuve :** ces identifiants sont des scénarios attendus. Ils ne signifient pas que les tests existent, qu'ils ont été exécutés ou que les parcours sont livrés. Le parcours d'identification demeure celui déjà défini dans le produit ; cette matrice ne crée aucune exigence d'authentification supplémentaire.
+
+## 10. Conditions de clôture
 
 - [x] Décisions R/A/B/C/P connues représentées.
 - [x] Exigences techniques séparées des décisions produit.
