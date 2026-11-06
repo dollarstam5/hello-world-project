@@ -17,9 +17,12 @@
 
 ### Navigation et accès
 
-- Navigation principale : Réel, Flash, Scan, Radar, 2x2.
-- Réel est la destination racine `/`.
-- Flash conserve `/flash`, Radar conserve `/radar`, Scan a une route dédiée `/scan`.
+- Home est le point d'entrée général de Vitalis et occupe la route racine `/` ; son contenu dépend de l'état onboarding/identification.
+- Le parcours de première utilisation est : onboarding → Home explicative → demande d'identification via le parcours existant → Home interactive après réussite.
+- L'icône de l'application ramène à Home, jamais directement à Réel.
+- La Home interactive donne accès aux moteurs Réel, Flash, Scan et Radar ainsi qu'aux catégories secondaires.
+- La navigation métier conserve les entrées Réel, Flash, Scan, Radar et 2x2 ; Réel est distinct de Home et sa route dédiée doit être confirmée dans l'inventaire runtime avant implémentation.
+- Flash conserve `/flash`, Radar conserve `/radar`, Scan cible `/scan` sous réserve de vérification du routage existant.
 - Le 2x2 ouvre le menu secondaire, dont les destinations actuellement documentées sont Espace et Talents.
 - Direction UI/UX : hybride, premium, simple et vivant.
 
