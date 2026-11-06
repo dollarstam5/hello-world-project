@@ -1,10 +1,15 @@
+import { lazy, Suspense, useState } from "react";
 import { Compass } from "lucide-react";
-import { useState } from "react";
 import { FloatingButton } from "@/components/app/FloatingButton";
 import { Sheet } from "@/components/app/Sheet";
 import { Icon } from "@/components/app/Icon";
-import { AssistantTab } from "@/domains/assistant/ui/AssistantTab";
 import { useI18n } from "@/lib/i18n/useI18n";
+
+const AssistantTab = lazy(() =>
+  import("@/domains/assistant/ui/AssistantTab").then((module) => ({
+    default: module.AssistantTab,
+  })),
+);
 
 /** AILayer — global entry point to Vita, the in-app guide. */
 export function AILayer() {
@@ -26,7 +31,17 @@ export function AILayer() {
         title={t("assistant.cta")}
         description={t("app.tagline")}
       >
-        {open && <AssistantTab />}
+        {open ? (
+          <Suspense
+            fallback={
+              <p role="status" className="py-8 text-center text-sm text-muted-foreground">
+                {t("app.loading")}
+              </p>
+            }
+          >
+            <AssistantTab />
+          </Suspense>
+        ) : null}
       </Sheet>
     </>
   );
