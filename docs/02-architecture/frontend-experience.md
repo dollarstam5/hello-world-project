@@ -23,6 +23,33 @@
 
 Les valeurs de design doivent être modifiées dans leur source exécutable appropriée. Cette documentation explique les responsabilités et les contrôles ; elle ne doit pas devenir une copie manuelle des tokens.
 
+## Entrée Home, navigation et routes — frontière produit/runtime
+
+La décision produit est définie dans [Navigation principale V1](../01-product/navigation.md) et les transitions sont détaillées dans [Parcours utilisateurs](../01-product/user-journeys.md). La spécification de Réel reste définie dans [Réel — spécification fonctionnelle](../03-engines/reel/reel-engine.md).
+
+**Règle structurante : Home et Réel sont deux destinations distinctes.** La route racine `/` est le point d'entrée Home, avec un rendu qui dépend de l'état du parcours : onboarding lors de la première utilisation inachevée, Home explicative avant identification, puis Home interactive après identification réussie. Réel est un moteur accessible depuis la Home interactive et doit disposer d'une destination distincte, à confirmer dans l'inventaire de routes avant tout changement runtime.
+
+L'icône de l'application ramène à Home ; elle ne doit pas ouvrir Réel directement. La Home interactive compose des liens vers Réel, Flash, Scan, Radar et les catégories secondaires, sans absorber leurs responsabilités métier.
+
+Au contrôle documentaire du 1er novembre 2026 sur `main`, la route racine affichait `HomeFoundation`, la navigation runtime observée comportait quatre entrées (Accueil, Flash, Radar, Menu) et aucune route `src/routes/scan.tsx` n'avait été retrouvée dans l'inventaire consulté. Ces observations sont historiques et doivent être revalidées sur la branche de développement. Elles ne prouvent ni la disponibilité du nouveau parcours Home ni celle des destinations moteurs.
+
+| Responsabilité | Fichier ou zone à vérifier |
+| --- | --- |
+| Shell global et montage de la navigation | `src/routes/__root.tsx`, `src/components/app/AppShell.tsx` |
+| Point d'entrée Home et résolution des états | `src/routes/index.tsx` et composants d'expérience Home/onboarding |
+| Barre de navigation principale | `src/components/app/BottomNav.tsx` |
+| Menu secondaire 2x2 | `src/components/app/MenuSheet.tsx` |
+| Parcours d'identification existant | composants, routes et contrats Identity/UDI réellement présents ; ne pas les remplacer |
+| Destination dédiée Réel | route à localiser ou créer après vérification ; ne pas réutiliser `/` |
+| Routes Flash et Radar | `src/routes/flash.tsx`, `src/routes/radar.tsx` |
+| Route Scan cible | `src/routes/scan.tsx`, à confirmer ou créer |
+| Routes secondaires | `src/routes/espace.tsx`, `src/routes/talents.tsx` |
+| Libellés FR/EN | `src/lib/i18n/messages.ts` |
+| Conventions file-based routing | `src/routes/README.md` |
+| Arbre de routes généré | `src/routeTree.gen.ts` — ne jamais éditer manuellement |
+
+La liste fichier par fichier et les statuts sont suivis dans [Cartographie documentaire Navigation/Réel](../07-annexes/reel-navigation-documentation-map.md).
+
 ## Organisation et direction des dépendances
 
 La règle architecturale du dépôt fixe l'ordre suivant, du plus bas au plus haut :
