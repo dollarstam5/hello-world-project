@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ScanSpace } from "@/domains/scan/ui/ScanSpace";
+import { ScanSpace } from "@/domains/scan";
 
 export const Route = createFileRoute("/scan")({
   head: () => ({
