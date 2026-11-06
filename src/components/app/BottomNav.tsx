@@ -4,19 +4,29 @@ import { motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useReducedMotion } from "@/lib/design/useReducedMotion";
 import { cn } from "@/lib/utils";
+import { PRIMARY_ENGINES, type PrimaryEngineKey } from "@/lib/navigation/primary-engines";
 
 type Tab = {
-  key: "reel" | "flash" | "scan" | "radar" | "menu";
+  key: PrimaryEngineKey | "menu";
   to?: string;
   icon: React.ComponentType<{ className?: string }>;
   labelKey: "nav.reel" | "nav.flash" | "nav.scan" | "nav.radar" | "nav.menu";
 };
 
+const ENGINE_ICONS = {
+  reel: UsersRound,
+  flash: Zap,
+  scan: ScanLine,
+  radar: Radar,
+} satisfies Record<PrimaryEngineKey, Tab["icon"]>;
+
 const TABS: Tab[] = [
-  { key: "reel", to: "/reel", icon: UsersRound, labelKey: "nav.reel" },
-  { key: "flash", to: "/flash", icon: Zap, labelKey: "nav.flash" },
-  { key: "scan", to: "/scan", icon: ScanLine, labelKey: "nav.scan" },
-  { key: "radar", to: "/radar", icon: Radar, labelKey: "nav.radar" },
+  ...PRIMARY_ENGINES.map((engine) => ({
+    key: engine.key,
+    to: engine.to,
+    icon: ENGINE_ICONS[engine.key],
+    labelKey: engine.labelKey,
+  })),
   { key: "menu", icon: LayoutGrid, labelKey: "nav.menu" },
 ];
 
