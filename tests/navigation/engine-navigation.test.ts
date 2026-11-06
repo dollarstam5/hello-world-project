@@ -36,11 +36,13 @@ describe("Vitalis engine navigation boundaries", () => {
   it("makes French and English selectable on the first screen and in the app header", () => {
     const switcher = read("src/components/experience/LanguageSwitcher.tsx");
     expect(switcher).toContain('role="group"');
-    expect(switcher).toContain('aria-pressed={locale === option}');
-    expect(switcher).toContain('option.toUpperCase()');
+    expect(switcher).toContain("aria-pressed={locale === option}");
+    expect(switcher).toContain("option.toUpperCase()");
     expect(read("src/components/experience/OnboardingSheet.tsx")).toContain("<LanguageSwitcher />");
     expect(read("src/components/experience/OnboardingSheet.tsx")).toContain('showCloseButton={false}');
-    expect(read("src/components/experience/OnboardingSheet.tsx")).toContain('navigate({ to: "/" })');
+    expect(read("src/components/experience/OnboardingSheet.tsx")).toContain(
+      'navigate({ to: "/" })',
+    );
     expect(read("src/components/app/Sheet.tsx")).toContain("showCloseButton?: boolean");
     expect(read("src/components/experience/AppHeader.tsx")).toContain("<LanguageSwitcher />");
     expect(read("src/lib/i18n/useI18n.ts")).toContain("document.documentElement.lang = locale");
@@ -53,9 +55,11 @@ describe("Vitalis engine navigation boundaries", () => {
       '<Tabs defaultValue="notifications">',
     );
     const assistantLayer = read("src/components/experience/AILayer.tsx");
-    expect(assistantLayer).toContain('lazy(() =>');
+    expect(assistantLayer).toContain("lazy(() =>");
     expect(assistantLayer).toContain("<Suspense");
-    expect(read("src/domains/assistant/ui/AssistantTab.tsx")).not.toContain("inputRef.current?.focus()");
+    expect(read("src/domains/assistant/ui/AssistantTab.tsx")).not.toContain(
+      "inputRef.current?.focus()",
+    );
   });
 
   it("boots the service worker and Web Vitals once from the app shell", () => {
@@ -82,7 +86,7 @@ describe("Vitalis engine navigation boundaries", () => {
     expect(onboarding).toContain('navigate({ to: "/" })');
     expect(onboarding).not.toContain("dismiss");
     const onboardingStore = read("src/lib/experience/onboarding.ts");
-    expect(onboardingStore).toContain("localStorage.setItem(STORAGE_KEY, \"1\")");
+    expect(onboardingStore).toContain('localStorage.setItem(STORAGE_KEY, "1")');
     expect(onboardingStore).toContain("catch");
     const home = read("src/components/experience/HomeFoundation.tsx");
     expect(home).toContain('to="/auth"');
