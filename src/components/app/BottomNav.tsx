@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Fingerprint, Zap, ScanLine, Radar, LayoutGrid } from "lucide-react";
+import { House, Zap, ScanLine, Radar, LayoutGrid } from "lucide-react";
 import { motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useReducedMotion } from "@/lib/design/useReducedMotion";
@@ -13,7 +13,7 @@ type Tab = {
 };
 
 const TABS: Tab[] = [
-  { key: "reel", to: "/", icon: Fingerprint, labelKey: "nav.reel" },
+  { key: "reel", to: "/", icon: House, labelKey: "nav.reel" },
   { key: "flash", to: "/flash", icon: Zap, labelKey: "nav.flash" },
   { key: "scan", to: "/scan", icon: ScanLine, labelKey: "nav.scan" },
   { key: "radar", to: "/radar", icon: Radar, labelKey: "nav.radar" },
@@ -27,7 +27,8 @@ interface BottomNavProps {
 
 /**
  * Floating bottom navigation — calm, glassy, breathing.
- * 4 tabs (Réel, Flash, Scan, Radar) + a 2x2 grid that opens the MenuSheet.
+ * Réel, Flash, Scan, Radar + a 2x2 grid that opens the MenuSheet.
+ * 2026 pattern: icon + visible label, Scan elevated as the center action.
  * Pure presentation; no business logic.
  */
 export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
@@ -42,18 +43,38 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
     >
       <ul
         role="tablist"
-        className="glass pointer-events-auto flex items-center gap-1 rounded-full border border-border-soft px-2 py-2 shadow-[var(--shadow-float)]"
+        className="glass pointer-events-auto flex items-end gap-1 rounded-full border border-border-soft px-2 py-1.5 shadow-[var(--shadow-float)]"
       >
         {TABS.map((tab) => {
           const isMenu = tab.key === "menu";
+          const isCenter = tab.key === "scan";
           const active = isMenu ? menuOpen : tab.to === pathname;
           const Icon = tab.icon;
           const label = t(tab.labelKey);
 
-          const inner = (
+          const inner = isCenter ? (
+            <span className="flex flex-col items-center gap-0.5">
+              <span
+                className={cn(
+                  "flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[var(--glow-soft)] transition-transform",
+                  "hover:scale-105 active:scale-95",
+                )}
+              >
+                <Icon className="h-5 w-5" aria-hidden />
+              </span>
+              <span
+                className={cn(
+                  "text-[10px] font-medium leading-none",
+                  active ? "text-foreground" : "text-muted-foreground",
+                )}
+              >
+                {label}
+              </span>
+            </span>
+          ) : (
             <span
               className={cn(
-                "relative flex h-11 min-w-11 items-center justify-center rounded-full px-3 transition-colors",
+                "relative flex min-w-14 flex-col items-center gap-0.5 rounded-full px-3 py-1.5 transition-colors",
                 "text-muted-foreground hover:text-foreground",
                 active && "text-primary-foreground",
               )}
@@ -70,7 +91,7 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
                   />
                 ))}
               <Icon className="relative h-5 w-5" aria-hidden />
-              <span className="sr-only">{label}</span>
+              <span className="relative text-[10px] font-medium leading-none">{label}</span>
             </span>
           );
 
