@@ -7,10 +7,15 @@ import { signOut, useAuth } from "@/domains/auth";
 export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => void }) {
   const { t } = useI18n();
   const { user } = useAuth();
+
   return (
     <header className="sticky top-0 z-30 border-b border-border-soft bg-background/85 backdrop-blur-xl">
       <div className="mx-auto flex h-14 w-full max-w-screen-md items-center justify-between px-4">
-        <Link to="/" aria-label={t("nav.home")} className="rounded-md text-lg font-semibold tracking-tight outline-none focus-visible:ring-2 focus-visible:ring-ring">
+        <Link
+          to="/"
+          aria-label={t("nav.home")}
+          className="rounded-md text-lg font-semibold tracking-tight outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        >
           {t("app.name")}
         </Link>
         <div className="flex items-center gap-1">
