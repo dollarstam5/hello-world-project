@@ -32,6 +32,9 @@ describe("Vitalis engine navigation boundaries", () => {
     expect(switcher).toContain('aria-pressed={locale === option}');
     expect(switcher).toContain('option.toUpperCase()');
     expect(read("src/components/experience/OnboardingSheet.tsx")).toContain("<LanguageSwitcher />");
+    expect(read("src/components/experience/OnboardingSheet.tsx")).toContain('showCloseButton={false}');
+    expect(read("src/components/experience/OnboardingSheet.tsx")).toContain('navigate({ to: "/" })');
+    expect(read("src/components/app/Sheet.tsx")).toContain("showCloseButton?: boolean");
     expect(read("src/components/experience/AppHeader.tsx")).toContain("<LanguageSwitcher />");
     expect(read("src/lib/i18n/useI18n.ts")).toContain("document.documentElement.lang = locale");
     expect(read("src/lib/i18n/messages.ts")).toContain('"app.language.fr": "Passer en français"');
