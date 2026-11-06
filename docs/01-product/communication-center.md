@@ -38,7 +38,11 @@ Chaque conversation affiche son contexte, par exemple : « Mise en relation — 
 | COM-04 | Compteur global et compteurs distincts par onglet | Validée |
 | COM-05 | Conversations uniquement liées à une action/mise en relation autorisée ; pas de messagerie libre | Validée |
 | COM-06 | Afficher l'origine métier de chaque conversation | Validée |
-
+| COM-07 | Quatre catégories de notifications incluses dans la V1 | Validée |
+| COM-08 | Ouverture directe ou aperçu selon la nature de la notification | Validée |
+| COM-09 | Historique conservé, distinction « Non lues » / « Toutes », lecture automatique et regroupement par date/catégorie | Validée |
+| COM-10 | Regroupement intelligent des notifications similaires, sans masquer les événements nécessitant une attention individuelle | Validée |
+| COM-11 | Trois niveaux de priorité : Normal, Important et Urgent, avec interruption uniquement si nécessaire | Validée |
 
 ## Notifications — périmètre V1
 
@@ -76,9 +80,27 @@ Le comportement dépend de la nature de la notification :
 - Le compteur de la cloche et celui de l'onglet Notifications sont actualisés automatiquement.
 - L'archivage et la durée de conservation restent à définir ; aucune durée n'est présumée par cette décision.
 
+### Priorités et interruptions
+
+Vitalis classe les notifications selon trois niveaux :
+
+- **Normal :** notification discrète dans le centre, sans interruption.
+- **Important :** notification mise en évidence dans le centre, sans interruption automatique par défaut.
+- **Urgent :** alerte immédiate uniquement lorsqu'une réaction rapide est réellement nécessaire.
+
+Règles transversales :
+
+- Les événements de sécurité réellement critiques peuvent déclencher une alerte immédiate.
+- Les annonces promotionnelles ou informations ordinaires ne peuvent pas être classées Urgent.
+- Les alertes évitent les répétitions inutiles et respectent les préférences de l'utilisateur ainsi que les réglages du système.
+- Les aperçus ne doivent pas exposer de données sensibles.
+- Le niveau Urgent doit rester rare et justifié ; il ne sert pas à augmenter artificiellement l'engagement.
+
 ## À préciser
 
 - La règle exacte de sélection de l'onglet si plusieurs espaces ont des nouveautés.
+- Les événements précis associés aux niveaux Normal, Important et Urgent, notamment les critères objectifs d'urgence.
+- Le comportement des alertes selon les réglages du téléphone et les préférences de l'utilisateur.
 - Le contenu détaillé des notifications et des listes de conversations.
 - Le lien permettant de retrouver l'action ou la mise en relation d'origine.
 - Les états de lecture, accusés de réception et synchronisation.
