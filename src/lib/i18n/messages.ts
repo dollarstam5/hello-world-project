@@ -89,7 +89,8 @@ export const messages = {
     "home.section.feed": "Pour vous",
     "home.section.discovery": "À découvrir",
     "onboarding.title": "Bienvenue",
-    "onboarding.desc": "Découvrez les quatre moteurs et les espaces complémentaires de Vitalis avant de commencer.",
+    "onboarding.desc":
+      "Découvrez les quatre moteurs et les espaces complémentaires de Vitalis avant de commencer.",
     "onboarding.skip": "Passer",
     "onboarding.start": "Commencer",
     "identity.guest": "Invité",
