@@ -5,7 +5,7 @@ Ce répertoire suit une structure canonique pour la documentation active.
 ## Structure active
 
 - [`00-foundation/`](./00-foundation/README.md) — architecture, conventions et langage de design
-- [`01-product/`](./01-product/README.md) — vision, personas, parcours, confiance et expérience
+- [`01-product/`](./01-product/README.md) — vision, personas, parcours, navigation, confiance et expérience
 - [`02-architecture/`](./02-architecture/README.md) — architecture système, front-end, backend, base de données, synchronisation et identité numérique
 - [`03-api/`](./03-api/README.md) — contrats et références API
 - [`03-engines/`](./03-engines/README.md) — documents de domaines métier classés par moteur
@@ -18,7 +18,10 @@ Ce répertoire suit une structure canonique pour la documentation active.
 
 - [Langage de design Vitala](./00-foundation/design-language.md)
 - [Vitala Experience System](./01-product/experience-system.md)
+- [Navigation produit Vitalis](./01-product/navigation.md)
+- [Parcours utilisateurs](./01-product/user-journeys.md)
 - [Architecture front-end et expérience](./02-architecture/frontend-experience.md)
+- [Standards de navigation mobile Android, iOS et Web](./02-architecture/mobile-navigation-standards.md)
 - [Architecture backend et API](./02-architecture/backend-api.md)
 - [Architecture de la base de données](./02-architecture/database-architecture.md)
 - [Synchronisation, mode hors ligne et temps réel](./02-architecture/synchronization-offline-realtime.md)
@@ -27,7 +30,6 @@ Ce répertoire suit une structure canonique pour la documentation active.
 - [Dictionnaire de données](./04-database/data-dictionary.md)
 - [Schéma, grants et politiques RLS](./04-database/schema-design.md)
 - [Personas Vitala](./01-product/personas.md)
-- [Parcours utilisateurs](./01-product/user-journeys.md)
 - [Niveaux de confiance](./01-product/trust-levels.md)
 - [Domaine Trust et Trust Engine](./02-architecture/trust-domain.md)
 - [Modèle d'identité numérique unifiée](./02-architecture/identity-model.md)
@@ -43,6 +45,10 @@ Ce répertoire suit une structure canonique pour la documentation active.
 - [Réconciliation fichier par fichier du Lot 12](./07-annexes/lot12-file-reconciliation.md) — dépendances, contrôles disponibles, corrections proposées et limites de validation de la PR #25.
 - [Audit préliminaire de couverture du contenu](./07-annexes/documentation-content-coverage.md) — premiers constats de comparaison ; aucun retrait n'est autorisé par cet audit.
 - [Candidats aux suppressions documentaires](./07-annexes/proposed-document-removals.md) — propositions uniquement, en attente d'approbation explicite.
+
+## Annexes de contrôle
+
+- [Matrice de conformité de la navigation Vitalis V1](./07-annexes/navigation-compliance-matrix.md) — critères, constats initiaux, preuves et tests d'acceptation.
 
 ## Archives
 
