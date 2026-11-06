@@ -41,9 +41,7 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
       aria-label={t("nav.primary")}
       className="fixed inset-x-0 bottom-0 z-40 flex justify-center pb-[max(env(safe-area-inset-bottom),0.75rem)] pointer-events-none"
     >
-      <ul
-        className="glass pointer-events-auto flex items-end gap-1 rounded-full border border-border-soft px-2 py-1.5 shadow-[var(--shadow-float)]"
-      >
+      <ul className="glass pointer-events-auto flex items-end gap-1 rounded-full border border-border-soft px-2 py-1.5 shadow-[var(--shadow-float)]">
         {TABS.map((tab) => {
           const isMenu = tab.key === "menu";
           const isCenter = tab.key === "scan";
