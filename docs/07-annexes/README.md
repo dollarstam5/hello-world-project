@@ -6,6 +6,7 @@ This section stores reference documents that are not primary project guides but 
 
 - [glossary.md](./glossary.md)
 - [error-handbook.md](./error-handbook.md)
+- [Navigation compliance matrix — Vitalis V1](./navigation-compliance-matrix.md)
 
 ## Audit et migration documentaire
 
