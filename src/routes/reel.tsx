@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ReelSpace } from "@/domains/reel/ui/ReelSpace";
+import { ReelSpace } from "@/domains/reel";
 
 export const Route = createFileRoute("/reel")({
   head: () => ({
