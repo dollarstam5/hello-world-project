@@ -12,11 +12,7 @@ export function AssistantTab() {
   const [question, setQuestion] = useState("");
   const { signedIn, authLoading, messages, pending, streaming, failure, send, reset } =
     useHybridAssistant();
-  const inputRef = useRef<HTMLInputElement>(null);
   const endRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (!pending && !streaming) inputRef.current?.focus();
-  }, [pending, streaming]);
   useEffect(() => {
     endRef.current?.scrollIntoView({ block: "end" });
   }, [messages, pending]);
@@ -101,7 +97,6 @@ export function AssistantTab() {
 
       <form onSubmit={submit} className="flex gap-2 border-t border-border-soft pt-3">
         <Input
-          ref={inputRef}
           value={question}
           onChange={(event) => setQuestion(event.target.value)}
           maxLength={600}
