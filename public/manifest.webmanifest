@@ -2,7 +2,7 @@
   "id": "/",
   "name": "Vitalis",
   "short_name": "Vitalis",
-  "description": "Votre écosystème vivant : identités, flash, missions et échanges, même hors connexion.",
+  "description": "Vitalis réunit quatre moteurs complémentaires et des espaces dédiés, même hors connexion.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
