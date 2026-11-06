@@ -14,6 +14,65 @@
 7. **Protéger les données.** Ne montrer que les informations nécessaires à l'étape et à la personne concernée. Les scores et signaux internes ne deviennent pas publics par défaut.
 8. **Ne pas confondre cible et produit livré.** Les parcours décrits dans les sources historiques sont des spécifications de conception ; leur statut documentaire « VALIDÉ » ne prouve pas leur disponibilité dans le code.
 
+## Parcours d'entrée Vitalis — onboarding, Home et identification
+
+Ce parcours formalise la règle d'entrée produit clarifiée : Home est distincte des moteurs métier, et Réel ne remplace pas Home.
+
+### UJ-00A — première utilisation
+
+1. L'utilisateur ouvre Vitalis pour la première fois.
+2. Vitalis présente l'onboarding avant les autres écrans d'accueil.
+3. À la fin de l'onboarding, Vitalis affiche la Home explicative.
+4. La Home explicative présente le fonctionnement général de Vitalis et les possibilités offertes.
+5. L'utilisateur peut choisir de poursuivre vers l'identification depuis l'action principale proposée.
+
+**Résultat attendu :** onboarding terminé puis Home explicative affichée. Ce parcours ne présume pas d'un compte déjà créé ni d'une identification accomplie.
+
+### UJ-00B — identification depuis la Home explicative
+
+1. L'utilisateur déclenche l'action de poursuite depuis la Home explicative.
+2. Vitalis ouvre le parcours d'identification existant.
+3. L'utilisateur renseigne les informations demandées par ce parcours.
+4. En cas de réussite confirmée, Vitalis redirige l'utilisateur vers la Home interactive.
+5. En cas d'annulation, d'abandon ou d'échec, Vitalis respecte l'état du parcours existant et ne présente pas l'identification comme réussie.
+
+**Résultat attendu :** redirection vers la Home interactive uniquement après la réussite du parcours d'identification.
+
+**Limite :** cette documentation ne crée aucun champ d'identité, règle de validation, méthode d'authentification ou nouveau mécanisme de compte. Ces éléments restent définis par les contrats Identity/UDI et le parcours existant.
+
+### UJ-00C — retour via l'icône de l'application
+
+1. L'utilisateur sélectionne l'icône de Vitalis.
+2. L'application revient au point d'entrée Home.
+3. Le contenu Home dépend de l'état du parcours : Home explicative si l'utilisateur n'a pas terminé l'identification ; Home interactive après identification réussie.
+4. Si l'utilisateur est en première utilisation et que l'onboarding n'a pas été terminé, l'onboarding reste prioritaire.
+
+**Résultat attendu :** l'icône Vitalis ouvre Home, jamais directement le moteur Réel.
+
+### UJ-00D — accès aux moteurs depuis la Home interactive
+
+La Home interactive propose des accès aux moteurs et aux catégories de Vitalis :
+- Réel ;
+- Flash ;
+- Scan ;
+- Radar ;
+- les autres pages et catégories disponibles via la navigation ou le menu secondaire 2x2.
+
+Chaque destination conserve son propre parcours, ses règles, ses autorisations et ses états. Home est un hub de navigation, pas un moteur qui fusionne les logiques métier.
+
+### États à couvrir
+
+| État d'entrée | Écran attendu | Action ou transition |
+| --- | --- | --- |
+| Première ouverture, onboarding non terminé | Onboarding | Terminer l'onboarding |
+| Onboarding terminé, identification non terminée | Home explicative | Choisir de s'identifier |
+| Identification en cours | Parcours d'identification existant | Réussite, annulation ou échec |
+| Identification réussie | Home interactive | Accéder aux moteurs |
+| Retour via icône, identification non terminée | Home explicative (ou onboarding si première utilisation inachevée) | Reprendre le parcours |
+| Retour via icône, identification réussie | Home interactive | Reprendre la navigation |
+
+Ces états sont des exigences produit et des scénarios attendus ; leur persistance, leur résolution au démarrage et leur implémentation doivent être vérifiées dans le runtime.
+
 ## Carte des parcours connus
 
 Les documents historiques accessibles à la date de cette consolidation décrivent les parcours suivants.
