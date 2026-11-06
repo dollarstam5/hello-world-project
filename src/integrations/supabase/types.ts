@@ -359,6 +359,93 @@ export type Database = {
         }
         Relationships: []
       }
+      radars: {
+        Row: {
+          area_label: string
+          category: string | null
+          created_at: number
+          deleted_at: number | null
+          expires_at: number
+          id: string
+          last_reviewed_at: number | null
+          next_review_at: number | null
+          owner_id: string
+          query: string
+          radius_km: number
+          revision: number
+          server_updated_at: string
+          starts_at: number
+          status: string
+          title: string
+          updated_at: number
+        }
+        Insert: {
+          area_label: string
+          category?: string | null
+          created_at?: number
+          deleted_at?: number | null
+          expires_at: number
+          id?: string
+          last_reviewed_at?: number | null
+          next_review_at?: number | null
+          owner_id: string
+          query: string
+          radius_km?: number
+          revision?: number
+          server_updated_at?: string
+          starts_at: number
+          status?: string
+          title: string
+          updated_at?: number
+        }
+        Update: {
+          area_label?: string
+          category?: string | null
+          created_at?: number
+          deleted_at?: number | null
+          expires_at?: number
+          id?: string
+          last_reviewed_at?: number | null
+          next_review_at?: number | null
+          owner_id?: string
+          query?: string
+          radius_km?: number
+          revision?: number
+          server_updated_at?: string
+          starts_at?: number
+          status?: string
+          title?: string
+          updated_at?: number
+        }
+        Relationships: []
+      }
+      sync_mutation_receipts: {
+        Row: {
+          accepted_at: string
+          logical_table: string
+          mutation_id: string
+          owner_id: string
+          record_id: string
+          response: Json | null
+        }
+        Insert: {
+          accepted_at?: string
+          logical_table: string
+          mutation_id: string
+          owner_id: string
+          record_id: string
+          response?: Json | null
+        }
+        Update: {
+          accepted_at?: string
+          logical_table?: string
+          mutation_id?: string
+          owner_id?: string
+          record_id?: string
+          response?: Json | null
+        }
+        Relationships: []
+      }
       udi: {
         Row: {
           attributes: Json
@@ -424,6 +511,34 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      command_radar: {
+        Args: { p_action: string; p_radar_id: string }
+        Returns: {
+          area_label: string
+          category: string | null
+          created_at: number
+          deleted_at: number | null
+          expires_at: number
+          id: string
+          last_reviewed_at: number | null
+          next_review_at: number | null
+          owner_id: string
+          query: string
+          radius_km: number
+          revision: number
+          server_updated_at: string
+          starts_at: number
+          status: string
+          title: string
+          updated_at: number
+        }
+        SetofOptions: {
+          from: "*"
+          to: "radars"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
