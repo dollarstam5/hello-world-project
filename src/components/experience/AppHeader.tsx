@@ -3,6 +3,7 @@ import { Bell, LogOut, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { signOut, useAuth } from "@/domains/auth";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => void }) {
   const { t } = useI18n();
@@ -18,7 +19,8 @@ export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => 
         >
           {t("app.name")}
         </Link>
-        <div className="flex items-center gap-1">
+        <div className="flex min-w-0 items-center gap-0.5">
+          <LanguageSwitcher />
           <Button asChild variant="ghost" size="icon">
             <Link to="/espace" aria-label={t("profile.open")}>
               <UserRound aria-hidden />
