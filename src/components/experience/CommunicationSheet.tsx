@@ -24,7 +24,7 @@ export function CommunicationSheet({
       title={t("communication.title")}
       className="max-h-[92dvh]"
     >
-      <Tabs defaultValue="assistant">
+      <Tabs defaultValue="notifications">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger className="px-1 text-[11px] sm:text-sm" value="notifications">
             {t("communication.notifications")}
