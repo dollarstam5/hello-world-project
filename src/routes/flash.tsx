@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { FlashSpace } from "@/domains/flash/ui/FlashSpace";
+import { FlashSpace } from "@/domains/flash";
 
 export const Route = createFileRoute("/flash")({
   head: () => ({
