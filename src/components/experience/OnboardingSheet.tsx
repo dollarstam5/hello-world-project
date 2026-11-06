@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useOnboarding } from "@/lib/experience/onboarding";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { PRIMARY_ENGINES } from "@/lib/navigation/primary-engines";
 
 /**
  * First-run onboarding is a required step before the explanatory Home.
@@ -31,24 +32,17 @@ export function OnboardingSheet() {
           <LanguageSwitcher />
         </div>
         <ol className="space-y-3 text-sm text-muted-foreground">
-          <li className="flex items-start gap-3">
-            <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary text-xs font-medium">
-              1
-            </span>
-            <span>{t("home.section.flash")}</span>
-          </li>
-          <li className="flex items-start gap-3">
-            <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary text-xs font-medium">
-              2
-            </span>
-            <span>{t("home.section.radar")}</span>
-          </li>
-          <li className="flex items-start gap-3">
-            <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary text-xs font-medium">
-              3
-            </span>
-            <span>{t("home.section.discovery")}</span>
-          </li>
+          {PRIMARY_ENGINES.map((engine, index) => (
+            <li key={engine.key} className="flex items-start gap-3">
+              <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary text-xs font-medium">
+                {index + 1}
+              </span>
+              <span>
+                <strong className="font-medium text-foreground">{t(engine.titleKey)}</strong>
+                <span className="block">{t(engine.descriptionKey)}</span>
+              </span>
+            </li>
+          ))}
         </ol>
         <div className="flex justify-end pt-2">
           <Button
