@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { RadarSpace } from "@/domains/radar/ui/RadarSpace";
+import { RadarSpace } from "@/domains/radar";
 
 export const Route = createFileRoute("/radar")({
   head: () => ({
