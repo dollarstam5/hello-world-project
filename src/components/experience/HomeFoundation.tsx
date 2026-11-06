@@ -99,9 +99,7 @@ export function HomeFoundation() {
             <p className="text-sm leading-6 text-muted-foreground">
               {t("home.explainer.description")}
             </p>
-            <p className="text-sm leading-6 text-muted-foreground">
-              {t("home.explainer.engines")}
-            </p>
+            <p className="text-sm leading-6 text-muted-foreground">{t("home.explainer.engines")}</p>
           </div>
           <Link
             to="/auth"
