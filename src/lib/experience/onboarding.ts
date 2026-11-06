@@ -21,13 +21,24 @@ export const useOnboarding = create<OnboardingState>((set) => ({
   completed: false,
   shouldShow: false,
   markCompleted: () => {
-    if (typeof window !== "undefined") window.localStorage.setItem(STORAGE_KEY, "1");
+    if (typeof window !== "undefined") {
+      try {
+        window.localStorage.setItem(STORAGE_KEY, "1");
+      } catch {
+        // Continue the first-run flow when browser storage is unavailable.
+      }
+    }
     set({ completed: true, shouldShow: false });
   },
   dismiss: () => set({ shouldShow: false }),
   hydrate: () => {
     if (typeof window === "undefined") return;
-    const done = window.localStorage.getItem(STORAGE_KEY) === "1";
+    let done = false;
+    try {
+      done = window.localStorage.getItem(STORAGE_KEY) === "1";
+    } catch {
+      // Treat unavailable storage as a fresh visit; the flow remains usable.
+    }
     set({ hydrated: true, completed: done, shouldShow: !done });
   },
 }));

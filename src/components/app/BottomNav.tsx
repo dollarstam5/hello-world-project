@@ -1,22 +1,32 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { House, Zap, ScanLine, Radar, LayoutGrid } from "lucide-react";
+import { UsersRound, Zap, ScanLine, Radar, LayoutGrid } from "lucide-react";
 import { motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useReducedMotion } from "@/lib/design/useReducedMotion";
 import { cn } from "@/lib/utils";
+import { PRIMARY_ENGINES, type PrimaryEngineKey } from "@/lib/navigation/primary-engines";
 
 type Tab = {
-  key: "reel" | "flash" | "scan" | "radar" | "menu";
+  key: PrimaryEngineKey | "menu";
   to?: string;
   icon: React.ComponentType<{ className?: string }>;
   labelKey: "nav.reel" | "nav.flash" | "nav.scan" | "nav.radar" | "nav.menu";
 };
 
+const ENGINE_ICONS = {
+  reel: UsersRound,
+  flash: Zap,
+  scan: ScanLine,
+  radar: Radar,
+} satisfies Record<PrimaryEngineKey, Tab["icon"]>;
+
 const TABS: Tab[] = [
-  { key: "reel", to: "/", icon: House, labelKey: "nav.reel" },
-  { key: "flash", to: "/flash", icon: Zap, labelKey: "nav.flash" },
-  { key: "scan", to: "/scan", icon: ScanLine, labelKey: "nav.scan" },
-  { key: "radar", to: "/radar", icon: Radar, labelKey: "nav.radar" },
+  ...PRIMARY_ENGINES.map((engine) => ({
+    key: engine.key,
+    to: engine.to,
+    icon: ENGINE_ICONS[engine.key],
+    labelKey: engine.labelKey,
+  })),
   { key: "menu", icon: LayoutGrid, labelKey: "nav.menu" },
 ];
 
@@ -38,13 +48,10 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
 
   return (
     <nav
-      aria-label={t("nav.menu")}
+      aria-label={t("nav.primary")}
       className="fixed inset-x-0 bottom-0 z-40 flex justify-center pb-[max(env(safe-area-inset-bottom),0.75rem)] pointer-events-none"
     >
-      <ul
-        role="tablist"
-        className="glass pointer-events-auto flex items-end gap-1 rounded-full border border-border-soft px-2 py-1.5 shadow-[var(--shadow-float)]"
-      >
+      <ul className="glass pointer-events-auto flex items-end gap-1 rounded-full border border-border-soft px-2 py-1.5 shadow-[var(--shadow-float)]">
         {TABS.map((tab) => {
           const isMenu = tab.key === "menu";
           const isCenter = tab.key === "scan";
@@ -96,7 +103,7 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
           );
 
           return (
-            <li key={tab.key} role="presentation">
+            <li key={tab.key}>
               {isMenu ? (
                 <button
                   type="button"

@@ -10,7 +10,12 @@ const STORAGE_KEY = "eco.locale";
 
 function detectInitialLocale(): Locale {
   if (typeof window === "undefined") return defaultLocale;
-  const stored = window.localStorage.getItem(STORAGE_KEY) as Locale | null;
+  let stored: Locale | null = null;
+  try {
+    stored = window.localStorage.getItem(STORAGE_KEY) as Locale | null;
+  } catch {
+    // Fall back to the browser language when storage is unavailable.
+  }
   if (stored && locales.includes(stored)) return stored;
   const nav = window.navigator.language?.slice(0, 2);
   return (locales as readonly string[]).includes(nav) ? (nav as Locale) : defaultLocale;
@@ -19,14 +24,23 @@ function detectInitialLocale(): Locale {
 export const useI18nStore = create<I18nState>((set) => ({
   locale: defaultLocale,
   setLocale: (locale) => {
-    if (typeof window !== "undefined") window.localStorage.setItem(STORAGE_KEY, locale);
+    if (typeof window !== "undefined") {
+      try {
+        window.localStorage.setItem(STORAGE_KEY, locale);
+      } catch {
+        // The current session can still change language when storage is unavailable.
+      }
+      document.documentElement.lang = locale;
+    }
     set({ locale });
   },
 }));
 
 export function initI18n() {
   if (typeof window === "undefined") return;
-  useI18nStore.setState({ locale: detectInitialLocale() });
+  const locale = detectInitialLocale();
+  document.documentElement.lang = locale;
+  useI18nStore.setState({ locale });
 }
 
 export function useI18n() {

@@ -17,6 +17,7 @@ interface AppSheetProps {
   side?: "top" | "right" | "bottom" | "left";
   children?: ReactNode;
   className?: string;
+  showCloseButton?: boolean;
 }
 
 /**
@@ -30,12 +31,14 @@ export function Sheet({
   description,
   side = "bottom",
   className,
+  showCloseButton = true,
   children,
 }: AppSheetProps) {
   return (
     <UISheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side={side}
+        showCloseButton={showCloseButton}
         className={cn(
           "border-border-soft glass-strong",
           side === "bottom" && "rounded-t-3xl pb-[max(env(safe-area-inset-bottom),1rem)]",

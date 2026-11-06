@@ -15,7 +15,7 @@ import { AILayer } from "@/components/experience/AILayer";
 import { registerServiceWorker } from "@/platform/pwa";
 import { useResponsive } from "@/lib/platform/useResponsive";
 import { duration, easing } from "@/lib/design/tokens";
-import { startWebVitals } from "@/platform/performance";
+import { startWebVitalsMonitoring } from "@/lib/performance/web-vitals";
 
 /**
  * AppShell — single mount-point that boots foundation services
@@ -37,7 +37,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     registerServiceWorker();
-    startWebVitals();
+    return startWebVitalsMonitoring(() => undefined);
   }, []);
 
   // Apply low-end gating on <html> so the CSS effects fall back.
