@@ -72,12 +72,12 @@ Les constats ci-dessous proviennent de la revue du 1er novembre 2026 sur la bran
 | Fichier | État constaté | Alignement attendu |
 | --- | --- | --- |
 | `src/components/app/AppShell.tsx` | Monte BottomNav et MenuSheet dans le shell global | Conserver le shell et définir les états de navigation cohérents avec Home et les moteurs |
-| `src/components/app/BottomNav.tsx` | Quatre entrées : Accueil (`/`), Flash, Radar et Menu | Aligner les destinations métier sans confondre Home et Réel |
+| `src/components/app/BottomNav.tsx` | Cinq entrées : Réel (`/`), Flash (`/flash`), Scan (`/scan`), Radar (`/radar`) et menu 2x2 | Corriger la destination Réel pour qu'elle soit distincte de Home ; vérifier les états actifs et l'accès à Home |
 | `src/components/app/MenuSheet.tsx` | Menu secondaire avec Espace et Talents | Conserver ces destinations tant que le périmètre 2x2 n'est pas autrement arbitré |
 | `src/routes/index.tsx` | Route `/` affiche `HomeFoundation` | Examiner et faire évoluer cette Home selon les états onboarding, explicatif et interactif |
 | `src/routes/flash.tsx` | Route Flash présente | Conserver |
 | `src/routes/radar.tsx` | Route Radar présente | Conserver |
-| `src/routes/scan.tsx` | Fichier absent de l'inventaire examiné | Créer ou confirmer la route Scan dans un lot runtime ultérieur |
+| `src/routes/scan.tsx` | Route `/scan` présente sur `main` au contrôle du 6 novembre 2026 | Vérifier le parcours et les contrats fonctionnels de Scan ; ne pas assimiler présence de route et validation métier |
 | Route Réel | Destination dédiée non confirmée par cet inventaire | Localiser ou créer une route distincte de Home après vérification |
 | `src/routes/espace.tsx` | Route présente | Conserver comme destination secondaire |
 | `src/routes/talents.tsx` | Route présente | Conserver comme destination secondaire |
