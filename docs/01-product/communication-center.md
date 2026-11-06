@@ -39,6 +39,35 @@ Chaque conversation affiche son contexte, par exemple : « Mise en relation — 
 | COM-05 | Conversations uniquement liées à une action/mise en relation autorisée ; pas de messagerie libre | Validée |
 | COM-06 | Afficher l'origine métier de chaque conversation | Validée |
 
+
+## Notifications — périmètre V1
+
+Les quatre catégories suivantes sont incluses dans la V1 :
+
+1. Activité des moteurs : Réel, Flash, Scan et Radar.
+2. Mises en relation et actions engagées.
+3. Compte et sécurité.
+4. Informations et annonces de Vitalis.
+
+### Ouverture d'une notification
+
+Le comportement dépend de la nature de la notification :
+
+- Une notification liée à une action simple peut ouvrir directement la page ou le moteur concerné.
+- Une notification nécessitant du contexte ouvre un aperçu dans une fenêtre, avec une possibilité de poursuivre vers la page concernée.
+- Une notification sensible présente les informations utiles sans exposer inutilement les données personnelles.
+
+### Lecture, historique et organisation
+
+- Une notification consultée passe automatiquement à l'état « Lue ».
+- Les notifications non lues restent visuellement prioritaires.
+- Les notifications lues restent accessibles dans l'historique.
+- L'affichage distingue « Non lues » et « Toutes ».
+- Les notifications sont regroupées de manière lisible par date et catégorie.
+- Une action « Tout marquer comme lu » est disponible.
+- Le compteur de la cloche et celui de l'onglet Notifications sont actualisés automatiquement.
+- L'archivage et la durée de conservation restent à définir ; aucune durée n'est présumée par cette décision.
+
 ## À préciser
 
 - La règle exacte de sélection de l'onglet si plusieurs espaces ont des nouveautés.
