@@ -4,16 +4,16 @@ import { HomeFoundation } from "@/components/experience/HomeFoundation";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Écosystème — Vivant, calme, intelligent" },
+      { title: "Vitalis — Vivant, calme, intelligent" },
       {
         name: "description",
         content:
           "Un écosystème vivant qui relie les personnes, les talents et les opportunités, avec calme et intelligence.",
       },
-      { property: "og:title", content: "Écosystème — Vivant, calme, intelligent" },
+      { property: "og:title", content: "Vitalis — Vivant, calme, intelligent" },
       {
         property: "og:description",
-        content: "Foundation — orchestration globale, calme et vivante.",
+        content: "Votre point d’entrée vers les quatre moteurs Vitalis et les espaces complémentaires.",
       },
     ],
   }),
