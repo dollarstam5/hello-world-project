@@ -98,15 +98,15 @@ Cette liste n'autorise pas une modification immédiate du code. Elle décrit les
 | Fichier | État observé sur main | Travail runtime attendu pour la navigation Réel V1 |
 | --- | --- | --- |
 | `src/routes/__root.tsx` | Racine TanStack, AppShell et Outlet | Préserver le shell et l'insertion des routes |
-| `src/routes/index.tsx` | `/` affiche HomeFoundation lors de l'audit historique | Faire évoluer la route en point d'entrée Home à états ; préserver et inventorier le contenu utile |
+| `src/routes/index.tsx` | `/` affiche toujours HomeFoundation sur `main` au 6 novembre 2026 | Faire évoluer la route en point d'entrée Home à états ; préserver et inventorier le contenu utile |
 | `src/routes/flash.tsx` | Présent | Conserver |
 | `src/routes/radar.tsx` | Présent | Conserver |
-| `src/routes/scan.tsx` | Absent de l'inventaire des routes | Confirmer ou créer la route Scan dédiée |
+| `src/routes/scan.tsx` | Route `/scan` présente sur `main` au 6 novembre 2026 | Vérifier le parcours et les contrats Scan ; présence de route ne vaut pas validation fonctionnelle |
 | `src/routes/espace.tsx` | Présent | Conserver |
 | `src/routes/talents.tsx` | Présent | Conserver |
 | `src/routes/README.md` | Convention de routage fichier par fichier | Mettre à jour la table des routes après création |
 | `src/components/app/AppShell.tsx` | Monte BottomNav et MenuSheet ; ferme le menu au changement de route | Vérifier le shell, le menu et les états actifs |
-| `src/components/app/BottomNav.tsx` | Accueil, Flash, Radar, Menu (4 entrées) | Aligner les destinations métier sans confondre Home et Réel |
+| `src/components/app/BottomNav.tsx` | Cinq entrées : Réel (`/`), Flash, Scan, Radar et 2x2 ; Réel pointe actuellement vers la racine | Faire pointer Home vers `/` et Réel vers une destination dédiée ; revoir l'icône et l'état actif selon les règles validées |
 | `src/components/app/MenuSheet.tsx` | Menu secondaire Espace et Talents | Conserver comme menu secondaire 2x2 |
 | `src/lib/i18n/messages.ts` | Clés FR/EN pour Accueil, Flash, Radar, Menu, Espace et Talents | Ajouter Réel, Scan et 2x2 en FR/EN |
 | `src/routeTree.gen.ts` | Généré automatiquement ; non éditable à la main | Régénérer par l'outillage après ajout des routes |
