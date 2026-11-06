@@ -10,7 +10,7 @@ export const defaultLocale: Locale = "fr";
 
 export const messages = {
   fr: {
-    "app.name": "Vitala",
+    "app.name": "Vitalis",
     "app.tagline": "Vivant, calme, intelligent.",
     "app.loading": "Chargement…",
     "app.offline": "Hors ligne",
@@ -376,7 +376,7 @@ export const messages = {
     "admin.administration.description": "Qui a le droit de faire quoi",
   },
   en: {
-    "app.name": "Vitala",
+    "app.name": "Vitalis",
     "app.tagline": "Alive, calm, intelligent.",
     "app.loading": "Loading…",
     "app.offline": "Offline",
