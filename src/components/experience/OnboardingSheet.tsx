@@ -4,14 +4,13 @@ import { useOnboarding } from "@/lib/experience/onboarding";
 import { useI18n } from "@/lib/i18n/useI18n";
 
 /**
- * OnboardingSheet — minimal welcome shell.
- * Appears once per device. Real flow steps land later; surface stays stable.
+ * First-run onboarding is a required step before the explanatory Home.
+ * The existing onboarding state remains local to the device.
  */
 export function OnboardingSheet() {
   const { t } = useI18n();
   const shouldShow = useOnboarding((s) => s.shouldShow);
   const hydrated = useOnboarding((s) => s.hydrated);
-  const dismiss = useOnboarding((s) => s.dismiss);
   const markCompleted = useOnboarding((s) => s.markCompleted);
 
   if (!hydrated) return null;
@@ -19,7 +18,7 @@ export function OnboardingSheet() {
   return (
     <Sheet
       open={shouldShow}
-      onOpenChange={(o) => !o && dismiss()}
+      onOpenChange={() => undefined}
       title={t("onboarding.title")}
       description={t("onboarding.desc")}
     >
@@ -44,10 +43,7 @@ export function OnboardingSheet() {
             <span>{t("home.section.discovery")}</span>
           </li>
         </ol>
-        <div className="flex items-center justify-end gap-2 pt-2">
-          <Button variant="ghost" onClick={dismiss}>
-            {t("onboarding.skip")}
-          </Button>
+        <div className="flex justify-end pt-2">
           <Button onClick={markCompleted}>{t("onboarding.start")}</Button>
         </div>
       </div>
