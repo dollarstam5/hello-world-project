@@ -1,3 +1,4 @@
+import { useNavigate } from "@tanstack/react-router";
 import { Sheet } from "@/components/app/Sheet";
 import { Button } from "@/components/ui/button";
 import { useOnboarding } from "@/lib/experience/onboarding";
@@ -10,6 +11,7 @@ import { LanguageSwitcher } from "./LanguageSwitcher";
  */
 export function OnboardingSheet() {
   const { t } = useI18n();
+  const navigate = useNavigate();
   const shouldShow = useOnboarding((s) => s.shouldShow);
   const hydrated = useOnboarding((s) => s.hydrated);
   const markCompleted = useOnboarding((s) => s.markCompleted);
@@ -20,6 +22,7 @@ export function OnboardingSheet() {
     <Sheet
       open={shouldShow}
       onOpenChange={() => undefined}
+      showCloseButton={false}
       title={t("onboarding.title")}
       description={t("onboarding.desc")}
     >
@@ -48,7 +51,14 @@ export function OnboardingSheet() {
           </li>
         </ol>
         <div className="flex justify-end pt-2">
-          <Button onClick={markCompleted}>{t("onboarding.start")}</Button>
+          <Button
+            onClick={() => {
+              markCompleted();
+              void navigate({ to: "/" });
+            }}
+          >
+            {t("onboarding.start")}
+          </Button>
         </div>
       </div>
     </Sheet>
