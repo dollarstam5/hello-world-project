@@ -13,7 +13,8 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Vitalis — Vivant, calme, intelligent" },
       {
         property: "og:description",
-        content: "Votre point d’entrée vers les quatre moteurs Vitalis et les espaces complémentaires.",
+        content:
+          "Votre point d’entrée vers les quatre moteurs Vitalis et les espaces complémentaires.",
       },
     ],
   }),
