@@ -26,6 +26,28 @@ describe("Vitalis engine navigation boundaries", () => {
     expect(read("src/domains/reel/index.ts")).toContain("export { ReelSpace }");
   });
 
+  it("makes French and English selectable on the first screen and in the app header", () => {
+    const switcher = read("src/components/experience/LanguageSwitcher.tsx");
+    expect(switcher).toContain('role="group"');
+    expect(switcher).toContain('aria-pressed={locale === option}');
+    expect(switcher).toContain('option.toUpperCase()');
+    expect(read("src/components/experience/OnboardingSheet.tsx")).toContain("<LanguageSwitcher />");
+    expect(read("src/components/experience/AppHeader.tsx")).toContain("<LanguageSwitcher />");
+    expect(read("src/lib/i18n/useI18n.ts")).toContain("document.documentElement.lang = locale");
+    expect(read("src/lib/i18n/messages.ts")).toContain('"app.language.fr": "Passer en français"');
+    expect(read("src/lib/i18n/messages.ts")).toContain('"app.language.en": "Switch to English"');
+  });
+
+  it("opens the notification tab from the notification bell and lazy-loads Vita", () => {
+    expect(read("src/components/experience/CommunicationSheet.tsx")).toContain(
+      '<Tabs defaultValue="notifications">',
+    );
+    const assistantLayer = read("src/components/experience/AILayer.tsx");
+    expect(assistantLayer).toContain('lazy(() =>');
+    expect(assistantLayer).toContain("<Suspense");
+    expect(read("src/domains/assistant/ui/AssistantTab.tsx")).not.toContain("inputRef.current?.focus()");
+  });
+
   it("keeps route links as navigation, not ARIA tabs", () => {
     const nav = read("src/components/app/BottomNav.tsx");
     expect(nav).toContain('aria-label={t("nav.primary")}');
