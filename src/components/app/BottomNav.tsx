@@ -1,20 +1,21 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Home, Zap, Radar, LayoutGrid } from "lucide-react";
+import { Fingerprint, Zap, ScanLine, Radar, LayoutGrid } from "lucide-react";
 import { motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useReducedMotion } from "@/lib/design/useReducedMotion";
 import { cn } from "@/lib/utils";
 
 type Tab = {
-  key: "home" | "flash" | "radar" | "menu";
+  key: "reel" | "flash" | "scan" | "radar" | "menu";
   to?: string;
   icon: React.ComponentType<{ className?: string }>;
-  labelKey: "nav.home" | "nav.flash" | "nav.radar" | "nav.menu";
+  labelKey: "nav.reel" | "nav.flash" | "nav.scan" | "nav.radar" | "nav.menu";
 };
 
 const TABS: Tab[] = [
-  { key: "home", to: "/", icon: Home, labelKey: "nav.home" },
+  { key: "reel", to: "/", icon: Fingerprint, labelKey: "nav.reel" },
   { key: "flash", to: "/flash", icon: Zap, labelKey: "nav.flash" },
+  { key: "scan", to: "/scan", icon: ScanLine, labelKey: "nav.scan" },
   { key: "radar", to: "/radar", icon: Radar, labelKey: "nav.radar" },
   { key: "menu", icon: LayoutGrid, labelKey: "nav.menu" },
 ];
@@ -26,7 +27,7 @@ interface BottomNavProps {
 
 /**
  * Floating bottom navigation — calm, glassy, breathing.
- * 4 tabs. The "menu" tab is a 2x2 grid that opens the MenuSheet.
+ * 4 tabs (Réel, Flash, Scan, Radar) + a 2x2 grid that opens the MenuSheet.
  * Pure presentation; no business logic.
  */
 export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
