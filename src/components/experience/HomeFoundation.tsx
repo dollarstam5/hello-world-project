@@ -2,33 +2,16 @@ import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, Radar, ScanLine, UsersRound, Zap } from "lucide-react";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useAuth } from "@/domains/auth";
+import { PRIMARY_ENGINES, type PrimaryEngineKey } from "@/lib/navigation/primary-engines";
 
-const ENGINES = [
-  {
-    to: "/reel",
-    icon: UsersRound,
-    titleKey: "home.engine.reel",
-    descriptionKey: "home.engine.reel.desc",
-  },
-  {
-    to: "/flash",
-    icon: Zap,
-    titleKey: "home.engine.flash",
-    descriptionKey: "home.engine.flash.desc",
-  },
-  {
-    to: "/scan",
-    icon: ScanLine,
-    titleKey: "home.engine.scan",
-    descriptionKey: "home.engine.scan.desc",
-  },
-  {
-    to: "/radar",
-    icon: Radar,
-    titleKey: "home.engine.radar",
-    descriptionKey: "home.engine.radar.desc",
-  },
-] as const;
+const ENGINE_ICONS = {
+  reel: UsersRound,
+  flash: Zap,
+  scan: ScanLine,
+  radar: Radar,
+} satisfies Record<PrimaryEngineKey, typeof UsersRound>;
+
+
 
 /**
  * Home is the application entry and navigation hub.
@@ -65,8 +48,8 @@ export function HomeFoundation() {
             {t("home.engines.title")}
           </h2>
           <div className="grid gap-3 sm:grid-cols-2">
-            {ENGINES.map((engine) => {
-              const Icon = engine.icon;
+            {PRIMARY_ENGINES.map((engine) => {
+              const Icon = ENGINE_ICONS[engine.key];
               return (
                 <Link
                   key={engine.to}
