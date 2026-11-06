@@ -7,19 +7,27 @@
 
 ## 1. Décisions à préserver depuis les échanges
 
-### 1.1 Navigation
+### 1.1 Entrée Home et navigation
 
-Décision produit validée :
+**Home est distincte de Réel.** La route racine `/` est réservée au point d'entrée Home et à ses états conditionnels :
+- onboarding lors de la première utilisation tant qu'il n'est pas terminé ;
+- Home explicative après onboarding et avant identification réussie ;
+- Home interactive après réussite du parcours d'identification existant.
+
+L'icône de l'application ramène à Home et ne doit pas ouvrir Réel directement. La Home interactive donne accès à Réel, Flash, Scan, Radar et aux pages/catégories secondaires.
+
+La navigation métier principale conserve cinq entrées :
 - Réel
 - Flash
 - Scan
 - Radar
 - 2x2
 
-Cible de routes décidée :
-- Réel : `/`
+État des destinations :
+- Home : `/`
+- Réel : destination dédiée à confirmer dans l'inventaire runtime ; ne pas attribuer `/` à Réel. `/reel` reste une option à examiner, pas une route attestée.
 - Flash : `/flash`
-- Scan : `/scan`
+- Scan : `/scan` cible, à vérifier
 - Radar : `/radar`
 - 2x2 : ouverture du menu secondaire ; Espace et Talents sont les destinations déjà présentes dans le composant de menu.
 
@@ -67,6 +75,18 @@ Direction UI/UX : hybride, premium, simple et vivant.
 | `docs/07-annexes/README.md` | Index des annexes | Ajouter la présente cartographie |
 | `docs/07-annexes/reel-navigation-documentation-map.md` | Matrice fichier par fichier et traçabilité des décisions | Nouveau fichier canonique de suivi |
 
+## 2.1 Parcours Home à tracer
+
+| ID | Exigence | Documents de référence | Scénarios attendus | Statut |
+| --- | --- | --- | --- | --- |
+| HOME-01 | Première utilisation : onboarding avant Home explicative | `navigation.md`, `user-journeys.md` | T-HOME-01, T-HOME-02 | Décision produit clarifiée ; runtime/tests non vérifiés |
+| HOME-02 | Après onboarding, présenter la Home explicative | mêmes références | T-HOME-03 | Décision produit clarifiée ; runtime/tests non vérifiés |
+| HOME-03 | Le CTA de Home explicative ouvre le parcours d'identification existant | mêmes références, contrats Identity/UDI | T-HOME-04, T-HOME-05 | À confronter au parcours existant ; aucun changement Auth autorisé |
+| HOME-04 | Après identification réussie, rediriger vers Home interactive | mêmes références | T-HOME-06, T-HOME-07 | Décision produit clarifiée ; runtime/tests non vérifiés |
+| HOME-05 | L'icône de l'application ramène à Home selon l'état utilisateur | mêmes références, route racine | T-HOME-08, T-HOME-09 | Décision produit clarifiée ; runtime/tests non vérifiés |
+| HOME-06 | Home interactive donne accès à Réel, Flash, Scan, Radar et aux catégories secondaires | navigation et architecture front | T-HOME-10 | Câblage runtime non vérifié |
+| HOME-07 | Home et Réel ont des destinations distinctes | navigation, frontend-experience | T-HOME-11 | Correction documentaire requise avant runtime |
+
 ## 3. Matrice de traçabilité Réel V1
 
 La matrice détaillée des décisions R/A/B/C/P, exigences techniques et scénarios de test est [Réel V1 — matrice de traçabilité](../03-engines/reel/reel-traceability-matrix.md). Elle décrit des exigences et tests attendus ; elle ne certifie ni l'existence des tests ni leur exécution.
@@ -78,19 +98,19 @@ Cette liste n'autorise pas une modification immédiate du code. Elle décrit les
 | Fichier | État observé sur main | Travail runtime attendu pour la navigation Réel V1 |
 | --- | --- | --- |
 | `src/routes/__root.tsx` | Racine TanStack, AppShell et Outlet | Préserver le shell et l'insertion des routes |
-| `src/routes/index.tsx` | `/` affiche HomeFoundation | Faire de `/` l'entrée Réel ; décider séparément du contenu HomeFoundation à préserver |
+| `src/routes/index.tsx` | `/` affiche HomeFoundation lors de l'audit historique | Faire évoluer la route en point d'entrée Home à états ; préserver et inventorier le contenu utile |
 | `src/routes/flash.tsx` | Présent | Conserver |
 | `src/routes/radar.tsx` | Présent | Conserver |
-| `src/routes/scan.tsx` | Absent de l'inventaire des routes | Créer route Scan dédiée |
+| `src/routes/scan.tsx` | Absent de l'inventaire des routes | Confirmer ou créer la route Scan dédiée |
 | `src/routes/espace.tsx` | Présent | Conserver |
 | `src/routes/talents.tsx` | Présent | Conserver |
 | `src/routes/README.md` | Convention de routage fichier par fichier | Mettre à jour la table des routes après création |
 | `src/components/app/AppShell.tsx` | Monte BottomNav et MenuSheet ; ferme le menu au changement de route | Vérifier le shell, le menu et les états actifs |
-| `src/components/app/BottomNav.tsx` | Accueil, Flash, Radar, Menu (4 entrées) | Passer à Réel, Flash, Scan, Radar, 2x2 |
+| `src/components/app/BottomNav.tsx` | Accueil, Flash, Radar, Menu (4 entrées) | Aligner les destinations métier sans confondre Home et Réel |
 | `src/components/app/MenuSheet.tsx` | Menu secondaire Espace et Talents | Conserver comme menu secondaire 2x2 |
 | `src/lib/i18n/messages.ts` | Clés FR/EN pour Accueil, Flash, Radar, Menu, Espace et Talents | Ajouter Réel, Scan et 2x2 en FR/EN |
 | `src/routeTree.gen.ts` | Généré automatiquement ; non éditable à la main | Régénérer par l'outillage après ajout des routes |
-| `src/components/experience/HomeFoundation.tsx` | Cible actuelle de la route racine | Examiner les éléments réutilisables avant remplacement ; ne pas supprimer à l'aveugle |
+| `src/components/experience/HomeFoundation.tsx` | Cible actuelle de la route racine dans l'audit historique | Évaluer sa réutilisation pour Home explicative/interactive ; ne pas supprimer à l'aveugle |
 
 ## 5. Fichiers domaine, contrats, données et tests — à vérifier avant création
 
