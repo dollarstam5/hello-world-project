@@ -1,0 +1,55 @@
+# Centre de communication — Vitalis V1
+
+**Statut :** spécification produit en cours de construction. Les décisions ci-dessous sont validées ; elles ne prouvent pas l'implémentation.
+
+## Principe
+
+La cloche ouvre une fenêtre unique avec trois onglets en haut : **Notifications**, **Messages** et **Assistance**. L'utilisateur peut naviguer entre eux sans quitter cette fenêtre.
+
+## Ouverture et indicateurs
+
+- À l'ouverture, Vitalis privilégie un onglet contenant une nouvelle activité.
+- Si plusieurs espaces sont concernés, Notifications est prioritaire en cas d'égalité.
+- La cloche affiche le total des activités non lues.
+- Chaque onglet affiche son propre compteur : notifications non lues, messages non lus, nouvelles réponses/activités d'assistance non lues.
+- La règle précise de sélection en présence de plusieurs activités reste à définir.
+
+## Conversations : règle fondamentale
+
+Vitalis ne propose pas de messagerie libre entre utilisateurs. Une conversation découle d'une action, d'une mise en relation ou d'un parcours métier explicitement autorisé.
+
+- Afficher uniquement les conversations autorisées et existantes.
+- Conserver l'origine métier de chaque conversation.
+- Ne pas proposer d'annuaire, de recherche générale d'utilisateurs ou de bouton permettant d'envoyer librement un nouveau message.
+- Appliquer les participants, permissions, états et règles du parcours métier source.
+- Garder l'assistance séparée des conversations entre utilisateurs.
+
+## Origine visible
+
+Chaque conversation affiche son contexte, par exemple : « Mise en relation — Réel », « Mission — Flash » ou « Action — Scan ». Ces exemples ne signifient pas que tous ces moteurs autorisent déjà une conversation en V1 : chaque cas doit être confirmé dans la spécification du moteur concerné.
+
+## Décisions validées
+
+| ID | Décision | État |
+| --- | --- | --- |
+| COM-01 | Une cloche, un centre, trois parcours | Validée |
+| COM-02 | Trois onglets en haut de la fenêtre | Validée |
+| COM-03 | Ouvrir un espace avec nouveauté ; Notifications prioritaire en cas d'égalité | Validée |
+| COM-04 | Compteur global et compteurs distincts par onglet | Validée |
+| COM-05 | Conversations uniquement liées à une action/mise en relation autorisée ; pas de messagerie libre | Validée |
+| COM-06 | Afficher l'origine métier de chaque conversation | Validée |
+
+## À préciser
+
+- La règle exacte de sélection de l'onglet si plusieurs espaces ont des nouveautés.
+- Le contenu détaillé des notifications et des listes de conversations.
+- Le lien permettant de retrouver l'action ou la mise en relation d'origine.
+- Les états de lecture, accusés de réception et synchronisation.
+- Les permissions, blocages, clôture et conservation hérités de chaque parcours.
+- Les états vides, chargement, erreur et hors ligne, ainsi que les critères de test.
+
+## Limite de preuve
+
+Ce document décrit les décisions produit. Il ne confirme pas que les panneaux, notifications, conversations ou échanges d'assistance sont implémentés ou testés.
+
+Référence : [Parcours utilisateurs](./user-journeys.md).
