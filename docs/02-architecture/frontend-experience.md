@@ -31,7 +31,7 @@ La décision produit est définie dans [Navigation principale V1](../01-product/
 
 L'icône de l'application ramène à Home ; elle ne doit pas ouvrir Réel directement. La Home interactive compose des liens vers Réel, Flash, Scan, Radar et les catégories secondaires, sans absorber leurs responsabilités métier.
 
-Au contrôle documentaire du 1er novembre 2026 sur `main`, la route racine affichait `HomeFoundation`, la navigation runtime observée comportait quatre entrées (Accueil, Flash, Radar, Menu) et aucune route `src/routes/scan.tsx` n'avait été retrouvée dans l'inventaire consulté. Ces observations sont historiques et doivent être revalidées sur la branche de développement. Elles ne prouvent ni la disponibilité du nouveau parcours Home ni celle des destinations moteurs.
+Au contrôle du 6 novembre 2026 sur `main` (HEAD `86f4f43cbd6942a8e7df95d3ce53c3db9634a7fb`), la route `/` rend toujours `HomeFoundation`, tandis que `BottomNav.tsx` associe l'entrée libellée Réel à `/`. Les entrées Flash, Scan et Radar pointent vers `/flash`, `/scan` et `/radar`, avec le menu 2x2. La route `src/routes/scan.tsx` existe. Il y a donc un écart concret entre la décision produit (Home sur `/`, Réel distinct) et le câblage runtime actuel (Réel sur `/`). Le nouveau parcours onboarding → Home explicative → identification → Home interactive n'est pas démontré par cet inventaire.
 
 | Responsabilité | Fichier ou zone à vérifier |
 | --- | --- |
@@ -40,9 +40,9 @@ Au contrôle documentaire du 1er novembre 2026 sur `main`, la route racine affic
 | Barre de navigation principale | `src/components/app/BottomNav.tsx` |
 | Menu secondaire 2x2 | `src/components/app/MenuSheet.tsx` |
 | Parcours d'identification existant | composants, routes et contrats Identity/UDI réellement présents ; ne pas les remplacer |
-| Destination dédiée Réel | route à localiser ou créer après vérification ; ne pas réutiliser `/` |
+| Destination dédiée Réel | route dédiée à définir et à câbler ; actuellement l'entrée Réel de BottomNav pointe vers `/`, qui rend HomeFoundation |
 | Routes Flash et Radar | `src/routes/flash.tsx`, `src/routes/radar.tsx` |
-| Route Scan cible | `src/routes/scan.tsx`, à confirmer ou créer |
+| Route Scan | `src/routes/scan.tsx`, présente sur `main` au contrôle du 6 novembre 2026 |
 | Routes secondaires | `src/routes/espace.tsx`, `src/routes/talents.tsx` |
 | Libellés FR/EN | `src/lib/i18n/messages.ts` |
 | Conventions file-based routing | `src/routes/README.md` |
