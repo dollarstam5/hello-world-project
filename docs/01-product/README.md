@@ -7,6 +7,7 @@ Cette section documente la vision produit, les intentions d'usage, les parcours,
 - [Vision](./vision.md)
 - [Personas](./personas.md)
 - [Parcours utilisateurs](./user-journeys.md)
+- [Centre de communication](./communication-center.md) — cloche unifiée, notifications, conversations liées aux actions et assistance.
 - [Niveaux de confiance](./trust-levels.md)
 - [Vitala Experience System](./experience-system.md)
 
