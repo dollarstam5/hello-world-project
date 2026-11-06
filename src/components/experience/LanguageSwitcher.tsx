@@ -20,8 +20,8 @@ export function LanguageSwitcher() {
           onClick={() => setLocale(option)}
           className={
             locale === option
-              ? "min-h-9 min-w-9 rounded-full bg-primary px-2 text-xs font-semibold text-primary-foreground"
-              : "min-h-9 min-w-9 rounded-full px-2 text-xs font-medium text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+              ? "min-h-10 min-w-10 rounded-full bg-primary px-2 text-xs font-semibold text-primary-foreground"
+              : "min-h-10 min-w-10 rounded-full px-2 text-xs font-medium text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
           }
         >
           {option.toUpperCase()}
