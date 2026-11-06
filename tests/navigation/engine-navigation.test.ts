@@ -12,10 +12,17 @@ describe("Vitalis engine navigation boundaries", () => {
   });
 
   it("routes each primary engine to its own public domain space", () => {
-    expect(read("src/components/app/BottomNav.tsx")).toContain('to: "/reel"');
-    expect(read("src/components/app/BottomNav.tsx")).toContain('to: "/flash"');
-    expect(read("src/components/app/BottomNav.tsx")).toContain('to: "/scan"');
-    expect(read("src/components/app/BottomNav.tsx")).toContain('to: "/radar"');
+    expect(read("src/components/app/BottomNav.tsx")).toContain("PRIMARY_ENGINES");
+    expect(read("src/components/experience/HomeFoundation.tsx")).toContain("PRIMARY_ENGINES");
+    const engines = read("src/lib/navigation/primary-engines.ts");
+    expect(engines).toContain('to: "/reel"');
+    expect(engines).toContain('to: "/flash"');
+    expect(engines).toContain('to: "/scan"');
+    expect(engines).toContain('to: "/radar"');
+    const categories = read("src/lib/navigation/secondary-spaces.ts");
+    expect(categories).toContain('to: "/espace"');
+    expect(categories).toContain('to: "/talents"');
+    expect(read("src/components/app/MenuSheet.tsx")).toContain("SECONDARY_SPACES");
     expect(read("src/routes/reel.tsx")).toContain('@/domains/reel"');
     expect(read("src/routes/flash.tsx")).toContain('@/domains/flash"');
     expect(read("src/routes/scan.tsx")).toContain('@/domains/scan"');
@@ -37,8 +44,8 @@ describe("Vitalis engine navigation boundaries", () => {
     expect(read("src/components/app/Sheet.tsx")).toContain("showCloseButton?: boolean");
     expect(read("src/components/experience/AppHeader.tsx")).toContain("<LanguageSwitcher />");
     expect(read("src/lib/i18n/useI18n.ts")).toContain("document.documentElement.lang = locale");
-    expect(read("src/lib/i18n/messages.ts")).toContain('"app.language.fr": "Passer en français"');
-    expect(read("src/lib/i18n/messages.ts")).toContain('"app.language.en": "Switch to English"');
+    expect(read("src/lib/i18n/messages.ts")).toContain('"app.language.fr": "Français"');
+    expect(read("src/lib/i18n/messages.ts")).toContain('"app.language.en": "English"');
   });
 
   it("opens the notification tab from the notification bell and lazy-loads Vita", () => {
@@ -51,6 +58,18 @@ describe("Vitalis engine navigation boundaries", () => {
     expect(read("src/domains/assistant/ui/AssistantTab.tsx")).not.toContain("inputRef.current?.focus()");
   });
 
+  it("boots the service worker and Web Vitals once from the app shell", () => {
+    const shell = read("src/components/app/AppShell.tsx");
+    expect(shell).toContain("registerServiceWorker()");
+    expect(shell).toContain("startWebVitalsMonitoring");
+    const root = read("src/routes/__root.tsx");
+    expect(root).not.toContain("registerServiceWorker()");
+    expect(root).not.toContain("startWebVitalsMonitoring");
+    const pwa = read("src/platform/pwa/install.ts");
+    expect(pwa).toContain("serviceWorkerRegistrationStarted");
+    expect(pwa).toContain('document.readyState === "complete"');
+  });
+
   it("keeps route links as navigation, not ARIA tabs", () => {
     const nav = read("src/components/app/BottomNav.tsx");
     expect(nav).toContain('aria-label={t("nav.primary")}');
@@ -60,7 +79,11 @@ describe("Vitalis engine navigation boundaries", () => {
   it("shows onboarding before the explanatory Home and preserves the existing identification route", () => {
     const onboarding = read("src/components/experience/OnboardingSheet.tsx");
     expect(onboarding).toContain("markCompleted");
+    expect(onboarding).toContain('navigate({ to: "/" })');
     expect(onboarding).not.toContain("dismiss");
+    const onboardingStore = read("src/lib/experience/onboarding.ts");
+    expect(onboardingStore).toContain("localStorage.setItem(STORAGE_KEY, \"1\")");
+    expect(onboardingStore).toContain("catch");
     const home = read("src/components/experience/HomeFoundation.tsx");
     expect(home).toContain('to="/auth"');
     expect(home).toContain("useAuth");
