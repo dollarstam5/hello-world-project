@@ -16,10 +16,10 @@ describe("Vitalis engine navigation boundaries", () => {
     expect(read("src/components/app/BottomNav.tsx")).toContain('to: "/flash"');
     expect(read("src/components/app/BottomNav.tsx")).toContain('to: "/scan"');
     expect(read("src/components/app/BottomNav.tsx")).toContain('to: "/radar"');
-    expect(read("src/routes/reel.tsx")).toContain("@/domains/reel\"");
-    expect(read("src/routes/flash.tsx")).toContain("@/domains/flash\"");
-    expect(read("src/routes/scan.tsx")).toContain("@/domains/scan\"");
-    expect(read("src/routes/radar.tsx")).toContain("@/domains/radar\"");
+    expect(read("src/routes/reel.tsx")).toContain('@/domains/reel"');
+    expect(read("src/routes/flash.tsx")).toContain('@/domains/flash"');
+    expect(read("src/routes/scan.tsx")).toContain('@/domains/scan"');
+    expect(read("src/routes/radar.tsx")).toContain('@/domains/radar"');
     expect(read("src/domains/flash/index.ts")).toContain("export { FlashSpace }");
     expect(read("src/domains/scan/index.ts")).toContain("export { ScanSpace }");
     expect(read("src/domains/radar/index.ts")).toContain("export { RadarSpace }");
