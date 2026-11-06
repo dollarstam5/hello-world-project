@@ -11,8 +11,6 @@ const ENGINE_ICONS = {
   radar: Radar,
 } satisfies Record<PrimaryEngineKey, typeof UsersRound>;
 
-
-
 /**
  * Home is the application entry and navigation hub.
  * It reads the existing auth session but never owns authentication or engine logic.
