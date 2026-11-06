@@ -58,7 +58,10 @@ export function HomeFoundation() {
 
       {user ? (
         <section className="stack-3" aria-labelledby="home-engines-title">
-          <h2 id="home-engines-title" className="text-caption font-medium tracking-tight text-foreground/80">
+          <h2
+            id="home-engines-title"
+            className="text-caption font-medium tracking-tight text-foreground/80"
+          >
             {t("home.engines.title")}
           </h2>
           <div className="grid gap-3 sm:grid-cols-2">
