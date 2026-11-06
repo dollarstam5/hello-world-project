@@ -43,6 +43,7 @@ Chaque conversation affiche son contexte, par exemple : « Mise en relation — 
 | COM-09 | Historique conservé, distinction « Non lues » / « Toutes », lecture automatique et regroupement par date/catégorie | Validée |
 | COM-10 | Regroupement intelligent des notifications similaires, sans masquer les événements nécessitant une attention individuelle | Validée |
 | COM-11 | Trois niveaux de priorité : Normal, Important et Urgent, avec interruption uniquement si nécessaire | Validée |
+| COM-12 | Consultation hors ligne et synchronisation automatique au retour du réseau, sans doublons ni avalanche d'alertes | Validée |
 
 ## Notifications — périmètre V1
 
@@ -96,6 +97,16 @@ Règles transversales :
 - Les aperçus ne doivent pas exposer de données sensibles.
 - Le niveau Urgent doit rester rare et justifié ; il ne sert pas à augmenter artificiellement l'engagement.
 
+### Fonctionnement hors ligne et synchronisation
+
+- Les notifications déjà reçues et mises en cache restent consultables hors ligne.
+- Les nouvelles notifications générées pendant l'absence de connexion restent récupérables depuis le serveur au retour du réseau.
+- Vitalis relance automatiquement la synchronisation ; l'utilisateur n'a pas à actualiser manuellement ni à relancer l'application.
+- La synchronisation évite de créer des doublons et conserve l'état de lecture de manière cohérente.
+- Au retour du réseau, les notifications accumulées sont regroupées intelligemment et seules les informations encore pertinentes sont mises en évidence.
+- La reconnexion ne doit pas provoquer une avalanche d'alertes ni rejouer toutes les notifications comme si elles venaient d'arriver.
+- Les limites de cache local, la stratégie de reprise, la déduplication technique et la gestion des conflits d'état restent à spécifier et à tester.
+
 ## À préciser
 
 - La règle exacte de sélection de l'onglet si plusieurs espaces ont des nouveautés.
@@ -105,6 +116,7 @@ Règles transversales :
 - Le lien permettant de retrouver l'action ou la mise en relation d'origine.
 - Les états de lecture, accusés de réception et synchronisation.
 - Les permissions, blocages, clôture et conservation hérités de chaque parcours.
+- Les limites de cache local, la stratégie de reprise, la déduplication technique et les tests hors ligne.
 - Les états vides, chargement, erreur et hors ligne, ainsi que les critères de test.
 
 ## Limite de preuve
