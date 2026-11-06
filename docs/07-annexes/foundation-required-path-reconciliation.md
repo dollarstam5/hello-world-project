@@ -1,0 +1,139 @@
+# Réconciliation des chemins requis par Foundation
+
+**Branche de travail :** `fix/lot12-script-documentation-paths`  
+**Contrôle :** `src/scripts/check-foundation.mjs` comparé à l'arborescence Git du commit audité `152d4e61339a717c560df0813affb447d22f4255` (avant la présente mise à jour documentaire).  
+**But :** distinguer les déplacements certains des exigences qui nécessitent une décision métier/technique. Ce document ne certifie pas l'exécution des tests.
+
+## Résultat quantifié
+
+- Références déclarées dans `requiredFiles` : **145**.
+- Chemins initialement non résolus sur la tête auditée avant les corrections de préfixe : **112**.
+- Déplacements de préfixe vérifiés et corrigés dans le script : **13**.
+- Chemins restant non résolus après ces corrections : **99 dans le calcul historique** ; **95 au contrôle reproductible du head actuel** (liste ci-dessous).
+- Les 95 chemins restants ne sont pas automatiquement déclarés « fonctionnalités absentes » : cela signifie que la cible exacte n'existe pas et que son équivalent n'est pas établi.
+
+> Correction du compte rendu précédent : le chiffre annoncé précédemment de 106 était incomplet. Le recalcul reproductible sur les 145 références du script et l'arborescence du commit audité `152d4e61339a717c560df0813affb447d22f4255` donne 95 chemins non résolus. Le chiffre de 112 puis 99 appartient à un état antérieur et ne doit pas être utilisé pour décrire l'état courant.
+
+## A. Déplacements confirmés appliqués
+
+| Ancienne référence | Cible présente dans le dépôt |
+|---|---|
+
+Ces changements ne font que réaligner le contrôle sur les fichiers existants. Ils ne modifient ni le contenu des migrations, ni les tests, ni le comportement applicatif.
+
+## B. Chemins non résolus après correction
+
+| Chemin requis | Classification | Candidat / décision nécessaire |
+|---|---|---|
+| `SECURITY.md` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `CHANGELOG.md` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `scripts/check-release-readiness.mjs` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `tests/smoke/release-readiness.test.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `packages/core-contracts/src/profile.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `packages/core-logic/src/profile.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/domains/profile/model/profile.schema.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/domains/profile/api/profile.server.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/domains/profile/api/profile.functions.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/domains/profile/hooks/useProfile.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/domains/profile/ui/ProfileView.tsx` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/routes/_authenticated/profil.tsx` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `supabase/migrations/20260912005000_profile_preferences.sql` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `supabase/tests/database/70_profile_preferences_rls.test.sql` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `tests/profile/profile-contract.test.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `docs/PROFILE_IDENTITY.md` | Documentation scope — decision required | Semantic candidate: `docs/02-architecture/identity-model.md`; compare required scope first |
+| `packages/core-contracts/src/auth.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `packages/core-contracts/src/onboarding.ts` | Alternative filename — unconfirmed | Candidate only: `src/lib/experience/onboarding.ts`; not a confirmed equivalent |
+| `packages/core-logic/src/onboarding.ts` | Alternative filename — unconfirmed | Candidate only: `src/lib/experience/onboarding.ts`; cannot assume it replaces both package layers |
+| `src/domains/auth/model/auth.schema.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/domains/auth/ui/AuthView.tsx` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/domains/auth/ui/AuthCallbackView.tsx` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/domains/auth/ui/PasswordRecoveryView.tsx` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/routes/auth.callback.tsx` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/routes/auth.recovery.tsx` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/features/onboarding/MemberOnboarding.tsx` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/features/onboarding/useMemberOnboarding.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `supabase/migrations/20260912006000_member_onboarding.sql` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `supabase/tests/database/80_member_onboarding_rls.test.sql` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `tests/auth/auth-contract.test.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `tests/onboarding/onboarding-flow.test.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `docs/AUTH_ONBOARDING.md` | Documentation scope — decision required | Semantic candidates: `docs/03-api/auth-api.md`, `docs/01-product/user-journeys.md`; neither is confirmed as full replacement |
+| `src/domains/flash/model/flash.schema.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/domains/flash/model/flash.mapper.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/domains/flash/hooks/useFlashComposer.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/domains/flash/ui/FlashComposer.tsx` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/domains/flash/ui/FlashView.tsx` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/routes/_authenticated/flash.new.tsx` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `supabase/migrations/20260912007000_secure_flash_lifecycle.sql` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `supabase/tests/database/90_flash_lifecycle_rls.test.sql` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `tests/flash/flash-contract.test.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `tests/flash/flash-mapping.test.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `docs/FLASH_MODULE.md` | Documentation scope — decision required | Semantic candidates: `docs/03-engines/flash/11-VITALA-UJ-08-FLASH-ENGINE.md`, `docs/03-api/flash-api.md`; compare the intended module spec |
+| `src/domains/scan/model/scan.schema.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/domains/scan/services/geolocation.service.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/domains/scan/ui/ScanView.tsx` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/routes/_authenticated/scan.tsx` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `supabase/migrations/20260912008000_private_flash_locations_scan.sql` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `supabase/tests/database/100_scan_location_privacy.test.sql` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `tests/scan/geolocation-privacy.test.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `supabase/migrations/20260912011000_radar_offline_sync.sql` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `supabase/tests/database/130_radar_offline_sync.test.sql` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/domains/radar/api/radar.server.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/domains/radar/api/radar.functions.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/domains/radar/hooks/useRadarComposer.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/domains/radar/hooks/useRadars.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/domains/radar/ui/RadarComposer.tsx` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/domains/radar/ui/RadarList.tsx` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/domains/radar/ui/RadarView.tsx` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/routes/_authenticated/radar.new.tsx` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `tests/radar/radar-offline.test.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `tests/radar/radar-sync-validation.test.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `tests/radar/radar-composer.test.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `supabase/migrations/20260912012000_radar_matches_notifications.sql` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `supabase/tests/database/140_radar_matches_notifications_rls.test.sql` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/domains/radar/api/radar-matches.server.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/domains/radar/hooks/useRadarMatches.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/lib/radar-maintenance.server.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/platform/notifications/NotificationsTab.tsx` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `tests/radar/radar-matching.test.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `tests/radar/radar-maintenance.test.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `tests/notifications/radar-notifications.test.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/lib/health.server.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/routes/api/health/live.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/routes/api/health/ready.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `public/offline.html` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `public/favicon.svg` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `scripts/check-pwa.mjs` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `performance-budget.json` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `scripts/check-performance-budget.mjs` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `playwright.config.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `tests/e2e/mobile-foundation.spec.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/lib/maintenance.server.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `src/routes/api/cron/maintenance.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `supabase/tests/database/00_schema_contract.test.sql` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `supabase/tests/database/10_profiles_identity_rls.test.sql` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `supabase/tests/database/20_content_isolation_rls.test.sql` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `supabase/tests/database/30_mission_transitions_rls.test.sql` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `supabase/tests/database/40_sync_receipts_rls.test.sql` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `supabase/tests/database/50_assistant_rls.test.sql` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `tests/sync/offline-reconnect.e2e.test.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `tests/sync/conflict-recovery.e2e.test.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `tests/offline/local-database-isolation.e2e.test.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `tests/observability/maintenance-config.test.ts` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+| `supabase/migrations/20260912004000_operational_retention.sql` | Unresolved — no direct equivalent | No direct path/basename equivalent confirmed in the inspected tree. Check intent, architecture, and consumer before changing the requirement. |
+
+## C. Règles de traitement
+
+1. **Ne pas supprimer de référence uniquement pour faire passer Foundation.**
+2. **Ne pas pointer deux couches/packages distincts vers un seul fichier** sans vérifier les contrats et les consommateurs.
+3. Pour chaque candidat alternatif, comparer exports, responsabilités, imports, assertions et couverture de test avant de décider qu'il s'agit d'un renommage.
+4. Pour les documents métier, comparer le contenu section par section ; un document voisin ou un index n'est pas forcément un remplacement complet.
+5. Les chemins réellement non présents peuvent signaler un contrôle obsolète, un artefact manquant ou une architecture différente. La décision doit être documentée avant toute modification.
+6. Toute évolution de migrations/tests SQL doit rester séparée de ce correctif de chemins et suivre les contrôles techniques dédiés.
+
+## D. État de validation
+
+- Le script a été modifié uniquement pour 13 déplacements de préfixe confirmés, en plus des corrections documentaires déjà préparées.
+- **Aucune exécution réussie de Foundation n'est revendiquée ici.**
+- Le lint Quality est un blocage indépendant déjà observé ; les étapes aval ne doivent pas être marquées réussies tant qu'elles n'ont pas réellement tourné.
+- TECH-001 à TECH-006 restent ouverts.
+- PR #27 reste en brouillon et non fusionnée. Ce rapport ne donne aucune autorisation de fusion.
