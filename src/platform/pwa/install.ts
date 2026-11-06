@@ -12,6 +12,7 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 let deferredPrompt: BeforeInstallPromptEvent | null = null;
+let serviceWorkerRegistrationStarted = false;
 const listeners = new Set<() => void>();
 
 function notify() {
@@ -31,12 +32,23 @@ export function registerServiceWorker(): void {
   if (typeof window === "undefined") return;
   if (!("serviceWorker" in navigator)) return;
   if (!import.meta.env.PROD) return;
-  window.addEventListener("load", () => {
+
+  const register = () => {
+    if (serviceWorkerRegistrationStarted) return;
+    serviceWorkerRegistrationStarted = true;
     void navigator.serviceWorker
       .register("/sw.js", { scope: "/" })
       .then((registration) => watchForUpdates(registration))
-      .catch(() => undefined);
-  });
+      .catch(() => {
+        serviceWorkerRegistrationStarted = false;
+      });
+  };
+
+  if (document.readyState === "complete") {
+    register();
+  } else {
+    window.addEventListener("load", register, { once: true });
+  }
 }
 
 export function useInstallPrompt() {
