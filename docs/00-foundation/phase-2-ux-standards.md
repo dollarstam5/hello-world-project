@@ -61,7 +61,7 @@ Les composants concernés doivent prévoir les états utiles suivants, selon le 
 - Contraste des tokens clairs : bleu primaire et accents sémantiques ajustés en conservant leurs familles de teinte ; les paires de base texte/fond calculées dépassent 4,5:1. Les surfaces translucides et états composés restent à vérifier visuellement.
 - Feuilles et dialogues : contenu défilant sur les petits écrans, avec gestion native du focus et fermeture clavier assurée par Radix.
 - États réseau : le bandeau reflète les états réseau et synchronisation du worker ; aucun nombre ni succès n’est inventé.
-- Premier lancement : fermer ou ignorer l’onboarding est mémorisé ; les trois repères présentent Réel, Flash/Scan et Radar/2x2.
+- Premier lancement : fermer ou ignorer l’onboarding est mémorisé ; les trois repères suivent l’ordre de navigation : Flash/Scan, Réel, puis Radar/2x2.
 - Les quatre espaces du centre de communication et leurs règles V1 sont spécifiés dans [Centre de communication V1](../01-product/communication-center-v1.md).
 - Les vues globales 404 et erreur utilisent également les messages FR/EN et des actions de reprise d'au moins 44 px.
 
@@ -268,3 +268,15 @@ Le smoke visuel confirme le rendu et la disponibilité des routes ; il ne valide
 - Chaque cas dispose d'un message FR/EN dédié ; le message de refus n'est plus affiché pour un simple délai dépassé ou une indisponibilité du fournisseur de position.
 - Correction portée dans `ScanPanel.tsx` et `messages.ts`, dans la branche existante de la PR #37.
 - La nouvelle exécution Quality #556 est en cours ; cette correction ne sera considérée vérifiée qu'après son résultat.
+
+
+## 14. Preuve CI actualisée — Quality #557
+
+**Commit contrôlé :** `796cbf22d5e05fd8e9146fdb6996f6f9d4495130`  
+**Résultat :** Quality #557 réussie ; Dependency review réussie.
+
+Les étapes vérifiées sont toutes au vert : contrôle des fondations et secrets, tests RLS, release check, build/budgets/audit documentaire/reproductibilité/Go-No-Go, installation Chromium et smoke visuel mobile. Le job complet est terminé avec succès le 9 novembre 2026.
+
+Cette exécution valide les corrections de géolocalisation Scan présentes dans ce commit. Elle ne remplace pas les validations manuelles : clavier et focus, lecteur d'écran, contrastes composites et mesures tactiles sur appareils réels restent ouverts.
+
+**Statut Phase 2 :** automatisation verte sur le dernier commit contrôlé ; phase toujours en attente de validation manuelle finale. La phase 3 ne démarre pas avant ces validations. La PR #37 reste en brouillon et aucune modification n'est portée sur `main`.
