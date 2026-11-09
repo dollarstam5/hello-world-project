@@ -80,7 +80,7 @@ export const messages = {
     "home.engine.flash.desc":
       "Partagez un besoin ou une proposition, et découvrez les publications utiles.",
     "home.engine.scan.title": "Scan",
-    "home.engine.scan.desc": "Repérez les Flash actifs près de vous, sans afficher votre position.",
+    "home.engine.scan.desc": "Repérez les publications Flash actives près de vous, sans partager votre position.",
     "home.engine.reel.title": "Réel",
     "home.engine.reel.desc":
       "Cet espace se prépare. Vous pourrez bientôt signaler votre présence et découvrir les personnes à proximité.",
@@ -490,7 +490,7 @@ export const messages = {
     "home.engine.flash.title": "Flash",
     "home.engine.flash.desc": "Share a need or an offer, and discover useful posts.",
     "home.engine.scan.title": "Scan",
-    "home.engine.scan.desc": "Spot active Flash nearby without showing your location.",
+    "home.engine.scan.desc": "Find active Flash posts nearby without sharing your location.",
     "home.engine.reel.title": "Live",
     "home.engine.reel.desc":
       "This space is taking shape. Soon, you will be able to share your presence and discover people nearby.",
@@ -499,7 +499,7 @@ export const messages = {
       "This space is taking shape. Soon, you will be able to spot opportunities around you.",
     "home.engine.action": "View this space",
     "home.menuHint":
-      "Find complementary spaces and other Vitalis features in the 2x2 menu at the bottom of the screen.",
+      "Explore additional spaces and other Vitalis features from the 2x2 menu at the bottom of the screen.",
     "onboarding.title": "Welcome to Vitalis",
     "onboarding.desc": "A few quick landmarks to discover the essentials, at your own pace.",
     "onboarding.stepLabel": "Discover",
