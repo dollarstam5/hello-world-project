@@ -15,6 +15,8 @@ export function useFlashFeed() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>();
   const activeRef = useRef(true);
+  const translateRef = useRef(t);
+  translateRef.current = t;
 
   const offlineRows = useMemo<PublicFlash[]>(
     () =>
@@ -41,11 +43,11 @@ export function useFlashFeed() {
         setError(undefined);
       }
     } catch {
-      if (activeRef.current) setError(t("flash.feed.error"));
+      if (activeRef.current) setError(translateRef.current("flash.feed.error"));
     } finally {
       if (activeRef.current) setLoading(false);
     }
-  }, [loadRemote, t]);
+  }, [loadRemote]);
 
   useEffect(() => {
     activeRef.current = true;
