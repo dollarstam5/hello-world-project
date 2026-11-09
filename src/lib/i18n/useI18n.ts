@@ -7,23 +7,54 @@ interface I18nState {
 }
 
 const STORAGE_KEY = "eco.locale";
+let hasExplicitLocalePreference = false;
+let languageChangeListenerAttached = false;
 
-function detectInitialLocale(): Locale {
-  if (typeof window === "undefined") return defaultLocale;
-  let stored: Locale | null = null;
+/** Resolve browser/system language preferences against the locales Vitalis supports. */
+export function resolveBrowserLocale(
+  preferredLanguages: readonly string[] = [],
+  fallbackLanguage?: string,
+): Locale {
+  for (const candidate of [...preferredLanguages, fallbackLanguage ?? ""]) {
+    const language = candidate.trim().replace(/_/g, "-").split("-")[0]?.toLowerCase();
+    if (language && (locales as readonly string[]).includes(language)) {
+      return language as Locale;
+    }
+  }
+  return defaultLocale;
+}
+
+function readStoredLocale(): Locale | null {
+  if (typeof window === "undefined") return null;
   try {
-    stored = window.localStorage.getItem(STORAGE_KEY) as Locale | null;
+    const stored = window.localStorage.getItem(STORAGE_KEY);
+    return stored && (locales as readonly string[]).includes(stored) ? (stored as Locale) : null;
   } catch {
     // Storage can be unavailable in restricted/private browsing contexts.
+    return null;
   }
-  if (stored && locales.includes(stored)) return stored;
-  const nav = window.navigator.language?.slice(0, 2);
-  return (locales as readonly string[]).includes(nav) ? (nav as Locale) : defaultLocale;
+}
+
+function detectBrowserLocale(): Locale {
+  if (typeof window === "undefined") return defaultLocale;
+  try {
+    return resolveBrowserLocale(window.navigator.languages ?? [], window.navigator.language);
+  } catch {
+    return defaultLocale;
+  }
+}
+
+function syncWithBrowserLanguage() {
+  if (hasExplicitLocalePreference || typeof window === "undefined") return;
+  const locale = detectBrowserLocale();
+  document.documentElement.lang = locale;
+  useI18nStore.setState({ locale });
 }
 
 export const useI18nStore = create<I18nState>((set) => ({
   locale: defaultLocale,
   setLocale: (locale) => {
+    hasExplicitLocalePreference = true;
     if (typeof window !== "undefined") {
       try {
         window.localStorage.setItem(STORAGE_KEY, locale);
@@ -38,9 +69,17 @@ export const useI18nStore = create<I18nState>((set) => ({
 
 export function initI18n() {
   if (typeof window === "undefined") return;
-  const locale = detectInitialLocale();
+  const stored = readStoredLocale();
+  hasExplicitLocalePreference = stored !== null;
+  const locale = stored ?? detectBrowserLocale();
   document.documentElement.lang = locale;
   useI18nStore.setState({ locale });
+
+  // Follow later system/browser language changes only until the person chooses a language.
+  if (!languageChangeListenerAttached) {
+    window.addEventListener("languagechange", syncWithBrowserLanguage);
+    languageChangeListenerAttached = true;
+  }
 }
 
 export function useI18n() {
