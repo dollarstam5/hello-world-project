@@ -48,11 +48,12 @@ Aider une personne à découvrir rapidement ce qui peut se faire autour d'elle, 
 1. L'utilisateur active volontairement sa présence dans une zone.
 2. Il renseigne une description courte de sa présence, sans créer de publication.
 3. Les personnes ayant elles aussi activé leur visibilité dans le même environnement local peuvent se découvrir en temps réel.
-4. Une personne intéressée sélectionne la présence et manifeste son intérêt.
-5. L'auteur reçoit la demande et choisit d'accepter ou de refuser.
-6. En cas d'acceptation, la mise en relation est créée ; les informations complémentaires autorisées deviennent accessibles au demandeur.
-7. Les participants peuvent alors communiquer dans le contexte de cette mise en relation.
-8. En cas de refus, aucune conversation n'est ouverte.
+4. Une personne consulte une carte de présence à proximité.
+5. Le mode d'interaction permettant d'entrer en relation reste **À CONCEVOIR** à partir de la vision de l'utilisateur ; aucun bouton ou mécanisme « Ça m'intéresse » n'est retenu.
+6. Les étapes de consentement, de mise en relation et d'accès aux informations complémentaires seront définies avec cette nouvelle approche.
+7. Toute communication éventuelle devra respecter les règles de conversation contextualisée déjà validées.
+
+Les étapes 5 et 6 ne constituent pas encore un parcours fonctionnel validé.
 
 Le déclencheur de conversation après acceptation et l'absence de messagerie libre sont des décisions produit déjà validées. Les règles détaillées de fin de conversation, de participants, de blocage et de signalement sont suivies dans la matrice de décisions Communication.
 
@@ -74,7 +75,7 @@ Les éléments suivants proviennent d'arbitrages antérieurs et doivent être co
 - durées de présence proposées : 30 min, 1 h, 2 h, 3 h, 6 h, 12 h et 24 h ;
 - à expiration, la présence est supprimée ;
 - la position actuelle est partagée volontairement ; les coordonnées exactes restent privées ;
-- la mise en relation suit le principe « Ça m'intéresse » → décision de l'auteur → connexion ; un refus n'ouvre aucune conversation.
+- le mécanisme d'interaction et de mise en relation est **À CONCEVOIR** ; l'ancien principe « Ça m'intéresse » est explicitement écarté.
 
 Ces décisions doivent être reliées à leurs exigences et tests dans une matrice de traçabilité Réel. Toute évolution devra être explicitement arbitrée, pas supposée.
 
@@ -86,7 +87,7 @@ Ces décisions doivent être reliées à leurs exigences et tests dans une matri
 | Principes fondamentaux | Première base consignée ; validation détaillée à poursuivre |
 | Périmètre V1 / exclusions | À définir |
 | Fonctionnalités V1 | À détailler |
-| Carte, fiche et informations révélées | À arbitrer |
+| Cartes de présence : nom, description facultative, indication de proximité ; carte géographique non obligatoire | **VALIDÉ V1** |\n| Nouvelle interaction pour entrer en relation (remplace « Ça m'intéresse ») | **À CONCEVOIR avec la vision de l'utilisateur** |
 | États de visibilité Visible / Invisible | **VALIDÉ V1** — contrôle volontaire et réversible ; Invisible masque la présence sans fermer l'application ni supprimer les données |\n| Nombre de présences simultanées | **VALIDÉ V1** — une seule présence active par utilisateur ; modification de la présence existante plutôt que cumul |
 | Description de présence facultative ; visibilité possible sans texte | **VALIDÉ V1** — la description n'est pas obligatoire pour activer la visibilité |
 | Forme et longueur maximale de la description facultative | À préciser |
@@ -188,3 +189,19 @@ Cette décision vise une gestion souple et simple de la présence, sans multipli
 - Aucune ancienne description ou intention expirée ne redevient visible sans une nouvelle action explicite de l'utilisateur.
 
 **Conséquence UX :** l'interface peut proposer une action claire pour recommencer, mais ne doit pas présenter cette proposition comme une reconduction déjà activée. La nouvelle présence constitue une nouvelle activation et un nouveau cycle de durée.
+
+## 18. Décision produit validée — cartes de présence et nouvelle interaction à concevoir (2026-11-09)
+
+**Statut : présentation des cartes VALIDÉE V1 ; mécanisme d'interaction À CONCEVOIR.**
+
+Chaque présence à proximité est présentée sous forme de carte simple. La carte affiche :
+
+- le nom affiché de la personne ;
+- sa description facultative, lorsqu'elle existe ;
+- une indication qualitative de proximité, sans coordonnées exactes.
+
+Une carte géographique n'est pas obligatoire pour découvrir les présences. L'interface privilégie la lecture immédiate et la simplicité.
+
+**Correction produit explicite :** le bouton et le mécanisme « Ça m'intéresse » sont abandonnés. Ils ne doivent pas être renommés ni réintroduits sous une autre forme par défaut. L'utilisateur souhaite définir une nouvelle approche d'interaction à partir de sa propre vision. Aucun libellé, bouton, geste, demande ou enchaînement de mise en relation n'est donc décidé à ce stade.
+
+**Conséquence documentaire :** les anciens passages décrivant « Ça m'intéresse » comme un mécanisme validé sont remplacés par un point ouvert. Les règles déjà validées sur le consentement, la conversation contextualisée, le blocage et le signalement restent des contraintes à prendre en compte lors de la conception du nouveau parcours, sans préjuger de son fonctionnement.
