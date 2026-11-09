@@ -20,6 +20,7 @@ Présenter Vitalis avant la première utilisation sans imposer de compte, de for
 
 - Affichage au premier lancement, puis une seule fois après complétion.
 - Progression visible sur cinq étapes.
+- Les cartes Flash/Scan et Réel/Radar restent empilées sur mobile et passent en deux colonnes sur écran moyen ou large.
 - Navigation Retour/Suivant.
 - Possibilité de passer ou de fermer l'onboarding.
 - La validation, le passage ou la fermeture mémorisent la complétion sur l'appareil.
