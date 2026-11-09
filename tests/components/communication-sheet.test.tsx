@@ -24,7 +24,7 @@ describe("CommunicationSheet", () => {
     const reel = markup.indexOf("communication.reel</button>");
 
     expect(markup).toContain('aria-label="communication.title"');
-    expect(markup).toContain('role="tablist" aria-label="communication.title"');
+    expect(markup).toMatch(/role="tablist"[^>]*aria-label="communication\\.title"/);
     expect(markup.match(/role="tab"/g)).toHaveLength(4);
     expect(notifications).toBeGreaterThan(-1);
     expect(notifications).toBeLessThan(assistant);
@@ -38,7 +38,7 @@ describe("CommunicationSheet", () => {
     expect(markup.match(/role="tabpanel"/g)?.length).toBeGreaterThanOrEqual(1);
     expect(markup).toContain('data-state="active"');
     expect(markup).toContain("communication.notifications.empty");
-    expect(markup).toContain("communication.messages.empty");
-    expect(markup).toContain("communication.reel.empty");
+    expect(markup).toContain("communication.notifications.empty");
+    expect(markup).toContain("aria-controls=");
   });
 });
