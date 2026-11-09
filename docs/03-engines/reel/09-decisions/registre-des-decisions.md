@@ -35,12 +35,16 @@
 | DEC-031 | Le mode rapide vise un parcours d'accès en deux ou trois étapes, avec validation des permissions nécessaires et choix/création d'un avatar personnalisé. | VALIDÉ — objectif UX |
 | DEC-032 | Les coordonnées de localisation servent au calcul de proximité et non d'identifiant unique d'un utilisateur. | VALIDÉ — garde-fou de conception |
 
+## Historique et distinction des données
+
+L'historique des comptes Vitalis est une chronologie rétrospective des bips, mises en relation et interactions passées. Il ne maintient pas les mises en relation clôturées dans les espaces actifs. Les bips non acceptés expirent comme actions après 24 h, mais leur événement reste dans l'historique du compte. En mode invité, les données personnelles de session ne persistent pas après la fin de la session. Les traces techniques minimales sont séparées de cet historique. La conservation du contenu des conversations n'est pas incluse.
+
 ## Clarification temporelle
 
 Une discussion a évoqué une conservation de 12 h ou 24 h pour absorber les perturbations réseau. Les clarifications ultérieures distinguent :
 - les bips non acceptés, conservés 24 h ;
 - les mises en relation acceptées, accessibles dans le compteur Réel et Notifications jusqu'à leur clôture ;
-- les traces minimales après clôture.
+- les traces techniques minimales après clôture, distinctes de l'historique du compte.
 
 La durée de vie d'une mise en relation acceptée non clôturée reste à arbitrer. Ne pas appliquer automatiquement le délai de 24 h à cet objet.
 
