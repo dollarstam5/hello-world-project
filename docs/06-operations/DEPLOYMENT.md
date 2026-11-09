@@ -1,4 +1,4 @@
-# Déploiement de Vitala
+# Déploiement de Vitalis
 
 Ce guide décrit une mise en production reproductible. Les secrets ne doivent jamais être stockés dans Git, dans une variable `VITE_*`, ni dans les journaux applicatifs.
 
