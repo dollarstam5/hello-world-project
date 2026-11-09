@@ -22,8 +22,8 @@ Présence : 30 min, 1 h, 2 h, 3 h, 6 h, 12 h, 24 h. À expiration, le statut est
 
 - **Compte Vitalis :** l'historique personnel de Réel conserve les bips, les mises en relation et les interactions passées associées, y compris les événements liés à une mise en relation clôturée.
 - **Mode invité :** aucune histoire personnelle persistante. Les données personnelles liées à la session disparaissent à la fin de celle-ci, sous réserve des traces techniques minimales nécessaires et séparées.
-- L'historique visible porte sur les événements et statuts. Les conversations des comptes Vitalis sont conservées jusqu'à leur archivage : après 3 mois, ou plus tôt dès que le plafond de 50 conversations est dépassé (la plus ancienne est alors archivée).
-- L'utilisateur peut supprimer son historique, mais ne peut pas l'exporter. Une archive est inaccessible à l'utilisateur, sauf accès exceptionnel demandé par celui-ci et autorisé par un administrateur pour 24 heures. La durée de conservation des archives après archivage et les délais d'effacement définitif restent à définir.
+- L'historique des comptes Vitalis comprend les événements et les conversations selon les règles de conservation suivantes : une conversation est archivée après 3 mois, ou plus tôt dès que le plafond de 50 conversations conservées est dépassé (la plus ancienne est alors archivée).
+- L'utilisateur peut supprimer son historique, mais ne peut pas l'exporter. Une archive est inaccessible à l'utilisateur, sauf accès exceptionnel demandé par celui-ci et autorisé par un administrateur pour 24 heures. Une archive est conservée pendant 6 mois à compter de son archivage, puis supprimée définitivement selon la politique de purge. Les délais d'effacement technique des sauvegardes éventuelles et les obligations légales applicables restent à vérifier.
 
 ## Bips non acceptés
 
@@ -35,7 +35,7 @@ Accès dans deux emplacements. À la clôture, retrait immédiat des deux espace
 
 ## Clôture et traces
 
-La clôture retire la mise en relation des espaces actifs des deux participants et désactive la communication. Pour les comptes Vitalis, l'événement et la mise en relation passée restent consultables dans l'historique ; cette conservation ne réactive pas la relation. Le contenu des conversations n'est pas inclus dans l'historique validé.
+La clôture retire la mise en relation des espaces actifs des deux participants et désactive la communication. Pour les comptes Vitalis, l'événement et la mise en relation passée restent consultables dans l'historique ; cette conservation ne réactive pas la relation. Le contenu des conversations est soumis à cette durée de conservation et à ces règles d'accès ; il n'est pas conservé indéfiniment.
 
 Les traces techniques minimales (date, statut, événement) restent distinctes de l'historique visible. Leur durée de conservation, les accès autorisés, la pseudonymisation et les modalités de suppression restent à préciser.
 
@@ -53,3 +53,38 @@ Chaque espace Vitalis est soumis à un plafond gratuit de stockage. À saturatio
 Les plafonds individuels par espace doivent respecter un plafond global strict du projet Supabase Cloud. La V1 vise zéro coût récurrent obligatoire ou un coût quasi nul strictement maîtrisé ; les quotas et marges doivent être calculés selon les limites gratuites effectivement disponibles et vérifiés avant lancement. Il ne s'agit pas d'une promesse de stockage illimité ou de gratuité garantie indépendamment des conditions du fournisseur.
 
 L'accès administrateur exceptionnel aux archives doit être limité au strict nécessaire et journalisé.
+
+
+## Proposition de quotas gratuits V1 — à valider après mesure
+
+Proposition de budget logique par compte, réparti entre les espaces (il ne s'agit pas d'une réservation physique de capacité dans Supabase) :
+
+| Espace | Quota indicatif par compte |
+|---|---:|
+| Profil et avatar | 2 Mo, dont avatar limité à 500 Ko |
+| Réel | 5 Mo |
+| Flash | 3 Mo |
+| Scan | 1 Mo |
+| Radar | 1 Mo |
+| Notifications | 1 Mo |
+| Données personnelles et préférences communes | 2 Mo |
+| **Total indicatif** | **15 Mo** |
+
+Cette répartition est une proposition de départ pour une V1 légère, principalement textuelle. Les médias lourds et les vidéos ne sont pas prévus ; les résultats Scan doivent privilégier les données structurées et métadonnées. Les quotas devront être validés par des mesures de consommation et par les spécifications des autres moteurs. Ils ne garantissent pas que chaque compte pourra consommer la totalité de son quota si le plafond global est atteint.
+
+## Proposition de garde-fous globaux Supabase Cloud — à valider
+
+Sur la base des quotas Free documentés au moment de la rédaction (à revérifier avant lancement), proposition de plafonds internes conservateurs :
+
+| Ressource | Quota Free documenté | Seuil interne proposé |
+|---|---:|---:|
+| Base de données par projet | 500 Mo | 350 Mo |
+| Stockage fichiers | 1 Go | 700 Mo |
+| Egress non mis en cache / mois | 5 Go | 3,5 Go |
+| Egress mis en cache / mois | 5 Go | 3,5 Go |
+| Messages Realtime / mois | 2 millions | 1,4 million |
+| Connexions simultanées | 200 | 140 |
+
+Proposition de réaction : à 50 %, avertissement et surveillance renforcée ; à 65 %, limitation des opérations non essentielles ; à 70 %, suspension des nouvelles écritures non indispensables et information de l'utilisateur, sans effacer silencieusement ses données ni perdre les actions hors ligne en attente. Ces seuils sont des garde-fous applicatifs proposés, pas des limites imposées automatiquement par Supabase.
+
+Attention : le plan Free Supabase peut mettre en pause un projet après une semaine d'inactivité et ne doit pas être assimilé à une garantie de disponibilité ou de sauvegarde de production. Le choix de disponibilité V1 doit être validé avant lancement.
