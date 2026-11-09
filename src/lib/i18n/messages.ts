@@ -176,6 +176,7 @@ export const messages = {
     "scan.busy": "Recherche en cours…",
     "scan.empty": "Aucun Flash actif dans cette zone pour le moment.",
     "scan.denied": "Position indisponible. Autorisez la localisation pour scanner.",
+    "scan.error": "Le scan a échoué. Réessayez.",
     "page.scan.eyebrow": "Proximité",
     "page.scan.title": "Scan",
     "page.scan.desc":
@@ -538,6 +539,7 @@ export const messages = {
     "scan.busy": "Searching…",
     "scan.empty": "No active Flash in this area yet.",
     "scan.denied": "Location unavailable. Allow location access to scan.",
+    "scan.error": "The scan failed. Please try again.",
     "page.scan.eyebrow": "Nearby",
     "page.scan.title": "Scan",
     "page.scan.desc": "Spot active Flash around you, without ever revealing your position.",
