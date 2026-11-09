@@ -22,8 +22,8 @@
 | NAV-04 | Réel central, icône antenne | RadioTower au centre | À TESTER | Vérification visuelle et clavier/lecteur d'écran |
 | NAV-05 | 2×2 ouvre le menu secondaire | Bouton menu dans BottomNav avec dialogue | À TESTER | Ouverture, fermeture, retour système et focus |
 | NAV-06 | État actif sémantique | `aria-current` sur route active | À TESTER | Routes parentes/sous-routes et lecteur d'écran |
-| NAV-07 | Cibles tactiles Android | Plusieurs contrôles ont min-height 44 CSS px ; dp réels non établis | À TESTER | Mesure ≥48 dp sur appareils Android |
-| NAV-08 | Cibles tactiles iOS | Plusieurs contrôles ont min-height 44 CSS px ; pt réels non établis | À TESTER | Mesure ≥44 pt sur appareils iOS |
+| NAV-07 | Cibles tactiles Android | Les principaux contrôles partagés visent 48 CSS px minimum ; la mesure en dp réels reste à établir | À TESTER | Mesure ≥48 dp sur appareils Android |
+| NAV-08 | Cibles tactiles iOS | Les principaux contrôles partagés visent 48 CSS px minimum ; la mesure en pt réels reste à établir | À TESTER | Mesure ≥44 pt sur appareils iOS |
 | NAV-09 | WCAG 2.2 SC 2.5.8 | Mesure globale non fournie | À TESTER | Audit en CSS px et vérification des exceptions |
 | NAV-10 | Safe areas et insets | Barre basse utilise safe-area-inset-bottom ; couverture complète inconnue | À TESTER | Encoche, barres système, clavier, rotation |
 | NAV-11 | Retour Android | Pas de preuve appareil réel | À TESTER | Geste, trois boutons, panneaux et pile |
@@ -31,7 +31,7 @@
 | NAV-13 | Historique Web/PWA | Routes TanStack présentes ; parcours complet non prouvé | À TESTER | Retour/avance, URL directe, refresh |
 | NAV-14 | Adaptation tablette | useResponsive et useDevice existent ; navigation rail/latérale non démontrée | À TESTER | Largeurs, fenêtres redimensionnées, multi-panneaux |
 | NAV-15 | Conservation du contexte | Pas de preuve de conservation globale | À TESTER | Filtres, recherche, position et sous-route |
-| NAV-16 | Langue FR/EN | Bascule FR/EN présente dans AppHeader ; lang document géré par i18n | À TESTER | Parcours complet, annonces et textes longs |
+| NAV-16 | Langue FR/EN | Détection automatique FR/EN et choix manuel dans l'onboarding ; lang document géré par i18n, sans sélecteur dans le header | À TESTER | Parcours complet, annonces et textes longs |
 | NAV-17 | Focus et clavier | Focus visibles présents sur plusieurs contrôles | À TESTER | Parcours clavier et restitution après dialogue |
 | NAV-18 | Lecteurs d'écran | Noms et rôles présents sur plusieurs contrôles | À TESTER | TalkBack et VoiceOver sur parcours principaux |
 | NAV-19 | Contraste et zoom | Tokens et règles documentés ; surfaces composites non certifiées | À TESTER | Mesures sur thèmes clair/sombre, zoom et reflow |
@@ -46,7 +46,7 @@
 - `BottomNav` porte les cinq contrôles dans l'ordre validé ; 2×2 est un bouton ouvrant `MenuSheet`, pas une route moteur.
 - Réel est central et utilise l'icône `RadioTower`.
 - Les liens moteur exposent `aria-current` lorsque la route correspond.
-- `AppHeader` fournit Home, langue, thème, profil et accès au centre de communication.
+- `AppHeader` fournit Home, Notifications et Profil ; la langue est détectée automatiquement et son choix manuel reste hors du header.
 - `useDevice` suit largeur, orientation, pointeur grossier et préférence de mouvement ; cela ne constitue pas encore une couche complète de détection des capacités PWA/natives.
 - Les classes de taille CSS ne prouvent pas à elles seules les dimensions dp/pt sur appareil.
 - Les captures de smoke test et tests navigateur ne remplacent pas les tests d'interaction sur appareil réel.
