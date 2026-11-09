@@ -195,3 +195,17 @@ Les fonctions de compréhension libre, d'adaptation intelligente et de dialogue 
 - Quality #514, exécutée après la première correction du lint, a révélé sept écarts de formatage supplémentaires dans les contrats, Surface, les tokens, les traductions et les permissions. Ces sept écarts ont été corrigés dans la branche.
 - Les deux avertissements de hooks liés au flux Flash ont également été traités. Les avertissements Fast Refresh restants dans les composants UI partagés sont non bloquants, mais restent à examiner dans le cadre de l'hygiène technique.
 - Une nouvelle exécution Quality #521 est en attente sur le commit suivant ; elle doit confirmer les corrections précédentes. Aucun test ou build n'est réputé réussi avant son résultat.
+
+
+### Authentification — cohérence invité/compte et accès système
+- La route de connexion est volontairement sans chrome global ; elle possède maintenant ses propres contrôles FR/EN et clair/sombre afin que ces réglages restent disponibles pendant l'authentification.
+- Les champs, le bouton principal et les actions secondaires respectent une cible tactile minimale de 44 px et un focus visible.
+- Les erreurs inattendues d'authentification sont interceptées et présentées avec un rôle accessible ; le retour de succès reste distinct.
+- Les métadonnées de connexion utilisent désormais le nom Vitalis.
+- Le parcours Flash reste réservé à un compte pour publier ; le parcours Scan public ne requiert pas de compte. Le profil et les moteurs Réel/Radar restent des espaces incomplets et ne sont pas déclarés fonctionnels par anticipation.
+
+### Dernière vérification Quality #521
+- La seconde tentative de Quality #521 a passé l'installation des dépendances et du Supabase CLI, puis a atteint le lint.
+- Le lint a échoué sur un unique écart Prettier dans le callback de reprise Flash ; cet écart a été corrigé dans le commit suivant.
+- Six avertissements Fast Refresh restent dans des composants UI génériques partagés. Aucun avertissement n'est bloquant dans la configuration actuelle.
+- Les étapes RLS, release/build et tests mobile/offline ont été ignorées après cet échec de lint. Une nouvelle exécution est nécessaire après les dernières corrections Auth/Flash.
