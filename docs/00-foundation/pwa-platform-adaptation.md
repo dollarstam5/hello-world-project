@@ -75,9 +75,9 @@ Cette matrice est un contrat de conception. Elle ne signifie pas que chaque API 
 - `src/lib/platform/capabilities.ts` centralise l'identification du système/navigateur et la détection des API réellement disponibles : Service Worker, géolocalisation, notifications, presse-papiers, partage, contexte sécurisé, mode autonome, pointeur et réduction du mouvement.
 - `src/lib/platform/useDevice.ts` expose ces informations avec la classe d'appareil, le viewport, l'orientation et une approximation de capacité matérielle.
 - La détection de la possibilité d'installation native reste événementielle : Android peut fournir `beforeinstallprompt`, alors que ce mécanisme n'est pas disponible sur iOS.
-- `src/platform/pwa/install.ts` et `src/platform/pwa/update.ts` portent les fondations d'installation et de mise à jour. Quand aucun prompt natif n'est disponible, des instructions manuelles sont proposées sur Android et iOS si le contexte sécurisé et le Service Worker sont disponibles.
+- `src/platform/pwa/install.ts` et `src/platform/pwa/update.ts` portent les fondations d'installation et de mise à jour. Quand aucun prompt natif n'est disponible, des instructions manuelles sont proposées sur Android et iOS lorsque le contexte est sécurisé. Elles ne dépendent pas de la présence d'un Service Worker.
 - `public/manifest.webmanifest` porte les métadonnées PWA.
-- Les composants ne doivent pas étendre `useDevice` à toutes les capacités sans contrat explicite ; les capacités fonctionnelles devront être regroupées dans une couche dédiée et testable.
+- Les composants consomment les capacités via `useDevice` ou la couche plateforme ; ils ne doivent pas recréer leurs propres détections.
 
 ## 8. Matrice de validation
 
