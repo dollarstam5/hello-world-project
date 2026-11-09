@@ -16,10 +16,13 @@
 Acceptation directe depuis la liste, sans renvoi de bip. Consultation du profil possible avant décision. L'existence d'une confirmation supplémentaire à l'acceptation reste à confirmer.
 
 ## Conversation
-Pas de messagerie libre autonome. Communication rattachée à une mise en relation/action autorisée. Aucun historique de conversation conservé après clôture. Formats, pièces jointes, modération et comportement hors ligne à spécifier.
+Pas de messagerie libre autonome. Communication rattachée à une mise en relation/action autorisée. Les conversations sont conservées selon les règles d'archivage V1 : 3 mois maximum avant archivage, ou plus tôt dès dépassement du plafond de 50 conversations (archivage de la plus ancienne). L'archive est inaccessible à l'utilisateur, sauf autorisation administrateur exceptionnelle demandée par l'utilisateur et limitée à 24 heures. L'utilisateur peut supprimer son historique, sans possibilité d'export. Formats, pièces jointes, modération et comportement hors ligne à spécifier.
 
 ## Refus, annulation, blocage
 Refus explicite, annulation par l'émetteur, blocage, signalement, demandes répétées et anti-abus restent à arbitrer ; aucune règle détaillée n'est déclarée validée.
 
 ## Notifications
 Événement explicitement retenu : informer l'autre participant lors de la clôture. Le catalogue complet des notifications reste à établir.
+
+## Règle de stockage V1
+Les conversations archivées continuent d'occuper du stockage tant qu'elles ne sont pas supprimées. La durée de conservation des archives après archivage, les délais d'effacement définitif et le parcours de demande/autorisation restent à définir. Aucun paiement ou supplément de stockage n'est proposé en V1.
