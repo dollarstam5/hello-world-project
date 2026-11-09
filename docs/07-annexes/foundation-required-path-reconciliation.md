@@ -296,3 +296,93 @@ Les tests et sources ci-dessus ont été lus dans `main`, mais **n'ont pas été
 6. Définir les preuves minimales de release : les documents canoniques existent, mais le script et le smoke test dédiés ne sont pas présents sous les chemins attendus.
 
 **Action conservatoire :** ne pas créer de fichiers vides, ne pas renommer les artefacts existants, ne pas déclarer la release prête et ne pas retirer de référence Foundation avant arbitrage. Les chemins absents restent comptabilisés jusqu'à décision explicite.
+
+
+## Quatrième vague — Auth, identité, onboarding, moteurs, synchronisation et notifications
+
+### Auth et identité
+
+- `src/domains/auth/services/auth.service.ts` implémente connexion par mot de passe, inscription, demande de réinitialisation et mise à jour du mot de passe via Supabase Auth.
+- `src/domains/auth/model/useAuth.ts` observe la session Supabase et expose utilisateur/chargement. Le chemin réel est `model/useAuth.ts`, pas `hooks/useAuth.ts`.
+- `src/routes/auth.tsx` rend `SignInView`. La récupération utilise une redirection vers `/reset-password`, mais aucune route dédiée de callback ou de récupération nommée comme dans Foundation n'a été trouvée. Le fichier `ResetPasswordView.tsx` existe ; il faut encore vérifier l'intégration de la route et le traitement complet des liens PKCE avant de conclure.
+- Les contrats Auth attendus (`packages/core-contracts/src/auth.ts`), le schéma Zod dédié et les tests `tests/auth/auth-contract.test.ts` ne sont pas présents sous les chemins attendus.
+- `src/lib/experience/identity.ts` décrit explicitement une fondation locale provisoire : tiers guest/identified/trusted, état Zustand en mémoire, raccordement backend annoncé pour une phase ultérieure. Ce n'est pas un profil persistant ni une preuve de vérification d'identité.
+- Le store de session Auth et le store d'identité progressive sont donc deux mécanismes distincts ; ne pas les considérer comme une identité métier complète.
+
+**Classement :** Auth de base présente ; callback/récupération complète, contrats et tests dédiés non démontrés ; identité/profil complet absent au niveau des preuves consultées.
+
+### Onboarding
+
+- `src/lib/experience/onboarding.ts` conserve un seul indicateur `eco.onboarding.v1` dans localStorage.
+- `OnboardingSheet.tsx` est explicitement qualifié de shell minimal, affiché une fois par appareil, avec étapes métier à venir.
+- Aucun contrat d'onboarding, parcours membre, migration SQL dédiée, politique RLS ou test de flux membre n'a été trouvé dans les chemins attendus.
+- Ce comportement local ne satisfait pas à lui seul l'exigence d'onboarding membre synchronisé entre appareils ou attaché à un compte.
+
+**Classement :** accueil d'orientation minimal présent ; onboarding membre V1 complet non démontré.
+
+### Flash
+
+- Le flux réel est composé de `FlashComposer`, `createFlash`, `useFlashFeed`, `getPublicFlashFeed`, `commandFlash` et `saveFlashLocation`.
+- Le compositeur crée localement et s'appuie sur le worker de synchronisation pour publier lorsque le réseau revient. Le feed combine les lignes locales et la projection distante.
+- Les contrats partagés `packages/core-contracts/src/flash.ts`, la logique `packages/core-logic/src/flash.ts`, le feed et le test de flux public existent.
+- Plusieurs chemins Foundation demandent des schémas/mappers/hooks/UI/routes séparés qui ne correspondent pas à la structure actuelle. Leur absence exacte ne signifie donc pas que Flash est absent.
+- La migration Drizzle Flash/Scan et la migration Supabase de projection publique ont des périmètres différents ; les tests actuels couvrent le feed public, pas toutes les transitions de cycle de vie et les écritures privées.
+
+**Classement :** fondation Flash réelle et utilisable dans le dépôt ; équivalence partielle aux exigences Foundation concernant le cycle protégé, la séparation des couches et les tests dédiés.
+
+### Scan
+
+- Le contrat `packages/core-contracts/src/scan.ts`, la logique `packages/core-logic/src/scan.ts`, `scanNearby`, `useScan`, `ScanPanel` et la souscription Realtime existent.
+- L'API valide latitude/longitude, rayon et limite ; elle délègue à une projection publique. Le hook classe les résultats et relance la recherche à la réception de changements Flash.
+- La migration Drizzle `0000_flash_scan_public_functions.sql` contient les fonctions de recherche de proximité et d'écriture de position privée ; la migration Supabase `20260912009000_secure_public_flash_feed.sql` ne couvre que la projection publique Flash.
+- Aucun service de géolocalisation dédié ni test SQL dédié de confidentialité Scan n'a été trouvé aux chemins Foundation. La capture/permission de position côté client et le traitement des refus doivent être vérifiés comme parcours utilisateur avant certification.
+- Le schéma actuel autorise un rayon de 1 à 50 km dans l'API ; ce choix doit être comparé à la règle produit V1 décidée pour Vitalis avant toute validation fonctionnelle.
+
+**Classement :** moteur Scan présent avec proximité et Realtime ; géolocalisation utilisateur, confidentialité de bout en bout, intégration migration Supabase et tests dédiés à compléter/arbriter.
+
+### Radar
+
+- Les contrats et la logique Radar partagés existent ; le schéma Zod et le mapper existent.
+- La migration Supabase crée `radars`, active RLS, protège les champs et expose une fonction de commande ; le test pgTAP couvre brouillon privé, interdiction de mutation directe, activation autorisée, isolation entre membres et durée minimale.
+- La route `/radar` actuelle rend une fondation de section avec emplacements « near » et « area » ; elle n'utilise pas un véritable composeur/liste/détail Radar.
+- Aucun API server/functions, hooks de composition/liste, UI RadarComposer/RadarList/RadarView, route de création ou test de composition n'a été trouvé sous les chemins Foundation.
+- Les tables/contrats sync incluent le type `radars`, mais les migrations de reçus divergent : Drizzle autorise `radars`, la migration Supabase de protocole ne l'autorise pas. Les tests de synchronisation génériques ne prouvent donc pas l'intégration offline Radar de bout en bout.
+- Aucun service de matching, hook de correspondances, maintenance Radar ou notification Radar dédiée n'a été identifié ; le module notifications actuel est seulement une interface `NotificationSink` noop (canal in-app/push annoncé comme futur).
+
+**Classement :** contrat, modèle, migration de cycle de vie et test RLS présents ; expérience Radar complète, création/liste, sync offline propre à Radar, matching et notifications non démontrés.
+
+### Synchronisation offline
+
+- `packages/core-sync/src/engine.ts` implémente push avant pull, outbox, reprises avec backoff, quarantaine, pagination plafonnée à 20 pages et statut offline.
+- `packages/core-sync/src/transport.ts` valide les réponses de transport et distingue erreurs d'authentification, réseau et protocole.
+- `src/platform/offline/sync-controller.ts` relie session Supabase, worker, scope local par propriétaire, reprise à l'événement online et au retour au premier plan.
+- `tests/sync/engine.test.ts`, `tests/sync/protocol.test.ts` et `tests/sync-validation.test.ts` couvrent des invariants importants : push avant pull, aucune requête transport hors ligne, plafond de pagination, validation stricte et refus des champs protégés.
+- Les tests E2E de reconnexion, récupération de conflit et isolation de base locale attendus par Foundation ne sont pas présents aux chemins demandés. La divergence des migrations et l'absence d'une preuve d'exécution sur base Supabase empêchent de conclure à une chaîne serveur complète et cohérente.
+
+**Classement :** moteur de synchronisation client et tests unitaires présents ; tests E2E, résolution de conflits en conditions réelles, isolation multi-compte et cohérence des migrations serveur à prouver.
+
+### Notifications
+
+- `src/platform/notifications/index.ts` expose un contrat `NotificationSink` et une implémentation noop. Le commentaire indique que les canaux in-app et push sont à venir.
+- Le composant `NotificationsTab.tsx`, les tests de notifications Radar et les services de correspondance ne sont pas présents dans l'arbre.
+- Les notifications figurent dans le protocole de synchronisation et dans le test SQL RLS transversal, mais cela ne démontre ni centre de notifications utilisable, ni compteur non-lu, ni préférences, ni livraison push.
+- Cette fondation ne couvre pas non plus le centre de communication Vitalis validé : cloche unique avec parcours notifications, messages liés à une action/mise en relation et communication avec l'assistance.
+
+**Classement :** contrat technique noop seulement ; centre de notifications et parcours de cloche V1 non implémentés dans les preuves examinées.
+
+### Synthèse de cette vague
+
+| Domaine | Classement |
+|---|---|
+| Auth | Partiel — authentification de base présente, callback/récupération complète et contrats dédiés non démontrés |
+| Identité / profil | Insuffisant — store local explicitement provisoire, pas de profil persistant démontré |
+| Onboarding | Insuffisant — simple flag local et feuille d'accueil minimale |
+| Flash | Partiel avancé — flux local/distant et contrats présents, migrations/tests lifecycle incomplets |
+| Scan | Partiel avancé — recherche de proximité et Realtime présents, géolocalisation/confidentialité/chaîne DB à compléter |
+| Radar | Partiel — contrat et cycle de vie SQL testable présents, UX et sync/matching absents |
+| Synchronisation | Partiel avancé — moteur client et tests unitaires présents, E2E et cohérence serveur à prouver |
+| Notifications | Insuffisant — interface noop, pas de centre fonctionnel ni de tests de livraison |
+
+**Précaution de périmètre produit :** les chemins et comportements ci-dessus sont ceux du dépôt historique `main` examiné. Ils ne doivent pas être confondus avec les spécifications Vitalis validées plus récemment dans la conversation (navigation Réel/Flash/Scan/Radar/2x2, profil, cloche à trois parcours, onboarding progressif). Une matrice de conformité Vitalis doit comparer explicitement ces décisions produit aux fondations techniques avant toute proposition de code.
+
+**Aucune migration, route, fonctionnalité ou référence Foundation n'a été supprimée ou modifiée durant cette vague.** Les conclusions sont documentaires ; aucun test ni workflow n'a été exécuté.
