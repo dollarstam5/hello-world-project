@@ -8,12 +8,12 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Votre espace Vitalis : les moteurs locaux, les échanges et les opportunités, même hors connexion.",
+          "Découvrez les espaces de Vitalis : Flash, Scan, Réel et Radar, puis explorez les fonctions complémentaires du menu 2×2.",
       },
       { property: "og:title", content: "Vitalis — Accueil" },
       {
         property: "og:description",
-        content: "Accueil Vitalis — votre point de départ.",
+        content: "Découvrez les espaces de Vitalis et choisissez par où commencer.",
       },
     ],
   }),
