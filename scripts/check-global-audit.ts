@@ -21,7 +21,7 @@ const requiredFiles = [
 ];
 
 const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
-const requiredScripts = ["check:pwa", "check:web-vitals", "check:performance-budget", "test:e2e"];
+const requiredScripts = ["check:pwa", "check:web-vitals", "check:performance-budget", "check:mobile-e2e", "test:e2e"];
 
 const missingFiles = requiredFiles.filter((path) => !existsSync(path));
 const missingScripts = requiredScripts.filter((name) => !packageJson.scripts?.[name]);
