@@ -391,3 +391,14 @@ L'ancien écran d'accueil minimal est remplacé par un onboarding guidé en **ci
 - Le nom Vitalis, le sélecteur FR/EN, le contrôle clair/sombre et la déconnexion sont retirés du header. La langue est détectée automatiquement ; aucun contrôle de langue ou de thème n'est affiché dans cet en-tête.
 - Les deux actions à droite et le lien de l'icône d'application conservent des noms accessibles, un focus visible et des zones tactiles d'au moins 48 × 48 px.
 - Implémentation : `src/components/experience/AppHeader.tsx`, icône : `public/icon-192.svg`.
+
+
+### Hiérarchie visuelle des icônes — actions principales
+- Les icônes des cinq destinations principales de la navigation basse doivent être immédiatement repérables : 24 px minimum pour Flash, Scan, Radar et 2×2 ; 28 px pour Réel, mis en avant au centre.
+- Les accès Notifications et Profil dans l'en-tête utilisent des icônes de 24 px dans des zones tactiles de 48 × 48 px.
+- Les cartes d'accès aux quatre moteurs sur l'accueil utilisent des icônes de 24 px dans des conteneurs de 48 × 48 px.
+- Les actions métier principales (par exemple démarrer Scan ou publier un Flash) ne doivent pas utiliser de pictogrammes de 16 px : viser 20 à 24 px selon la densité du bouton.
+- Les icônes secondaires et décoratives peuvent rester plus discrètes lorsqu'elles ne portent pas une action importante ; elles ne doivent toutefois pas être confondues avec une destination ou une action principale.
+- Les noms accessibles et les libellés textuels restent présents : agrandir une icône ne remplace jamais son nom ni l'indication de l'action.
+- Première harmonisation appliquée dans `BottomNav`, `AppHeader`, `HomeFoundation`, `ScanPanel` et le composant partagé `Button`. Les icônes des boutons partagés passent de 16 à 20 px par défaut ; les actions structurantes définissent 24 px explicitement.
+- À confirmer avec les captures mobile et les tests visuels : équilibre avec les libellés, absence de débordement sur les petits écrans et cohérence entre thèmes clair et sombre.
