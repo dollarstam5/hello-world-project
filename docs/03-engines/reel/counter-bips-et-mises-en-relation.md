@@ -45,7 +45,14 @@ Ne pas mélanger les deux espaces dans une liste indifférenciée. Les compteurs
 
 ## 5. Accès et navigation
 
-Les deux espaces sont accessibles depuis la fenêtre du compteur dans Réel. Ils ne constituent pas de nouvelles rubriques dans la cloche centrale, qui conserve ses trois parcours :
+Les deux espaces sont présentés sous forme de deux onglets dans une seule fenêtre du compteur Réel :
+
+- **Ouverture par défaut :** « Bips reçus » lorsque l'utilisateur ouvre le compteur.
+- **Accès contextuel :** si l'utilisateur ouvre le compteur depuis l'espace « Mes mises en relation », cet onglet est sélectionné directement.
+- Le changement d'onglet ne crée pas une nouvelle fenêtre et ne mélange jamais les deux listes.
+- Consulter le compteur ou changer d'onglet ne réactive jamais la présence Réel.
+
+Ils ne constituent pas de nouvelles rubriques dans la cloche centrale, qui conserve ses trois parcours :
 1. Notifications ;
 2. Messages ;
 3. Assistance.
@@ -63,6 +70,10 @@ Restent à spécifier et tester techniquement : le point de départ exact du dé
 | Sujet | Décision |
 |---|---|
 | Nombre d'espaces dans la fenêtre du compteur | Deux espaces distincts — VALIDÉ |
+| Présentation | Deux onglets dans une seule fenêtre — VALIDÉ |
+| Onglet par défaut à l'ouverture du compteur | « Bips reçus » — VALIDÉ |
+| Ouverture depuis « Mes mises en relation » | Sélection directe de cet onglet — VALIDÉ |
+| Consultation / changement d'onglet | Ne réactive jamais la présence Réel — VALIDÉ |
 | Libellé du premier espace | « Bips reçus » — VALIDÉ |
 | Contenu du premier espace | Bips reçus encore valides — VALIDÉ |
 | Durée des bips non acceptés | 24 heures — VALIDÉ |
@@ -78,7 +89,7 @@ Restent à spécifier et tester techniquement : le point de départ exact du dé
 
 ## 8. Points restant à définir
 
-- Présentation détaillée des deux espaces (onglets, sections ou autre disposition simple).
+- Détails visuels et comportementaux des onglets (animations, transitions et états de chargement), en préservant la simplicité et l'accessibilité.
 - États et actions après refus, blocage ou signalement.
 - Possibilité de retirer un bip envoyé.
 - Limites anti-abus et règles sur les bips répétés.
