@@ -209,3 +209,9 @@ Les fonctions de compréhension libre, d'adaptation intelligente et de dialogue 
 - Le lint a échoué sur un unique écart Prettier dans le callback de reprise Flash ; cet écart a été corrigé dans le commit suivant.
 - Six avertissements Fast Refresh restent dans des composants UI génériques partagés. Aucun avertissement n'est bloquant dans la configuration actuelle.
 - Les étapes RLS, release/build et tests mobile/offline ont été ignorées après cet échec de lint. Une nouvelle exécution est nécessaire après les dernières corrections Auth/Flash.
+
+
+### Résilience des préférences locales
+- La lecture et l'écriture des préférences de langue, de thème et d'onboarding tolèrent désormais une indisponibilité de `localStorage` : l'interface continue à fonctionner pour la session courante au lieu de bloquer le démarrage ou la fermeture de l'onboarding.
+- Des tests de non-régression couvrent le stockage bloqué pour la langue, le thème et l'onboarding.
+- Le stockage persistant reste la meilleure expérience, mais il n'est plus une condition absolue pour utiliser l'interface courante.
