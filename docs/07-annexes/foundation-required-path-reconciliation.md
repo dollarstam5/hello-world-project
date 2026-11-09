@@ -494,3 +494,136 @@ Les éléments de navigation et les surfaces de communication sont partiellement
 Les 113 chemins absents exacts ne sont pas 113 fonctionnalités inexistantes. Plusieurs groupes disposent d'implémentations alternatives ou partielles ; les lacunes les plus nettes concernent le parcours onboarding membre, le profil persistant, les flux Radar complets, la communication/notifications opérationnelles, les exécuteurs de maintenance et les preuves E2E / exploitation.
 
 **Statut de cette vague :** classification documentaire provisoire. Les équivalences ne sont pas toutes confirmées par une comparaison exhaustive fichier-à-fichier ; aucune suppression, migration, modification de code ou intervention sur `main` n'est autorisée par cette étape.
+
+
+---
+
+## Vague 7 — audit approfondi de la chaîne SQL, des migrations et des tests RLS
+
+**Référence examinée :** branche `reconcile/lot-a-2026-11`, état consulté pendant cette vague.  
+**Périmètre :** configuration Supabase, scripts npm/Bun, workflow CI, migrations Supabase, migrations Drizzle et tests pgTAP.  
+**Nature :** audit statique des fichiers et de leur raccordement. Aucun SQL n'a été appliqué et aucun test de base n'a été lancé depuis cette vague.
+
+### 1. Inventaire des chaînes et registres
+
+| Emplacement | Éléments constatés | Rôle / limite |
+|---|---|---|
+| `supabase/migrations/` | 3 migrations historiques : schéma de base/RLS, privilèges/fonctions, politiques Storage | Seul dossier de migrations Supabase standard présent sous la racine attendue par la configuration examinée |
+| `src/supabase/migrations/` | 6 migrations datées : identité, missions, synchronisation, assistant, feed Flash, cycle Radar | Aucun paramètre de configuration Supabase observé ne redirige vers ce dossier ; aucune preuve qu'il soit chargé par la CLI |
+| `drizzle/migrations/` | 3 migrations numérotées | Chaîne distincte, suivie par `drizzle/migrations/meta/_journal.json` |
+| `supabase/tests/database/` | 1 test SQL transversal : `rls_core.test.sql` | Dossier de tests SQL détecté par le script de contrôle |
+| `src/supabase/tests/database/` | 2 tests SQL ciblés : Flash public (8 assertions) et Radar lifecycle (10 assertions) | Dossier non ciblé par le script `check:db-tests` examiné |
+
+Le fichier `supabase/config.toml` ne contient que `project_id`. Aucun chemin personnalisé de migrations ou de tests n'y est déclaré. Le fichier `drizzle.config.ts` déclare explicitement `./drizzle/migrations` comme sortie Drizzle et utilise `drizzle/schema.ts`.
+
+**Conclusion : aucune source de vérité unique n'est établie par la configuration du dépôt.** Il existe au moins deux registres de migrations distincts, plus un dossier Supabase non standard. Il serait dangereux de déplacer ou fusionner ces fichiers sans décider d'abord quelle chaîne a été appliquée sur chaque environnement.
+
+### 2. Raccordement réel des scripts et de la CI
+
+Les scripts examinés dans `package.json` indiquent :
+
+- `test:db` exécute `supabase test db`.
+- `check:db-tests` vérifie uniquement l'existence de fichiers `*.test.sql` sous `supabase/tests/database`.
+- `check:db-tests` ne vérifie ni `src/supabase/tests/database`, ni le contenu des migrations, ni leur présence dans un registre.
+- Le workflow `.github/workflows/quality.yml` démarre Supabase, lance `check:db-tests`, puis `test:db`.
+
+En l'absence d'une configuration de chemin personnalisé, les scripts et la CLI sont raccordés aux dossiers Supabase racine, pas aux dossiers `src/supabase/`. Le workflow contient donc bien une étape de tests RLS, mais **il ne fournit pas de preuve que les deux tests SQL ciblés sous `src/supabase/tests/database/` soient exécutés**.
+
+Le contrôle `check:db-tests` est un contrôle de présence minimale, pas une validation de couverture : un seul fichier SQL racine suffit à le satisfaire. La présence du test `rls_core.test.sql` ne prouve pas que les tests Flash/Radar placés sous `src/` soient lancés.
+
+### 3. Anomalie bloquante dans la migration Missions
+
+Le fichier `src/supabase/migrations/20260912001000_secure_mission_transitions.sql` commence par :
+
+- un titre Markdown (`## 8. Nouvelle migration Supabase`) ;
+- une référence textuelle à `supabase/migrations/20260912001000_secure_mission_transitions.sql` ;
+- une clôture de bloc Markdown après le SQL.
+
+Le contenu SQL est donc encapsulé dans un bloc de documentation au lieu de constituer un fichier SQL brut. **Ce fichier, tel qu'il est versionné, n'est pas une migration SQL exécutable telle quelle.**
+
+Le SQL inclus définit pourtant des contraintes et une machine d'états de missions, des privilèges, des politiques RLS et des triggers d'audit. Il ne faut donc ni ignorer silencieusement le fichier, ni considérer ces protections comme actives. Il faut retrouver l'origine de la migration et déterminer si une version brute existe dans un autre environnement avant toute correction.
+
+### 4. Dépendances et collisions entre migrations
+
+#### 4.1 Radar — deux créations de la même table
+
+- `drizzle/migrations/0001_create_radars_table.sql` crée `public.radars`.
+- `src/supabase/migrations/20260912010000_secure_radar_lifecycle.sql` crée également `public.radars`.
+
+Les définitions sont très proches, mais les fichiers appartiennent à deux chaînes distinctes. Si les deux étaient appliqués sur la même base sans mécanisme de convergence, la seconde création pourrait échouer sur l'existence de la table. La migration Supabase ajoute l'encapsulation transactionnelle explicite ; le journal Drizzle enregistre séparément son propre ordre.
+
+**Décision :** ne pas appliquer les deux chaînes ensemble et ne pas supprimer l'une des deux avant d'avoir établi l'historique réel de chaque base.
+
+#### 4.2 Reçus de synchronisation — divergence fonctionnelle confirmée
+
+| Élément | Drizzle 0002 | Supabase 20260912002000 |
+|---|---|---|
+| Valeurs autorisées pour `logical_table` | Inclut `radars` | N'inclut pas `radars` |
+| RLS | Activée | Activée |
+| Lecture / insertion propriétaire | Politiques propriétaire | Politiques propriétaire |
+
+La divergence est fonctionnelle et directement liée à l'intégration offline Radar. Un client qui émet des reçus pour Radar ne peut pas être considéré compatible avec la contrainte SQL Supabase actuelle.
+
+#### 4.3 Flash / Scan — périmètres et dépendances différents
+
+- Drizzle `0000_flash_scan_public_functions.sql` ajoute les colonnes Flash `kind`, `category`, `time_slot`, `area_label`, `latitude`, `longitude`, `accuracy_meters`, puis les fonctions `list_public_flashes`, `scan_public_flashes`, `transition_flash` et `set_flash_location`.
+- Supabase `20260912009000_secure_public_flash_feed.sql` ne définit que la projection publique `list_public_flashes` et supprime l'ancienne vue publique.
+
+La migration Supabase 090 sélectionne des colonnes ajoutées par Drizzle 0000, mais aucun ordre commun entre ces deux chaînes n'est établi. Si la migration 090 était exécutée sans que les colonnes soient déjà présentes, elle échouerait. Elle ne remplace pas non plus les fonctions Scan et de gestion de position privée.
+
+### 5. Incompatibilité entre les tests RLS racine et les migrations récentes
+
+Le test racine `supabase/tests/database/rls_core.test.sql` utilise des assertions `policies_are` qui attendent notamment les anciennes politiques :
+
+- profils : `own profile insert` ;
+- UDI : `own identity readable`, `own identity insert`, `own identity update` ;
+- missions : `own missions write`, `assignee advances mission`.
+
+Or les migrations récentes examinées sous `src/supabase/migrations/` suppriment ou remplacent ces politiques :
+
+- identité : suppression de `own profile insert` et des trois politiques UDI, puis création de `identity readable by owner and administrators` ;
+- missions : suppression de `own missions write` et `assignee advances mission`, puis création de `mission author creates` et `mission participants update`.
+
+Si ces migrations récentes étaient ajoutées à la chaîne racine sans adapter les assertions et les données de test, les assertions de noms de politiques du test transversal seraient incompatibles avec l'état final attendu. Ce point doit être résolu par une suite de tests alignée sur la version cible, pas en supprimant les contrôles de sécurité.
+
+### 6. Couverture SQL : ce qui est prouvé et ce qui ne l'est pas
+
+| Contrôle | Couverture constatée | Limite |
+|---|---|---|
+| RLS transversal | 40 assertions planifiées dans `rls_core.test.sql` | Attend les noms de politiques historiques ; ne couvre pas les nouvelles politiques Profile/UDI/Missions |
+| Feed Flash public | 8 assertions planifiées dans le test 110 | Couvre la projection, les rôles et les limites ; ne teste pas le cycle complet Flash ni la confidentialité Scan |
+| Cycle Radar | 10 assertions planifiées dans le test 120 | Couvre brouillon, activation, isolation et durée ; ne couvre pas l'idempotence offline, les conflits, le matching ou les notifications |
+| Assistant hybride | Tables et fonctions SQL présentes dans la migration 03000 | Aucun test pgTAP dédié identifié dans les deux dossiers de tests examinés |
+| Protocole de synchronisation | Table et politiques des reçus présentes dans les deux versions divergentes | Pas de test SQL dédié de propriété, rejeu, unicité/idempotence et prise en charge Radar identifié |
+| Transitions Missions | SQL documenté dans un fichier mal formé | Pas de test SQL ciblé de machine d'états associé identifié dans les dossiers examinés |
+| Scan / position privée | Fonctions dans la migration Drizzle 0000 | Pas de test SQL dédié de non-divulgation des coordonnées identifié |
+
+Les nombres 40, 8 et 10 sont les plans d'assertions déclarés dans les fichiers, pas des nombres d'assertions réussies. Aucun résultat d'exécution n'a été observé dans cette passe.
+
+### 7. Décisions de remédiation à préparer — sans exécution automatique
+
+1. **Établir l'état des environnements** : récupérer, pour chaque base concernée, l'historique de migrations réellement appliquées (table d'historique Supabase/Drizzle, journaux de déploiement et commit déployé). Ne pas se fier au seul arbre Git.
+2. **Choisir une chaîne canonique** : décider explicitement si Supabase CLI devient l'unique autorité, si Drizzle reste générateur/schema tool, ou si une autre séparation est voulue. Documenter la règle et les responsabilités.
+3. **Réparer la migration Missions après traçabilité** : récupérer une version SQL brute approuvée, vérifier son hash et ses dépendances, puis préparer un correctif dédié.
+4. **Converger les reçus sync** : arbitrer l'inclusion de `radars` en fonction du contrat sync réellement supporté et écrire des tests SQL d'idempotence.
+5. **Aligner Flash/Scan** : définir l'ordre des colonnes et fonctions, les privilèges, les politiques et les tests de non-divulgation avant d'intégrer la projection publique.
+6. **Aligner les tests RLS sur le schéma final** : assertions de politiques, accès positif/négatif, privilèges, triggers et transitions, avec tests dédiés Missions, Profile/UDI, Flash, Scan, Radar, reçus et assistant.
+7. **Rendre la CI explicite** : faire échouer la vérification si une migration SQL attendue est mal formée ou non enregistrée, et garantir que tous les tests SQL canoniques sont exécutés par le workflow.
+
+### 8. Statut de l'audit SQL approfondi
+
+| Sujet | Statut |
+|---|---|
+| Chaîne Supabase racine identifiée | Confirmée |
+| Chaîne Drizzle et journal identifiés | Confirmée |
+| Dossier `src/supabase/migrations` non raccordé par la configuration observée | Confirmé statiquement |
+| Migration Missions mal formée | Anomalie confirmée |
+| Collision potentielle de création Radar | Confirmée au niveau des fichiers ; historique d'application inconnu |
+| Divergence des reçus sync Radar | Confirmée |
+| Dépendance colonnes Flash/Scan entre chaînes | Confirmée au niveau des fichiers ; ordre d'application inconnu |
+| Incompatibilité des noms de politiques avec le test RLS racine | Confirmée statiquement |
+| Exécution réelle des tests SQL ciblés sous `src/` | Non démontrée |
+| État réel des bases de production/staging | Inconnu |
+| Sécurité RLS globale validée | **Non validée** |
+
+**Conclusion :** le dépôt ne permet pas encore de démontrer une chaîne SQL unique, reproductible et intégralement testée. La présence de migrations et de tests utiles est réelle, mais leur raccordement est incomplet et certaines définitions sont incompatibles entre elles. Aucune migration, aucun test, aucun script de CI et aucun fichier de code n'a été modifié dans cette vague ; seule cette annexe d'audit est complétée. Les TECH-001 à TECH-006 restent ouverts.
