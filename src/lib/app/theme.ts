@@ -23,6 +23,12 @@ function apply(mode: ThemeMode) {
   document.documentElement.classList.toggle("dark", effective === "dark");
 }
 
+let systemPreference: MediaQueryList | null = null;
+
+function handleSystemPreferenceChange() {
+  if (useThemeStore.getState().mode === "system") apply("system");
+}
+
 export const useThemeStore = create<ThemeState>((set) => ({
   mode: "dark",
   setMode: (mode) => {
@@ -42,7 +48,7 @@ export function initTheme() {
       : "dark";
   apply(stored);
   useThemeStore.setState({ mode: stored });
-  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
-    if (useThemeStore.getState().mode === "system") apply("system");
-  });
+  systemPreference?.removeEventListener("change", handleSystemPreferenceChange);
+  systemPreference = window.matchMedia("(prefers-color-scheme: dark)");
+  systemPreference.addEventListener("change", handleSystemPreferenceChange);
 }
