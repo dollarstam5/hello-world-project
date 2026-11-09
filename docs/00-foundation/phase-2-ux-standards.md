@@ -326,7 +326,10 @@ L'ancien écran d'accueil minimal est remplacé par un onboarding guidé en **ci
 - `OnboardingSheet` porte les cinq étapes et leurs contenus.
 - `useOnboarding` gère la progression, le passage, la complétion et la persistance versionnée.
 - Les tests couvrent les limites de navigation, la persistance, le stockage indisponible et la réapparition du nouvel onboarding malgré l'ancienne clé.
-- L'accueil `/` reste la destination d'arrivée ; son contenu produit doit être évalué séparément avant de le déclarer terminé.
+- L'accueil `/` est désormais structuré comme un véritable point de départ : message de bienvenue, présentation concise et quatre cartes d'accès vers Flash, Scan, Réel et Radar.
+- Les cartes s'affichent en une colonne sur petit écran puis en deux colonnes lorsque la largeur le permet ; le menu 2×2 reste un accès distinct aux espaces complémentaires.
+- Les textes de l'accueil sont localisés en français et en anglais. Les espaces Réel et Radar indiquent explicitement qu'ils sont encore en préparation, au lieu de laisser croire qu'ils sont déjà pleinement disponibles.
+- L'accueil ne contient pas de flux factice, de faux contenus ni de compteurs inventés. Le contrôle visuel réel et les validations d'accessibilité restent à effectuer avant clôture de la phase 2.
 
 ### Mise à jour — accueil et cohérence des moteurs
 
