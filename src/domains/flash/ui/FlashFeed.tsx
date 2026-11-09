@@ -27,7 +27,7 @@ export function FlashFeed() {
             variant="ghost"
             onClick={() => void refresh()}
             disabled={loading}
-            className="min-h-11"
+            className="min-h-12"
           >
             {t("common.retry")}
           </Button>
