@@ -357,3 +357,12 @@ L'ancien écran d'accueil minimal est remplacé par un onboarding guidé en **ci
 - Fichiers : `src/components/ui/button.tsx`, `src/components/ui/tabs.tsx`, `src/components/experience/AppHeader.tsx`, `src/components/experience/OnboardingSheet.tsx`, en complément des fermetures de fenêtres dans `sheet.tsx` et `dialog.tsx`.
 - Les destinations de la navigation basse étaient déjà en 48 px et n'ont pas été modifiées.
 - Contrôle restant : mesurer les cibles réellement rendues et leur espacement sur Android/iOS, y compris les textes longs, les petits écrans et les éléments adjacents. La règle CSS seule ne vaut pas validation physique.
+
+
+### Derniers contrôles tactiles et focus — actions contextuelles
+- La passe complémentaire a repéré des actions de fermeture et d'installation/mise à jour, le bouton de démarrage Scan et les commandes de connexion qui conservaient une hauteur de 44 px.
+- Les cibles interactives concernées passent à 48 px minimum : bannières d'installation et de mise à jour (action et fermeture), contrôles de connexion (langue, thème, champs, soumission et actions secondaires), et lancement Scan.
+- Les boutons des bannières et le lancement Scan disposent maintenant d'un indicateur de focus visible explicite.
+- Fichiers : `InstallBanner.tsx`, `UpdateBanner.tsx`, `SignInView.tsx`, `ScanPanel.tsx`.
+- Les éléments décoratifs de 44 px (par exemple une icône sans action) ne sont pas agrandis artificiellement.
+- Vérification à compléter : parcours clavier intégral, retour du focus à l'ouverture/fermeture des feuilles, lecteur d'écran, espacement entre cibles et mesures sur appareils réels.
