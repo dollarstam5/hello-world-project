@@ -44,7 +44,7 @@ export function detectPlatformIdentity(input: NavigatorHints): PlatformIdentity 
 
   const brands = input.userAgentData?.brands?.map((item) => item.brand.toLowerCase()) ?? [];
   let browser: BrowserName = "other";
-  if (brands.some((brand) => brand.includes("edge")) || /edg\//i.test(ua)) browser = "edge";
+  if (brands.some((brand) => brand.includes("edge")) || /edg(e|a|ios)?\//i.test(ua)) browser = "edge";
   else if (/samsungbrowser/i.test(ua)) browser = "samsung";
   else if (brands.some((brand) => brand.includes("chrome")) || /crios|chrome/i.test(ua)) browser = "chrome";
   else if (/firefox|fxios/i.test(ua)) browser = "firefox";
