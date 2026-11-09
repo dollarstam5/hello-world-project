@@ -1,8 +1,8 @@
 import { readFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
+import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
-const scriptPath = fileURLToPath(new URL("../scripts/test-mobile-e2e.sh", import.meta.url));
+const scriptPath = resolve(process.cwd(), "scripts/test-mobile-e2e.sh");
 const script = readFileSync(scriptPath, "utf8");
 
 describe("mobile visual smoke contract", () => {
