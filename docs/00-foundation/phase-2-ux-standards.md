@@ -80,65 +80,61 @@ Les composants concernés doivent prévoir les états utiles suivants, selon le 
 La phase 2 ne peut être déclarée terminée qu'après revue des composants partagés et des parcours V1, corrections des anomalies bloquantes, preuves de tests automatisés et validation manuelle responsive/accessibilité. Les sujets non couverts restent explicitement ouverts ; ils ne sont pas réputés conformes par défaut.
 
 
-## 9. Dialogue intelligent et formulaires
+## 9. Dialogue guidé et formulaires — périmètre par version
 
 ### Principe directeur
 
-Vitalis privilégie un parcours conversationnel guidé par l'intelligence plutôt qu'un formulaire classique long. L'utilisateur exprime son intention avec ses propres mots ; Vitalis recueille progressivement les seules informations nécessaires, dans un dialogue simple, contextualisé et compréhensible.
+Vitalis évite autant que possible les formulaires classiques longs. L'expérience privilégiée consiste à guider l'utilisateur par de petites boîtes de dialogue, avec une question claire, des choix proposés et, lorsque nécessaire, un champ de réponse court.
 
-Le dialogue intelligent est le mode d'interaction privilégié pour l'identification, l'enregistrement, la création ou la mise à jour d'informations et les autres démarches compatibles. Il doit réduire l'effort demandé à l'utilisateur, pas simplement reproduire un formulaire champ par champ sous forme de questions.
+**Important : ce dialogue guidé de V1 n'est pas un assistant conversationnel intelligent.** Il s'agit d'une interface déterministe, conçue à l'avance selon les parcours et les règles métier. L'intelligence conversationnelle adaptative évoquée pour les évolutions futures ne doit pas être introduite implicitement dans le périmètre V1.
 
-### Parcours de référence
+### V1 — Boîtes de dialogue simples et interactives
 
-1. **Comprendre l'intention** : identifier ce que la personne souhaite accomplir et le contexte utile.
-2. **Questionner progressivement** : poser une seule question claire à la fois, éviter de redemander une information déjà connue et adapter la prochaine question aux réponses précédentes.
-3. **Structurer et vérifier** : convertir les réponses en données structurées, détecter les éléments manquants ou incohérents et demander une précision lorsque c'est nécessaire.
-4. **Présenter un récapitulatif** : rendre les informations importantes lisibles et permettre leur correction avant une opération engageante.
-5. **Obtenir la confirmation proportionnée** : demander une confirmation explicite avant une création, une transmission ou une modification sensible.
-6. **Transmettre aux services concernés** : envoyer uniquement les données nécessaires aux systèmes d'identification, d'enregistrement ou de traitement concernés, selon leurs contrats.
-7. **Confirmer le résultat** : indiquer clairement si l'opération a réussi, est en attente, nécessite une action ou a échoué.
+- Présenter une question ou une consigne à la fois, dans une boîte de dialogue courte et contextualisée.
+- Permettre à l'utilisateur de choisir une réponse parmi des options claires ou de saisir une réponse courte lorsque c'est nécessaire.
+- Adapter les étapes selon les choix prévus par le parcours, sans prétendre comprendre librement une conversation.
+- Éviter les longues séquences de champs et ne demander que les informations nécessaires à l'action en cours.
+- Afficher un récapitulatif et demander confirmation lorsque l'action ou les données le nécessitent.
+- Transmettre les réponses aux services concernés après validation des règles métier ; afficher le résultat réel de l'opération.
+- Prévoir une reprise claire en cas d'interruption ou de perte de réseau, sans perdre silencieusement les réponses déjà saisies.
 
-### Règles d'expérience
+Les boîtes de dialogue V1 peuvent donc remplacer de nombreux formulaires, mais restent simples, prévisibles, rapides et peu coûteuses à maintenir.
 
-- Ne pas afficher d'emblée une longue liste de champs lorsque le dialogue peut recueillir les mêmes informations plus simplement.
-- Ne poser que les questions utiles à l'objectif en cours ; les questions facultatives restent facultatives.
-- Autoriser les réponses naturelles et les corrections sans obliger l'utilisateur à recommencer le parcours.
-- Réutiliser, lorsque cela est autorisé et pertinent, les informations déjà fournies ; expliquer toute demande de confirmation ou de mise à jour.
-- Ne jamais inventer, déduire silencieusement ou enregistrer comme certaine une information incertaine.
-- Distinguer clairement les données proposées par l'intelligence, celles confirmées par l'utilisateur et celles effectivement enregistrées.
-- Ne jamais laisser croire qu'une donnée a été enregistrée ou transmise tant que le service concerné n'a pas confirmé le résultat.
-- Prévoir les interruptions, la reprise du dialogue et les pertes de réseau sans perdre silencieusement les réponses déjà saisies.
-- Le dialogue doit rester accessible, utilisable au clavier et compatible avec les lecteurs d'écran ; les réponses ne doivent pas dépendre d'une animation ou d'une couleur.
-- Le choix du canal (texte, voix ou autre interaction) ne doit pas modifier les règles de validation, de consentement et de confirmation.
+### V2/V3 — Dialogue intelligent adaptatif
+
+À partir d'une version ultérieure, Vitalis pourra évoluer vers un dialogue capable de comprendre des réponses formulées librement, d'adapter ses questions au contexte, de repérer les informations déjà données et de préparer automatiquement des données structurées. Les modalités vocales ou de type appel (« calling ») relèvent également de cette évolution et ne sont pas promises pour la V1.
+
+Le fournisseur, l'architecture, les coûts, les quotas, les règles de confidentialité et les contrôles de cette intelligence devront faire l'objet d'une spécification et d'une validation distinctes avant développement.
 
 ### Formulaire classique : recours secondaire
 
-Un formulaire classique reste disponible lorsqu'il est réellement plus adapté, notamment :
+Un formulaire classique peut être proposé dans une seconde étape ou dans un cas particulier, notamment :
 - lorsqu'une exigence légale, réglementaire ou technique impose un format précis ;
-- lorsqu'un grand nombre de champs structurés doit être consulté ou corrigé en une seule fois ;
+- lorsqu'un ensemble de données structurées doit être consulté ou corrigé en une seule fois ;
 - lorsqu'une donnée complexe nécessite un contrôle visuel précis ;
-- lorsque le dialogue intelligent est indisponible, inadapté ou explicitement refusé par l'utilisateur.
+- lorsque le parcours par boîtes de dialogue ne convient pas ou que l'utilisateur choisit cette solution.
 
-Dans ces situations, le formulaire doit être court, segmenté en étapes compréhensibles, prérempli avec les informations déjà confirmées lorsque cela est permis, et limité aux champs nécessaires. Il peut apparaître dans une seconde période du parcours ou être proposé comme solution de remplacement clairement expliquée.
+Dans ces situations, le formulaire doit rester court, segmenté en étapes compréhensibles, prérempli avec les informations déjà fournies lorsque cela est permis, et limité aux champs nécessaires.
 
 ### Séparation des responsabilités
 
-- **Interface conversationnelle** : présente les échanges et recueille les réponses.
-- **Orchestration intelligente** : détermine les questions utiles et prépare une proposition de données structurées ; elle ne décide pas seule d'une opération sensible.
-- **Validation métier** : vérifie les règles, les champs requis, les formats et les autorisations.
+- **Interface V1** : présente les boîtes de dialogue et recueille les choix ou réponses.
+- **Logique de parcours** : détermine les étapes et embranchements prévus, sans intelligence conversationnelle autonome.
+- **Validation métier** : vérifie les champs requis, les formats, les règles et les autorisations.
 - **Services de données** : assurent l'identification, l'enregistrement et les mises à jour selon leurs contrats et contrôles d'accès.
 - **Retour utilisateur** : affiche le résultat réel de l'opération et les éventuelles étapes restantes.
 
-L'intelligence ne remplace donc ni les validations métier, ni les contrôles de sécurité, ni les autorisations d'accès à la base de données. Les données ne doivent pas être écrites directement en base depuis le seul texte généré par le modèle.
+Pour les versions futures intégrant une intelligence, celle-ci pourra préparer et structurer les informations, mais ne devra pas écrire directement en base ni contourner les validations métier, les contrôles de sécurité ou les autorisations.
 
-### Critères d'acceptation
+### Critères d'acceptation V1
 
-- Un parcours courant peut être accompli sans ouvrir un long formulaire classique.
-- Chaque question est justifiée par l'objectif et le contexte.
-- L'utilisateur peut corriger ses réponses et consulter un récapitulatif avant confirmation.
-- Les données structurées sont validées par les règles métier avant transmission.
-- Les états en attente, échec, reprise et succès sont explicites et fondés sur le résultat réel des services.
+- Un parcours courant peut être accompli avec des boîtes de dialogue courtes, sans long formulaire classique.
+- Chaque étape présente une question ou une consigne compréhensible et permet une réponse ou un choix.
+- Les embranchements sont déterministes, documentés et testables.
+- L'utilisateur peut corriger ses réponses et consulter un récapitulatif avant confirmation lorsque nécessaire.
+- Les données sont validées par les règles métier avant transmission aux services.
+- Les états d'attente, d'échec, de reprise et de succès reflètent le résultat réel des services.
 - Un formulaire court de second recours existe pour les exceptions et les besoins de saisie structurée.
-- Les parcours conversationnels et les formulaires de secours sont testés en FR/EN, sur mobile, avec clavier et lecteur d'écran.
+- Les parcours et formulaires de secours sont testés en FR/EN, sur mobile, au clavier et avec lecteur d'écran.
 
-Cette référence définit le principe UX et la séparation des responsabilités. Le choix du fournisseur d'intelligence, les coûts, les quotas, les contrats de données et les règles détaillées de chaque parcours restent à spécifier avant leur implémentation.
+Les fonctions de compréhension libre, d'adaptation intelligente et de dialogue vocal ne font pas partie des critères d'acceptation V1.
