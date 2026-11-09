@@ -49,7 +49,7 @@ Points techniques à préciser :
 - Comportement en cas de plafond global atteint : protection des données, mode lecture seule ciblé, reprise au prochain cycle.
 - Vérification périodique des quotas, tarifs et règles de pause du plan Supabase Free.
 
-## Priorité 6 — technique et données
+Questions V2 à concevoir pour les quotas évolutifs :\n- Quels espaces pourront recevoir des extensions de capacité ?\n- Les extensions seront-elles ponctuelles, mensuelles ou proposées selon plusieurs formules ?\n- Quel prestataire de paiement et quelles règles de remboursement/résiliation ?\n- Comment traiter une extension qui expire alors que l'utilisateur dépasse encore le quota gratuit ?\n- Quels prix couvrent les coûts réels, les frais de paiement et la marge de sécurité sans rendre les fonctions essentielles payantes ?\n\n## Priorité 6 — technique et données
 24. Durée de conservation des traces techniques minimales ?
 25. Rôles autorisés à consulter les traces ?
 26. Précision et fréquence de localisation ?
