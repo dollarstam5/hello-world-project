@@ -1,8 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  detectPlatformIdentity,
-  getPlatformCapabilities,
-} from "@/lib/platform/capabilities";
+import { detectPlatformIdentity, getPlatformCapabilities } from "@/lib/platform/capabilities";
 
 describe("platform identity detection", () => {
   it("recognizes Android and common Chromium browsers", () => {
