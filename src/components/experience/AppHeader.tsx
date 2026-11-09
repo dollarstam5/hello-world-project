@@ -26,12 +26,12 @@ export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => 
             aria-label={t("communication.open")}
             className="h-12 w-12 rounded-full"
           >
-            <Bell aria-hidden className="h-5 w-5" />
+            <Bell aria-hidden className="!size-6" />
           </Button>
 
           <Button asChild variant="ghost" size="icon" className="h-12 w-12 rounded-full">
             <Link to="/espace" aria-label={t("menu.espace.open")}>
-              <UserRound aria-hidden className="h-5 w-5" />
+              <UserRound aria-hidden className="!size-6" />
             </Link>
           </Button>
         </div>
