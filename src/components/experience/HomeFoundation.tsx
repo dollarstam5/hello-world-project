@@ -92,7 +92,6 @@ export function HomeFoundation() {
           </div>
         )}
       </Section>
-
     </div>
   );
 }
