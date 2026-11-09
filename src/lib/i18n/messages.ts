@@ -71,19 +71,24 @@ export const messages = {
     "communication.reel.empty":
       "Les demandes et interactions Réel nécessitant votre attention apparaîtront ici.",
     "home.welcome": "Bienvenue dans Vitalis",
-    "home.subtitle": "Découvrez ce qui vous entoure, partagez ce qui compte et créez des liens utiles, à votre rythme.",
+    "home.subtitle":
+      "Découvrez ce qui vous entoure, partagez ce qui compte et créez des liens utiles, à votre rythme.",
     "home.engines.title": "Par où souhaitez-vous commencer ?",
-    "home.engines.desc": "Choisissez un espace. Vous pourrez passer de l’un à l’autre à tout moment.",
+    "home.engines.desc":
+      "Choisissez un espace. Vous pourrez passer de l’un à l’autre à tout moment.",
     "home.engine.flash.title": "Flash",
-    "home.engine.flash.desc": "Partagez un besoin ou une proposition, et découvrez les publications utiles.",
+    "home.engine.flash.desc":
+      "Partagez un besoin ou une proposition, et découvrez les publications utiles.",
     "home.engine.scan.title": "Scan",
     "home.engine.scan.desc": "Repérez les Flash actifs près de vous, sans afficher votre position.",
     "home.engine.reel.title": "Réel",
     "home.engine.reel.desc": "Signalez votre présence et découvrez les personnes à proximité.",
     "home.engine.radar.title": "Radar",
-    "home.engine.radar.desc": "Explorez les possibilités et les informations utiles autour de vous.",
+    "home.engine.radar.desc":
+      "Explorez les possibilités et les informations utiles autour de vous.",
     "home.engine.action": "Ouvrir cet espace",
-    "home.menuHint": "Les espaces complémentaires et les autres fonctionnalités de Vitalis sont accessibles depuis le menu 2×2 en bas de l’écran.",
+    "home.menuHint":
+      "Les espaces complémentaires et les autres fonctionnalités de Vitalis sont accessibles depuis le menu 2×2 en bas de l’écran.",
     "onboarding.title": "Bienvenue dans Vitalis",
     "onboarding.desc": "Quelques repères pour découvrir l'essentiel, à votre rythme.",
     "onboarding.stepLabel": "Découverte",
@@ -474,7 +479,8 @@ export const messages = {
     "communication.reel.empty":
       "Real-time requests and interactions that need your attention will appear here.",
     "home.welcome": "Welcome to Vitalis",
-    "home.subtitle": "Discover what is around you, share what matters and build useful connections at your own pace.",
+    "home.subtitle":
+      "Discover what is around you, share what matters and build useful connections at your own pace.",
     "home.engines.title": "Where would you like to start?",
     "home.engines.desc": "Choose a space. You can move between them whenever you like.",
     "home.engine.flash.title": "Flash",
@@ -486,7 +492,8 @@ export const messages = {
     "home.engine.radar.title": "Radar",
     "home.engine.radar.desc": "Explore useful opportunities and information around you.",
     "home.engine.action": "Open this space",
-    "home.menuHint": "Find complementary spaces and other Vitalis features in the 2x2 menu at the bottom of the screen.",
+    "home.menuHint":
+      "Find complementary spaces and other Vitalis features in the 2x2 menu at the bottom of the screen.",
     "onboarding.title": "Welcome to Vitalis",
     "onboarding.desc": "A few quick landmarks to discover the essentials, at your own pace.",
     "onboarding.stepLabel": "Discover",
