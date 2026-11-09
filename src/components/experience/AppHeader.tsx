@@ -49,7 +49,7 @@ export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => 
             {isDark ? <Sun aria-hidden /> : <Moon aria-hidden />}
           </Button>
           <Button asChild variant="ghost" size="icon" className="h-11 w-11">
-            <Link to="/espace" aria-label={t("profile.open")}>
+            <Link to="/espace" aria-label={t("menu.espace.open")}>
               <UserRound aria-hidden />
             </Link>
           </Button>
