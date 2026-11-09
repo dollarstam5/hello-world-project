@@ -2,11 +2,7 @@
  * Device permissions foundation (camera, geolocation, notifications…).
  */
 export type PermissionKey =
-  | "geolocation"
-  | "camera"
-  | "microphone"
-  | "notifications"
-  | "clipboard-read"
+  "geolocation" | "camera" | "microphone" | "notifications" | "clipboard-read"
   | "clipboard-write";
 
 export type PermissionState = "prompt" | "granted" | "denied" | "unsupported";
