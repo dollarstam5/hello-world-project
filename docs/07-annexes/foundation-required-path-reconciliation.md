@@ -632,3 +632,12 @@ Les nombres 40, 8 et 10 sont les plans d'assertions déclarés dans les fichiers
 ## Plan de remédiation associé
 
 Le plan opérationnel fichier par fichier est disponible dans [`sql-remediation-plan-file-by-file.md`](./sql-remediation-plan-file-by-file.md). Il détaille les priorités P0/P1/P2, les corrections envisagées, les dépendances, les tests et les critères d'acceptation. Il reste documentaire : aucune remédiation SQL n'est autorisée ou exécutée par ce plan.
+
+
+## Chantier 0 — inventaire des migrations par environnement
+
+L'inventaire statique du dépôt et le protocole de collecte distant sont consignés dans [`sql-environment-migration-inventory.md`](./sql-environment-migration-inventory.md).
+
+**Résultat à ce stade :** 3 migrations Supabase racine, 6 fichiers sous `src/supabase/migrations/` et 3 migrations Drizzle avec 3 entrées de journal. Le dépôt expose un seul `project_id` Supabase dans `supabase/config.toml`, mais ne permet pas d'identifier s'il correspond à dev, staging ou production. Les valeurs de `.env.example` sont des placeholders. Aucun historique de base distante n'a été consulté.
+
+**Statut du chantier 0 : PARTIEL.** L'inventaire Git est établi. L'état d'application par environnement demeure inconnu et nécessite une collecte en lecture seule (`supabase migration list --linked` et/ou requêtes SELECT sur les historiques existants). Aucune commande d'application, de réparation ou de reset n'a été exécutée.
