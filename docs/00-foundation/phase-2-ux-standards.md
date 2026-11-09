@@ -187,3 +187,11 @@ Les fonctions de compréhension libre, d'adaptation intelligente et de dialogue 
 - Vérifier les états réseau et les parcours invité/compte sur les écrans effectivement implémentés. Réel et Radar restent des fondations d'attente : leurs comportements métier relèvent respectivement des phases 3 et 5, et ne sont pas certifiés par cette phase.
 
 **Statut de sortie : non clôturée.** La phase 2 ne sera déclarée terminée qu'après obtention de preuves CI et validation manuelle des critères transversaux. Aucun passage à la phase 3 n'est autorisé avant ces conditions.
+
+
+### Reprise Flash et seconde passe de qualité
+- Le flux Flash expose maintenant une action explicite de nouvelle tentative après erreur ; elle est désactivée pendant le chargement et réutilise la même opération de récupération que le retour réseau.
+- La fonction de reprise reste stable entre les rendus ; les données locales absentes ne créent pas de tableau vide instable et le message d'erreur suit la langue active.
+- Quality #514, exécutée après la première correction du lint, a révélé sept écarts de formatage supplémentaires dans les contrats, Surface, les tokens, les traductions et les permissions. Ces sept écarts ont été corrigés dans la branche.
+- Les deux avertissements de hooks liés au flux Flash ont également été traités. Les avertissements Fast Refresh restants dans les composants UI partagés sont non bloquants, mais restent à examiner dans le cadre de l'hygiène technique.
+- Une nouvelle exécution Quality #521 est en attente sur le commit suivant ; elle doit confirmer les corrections précédentes. Aucun test ou build n'est réputé réussi avant son résultat.
