@@ -1,6 +1,6 @@
 # Vitalis — Moteur Réel
 
-**Version 0.1 — inventaire initial, 9 novembre 2026.** Statut : base documentaire à réconcilier et valider.
+**Version 0.2 — base documentaire et audit de réconciliation, 9 novembre 2026.** Statut : réconciliation engagée ; décisions et questions restent à valider au fil des mises à jour.
 
 Réel est le moteur de présence locale et de mise en relation immédiate de Vitalis. Ce dossier sépare vision, fonctionnalités, règles, UX, communication, sécurité, architecture, tests, évolutions et décisions.
 
@@ -22,6 +22,7 @@ Réel est le moteur de présence locale et de mise en relation immédiate de Vit
 - [Scénarios et preuves](07-tests-validation/scenarios-et-preuves.md)
 - [Périmètres V1/V2/V3](08-evolution/perimetres-v1-v2-v3.md)
 - [Registre des décisions](09-decisions/registre-des-decisions.md)
+- [Réconciliation des fondations](09-decisions/reconciliation-des-fondations.md)
 - [Questions ouvertes](09-decisions/questions-ouvertes.md)
 
 Ce dossier est une base de référence produit. Il ne prouve pas que les fonctionnalités sont implémentées. Les scénarios décrits sont des attentes, pas des résultats de tests exécutés. Aucune modification de l'application n'est incluse.
