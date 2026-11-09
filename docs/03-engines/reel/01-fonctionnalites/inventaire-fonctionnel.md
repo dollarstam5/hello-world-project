@@ -111,4 +111,4 @@ Les durées de conservation des traces, les règles détaillées de synchronisat
 - L'utilisateur peut supprimer son historique, mais ne peut pas l'exporter.
 - Chaque espace Vitalis dispose d'un plafond de stockage gratuit en V1. À saturation, l'utilisateur choisit entre supprimer des données pour libérer de la place ou limiter les nouveaux usages/enregistrements de l'espace concerné.
 - Aucun achat, abonnement ou stockage supplémentaire payant n'est proposé en V1. Les extensions et micro-paiements sont réservés à V2.
-- Les quotas chiffrés, les seuils d'avertissement et la durée de conservation des archives après archivage restent à définir. Les données archivées continuent d'occuper du stockage tant qu'elles ne sont pas supprimées.
+- Les quotas chiffrés et les seuils d'avertissement restent à valider. Les données archivées continuent d'occuper du stockage pendant les 6 mois suivant leur archivage, puis leur suppression définitive est prévue.
