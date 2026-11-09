@@ -9,20 +9,22 @@
 
 ## 1. Vision
 
-Réel est le moteur de la présence et des opportunités immédiates de Vitalis : **« ici, maintenant, tout de suite »**.
+Réel est le moteur de la présence et de la mise en relation instantanée de Vitalis : **« ici, maintenant, tout de suite »**.
 
-Il permet aux personnes qui se trouvent dans un même environnement local de rendre visible une intention, une demande ou une proposition valable dans le présent. Plusieurs personnes peuvent être présentes dans un même secteur et découvrir les intentions publiées par les autres.
+Réel ne fonctionne pas comme un moteur de publication. L'utilisateur n'y publie pas un contenu destiné à rester consultable dans une zone. Il active volontairement une visibilité en temps réel et peut l'accompagner d'une description courte indiquant sa disponibilité, son intention ou ce qu'il souhaite faire à cet instant. Les autres personnes également visibles à proximité peuvent alors se découvrir dans un même environnement : salle, stade, campus ou espace public.
 
-Réel n'est pas un réseau social généraliste ni un fil d'actualité à consulter sans objectif. Sa valeur repose sur la proximité, l'instant présent, la clarté de l'intention et une mise en relation contrôlée par son auteur.
+La disponibilité est strictement locale pour la première version : elle concerne l'environnement immédiat de l'utilisateur, dans les limites de proximité définies par le produit. La présence cesse d'être visible lorsque l'utilisateur la désactive ou lorsqu'elle expire.
 
-## 2. Exemples d'intentions
+La valeur de Réel repose sur la simultanéité, la proximité physique, le consentement et la mise en relation contrôlée par chaque personne.
 
-- « Je veux discuter avec une voisine. »
-- « J'offre un plat de nourriture à la première personne qui arrive. »
-- « J'ai un petit travail de 30 minutes à proposer maintenant. »
+## 2. Exemples de descriptions de présence
+
+- « Disponible pour discuter. »
+- « Je cherche quelqu'un pour jouer au football maintenant. »
+- « Disponible pour un petit travail de 30 minutes. »
 - « Je souhaite faire une rencontre maintenant. »
 
-Ces exemples illustrent des usages possibles ; ils ne constituent pas encore une taxonomie exhaustive ni une autorisation de toutes les catégories d'activité.
+Ces formulations décrivent une présence et une intention immédiates. Elles ne constituent pas des publications autonomes, des annonces persistantes ou un fil de contenus. Les catégories d'activités autorisées restent à définir.
 
 ## 3. Mission
 
@@ -44,9 +46,9 @@ Aider une personne à découvrir rapidement ce qui peut se faire autour d'elle, 
 ## 5. Parcours de mise en relation — base produit
 
 1. L'utilisateur active volontairement sa présence dans une zone.
-2. Il publie une intention immédiate.
-3. Les personnes présentes dans le secteur peuvent découvrir cette intention.
-4. Une personne intéressée sélectionne la carte et manifeste son intérêt.
+2. Il renseigne une description courte de sa présence, sans créer de publication.
+3. Les personnes ayant elles aussi activé leur visibilité dans le même environnement local peuvent se découvrir en temps réel.
+4. Une personne intéressée sélectionne la présence et manifeste son intérêt.
 5. L'auteur reçoit la demande et choisit d'accepter ou de refuser.
 6. En cas d'acceptation, la mise en relation est créée ; les informations complémentaires autorisées deviennent accessibles au demandeur.
 7. Les participants peuvent alors communiquer dans le contexte de cette mise en relation.
@@ -56,12 +58,11 @@ Le déclencheur de conversation après acceptation et l'absence de messagerie li
 
 ## 6. Informations visibles — première base
 
-La vision exprimée prévoit au minimum :
-- le nom affiché de l'auteur ;
-- un titre court qui exprime son intention ;
-- une description qui apporte le contexte utile.
+La présence peut afficher au minimum :
+- le nom affiché de la personne ;
+- une description courte de sa disponibilité ou de son intention actuelle.
 
-La distinction entre informations visibles avant intérêt et informations révélées après acceptation reste à préciser. Ne pas exposer par défaut les coordonnées exactes, les informations de contact ou des données personnelles non nécessaires.
+La forme exacte de cette description (titre, phrase courte ou combinaison des deux) reste à arbitrer. La distinction entre informations visibles avant manifestation d'intérêt et informations révélées après acceptation reste également à préciser. Ne pas exposer par défaut les coordonnées exactes, les informations de contact ou des données personnelles non nécessaires.
 
 ## 7. Décisions Réel déjà formulées dans les échanges produit
 
@@ -86,8 +87,9 @@ Ces décisions doivent être reliées à leurs exigences et tests dans une matri
 | Périmètre V1 / exclusions | À définir |
 | Fonctionnalités V1 | À détailler |
 | Carte, fiche et informations révélées | À arbitrer |
-| Règles de publication et nombre d'intentions actives | À décider |
-| Découverte, tri et actualisation locale | À définir |
+| Activation/désactivation de présence et nombre de présences simultanées | À décider |
+| Description de présence et champs visibles | À préciser |
+| Découverte simultanée, actualisation et disponibilité locale | À définir |
 | Rayon, présence et expiration | Décisions antérieures à réconcilier et tracer |
 | Demande d'intérêt, acceptation et refus | Base déjà définie ; cas limites à préciser |
 | Blocage, signalement et sécurité | À relier aux décisions Communication validées |
@@ -101,7 +103,8 @@ Ces décisions doivent être reliées à leurs exigences et tests dans une matri
 ## 9. Garde-fous
 
 - Réel reste un moteur métier indépendant ; il ne doit pas absorber les responsabilités de Flash, Scan ou Radar.
-- Une intention Réel n'est pas automatiquement une publication Flash.
+- Réel ne publie pas de contenu persistant : une présence Réel n'est pas une publication Flash.
+- La visibilité Réel est simultanée et locale ; elle ne doit pas être confondue avec la disponibilité différée d'une information Flash.
 - Une mise en relation Réel n'est pas un message libre.
 - La découverte locale ne doit pas révéler la position exacte d'une personne.
 - La présence et les intentions expirées ne doivent pas rester visibles comme si elles étaient encore actives.
@@ -110,4 +113,4 @@ Ces décisions doivent être reliées à leurs exigences et tests dans une matri
 
 ## 10. Prochaine étape de conception
 
-Définir la règle de publication : un utilisateur peut-il avoir plusieurs intentions Réel actives en même temps, ou une seule intention active à la fois ? Cette décision conditionne la simplicité de l'interface, les limites V1, les notifications et le modèle de données.
+Définir si un utilisateur peut activer plusieurs présences ou descriptions simultanées, ou si une seule présence active est autorisée à la fois. Cette décision conditionne la simplicité de l'interface, les limites V1 et le modèle de données.
