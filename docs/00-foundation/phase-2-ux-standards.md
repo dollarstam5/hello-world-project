@@ -374,3 +374,11 @@ L'ancien écran d'accueil minimal est remplacé par un onboarding guidé en **ci
 - La page de réinitialisation du mot de passe dispose maintenant de champs et d'un bouton d'au moins 48 px, avec un focus visible explicite.
 - Fichiers : `SmartTabs.tsx`, `FlashFeed.tsx` et `ResetPasswordView.tsx`.
 - `SmartTabs` n'était pas directement utilisé dans les écrans audités ; sa correction prévient une réintroduction du défaut si le composant est adopté ultérieurement.
+
+
+### Détection automatique de la langue — PWA
+- Au premier lancement, Vitalis utilise la première langue prise en charge dans `navigator.languages`, puis `navigator.language` en repli. Les variantes régionales sont reconnues (`en-GB` → `en`, `fr-CA` → `fr`).
+- Une préférence manuelle déjà enregistrée reste prioritaire. Sans choix manuel, Vitalis suit les changements du navigateur/système via `languagechange`.
+- La langue effective est appliquée à `document.documentElement.lang` pour les lecteurs d'écran et les outils du navigateur.
+- Le catalogue V1 reste limité au français et à l'anglais ; toute autre langue non prise en charge revient au français, sans traduction improvisée.
+- Implémentation et tests : `src/lib/i18n/useI18n.ts`, `tests/i18n.test.ts`. Référence détaillée : `docs/00-foundation/pwa-platform-adaptation.md`, section 10.
