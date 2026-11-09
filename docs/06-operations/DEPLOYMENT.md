@@ -54,9 +54,10 @@ bun run check:foundation
 bun run security:secrets
 bun run lint
 bun run test:run
-bun run test:offline
+bun run check:protocol
+supabase start
 bun run test:db
-bun run build:check
+supabase stop
 bun run test:e2e
 bun run check:release
 ```
@@ -83,7 +84,7 @@ Vérifier également l’installation, la mise à jour du service worker et les 
 
 ## 6. Décision Go/No-Go
 
-Exécuter `bun run certify:p0`, puis compléter la checklist de [préparation de release](./release-readiness.md). Toute erreur de verrou, de RLS, d’isolation, de sécurité, de build, de budget, de PWA ou de rollback impose un No-Go.
+Exécuter `bun run check:release`, puis compléter la checklist de [préparation de release](./release-readiness.md). Toute erreur de verrou, de RLS, d’isolation, de sécurité, de build, de budget, de PWA ou de rollback impose un No-Go.
 
 La promotion doit référencer un commit immuable et réutiliser le même artefact validé en préproduction. Conserver l’artefact précédent, vérifier sa compatibilité avec les migrations déjà appliquées et tester le rollback avant l’ouverture aux utilisateurs.
 
