@@ -388,6 +388,6 @@ L'ancien écran d'accueil minimal est remplacé par un onboarding guidé en **ci
 - Le header est transparent, sans bande de fond opaque ni bordure inférieure, avec une hauteur compacte et un alignement horizontal simple.
 - À gauche : uniquement l'icône officielle de l'application, cliquable pour revenir à l'accueil.
 - À droite : uniquement l'icône Notifications puis l'icône Profil/Avatar.
-- Le nom Vitalis, le sélecteur FR/EN, le contrôle clair/sombre et la déconnexion sont retirés du header. La langue est détectée automatiquement ; les préférences et la déconnexion restent accessibles dans leurs espaces dédiés.
+- Le nom Vitalis, le sélecteur FR/EN, le contrôle clair/sombre et la déconnexion sont retirés du header. La langue est détectée automatiquement ; aucun contrôle de langue ou de thème n'est affiché dans cet en-tête.
 - Les deux actions à droite et le lien de l'icône d'application conservent des noms accessibles, un focus visible et des zones tactiles d'au moins 48 × 48 px.
 - Implémentation : `src/components/experience/AppHeader.tsx`, icône : `public/icon-192.svg`.
