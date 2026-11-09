@@ -48,3 +48,20 @@
 33. Scénarios constituant le seuil d'acceptation V1 ?
 
 Chaque réponse doit être enregistrée avec ID de décision, statut, date, exigences et tests impactés. Aucune question ouverte ne doit être résolue par supposition.
+
+## Priorité 5 — archivage, suppression et coûts (décisions déjà validées, détails ouverts)
+
+- Les conversations sont archivées après 3 mois ou dès dépassement du plafond de 50 (la plus ancienne est archivée).
+- Une archive est inaccessible à l'utilisateur, sauf accès exceptionnel autorisé par un administrateur pour 24 h après demande.
+- L'utilisateur peut supprimer son historique ; aucun export n'est proposé.
+- En V1, chaque espace a un plafond gratuit ; à saturation, l'utilisateur choisit de supprimer des données ou de limiter les nouveaux usages/enregistrements.
+- Aucun paiement ni extension payante en V1 ; micro-paiements et stockage supplémentaire réservés à V2.
+
+Questions restant à trancher :
+1. Combien de temps conserver une archive après son archivage ?
+2. Quel délai appliquer à l'effacement définitif après suppression par l'utilisateur ?
+3. Quels quotas chiffrés gratuits attribuer à chaque espace et quels seuils d'avertissement afficher ?
+4. Quel plafond global et quelle marge de sécurité définir pour Supabase Cloud ?
+5. Quelle procédure d'autorisation administrateur, avec journalisation et contrôle d'accès, mettre en place ?
+
+
