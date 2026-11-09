@@ -10,11 +10,10 @@ Le Vitalis Experience System définit non seulement l'apparence de Vitalis, mais
 
 Il exprime des objectifs de conception ; les comportements concrets doivent être validés dans les écrans, composants et tests actuels.
 
-
-
 ## Une voix humaine, partout
 
 Vitalis s'exprime avec une voix humaine, chaleureuse, naturelle et directe. Les messages doivent être simples, honnêtes sur l'état réel des actions et utiles pour la prochaine étape. Le vocabulaire technique et les formulations robotiques sont évités lorsqu'un mot courant suffit. La référence éditoriale applicable à tous les parcours est le [langage humain et communication Vitalis](./communication-language.md).
+
 ## Vision
 
 Vitalis doit aider les personnes à atteindre leur objectif sans les obliger à lutter contre l'interface. La technologie s'efface au profit du besoin réel. L'expérience doit inspirer confiance, simplicité et efficacité.
