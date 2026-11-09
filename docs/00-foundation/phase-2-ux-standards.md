@@ -244,3 +244,20 @@ Le Go/No-Go retourne `GO_CANDIDATE`, avec 17 fichiers et 6 scripts requis prése
 - Vérifier les contrastes composites et les tailles/espacements tactiles sur les thèmes clair et sombre, à partir de l'interface rendue.
 
 **Décision :** les critères automatisés de la phase 2 sont satisfaits. La phase 2 reste **en attente de validation manuelle finale** ; la phase 3 ne commence pas tant que ces trois contrôles humains ne sont pas confirmés. Aucun changement n'est porté sur `main` et la PR #37 reste en brouillon, sans fusion.
+
+
+## 13. Preuve CI actualisée — Quality #551
+
+**Commit contrôlé :** `a4d4504b938b20ed766cacfced0cfd656c7f73bd`  
+**Résultat :** Quality #551 réussie ; Dependency review #464 réussie.
+
+La dernière exécution confirme à nouveau :
+- lint sans erreur (six avertissements non bloquants de Fast Refresh dans les composants partagés) ;
+- 27 fichiers de tests Vitest réussis ;
+- contrôle des secrets et tests RLS réussis ;
+- release check réussi, incluant le build, le budget de performance, l'audit documentaire, la reproductibilité et le Go/No-Go ;
+- Chromium installé et smoke visuel mobile réussi sur les quatre viewports et les six routes documentées.
+
+Le smoke visuel confirme le rendu et la disponibilité des routes ; il ne valide pas les interactions réelles, la navigation au clavier, le lecteur d'écran ou les contrastes composites. Le test réseau vérifie les événements navigateur online/offline et le test de synchronisation couvre la conservation des mutations en attente sans transport hors ligne.
+
+**État actualisé :** tous les contrôles automatisés requis sont verts sur le commit ci-dessus. Les trois validations manuelles listées en section 12 restent obligatoires avant clôture de la phase 2. La PR #37 reste en brouillon ; aucune modification n'a été portée sur `main` et aucune fusion n'a été effectuée.
