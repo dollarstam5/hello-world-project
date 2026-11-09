@@ -665,3 +665,8 @@ La revue de santé/readiness, budgets de performance, Web Vitals, manifeste, ser
 Les deux logs rapportent **615 problèmes : 607 erreurs Prettier et 8 avertissements**, sur les mêmes 21 chemins de code. Aucun de ces chemins ne figure dans la liste des fichiers modifiés par la PR #34. La comparaison confirme que cet échec de lint préexiste à la PR et n'est pas introduit par le Lot A.
 
 Conséquence : les étapes suivantes du workflow Quality (tests SQL, release/build et tests mobiles) ont été ignorées pour ces exécutions. Aucun résultat vert n'est donc disponible pour ces étapes. L'exécution Quality du HEAD actuel doit encore être observée séparément ; ne pas assimiler le diagnostic de référence à une validation de la nouvelle tête.
+
+
+## Vague 10 — communication et moteurs secondaires
+
+La revue de la cloche, des notifications, des conversations liées aux actions, de l'assistance Vita et des moteurs Flash/Scan/Radar/Veille/Recommendation/Trust/Missions est consignée dans [la réconciliation Communication et moteurs secondaires — vague 10](./foundation-communication-engines-reconciliation-wave-5.md). Elle confirme une coque de communication à trois onglets, mais Notifications et Conversations sont encore des placeholders ; le sink notification est noop et aucun runtime de conversation liée à une action n'a été identifié. Le contrat/runtime status API a été complété en conséquence. Aucun code métier n'a été modifié.
