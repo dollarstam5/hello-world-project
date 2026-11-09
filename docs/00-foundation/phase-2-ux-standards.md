@@ -366,3 +366,11 @@ L'ancien écran d'accueil minimal est remplacé par un onboarding guidé en **ci
 - Fichiers : `InstallBanner.tsx`, `UpdateBanner.tsx`, `SignInView.tsx`, `ScanPanel.tsx`.
 - Les éléments décoratifs de 44 px (par exemple une icône sans action) ne sont pas agrandis artificiellement.
 - Vérification à compléter : parcours clavier intégral, retour du focus à l'ouverture/fermeture des feuilles, lecteur d'écran, espacement entre cibles et mesures sur appareils réels.
+
+
+### Dernière passe des composants réutilisables et récupération de compte
+- `SmartTabs` avait des boutons trop bas et supprimait le contour de focus sans fournir de remplacement visible : les deux variantes ont maintenant une cible minimale de 48 × 48 px et un anneau de focus visible.
+- Le bouton de reprise du flux Flash passe à 48 px minimum.
+- La page de réinitialisation du mot de passe dispose maintenant de champs et d'un bouton d'au moins 48 px, avec un focus visible explicite.
+- Fichiers : `SmartTabs.tsx`, `FlashFeed.tsx` et `ResetPasswordView.tsx`.
+- `SmartTabs` n'était pas directement utilisé dans les écrans audités ; sa correction prévient une réintroduction du défaut si le composant est adopté ultérieurement.
