@@ -136,3 +136,21 @@ Chaque exécution doit conserver : identifiant du scénario, marque/modèle, ver
 - [Standards UX et accessibilité — Phase 2](./phase-2-ux-standards.md)
 - [Performance PWA](../06-operations/performance-pwa.md)
 - [Standards de navigation mobile](../02-architecture/mobile-navigation-standards.md)
+
+
+## 10. Langue du système et du navigateur
+
+Vitalis propose actuellement le français et l'anglais. Au premier lancement, la langue est déterminée automatiquement à partir des préférences exposées par le navigateur :
+
+1. lire `navigator.languages` dans l'ordre de préférence ;
+2. utiliser `navigator.language` comme solution de repli ;
+3. rapprocher les variantes régionales de la langue prise en charge (par exemple `en-GB` → `en`, `fr-CA` → `fr`) ;
+4. utiliser le français si aucune langue prise en charge ne correspond.
+
+Une préférence choisie manuellement dans Vitalis est prioritaire et est conservée dans le stockage local. Tant qu'aucun choix manuel n'a été fait, Vitalis peut suivre un changement de langue du navigateur/système via l'événement `languagechange`. Après un choix manuel, la détection automatique ne doit plus remplacer cette préférence.
+
+La langue effective doit aussi être appliquée à `document.documentElement.lang` afin que les lecteurs d'écran, les outils du navigateur et les fonctions de traduction disposent de la bonne indication. Le document serveur garde le français comme langue de repli initiale ; l'initialisation cliente applique la préférence détectée.
+
+Implémentation : `src/lib/i18n/useI18n.ts`. Tests : `tests/i18n.test.ts` (ordre des langues préférées, variantes régionales, préférence manuelle et changement de langue).
+
+**Limite actuelle :** les catalogues disponibles sont uniquement FR et EN. Une langue système différente ne déclenche pas une traduction approximative : Vitalis utilise le français par défaut jusqu'à l'ajout d'un catalogue validé.
