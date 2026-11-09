@@ -1,10 +1,17 @@
 import { existsSync, readFileSync } from "node:fs";
 
 const requiredFiles = [
-  "docs/PROJECT_BIBLE.md",
-  "docs/QUALITY.md",
-  "docs/OPERATIONS.md",
+  "docs/README.md",
+  "docs/00-foundation/README.md",
+  "docs/01-product/README.md",
+  "docs/02-architecture/README.md",
+  "docs/03-engines/README.md",
+  "docs/05-ai/README.md",
+  "docs/06-operations/README.md",
+  "docs/06-operations/QUALITY.md",
+  "docs/06-operations/operations.md",
   "docs/06-operations/performance-pwa.md",
+  "docs/07-annexes/documentation-content-coverage.md",
   "src/lib/performance/performance-policy.ts",
   "src/lib/performance/performance-budget-policy.ts",
   "src/lib/performance/web-vitals.ts",
