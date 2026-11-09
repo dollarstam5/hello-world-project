@@ -31,7 +31,7 @@ for viewport in "320,720" "360,800" "390,844" "412,915" "768,1024" "1024,768" "1
     --browser=chromium \
     --viewport-size="$viewport" \
     --wait-for-selector="#main" \
-    "$BASE_URL/" \
+    "$BASE_URL/?__vitalis_smoke=1" \
     "$output" >/dev/null
   test -s "$output"
 done
@@ -42,7 +42,7 @@ for route in "/flash" "/scan" "/reel" "/radar" "/talents" "/espace"; do
     --browser=chromium \
     --viewport-size="390,844" \
     --wait-for-selector="#main" \
-    "$BASE_URL$route" \
+    "$BASE_URL$route?__vitalis_smoke=1" \
     "$output" >/dev/null
   test -s "$output"
 done
