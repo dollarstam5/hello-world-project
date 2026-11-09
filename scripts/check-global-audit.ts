@@ -12,6 +12,8 @@ const requiredFiles = [
   "docs/06-operations/operations.md",
   "docs/06-operations/performance-pwa.md",
   "docs/07-annexes/documentation-content-coverage.md",
+  "tests/mobile-e2e-contract.test.ts",
+  "tests/platform/use-network-status.test.tsx",
   "src/lib/performance/performance-policy.ts",
   "src/lib/performance/performance-budget-policy.ts",
   "src/lib/performance/web-vitals.ts",
