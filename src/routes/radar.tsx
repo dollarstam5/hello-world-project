@@ -20,7 +20,6 @@ export const Route = createFileRoute("/radar")({
         { key: "near", titleKey: "page.radar.section.near", perf: "short" },
         { key: "area", titleKey: "page.radar.section.area", perf: "tall" },
       ]}
-      footer="Foundation · Radar"
     />
   ),
 });
