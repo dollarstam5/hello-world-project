@@ -56,7 +56,7 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
                   "hover:scale-105 active:scale-95",
                 )}
               >
-                <Icon className="h-6 w-6" aria-hidden />
+                <Icon className="!h-7 !w-7" aria-hidden />
               </span>
               <span
                 className={cn(
@@ -86,7 +86,7 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
                     aria-hidden
                   />
                 ))}
-              <Icon className="relative h-5 w-5" aria-hidden />
+              <Icon className="relative !h-6 !w-6" aria-hidden />
               <span className="relative text-[11px] font-medium leading-tight">{label}</span>
             </span>
           );
