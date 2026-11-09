@@ -314,3 +314,34 @@ L'acceptation confirme le jumelage entre les deux personnes et autorise l'étape
 - contenu et comportement précis de la conversation contextualisée après acceptation.
 
 Ces points restent ouverts et ne doivent pas être considérés comme implémentés ou décidés par anticipation.
+
+
+## 23. Décision produit validée — caractère éphémère des bips et conservation des jumelages (2026-11-09)
+
+**Statut : VALIDÉ V1.** Réel est une expérience instantanée. Les bips ne constituent pas un historique et ne sont pas conservés après la fin du contexte de présence.
+
+### 23.1 Aucun historique de bips
+
+- L'envoi d'un bip ne crée pas d'historique consultable par son expéditeur.
+- Les bips reçus sont consultables par le destinataire uniquement dans le contexte de sa présence Réel active.
+- Aucun journal des bips envoyés ou reçus n'est proposé dans Réel.
+- Le produit ne doit pas afficher après coup une liste des personnes bipées ou des bips reçus qui ont expiré.
+
+### 23.2 Fin du contexte Réel
+
+À la fermeture de la présence ou à la déconnexion de l'utilisateur, les bips non convertis en jumelage sont supprimés et ne sont plus accessibles dans Réel.
+
+Cette règle s'applique aux bips en attente, qu'ils aient ou non été consultés. Un bip ne doit pas survivre comme sollicitation en attente après la fin du contexte instantané auquel il appartient.
+
+### 23.3 Seules les mises en relation acceptées sont conservées
+
+Lorsqu'un destinataire appuie sur **« Accepter »**, la mise en relation devient une relation validée. Seules ces mises en relation acceptées sont conservées selon les règles du moteur Communication et les règles de conservation Vitalis applicables.
+
+Un bip non accepté ne devient jamais une mise en relation et ne doit pas être conservé comme historique.
+
+### 23.4 Conséquences produit et techniques à respecter
+
+- Le compteur représente uniquement les bips encore actifs dans le contexte Réel courant ; il ne représente jamais un total historique.
+- La disparition des bips à la fermeture de la présence ou à la déconnexion doit être cohérente dans l'interface et dans les données.
+- Les mises en relation acceptées doivent être séparées des bips éphémères afin que leur conservation ne dépende pas de la durée de vie de la présence Réel.
+- Les modalités techniques de suppression, de synchronisation et de gestion des cas de déconnexion restent à spécifier et à vérifier ; cette décision produit ne constitue pas une preuve d'implémentation.
