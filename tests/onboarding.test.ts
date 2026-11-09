@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { useOnboarding } from "@/lib/experience/onboarding";
 
 describe("onboarding persistence", () => {
@@ -21,6 +21,40 @@ describe("onboarding persistence", () => {
       completed: true,
       shouldShow: false,
     });
+  });
+
+  it("can dismiss onboarding when browser storage is unavailable", () => {
+    const storage = vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      throw new Error("storage unavailable");
+    });
+    useOnboarding.setState({ hydrated: true, shouldShow: true });
+
+    try {
+      expect(() => useOnboarding.getState().dismiss()).not.toThrow();
+      expect(useOnboarding.getState()).toMatchObject({
+        completed: true,
+        shouldShow: false,
+      });
+    } finally {
+      storage.mockRestore();
+    }
+  });
+
+  it("shows onboarding when its stored completion flag cannot be read", () => {
+    const storage = vi.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
+      throw new Error("storage unavailable");
+    });
+
+    try {
+      useOnboarding.getState().hydrate();
+      expect(useOnboarding.getState()).toMatchObject({
+        hydrated: true,
+        completed: false,
+        shouldShow: true,
+      });
+    } finally {
+      storage.mockRestore();
+    }
   });
 
   it("shows the welcome sheet only when no completion flag exists", () => {
