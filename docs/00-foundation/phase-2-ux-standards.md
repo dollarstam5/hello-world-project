@@ -61,7 +61,7 @@ Les composants concernés doivent prévoir les états utiles suivants, selon le 
 - Contraste des tokens clairs : bleu primaire et accents sémantiques ajustés en conservant leurs familles de teinte ; les paires de base texte/fond calculées dépassent 4,5:1. Les surfaces translucides et états composés restent à vérifier visuellement.
 - Feuilles et dialogues : contenu défilant sur les petits écrans, avec gestion native du focus et fermeture clavier assurée par Radix.
 - États réseau : le bandeau reflète les états réseau et synchronisation du worker ; aucun nombre ni succès n’est inventé.
-- Premier lancement : fermer ou ignorer l’onboarding est mémorisé ; les trois repères suivent l’ordre de navigation : Flash/Scan, Réel, puis Radar/2x2.
+- Premier lancement : l’onboarding V1 suit cinq écrans distincts : Vitalis, Flash+Scan, Réel+Radar, 2×2, puis l’invitation finale. Passer ou fermer le parcours est mémorisé.
 - Les quatre espaces du centre de communication et leurs règles V1 sont spécifiés dans [Centre de communication V1](../01-product/communication-center-v1.md).
 - Les vues globales 404 et erreur utilisent également les messages FR/EN et des actions de reprise d'au moins 44 px.
 
@@ -284,19 +284,20 @@ Cette exécution valide les corrections de géolocalisation Scan présentes dans
 
 ## 15. Onboarding V1 — parcours de découverte validé
 
-L'ancien écran d'accueil minimal à trois repères est remplacé par un onboarding guidé en quatre écrans :
+L'ancien écran d'accueil minimal est remplacé par un onboarding guidé en **cinq écrans** :
 
-1. **Vitalis en général** : présenter la promesse globale de l'application. Le rôle de 2x2 comme accès aux espaces et fonctionnalités complémentaires est expliqué ici ; 2x2 n'est pas présenté comme un moteur.
+1. **Vitalis en général** : présenter la vision, la promesse et l'utilité globale de l'application.
 2. **Flash et Scan** : deux présentations courtes, côte à côte dans la même étape.
-3. **Réel et Radar** : deux présentations courtes, côte à côte dans la même étape. Réel est explicitement accessible en mode invité, sans compte obligatoire.
-4. **Entrer dans Vitalis** : invitation humaine à commencer, avec l'action « C'est parti ! ».
+3. **Réel et Radar** : deux présentations courtes, côte à côte dans la même étape. Réel est accessible en mode invité, sans compte obligatoire.
+4. **2×2** : expliquer le menu et les espaces/fonctionnalités complémentaires. 2×2 n'est pas un cinquième moteur.
+5. **Entrer dans Vitalis** : invitation humaine à commencer, avec l'action « C'est parti ! ».
 
 ### Règles d'expérience
 
 - L'onboarding est une feuille quasi plein écran, adaptée au mobile, et non une page d'inscription.
-- Une seule progression sur quatre étapes, avec actions Retour/Suivant.
+- Une seule progression sur cinq étapes, avec actions Retour/Suivant.
 - L'utilisateur peut passer la découverte ; le passage, la fermeture et la validation finale marquent le parcours comme terminé pour cet appareil.
-- La validation finale et le passage conduisent directement à la route d'accueil `/`.
+- La validation finale et le passage conduisent directement à la route Home `/`.
 - Le parcours est présenté une seule fois après complétion. Une nouvelle clé versionnée permet aux personnes ayant déjà fermé l'ancien écran minimal de découvrir le nouvel onboarding.
 - Les contenus sont disponibles en français et en anglais.
 - Aucun formulaire, création de compte ou dialogue IA n'est ajouté à cette étape.
@@ -304,7 +305,7 @@ L'ancien écran d'accueil minimal à trois repères est remplacé par un onboard
 
 ### Implémentation et vérification
 
-- `OnboardingSheet` porte désormais les quatre étapes et leurs contenus.
+- `OnboardingSheet` porte les cinq étapes et leurs contenus.
 - `useOnboarding` gère la progression, le passage, la complétion et la persistance versionnée.
 - Les tests couvrent les limites de navigation, la persistance, le stockage indisponible et la réapparition du nouvel onboarding malgré l'ancienne clé.
 - L'accueil `/` reste la destination d'arrivée ; son contenu produit doit être évalué séparément avant de le déclarer terminé.
