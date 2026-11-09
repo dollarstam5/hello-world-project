@@ -3,6 +3,7 @@ import { useOnboarding } from "@/lib/experience/onboarding";
 
 describe("Vitalis onboarding", () => {
   beforeEach(() => {
+    window.history.replaceState({}, "", "/");
     window.localStorage.clear();
     useOnboarding.setState({
       hydrated: false,
@@ -24,6 +25,19 @@ describe("Vitalis onboarding", () => {
 
     useOnboarding.getState().previous();
     expect(useOnboarding.getState().step).toBe(3);
+  });
+
+  it("skips the first-run sheet only for the development visual smoke route", () => {
+    window.history.replaceState({}, "", "/?__vitalis_smoke=1");
+
+    useOnboarding.getState().hydrate();
+
+    expect(useOnboarding.getState()).toMatchObject({
+      hydrated: true,
+      completed: true,
+      shouldShow: false,
+    });
+    expect(window.localStorage.getItem("vitalis.onboarding.v2")).toBe("1");
   });
 
   it("persists completion so the introduction does not reopen next time", () => {
