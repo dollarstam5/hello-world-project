@@ -46,6 +46,15 @@ Ce document fixe les règles vérifiables de la phase 2. Il ne certifie pas les 
 - Le centre de communication conserve quatre espaces indépendants : Notifications, Assistant, Messages et Réel.
 - Aucun compteur ne doit être simulé ; les indicateurs ne seront activés qu'une fois raccordés à des événements métier fiables.
 
+### Accueil V1
+
+- L'accueil est le point de départ de Vitalis, distinct des espaces métier et de la barre de navigation basse.
+- Il présente une phrase d'accueil concrète, puis quatre accès directs : Flash, Scan, Réel et Radar.
+- Les cartes sont simples, lisibles, tactiles et passent en deux colonnes lorsque la largeur le permet ; sur petit écran, elles restent en une seule colonne.
+- Le menu 2×2 est présenté comme l'accès aux espaces complémentaires ; il ne doit pas être confondu avec un cinquième moteur.
+- Ne pas afficher de sections de flux vides, de faux contenus ou de compteurs fictifs pour remplir la page. Les espaces sans contenu réel ne sont présentés que lorsqu'une donnée ou une fonction existe.
+- Les libellés de l'accueil sont localisés en français et en anglais et suivent le langage humain de Vitalis.
+
 ## 5. Réseau et états d'interface
 
 Les composants concernés doivent prévoir les états utiles suivants, selon le contexte : chargement, contenu, vide, erreur récupérable, hors ligne, synchronisation en attente et retour au réseau. L'état hors ligne ne doit pas laisser croire qu'une action a été envoyée au serveur si elle est seulement conservée localement. Le bandeau transversal reflète uniquement l'état du réseau et les états réellement émis par le worker de synchronisation ; il n'invente ni compteur ni confirmation.
@@ -65,6 +74,7 @@ Les composants concernés doivent prévoir les états utiles suivants, selon le 
 - Feuilles et dialogues : contenu défilant sur les petits écrans, avec gestion native du focus et fermeture clavier assurée par Radix.
 - États réseau : le bandeau reflète les états réseau et synchronisation du worker ; aucun nombre ni succès n’est inventé.
 - Premier lancement : l’onboarding V1 suit cinq écrans distincts : Vitalis, Flash+Scan, Réel+Radar, 2×2, puis l’invitation finale. Passer ou fermer le parcours est mémorisé.
+- Accueil : remplacement des blocs de flux vides par quatre accès directs aux moteurs, une présentation claire de Vitalis et un rappel du menu 2×2 ; textes FR/EN alignés.
 - Les quatre espaces du centre de communication et leurs règles V1 sont spécifiés dans [Centre de communication V1](../01-product/communication-center-v1.md).
 - Les textes visibles suivent la référence [Langage humain et communication Vitalis](../01-product/communication-language.md).
 - Les vues globales 404 et erreur utilisent également les messages FR/EN et des actions de reprise d'au moins 44 px.
