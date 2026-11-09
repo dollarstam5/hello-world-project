@@ -85,25 +85,32 @@ export const messages = {
     "onboarding.next": "Suivant",
     "onboarding.enter": "C'est parti !",
     "onboarding.intro.title": "Vitalis, tout un monde à découvrir",
-    "onboarding.intro.body": "Vitalis vous aide à découvrir ce qui vous entoure, à repérer ce qui compte et à créer des liens utiles, simplement.",
+    "onboarding.intro.body":
+      "Vitalis vous aide à découvrir ce qui vous entoure, à repérer ce qui compte et à créer des liens utiles, simplement.",
     "onboarding.intro.moreTitle": "Une expérience qui vous ressemble",
-    "onboarding.intro.moreBody": "Avancez à votre rythme, découvrez ce qui vous est utile et gardez vos repères simplement.",
+    "onboarding.intro.moreBody":
+      "Avancez à votre rythme, découvrez ce qui vous est utile et gardez vos repères simplement.",
     "onboarding.discovery.title": "Découvrez et explorez",
-    "onboarding.discovery.body": "Deux moteurs pour partager ce qui se passe et trouver ce que vous cherchez.",
+    "onboarding.discovery.body":
+      "Deux moteurs pour partager ce qui se passe et trouver ce que vous cherchez.",
     "onboarding.flash.title": "Flash",
-    "onboarding.flash.body": "Publiez un besoin ou une proposition, et découvrez les publications utiles autour de vous.",
+    "onboarding.flash.body":
+      "Publiez un besoin ou une proposition, et découvrez les publications utiles autour de vous.",
     "onboarding.scan.title": "Scan",
     "onboarding.scan.body": "Repérez les Flash actifs autour de vous sans révéler votre position.",
     "onboarding.connection.title": "Rapprochez-vous de ce qui compte",
-    "onboarding.connection.body": "Repérez les possibilités autour de vous et entrez en relation quand le moment s'y prête.",
+    "onboarding.connection.body":
+      "Repérez les possibilités autour de vous et entrez en relation quand le moment s'y prête.",
     "onboarding.spaces.title": "Et tout un monde à explorer",
-    "onboarding.spaces.body": "Le menu 2×2 vous ouvre les espaces et fonctionnalités complémentaires de Vitalis. Vous pouvez les découvrir quand vous en avez besoin.",
+    "onboarding.spaces.body":
+      "Le menu 2×2 vous ouvre les espaces et fonctionnalités complémentaires de Vitalis. Vous pouvez les découvrir quand vous en avez besoin.",
     "onboarding.reel.title": "Réel",
     "onboarding.reel.body": "Signalez votre présence et découvrez les personnes à proximité, avec la liberté d'utiliser le mode invité.",
     "onboarding.radar.title": "Radar",
     "onboarding.radar.body": "Repérez les opportunités et les éléments pertinents autour de vous.",
     "onboarding.ready.title": "Prêt à faire votre premier pas ?",
-    "onboarding.ready.body": "Installez-vous, explorez à votre rythme et commencez par l'espace qui vous attire. Toute l'expérience Vitalis vous attend.",
+    "onboarding.ready.body":
+      "Installez-vous, explorez à votre rythme et commencez par l'espace qui vous attire. Toute l'expérience Vitalis vous attend.",
     "onboarding.ready.guest": "Vous pouvez commencer sans créer de compte lorsque le moteur le permet. Réel est accessible en mode invité.",
 
     "identity.guest": "Invité",
@@ -468,26 +475,36 @@ export const messages = {
     "onboarding.next": "Next",
     "onboarding.enter": "Let's go!",
     "onboarding.intro.title": "Vitalis, a world to discover",
-    "onboarding.intro.body": "Vitalis helps you discover what's around you, spot what matters and create useful connections, simply.",
+    "onboarding.intro.body":
+      "Vitalis helps you discover what's around you, spot what matters and create useful connections, simply.",
     "onboarding.intro.moreTitle": "An experience that feels like yours",
-    "onboarding.intro.moreBody": "Explore at your own pace, find what is useful to you and keep things simple.",
+    "onboarding.intro.moreBody":
+      "Explore at your own pace, find what is useful to you and keep things simple.",
     "onboarding.discovery.title": "Discover and explore",
-    "onboarding.discovery.body": "Two engines to share what's happening and find what you're looking for.",
+    "onboarding.discovery.body":
+      "Two engines to share what's happening and find what you're looking for.",
     "onboarding.flash.title": "Flash",
-    "onboarding.flash.body": "Publish a need or an offer, and discover useful posts around you.",
+    "onboarding.flash.body":
+      "Publish a need or an offer, and discover useful posts around you.",
     "onboarding.scan.title": "Scan",
-    "onboarding.scan.body": "Spot active Flash around you without revealing your location.",
+    "onboarding.scan.body":
+      "Spot active Flash around you without revealing your location.",
     "onboarding.connection.title": "Get closer to what matters",
-    "onboarding.connection.body": "Spot possibilities nearby and connect when the moment feels right.",
+    "onboarding.connection.body":
+      "Spot possibilities nearby and connect when the moment feels right.",
     "onboarding.spaces.title": "More places to explore",
-    "onboarding.spaces.body": "The 2x2 menu opens Vitalis spaces and extra features. You can explore them whenever you need them.",
+    "onboarding.spaces.body":
+      "The 2x2 menu opens Vitalis spaces and extra features. You can explore them whenever you need them.",
     "onboarding.reel.title": "Real",
-    "onboarding.reel.body": "Share your presence and discover people nearby, with the freedom to use guest mode.",
+    "onboarding.reel.body":
+      "Share your presence and discover people nearby, with the freedom to use guest mode.",
     "onboarding.radar.title": "Radar",
     "onboarding.radar.body": "Spot opportunities and relevant things around you.",
     "onboarding.ready.title": "Ready to take your first step?",
-    "onboarding.ready.body": "Make yourself at home, explore at your own pace and start wherever you like. Your Vitalis experience is waiting.",
-    "onboarding.ready.guest": "You can get started without an account wherever the engine allows it. Real is available in guest mode.",
+    "onboarding.ready.body":
+      "Make yourself at home, explore at your own pace and start wherever you like. Your Vitalis experience is waiting.",
+    "onboarding.ready.guest":
+      "You can get started without an account wherever the engine allows it. Real is available in guest mode.",
 
     "identity.guest": "Guest",
     "identity.identified": "Identified",
