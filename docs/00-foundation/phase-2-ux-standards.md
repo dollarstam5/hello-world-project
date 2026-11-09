@@ -43,6 +43,7 @@ Ce document fixe les règles vérifiables de la phase 2. Il ne certifie pas les 
 - Le centre 2x2 ouvre le menu ; il ne constitue pas une destination métier supplémentaire.
 - L’accueil reste hors de la barre basse : l’icône/identité de l’application ouvre `/`, et le lancement depuis l’icône installée ouvre également l’accueil.
 - Le changement FR/EN est accessible depuis l'en-tête principal et conserve la langue choisie via le mécanisme i18n existant.
+- Pendant l'onboarding initial, le changement FR/EN reste accessible dans le parcours lui-même, même lorsque la feuille modale masque l'en-tête.
 - Le centre de communication conserve quatre espaces indépendants : Notifications, Assistant, Messages et Réel.
 - Aucun compteur ne doit être simulé ; les indicateurs ne seront activés qu'une fois raccordés à des événements métier fiables.
 
