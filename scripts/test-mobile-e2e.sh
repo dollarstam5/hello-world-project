@@ -4,7 +4,7 @@ set -euo pipefail
 HOST="127.0.0.1"
 PORT="4173"
 BASE_URL="http://${HOST}:${PORT}"
-SERVER_LOG="${TMPDIR:-/tmp}/vitala-e2e.log"
+SERVER_LOG="${TMPDIR:-/tmp}/vitalis-e2e.log"
 
 bun run build:check >/dev/null
 bun run dev --host "$HOST" --port "$PORT" >"$SERVER_LOG" 2>&1 &
@@ -24,7 +24,7 @@ if ! curl --silent --fail "$BASE_URL/" >/dev/null; then
 fi
 
 for viewport in "360,800" "390,844" "412,915" "768,1024"; do
-  output="/tmp/vitala-mobile-${viewport//,/-}.png"
+  output="/tmp/vitalis-mobile-${viewport//,/-}.png"
   bunx playwright screenshot \
     --browser=chromium \
     --viewport-size="$viewport" \
@@ -34,8 +34,8 @@ for viewport in "360,800" "390,844" "412,915" "768,1024"; do
   test -s "$output"
 done
 
-for route in "/flash" "/radar" "/talents" "/espace"; do
-  output="/tmp/vitala-route-${route#/}.png"
+for route in "/flash" "/scan" "/reel" "/radar" "/talents" "/espace"; do
+  output="/tmp/vitalis-route-${route#/}.png"
   bunx playwright screenshot \
     --browser=chromium \
     --viewport-size="390,844" \
@@ -45,4 +45,4 @@ for route in "/flash" "/radar" "/talents" "/espace"; do
   test -s "$output"
 done
 
-echo "Mobile E2E smoke validation passed for four target viewports and core routes."
+echo "Mobile E2E smoke validation passed for four target viewports and six engine/profile routes."
