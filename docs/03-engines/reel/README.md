@@ -407,3 +407,30 @@ Aucune quatrième rubrique « Temps réel » ou « Réel » n'est créée. Les �
 Les deux accès renvoient à la même mise en relation validée : ils ne doivent pas créer deux relations distinctes ni deux compteurs indépendants. La copie accessible depuis Réel et la notification centrale sont deux points d'entrée complémentaires vers un même événement de jumelage.
 
 Les modalités détaillées d'affichage, de classement, de lecture et d'archivage des notifications restent alignées sur les règles communes de la cloche et du moteur Communication.
+
+
+## 26. Clarification validée — seules les mises en relation acceptées sont conservées (2026-11-09)
+
+**Statut : VALIDÉ V1.** La règle de conservation de Réel est strictement limitée aux mises en relation effectivement acceptées. Le compteur de Réel et la rubrique Notifications ne conservent jamais les bips eux-mêmes.
+
+### 26.1 Bips accessibles uniquement pendant l'activité Réel
+
+- Les bips reçus sont accessibles uniquement lorsque l'utilisateur est actif dans Réel, avec une présence en cours.
+- Les bips envoyés ne créent aucun historique consultable.
+- Les bips reçus non acceptés ne sont pas conservés dans le compteur de Réel ni dans les Notifications.
+- À la fermeture de la présence ou à la déconnexion, les bips en attente disparaissent et ne sont plus accessibles.
+- Si l'utilisateur n'a aucune présence active dans Réel, il n'a accès à aucun bip en attente ni à un historique de bips.
+
+### 26.2 Conservation exclusive des jumelages acceptés
+
+Lorsqu'un bip est accepté, seule la mise en relation résultante est conservée :
+- dans l'espace accessible depuis le compteur de Réel ;
+- dans la rubrique **Notifications** de la fenêtre centrale de la cloche, sous la forme de la notification de confirmation destinée à l'expéditeur.
+
+Ces deux emplacements donnent accès à la même mise en relation validée. Ils ne constituent pas deux historiques indépendants.
+
+### 26.3 Absence de mise en relation, absence d'historique
+
+Si aucun bip n'est accepté, aucune mise en relation n'est créée et aucun historique de cette interaction n'est conservé. Il n'existe donc pas d'archive des bips envoyés, reçus, ignorés ou expirés dans Réel.
+
+**Règle synthétique :** bips = temporaires et accessibles uniquement pendant l'activité Réel ; jumelages acceptés = seules données de mise en relation conservées dans les deux emplacements prévus. Cette règle produit ne constitue pas une preuve de comportement déjà implémenté dans le runtime.
