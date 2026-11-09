@@ -15,10 +15,9 @@ interface BeforeInstallPromptEvent extends Event {
 export function getManualInstallInstructions(
   os: PlatformOS,
   secureContext: boolean,
-  serviceWorker: boolean,
   standalone: boolean,
 ): "ios" | "android" | null {
-  if (standalone || !secureContext || !serviceWorker) return null;
+  if (standalone || !secureContext) return null;
   return os === "ios" || os === "android" ? os : null;
 }
 
@@ -106,7 +105,6 @@ export function useInstallPrompt() {
   const manualInstructions = getManualInstallInstructions(
     capabilities.os,
     capabilities.secureContext,
-    capabilities.serviceWorker,
     installed,
   );
   const canOfferManualInstall = manualInstructions !== null;
