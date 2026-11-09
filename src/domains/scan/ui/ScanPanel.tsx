@@ -13,15 +13,18 @@ const SCAN_LIMIT = 20;
  */
 export function ScanPanel() {
   const { t } = useI18n();
-  const { rows, busy, execute } = useScan();
+  const { rows, busy, failed, execute } = useScan();
   const [denied, setDenied] = useState(false);
   const [started, setStarted] = useState(false);
+  const [locating, setLocating] = useState(false);
 
   const start = () => {
     setDenied(false);
     setStarted(true);
+    setLocating(true);
     navigator.geolocation.getCurrentPosition(
-      (pos) =>
+      (pos) => {
+        setLocating(false);
         void execute({
           text: "",
           category: null,
@@ -29,8 +32,12 @@ export function ScanPanel() {
           longitude: pos.coords.longitude,
           radiusKm: SCAN_RADIUS_KM,
           limit: SCAN_LIMIT,
-        }),
-      () => setDenied(true),
+        });
+      },
+      () => {
+        setLocating(false);
+        setDenied(true);
+      },
       { enableHighAccuracy: false, timeout: 8000 },
     );
   };
@@ -42,26 +49,24 @@ export function ScanPanel() {
       <button
         type="button"
         onClick={start}
-        disabled={busy}
-        className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
+        disabled={busy || locating}
+        className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
       >
-        {busy ? <ScanLine className="h-4 w-4 animate-pulse" aria-hidden /> : <LocateFixed className="h-4 w-4" aria-hidden />}
-        {busy ? t("scan.busy") : t("scan.start")}
+        {busy || locating ? <ScanLine className="h-4 w-4 animate-pulse" aria-hidden /> : <LocateFixed className="h-4 w-4" aria-hidden />}
+        {busy || locating ? t("scan.busy") : t("scan.start")}
       </button>
 
-      {denied && <p className="text-sm text-destructive">{t("scan.denied")}</p>}
+      {denied && <p className="text-sm text-destructive" role="alert">{t("scan.denied")}</p>}
+      {failed && <p className="text-sm text-destructive" role="alert">{t("scan.error")}</p>}
 
-      {started && !busy && !denied && rows.length === 0 && (
-        <p className="text-sm text-muted-foreground">{t("scan.empty")}</p>
+      {started && !busy && !locating && !denied && !failed && rows.length === 0 && (
+        <p className="text-sm text-muted-foreground" role="status">{t("scan.empty")}</p>
       )}
 
       {rows.length > 0 && (
         <ul className="stack-3">
           {rows.map((r) => (
-            <li
-              key={r.id}
-              className="rounded-3xl border border-border-soft bg-surface p-4"
-            >
+            <li key={r.id} className="rounded-3xl border border-border-soft bg-surface p-4">
               <div className="flex items-center justify-between gap-3">
                 <span className="text-base font-medium">{r.title}</span>
                 <span className="shrink-0 rounded-full bg-primary-soft px-2.5 py-1 text-xs font-medium text-primary">
