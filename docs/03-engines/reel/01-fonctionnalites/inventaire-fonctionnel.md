@@ -94,7 +94,7 @@ Le refus, l'annulation par l'émetteur, les demandes répétées et les limites 
 
 - Pour les comptes Vitalis, l'historique conserve les bips, les mises en relation et les interactions passées associées à Réel.
 - La clôture retire la mise en relation des espaces actifs des deux participants et désactive la communication, mais ne supprime pas son entrée de l'historique des comptes.
-- L'historique est une chronologie d'événements et de statuts ; cela ne vaut pas validation de la conservation du contenu des conversations, qui reste exclu en l'état.
+- L'historique des comptes conserve les événements et les conversations selon les règles de rétention et d'archivage décrites ci-dessous.
 - En mode invité, l'historique personnel n'est pas persistant et les données personnelles de session disparaissent à la fin de celle-ci.
 - Les traces techniques minimales nécessaires à la sécurité et à la cohérence restent distinctes de l'historique visible.
 - Les actions en attente doivent être préservées en cas de perturbation réseau puis synchronisées au retour de la connexion.
