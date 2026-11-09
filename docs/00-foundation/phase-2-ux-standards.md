@@ -162,3 +162,28 @@ Les fonctions de compréhension libre, d'adaptation intelligente et de dialogue 
 - Les corrections de cette revue ont été poussées dans la branche de la PR #37.
 - Aucune exécution CI n'a encore été retournée pour le dernier commit ; les corrections ne sont donc pas déclarées testées ou validées par CI.
 - Les validations manuelles (clavier, lecteur d'écran, contraste réel, petits écrans) restent ouvertes.
+
+
+## 11. Dernière passe de stabilisation et preuves
+
+### Corrections supplémentaires appliquées
+- Flash : l'erreur d'enregistrement local est interceptée et affichée ; le bouton reste réutilisable après échec. Le compositeur attend la fin du chargement de session avant de présenter le parcours invité ou authentifié.
+- Flash : le message de confirmation décrit désormais un enregistrement local en attente de transmission, et non une publication serveur déjà garantie.
+- Flash : le libellé d'erreur du flux précise que seules les données réellement disponibles localement sont affichées.
+- Scan : le navigateur sans API de géolocalisation reçoit un état explicite ; les états de localisation et d'exécution sont distincts ; les échecs sont visibles et relançables.
+- Scan : les messages de refus/échec ne présument plus que la permission est forcément la cause de l'indisponibilité.
+- FR/EN : les nouveaux messages d'erreur et de repli sont présents dans les deux catalogues ; le test de parité i18n couvre leur présence.
+
+### CI — état vérifiable
+- La dernière exécution disponible au moment de cette revue est Quality #504, sur le commit antérieur aux dernières corrections de formatage.
+- Cette exécution a échoué pendant `bun run check:foundation`, avant les étapes RLS, release/build et tests mobile/offline.
+- Le journal relevait 611 erreurs Prettier. Onze concernaient trois fichiers modifiés dans cette série (`FlashComposer.tsx`, `ScanPanel.tsx`, `messages.ts`) ; ces onze écarts ont été corrigés dans la branche.
+- Les autres erreurs relevées concernent des fichiers préexistants hors des corrections Phase 2, notamment des contrats, de la logique Flash, des types Supabase générés, des composants génériques et des fondations de design. Elles ne sont pas masquées ni déclarées résolues.
+- Les commits de correction les plus récents n'ont pas encore de résultat CI récupérable. Tests, build, RLS et tests navigateur ne sont donc toujours pas certifiés.
+
+### Conditions restantes pour clôturer la phase 2
+- Obtenir une exécution CI exploitable après les derniers commits et résoudre le blocage de qualité restant sans désactiver les contrôles.
+- Valider manuellement sur appareils réels les parcours clavier/focus, lecteur d'écran, contrastes composites et tailles mobiles ; les vérifications de code seules ne remplacent pas ces essais.
+- Vérifier les états réseau et les parcours invité/compte sur les écrans effectivement implémentés. Réel et Radar restent des fondations d'attente : leurs comportements métier relèvent respectivement des phases 3 et 5, et ne sont pas certifiés par cette phase.
+
+**Statut de sortie : non clôturée.** La phase 2 ne sera déclarée terminée qu'après obtention de preuves CI et validation manuelle des critères transversaux. Aucun passage à la phase 3 n'est autorisé avant ces conditions.
