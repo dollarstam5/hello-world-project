@@ -35,7 +35,11 @@ export const useThemeStore = create<ThemeState>((set) => ({
 export function initTheme() {
   if (typeof window === "undefined") return;
   // Dark-first default; user can opt into light/system explicitly.
-  const stored = (window.localStorage.getItem(STORAGE_KEY) as ThemeMode | null) ?? "dark";
+  const storedValue = window.localStorage.getItem(STORAGE_KEY);
+  const stored: ThemeMode =
+    storedValue === "light" || storedValue === "dark" || storedValue === "system"
+      ? storedValue
+      : "dark";
   apply(stored);
   useThemeStore.setState({ mode: stored });
   matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
