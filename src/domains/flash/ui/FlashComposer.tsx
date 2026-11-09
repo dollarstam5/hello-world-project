@@ -25,10 +25,7 @@ export function FlashComposer() {
   const [pending, setPending] = useState(false);
   const [failed, setFailed] = useState(false);
 
-  const intent = useMemo(
-    () => (text.trim().length >= 3 ? parseFlashIntent(text) : null),
-    [text],
-  );
+  const intent = useMemo(() => (text.trim().length >= 3 ? parseFlashIntent(text) : null), [text]);
 
   async function submit(event: FormEvent) {
     event.preventDefault();
@@ -59,7 +56,9 @@ export function FlashComposer() {
   if (loading) {
     return (
       <Surface variant="sunken" padding="lg" bordered>
-        <p className="text-sm text-muted-foreground" role="status">{t("app.loading")}</p>
+        <p className="text-sm text-muted-foreground" role="status">
+          {t("app.loading")}
+        </p>
       </Surface>
     );
   }
@@ -93,9 +92,7 @@ export function FlashComposer() {
 
         {intent ? (
           <div className="flex flex-wrap items-center gap-2" aria-live="polite">
-            <span className="text-xs text-muted-foreground">
-              {t("flash.composer.understood")}
-            </span>
+            <span className="text-xs text-muted-foreground">{t("flash.composer.understood")}</span>
             <Indicator tone="primary" label={t(`flash.kind.${intent.kind}`)} />
             <Indicator tone="info" label={t(`flash.category.${intent.category}`)} />
             <Indicator tone="warning" label={t(`flash.slot.${intent.timeSlot}`)} />
