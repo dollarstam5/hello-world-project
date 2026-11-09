@@ -287,8 +287,10 @@ export const messages = {
     "install.title": "Gardez l'app sous la main",
     "install.subtitle": "Retrouvez Vitalis directement depuis votre écran d'accueil.",
     "install.action": "Installer",
-    "install.ios.instructions": "Ouvrez le menu de partage puis choisissez « Sur l’écran d’accueil » pour ajouter Vitalis.",
-    "install.android.instructions": "Dans le menu de votre navigateur, choisissez « Installer l’application » ou « Ajouter à l’écran d’accueil ».",
+    "install.ios.instructions":
+      "Ouvrez le menu de partage puis choisissez « Sur l’écran d’accueil » pour ajouter Vitalis.",
+    "install.android.instructions":
+      "Dans le menu de votre navigateur, choisissez « Installer l’application » ou « Ajouter à l’écran d’accueil ».",
     "install.dismiss": "Plus tard",
     "admin.kpi.tables": "Tables",
     "admin.kpi.rows": "Lignes",
@@ -675,8 +677,10 @@ export const messages = {
     "install.title": "Keep the app close",
     "install.subtitle": "Open Vitalis directly from your home screen.",
     "install.action": "Install",
-    "install.ios.instructions": "Open the share menu, then choose “Add to Home Screen” to add Vitalis.",
-    "install.android.instructions": "In your browser menu, choose “Install app” or “Add to Home screen”.",
+    "install.ios.instructions":
+      "Open the share menu, then choose “Add to Home Screen” to add Vitalis.",
+    "install.android.instructions":
+      "In your browser menu, choose “Install app” or “Add to Home screen”.",
     "install.dismiss": "Later",
     "admin.kpi.tables": "Tables",
     "admin.kpi.rows": "Rows",
