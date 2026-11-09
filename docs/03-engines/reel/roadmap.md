@@ -39,15 +39,17 @@ Le détail normatif se trouve dans [Réel — spécification fonctionnelle](./re
 - demande de connexion simple « Ça m'intéresse », sans message libre ;
 - destinataire voit le profil visible, le statut et la distance approximative avant décision ;
 - notification in-app et push si autorisée ; aucun rappel automatique ;
-- aucun message de refus explicite à l'expéditeur ; cooldown serveur unidirectionnel de 24 h après refus/retrait ;
-- blocage, fin de connexion, annulation des demandes en attente et historique en lecture seule selon les règles du Groupe A.
+- bip non accepté conservé 24 h à partir de son enregistrement serveur, sans délai artificiel d'envoi ; synchronisation automatique après interruption réseau ;
+- mises en relation acceptées accessibles dans deux emplacements seulement : Réel et Notifications ; communication attachée à la mise en relation ;
+- clôture confirmée par un participant, commune et immédiate pour les deux : retrait des deux emplacements, désactivation de la communication, information de l'autre participant et conservation éventuelle d'une trace technique minimale, sans historique de conversation consultable ;
+- détails normatifs : [Cycle de vie immédiat Réel V1](./reel-lifecycle-v1.md).
 
 ### Décisions fonctionnelles validées dans le Groupe C
 
 - C-01 : consultation d'un profil intermédiaire, limité aux champs visibles et à la distance approximative.
 - C-02.1 à C-02.4 : demande « Ça m'intéresse » sans message libre, informations visibles avant décision, notifications selon autorisation et absence de notification explicite de refus.
 - C-03.1 à C-03.9 : conversation créée après acceptation, texte uniquement, premier message libre pour chacun, partage volontaire et ponctuel d'une zone approximative après confirmation, notifications, états envoyé/reçu/lu, retrait d'affichage côté auteur sans effacement global, limite de 1 000 caractères et signalement.
-- C-04.1 à C-04.5 : conversation en lecture seule après fin ou blocage, confirmation de fin définitive, blocage et annulation des demandes en attente, déblocage sans restauration de l'ancienne connexion, et règles de redécouverte.
+- C-04.1 à C-04.5 : clôture confirmée et définitive, commune aux deux participants, retrait immédiat des deux emplacements, désactivation de la communication, information du second participant et absence d'historique de conversation après clôture ; déblocage sans restauration de l'ancienne mise en relation.
 
 Les décisions fonctionnelles C-03 et C-04 sont validées. Restent ouverts ou non vérifiés : seuils anti-spam, rétention technique des messages et signalements, contrats API, modèle de données, politiques RLS, comportement offline, tests mobiles et preuves d'implémentation.
 
