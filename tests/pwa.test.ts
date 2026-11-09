@@ -10,7 +10,6 @@ describe("PWA platform exports", () => {
   });
 });
 
-
 describe("platform-specific installation guidance", () => {
   it("offers iOS manual installation only in a supported secure PWA context", () => {
     expect(getManualInstallInstructions("ios", true, false)).toBe("ios");
