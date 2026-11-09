@@ -28,7 +28,7 @@ export const useOnboarding = create<OnboardingState>((set) => ({
   completed: false,
   shouldShow: false,
   step: 0,
-  next: () => set((state) => ({ step: Math.min(state.step + 1, 3) })),
+  next: () => set((state) => ({ step: Math.min(state.step + 1, 4) })),
   previous: () => set((state) => ({ step: Math.max(state.step - 1, 0) })),
   complete: () => {
     persistCompletion();
