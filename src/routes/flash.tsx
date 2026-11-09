@@ -30,7 +30,6 @@ export const Route = createFileRoute("/flash")({
             </div>
           ),
         },
-        { key: "soon", titleKey: "page.flash.section.soon", perf: "tall" },
       ]}
     />
   ),
