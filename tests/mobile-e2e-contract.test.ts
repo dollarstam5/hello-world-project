@@ -1,9 +1,5 @@
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import script from "../scripts/test-mobile-e2e.sh?raw";
 import { describe, expect, it } from "vitest";
-
-const scriptPath = resolve(process.cwd(), "scripts/test-mobile-e2e.sh");
-const script = readFileSync(scriptPath, "utf8");
 
 describe("mobile visual smoke contract", () => {
   it("covers the four agreed responsive reference viewports", () => {
