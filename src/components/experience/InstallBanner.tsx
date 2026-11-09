@@ -33,7 +33,7 @@ export function InstallBanner() {
             <button
               type="button"
               onClick={() => void install()}
-              className="mt-2 inline-flex min-h-11 items-center rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90"
+              className="mt-2 inline-flex min-h-12 items-center rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               {t("install.action")}
             </button>
@@ -43,7 +43,7 @@ export function InstallBanner() {
           type="button"
           onClick={() => setDismissed(true)}
           aria-label={t("install.dismiss")}
-          className="flex min-h-11 min-w-11 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground"
+          className="flex min-h-12 min-w-12 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           <X className="size-4" />
         </button>
