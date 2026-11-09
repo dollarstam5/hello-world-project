@@ -9,7 +9,11 @@ export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => 
   const { t, locale, setLocale } = useI18n();
   const { user } = useAuth();
   const { mode, setMode } = useThemeStore();
-  const isDark = mode === "dark";
+  const isDark =
+    mode === "dark" ||
+    (mode === "system" &&
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches);
 
   return (
     <header className="sticky top-0 z-30 border-b border-border-soft bg-background/85 backdrop-blur-xl">
