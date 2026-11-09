@@ -62,3 +62,32 @@ Les garanties liées aux reçus d'idempotence et au schéma distant restent non 
 ## 6. Limites
 
 Cet inventaire ne remplace pas une exploration complète de toutes les fonctions serveur, ni les tests de contrat, ni une vérification de production. Il doit être actualisé quand le code runtime ou les tests changent.
+
+
+## 7. Notifications, conversations et assistance : état runtime
+
+La présence du contrat historique [Notification API](./14.%20Notification%20API.md) ne signifie pas que le service est livré.
+
+| Capacité | État constaté dans le dépôt | Conclusion |
+|---|---|---|
+| Fenêtre de communication | `CommunicationSheet` avec onglets notifications, assistant et conversations | Coque UI présente ; onglets Notifications et Conversations sont des états vides statiques. |
+| Notification API | `src/platform/notifications/index.ts` expose un payload et `noopNotifications` ; aucun handler de liste/lecture/archivage, domaine dédié ou route API n'a été confirmé | Contrat historique uniquement ; runtime non démontré. |
+| Conversations entre membres | Aucun domaine, route, schéma, table ou test de conversation n'a été identifié dans l'inventaire de cette passe | Non démontré ; ne pas assimiler Assistant Vita à une messagerie membre. |
+| Conversations déclenchées par action | Aucun lien runtime vers une action source / mission / mise en relation n'a été identifié | Contrat et règles V1 à définir avant implémentation. |
+| Assistant Vita | Composants UI, hook hybride, fonction serveur authentifiée, validation Zod, quotas SQL et tests de politique/isolation présents | Assistance IA partielle présente ; aucun endpoint de conversation membre ni historique serveur membre n'est établi. |
+
+La règle produit à préserver est l'absence de messagerie libre : une conversation membre doit être créée uniquement à partir d'une action métier autorisée et rester liée à son contexte. Les détails et écarts sont consignés dans [la réconciliation Communication et moteurs secondaires — vague 10](../07-annexes/foundation-communication-engines-reconciliation-wave-5.md).
+
+## 8. Moteurs secondaires : état runtime observé
+
+| Domaine | État observé | Référence runtime |
+|---|---|---|
+| Flash | Partiel : feed public, création locale, commandes limitées | `src/domains/flash/`, `src/routes/flash.tsx` |
+| Scan | Partiel : fonction de scan, hook et abonnement Realtime | `src/domains/scan/`, `src/routes/scan.tsx` |
+| Radar | Schéma et logique/test présents ; route encore placeholder | `src/domains/radar/`, `src/routes/radar.tsx` |
+| Veille | Contrat historique ; runtime non confirmé | `docs/03-engines/veille/10. Veille API.md` |
+| Recommendation | Contrat historique ; runtime non confirmé | `docs/03-engines/recommendation/11._Recommendation_API.md` |
+| Trust | Documents et index de domaine ; parcours runtime complet non confirmé | `docs/03-engines/trust/`, `src/domains/trust/` |
+| Missions | Contrat historique ; route/domaine runtime non confirmé dans cette passe | `docs/03-engines/missions/7. Mission API.md` |
+
+Les routes et écrans placeholder ne doivent pas être présentés comme des moteurs livrés. Les contrats historiques sont des cibles documentaires jusqu'à confirmation de leurs handlers et tests. Voir la [vague 10](../07-annexes/foundation-communication-engines-reconciliation-wave-5.md) pour les réserves détaillées.
