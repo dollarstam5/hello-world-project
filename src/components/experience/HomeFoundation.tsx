@@ -37,12 +37,12 @@ function EngineCard({ to, icon: Icon, title, description, action, tone }: Engine
       >
         <div className="flex items-start justify-between gap-3">
           <span
-            className={`flex h-11 w-11 items-center justify-center rounded-2xl ${toneClasses[tone]}`}
+            className={`flex h-12 w-12 items-center justify-center rounded-2xl ${toneClasses[tone]}`}
           >
-            <Icon className="h-5 w-5" aria-hidden />
+            <Icon className="h-6 w-6" aria-hidden />
           </span>
           <ArrowUpRight
-            className="h-4 w-4 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+            className="h-5 w-5 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
             aria-hidden
           />
         </div>
