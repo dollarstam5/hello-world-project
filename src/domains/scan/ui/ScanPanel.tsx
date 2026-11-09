@@ -102,10 +102,10 @@ export function ScanPanel() {
         !failed &&
         !unsupported &&
         rows.length === 0 && (
-        <p className="text-sm text-muted-foreground" role="status">
-          {t("scan.empty")}
-        </p>
-      )}
+          <p className="text-sm text-muted-foreground" role="status">
+            {t("scan.empty")}
+          </p>
+        )}
 
       {rows.length > 0 && (
         <ul className="stack-3">
