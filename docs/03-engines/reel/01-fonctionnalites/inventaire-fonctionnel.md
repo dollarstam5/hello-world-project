@@ -59,7 +59,9 @@ Le placement exact, les règles de chevauchement, le seuil de regroupement et l'
 - Les bips sont consultables par l'utilisateur uniquement lorsqu'il est actif dans Réel.
 - L'auteur d'une intention peut consulter le profil de l'émetteur du bip avant de décider.
 - L'auteur peut accepter directement depuis la liste des bips, sans renvoyer de bip.
-- Un bip non accepté est conservé 24 h, même si Réel est fermé, puis expire.
+- Un bip non accepté reste actif pendant 24 h, même si Réel est fermé, puis expire en tant qu'action.
+- Pour un utilisateur connecté à son compte Vitalis, l'événement du bip (envoyé/reçu, date et état, selon les données minimisées retenues) reste consultable dans son historique après l'expiration.
+- En mode invité, aucune histoire personnelle persistante n'est conservée : les données personnelles liées à la session disparaissent à sa fin.
 - Le point de départ exact du délai de 24 h reste à définir.
 
 Le refus, l'annulation par l'émetteur, les demandes répétées et les limites anti-abus restent à arbitrer.
@@ -67,7 +69,8 @@ Le refus, l'annulation par l'émetteur, les demandes répétées et les limites 
 ## 6. Mises en relation acceptées
 
 - L'acceptation d'un bip crée une mise en relation.
-- Les mises en relation acceptées sont accessibles dans deux emplacements : le compteur de Réel et Notifications.
+- Les mises en relation acceptées sont accessibles dans deux emplacements actifs : le compteur de Réel et Notifications.
+- Pour un utilisateur connecté, les mises en relation et leurs événements passés restent consultables dans l'historique, y compris après leur clôture ; leur présence dans l'historique ne les maintient pas actives.
 - Aucun espace autonome supplémentaire « Temps réel » n'est prévu.
 - La poursuite du contact après acceptation relève d'un choix ; l'acceptation ne doit pas être assimilée à l'ouverture automatique d'une messagerie libre.
 - Une mise en relation acceptée reste accessible jusqu'à sa clôture selon les règles actuellement retenues ; sa durée maximale avant clôture n'est pas fixée.
@@ -89,8 +92,11 @@ Le refus, l'annulation par l'émetteur, les demandes répétées et les limites 
 
 ## 9. Traçabilité et résilience réseau
 
-- Après clôture, seule une trace technique minimale est conservée : date, statut et événement.
-- Aucun historique de conversation ni historique visible de mise en relation clôturée n'est conservé.
+- Pour les comptes Vitalis, l'historique conserve les bips, les mises en relation et les interactions passées associées à Réel.
+- La clôture retire la mise en relation des espaces actifs des deux participants et désactive la communication, mais ne supprime pas son entrée de l'historique des comptes.
+- L'historique est une chronologie d'événements et de statuts ; cela ne vaut pas validation de la conservation du contenu des conversations, qui reste exclu en l'état.
+- En mode invité, l'historique personnel n'est pas persistant et les données personnelles de session disparaissent à la fin de celle-ci.
+- Les traces techniques minimales nécessaires à la sécurité et à la cohérence restent distinctes de l'historique visible.
 - Les actions en attente doivent être préservées en cas de perturbation réseau puis synchronisées au retour de la connexion.
 - La synchronisation doit éviter les doublons et les incohérences ; une action en attente localement ne doit pas être présentée comme confirmée par le serveur.
 
