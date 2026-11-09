@@ -475,7 +475,7 @@ export const messages = {
     "communication.notifications": "Notifications",
     "communication.assistant": "Assistant",
     "communication.messages": "Messages",
-    "communication.reel": "Real",
+    "communication.reel": "Live",
     "communication.notifications.empty": "No new notifications.",
     "communication.messages.empty":
       "Conversations linked to your actions and connections will appear here.",
@@ -645,7 +645,7 @@ export const messages = {
     "page.scan.desc": "Spot active Flash around you, without ever revealing your position.",
     "page.scan.section.scan": "Scan",
     "page.reel.eyebrow": "Your presence",
-    "page.reel.title": "Real",
+    "page.reel.title": "Live",
     "page.reel.desc":
       "This space is taking shape. Soon, you will be able to share your presence and discover people nearby.",
     "page.radar.title": "Radar",
