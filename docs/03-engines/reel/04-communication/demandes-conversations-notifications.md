@@ -25,7 +25,7 @@ Refus explicite, annulation par l'émetteur, blocage, signalement, demandes rép
 Événement explicitement retenu : informer l'autre participant lors de la clôture. Le catalogue complet des notifications reste à établir.
 
 ## Règle de stockage V1
-Les conversations archivées continuent d'occuper du stockage tant qu'elles ne sont pas supprimées. La durée de conservation des archives après archivage, les délais d'effacement définitif et le parcours de demande/autorisation restent à définir. Aucun paiement ou supplément de stockage n'est proposé en V1.
+Les conversations archivées continuent d'occuper du stockage pendant 6 mois à compter de leur archivage, puis leur suppression définitive est prévue. Les délais d'effacement technique des sauvegardes éventuelles et le parcours de demande/autorisation restent à définir. Aucun paiement ou supplément de stockage n'est proposé en V1.
 
 
 ## Durée de conservation des archives
