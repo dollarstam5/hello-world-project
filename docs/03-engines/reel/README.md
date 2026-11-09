@@ -316,36 +316,42 @@ L'acceptation confirme le jumelage entre les deux personnes et autorise l'étape
 Ces points restent ouverts et ne doivent pas être considérés comme implémentés ou décidés par anticipation.
 
 
-## 23. Décision produit validée — caractère éphémère des bips et conservation des jumelages (2026-11-09)
+## 23. Décision produit validée — conservation temporaire des bips pendant 24 heures (2026-11-09)
 
-**Statut : VALIDÉ V1.** Réel est une expérience instantanée. Les bips ne constituent pas un historique et ne sont pas conservés après la fin du contexte de présence.
+**Statut : VALIDÉ V1.** Pour tenir compte des perturbations réseau, des déconnexions et des dysfonctionnements technologiques, les bips envoyés et reçus bénéficient d'une conservation temporaire de **24 heures**, y compris après la fermeture de la présence Réel.
 
-### 23.1 Aucun historique de bips
+### 23.1 Historique temporaire des bips
 
-- L'envoi d'un bip ne crée pas d'historique consultable par son expéditeur.
-- Les bips reçus sont consultables par le destinataire uniquement dans le contexte de sa présence Réel active.
-- Aucun journal des bips envoyés ou reçus n'est proposé dans Réel.
-- Le produit ne doit pas afficher après coup une liste des personnes bipées ou des bips reçus qui ont expiré.
+- Les bips envoyés et reçus peuvent être retrouvés pendant une fenêtre temporaire de 24 heures.
+- Cette fenêtre reste valable même si l'utilisateur ferme sa présence Réel ou quitte temporairement l'application.
+- L'historique est limité aux événements de bip concernés par cette fenêtre ; il ne devient pas un historique permanent ni une messagerie.
+- À l'expiration des 24 heures, les bips non acceptés ne sont plus consultables et sont supprimés selon les règles de conservation à spécifier.
+- L'interface doit distinguer clairement un bip en attente d'une mise en relation déjà acceptée.
 
-### 23.2 Fin du contexte Réel
+### 23.2 Prise en compte des perturbations réseau
 
-À la fermeture de la présence ou à la déconnexion de l'utilisateur, les bips non convertis en jumelage sont supprimés et ne sont plus accessibles dans Réel.
+La règle produit doit éviter qu'une coupure réseau ou une synchronisation retardée fasse disparaître prématurément un bip :
 
-Cette règle s'applique aux bips en attente, qu'ils aient ou non été consultés. Un bip ne doit pas survivre comme sollicitation en attente après la fin du contexte instantané auquel il appartient.
+- les événements en attente de synchronisation doivent pouvoir être récupérés au retour du réseau ;
+- une fermeture de présence ou une déconnexion ne doit pas, à elle seule, supprimer immédiatement les bips ;
+- la durée temporaire de 24 heures doit être appliquée de manière cohérente entre les appareils et le serveur ;
+- le point de départ exact du délai (création locale, réception serveur ou confirmation de synchronisation), les reprises après échec et les garanties de livraison restent **À SPÉCIFIER TECHNIQUEMENT**.
 
-### 23.3 Seules les mises en relation acceptées sont conservées
+Cette règle produit ne présume pas d'une implémentation déjà existante. Les mécanismes de file d'attente, d'accusé de réception, de synchronisation, de déduplication et de suppression doivent être documentés et testés avant d'être considérés comme réalisés.
 
-Lorsqu'un destinataire appuie sur **« Accepter »**, la mise en relation devient une relation validée. Seules ces mises en relation acceptées sont conservées selon les règles du moteur Communication et les règles de conservation Vitalis applicables.
+### 23.3 Seules les mises en relation acceptées deviennent durables
 
-Un bip non accepté ne devient jamais une mise en relation et ne doit pas être conservé comme historique.
+Lorsqu'un destinataire appuie sur **« Accepter »**, la mise en relation devient une relation validée. Elle est conservée selon les règles du moteur Communication et les règles de conservation Vitalis applicables, indépendamment de l'expiration du bip d'origine.
 
-### 23.4 Conséquences produit et techniques à respecter
+Un bip non accepté reste un événement temporaire : sa conservation de 24 heures ne le transforme jamais en mise en relation.
 
-- Le compteur représente uniquement les bips encore actifs dans le contexte Réel courant ; il ne représente jamais un total historique.
-- La disparition des bips à la fermeture de la présence ou à la déconnexion doit être cohérente dans l'interface et dans les données.
-- Les mises en relation acceptées doivent être séparées des bips éphémères afin que leur conservation ne dépende pas de la durée de vie de la présence Réel.
-- Les modalités techniques de suppression, de synchronisation et de gestion des cas de déconnexion restent à spécifier et à vérifier ; cette décision produit ne constitue pas une preuve d'implémentation.
+### 23.4 Conséquences produit
 
+- Les bips envoyés et reçus disposent d'un historique temporaire de 24 heures.
+- Les bips non acceptés ne sont jamais conservés indéfiniment.
+- Les mises en relation acceptées sont séparées des bips temporaires et suivent leur propre cycle de vie.
+- Le compteur et les accès de Réel ne doivent pas confondre bips temporaires et mises en relation durables.
+- La règle de 24 heures remplace explicitement l'ancienne règle d'effacement immédiat à la fermeture de présence ou à la déconnexion.
 
 ## 24. Décision produit validée — jumelage établi sans obligation de conversation immédiate (2026-11-09)
 
@@ -409,28 +415,40 @@ Les deux accès renvoient à la même mise en relation validée : ils ne doivent
 Les modalités détaillées d'affichage, de classement, de lecture et d'archivage des notifications restent alignées sur les règles communes de la cloche et du moteur Communication.
 
 
-## 26. Clarification validée — seules les mises en relation acceptées sont conservées (2026-11-09)
+## 26. Clarification validée — séparation entre historique temporaire des bips et mises en relation durables (2026-11-09)
 
-**Statut : VALIDÉ V1.** La règle de conservation de Réel est strictement limitée aux mises en relation effectivement acceptées. Le compteur de Réel et la rubrique Notifications ne conservent jamais les bips eux-mêmes.
+**Statut : VALIDÉ V1.** La règle précédente selon laquelle les bips disparaissaient immédiatement à la fermeture de la présence ou à la déconnexion est remplacée. Les bips disposent désormais d'une fenêtre de conservation temporaire de **24 heures**, même après la fermeture de Réel.
 
-### 26.1 Bips accessibles uniquement pendant l'activité Réel
+### 26.1 Bips : historique temporaire de 24 heures
 
-- Les bips reçus sont accessibles uniquement lorsque l'utilisateur est actif dans Réel, avec une présence en cours.
-- Les bips envoyés ne créent aucun historique consultable.
-- Les bips reçus non acceptés ne sont pas conservés dans le compteur de Réel ni dans les Notifications.
-- À la fermeture de la présence ou à la déconnexion, les bips en attente disparaissent et ne sont plus accessibles.
-- Si l'utilisateur n'a aucune présence active dans Réel, il n'a accès à aucun bip en attente ni à un historique de bips.
+- Les bips envoyés et reçus restent retrouvables pendant 24 heures.
+- Cette possibilité de consultation ne dépend plus du maintien d'une présence Réel active.
+- La fermeture de la présence, la déconnexion ou la fermeture de l'application ne provoque pas leur effacement immédiat.
+- Les bips non acceptés expirent au terme de la fenêtre de 24 heures et ne deviennent pas un historique permanent.
+- Le parcours précis d'accès à cet historique temporaire dans l'interface reste **À DÉFINIR**.
 
-### 26.2 Conservation exclusive des jumelages acceptés
+### 26.2 Résilience réseau et synchronisation
 
-Lorsqu'un bip est accepté, seule la mise en relation résultante est conservée :
-- dans l'espace accessible depuis le compteur de Réel ;
-- dans la rubrique **Notifications** de la fenêtre centrale de la cloche, sous la forme de la notification de confirmation destinée à l'expéditeur.
+- Les bips non encore synchronisés doivent être préservés localement jusqu'à leur prise en charge par le mécanisme de synchronisation.
+- Au retour du réseau, les événements en attente doivent être transmis et réconciliés sans créer de doublons.
+- Une déconnexion ne doit pas être interprétée comme une suppression volontaire.
+- Le point de départ exact des 24 heures, le traitement d'un événement reçu tardivement, les tentatives de reprise et la confirmation de synchronisation restent **À SPÉCIFIER ET TESTER**.
+- Aucun comportement technique n'est déclaré implémenté sur la seule base de cette décision produit.
 
-Ces deux emplacements donnent accès à la même mise en relation validée. Ils ne constituent pas deux historiques indépendants.
+### 26.3 Mises en relation acceptées : conservation durable distincte
 
-### 26.3 Absence de mise en relation, absence d'historique
+Lorsqu'un bip est accepté, seule la mise en relation résultante devient durable :
 
-Si aucun bip n'est accepté, aucune mise en relation n'est créée et aucun historique de cette interaction n'est conservé. Il n'existe donc pas d'archive des bips envoyés, reçus, ignorés ou expirés dans Réel.
+- elle reste accessible depuis l'espace des mises en relation de Réel ;
+- la notification de confirmation destinée à l'expéditeur reste accessible dans la rubrique **Notifications** de la fenêtre centrale de la cloche ;
+- les deux accès renvoient à la même mise en relation, sans créer deux relations distinctes ni deux historiques indépendants ;
+- la conservation de la mise en relation ne dépend pas de l'expiration du bip initial.
 
-**Règle synthétique :** bips = temporaires et accessibles uniquement pendant l'activité Réel ; jumelages acceptés = seules données de mise en relation conservées dans les deux emplacements prévus. Cette règle produit ne constitue pas une preuve de comportement déjà implémenté dans le runtime.
+### 26.4 Règle synthétique et priorité documentaire
+
+- **Bips envoyés ou reçus :** historique temporaire de 24 heures, y compris après fermeture de présence ou déconnexion.
+- **Bips non acceptés :** expiration après 24 heures ; aucune conservation permanente.
+- **Bips acceptés :** la mise en relation créée est conservée durablement selon les règles du moteur Communication et Vitalis.
+- **Réseau indisponible :** les événements en attente de synchronisation doivent être préservés et réconciliés au retour de la connexion.
+
+Cette décision remplace les formulations contraires des sections 23 et des versions antérieures de la section 26. Elle constitue une règle produit validée, pas une preuve de comportement déjà implémenté dans le runtime.
