@@ -61,3 +61,18 @@ Les règles ci-dessous reflètent les décisions produit retrouvées. VALIDÉ si
 - L'historique des interactions conserve les événements et statuts, pas le contenu des conversations. Les règles détaillées de contenu, de rétention et de suppression restent à spécifier.
 - La clôture est bilatérale, jamais un simple retrait local.
 - Les principes réseau sont des exigences produit ; l'architecture et les preuves de leur réalisation restent à établir.
+
+
+## Règles complémentaires — historique et maîtrise des coûts V1
+
+| ID | Règle | Statut |
+|---|---|---|
+| HIST-005 | Une conversation d'un compte Vitalis est archivée après 3 mois ; le plafond est de 50 conversations conservées et, dès son dépassement, la plus ancienne est archivée même avant 3 mois. | VALIDÉ |
+| HIST-006 | Une conversation archivée est inaccessible à l'utilisateur, sauf demande de celui-ci autorisée par un administrateur pour 24 heures ; après ce délai, elle redevient inaccessible. | VALIDÉ |
+| HIST-007 | L'utilisateur peut supprimer son historique, mais ne peut pas l'exporter. | VALIDÉ |
+| STO-001 | Chaque espace Vitalis dispose d'un plafond gratuit de stockage en V1 ; les valeurs chiffrées restent à définir. | VALIDÉ — chiffres à définir |
+| STO-002 | À saturation, l'utilisateur choisit entre supprimer des données ou limiter les nouveaux usages/enregistrements de l'espace concerné. | VALIDÉ |
+| STO-003 | Aucun paiement, abonnement ou supplément de stockage n'est proposé en V1 ; les micro-paiements et extensions facultatives sont réservés à V2. | VALIDÉ |
+| STO-004 | Les plafonds individuels doivent respecter les limites globales gratuites réellement disponibles sur Supabase Cloud ; aucune consommation illimitée ni dépense récurrente obligatoire n'est admise comme hypothèse V1. | VALIDÉ — contrainte d'architecture |
+
+La règle antérieure excluant le contenu des conversations de l'historique est remplacée par HIST-005 à HIST-007. La durée de conservation des archives après archivage reste à définir.
