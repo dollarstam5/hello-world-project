@@ -265,3 +265,52 @@ Cette présentation est distincte d'une grande fiche plein écran. Elle préserv
 3. **Description de présence**, lorsqu'elle a été renseignée.
 
 La description étant facultative, son absence ne doit pas empêcher la consultation du profil ni créer un emplacement vide inutile. La fiche reste compacte et ne présente pas d'autres informations ou actions à ce stade. Toute extension de son contenu devra faire l'objet d'un arbitrage distinct.
+
+
+## 22. Décision produit validée — bip et acceptation directe pour le jumelage (2026-11-09)
+
+**Statut : PARCOURS DE PRINCIPE VALIDÉ V1 — règles de détail à préciser.** Le mécanisme de mise en relation de Réel repose sur un signal volontaire appelé provisoirement **« bip »**. Le bip permet à une personne de faire discrètement signe à un profil qu'elle souhaite contacter, sans envoyer de message libre et sans déclencher automatiquement une conversation.
+
+### 22.1 Envoyer un bip depuis la fiche compacte
+
+La fiche compacte d'un profil comporte un petit bouton **« Biper »**. En l'utilisant, la personne manifeste son souhait d'entrer en contact avec le profil sélectionné.
+
+Le bip est un signal d'intérêt, pas un message. Il ne crée pas à lui seul un jumelage et n'ouvre pas de conversation.
+
+### 22.2 Compteur des bips reçus
+
+La page Réel présente en bas un compteur permettant à l'utilisateur de voir combien de personnes lui ont envoyé un bip. Ce compteur donne accès à la consultation des bips reçus.
+
+Le compteur et son accès doivent rester simples, visibles et compréhensibles, sans détourner l'attention de la découverte des présences locales.
+
+### 22.3 Liste des personnes ayant envoyé un bip
+
+Lorsque l'utilisateur touche le compteur, une fenêtre s'ouvre sous la forme d'une **bottom sheet** ou d'un modal. Elle présente les profils des personnes qui lui ont envoyé un bip, avec les éléments essentiels déjà retenus pour les profils : avatar ou photo, nom affiché et description de présence lorsqu'elle existe.
+
+### 22.4 Accepter directement — parcours court validé
+
+**Décision utilisateur : option B — VALIDÉE V1.** Depuis cette liste, l'utilisateur peut appuyer directement sur le bouton **« Accepter »** associé à un profil. Il n'a pas besoin de renvoyer un bip ni de suivre un échange de signaux réciproques.
+
+L'acceptation confirme le jumelage entre les deux personnes et autorise l'étape de communication contextualisée selon les règles Vitalis. Le bip initial seul ne donne jamais accès à une conversation.
+
+### 22.5 Principes et limites
+
+- Le bip est volontaire et déclenché par l'utilisateur.
+- Recevoir un bip n'oblige jamais à accepter.
+- L'acceptation est une action explicite du destinataire.
+- Le parcours doit rester court : consulter les bips reçus, puis accepter directement si l'utilisateur le souhaite.
+- Le mécanisme ne réintroduit pas « Ça m'intéresse », ni sous ce nom ni sous une autre forme : le bip constitue l'approche nouvelle exprimée par l'utilisateur.
+- Le détail de la conversation après jumelage reste soumis aux règles du moteur Communication ; aucune messagerie libre n'est créée.
+
+### 22.6 Points restant à arbitrer
+
+- comportement exact après l'envoi d'un bip et confirmation visuelle pour son expéditeur ;
+- possibilité ou non de retirer un bip envoyé ;
+- règles contre les bips répétés ou abusifs et limites V1 ;
+- comportement d'un bip lorsque la présence de l'expéditeur expire ou devient invisible ;
+- actions disponibles pour refuser, ignorer, bloquer ou signaler un profil ;
+- état et mise à jour du compteur après acceptation, refus ou expiration ;
+- libellé final du mécanisme si « bip » reste un nom de travail ;
+- contenu et comportement précis de la conversation contextualisée après acceptation.
+
+Ces points restent ouverts et ne doivent pas être considérés comme implémentés ou décidés par anticipation.
