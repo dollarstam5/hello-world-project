@@ -34,3 +34,16 @@ ID, préconditions, étapes, résultat attendu/observé, environnement/version, 
 - Vérifier qu'aucune option payante n'est proposée en V1 et que les opérations refusées au plafond ne provoquent ni dépassement ni perte silencieuse de données.
 
 Les valeurs chiffrées des quotas et seuils devront être testées après leur arbitrage.
+
+
+## Scénarios attendus — rétention et maîtrise des coûts
+
+- Vérifier qu'une conversation est archivée après 3 mois ou dès que le plafond de 50 est dépassé.
+- Vérifier que l'archive reste conservée 6 mois à compter de son archivage, puis que la purge définitive est exécutée selon la politique définie.
+- Vérifier qu'un accès exceptionnel administrateur expire après 24 heures.
+- Vérifier les compteurs logiques par espace et les quotas proposés une fois validés.
+- Simuler l'atteinte des seuils globaux à 50 %, 65 % et 70 % et vérifier les réactions attendues.
+- Vérifier qu'aucune écriture refusée ne provoque de perte silencieuse et que les actions hors ligne restent en attente.
+- Vérifier qu'aucune option de paiement ou d'extension payante n'est proposée en V1.
+
+Les quotas et seuils ci-dessus sont des propositions de conception, pas des résultats de tests exécutés.
