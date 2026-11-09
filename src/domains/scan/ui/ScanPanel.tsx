@@ -72,9 +72,9 @@ export function ScanPanel() {
         className="inline-flex min-h-12 items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
       >
         {busy || locating ? (
-          <ScanLine className="h-4 w-4 animate-pulse" aria-hidden />
+          <ScanLine className="h-6 w-6 animate-pulse" aria-hidden />
         ) : (
-          <LocateFixed className="h-4 w-4" aria-hidden />
+          <LocateFixed className="h-6 w-6" aria-hidden />
         )}
         {busy || locating ? t("scan.busy") : t("scan.start")}
       </button>
