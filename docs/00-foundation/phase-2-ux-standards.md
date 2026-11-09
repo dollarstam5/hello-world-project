@@ -34,8 +34,10 @@ Ce document fixe les règles vérifiables de la phase 2. Il ne certifie pas les 
 
 ## 4. Navigation et langue
 
-- La navigation principale mobile présente Réel, Flash, Scan, Radar et 2x2.
+- La navigation principale mobile présente exactement cinq icônes, dans cet ordre : Flash, Scan, Réel, Radar, 2x2.
+- Réel occupe la position centrale et utilise une icône d’antenne ; son point d’entrée est `/reel`.
 - Le centre 2x2 ouvre le menu ; il ne constitue pas une destination métier supplémentaire.
+- L’accueil reste hors de la barre basse : l’icône/identité de l’application ouvre `/`, et le lancement depuis l’icône installée ouvre également l’accueil.
 - Le changement FR/EN est accessible depuis l'en-tête principal et conserve la langue choisie via le mécanisme i18n existant.
 - Le centre de communication conserve quatre espaces indépendants : Notifications, Assistant, Messages et Réel.
 - Aucun compteur ne doit être simulé ; les indicateurs ne seront activés qu'une fois raccordés à des événements métier fiables.
