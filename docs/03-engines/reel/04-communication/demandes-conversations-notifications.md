@@ -26,3 +26,8 @@ Refus explicite, annulation par l'émetteur, blocage, signalement, demandes rép
 
 ## Règle de stockage V1
 Les conversations archivées continuent d'occuper du stockage tant qu'elles ne sont pas supprimées. La durée de conservation des archives après archivage, les délais d'effacement définitif et le parcours de demande/autorisation restent à définir. Aucun paiement ou supplément de stockage n'est proposé en V1.
+
+
+## Durée de conservation des archives
+
+Après archivage, une conversation reste conservée pendant 6 mois à compter de la date d'archivage, puis sa suppression définitive est prévue. L'accès utilisateur reste soumis à l'autorisation exceptionnelle de 24 heures. Les délais techniques éventuels liés aux sauvegardes et les obligations légales restent à vérifier.
