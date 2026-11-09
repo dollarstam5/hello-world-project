@@ -15,10 +15,10 @@ Cette section rassemble les documents d'architecture technique, les frontières 
 
 ## Legacy references retained pending approval
 
-- `docs/18-VITALA-ARCHITECTURE-V1 Partie 1.md`
-- `docs/18-VITALA-ARCHITECTURE-V1 Partie 2.md`
-- `docs/18-VITALA-ARCHITECTURE-V1 Partie 3.md`
-- `docs/Database Architecture.md`
+- `docs/02-architecture/18-VITALA-ARCHITECTURE-V1 Partie 1.md`
+- `docs/02-architecture/18-VITALA-ARCHITECTURE-V1 Partie 2.md`
+- `docs/02-architecture/18-VITALA-ARCHITECTURE-V1 Partie 3.md`
+- `docs/04-database/Database Architecture.md`
 - Les sources historiques UDI et Trust restent conservées dans `docs/` jusqu'à validation et autorisation explicite.
 
 Les nouveaux changements doivent viser les références canoniques et respecter la propriété des données par domaine. Une référence documentaire n'est pas une preuve que le composant décrit est déjà implémenté.

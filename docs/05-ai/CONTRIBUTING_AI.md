@@ -4,7 +4,7 @@
 
 ## Avant d'écrire une ligne
 
-1. Lire `docs/PROJECT_BIBLE.md` et `ARCHITECTURE.md`.
+1. Lire `docs/07-annexes/PROJECT_BIBLE.md` et `ARCHITECTURE.md`.
 2. Identifier la couche propriétaire de la responsabilité concernée.
 3. Vérifier qu'un module existant ne fait pas déjà le travail.
 
