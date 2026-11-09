@@ -152,7 +152,8 @@ export const messages = {
     "flash.composer.placeholder": "Exprimez votre besoin ou votre offre, simplement…",
     "flash.composer.publish": "Diffuser",
     "flash.composer.published": "Flash diffusé. Il se synchronisera dès que le réseau est là.",
-    "flash.composer.error": "Impossible d’enregistrer ce Flash. Vérifiez votre connexion et réessayez.",
+    "flash.composer.error":
+      "Impossible d’enregistrer ce Flash. Vérifiez votre connexion et réessayez.",
     "flash.composer.signIn": "Connectez-vous pour diffuser un Flash.",
     "flash.composer.understood": "Vita a compris :",
     "flash.kind.offer": "Offre",
@@ -178,7 +179,8 @@ export const messages = {
     "scan.empty": "Aucun Flash actif dans cette zone pour le moment.",
     "scan.denied": "Position indisponible. Autorisez la localisation pour scanner.",
     "scan.error": "Le scan a échoué. Réessayez.",
-    "scan.unsupported": "Ce navigateur ne permet pas d’obtenir votre position. Essayez un navigateur compatible.",
+    "scan.unsupported":
+      "Ce navigateur ne permet pas d’obtenir votre position. Essayez un navigateur compatible.",
     "page.scan.eyebrow": "Proximité",
     "page.scan.title": "Scan",
     "page.scan.desc":
@@ -517,7 +519,8 @@ export const messages = {
     "flash.composer.placeholder": "Share your need or offer, simply…",
     "flash.composer.publish": "Broadcast",
     "flash.composer.published": "Flash broadcast. It will sync as soon as the network is back.",
-    "flash.composer.error": "This Flash could not be saved. Check your connection and try again.",
+    "flash.composer.error":
+      "This Flash could not be saved. Check your connection and try again.",
     "flash.composer.signIn": "Sign in to broadcast a Flash.",
     "flash.composer.understood": "Vita understood:",
     "flash.kind.offer": "Offer",
@@ -543,7 +546,8 @@ export const messages = {
     "scan.empty": "No active Flash in this area yet.",
     "scan.denied": "Location unavailable. Allow location access to scan.",
     "scan.error": "The scan failed. Please try again.",
-    "scan.unsupported": "This browser cannot provide your location. Try a compatible browser.",
+    "scan.unsupported":
+      "This browser cannot provide your location. Try a compatible browser.",
     "page.scan.eyebrow": "Nearby",
     "page.scan.title": "Scan",
     "page.scan.desc": "Spot active Flash around you, without ever revealing your position.",
