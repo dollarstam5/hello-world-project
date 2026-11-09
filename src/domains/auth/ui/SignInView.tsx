@@ -1,52 +1,94 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "@tanstack/react-router";
+import { Languages, Moon, Sun } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n/useI18n";
+import { useThemeStore } from "@/lib/app/theme";
 import { authService } from "../services/auth.service";
 
 type Mode = "signIn" | "signUp" | "forgot";
 
 /** Sign-in / sign-up / password-reset doorway. Public route: no gate, no redirect loop. */
 export function SignInView() {
-  const { t } = useI18n();
+  const { t, locale, setLocale } = useI18n();
   const navigate = useNavigate();
-  const [mode, setMode] = useState<Mode>("signIn");
+  const { mode: themeMode, setMode } = useThemeStore();
+  const isDark =
+    themeMode === "dark" ||
+    (themeMode === "system" &&
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches);
+  const [mode, setAuthMode] = useState<Mode>("signIn");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [messageType, setMessageType] = useState<"error" | "status">("status");
 
   async function submit(event: FormEvent) {
     event.preventDefault();
     setBusy(true);
     setMessage(null);
 
-    if (mode === "forgot") {
-      const { error } = await authService.requestPasswordReset(email);
+    try {
+      if (mode === "forgot") {
+        const { error } = await authService.requestPasswordReset(email);
+        setMessageType(error ? "error" : "status");
+        setMessage(error ? error.message : t("auth.resetSent"));
+        return;
+      }
+
+      const result =
+        mode === "signIn"
+          ? await authService.signIn(email, password)
+          : await authService.signUp(email, password);
+
+      if (result.error) {
+        setMessageType("error");
+        setMessage(result.error.message);
+        return;
+      }
+      if (result.data.session) {
+        void navigate({ to: "/" });
+        return;
+      }
+      setMessageType("status");
+      setMessage(t("auth.checkEmail"));
+    } catch {
+      setMessageType("error");
+      setMessage(t("auth.error.generic"));
+    } finally {
       setBusy(false);
-      setMessage(error ? error.message : t("auth.resetSent"));
-      return;
     }
-
-    const result =
-      mode === "signIn"
-        ? await authService.signIn(email, password)
-        : await authService.signUp(email, password);
-
-    setBusy(false);
-
-    if (result.error) {
-      setMessage(result.error.message);
-      return;
-    }
-    if (result.data.session) {
-      void navigate({ to: "/" });
-      return;
-    }
-    setMessage(t("auth.checkEmail"));
   }
 
   return (
-    <div className="grid min-h-dvh place-items-center bg-background px-4 py-10">
+    <div className="relative grid min-h-dvh place-items-center bg-background px-4 py-16">
+      <div className="absolute right-4 top-4 flex items-center gap-1">
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          aria-label={t("language.switch")}
+          onClick={() => setLocale(locale === "fr" ? "en" : "fr")}
+          className="min-h-11 min-w-11 px-2 text-xs font-semibold"
+        >
+          <Languages aria-hidden className="mr-1 h-4 w-4" />
+          {locale.toUpperCase()}
+        </Button>
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          aria-label={t(isDark ? "theme.switchToLight" : "theme.switchToDark")}
+          title={t(isDark ? "theme.switchToLight" : "theme.switchToDark")}
+          onClick={() => setMode(isDark ? "light" : "dark")}
+          className="h-11 w-11"
+        >
+          {isDark ? <Sun aria-hidden /> : <Moon aria-hidden />}
+        </Button>
+      </div>
+
       <div className="w-full max-w-sm">
         <h1 className="text-2xl font-semibold tracking-tight">
           {t(mode === "forgot" ? "auth.forgotTitle" : "auth.title")}
@@ -64,7 +106,7 @@ export function SignInView() {
               autoComplete="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              className="mt-1 w-full rounded-xl border border-border/60 bg-card/40 px-3 py-2 outline-none focus:border-primary"
+              className="mt-1 min-h-11 w-full rounded-xl border border-border/60 bg-card/40 px-3 py-2 outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-ring"
             />
           </label>
 
@@ -78,16 +120,12 @@ export function SignInView() {
                 autoComplete={mode === "signIn" ? "current-password" : "new-password"}
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                className="mt-1 w-full rounded-xl border border-border/60 bg-card/40 px-3 py-2 outline-none focus:border-primary"
+                className="mt-1 min-h-11 w-full rounded-xl border border-border/60 bg-card/40 px-3 py-2 outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-ring"
               />
             </label>
           ) : null}
 
-          <button
-            type="submit"
-            disabled={busy}
-            className="w-full rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-60"
-          >
+          <Button type="submit" disabled={busy} className="min-h-11 w-full">
             {busy
               ? t("app.loading")
               : t(
@@ -97,20 +135,24 @@ export function SignInView() {
                       ? "auth.signUp"
                       : "auth.sendReset",
                 )}
-          </button>
+          </Button>
         </form>
 
-        {message ? <p className="mt-3 text-sm text-muted-foreground">{message}</p> : null}
+        {message ? (
+          <p className="mt-3 text-sm text-muted-foreground" role={messageType}>
+            {message}
+          </p>
+        ) : null}
 
         <div className="mt-5 flex flex-col items-center gap-2 text-sm">
           {mode === "signIn" ? (
             <button
               type="button"
               onClick={() => {
-                setMode("forgot");
+                setAuthMode("forgot");
                 setMessage(null);
               }}
-              className="text-muted-foreground underline-offset-4 hover:underline"
+              className="min-h-11 rounded-md px-3 text-muted-foreground underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               {t("auth.forgot")}
             </button>
@@ -118,10 +160,10 @@ export function SignInView() {
           <button
             type="button"
             onClick={() => {
-              setMode(mode === "signIn" ? "signUp" : "signIn");
+              setAuthMode(mode === "signIn" ? "signUp" : "signIn");
               setMessage(null);
             }}
-            className="text-muted-foreground underline-offset-4 hover:underline"
+            className="min-h-11 rounded-md px-3 text-muted-foreground underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             {t(mode === "signIn" ? "auth.toSignUp" : "auth.toSignIn")}
           </button>
