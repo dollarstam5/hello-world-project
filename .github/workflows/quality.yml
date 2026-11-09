@@ -62,5 +62,5 @@ jobs:
       - name: Install Chromium for mobile validation
         run: bunx playwright install --with-deps chromium
 
-      - name: Mobile and offline browser tests
+      - name: Mobile visual smoke screenshots
         run: bun run test:e2e
