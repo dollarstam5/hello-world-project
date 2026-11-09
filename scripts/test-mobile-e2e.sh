@@ -23,7 +23,7 @@ if ! curl --silent --fail "$BASE_URL/" >/dev/null; then
   exit 1
 fi
 
-for viewport in "360,800" "390,844" "412,915" "768,1024"; do
+for viewport in "320,720" "360,800" "390,844" "412,915" "768,1024" "1024,768" "1280,800" "844,390"; do
   output="/tmp/vitalis-mobile-${viewport//,/-}.png"
   bunx playwright screenshot \
     --browser=chromium \
@@ -45,4 +45,4 @@ for route in "/flash" "/scan" "/reel" "/radar" "/talents" "/espace"; do
   test -s "$output"
 done
 
-echo "Mobile E2E smoke validation passed for four target viewports and six engine/profile routes."
+echo "Mobile E2E smoke validation passed for eight target viewports including landscape and six engine/profile routes."
