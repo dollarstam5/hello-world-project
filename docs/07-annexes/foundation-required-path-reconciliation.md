@@ -13,7 +13,7 @@
 | `scripts/check-global-audit.ts` | 10 | 10 | 0 |
 | `scripts/check-go-no-go.ts` | 13 | 13 | 0 |
 
-Le script Foundation avait 126 chemins présents et 19 absents sur le même arbre de référence avant les corrections de #27. Les **19 remplacements de chemins** apportés par #27 ont tous une cible présente dans l'arborescence actuelle ; aucun chemin de remplacement ajouté n'est absent.
+Sur le même arbre de référence, la version de `main` avant correction avait 32 chemins présents et 113 absents. Après les 19 remplacements de #27, la version auditée en compte 51 présents et 94 absents. Les **19 remplacements de chemins** apportés par #27 ont tous une cible présente dans l'arborescence actuelle ; aucun chemin de remplacement ajouté n'est absent.
 
 Les contrôles Global Audit et Go/No-Go pointent désormais vers les emplacements documentaires existants. Les noms de scripts déclarés dans `package.json` ont été vérifiés séparément :
 - Global Audit : 4/4 présents.
