@@ -69,7 +69,7 @@ export function ScanPanel() {
         onClick={start}
         disabled={busy || locating}
         aria-busy={busy || locating}
-        className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
+        className="inline-flex min-h-12 items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
       >
         {busy || locating ? (
           <ScanLine className="h-4 w-4 animate-pulse" aria-hidden />
