@@ -26,6 +26,19 @@ describe("Vitalis onboarding", () => {
     expect(useOnboarding.getState().step).toBe(3);
   });
 
+  it("migrates the previous Eco completion flag without reopening onboarding", () => {
+    window.localStorage.setItem("eco.onboarding.v1", "1");
+
+    useOnboarding.getState().hydrate();
+
+    expect(useOnboarding.getState()).toMatchObject({
+      hydrated: true,
+      completed: true,
+      shouldShow: false,
+    });
+    expect(window.localStorage.getItem("vitalis.onboarding.v2")).toBe("1");
+  });
+
   it("persists completion so the introduction does not reopen next time", () => {
     useOnboarding.setState({ hydrated: true, shouldShow: true, step: 4 });
 
