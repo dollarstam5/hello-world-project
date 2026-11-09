@@ -25,7 +25,7 @@ ID, préconditions, étapes, résultat attendu/observé, environnement/version, 
 
 ## Scénarios — archivage, suppression et quotas
 
-- Vérifier l'archivage d'une conversation à 3 mois.
+- Vérifier qu'une conversation sans nouveau message est archivée après 3 mois calculés depuis son dernier message échangé.\n- Vérifier qu'un nouveau message relance le délai de 3 mois et empêche l'archivage fondé uniquement sur la date de création.
 - Vérifier qu'au-delà de 50 conversations conservées, la plus ancienne est archivée immédiatement, même si elle a moins de 3 mois.
 - Vérifier qu'une archive est inaccessible par défaut.
 - Vérifier qu'une demande de l'utilisateur nécessite une autorisation administrateur et que l'accès cesse exactement après 24 heures.
@@ -38,7 +38,7 @@ Les valeurs chiffrées des quotas et seuils devront être testées après leur a
 
 ## Scénarios attendus — rétention et maîtrise des coûts
 
-- Vérifier qu'une conversation est archivée après 3 mois ou dès que le plafond de 50 est dépassé.
+- Vérifier qu'une conversation est archivée après 3 mois sans nouveau message, calculés depuis le dernier message échangé, ou dès que le plafond de 50 est dépassé.\n- Vérifier qu'un nouveau message réinitialise le point de départ du délai.
 - Vérifier que l'archive reste conservée 6 mois à compter de son archivage, puis que la purge définitive est exécutée selon la politique définie.
 - Vérifier qu'un accès exceptionnel administrateur expire après 24 heures.
 - Vérifier les compteurs logiques par espace et les quotas proposés une fois validés.
