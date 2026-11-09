@@ -24,7 +24,10 @@ export const useOnboarding = create<OnboardingState>((set) => ({
     if (typeof window !== "undefined") window.localStorage.setItem(STORAGE_KEY, "1");
     set({ completed: true, shouldShow: false });
   },
-  dismiss: () => set({ shouldShow: false }),
+  dismiss: () => {
+    if (typeof window !== "undefined") window.localStorage.setItem(STORAGE_KEY, "1");
+    set({ completed: true, shouldShow: false });
+  },
   hydrate: () => {
     if (typeof window === "undefined") return;
     const done = window.localStorage.getItem(STORAGE_KEY) === "1";
