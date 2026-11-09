@@ -46,6 +46,23 @@
 | NOT-08 | Anti-bruit | **PROPOSITION** | Regrouper les événements similaires et dédupliquer côté serveur avec une clé idempotente. | Définir fenêtres et règles de regroupement. |
 | NOT-09 | Préférences | **À DÉCIDER** | Paramètres V1 très limités, uniquement si plusieurs catégories de notifications sont réellement livrées. | Éviter un écran de préférences prématuré. |
 
+### 3.1 Catalogue initial d'événements à notifier — proposition
+
+Ce catalogue sert de base d'arbitrage ; aucun événement ci-dessous n'est encore validé comme livré en V1.
+
+| Événement candidat | Notification proposée | Justification |
+|---|---|---|
+| Une demande ou action de l'utilisateur est acceptée | **Oui** | Changement d'état qui appelle une suite de l'utilisateur. |
+| Une demande est refusée, annulée ou expire | **À arbitrer par action** | Informer sans générer plusieurs alertes pour une même transition. |
+| Un nouveau message arrive dans une conversation liée à une action | **Oui** | Réponse attendue dans un échange autorisé. |
+| Une action nécessite une confirmation ou une réponse de l'utilisateur | **Oui** | Événement nécessitant une intervention. |
+| Un événement de sécurité ou de compte important survient | **Oui** | Information sensible à ne pas enfouir. |
+| Une simple mise à jour de contenu ou activité passive survient | **Non par défaut** | Reste consultable dans le moteur ; évite le bruit. |
+| Une recommandation ou suggestion non urgente est disponible | **Non en V1 par défaut** | Peut rester dans le moteur, sans notification proactive. |
+| Une action est créée ou modifiée par l'utilisateur lui-même | **Non** | L'utilisateur connaît déjà l'action qu'il vient d'effectuer. |
+
+**Règle proposée :** une notification doit correspondre à un changement d'état utile, une réponse attendue ou un événement de sécurité. Une action utilisateur ne doit pas se notifier elle-même. Les transitions multiples d'une même action doivent être dédupliquées et ne pas produire une rafale d'alertes.
+
 ## 4. Parcours Messages liés aux actions
 
 | ID | Sujet | État | Proposition de départ V1 | À préciser / tester |
