@@ -39,7 +39,7 @@
 | DEC-033 | Pour un compte Vitalis, l'historique Réel conserve les bips, les mises en relation et les interactions passées associées au moteur. | VALIDÉ |
 | DEC-034 | Une mise en relation clôturée disparaît des espaces actifs des deux participants, mais son événement reste consultable dans l'historique de leur compte. | VALIDÉ |
 | DEC-035 | En mode invité, aucune histoire personnelle persistante n'est conservée ; les données personnelles liées à la session disparaissent à sa fin. | VALIDÉ |
-| DEC-036 | L'historique validé conserve les événements et statuts, pas le contenu des conversations ; ce dernier reste exclu en l'état. | VALIDÉ — périmètre actuel |
+| DEC-036 | L'historique validé conserve les événements et statuts, pas le contenu des conversations ; ce dernier reste exclu en l'état. | REMPLACÉE par DEC-037 à DEC-042 |
 
 ## Historique et distinction des données
 
@@ -57,3 +57,17 @@ La durée de vie d'une mise en relation acceptée non clôturée reste à arbitr
 ## Décisions et détails encore à préciser
 
 Les décisions validées ci-dessus ne déterminent pas à elles seules les détails UX, les cas limites ni l'architecture. Le point de départ des 24 h, les règles de refus/annulation, la durée maximale d'une mise en relation active, les modalités du choix de contact, les limites du texte et les mécanismes techniques de synchronisation restent documentés dans les questions ouvertes. Le mécanisme d'identifiant temporaire, la durée de session invitée, le rattachement éventuel à un compte et les règles de validation des permissions restent également à concevoir.
+
+
+## Décisions complémentaires — archivage et stockage
+
+| ID | Décision | Statut |
+|---|---|---|
+| DEC-037 | Une conversation d'un compte Vitalis est archivée après 3 mois ; dès que le plafond de 50 conversations conservées est dépassé, la plus ancienne est archivée même avant 3 mois. | VALIDÉ |
+| DEC-038 | Une conversation archivée est inaccessible à l'utilisateur, sauf demande de celui-ci autorisée par un administrateur pour 24 heures ; ensuite elle redevient inaccessible. | VALIDÉ |
+| DEC-039 | L'utilisateur peut supprimer son historique, mais ne peut pas l'exporter. | VALIDÉ |
+| DEC-040 | En V1, des plafonds gratuits de stockage sont appliqués par espace ; à saturation, l'utilisateur choisit entre supprimer des données ou limiter les nouveaux usages/enregistrements. Aucun paiement n'est proposé. | VALIDÉ — quotas chiffrés à définir |
+| DEC-041 | Les micro-paiements et extensions facultatives de stockage, de plafonds ou de fonctionnalités sont réservés à V2. | VALIDÉ |
+| DEC-042 | La V1 vise zéro coût récurrent obligatoire ou un coût quasi nul strictement maîtrisé, avec plafonds individuels et globaux compatibles avec les limites gratuites effectivement disponibles sur Supabase Cloud. | VALIDÉ — contrainte d'architecture |
+
+La durée de conservation des archives après archivage, les délais d'effacement définitif, les quotas chiffrés et les seuils d'alerte restent à arbitrer.
