@@ -48,7 +48,7 @@ export function ResetPasswordView() {
               autoComplete="new-password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
-              className="mt-1 w-full rounded-xl border border-border/60 bg-card/40 px-3 py-2 outline-none focus:border-primary"
+              className="mt-1 min-h-12 w-full rounded-xl border border-border/60 bg-card/40 px-3 py-2 outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-ring"
             />
           </label>
           <label className="block text-sm">
@@ -60,14 +60,14 @@ export function ResetPasswordView() {
               autoComplete="new-password"
               value={confirm}
               onChange={(event) => setConfirm(event.target.value)}
-              className="mt-1 w-full rounded-xl border border-border/60 bg-card/40 px-3 py-2 outline-none focus:border-primary"
+              className="mt-1 min-h-12 w-full rounded-xl border border-border/60 bg-card/40 px-3 py-2 outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-ring"
             />
           </label>
 
           <button
             type="submit"
             disabled={busy}
-            className="w-full rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-60"
+            className="min-h-12 w-full rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
           >
             {busy ? t("app.loading") : t("auth.resetSubmit")}
           </button>
