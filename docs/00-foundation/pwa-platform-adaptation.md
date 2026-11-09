@@ -21,7 +21,18 @@ La détection de plateforme ne doit jamais devenir une condition qui bloque inut
 
 Le User-Agent et le nom commercial d'un appareil ne sont que des indices secondaires. Ils ne doivent pas remplacer la détection fonctionnelle.
 
-## 3. Capacités à prendre en compte
+## 3. Identification Android / iOS
+
+La couche commune identifie Android, iOS/iPhone/iPad, iPadOS en mode « site pour ordinateur », Windows, macOS et Linux lorsque les informations du navigateur le permettent. Elle reconnaît aussi les principales familles de navigateurs.
+
+- Préférer les User-Agent Client Hints lorsqu'ils sont disponibles.
+- Utiliser le User-Agent et les indices tactiles comme solution de repli, notamment pour iPadOS.
+- Traiter une identité inconnue comme un cas normal : aucune fonction ne doit être bloquée uniquement parce que l'identification est incertaine.
+- L'identification décrit un contexte ; elle ne prouve jamais qu'une API est disponible.
+
+Implémentation : `src/lib/platform/capabilities.ts`, avec tests Android, iPhone Safari, iPadOS et User-Agent Client Hints dans `tests/platform-capabilities.test.ts`.
+
+## 4. Capacités à prendre en compte
 
 | Domaine | Capacité à vérifier | Comportement attendu si indisponible |
 | --- | --- | --- |
@@ -38,7 +49,7 @@ Le User-Agent et le nom commercial d'un appareil ne sont que des indices seconda
 
 Cette matrice est un contrat de conception. Elle ne signifie pas que chaque API ou chaque solution de repli est déjà implémentée.
 
-## 4. Règles d'implémentation
+## 5. Règles d'implémentation
 
 - Centraliser la lecture des capacités dans la couche plateforme ; éviter les tests dispersés dans les composants.
 - Garder séparées les informations de viewport, de pointeur, de préférences système et les capacités fonctionnelles des API.
@@ -49,7 +60,7 @@ Cette matrice est un contrat de conception. Elle ne signifie pas que chaque API 
 - Ne pas multiplier les chemins spécifiques à une marque lorsque la détection de capacité suffit.
 - Les solutions de repli doivent rester accessibles, localisées et testables.
 
-## 5. PWA, cycle de vie et mises à jour
+## 6. PWA, cycle de vie et mises à jour
 
 - Le manifeste décrit l'identité de l'application et ses possibilités d'installation ; il ne prouve pas l'installabilité sur tous les appareils.
 - Le Service Worker doit être enregistré une seule fois, dans un contexte compatible et selon la politique de production définie.
@@ -59,15 +70,16 @@ Cette matrice est un contrat de conception. Elle ne signifie pas que chaque API 
 - Le hors-ligne ne doit être annoncé que pour les fonctions réellement disponibles hors connexion.
 - La synchronisation reprend selon les règles métier et les capacités du navigateur ; aucune promesse de synchronisation en arrière-plan ne doit être faite sans preuve sur la plateforme concernée.
 
-## 6. Fondations existantes et limites connues
+## 7. Fondations existantes et limites connues
 
-- `src/lib/platform/useDevice.ts` fournit actuellement la classe d'appareil, le viewport, l'orientation, le pointeur tactile, la préférence de réduction du mouvement et une approximation de capacité matérielle.
-- `useDevice` n'est **pas** encore une couche complète de détection des capacités PWA ou des API de plateforme.
-- `src/platform/pwa/install.ts` et `src/platform/pwa/update.ts` portent les fondations d'installation et de mise à jour.
+- `src/lib/platform/capabilities.ts` centralise l'identification du système/navigateur et la détection des API réellement disponibles : Service Worker, géolocalisation, notifications, presse-papiers, partage, contexte sécurisé, mode autonome, pointeur et réduction du mouvement.
+- `src/lib/platform/useDevice.ts` expose ces informations avec la classe d'appareil, le viewport, l'orientation et une approximation de capacité matérielle.
+- La détection de la possibilité d'installation native reste événementielle : Android peut fournir `beforeinstallprompt`, alors que ce mécanisme n'est pas disponible sur iOS.
+- `src/platform/pwa/install.ts` et `src/platform/pwa/update.ts` portent les fondations d'installation et de mise à jour. Quand aucun prompt natif n'est disponible, des instructions manuelles sont proposées sur Android et iOS si le contexte sécurisé et le Service Worker sont disponibles.
 - `public/manifest.webmanifest` porte les métadonnées PWA.
 - Les composants ne doivent pas étendre `useDevice` à toutes les capacités sans contrat explicite ; les capacités fonctionnelles devront être regroupées dans une couche dédiée et testable.
 
-## 7. Matrice de validation
+## 8. Matrice de validation
 
 Chaque capacité utilisée dans un parcours V1 doit être testée au minimum dans les contextes pertinents suivants :
 
@@ -81,7 +93,7 @@ Chaque capacité utilisée dans un parcours V1 doit être testée au minimum dan
 
 Les résultats doivent préciser l'appareil, la version du système, le navigateur, son mode d'exécution, la capacité testée et le résultat observé. Une capture visuelle seule ne prouve pas le fonctionnement d'une API.
 
-## 8. Critères d'acceptation
+## 9. Critères d'acceptation
 
 - Une fonction n'est affichée comme disponible que si la capacité correspondante est vérifiée.
 - Une absence de capacité n'empêche pas les parcours qui peuvent fonctionner sans elle.
