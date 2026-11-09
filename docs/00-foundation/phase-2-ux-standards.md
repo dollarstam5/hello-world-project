@@ -53,6 +53,7 @@ Ce document fixe les règles vérifiables de la phase 2. Il ne certifie pas les 
 - Les cartes sont simples, lisibles, tactiles et passent en deux colonnes lorsque la largeur le permet ; sur petit écran, elles restent en une seule colonne.
 - Le menu 2×2 est présenté comme l'accès aux espaces complémentaires ; il ne doit pas être confondu avec un cinquième moteur.
 - Ne pas afficher de sections de flux vides, de faux contenus ou de compteurs fictifs pour remplir la page. Les espaces sans contenu réel ne sont présentés que lorsqu'une donnée ou une fonction existe.
+- Les accès vers un moteur encore en préparation doivent l'indiquer clairement ; la page d'accueil ne doit jamais laisser croire qu'une fonction non livrée est déjà disponible.
 - Les libellés de l'accueil sont localisés en français et en anglais et suivent le langage humain de Vitalis.
 
 ## 5. Réseau et états d'interface
