@@ -17,6 +17,10 @@ describe("mobile visual smoke contract", () => {
     }
   });
 
+  it("uses the development-only onboarding bypass for screen captures", () => {
+    expect(script).toContain("__vitalis_smoke=1");
+  });
+
   it("captures all five primary destinations and the profile entry", () => {
     for (const route of ["/flash", "/scan", "/reel", "/radar", "/espace"]) {
       expect(script).toContain(`"${route}"`);
