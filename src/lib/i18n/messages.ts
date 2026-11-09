@@ -660,8 +660,7 @@ export const messages = {
     "page.espace.section.you": "You",
     "page.espace.section.circles": "Your circles",
     "page.talents.title": "Talents — Living Knowledge",
-    "page.talents.desc":
-      "Discover the skills and talents people will soon be able to share.",
+    "page.talents.desc": "Discover the skills and talents people will soon be able to share.",
     "page.talents.eyebrow": "Living knowledge",
     "page.talents.section.offer": "What people offer",
     "page.talents.section.seek": "What people seek",
