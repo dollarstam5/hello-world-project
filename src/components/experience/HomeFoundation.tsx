@@ -93,7 +93,6 @@ export function HomeFoundation() {
         )}
       </Section>
 
-      <footer className="pt-4 pb-2 text-center text-meta">Phase 5 · Experience Foundation</footer>
     </div>
   );
 }
