@@ -1,4 +1,5 @@
-import { act, createElement } from "react";
+import { createElement } from "react";
+import { flushSync } from "react-dom";
 import { createRoot } from "react-dom/client";
 import { describe, expect, it } from "vitest";
 import { useNetworkStatus } from "@/lib/platform/useNetworkStatus";
@@ -9,11 +10,7 @@ function NetworkProbe() {
 }
 
 describe("network status", () => {
-  it("updates when the browser goes offline and comes back online", async () => {
-    Object.defineProperty(globalThis, "IS_REACT_ACT_ENVIRONMENT", {
-      configurable: true,
-      value: true,
-    });
+  it("updates when the browser goes offline and comes back online", () => {
     Object.defineProperty(navigator, "onLine", {
       configurable: true,
       value: true,
@@ -24,12 +21,12 @@ describe("network status", () => {
     const root = createRoot(container);
 
     try {
-      await act(async () => {
+      flushSync(() => {
         root.render(createElement(NetworkProbe));
       });
       expect(container.querySelector("output")?.dataset.online).toBe("true");
 
-      await act(async () => {
+      flushSync(() => {
         Object.defineProperty(navigator, "onLine", {
           configurable: true,
           value: false,
@@ -38,7 +35,7 @@ describe("network status", () => {
       });
       expect(container.querySelector("output")?.dataset.online).toBe("false");
 
-      await act(async () => {
+      flushSync(() => {
         Object.defineProperty(navigator, "onLine", {
           configurable: true,
           value: true,
@@ -47,7 +44,7 @@ describe("network status", () => {
       });
       expect(container.querySelector("output")?.dataset.online).toBe("true");
     } finally {
-      await act(async () => {
+      flushSync(() => {
         root.unmount();
       });
       container.remove();
