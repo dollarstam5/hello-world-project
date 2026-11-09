@@ -81,7 +81,7 @@ export function OnboardingSheet() {
                 size="sm"
                 aria-label={t("language.switch")}
                 onClick={() => setLocale(locale === "fr" ? "en" : "fr")}
-                className="min-h-11 min-w-11 px-2 text-xs font-semibold"
+                className="min-h-12 min-w-12 px-2 text-xs font-semibold"
               >
                 <Languages aria-hidden="true" className="mr-1 h-4 w-4" />
                 {locale.toUpperCase()}
