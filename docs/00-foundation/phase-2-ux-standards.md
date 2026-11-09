@@ -63,6 +63,7 @@ Les composants concernés doivent prévoir les états utiles suivants, selon le 
 - États réseau : le bandeau reflète les états réseau et synchronisation du worker ; aucun nombre ni succès n’est inventé.
 - Premier lancement : fermer ou ignorer l’onboarding est mémorisé ; les trois repères présentent Réel, Flash/Scan et Radar/2x2.
 - Les quatre espaces du centre de communication et leurs règles V1 sont spécifiés dans [Centre de communication V1](../01-product/communication-center-v1.md).
+- Les vues globales 404 et erreur utilisent également les messages FR/EN et des actions de reprise d'au moins 44 px.
 
 ## 7. Vérifications encore requises avant clôture
 
