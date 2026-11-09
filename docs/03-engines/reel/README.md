@@ -242,3 +242,15 @@ L'expérience doit être vivante, humaine, simple et lisible. Elle ne doit pas d
 - règles exactes de regroupement spatial et de calcul du nombre affiché ;
 - comportement de la vue spatiale et de la liste lorsque les présences arrivent, disparaissent ou changent de visibilité ;
 - accessibilité et alternative à la représentation spatiale pour les personnes qui préfèrent une liste.
+
+
+## 20. Décision produit validée — fiche compacte au clic sur un profil (2026-11-09)
+
+**Statut : VALIDÉ V1.** Lorsqu'un utilisateur touche un profil dans la vue spatiale Réel, une petite fiche de profil apparaît directement sur la page, au-dessus de la représentation spatiale.
+
+- La fiche est compacte et ne prend pas tout l'écran.
+- La page Réel et les autres présences restent dans leur contexte visuel ; l'utilisateur ne quitte pas la vue spatiale.
+- La fiche doit être rapide à consulter et facile à fermer.
+- Le contenu précis de la fiche et les actions proposées après consultation restent **À CONCEVOIR** avec l'utilisateur.
+
+Cette présentation est distincte d'une grande fiche plein écran. Elle préserve la continuité de la découverte locale et limite la charge cognitive.
