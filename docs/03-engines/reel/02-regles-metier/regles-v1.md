@@ -41,19 +41,23 @@ Les règles ci-dessous reflètent les décisions produit retrouvées. VALIDÉ si
 | COM-002 | La communication est rattachée à une mise en relation ou à une action autorisée. | VALIDÉ |
 | COM-003 | Il n'existe pas de messagerie libre indépendante. | VALIDÉ |
 | COM-004 | La communication associée est désactivée à la clôture. | VALIDÉ |
-| TRC-001 | Après clôture, la trace technique minimale comprend la date, le statut et l'événement. | VALIDÉ |
-| TRC-002 | Aucun historique de conversation n'est conservé après clôture. | VALIDÉ |
-| TRC-003 | Aucun historique visible de mise en relation clôturée n'est conservé. | VALIDÉ |
+| HIST-001 | Pour un compte Vitalis, l'historique Réel conserve les bips, les mises en relation et les interactions passées associées. | VALIDÉ |
+| HIST-002 | L'historique d'un compte reste distinct des espaces actifs : une mise en relation clôturée disparaît du compteur Réel et de Notifications, mais son entrée historique reste consultable. | VALIDÉ |
+| HIST-003 | En mode invité, aucune histoire personnelle persistante n'est conservée ; les données personnelles liées à la session disparaissent à la fin de celle-ci. | VALIDÉ |
+| HIST-004 | L'historique validé porte sur les événements et statuts ; la conservation du contenu des conversations n'est pas autorisée par cette décision et reste exclue en l'état. | VALIDÉ — périmètre actuel |
+| TRC-001 | Les traces techniques minimales nécessaires à la sécurité et à la cohérence sont distinctes de l'historique visible. | VALIDÉ |
+| TRC-002 | La trace technique minimale comprend au moins la date, le statut et l'événement. | VALIDÉ |
 | NET-001 | Les actions en attente sont préservées pendant les perturbations réseau et synchronisées au retour de la connexion. | VALIDÉ — principe produit |
 | NET-002 | La synchronisation doit éviter doublons et incohérences ; une action locale en attente n'est pas une confirmation serveur. | VALIDÉ — principe produit |
 
 ## Garde-fous d'interprétation
 
 - Les deux modes d'accès ont les mêmes privilèges fonctionnels ; ne pas ajouter de restriction de bips, d'acceptation ou de communication au seul mode invité.
-- Les 24 h concernent les bips non acceptés, pas automatiquement les mises en relation acceptées.
+- Les 24 h définissent la durée d'action d'un bip non accepté ; pour un compte Vitalis, l'événement du bip reste consultable dans l'historique après expiration.
+- L'historique visible d'un compte ne doit pas être confondu avec les espaces actifs : clôturer une mise en relation la retire des espaces actifs, sans effacer son entrée historique.
 - Le profil détaillé associé à une présence est facultatif ; cela n'empêche pas la consultation du profil de l'émetteur d'un bip.
 - L'acceptation d'un bip et le choix de poursuivre le contact sont deux étapes distinctes.
 - La communication est textuelle dans le périmètre retenu, mais ses limites détaillées restent à spécifier.
-- La trace minimale n'autorise pas à conserver le contenu des conversations.
+- L'historique des interactions conserve les événements et statuts, pas le contenu des conversations. Les règles détaillées de contenu, de rétention et de suppression restent à spécifier.
 - La clôture est bilatérale, jamais un simple retrait local.
 - Les principes réseau sont des exigences produit ; l'architecture et les preuves de leur réalisation restent à établir.
