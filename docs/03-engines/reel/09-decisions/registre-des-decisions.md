@@ -35,6 +35,12 @@
 | DEC-031 | Le mode rapide vise un parcours d'accès en deux ou trois étapes, avec validation des permissions nécessaires et choix/création d'un avatar personnalisé. | VALIDÉ — objectif UX |
 | DEC-032 | Les coordonnées de localisation servent au calcul de proximité et non d'identifiant unique d'un utilisateur. | VALIDÉ — garde-fou de conception |
 
+
+| DEC-033 | Pour un compte Vitalis, l'historique Réel conserve les bips, les mises en relation et les interactions passées associées au moteur. | VALIDÉ |
+| DEC-034 | Une mise en relation clôturée disparaît des espaces actifs des deux participants, mais son événement reste consultable dans l'historique de leur compte. | VALIDÉ |
+| DEC-035 | En mode invité, aucune histoire personnelle persistante n'est conservée ; les données personnelles liées à la session disparaissent à sa fin. | VALIDÉ |
+| DEC-036 | L'historique validé conserve les événements et statuts, pas le contenu des conversations ; ce dernier reste exclu en l'état. | VALIDÉ — périmètre actuel |
+
 ## Historique et distinction des données
 
 L'historique des comptes Vitalis est une chronologie rétrospective des bips, mises en relation et interactions passées. Il ne maintient pas les mises en relation clôturées dans les espaces actifs. Les bips non acceptés expirent comme actions après 24 h, mais leur événement reste dans l'historique du compte. En mode invité, les données personnelles de session ne persistent pas après la fin de la session. Les traces techniques minimales sont séparées de cet historique. La conservation du contenu des conversations n'est pas incluse.
@@ -42,8 +48,8 @@ L'historique des comptes Vitalis est une chronologie rétrospective des bips, mi
 ## Clarification temporelle
 
 Une discussion a évoqué une conservation de 12 h ou 24 h pour absorber les perturbations réseau. Les clarifications ultérieures distinguent :
-- les bips non acceptés, conservés 24 h ;
-- les mises en relation acceptées, accessibles dans le compteur Réel et Notifications jusqu'à leur clôture ;
+- les bips non acceptés, actifs pendant 24 h puis expirés comme actions, tandis que leur événement reste dans l'historique du compte Vitalis ;
+- les mises en relation acceptées, accessibles dans le compteur Réel et Notifications jusqu'à leur clôture, puis conservées comme événements dans l'historique du compte ;
 - les traces techniques minimales après clôture, distinctes de l'historique du compte.
 
 La durée de vie d'une mise en relation acceptée non clôturée reste à arbitrer. Ne pas appliquer automatiquement le délai de 24 h à cet objet.
