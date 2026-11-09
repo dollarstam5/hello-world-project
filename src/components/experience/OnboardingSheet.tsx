@@ -73,7 +73,7 @@ export function OnboardingSheet() {
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs text-muted-foreground">
             <span>{t("onboarding.stepLabel")}</span>
-            <span aria-label={t("onboarding.progress")}>{step + 1}/4</span>
+            <span aria-hidden="true">{step + 1}/4</span>
           </div>
           <Progress
             value={((step + 1) / 4) * 100}
