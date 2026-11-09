@@ -22,3 +22,13 @@ La clôture est une transition bilatérale faisant autorité côté serveur, pro
 
 ## Livrables techniques futurs
 Modèle de données/migrations, contrats API, états et transitions, règles d'accès/RLS si applicable, événements, idempotence, politique de purge, tests de concurrence et synchronisation.
+
+## Maîtrise des coûts et quotas — exigences à concevoir
+
+- Mettre en place un compteur logique par compte et par espace, sans réserver physiquement tout le quota annoncé à chaque compte.
+- Mesurer séparément base de données, fichiers, transfert sortant, Realtime et fonctions ; les quotas Supabase sont globaux au projet ou à l'organisation selon la ressource.
+- Appliquer des seuils globaux et un mécanisme de protection avant saturation ; les quotas applicatifs ne remplacent pas les limites fournisseur.
+- À saturation individuelle, proposer le choix validé : supprimer des données ou limiter les nouveaux enregistrements/usages dans l'espace concerné.
+- À saturation globale, protéger les données existantes, différer ou refuser les écritures non essentielles, conserver les actions hors ligne en attente et informer clairement l'utilisateur.
+- Automatiser la purge à l'expiration des 6 mois d'archive, avec idempotence, journalisation minimale et tests.
+- Ne pas supposer que le plan gratuit fournit une disponibilité continue, des sauvegardes automatiques ou un SLA ; évaluer le risque de pause pour inactivité avant lancement.
