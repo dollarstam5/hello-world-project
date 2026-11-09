@@ -177,3 +177,14 @@ Cette décision vise une gestion souple et simple de la présence, sans multipli
 2. **Terminer ma présence :** la présence est clôturée immédiatement. Elle ne peut pas être réactivée. Pour redevenir visible, l'utilisateur doit créer/activer une nouvelle présence, dans le respect de la limite d'une seule présence active.
 
 **Conséquence UX :** les deux actions doivent être nommées et différenciées sans ambiguïté. Masquer est réversible avant expiration ; terminer est définitif pour cette présence. Une confirmation explicite avant la fin définitive est recommandée afin d'éviter une suppression accidentelle.
+
+## 17. Décision produit validée — aucune reconduction automatique (2026-11-09)
+
+**Statut : VALIDÉ V1.** Une présence Réel arrivée à expiration n'est jamais renouvelée ni réactivée automatiquement.
+
+- À l'expiration, la présence cesse d'être découvrable et est supprimée conformément à la règle d'expiration déjà définie.
+- Pour redevenir visible, l'utilisateur doit lancer volontairement une nouvelle activation.
+- Il choisit à nouveau la durée et le rayon applicables à cette nouvelle présence.
+- Aucune ancienne description ou intention expirée ne redevient visible sans une nouvelle action explicite de l'utilisateur.
+
+**Conséquence UX :** l'interface peut proposer une action claire pour recommencer, mais ne doit pas présenter cette proposition comme une reconduction déjà activée. La nouvelle présence constitue une nouvelle activation et un nouveau cycle de durée.
