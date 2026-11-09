@@ -75,10 +75,7 @@ export function OnboardingSheet() {
             <span>{t("onboarding.stepLabel")}</span>
             <span aria-hidden="true">{step + 1}/5</span>
           </div>
-          <Progress
-            value={((step + 1) / 5) * 100}
-            aria-label={t("onboarding.progress")}
-          />
+          <Progress value={((step + 1) / 5) * 100} aria-label={t("onboarding.progress")} />
         </div>
 
         <div key={step} aria-live="polite" className="flex flex-1 flex-col gap-5">
@@ -186,9 +183,7 @@ export function OnboardingSheet() {
                   {t("onboarding.ready.body")}
                 </p>
               </div>
-              <p className="text-sm text-muted-foreground">
-                {t("onboarding.ready.guest")}
-              </p>
+              <p className="text-sm text-muted-foreground">{t("onboarding.ready.guest")}</p>
             </>
           )}
         </div>
