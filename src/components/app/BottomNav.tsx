@@ -38,11 +38,10 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
 
   return (
     <nav
-      aria-label={t("nav.menu")}
+      aria-label={t("nav.primary")}
       className="fixed inset-x-0 bottom-0 z-40 flex justify-center pb-[max(env(safe-area-inset-bottom),0.75rem)] pointer-events-none"
     >
       <ul
-        role="tablist"
         className="glass pointer-events-auto flex items-end gap-1 rounded-full border border-border-soft px-2 py-1.5 shadow-[var(--shadow-float)]"
       >
         {TABS.map((tab) => {
@@ -96,7 +95,7 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
           );
 
           return (
-            <li key={tab.key} role="presentation">
+            <li key={tab.key}>
               {isMenu ? (
                 <button
                   type="button"
