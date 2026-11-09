@@ -21,7 +21,7 @@ import { duration, easing } from "@/lib/design/tokens";
  *  - global navigation (floating bottom nav + menu sheet)
  *  - ambient AI layer
  *  - offline awareness
- *  - first-run onboarding sheet
+ *  - first-run guided Vitalis onboarding
  *  - low-end / reduced-motion gating (Phase 5/5)
  */
 export function AppShell({ children }: { children: ReactNode }) {
