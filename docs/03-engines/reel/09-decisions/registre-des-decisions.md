@@ -83,3 +83,10 @@ Les quotas individuels et globaux devront être vérifiés par mesures, tests de
 ## Précision validée — point de départ de l'archivage
 
 Le délai de 3 mois est calculé depuis la date du dernier message échangé dans la conversation. Chaque nouveau message relance le délai. Une conversation active n'est donc pas archivée uniquement en raison de son ancienneté depuis sa création. Le plafond de 50 conversations conservées demeure prioritaire : si ce plafond est dépassé, la plus ancienne est archivée même avant l'expiration de son délai de 3 mois.
+
+
+| DEC-047 | À partir de V2, les quotas gratuits de base pourront être augmentés volontairement par l'utilisateur via des extensions payantes ou micro-paiements ; les revenus contribueront au financement des coûts de fonctionnement de Vitalis, dans les limites de capacité réellement disponibles. | VALIDÉ — modèle commercial et tarifs à concevoir |
+
+## Principe validé — évolution des quotas
+
+Les quotas gratuits constituent le niveau de base. À partir de V2, un utilisateur pourra choisir d'augmenter certains plafonds selon ses besoins. Les recettes des extensions doivent contribuer au financement des factures de fonctionnement de Vitalis. Les prix, paliers, modalités de paiement, renouvellement, résiliation et gestion d'une capacité déjà consommée restent à concevoir. Cette décision ne valide pas les montants de quotas gratuits proposés dans DEC-044 ni les seuils techniques proposés dans DEC-045.
