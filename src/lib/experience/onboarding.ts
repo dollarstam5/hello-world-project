@@ -40,6 +40,13 @@ export const useOnboarding = create<OnboardingState>((set) => ({
   },
   hydrate: () => {
     if (typeof window === "undefined") return;
+    const smokeMode =
+      import.meta.env.DEV && new URLSearchParams(window.location.search).get("__vitalis_smoke") === "1";
+    if (smokeMode) {
+      persistCompletion();
+      set({ hydrated: true, completed: true, shouldShow: false, step: 0 });
+      return;
+    }
     let done = false;
     try {
       done = window.localStorage.getItem(STORAGE_KEY) === "1";
