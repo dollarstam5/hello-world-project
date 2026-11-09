@@ -14,7 +14,9 @@ const SCAN_LIMIT = 20;
 export function ScanPanel() {
   const { t } = useI18n();
   const { rows, busy, failed, execute } = useScan();
-  const [locationError, setLocationError] = useState<"permission" | "unavailable" | "timeout" | "unknown" | null>(null);
+  const [locationError, setLocationError] = useState<
+    "permission" | "unavailable" | "timeout" | "unknown" | null
+  >(null);
   const [started, setStarted] = useState(false);
   const [locating, setLocating] = useState(false);
   const [unsupported, setUnsupported] = useState(false);
@@ -93,7 +95,13 @@ export function ScanPanel() {
         </p>
       )}
 
-      {started && !busy && !locating && !locationError && !failed && !unsupported && rows.length === 0 && (
+      {started &&
+        !busy &&
+        !locating &&
+        !locationError &&
+        !failed &&
+        !unsupported &&
+        rows.length === 0 && (
         <p className="text-sm text-muted-foreground" role="status">
           {t("scan.empty")}
         </p>
