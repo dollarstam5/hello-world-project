@@ -27,11 +27,26 @@
 18. Catalogue des notifications ?
 19. Parcours de clôture si l'autre participant est hors ligne ?
 
-## Priorité 5 — historique et données
-20. Quelle durée de conservation appliquer à l'historique des comptes Vitalis ?
-21. Quelles actions de consultation, export ou suppression de l'historique proposer à l'utilisateur ?
-22. Quels champs exacts afficher pour chaque bip, mise en relation et interaction passée ?
-23. Confirmer explicitement que le contenu des conversations n'est pas conservé dans l'historique V1.
+## Priorité 5 — historique, archivage et stockage
+
+Décisions déjà validées :
+- Conversation archivée après 3 mois ou dès dépassement du plafond de 50 conversations conservées (la plus ancienne est archivée).
+- Archive inaccessible à l'utilisateur sauf autorisation administrateur sur demande, pendant 24 h.
+- Archive conservée 6 mois à compter de son archivage, puis suppression définitive prévue.
+- L'utilisateur peut supprimer son historique ; aucun export.
+- Aucun paiement en V1 ; extensions et micro-paiements réservés à V2.
+
+Propositions à valider :
+1. Quotas logiques par compte : Profil/avatar 2 Mo (avatar ≤ 500 Ko), Réel 5 Mo, Flash 3 Mo, Scan 1 Mo, Radar 1 Mo, Notifications 1 Mo, données communes 2 Mo ; total 15 Mo.
+2. Garde-fous globaux Supabase Free : DB 350 Mo/500 Mo ; fichiers 700 Mo/1 Go ; egress cache et non-cache 3,5 Go/5 Go chacun ; Realtime 1,4 M/2 M messages ; 140/200 connexions.
+3. Alertes à 50 %, limitation des opérations non essentielles à 65 %, arrêt des nouvelles écritures non indispensables à 70 %.
+4. Confirmer si le budget logique par compte doit être identique pour tous les utilisateurs ou ajusté selon les besoins d'accessibilité et d'usage.
+
+Points techniques à préciser :
+- Mesure exacte du stockage attribuable à chaque compte/espace (données, index, médias, métadonnées).
+- Effacement effectif des archives et délais éventuels des sauvegardes.
+- Comportement en cas de plafond global atteint : protection des données, mode lecture seule ciblé, reprise au prochain cycle.
+- Vérification périodique des quotas, tarifs et règles de pause du plan Supabase Free.
 
 ## Priorité 6 — technique et données
 24. Durée de conservation des traces techniques minimales ?
