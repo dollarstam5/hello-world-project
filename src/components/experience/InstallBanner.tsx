@@ -6,7 +6,7 @@ import { useI18n } from "@/lib/i18n/useI18n";
 /** Gentle invitation to keep the app on the home screen. Presentation only. */
 export function InstallBanner() {
   const { t } = useI18n();
-  const { available, install } = useInstallPrompt();
+  const { available, install, manualInstructions } = useInstallPrompt();
   const [dismissed, setDismissed] = useState(false);
 
   if (!available || dismissed) return null;
@@ -22,14 +22,22 @@ export function InstallBanner() {
         </span>
         <div className="min-w-0 flex-1">
           <p className="text-sm font-medium">{t("install.title")}</p>
-          <p className="mt-0.5 text-xs text-muted-foreground">{t("install.subtitle")}</p>
-          <button
-            type="button"
-            onClick={() => void install()}
-            className="mt-2 inline-flex min-h-11 items-center rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90"
-          >
-            {t("install.action")}
-          </button>
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            {manualInstructions === "ios"
+              ? t("install.ios.instructions")
+              : manualInstructions === "android"
+                ? t("install.android.instructions")
+                : t("install.subtitle")}
+          </p>
+          {manualInstructions === null && (
+            <button
+              type="button"
+              onClick={() => void install()}
+              className="mt-2 inline-flex min-h-11 items-center rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90"
+            >
+              {t("install.action")}
+            </button>
+          )}
         </div>
         <button
           type="button"
