@@ -70,11 +70,16 @@ Les décisions validées ci-dessus ne déterminent pas à elles seules les déta
 | DEC-041 | Les micro-paiements et extensions facultatives de stockage, de plafonds ou de fonctionnalités sont réservés à V2. | VALIDÉ |
 | DEC-042 | La V1 vise zéro coût récurrent obligatoire ou un coût quasi nul strictement maîtrisé, avec plafonds individuels et globaux compatibles avec les limites gratuites effectivement disponibles sur Supabase Cloud. | VALIDÉ — contrainte d'architecture |
 
-| DEC-043 | Une conversation archivée est conservée pendant 6 mois à compter de son archivage, puis supprimée définitivement selon la politique de purge. | VALIDÉ — détails techniques d'effacement à préciser |\n| DEC-046 | Le délai de 3 mois avant archivage commence à la date du dernier message échangé dans la conversation ; chaque nouveau message relance le délai. Le plafond de 50 conversations reste prioritaire et peut provoquer l'archivage anticipé de la plus ancienne. | VALIDÉ |
+| DEC-043 | Une conversation archivée est conservée pendant 6 mois à compter de son archivage, puis supprimée définitivement selon la politique de purge. | VALIDÉ — détails techniques d'effacement à préciser |
+| DEC-046 | Le délai de 3 mois avant archivage commence à la date du dernier message échangé dans la conversation ; chaque nouveau message relance le délai. Le plafond de 50 conversations reste prioritaire et peut provoquer l'archivage anticipé de la plus ancienne. | VALIDÉ |
 
 | DEC-044 | Proposition de quotas logiques gratuits V1 par compte : Profil/avatar 2 Mo (avatar ≤ 500 Ko), Réel 5 Mo, Flash 3 Mo, Scan 1 Mo, Radar 1 Mo, Notifications 1 Mo, données communes 2 Mo, total indicatif 15 Mo. | PROPOSITION À VALIDER |
 
 | DEC-045 | Proposition de garde-fous globaux Supabase Free : DB 350/500 Mo, fichiers 700 Mo/1 Go, egress 3,5/5 Go pour chacun des transferts mis en cache et non mis en cache, Realtime 1,4/2 millions de messages, 140/200 connexions ; alertes à 50 %, limitation à 65 %, arrêt des écritures non essentielles à 70 %. | PROPOSITION À VALIDER |
 
 Les quotas individuels et globaux devront être vérifiés par mesures, tests de charge et confirmation des limites Supabase en vigueur avant lancement.
-\n\n## Précision validée — point de départ de l'archivage\n\nLe délai de 3 mois est calculé depuis la date du dernier message échangé dans la conversation. Chaque nouveau message relance le délai. Une conversation active n'est donc pas archivée uniquement en raison de son ancienneté depuis sa création. Le plafond de 50 conversations conservées demeure prioritaire : si ce plafond est dépassé, la plus ancienne est archivée même avant l'expiration de son délai de 3 mois.\n
+
+
+## Précision validée — point de départ de l'archivage
+
+Le délai de 3 mois est calculé depuis la date du dernier message échangé dans la conversation. Chaque nouveau message relance le délai. Une conversation active n'est donc pas archivée uniquement en raison de son ancienneté depuis sa création. Le plafond de 50 conversations conservées demeure prioritaire : si ce plafond est dépassé, la plus ancienne est archivée même avant l'expiration de son délai de 3 mois.
