@@ -1,10 +1,11 @@
+import { Button } from "@/components/ui/button";
 import { FlashCard } from "@/components/app/FlashCard";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useFlashFeed } from "../hooks/useFlashFeed";
 
 export function FlashFeed() {
   const { t } = useI18n();
-  const { rows, source, loading, error } = useFlashFeed();
+  const { rows, source, loading, error, refresh } = useFlashFeed();
 
   if (loading && rows.length === 0) {
     return (
@@ -17,9 +18,20 @@ export function FlashFeed() {
   return (
     <div className="grid gap-3">
       {error ? (
-        <p className="text-xs text-warning" role="alert">
-          {error}
-        </p>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="text-xs text-warning" role="alert">
+            {error}
+          </p>
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={() => void refresh()}
+            disabled={loading}
+            className="min-h-11"
+          >
+            {t("common.retry")}
+          </Button>
+        </div>
       ) : null}
       {rows.length === 0 ? (
         <p className="text-sm text-muted-foreground" role="status">
