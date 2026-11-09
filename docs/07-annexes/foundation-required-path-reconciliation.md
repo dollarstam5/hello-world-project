@@ -135,3 +135,65 @@ Les 94 chemins ci-dessous ne sont pas présents sous leur nom exact dans l'arbre
 - Aucun contrôle CI n'a été relancé sur cette branche.
 - TECH-001 à TECH-006 restent ouverts.
 - Ce rapport ne vaut pas autorisation de fusion et ne ferme aucun problème technique.
+
+
+## Première vague de réconciliation fonctionnelle — preuves consultées sur main
+
+Cette première passe porte sur les fichiers candidats les plus directement liés aux chemins absents. Elle ne prétend pas clôturer l'audit des 94 chemins.
+
+### Profil et identité
+
+| Chemin attendu | Élément observé | Décision provisoire |
+|---|---|---|
+| `packages/core-contracts/src/profile.ts` et `packages/core-logic/src/profile.ts` | Les index des packages exportent des modules génériques (`records`, `modules`, `roles`, etc.), mais aucun module de contrat ou logique de profil dédié n'a été confirmé. | Équivalence non prouvée |
+| `src/domains/profile/model/profile.schema.ts`, API, hooks et vue | `src/domains/profile/index.ts` ne fait qu'exporter `src/lib/experience/identity.ts`. Ce dernier contient un store Zustand minimal (tier et nom d'affichage) et indique explicitement que le branchement backend viendra ultérieurement. | Pas d'équivalent fonctionnel complet |
+| Route profil, migration préférences et test RLS dédiés | Aucun candidat complet correspondant n'a été confirmé dans cette passe. | À investiguer |
+
+**Conclusion :** le domaine Profile existe comme point d'entrée, mais ne prouve pas l'existence d'une gestion de profil persistée, validée et sécurisée. Ne pas reclasser les chemins Profile comme satisfaits.
+
+### Authentification et onboarding
+
+- Auth : `src/domains/auth/model/useAuth.ts` et `services/auth.service.ts` existent et couvrent session, connexion, inscription, réinitialisation et déconnexion. Les écrans présents sont `SignInView.tsx` et `ResetPasswordView.tsx`. Les chemins de callback et les vues de récupération distinctes demandés par Foundation ne sont pas prouvés.
+- Onboarding : `src/features/onboarding/index.ts` réexporte `OnboardingSheet` et `src/lib/experience/onboarding.ts`. Le store conserve un seul indicateur local d'achèvement ; le commentaire le décrit comme une fondation minimale, pas comme un parcours membre complet.
+- Le chemin de réinitialisation effectivement utilisé par le service est `/reset-password`, différent de la route recovery dédiée listée dans Foundation.
+
+**Conclusion :** équivalences partielles seulement. Les chemins attendus ne doivent pas être retirés de Foundation sur cette seule base.
+
+### Flash, Scan et Radar
+
+- Flash : contrats partagés, logique métier, API serveur/fonctions, hooks de flux et compositeur existent. En revanche, les chemins de schéma/mapper/compositeur/vue attendus ne sont pas tous présents. La documentation canonique du moteur et le statut des contrats API existent.
+- Scan : contrats, logique, API, hook et service Realtime existent. Le hook exécute une requête serveur et réagit aux changements Flash. Le service de géolocalisation dédié et les chemins de vue/route attendus ne sont pas confirmés. Le module de documentation Scan décrit des garanties de confidentialité, mais ne remplace pas les tests spécifiques absents.
+- Radar : contrat, logique, schéma Zod, mapper et migrations de cycle de vie existent. Le domaine n'exporte actuellement que le schéma, le mapper et une carte UI. Les API, hooks de composition/liste, vues et routes attendues ne sont pas confirmés.
+
+**Conclusion :** les fondations métier des trois moteurs sont réelles, mais les chemins UI/API/tests absents restent à examiner séparément. Une présence de contrat ou de migration ne valide pas le parcours complet.
+
+### Divergences de migrations — point de vigilance important
+
+Les migrations trouvées dans `drizzle/migrations/` et `src/supabase/migrations/` ne sont pas toutes interchangeables :
+
+1. Radar : `drizzle/migrations/0001_create_radars_table.sql` et `src/supabase/migrations/20260912010000_secure_radar_lifecycle.sql` ont un contenu presque identique, mais la version Drizzle ne comporte pas l'encapsulation transactionnelle explicite de la version Supabase. Candidat proche, mais chaîne d'application et source d'autorité à clarifier avant tout déplacement.
+2. Reçus de synchronisation : `drizzle/migrations/0002_create_sync_mutation_receipts.sql` autorise `radars` dans `logical_table`, tandis que `src/supabase/migrations/20260912002000_harden_sync_protocol.sql` ne l'inclut pas. **Divergence fonctionnelle confirmée** : ne pas déclarer ces migrations équivalentes.
+3. Flash/Scan : `drizzle/migrations/0000_flash_scan_public_functions.sql` ajoute des colonnes et plusieurs fonctions Flash/Scan. `src/supabase/migrations/20260912009000_secure_public_flash_feed.sql` ne couvre que la projection publique Flash. **Périmètres différents** : pas d'équivalence globale.
+
+Aucune migration n'a été déplacée, fusionnée ou supprimée. Il faut d'abord identifier quel outil et quel dossier constituent la chaîne de migration effectivement exécutée dans les environnements ciblés.
+
+### Santé, performance et exploitation
+
+- Un endpoint `/api/health` existe, ainsi qu'une politique de classification de santé. Les chemins distincts `live.ts`, `ready.ts` et `health.server.ts` ne sont pas démontrés par le candidat examiné.
+- Le script existant est `scripts/check-performance-budgets.ts`, et non `scripts/check-performance-budget.mjs`. Il mesure les ressources du build et utilise la politique de budget du dépôt : candidat fonctionnel possible, mais le nom et l'interface du contrôle doivent être rapprochés avant modification du script Foundation.
+- La politique de rétention existe sous `src/lib/maintenance/retention-policy.ts`. Cela ne prouve pas l'existence d'un exécuteur de maintenance, d'une route cron, ni d'une migration de rétention à l'emplacement exigé.
+
+### Synthèse de cette passe
+
+| Domaine | Résultat |
+|---|---|
+| Profil | Insuffisant — store d'identité minimal, pas de profil complet prouvé |
+| Auth | Partiel — service/session/écrans existants, callback/recovery non prouvés |
+| Onboarding | Partiel — indicateur local, parcours membre complet non prouvé |
+| Flash | Socle confirmé, parcours et tests Foundation incomplets |
+| Scan | Socle confirmé, géolocalisation dédiée et parcours incomplets |
+| Radar | Contrat/logique/schéma/migration confirmés, API/UI/sync/matching à vérifier |
+| Migrations | Divergences fonctionnelles confirmées entre dossiers |
+| Santé/performance/maintenance | Composants partiels, scripts et endpoints attendus non équivalents à ce stade |
+
+**Action :** conserver les 94 chemins absents dans le contrôle. La prochaine passe doit examiner les migrations de profil, onboarding, Flash, Scan, Radar offline/matching et rétention, puis les tests RLS correspondants. Aucun ticket ou retrait d'exigence n'est créé sans rattachement à la décision produit/technique appropriée.
