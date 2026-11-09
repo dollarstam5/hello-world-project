@@ -386,3 +386,75 @@ Les tests et sources ci-dessus ont été lus dans `main`, mais **n'ont pas été
 **Précaution de périmètre produit :** les chemins et comportements ci-dessus sont ceux du dépôt historique `main` examiné. Ils ne doivent pas être confondus avec les spécifications Vitalis validées plus récemment dans la conversation (navigation Réel/Flash/Scan/Radar/2x2, profil, cloche à trois parcours, onboarding progressif). Une matrice de conformité Vitalis doit comparer explicitement ces décisions produit aux fondations techniques avant toute proposition de code.
 
 **Aucune migration, route, fonctionnalité ou référence Foundation n'a été supprimée ou modifiée durant cette vague.** Les conclusions sont documentaires ; aucun test ni workflow n'a été exécuté.
+
+
+---
+
+## Vague 5 — réconciliation produit Vitalis / implémentation actuelle
+
+**Référence technique :** arbre Git de `main` à `86f4f43cbd6942a8e7df95d3ce53c3db9634a7fb`, fichiers sources relus dans cette référence.  
+**Référence produit :** décisions validées dans les échanges Vitalis, notamment navigation Réel/Flash/Scan/Radar/2x2, onboarding progressif, profil et cloche de communication.
+
+### 1. Navigation principale
+
+| Décision produit validée | Preuve actuelle dans le dépôt | État |
+|---|---|---|
+| Barre principale Réel, Flash, Scan, Radar, 2x2 | `src/components/app/BottomNav.tsx` contient bien cinq entrées : Réel (clé i18n, route `/`), Flash, Scan, Radar et menu 2x2 | Partiel |
+| Chaque moteur ouvre son propre espace | Flash et Scan ont leurs routes dédiées ; Radar a une route mais seulement deux sections Foundation vides ; Réel renvoie vers la Home Foundation | Partiel |
+| 2x2 ouvre un espace de catégories | Le bouton ouvre `MenuSheet`, qui ne propose actuellement que Espace et Talents | Partiel |
+| Profil accessible depuis l'en-tête | `AppHeader.tsx` relie l'icône profil à `/espace` | Présent comme point d'entrée, profil fonctionnel non démontré |
+| Langue visible dès le premier écran | Aucun sélecteur de langue visible dans `AppHeader.tsx` ni `BottomNav.tsx` | Non démontré / écart |
+
+**Constat important :** le libellé de l'onglet d'accueil est « Réel », mais sa destination est `/` et son composant est `HomeFoundation`. Cela ne démontre pas encore une page Réel opérationnelle séparée de la Home explicative et de la Home interactive attendues dans le parcours produit.
+
+### 2. Home et première utilisation
+
+| Décision produit validée | Preuve actuelle | État |
+|---|---|---|
+| Première utilisation : onboarding avant la Home explicative | `AppShell` monte `OnboardingSheet` globalement ; le store `onboarding.ts` hydrate un seul flag localStorage | Partiel |
+| Onboarding explique le fonctionnement de Vitalis | `OnboardingSheet.tsx` affiche trois intitulés Flash/Radar/Découverte et deux actions ignorer/démarrer ; le commentaire précise que les étapes réelles viendront plus tard | Insuffisant |
+| Après explication, l'utilisateur déclenche une demande d'identification | Aucun déclenchement ni formulaire de demande d'identification démontré dans les fichiers examinés | Non démontré |
+| Après saisie, arrivée sur la Home d'interaction | `HomeFoundation.tsx` affiche des sections Flash/Radar/Feed/Découverte, avec états vides ; aucun état de parcours conditionnel identifié | Non conforme à la séquence validée / à construire |
+| Distinguer Home explicative et espace Réel actif | Une seule route racine et un seul composant `HomeFoundation` observés | Non démontré |
+
+Le flag d'onboarding est local au navigateur/appareil ; il ne constitue ni un état de compte synchronisé ni une preuve d'identification.
+
+### 3. Cloche et communication
+
+| Décision produit validée | Preuve actuelle | État |
+|---|---|---|
+| Une seule cloche ouvre une fenêtre regroupant trois parcours | `AppHeader` ouvre `CommunicationSheet`, monté dans `AppShell` | Présent |
+| Parcours notifications | Onglet présent, contenu actuellement vide | Structure seulement |
+| Parcours messages / conversations | Onglet présent, contenu actuellement vide | Structure seulement |
+| Parcours assistance | Onglet actuellement nommé Assistant ; il monte `AssistantTab` | Partiel, équivalence avec assistance à valider |
+| Pas de messagerie libre ; conversation liée à une action / mise en relation | Le composant ne démontre ni règles d'ouverture de conversation ni rattachement à une action | Non démontré |
+| Compteur, état non lu, préférences et livraison des notifications | `src/platform/notifications/index.ts` n'expose qu'un contrat `NotificationSink` et `noopNotifications` | Non démontré |
+
+L'ordre technique actuel des onglets est Notifications / Assistant / Conversations. La décision produit parle des parcours notifications / messages / assistance ; l'ordre et les libellés finaux doivent rester alignés sur la spécification canonique avant implémentation.
+
+### 4. Profil et identité
+
+- `AppHeader.tsx` donne accès à `/espace`, mais les fichiers examinés ne prouvent pas un profil persistant complet.
+- `src/domains/profile/index.ts` réexporte le store d'identité.
+- `src/lib/experience/identity.ts` décrit explicitement un placeholder Zustand local, sans branchement backend réel.
+- L'authentification Supabase existante ne doit pas être assimilée à une identité vérifiée ou à un profil membre complet.
+
+**Classement :** accès profil présent ; identité progressive locale provisoire ; profil persistant, préférences et preuve de confiance non démontrés.
+
+### 5. Réconciliation des totaux Foundation — correction de méthode
+
+Le script `src/scripts/check-foundation.mjs` contient une liste explicite de **145 chemins uniques** dans `requiredFiles`. La comparaison exacte de ces chemins avec l'arbre Git de référence `86f4f43cbd6942a8e7df95d3ce53c3db9634a7fb` donne :
+
+- **32 chemins présents exactement** ;
+- **113 chemins absents à l'emplacement attendu** ;
+- **145 chemins distincts contrôlés**.
+
+Le total de 146 obtenu lors d'une extraction antérieure incluait à tort la chaîne d'import `node:fs/promises`, qui n'est pas un chemin Foundation. Le total de 51 présents / 94 absents mentionné dans une synthèse précédente n'est pas reproductible par la comparaison exacte de la liste du script à l'arbre Git. Il ne doit donc plus être utilisé comme total de présence exacte. Des fichiers équivalents peuvent exister à d'autres chemins : ils doivent être comptabilisés séparément comme « candidat équivalent », avec revue de contenu et de responsabilité, jamais comme « présent exact ».
+
+**Limite :** ce comptage vérifie l'existence des chemins dans l'arbre Git ; il ne lance pas le script dans un checkout local et ne valide ni les tests, ni la qualité fonctionnelle, ni la chaîne de migrations.
+
+### 6. Conclusion de cette vague
+
+Les éléments de navigation et les surfaces de communication sont partiellement amorcés, mais plusieurs décisions Vitalis validées ne sont pas encore prouvées dans le code : page Réel distincte, Home à deux états et parcours d'identification, séquence d'onboarding explicative, sélecteur de langue visible, contenu réel des trois parcours de la cloche, et règles de conversations attachées à une action.
+
+**Aucune correction de code, migration, suppression ou modification de `main` n'a été effectuée.** Cette vague ajoute uniquement des constats documentaires à la branche de réconciliation.
