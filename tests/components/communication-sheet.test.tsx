@@ -17,9 +17,7 @@ vi.mock("@/lib/i18n/useI18n", () => ({
 
 describe("CommunicationSheet", () => {
   it("exposes the four communication spaces in the approved order", () => {
-    const markup = renderToStaticMarkup(
-      <CommunicationSheet open onOpenChange={() => undefined} />,
-    );
+    const markup = renderToStaticMarkup(<CommunicationSheet open onOpenChange={() => undefined} />);
     const notifications = markup.indexOf("communication.notifications</button>");
     const assistant = markup.indexOf("communication.assistant</button>");
     const messages = markup.indexOf("communication.messages</button>");
