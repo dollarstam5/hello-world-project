@@ -2,6 +2,19 @@
 
 Ce document décrit le périmètre fonctionnel retrouvé pour Réel. Les fonctionnalités décrites ne constituent pas une preuve d'implémentation.
 
+## 0. Deux modes d'accès avec les mêmes privilèges
+
+Réel peut être utilisé selon deux modes :
+
+- **Mode rapide / invité :** accès sans création obligatoire d'un compte Vitalis. Le parcours doit rester très court (deux ou trois étapes au maximum dans l'expérience cible), notamment pour les permissions nécessaires et le choix ou la création d'un avatar personnalisé.
+- **Mode complet / compte Vitalis :** accès à Réel avec le compte et le profil Vitalis de l'utilisateur.
+
+**Règle produit validée : les deux modes disposent des mêmes privilèges fonctionnels dans Réel.** Un utilisateur invité ne doit pas être privé d'une interaction essentielle au seul motif qu'il n'a pas créé de compte.
+
+Dans les deux modes, les fonctions essentielles sont les mêmes : publier une intention, découvrir les présences proches, consulter les profils accessibles, envoyer et recevoir des bips, accepter une mise en relation et choisir de poursuivre la communication associée après acceptation.
+
+La différence porte sur le mode d'identification et la continuité de l'expérience liée au compte, pas sur les droits d'interaction dans Réel. Le mécanisme technique d'identifiant temporaire pour une session invitée, sa durée de vie et les possibilités éventuelles de rattachement ultérieur à un compte restent à concevoir.
+
 ## 1. Présence volontaire
 
 - L'utilisateur active et désactive sa présence manuellement.
