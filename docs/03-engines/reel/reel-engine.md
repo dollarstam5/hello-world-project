@@ -8,6 +8,8 @@
 
 > **Règle de lecture importante :** ce document décrit le comportement attendu de Réel V1. Les contrats API, le schéma de données, les politiques RLS, les permissions mobiles, les tests et le runtime doivent être vérifiés séparément avant toute affirmation d'implémentation.
 
+> **Complément normatif — temporalité et clôture :** lire également [Cycle de vie immédiat Réel V1](./reel-lifecycle-v1.md). Pour les bips, la conservation de 24 heures, la reprise réseau, les deux accès aux mises en relation et leur clôture, ce document complémentaire prévaut sur toute formulation antérieure contradictoire de la présente spécification. En particulier, une mise en relation clôturée ne laisse ni conversation en lecture seule ni historique utilisateur consultable.
+
 ## 1. Mission et limites de Réel
 
 Réel permet de découvrir des personnes présentes à proximité physique immédiate, par exemple dans une même salle, autour d'un événement, sur un terrain de football ou dans un espace de rassemblement.
@@ -178,7 +180,7 @@ Les coordonnées GPS exactes et le numéro de téléphone restent privés.
 - notification push si les notifications sont autorisées par le destinataire ;
 - aucun rappel automatique si la demande reste sans réponse.
 
-La demande n'expire pas automatiquement.
+Le bip non accepté expire automatiquement 24 heures après son enregistrement par le serveur ; ce délai est une durée de validité et ne retarde jamais sa transmission.
 
 ### 7.4 Refus — C-02.4
 
@@ -196,7 +198,7 @@ La demande n'expire pas automatiquement.
 - L'auteur peut retirer sa demande tant qu'elle est en attente.
 - Le destinataire peut accepter ou refuser une demande en attente.
 - Une demande refusée ne crée aucune conversation.
-- Une demande en attente n'expire pas automatiquement.
+- Un bip non accepté reste valide 24 heures à compter de son enregistrement serveur, puis expire automatiquement ; aucune attente artificielle n'est ajoutée au traitement.
 - Une seule demande en attente est autorisée entre deux personnes, quel que soit le sens ; une demande inverse est bloquée tant que la première est en attente.
 - Le retrait ou le refus est enregistré côté serveur.
 - Après retrait, le délai de 24 heures s'applique également à l'auteur de la demande envers le même destinataire ; le délai commence à l'enregistrement serveur du retrait.
@@ -208,12 +210,12 @@ Les règles métier suivantes sont déjà validées et constituent les contraint
 
 - Une connexion acceptée reste active jusqu'à sa suppression volontaire par l'un des deux utilisateurs ou jusqu'au blocage.
 - Chacun peut mettre fin unilatéralement et définitivement à une connexion.
-- Après la fin de la connexion, celle-ci est inactive pour les deux utilisateurs ; la conversation devient en lecture seule et l'historique reste consultable par les deux.
+- Lorsqu'une mise en relation est clôturée, elle prend fin pour les deux participants ; elle disparaît de Réel et de Notifications, la communication est désactivée et aucun historique de conversation n'est conservé ou consultable.
 - Une nouvelle connexion nécessite une nouvelle demande et une nouvelle acceptation.
 - Le blocage interrompt les interactions et empêche toute nouvelle interaction.
-- Après blocage, la conversation devient immédiatement en lecture seule ; les deux personnes conservent l'accès à l'historique antérieur.
+- Un blocage met fin aux interactions entre les personnes. Si une mise en relation est clôturée dans ce contexte, les règles de clôture commune s'appliquent : communication désactivée et aucun historique de conversation consultable.
 - Le blocage annule immédiatement toutes les demandes en attente entre les deux personnes ; elles ne peuvent plus être acceptées.
-- Après déblocage, les interactions peuvent redevenir possibles, mais l'ancienne connexion n'est pas restaurée. L'ancienne conversation reste en lecture seule et son historique reste consultable par les deux personnes.
+- Après déblocage, l'ancienne mise en relation n'est pas restaurée. Une nouvelle demande et une nouvelle acceptation sont nécessaires ; aucun historique de l'ancienne conversation n'est restauré.
 - Une nouvelle connexion après déblocage exige une nouvelle demande et une nouvelle acceptation ; tout délai de refus ou de retrait encore applicable continue de s'appliquer.
 
 Les décisions fonctionnelles C-04 détaillent ci-dessous la présentation et les actions de ces états. Les règles restent des exigences produit ; leur implémentation et leurs tests ne sont pas vérifiés par ce document.
@@ -274,12 +276,13 @@ Les décisions fonctionnelles C-04 détaillent ci-dessous la présentation et le
 **Statut fonctionnel : décisions C-04.1 à C-04.5 validées.** Les règles métier et l'expérience attendue sont définies ; le runtime et les contrôles restent à vérifier.
 
 ### C-04.1 — Conversation en lecture seule
-Après fin de connexion ou blocage :
-- la conversation reste accessible aux deux personnes ;
-- les messages antérieurs restent consultables ;
-- la zone de saisie est supprimée ou désactivée ;
-- un texte informatif indique que l'envoi n'est plus disponible ;
-- aucune nouvelle prise de contact ne peut être initiée depuis cette ancienne conversation.
+Après clôture d'une mise en relation :
+- la mise en relation disparaît immédiatement des deux emplacements d'accès (Réel et Notifications) pour les deux participants ;
+- la communication associée est désactivée pour les deux ;
+- aucun historique de conversation ne reste consultable ;
+- l'autre participant est informé ;
+- seule une trace technique minimale (date/heure serveur, statut final, type d'événement) peut être conservée ;
+- aucune connexion active n'est maintenue.
 
 ### C-04.2 — Fin volontaire d'une connexion
 - L'utilisateur doit confirmer la fin de connexion.
@@ -290,19 +293,19 @@ Après fin de connexion ou blocage :
 ### C-04.3 — Blocage
 - Le blocage demande une confirmation.
 - Il annule immédiatement les demandes en attente entre les deux personnes.
-- La conversation passe immédiatement en lecture seule et l'historique reste consultable.
+- La mise en relation et la communication sont clôturées selon les règles de clôture commune ; aucun historique de conversation n'est consultable après clôture.
 - Aucun nouveau message ni aucune nouvelle interaction ne sont permis.
 - La personne bloquée ne reçoit pas de notification explicite indiquant qu'elle a été bloquée.
 
 ### C-04.4 — Déblocage
 - Le déblocage est effectué depuis la liste des personnes bloquées.
 - Il ne restaure pas l'ancienne connexion.
-- L'ancienne conversation reste en lecture seule et son historique consultable.
+- L'ancienne conversation n'est pas restaurée et aucun historique de l'ancienne mise en relation n'est rendu consultable.
 - Une nouvelle demande puis une acceptation sont nécessaires pour recréer une connexion.
 - Tout délai de refus ou de retrait encore applicable continue de s'appliquer.
 
 ### C-04.5 — Découverte après fin ou blocage
-- Après fin de connexion ou blocage, les personnes ne figurent plus dans les connexions actives l'une de l'autre ; l'historique reste consultable.
+- Après clôture ou blocage, aucune mise en relation active ne subsiste entre les deux personnes ; aucun historique de conversation clôturée n'est conservé pour consultation.
 - L'ancienne connexion ne donne plus accès au statut ou à la présence Réel de l'autre.
 - Une simple fin de connexion n'interdit pas une redécouverte fortuite dans Réel si les deux profils sont de nouveau visibles et éligibles.
 - Un blocage empêche la découverte réciproque et toute interaction tant qu'il reste actif.
