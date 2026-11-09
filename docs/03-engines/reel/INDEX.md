@@ -12,4 +12,5 @@
 - [Scénarios et preuves](07-tests-validation/scenarios-et-preuves.md)
 - [Périmètres V1/V2/V3](08-evolution/perimetres-v1-v2-v3.md)
 - [Registre des décisions](09-decisions/registre-des-decisions.md)
+- [Réconciliation des fondations](09-decisions/reconciliation-des-fondations.md)
 - [Questions ouvertes](09-decisions/questions-ouvertes.md)
