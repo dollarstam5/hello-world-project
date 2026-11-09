@@ -4,6 +4,12 @@ Les règles ci-dessous reflètent les décisions produit retrouvées. VALIDÉ si
 
 | ID | Règle | Statut |
 |---|---|---|
+| ACC-001 | Réel propose un mode rapide sans compte Vitalis et un mode complet avec compte Vitalis. | VALIDÉ |
+| ACC-002 | Le mode rapide vise un parcours de deux ou trois étapes au maximum, incluant les permissions nécessaires et le choix/la création d'un avatar personnalisé. | VALIDÉ — objectif UX |
+| ACC-003 | Le mode invité et le mode avec compte Vitalis disposent des mêmes privilèges fonctionnels dans Réel. | VALIDÉ |
+| ACC-004 | Les deux modes permettent les interactions essentielles : publier une intention, découvrir les présences proches, consulter les profils accessibles, envoyer/recevoir des bips, accepter une mise en relation et choisir de poursuivre la communication associée. | VALIDÉ |
+| ACC-005 | La différence entre les modes concerne l'identification et la continuité liées au compte, et non les privilèges d'interaction dans Réel. | VALIDÉ |
+| ACC-006 | Le mode invité ne doit pas être assimilé à une identité permanente ou à un compte Vitalis. Le mécanisme de session temporaire reste à concevoir. | À CONCEVOIR |
 | PRE-001 | La présence est activée et désactivée manuellement par l'utilisateur. | VALIDÉ |
 | PRE-002 | Le partage de la localisation est volontaire. | VALIDÉ |
 | PRE-003 | Le rayon est personnalisable, dans une limite maximale de 1 km. | VALIDÉ |
@@ -43,8 +49,8 @@ Les règles ci-dessous reflètent les décisions produit retrouvées. VALIDÉ si
 
 ## Garde-fous d'interprétation
 
+- Les deux modes d'accès ont les mêmes privilèges fonctionnels ; ne pas ajouter de restriction de bips, d'acceptation ou de communication au seul mode invité.
 - Les 24 h concernent les bips non acceptés, pas automatiquement les mises en relation acceptées.
-- La durée d'une mise en relation acceptée avant clôture n'est pas fixée.
 - Le profil détaillé associé à une présence est facultatif ; cela n'empêche pas la consultation du profil de l'émetteur d'un bip.
 - L'acceptation d'un bip et le choix de poursuivre le contact sont deux étapes distinctes.
 - La communication est textuelle dans le périmètre retenu, mais ses limites détaillées restent à spécifier.
