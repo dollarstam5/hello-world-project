@@ -15,7 +15,6 @@ describe("platform-specific installation guidance", () => {
   it("offers iOS manual installation only in a supported secure PWA context", () => {
     expect(getManualInstallInstructions("ios", true, false)).toBe("ios");
     expect(getManualInstallInstructions("ios", false, false)).toBeNull();
-    expect(getManualInstallInstructions("ios", true, false)).toBeNull();
     expect(getManualInstallInstructions("ios", true, true)).toBeNull();
   });
 
