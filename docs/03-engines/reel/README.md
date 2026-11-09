@@ -320,14 +320,14 @@ Ces points restent ouverts et ne doivent pas être considérés comme implément
 
 **Statut : VALIDÉ V1.** Pour tenir compte des perturbations réseau, des déconnexions et des dysfonctionnements technologiques, les bips envoyés et reçus bénéficient d'une conservation temporaire de **24 heures**, y compris après la fermeture de la présence Réel.
 
-### 23.1 Historique temporaire des bips
+### 23.1 Historique temporaire des bips — accès exclusivement dans Réel
 
-- Les bips envoyés et reçus peuvent être retrouvés pendant une fenêtre temporaire de 24 heures.
-- Cette fenêtre reste valable même si l'utilisateur ferme sa présence Réel ou quitte temporairement l'application.
+- Les bips envoyés et reçus restent consultables pendant une fenêtre temporaire de 24 heures, y compris après la fermeture de la présence Réel ou une déconnexion.
+- **Le seul point d'accès à cet historique temporaire est le moteur Réel.** Les bips en attente ne sont pas transférés dans la cloche et ne sont pas affichés dans Notifications ou Messages.
+- L'utilisateur retrouve cet historique en revenant dans l'espace Réel, même si sa présence n'est plus active.
 - L'historique est limité aux événements de bip concernés par cette fenêtre ; il ne devient pas un historique permanent ni une messagerie.
 - À l'expiration des 24 heures, les bips non acceptés ne sont plus consultables et sont supprimés selon les règles de conservation à spécifier.
 - L'interface doit distinguer clairement un bip en attente d'une mise en relation déjà acceptée.
-
 ### 23.2 Prise en compte des perturbations réseau
 
 La règle produit doit éviter qu'une coupure réseau ou une synchronisation retardée fasse disparaître prématurément un bip :
@@ -419,14 +419,14 @@ Les modalités détaillées d'affichage, de classement, de lecture et d'archivag
 
 **Statut : VALIDÉ V1.** La règle précédente selon laquelle les bips disparaissaient immédiatement à la fermeture de la présence ou à la déconnexion est remplacée. Les bips disposent désormais d'une fenêtre de conservation temporaire de **24 heures**, même après la fermeture de Réel.
 
-### 26.1 Bips : historique temporaire de 24 heures
+### 26.1 Bips : historique temporaire de 24 heures, accessible uniquement dans Réel
 
-- Les bips envoyés et reçus restent retrouvables pendant 24 heures.
-- Cette possibilité de consultation ne dépend plus du maintien d'une présence Réel active.
-- La fermeture de la présence, la déconnexion ou la fermeture de l'application ne provoque pas leur effacement immédiat.
-- Les bips non acceptés expirent au terme de la fenêtre de 24 heures et ne deviennent pas un historique permanent.
-- Le parcours précis d'accès à cet historique temporaire dans l'interface reste **À DÉFINIR**.
-
+- Les bips envoyés et reçus restent consultables pendant 24 heures, même après la fermeture de la présence, une déconnexion ou la fermeture de l'application.
+- **L'historique temporaire est accessible exclusivement depuis l'espace Réel**, y compris lorsque l'utilisateur n'a plus de présence active.
+- Les bips en attente ne sont pas copiés dans la cloche et ne créent aucune entrée dans Notifications ou Messages.
+- Le retour dans Réel permet de retrouver les bips encore dans leur fenêtre de conservation ; il ne réactive pas la présence de l'utilisateur.
+- Les bips non acceptés expirent au terme des 24 heures et ne deviennent pas un historique permanent.
+- La présentation précise de cet historique dans Réel (compteur, liste et états visuels) reste **À DÉFINIR**.
 ### 26.2 Résilience réseau et synchronisation
 
 - Les bips non encore synchronisés doivent être préservés localement jusqu'à leur prise en charge par le mécanisme de synchronisation.
@@ -439,11 +439,11 @@ Les modalités détaillées d'affichage, de classement, de lecture et d'archivag
 
 Lorsqu'un bip est accepté, seule la mise en relation résultante devient durable :
 
-- elle reste accessible depuis l'espace des mises en relation de Réel ;
+- elle reste accessible depuis l'espace des mises en relation de Réel pour les personnes concernées ;
 - la notification de confirmation destinée à l'expéditeur reste accessible dans la rubrique **Notifications** de la fenêtre centrale de la cloche ;
-- les deux accès renvoient à la même mise en relation, sans créer deux relations distinctes ni deux historiques indépendants ;
+- ces accès renvoient à la même mise en relation, sans créer deux relations distinctes ni deux historiques indépendants ;
+- seuls les événements de confirmation d'une mise en relation acceptée peuvent apparaître dans Notifications ; les bips en attente ou non acceptés n'y apparaissent jamais ;
 - la conservation de la mise en relation ne dépend pas de l'expiration du bip initial.
-
 ### 26.4 Règle synthétique et priorité documentaire
 
 - **Bips envoyés ou reçus :** historique temporaire de 24 heures, y compris après fermeture de présence ou déconnexion.
