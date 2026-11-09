@@ -71,9 +71,9 @@ Les composants concernés doivent prévoir les états utiles suivants, selon le 
 - Langue du document : l'attribut HTML `lang` suit la langue active après détection initiale et lors d'un changement FR/EN ; test de non-régression associé.
 - Préférences appareil : écoute des changements de `prefers-reduced-motion` et `pointer: coarse` dans `useDevice`.
 - Navigation mobile : cinq destinations dans l'ordre Flash, Scan, Réel (antenne centrale), Radar, 2x2 ; accueil hors barre basse et accessible par l'identité Vitalis et l'icône installée.
-- En-tête : accès à l'accueil, bascule FR/EN, bascule clair/sombre, profil et centre de communication ; contrôles icon-only nommés et cibles tactiles minimales de 44 px.
+- En-tête : accès à l'accueil, bascule FR/EN, bascule clair/sombre, profil et centre de communication ; contrôles icon-only nommés et cibles tactiles minimales de 48 px.
 - Réel : point d'entrée `/reel` disponible avec état d'attente explicite ; aucune fonctionnalité moteur n'est simulée avant la phase 3.
-- Contrôles partagés : boutons, fermeture des feuilles/dialogues, onglets de communication et actions de reprise utilisent une cible tactile minimale de 44 px ; libellé de fermeture localisé FR/EN.
+- Contrôles partagés : boutons, fermeture des feuilles/dialogues, onglets de communication et actions de reprise utilisent une cible tactile minimale de 48 px ; libellé de fermeture localisé FR/EN.
 - Contraste des tokens clairs : bleu primaire et accents sémantiques ajustés en conservant leurs familles de teinte ; les paires de base texte/fond calculées dépassent 4,5:1. Les surfaces translucides et états composés restent à vérifier visuellement.
 - Feuilles et dialogues : contenu défilant sur les petits écrans, avec gestion native du focus et fermeture clavier assurée par Radix.
 - États réseau : le bandeau reflète les états réseau et synchronisation du worker ; aucun nombre ni succès n’est inventé.
@@ -81,7 +81,7 @@ Les composants concernés doivent prévoir les états utiles suivants, selon le 
 - Accueil : remplacement des blocs de flux vides par quatre accès directs aux moteurs, une présentation claire de Vitalis et un rappel du menu 2×2 ; textes FR/EN alignés.
 - Les quatre espaces du centre de communication et leurs règles V1 sont spécifiés dans [Centre de communication V1](../01-product/communication-center-v1.md).
 - Les textes visibles suivent la référence [Langage humain et communication Vitalis](../01-product/communication-language.md).
-- Les vues globales 404 et erreur utilisent également les messages FR/EN et des actions de reprise d'au moins 44 px.
+- Les vues globales 404 et erreur utilisent également les messages FR/EN et des actions de reprise d'au moins 48 px.
 
 ## 7. Vérifications encore requises avant clôture
 
@@ -217,7 +217,7 @@ Les fonctions de compréhension libre, d'adaptation intelligente et de dialogue 
 
 ### Authentification — cohérence invité/compte et accès système
 - La route de connexion est volontairement sans chrome global ; elle possède maintenant ses propres contrôles FR/EN et clair/sombre afin que ces réglages restent disponibles pendant l'authentification.
-- Les champs, le bouton principal et les actions secondaires respectent une cible tactile minimale de 44 px et un focus visible.
+- Les champs, le bouton principal et les actions secondaires respectent une cible tactile minimale de 48 px et un focus visible.
 - Les erreurs inattendues d'authentification sont interceptées et présentées avec un rôle accessible ; le retour de succès reste distinct.
 - Les métadonnées de connexion utilisent désormais le nom Vitalis.
 - Le parcours Flash reste réservé à un compte pour publier ; le parcours Scan public ne requiert pas de compte. Le profil et les moteurs Réel/Radar restent des espaces incomplets et ne sont pas déclarés fonctionnels par anticipation.
