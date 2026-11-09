@@ -20,7 +20,6 @@ export const Route = createFileRoute("/espace")({
         { key: "you", titleKey: "page.espace.section.you", perf: "short" },
         { key: "circles", titleKey: "page.espace.section.circles", perf: "tall" },
       ]}
-      footer="Foundation · Espace"
     />
   ),
 });
