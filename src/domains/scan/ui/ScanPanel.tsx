@@ -61,16 +61,34 @@ export function ScanPanel() {
         aria-busy={busy || locating}
         className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
       >
-        {busy || locating ? <ScanLine className="h-4 w-4 animate-pulse" aria-hidden /> : <LocateFixed className="h-4 w-4" aria-hidden />}
+        {busy || locating ? (
+          <ScanLine className="h-4 w-4 animate-pulse" aria-hidden />
+        ) : (
+          <LocateFixed className="h-4 w-4" aria-hidden />
+        )}
         {busy || locating ? t("scan.busy") : t("scan.start")}
       </button>
 
-      {unsupported && <p className="text-sm text-destructive" role="alert">{t("scan.unsupported")}</p>}
-      {denied && <p className="text-sm text-destructive" role="alert">{t("scan.denied")}</p>}
-      {failed && <p className="text-sm text-destructive" role="alert">{t("scan.error")}</p>}
+      {unsupported && (
+        <p className="text-sm text-destructive" role="alert">
+          {t("scan.unsupported")}
+        </p>
+      )}
+      {denied && (
+        <p className="text-sm text-destructive" role="alert">
+          {t("scan.denied")}
+        </p>
+      )}
+      {failed && (
+        <p className="text-sm text-destructive" role="alert">
+          {t("scan.error")}
+        </p>
+      )}
 
       {started && !busy && !locating && !denied && !failed && !unsupported && rows.length === 0 && (
-        <p className="text-sm text-muted-foreground" role="status">{t("scan.empty")}</p>
+        <p className="text-sm text-muted-foreground" role="status">
+          {t("scan.empty")}
+        </p>
       )}
 
       {rows.length > 0 && (
@@ -84,7 +102,13 @@ export function ScanPanel() {
                 </span>
               </div>
               <p className="mt-1 text-xs text-muted-foreground">
-                {t(`flash.kind.${r.kind}`)} · {t(`flash.category.${r.category}`)} · {t(`flash.slot.${r.timeSlot}`)} · {r.areaLabel}
+                {t(`flash.kind.${r.kind}`)}
+                {" · "}
+                {t(`flash.category.${r.category}`)}
+                {" · "}
+                {t(`flash.slot.${r.timeSlot}`)}
+                {" · "}
+                {r.areaLabel}
               </p>
             </li>
           ))}
