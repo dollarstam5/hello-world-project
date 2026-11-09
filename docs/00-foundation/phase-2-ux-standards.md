@@ -13,6 +13,7 @@ Ce document fixe les règles vérifiables de la phase 2. Il ne certifie pas les 
 - Ne jamais dépendre uniquement de la couleur, d'une animation ou d'une icône pour transmettre une information ou une action.
 - Préserver l'accès aux fonctions essentielles lorsque le réseau est lent ou indisponible.
 - Toutes les chaînes visibles doivent passer par le catalogue i18n FR/EN ; aucun libellé d'interface ne doit être codé en dur dans un composant métier.
+- La voix de Vitalis est humaine, chaleureuse et directe ; les messages restent honnêtes sur l'état réel des actions et évitent le jargon inutile. La référence éditoriale est [Langage humain et communication Vitalis](../01-product/communication-language.md).
 - Les états de lecture et les actions requises restent distincts dans le centre de communication.
 
 ## 2. Responsive et capacités de l'appareil
@@ -20,8 +21,10 @@ Ce document fixe les règles vérifiables de la phase 2. Il ne certifie pas les 
 - Les seuils de mise en page proviennent des tokens de design ; ne pas recréer des breakpoints concurrents dans les composants.
 - `useResponsive` agrège la classe d'appareil, la taille du viewport, l'orientation, le réseau et la réduction des effets.
 - `useDevice` est la source commune pour les informations appareil/pointeur/préférence de mouvement.
+- La détection de capacité doit précéder toute adaptation à Android, iOS, tablette, desktop ou mode installé ; ne pas déduire la disponibilité d'une fonction du seul nom de plateforme.
 - Les composants ne doivent pas implémenter leur propre détection d'appareil lorsqu'une fondation commune répond au besoin.
 - Les adaptations de performance ne doivent pas supprimer une information ou une fonction essentielle.
+- La matrice des capacités, solutions de repli et validations est définie dans [Adaptation PWA et capacités des plateformes](./pwa-platform-adaptation.md).
 
 ## 3. Accessibilité et mouvement
 
@@ -63,6 +66,7 @@ Les composants concernés doivent prévoir les états utiles suivants, selon le 
 - États réseau : le bandeau reflète les états réseau et synchronisation du worker ; aucun nombre ni succès n’est inventé.
 - Premier lancement : l’onboarding V1 suit cinq écrans distincts : Vitalis, Flash+Scan, Réel+Radar, 2×2, puis l’invitation finale. Passer ou fermer le parcours est mémorisé.
 - Les quatre espaces du centre de communication et leurs règles V1 sont spécifiés dans [Centre de communication V1](../01-product/communication-center-v1.md).
+- Les textes visibles suivent la référence [Langage humain et communication Vitalis](../01-product/communication-language.md).
 - Les vues globales 404 et erreur utilisent également les messages FR/EN et des actions de reprise d'au moins 44 px.
 
 ## 7. Vérifications encore requises avant clôture
