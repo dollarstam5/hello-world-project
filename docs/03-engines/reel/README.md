@@ -345,3 +345,37 @@ Un bip non accepté ne devient jamais une mise en relation et ne doit pas être 
 - La disparition des bips à la fermeture de la présence ou à la déconnexion doit être cohérente dans l'interface et dans les données.
 - Les mises en relation acceptées doivent être séparées des bips éphémères afin que leur conservation ne dépende pas de la durée de vie de la présence Réel.
 - Les modalités techniques de suppression, de synchronisation et de gestion des cas de déconnexion restent à spécifier et à vérifier ; cette décision produit ne constitue pas une preuve d'implémentation.
+
+
+## 24. Décision produit validée — jumelage établi sans obligation de conversation immédiate (2026-11-09)
+
+**Statut : VALIDÉ V1.** L'acceptation d'un bip établit immédiatement la mise en relation entre les deux personnes. Cette mise en relation ne dépend pas de l'ouverture ou de l'envoi d'un message.
+
+### 24.1 Côté destinataire qui accepte
+
+Après avoir appuyé sur **« Accepter »** :
+- la mise en relation est considérée comme établie ;
+- le destinataire peut choisir d'écrire immédiatement à la personne ;
+- il peut également ne pas écrire tout de suite et revenir à la conversation plus tard ;
+- aucune rédaction de message n'est obligatoire pour valider le jumelage.
+
+### 24.2 Côté personne qui a envoyé le bip
+
+L'expéditeur reçoit une notification lui indiquant que la personne a accepté son bip. Cette notification lui confirme que la mise en relation est établie.
+
+### 24.3 Conservation dans les deux comptes
+
+La mise en relation acceptée reste accessible dans les comptes des deux personnes, indépendamment de la présence Réel et de sa durée.
+
+La notification confirmant l'acceptation reste également disponible dans le compte de l'expéditeur selon les règles de conservation des notifications de Vitalis.
+
+Cette conservation ne s'étend pas aux bips non acceptés : ceux-ci restent éphémères et sont supprimés à la fermeture de la présence ou à la déconnexion, conformément à la section 23.
+
+### 24.4 Distinction produit à respecter
+
+- **Bip :** signal temporaire, sans historique.
+- **Acceptation :** création immédiate d'une mise en relation durable.
+- **Notification :** confirmation persistante adressée à l'expéditeur.
+- **Conversation :** facultative au moment de l'acceptation ; elle peut commencer immédiatement ou plus tard.
+
+La mise en relation validée ne doit donc pas être confondue avec une conversation déjà commencée. Les règles de gestion ultérieure de cette relation (fin, blocage, signalement et conservation) restent soumises au moteur Communication.
