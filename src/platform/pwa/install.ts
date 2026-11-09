@@ -4,6 +4,7 @@
  */
 import { useEffect, useState } from "react";
 
+import { getPlatformCapabilities, type PlatformOS } from "@/lib/platform/capabilities";
 import { watchForUpdates } from "./update";
 
 interface BeforeInstallPromptEvent extends Event {
@@ -20,11 +21,7 @@ function notify() {
 }
 
 function isStandalone(): boolean {
-  if (typeof window === "undefined") return false;
-  return (
-    window.matchMedia("(display-mode: standalone)").matches ||
-    (window.navigator as { standalone?: boolean }).standalone === true
-  );
+  return getPlatformCapabilities().standalone;
 }
 
 /** Registers the service worker once, in production, even when load has passed. */
@@ -57,8 +54,9 @@ export function registerServiceWorker(): void {
 }
 
 export function useInstallPrompt() {
+  const capabilities = getPlatformCapabilities();
   const [available, setAvailable] = useState(deferredPrompt !== null);
-  const [installed, setInstalled] = useState(isStandalone());
+  const [installed, setInstalled] = useState(capabilities.standalone);
 
   useEffect(() => {
     const onListener = () => setAvailable(deferredPrompt !== null);
@@ -95,5 +93,15 @@ export function useInstallPrompt() {
     return outcome;
   }
 
-  return { available: available && !installed, installed, install };
+  const manualInstructions: "ios" | "android" | null =
+    capabilities.os === "ios" ? "ios" : capabilities.os === "android" ? "android" : null;
+  const canOfferManualInstall =
+    capabilities.secureContext && capabilities.serviceWorker && manualInstructions !== null;
+
+  return {
+    available: !installed && (available || canOfferManualInstall),
+    installed,
+    install,
+    manualInstructions: available ? null : manualInstructions,
+  };
 }
