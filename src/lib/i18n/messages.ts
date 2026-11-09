@@ -59,11 +59,15 @@ export const messages = {
     "communication.open": "Ouvrir les communications",
     "communication.title": "Communications",
     "communication.notifications": "Notifications",
-    "communication.assistance": "Assistance",
+    "communication.assistant": "Assistant",
     "communication.messages": "Messages",
+    "communication.reel": "Real",
+    "communication.reel": "Réel",
     "communication.notifications.empty": "Aucune nouvelle notification.",
     "communication.messages.empty":
       "Les conversations liées à vos actions et mises en relation apparaîtront ici.",
+    "communication.reel.empty":
+      "Les demandes et interactions Réel nécessitant votre attention apparaîtront ici.",
     "home.welcome": "Bonjour",
     "home.subtitle": "Voici votre écosystème, posé et vivant.",
     "home.section.flash": "Ce qui passe",
@@ -404,11 +408,13 @@ export const messages = {
     "communication.open": "Open communications",
     "communication.title": "Communications",
     "communication.notifications": "Notifications",
-    "communication.assistance": "Assistance",
+    "communication.assistant": "Assistant",
     "communication.messages": "Messages",
     "communication.notifications.empty": "No new notifications.",
     "communication.messages.empty":
       "Conversations linked to your actions and connections will appear here.",
+    "communication.reel.empty":
+      "Real-time requests and interactions that need your attention will appear here.",
     "home.welcome": "Hello",
     "home.subtitle": "Here is your ecosystem, calm and alive.",
     "home.section.flash": "What's passing",
