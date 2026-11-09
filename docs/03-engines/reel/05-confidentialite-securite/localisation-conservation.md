@@ -22,7 +22,7 @@ Présence : 30 min, 1 h, 2 h, 3 h, 6 h, 12 h, 24 h. À expiration, le statut est
 
 - **Compte Vitalis :** l'historique personnel de Réel conserve les bips, les mises en relation et les interactions passées associées, y compris les événements liés à une mise en relation clôturée.
 - **Mode invité :** aucune histoire personnelle persistante. Les données personnelles liées à la session disparaissent à la fin de celle-ci, sous réserve des traces techniques minimales nécessaires et séparées.
-- L'historique des comptes Vitalis comprend les événements et les conversations selon les règles de conservation suivantes : une conversation est archivée après 3 mois, ou plus tôt dès que le plafond de 50 conversations conservées est dépassé (la plus ancienne est alors archivée).
+- L'historique des comptes Vitalis comprend les événements et les conversations selon les règles de conservation suivantes : une conversation est archivée après 3 mois sans nouveau message, le délai étant calculé depuis la date du dernier message échangé et relancé à chaque nouveau message ; elle peut être archivée plus tôt dès que le plafond de 50 conversations conservées est dépassé (la plus ancienne est alors archivée).
 - L'utilisateur peut supprimer son historique, mais ne peut pas l'exporter. Une archive est inaccessible à l'utilisateur, sauf accès exceptionnel demandé par celui-ci et autorisé par un administrateur pour 24 heures. Une archive est conservée pendant 6 mois à compter de son archivage, puis supprimée définitivement selon la politique de purge. Les délais d'effacement technique des sauvegardes éventuelles et les obligations légales applicables restent à vérifier.
 
 ## Bips non acceptés
