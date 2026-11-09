@@ -128,7 +128,7 @@ export function OnboardingSheet() {
                   {t("onboarding.discovery.body")}
                 </p>
               </div>
-              <div className="grid gap-3">
+              <div className="grid gap-3 md:grid-cols-2">
                 <EngineCard
                   icon={Zap}
                   title={t("onboarding.flash.title")}
@@ -153,7 +153,7 @@ export function OnboardingSheet() {
                   {t("onboarding.connection.body")}
                 </p>
               </div>
-              <div className="grid gap-3">
+              <div className="grid gap-3 md:grid-cols-2">
                 <EngineCard
                   icon={RadioTower}
                   title={t("onboarding.reel.title")}
