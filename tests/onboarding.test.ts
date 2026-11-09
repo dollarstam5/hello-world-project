@@ -12,20 +12,22 @@ describe("Vitalis onboarding", () => {
     });
   });
 
-  it("guides the user through four steps without exceeding the final step", () => {
+  it("guides the user through five steps without exceeding the final step", () => {
+    useOnboarding.getState().next();
+    useOnboarding.getState().next();
     useOnboarding.getState().next();
     useOnboarding.getState().next();
     useOnboarding.getState().next();
     useOnboarding.getState().next();
 
-    expect(useOnboarding.getState().step).toBe(3);
+    expect(useOnboarding.getState().step).toBe(4);
 
     useOnboarding.getState().previous();
-    expect(useOnboarding.getState().step).toBe(2);
+    expect(useOnboarding.getState().step).toBe(3);
   });
 
   it("persists completion so the introduction does not reopen next time", () => {
-    useOnboarding.setState({ hydrated: true, shouldShow: true, step: 3 });
+    useOnboarding.setState({ hydrated: true, shouldShow: true, step: 4 });
 
     useOnboarding.getState().complete();
 
