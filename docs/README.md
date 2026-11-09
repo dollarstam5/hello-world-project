@@ -16,8 +16,8 @@ Ce répertoire suit une structure canonique pour la documentation active.
 
 ## Références canoniques
 
-- [Langage de design Vitala](./00-foundation/design-language.md)
-- [Vitala Experience System](./01-product/experience-system.md)
+- [Langage de design Vitalis](./00-foundation/design-language.md)
+- [Vitalis Experience System](./01-product/experience-system.md)
 - [Architecture front-end et expérience](./02-architecture/frontend-experience.md)
 - [Architecture backend et API](./02-architecture/backend-api.md)
 - [Architecture de la base de données](./02-architecture/database-architecture.md)
@@ -26,7 +26,7 @@ Ce répertoire suit une structure canonique pour la documentation active.
 - [API de synchronisation](./03-api/sync-api.md)
 - [Dictionnaire de données](./04-database/data-dictionary.md)
 - [Schéma, grants et politiques RLS](./04-database/schema-design.md)
-- [Personas Vitala](./01-product/personas.md)
+- [Personas Vitalis](./01-product/personas.md)
 - [Parcours utilisateurs](./01-product/user-journeys.md)
 - [Niveaux de confiance](./01-product/trust-levels.md)
 - [Domaine Trust et Trust Engine](./02-architecture/trust-domain.md)
