@@ -288,6 +288,8 @@ export const messages = {
     "install.subtitle":
       "Installez-la sur votre écran d'accueil : elle s'ouvre en un geste, même sans réseau.",
     "install.action": "Installer",
+    "install.ios.instructions": "Sur Safari, touchez Partager puis « Sur l’écran d’accueil » pour ajouter Vitalis.",
+    "install.android.instructions": "Dans le menu de votre navigateur, choisissez « Installer l’application » ou « Ajouter à l’écran d’accueil ».",
     "install.dismiss": "Plus tard",
     "admin.kpi.tables": "Tables",
     "admin.kpi.rows": "Lignes",
@@ -674,6 +676,8 @@ export const messages = {
     "install.title": "Keep the app close",
     "install.subtitle": "Add it to your home screen: one tap to open, even with no network.",
     "install.action": "Install",
+    "install.ios.instructions": "In Safari, tap Share, then “Add to Home Screen” to add Vitalis.",
+    "install.android.instructions": "In your browser menu, choose “Install app” or “Add to Home screen”.",
     "install.dismiss": "Later",
     "admin.kpi.tables": "Tables",
     "admin.kpi.rows": "Rows",
