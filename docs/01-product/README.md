@@ -9,6 +9,7 @@ Cette section documente la vision produit, les intentions d'usage, les parcours,
 - [Parcours utilisateurs](./user-journeys.md)
 - [Niveaux de confiance](./trust-levels.md)
 - [Vitala Experience System](./experience-system.md)
+- [Centre de communications — règles produit V1](./communication-center-v1.md)
 
 ## Références d'architecture liées
 
