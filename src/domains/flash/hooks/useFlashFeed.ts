@@ -43,10 +43,7 @@ export function useFlashFeed() {
     } catch {
       if (activeRef.current) {
         const locale = useI18nStore.getState().locale;
-        setError(
-          messages[locale]["flash.feed.error"] ??
-            messages[defaultLocale]["flash.feed.error"],
-        );
+        setError(messages[locale]["flash.feed.error"] ?? messages[defaultLocale]["flash.feed.error"]);
       }
     } finally {
       if (activeRef.current) setLoading(false);
