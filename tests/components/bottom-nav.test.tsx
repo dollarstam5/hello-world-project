@@ -16,9 +16,8 @@ vi.mock("@tanstack/react-router", () => ({
       {children}
     </a>
   ),
-  useRouterState: (options: {
-    select: (state: { location: { pathname: string } }) => string;
-  }) => options.select({ location: { pathname: "/scan" } }),
+  useRouterState: (options: { select: (state: { location: { pathname: string } }) => string }) =>
+    options.select({ location: { pathname: "/scan" } }),
 }));
 
 vi.mock("@/lib/i18n/useI18n", () => ({
@@ -76,9 +75,7 @@ describe("BottomNav", () => {
   });
 
   it("exposes the active route and an accessible secondary-menu button", () => {
-    const markup = renderToStaticMarkup(
-      <BottomNav onOpenMenu={() => undefined} menuOpen={true} />,
-    );
+    const markup = renderToStaticMarkup(<BottomNav onOpenMenu={() => undefined} menuOpen={true} />);
 
     expect(markup).toContain('href="/scan" aria-label="Scan" aria-current="page"');
     expect(markup).toContain('aria-label="Ouvrir le menu"');
