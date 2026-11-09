@@ -490,7 +490,7 @@ export const messages = {
     "home.engine.flash.desc": "Share a need or an offer, and discover useful posts.",
     "home.engine.scan.title": "Scan",
     "home.engine.scan.desc": "Spot active Flash nearby without showing your location.",
-    "home.engine.reel.title": "Real",
+    "home.engine.reel.title": "Live",
     "home.engine.reel.desc": "Share your presence and discover people nearby.",
     "home.engine.radar.title": "Radar",
     "home.engine.radar.desc": "Explore useful opportunities and information around you.",
@@ -524,7 +524,7 @@ export const messages = {
     "onboarding.spaces.title": "More places to explore",
     "onboarding.spaces.body":
       "The 2x2 menu opens Vitalis spaces and extra features. You can explore them whenever you need them.",
-    "onboarding.reel.title": "Real",
+    "onboarding.reel.title": "Live",
     "onboarding.reel.body":
       "Share your presence and discover people nearby, with the freedom to use guest mode.",
     "onboarding.radar.title": "Radar",
@@ -533,7 +533,7 @@ export const messages = {
     "onboarding.ready.body":
       "Make yourself at home, explore at your own pace and start wherever you like. Your Vitalis experience is waiting.",
     "onboarding.ready.guest":
-      "You can get started without an account wherever the engine allows it. Real is available in guest mode.",
+      "You can get started without an account wherever the engine allows it. Live is available in guest mode.",
 
     "identity.guest": "Guest",
     "identity.identified": "Identified",
@@ -551,7 +551,7 @@ export const messages = {
     "page.error.desc": "Something went wrong. Try again or return home.",
     "page.error.retry": "Try again",
     "nav.primary": "Main navigation",
-    "nav.reel": "Real",
+    "nav.reel": "Live",
     "nav.flash": "Flash",
     "nav.scan": "Scan",
     "nav.radar": "Radar",
