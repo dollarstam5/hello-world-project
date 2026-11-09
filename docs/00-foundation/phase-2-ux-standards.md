@@ -40,6 +40,7 @@ Ce document fixe les règles vérifiables de la phase 2. Il ne certifie pas les 
 
 - La navigation principale mobile présente exactement cinq icônes, dans cet ordre : Flash, Scan, Réel, Radar, 2x2.
 - Réel occupe la position centrale et utilise une icône d’antenne ; son point d’entrée est `/reel`.
+- La barre flottante conserve une marge latérale sur les petits écrans, respecte la zone sûre inférieure et ne touche pas les bords physiques du téléphone.
 - Le centre 2x2 ouvre le menu ; il ne constitue pas une destination métier supplémentaire.
 - L’accueil reste hors de la barre basse : l’icône/identité de l’application ouvre `/`, et le lancement depuis l’icône installée ouvre également l’accueil.
 - Le changement FR/EN est accessible depuis l'en-tête principal et conserve la langue choisie via le mécanisme i18n existant.
