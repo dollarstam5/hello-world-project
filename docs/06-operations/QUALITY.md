@@ -42,7 +42,7 @@ La CI utilise ensuite `bun install --frozen-lockfile`. Elle doit échouer si `pa
 | P0.6      | environnement et en-têtes HTTP                                                   | `tests/config/`, `tests/security/`                                                                                                                       |
 | P0.9      | corrélation, health, rétention et diagnostic offline                             | `tests/observability/`, `tests/offline/`                                                                                                                 |
 | P0.10     | PWA, budgets, Web Vitals et écrans mobiles                                       | `tests/pwa/`, `tests/performance/`, `tests/e2e/`                                                                                                         |
-| P0.11     | certification, reproductibilité, Go/No-Go et passage à P1                        | `tests/smoke/`, `docs/RELEASE_READINESS.md`                                                                                                              |
+| P0.11     | certification, reproductibilité, Go/No-Go et passage à P1                        | `tests/smoke/`, `docs/06-operations/release-readiness.md`                                                                                                              |
 | P1.1      | profil, préférences, progression UDI et champs protégés                          | `tests/profile/`, `supabase/tests/database/70_profile_preferences_rls.test.sql`                                                                          |
 | P1.2      | Auth PKCE, redirections internes et onboarding monotone                          | `tests/auth/`, `tests/onboarding/`, `supabase/tests/database/80_member_onboarding_rls.test.sql`                                                          |
 | P1.3      | brouillons Flash, cycle protégé et projection anonyme                            | `tests/flash/`, `supabase/tests/database/90_flash_lifecycle_rls.test.sql`                                                                                |
@@ -54,11 +54,11 @@ Les politiques RLS PostgreSQL restent la frontière de sécurité. P0.3 vérifie
 
 P0.4 couvre les invariants critiques du moteur de synchronisation : push avant pull, conservation des écritures hors ligne et arrêt sur la limite de sécurité de pagination. Les tests restent exécutables sans secret de production.
 
-Les incidents, seuils d’alerte et objectifs de service sont définis dans [`OPERATIONS.md`](OPERATIONS.md).
+Les incidents, seuils d’alerte et objectifs de service sont définis dans [opérations](./operations.md).
 
-Les budgets et la matrice mobile sont définis dans [`PERFORMANCE_PWA.md`](PERFORMANCE_PWA.md).
+Les budgets et la matrice mobile sont définis dans [performance PWA](./performance-pwa.md).
 
-La décision finale Go/No-Go et les validations manuelles sont définies dans [`RELEASE_READINESS.md`](RELEASE_READINESS.md). Un contrôle automatique vert signifie seulement « candidat Go » : la préproduction, le rollback et la validation humaine restent obligatoires.
+La décision finale Go/No-Go et les validations manuelles sont définies dans [préparation de release](./release-readiness.md). Un contrôle automatique vert signifie seulement « candidat Go » : la préproduction, le rollback et la validation humaine restent obligatoires.
 
 ## Règles de merge
 
