@@ -12,6 +12,16 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 }
 
+export function getManualInstallInstructions(
+  os: PlatformOS,
+  secureContext: boolean,
+  serviceWorker: boolean,
+  standalone: boolean,
+): "ios" | "android" | null {
+  if (standalone || !secureContext || !serviceWorker) return null;
+  return os === "ios" || os === "android" ? os : null;
+}
+
 let deferredPrompt: BeforeInstallPromptEvent | null = null;
 let registrationScheduled = false;
 const listeners = new Set<() => void>();
@@ -93,10 +103,13 @@ export function useInstallPrompt() {
     return outcome;
   }
 
-  const manualInstructions: "ios" | "android" | null =
-    capabilities.os === "ios" ? "ios" : capabilities.os === "android" ? "android" : null;
-  const canOfferManualInstall =
-    capabilities.secureContext && capabilities.serviceWorker && manualInstructions !== null;
+  const manualInstructions = getManualInstallInstructions(
+    capabilities.os,
+    capabilities.secureContext,
+    capabilities.serviceWorker,
+    installed,
+  );
+  const canOfferManualInstall = manualInstructions !== null;
 
   return {
     available: !installed && (available || canOfferManualInstall),
