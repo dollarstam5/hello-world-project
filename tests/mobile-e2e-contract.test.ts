@@ -21,8 +21,8 @@ describe("mobile visual smoke contract", () => {
     expect(script).toContain("__vitalis_smoke=1");
   });
 
-  it("captures all five primary destinations and the profile entry", () => {
-    for (const route of ["/flash", "/scan", "/reel", "/radar", "/espace"]) {
+  it("captures the four engines, secondary space and profile entry", () => {
+    for (const route of ["/flash", "/scan", "/reel", "/radar", "/talents", "/espace"]) {
       expect(script).toContain(`"${route}"`);
     }
   });
