@@ -1,5 +1,12 @@
 export type PlatformOS = "android" | "ios" | "windows" | "macos" | "linux" | "other" | "unknown";
-export type BrowserName = "chrome" | "edge" | "samsung" | "firefox" | "safari" | "other" | "unknown";
+export type BrowserName =
+  | "chrome"
+  | "edge"
+  | "samsung"
+  | "firefox"
+  | "safari"
+  | "other"
+  | "unknown";
 
 export interface PlatformIdentity {
   os: PlatformOS;
@@ -31,12 +38,16 @@ export function detectPlatformIdentity(input: NavigatorHints): PlatformIdentity 
   const ua = input.userAgent ?? "";
   const platform = input.userAgentData?.platform || input.platform || "";
   const normalized = platform.toLowerCase();
-  const isIPadOS =
-    /macintosh/i.test(ua) && (input.maxTouchPoints ?? 0) > 1;
+  const isIPadOS = /macintosh/i.test(ua) && (input.maxTouchPoints ?? 0) > 1;
 
   let os: PlatformOS = "other";
   if (/android/i.test(ua) || normalized === "android") os = "android";
-  else if (/iphone|ipad|ipod/i.test(ua) || isIPadOS || /ios/i.test(normalized)) os = "ios";
+  else if (
+    /iphone|ipad|ipod/i.test(ua) ||
+    isIPadOS ||
+    /ios/i.test(normalized)
+  )
+    os = "ios";
   else if (/win/i.test(normalized) || /windows/i.test(ua)) os = "windows";
   else if (/mac/i.test(normalized) || /macintosh|mac os/i.test(ua)) os = "macos";
   else if (/linux/i.test(normalized) || /linux/i.test(ua)) os = "linux";
@@ -44,7 +55,11 @@ export function detectPlatformIdentity(input: NavigatorHints): PlatformIdentity 
 
   const brands = input.userAgentData?.brands?.map((item) => item.brand.toLowerCase()) ?? [];
   let browser: BrowserName = "other";
-  if (brands.some((brand) => brand.includes("edge")) || /edg(e|a|ios)?\//i.test(ua)) browser = "edge";
+  if (
+    brands.some((brand) => brand.includes("edge")) ||
+    /edg(e|a|ios)?\//i.test(ua)
+  )
+    browser = "edge";
   else if (/samsungbrowser/i.test(ua)) browser = "samsung";
   else if (brands.some((brand) => brand.includes("chrome")) || /crios|chrome/i.test(ua)) browser = "chrome";
   else if (/firefox|fxios/i.test(ua)) browser = "firefox";
@@ -86,9 +101,7 @@ export function getPlatformCapabilities(): PlatformCapabilities {
     notifications: "Notification" in window,
     clipboard: Boolean(navigator.clipboard?.writeText),
     share: typeof navigator.share === "function",
-    standalone:
-      media("(display-mode: standalone)") ||
-      nav.standalone === true,
+    standalone: media("(display-mode: standalone)") || nav.standalone === true,
     coarsePointer: media("(pointer: coarse)"),
     reducedMotion: media("(prefers-reduced-motion: reduce)"),
   };
