@@ -87,7 +87,7 @@ Ces décisions doivent être reliées à leurs exigences et tests dans une matri
 | Périmètre V1 / exclusions | À définir |
 | Fonctionnalités V1 | À détailler |
 | Carte, fiche et informations révélées | À arbitrer |
-| Activation/désactivation de présence et nombre de présences simultanées | À décider |
+| États de visibilité Visible / Invisible | **VALIDÉ V1** — contrôle volontaire et réversible ; Invisible masque la présence sans fermer l'application ni supprimer les données |\n| Nombre de présences simultanées | À décider |
 | Description de présence facultative ; visibilité possible sans texte | **VALIDÉ V1** — la description n'est pas obligatoire pour activer la visibilité |
 | Forme et longueur maximale de la description facultative | À préciser |
 | Découverte simultanée, actualisation et disponibilité locale | À définir |
@@ -119,3 +119,16 @@ Définir si un utilisateur peut activer plusieurs présences ou descriptions sim
 ## 11. Décision produit validée — description facultative (2026-11-09)
 
 **Statut : VALIDÉ V1.** Un utilisateur peut activer sa présence Réel et devenir visible à proximité sans renseigner de description. La description est facultative ; elle permet, si l'utilisateur le souhaite, de préciser brièvement sa disponibilité ou son intention actuelle. L'activation de la présence ne dépend donc pas de la rédaction d'un texte. La forme et la longueur maximale de cette description restent à définir.
+
+## 12. Décision produit validée — états de visibilité (2026-11-09)
+
+**Statut : VALIDÉ V1.** La visibilité Réel repose sur deux états contrôlés par l'utilisateur :
+
+- **Visible :** la présence active peut être découverte par les autres personnes à proximité, selon les règles de zone et de durée applicables.
+- **Invisible :** la présence n'est plus présentée aux autres utilisateurs, même si l'application reste ouverte.
+
+Le passage en mode Invisible est réversible et ne supprime ni le compte, ni le profil, ni les autres données de l'utilisateur. Il agit sur la découvrabilité de la présence Réel uniquement. Il ne doit pas être interprété comme une déconnexion du compte ou une suppression de la présence enregistrée.
+
+**Conséquence UX V1 :** l'état de visibilité doit être compréhensible en un coup d'œil et modifiable simplement, sans parcours complexe. L'interface doit confirmer clairement à l'utilisateur lorsqu'il n'est plus découvrable.
+
+**Points à préciser ultérieurement :** comportement exact d'une présence mise en Invisible (mise en pause ou retrait temporaire du flux de découverte), traitement de sa durée pendant cette période, et reprise de visibilité. Ces détails ne sont pas implicitement décidés ici.
