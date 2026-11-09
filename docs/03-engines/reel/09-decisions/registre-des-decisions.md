@@ -24,7 +24,7 @@
 | DEC-020 | L'autre participant est informé de la clôture. | VALIDÉ |
 | DEC-021 | Communication désactivée après clôture. | VALIDÉ |
 | DEC-022 | Trace technique minimale : date, statut, événement. | VALIDÉ |
-| DEC-023 | Aucun historique de conversation après clôture. | VALIDÉ |
+| DEC-023 | Aucun historique de conversation après clôture. | REMPLACÉE par DEC-037 à DEC-043 |
 | DEC-024 | Aucun historique visible de mise en relation clôturée. | VALIDÉ |
 | DEC-025 | Le profil détaillé associé à une présence est facultatif. | VALIDÉ |
 | DEC-026 | La poursuite du contact après acceptation relève d'un choix distinct de l'acceptation du bip. | VALIDÉ |
@@ -39,7 +39,7 @@
 | DEC-033 | Pour un compte Vitalis, l'historique Réel conserve les bips, les mises en relation et les interactions passées associées au moteur. | VALIDÉ |
 | DEC-034 | Une mise en relation clôturée disparaît des espaces actifs des deux participants, mais son événement reste consultable dans l'historique de leur compte. | VALIDÉ |
 | DEC-035 | En mode invité, aucune histoire personnelle persistante n'est conservée ; les données personnelles liées à la session disparaissent à sa fin. | VALIDÉ |
-| DEC-036 | L'historique validé conserve les événements et statuts, pas le contenu des conversations ; ce dernier reste exclu en l'état. | REMPLACÉE par DEC-037 à DEC-042 |
+| DEC-036 | L'historique validé conserve les événements et statuts, pas le contenu des conversations ; ce dernier reste exclu en l'état. | REMPLACÉE par DEC-037 à DEC-043 |
 
 ## Historique et distinction des données
 
