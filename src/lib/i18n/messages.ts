@@ -105,13 +105,15 @@ export const messages = {
     "onboarding.spaces.body":
       "Le menu 2×2 vous ouvre les espaces et fonctionnalités complémentaires de Vitalis. Vous pouvez les découvrir quand vous en avez besoin.",
     "onboarding.reel.title": "Réel",
-    "onboarding.reel.body": "Signalez votre présence et découvrez les personnes à proximité, avec la liberté d'utiliser le mode invité.",
+    "onboarding.reel.body":
+      "Signalez votre présence et découvrez les personnes à proximité, avec la liberté d'utiliser le mode invité.",
     "onboarding.radar.title": "Radar",
     "onboarding.radar.body": "Repérez les opportunités et les éléments pertinents autour de vous.",
     "onboarding.ready.title": "Prêt à faire votre premier pas ?",
     "onboarding.ready.body":
       "Installez-vous, explorez à votre rythme et commencez par l'espace qui vous attire. Toute l'expérience Vitalis vous attend.",
-    "onboarding.ready.guest": "Vous pouvez commencer sans créer de compte lorsque le moteur le permet. Réel est accessible en mode invité.",
+    "onboarding.ready.guest":
+      "Vous pouvez commencer sans créer de compte lorsque le moteur le permet. Réel est accessible en mode invité.",
 
     "identity.guest": "Invité",
     "identity.identified": "Identifié",
@@ -484,11 +486,9 @@ export const messages = {
     "onboarding.discovery.body":
       "Two engines to share what's happening and find what you're looking for.",
     "onboarding.flash.title": "Flash",
-    "onboarding.flash.body":
-      "Publish a need or an offer, and discover useful posts around you.",
+    "onboarding.flash.body": "Publish a need or an offer, and discover useful posts around you.",
     "onboarding.scan.title": "Scan",
-    "onboarding.scan.body":
-      "Spot active Flash around you without revealing your location.",
+    "onboarding.scan.body": "Spot active Flash around you without revealing your location.",
     "onboarding.connection.title": "Get closer to what matters",
     "onboarding.connection.body":
       "Spot possibilities nearby and connect when the moment feels right.",
