@@ -68,7 +68,7 @@
 | ID | Sujet | État | Proposition de départ V1 | À préciser / tester |
 |---|---|---|---|---|
 | MSG-01 | Nature | **VALIDÉ** | Conversation membre contextualisée à une action ; jamais une boîte de chat libre. | Décision produit explicite. |
-| MSG-02 | Déclenchement | **PROPOSITION** | La conversation est créée uniquement après une action acceptée ou une mise en relation autorisée. | Définir les déclencheurs précis pour Réel, Flash, Radar et Missions si applicable. |
+| MSG-02 | Déclenchement | **VALIDÉ** | La conversation est ouverte uniquement après l'acceptation d'une demande ou la confirmation d'une mise en relation autorisée. | Déclencheur précis à décliner par moteur/action ; aucun chat libre ni contact hors contexte. |
 | MSG-03 | Contexte obligatoire | **PROPOSITION** | Chaque fil référence l'action source, son type, son identifiant et son état. | Définir le comportement si l'action source est supprimée/expirée. |
 | MSG-04 | Participants | **PROPOSITION** | Seuls les participants autorisés par l'action peuvent lire et écrire. | Tests d'isolation et de révocation indispensables. |
 | MSG-05 | Fin de conversation | **À DÉCIDER** | Clôture manuelle, clôture liée à la fin de l'action, ou combinaison des deux. | Définir les cas de réouverture. |
@@ -132,6 +132,7 @@ Les niveaux ci-dessous sont des **propositions de cadrage**, pas des engagements
 |---|---|---|---|
 | Antérieure au 2026-11-09 | COM-01 à COM-04 | Structure de cloche et absence de messagerie libre validées. | Échanges produit antérieurs, réconciliation vague 10. |
 | 2026-11-09 | NOT-10 — Catalogue initial d'événements | Sélection V1 validée : acceptation, nouveau message lié à une action, réponse/confirmation attendue et événement important de sécurité/compte ; refus/annulation/expiration à arbitrer selon l'action ; pas de notification par défaut pour activité passive, recommandation non urgente ou action initiée par l'utilisateur. | Validation explicite de l'utilisateur dans la conversation du 2026-11-09. |
+| 2026-11-09 | MSG-02 — Déclenchement d'une conversation | V1 validée : ouverture uniquement après acceptation d'une demande ou confirmation d'une mise en relation autorisée ; le fil reste rattaché à l'action source. | Validation explicite de l'utilisateur dans la conversation du 2026-11-09. |
 
 ---
 **Règle de mise à jour :** après chaque arbitrage utilisateur, mettre à jour l'état, la décision retenue, les impacts V1/V2/V3 et les tests d'acceptation associés. Ne pas effacer les propositions rejetées : les conserver dans l'historique de décision si elles expliquent un choix d'architecture ou de produit.
