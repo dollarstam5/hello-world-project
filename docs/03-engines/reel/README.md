@@ -87,7 +87,7 @@ Ces décisions doivent être reliées à leurs exigences et tests dans une matri
 | Périmètre V1 / exclusions | À définir |
 | Fonctionnalités V1 | À détailler |
 | Carte, fiche et informations révélées | À arbitrer |
-| États de visibilité Visible / Invisible | **VALIDÉ V1** — contrôle volontaire et réversible ; Invisible masque la présence sans fermer l'application ni supprimer les données |\n| Nombre de présences simultanées | À décider |
+| États de visibilité Visible / Invisible | **VALIDÉ V1** — contrôle volontaire et réversible ; Invisible masque la présence sans fermer l'application ni supprimer les données |\n| Nombre de présences simultanées | **VALIDÉ V1** — une seule présence active par utilisateur ; modification de la présence existante plutôt que cumul |
 | Description de présence facultative ; visibilité possible sans texte | **VALIDÉ V1** — la description n'est pas obligatoire pour activer la visibilité |
 | Forme et longueur maximale de la description facultative | À préciser |
 | Découverte simultanée, actualisation et disponibilité locale | À définir |
@@ -143,3 +143,16 @@ Le passage en mode Invisible est réversible et ne supprime ni le compte, ni le 
 - Si la durée arrive à son terme pendant que la présence est Invisible, elle expire normalement et ne peut pas être réactivée ; l'utilisateur devra créer/activer une nouvelle présence s'il souhaite redevenir visible.
 
 Cette règle évite qu'une présence masquée puisse être conservée indéfiniment et garantit que la durée choisie par l'utilisateur reste effective.
+
+## 14. Décision produit validée — une seule présence active (2026-11-09)
+
+**Statut : VALIDÉ V1.** Un utilisateur ne peut avoir qu'une seule présence Réel active à la fois.
+
+- L'utilisateur peut modifier la description facultative et les paramètres autorisés de sa présence existante.
+- Il ne peut pas créer une deuxième présence active en parallèle.
+- Pour exprimer une nouvelle intention, il modifie sa présence actuelle plutôt que d'en cumuler plusieurs.
+- La modification ne doit pas créer de présence concurrente ni contourner les règles de visibilité et d'expiration déjà validées.
+
+**Motifs produit :** réduire la charge mentale, éviter les intentions contradictoires, simplifier la gestion de la visibilité et de l'expiration, et limiter les données et traitements nécessaires en V1.
+
+**Point à préciser lors de la spécification détaillée :** quelles modifications sont autorisées pendant une présence active et si certaines modifications doivent réinitialiser ou préserver sa durée. Aucune réinitialisation de durée n'est décidée par le présent arbitrage.
