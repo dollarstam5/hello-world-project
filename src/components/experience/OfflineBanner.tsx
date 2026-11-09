@@ -32,7 +32,9 @@ export function OfflineBanner() {
   return (
     <div className="px-4 pt-3">
       <StatusBanner
-        status={isOffline || sync.phase === "offline" || sync.phase === "error" ? "warning" : "info"}
+        status={
+          isOffline || sync.phase === "offline" || sync.phase === "error" ? "warning" : "info"
+        }
         title={isOffline ? t("offline.banner.title") : t(sync.messageKey)}
         description={description}
       />
