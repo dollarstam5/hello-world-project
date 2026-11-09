@@ -379,3 +379,31 @@ Cette conservation ne s'étend pas aux bips non acceptés : ceux-ci restent éph
 - **Conversation :** facultative au moment de l'acceptation ; elle peut commencer immédiatement ou plus tard.
 
 La mise en relation validée ne doit donc pas être confondue avec une conversation déjà commencée. Les règles de gestion ultérieure de cette relation (fin, blocage, signalement et conservation) restent soumises au moteur Communication.
+
+
+## 25. Décision produit validée — deux accès aux jumelages acceptés, sans quatrième rubrique (2026-11-09)
+
+**Statut : VALIDÉ V1.** Pour faciliter la prise en main et éviter de multiplier les espaces de navigation, les mises en relation acceptées sont retrouvables par deux accès complémentaires. Aucun quatrième parcours « Temps réel » n'est ajouté à la fenêtre centrale de la cloche.
+
+### 25.1 Accès depuis le compteur de Réel
+
+Le compteur de Réel conserve une copie des mises en relation acceptées. L'utilisateur peut ainsi retrouver rapidement les personnes avec lesquelles un jumelage a été établi, même lorsque le bip initial a disparu.
+
+Cette conservation concerne uniquement les jumelages acceptés, jamais les bips en attente ou non acceptés. Elle ne transforme pas le compteur en historique des sollicitations.
+
+### 25.2 Accès depuis la fenêtre centrale de la cloche
+
+Une notification confirmant l'acceptation du bip est également attribuée à la rubrique **Notifications** de la fenêtre centrale.
+
+La cloche conserve ses trois parcours existants :
+1. **Notifications**
+2. **Messages**
+3. **Assistance**
+
+Aucune quatrième rubrique « Temps réel » ou « Réel » n'est créée. Les événements provenant du moteur Réel sont intégrés aux Notifications, tandis que les conversations liées aux jumelages relèvent de Messages selon les règles du moteur Communication.
+
+### 25.3 Règle de cohérence
+
+Les deux accès renvoient à la même mise en relation validée : ils ne doivent pas créer deux relations distinctes ni deux compteurs indépendants. La copie accessible depuis Réel et la notification centrale sont deux points d'entrée complémentaires vers un même événement de jumelage.
+
+Les modalités détaillées d'affichage, de classement, de lecture et d'archivage des notifications restent alignées sur les règles communes de la cloche et du moteur Communication.
