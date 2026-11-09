@@ -261,3 +261,10 @@ La dernière exécution confirme à nouveau :
 Le smoke visuel confirme le rendu et la disponibilité des routes ; il ne valide pas les interactions réelles, la navigation au clavier, le lecteur d'écran ou les contrastes composites. Le test réseau vérifie les événements navigateur online/offline et le test de synchronisation couvre la conservation des mutations en attente sans transport hors ligne.
 
 **État actualisé :** tous les contrôles automatisés requis sont verts sur le commit ci-dessus. Les trois validations manuelles listées en section 12 restent obligatoires avant clôture de la phase 2. La PR #37 reste en brouillon ; aucune modification n'a été portée sur `main` et aucune fusion n'a été effectuée.
+
+
+### Dernière correction ciblée — erreurs de géolocalisation Scan
+- Scan distingue désormais les quatre résultats possibles de la demande de position : permission refusée, position indisponible, délai dépassé et erreur inconnue.
+- Chaque cas dispose d'un message FR/EN dédié ; le message de refus n'est plus affiché pour un simple délai dépassé ou une indisponibilité du fournisseur de position.
+- Correction portée dans `ScanPanel.tsx` et `messages.ts`, dans la branche existante de la PR #37.
+- La nouvelle exécution Quality #556 est en cours ; cette correction ne sera considérée vérifiée qu'après son résultat.
