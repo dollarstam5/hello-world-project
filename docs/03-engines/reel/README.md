@@ -168,3 +168,12 @@ Cette règle évite qu'une présence masquée puisse être conservée indéfinim
 - La règle d'une seule présence active par utilisateur reste applicable.
 
 Cette décision vise une gestion souple et simple de la présence, sans multiplier les étapes ni permettre de prolonger implicitement sa durée.
+
+## 16. Décision produit validée — masquer ou terminer une présence (2026-11-09)
+
+**Statut : VALIDÉ V1.** L'utilisateur dispose de deux actions distinctes pour gérer sa présence :
+
+1. **Masquer temporairement :** la présence passe en mode Invisible et cesse immédiatement d'être découvrable. Elle reste active jusqu'à son expiration ; son compte à rebours continue normalement. L'utilisateur peut la rendre visible à nouveau avant l'expiration, pour le temps restant.
+2. **Terminer ma présence :** la présence est clôturée immédiatement. Elle ne peut pas être réactivée. Pour redevenir visible, l'utilisateur doit créer/activer une nouvelle présence, dans le respect de la limite d'une seule présence active.
+
+**Conséquence UX :** les deux actions doivent être nommées et différenciées sans ambiguïté. Masquer est réversible avant expiration ; terminer est définitif pour cette présence. Une confirmation explicite avant la fin définitive est recommandée afin d'éviter une suppression accidentelle.
