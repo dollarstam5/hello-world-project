@@ -1,26 +1,24 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import type { PublicFlash } from "@eco/core-contracts";
-import { useI18n } from "@/lib/i18n/useI18n";
+import { defaultLocale, messages } from "@/lib/i18n/messages";
+import { useI18nStore } from "@/lib/i18n/useI18n";
 import { useLiveFlashes } from "../data";
 import { getPublicFlashFeed } from "../api/flash.functions";
 
 export type FlashFeedSource = "remote" | "offline";
 
 export function useFlashFeed() {
-  const { t } = useI18n();
-  const localRows = useLiveFlashes() ?? [];
+  const localRows = useLiveFlashes();
   const loadRemote = useServerFn(getPublicFlashFeed);
   const [remoteRows, setRemoteRows] = useState<PublicFlash[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>();
   const activeRef = useRef(true);
-  const translateRef = useRef(t);
-  translateRef.current = t;
 
   const offlineRows = useMemo<PublicFlash[]>(
     () =>
-      localRows.map((flash) => ({
+      (localRows ?? []).map((flash) => ({
         id: flash.id,
         kind: flash.kind ?? "offer",
         category: flash.category ?? "other",
@@ -43,7 +41,10 @@ export function useFlashFeed() {
         setError(undefined);
       }
     } catch {
-      if (activeRef.current) setError(translateRef.current("flash.feed.error"));
+      if (activeRef.current) {
+        const locale = useI18nStore.getState().locale;
+        setError(messages[locale]["flash.feed.error"] ?? messages[defaultLocale]["flash.feed.error"]);
+      }
     } finally {
       if (activeRef.current) setLoading(false);
     }
