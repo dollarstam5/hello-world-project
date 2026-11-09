@@ -5,7 +5,7 @@ import { SectionFoundation } from "@/components/experience/SectionFoundation";
 export const Route = createFileRoute("/radar")({
   head: () => ({
     meta: [
-      { title: "Radar — Écosystème" },
+      { title: "Radar — Vitalis" },
       { name: "description", content: "Ce qui se passe autour de vous." },
     ],
   }),
