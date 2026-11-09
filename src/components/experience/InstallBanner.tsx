@@ -18,7 +18,7 @@ export function InstallBanner() {
     >
       <div className="flex items-start gap-3">
         <span className="mt-0.5 inline-flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-          <Download className="size-4" />
+          <Download className="size-4" aria-hidden />
         </span>
         <div className="min-w-0 flex-1">
           <p className="text-sm font-medium">{t("install.title")}</p>
@@ -26,7 +26,7 @@ export function InstallBanner() {
           <button
             type="button"
             onClick={() => void install()}
-            className="mt-2 inline-flex items-center rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90"
+            className="mt-2 inline-flex min-h-11 items-center rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90"
           >
             {t("install.action")}
           </button>
@@ -35,7 +35,7 @@ export function InstallBanner() {
           type="button"
           onClick={() => setDismissed(true)}
           aria-label={t("install.dismiss")}
-          className="text-muted-foreground transition-colors hover:text-foreground"
+          className="flex min-h-11 min-w-11 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground"
         >
           <X className="size-4" />
         </button>
