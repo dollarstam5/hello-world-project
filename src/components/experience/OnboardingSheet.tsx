@@ -8,6 +8,7 @@ import {
   ArrowLeft,
   ArrowRight,
   LayoutGrid,
+  Languages,
   Radar,
   RadioTower,
   ScanSearch,
@@ -39,7 +40,7 @@ function EngineCard({
 
 /** A short, five-step introduction to Vitalis, shown once per device. */
 export function OnboardingSheet() {
-  const { t } = useI18n();
+  const { t, locale, setLocale } = useI18n();
   const navigate = useNavigate();
   const shouldShow = useOnboarding((state) => state.shouldShow);
   const hydrated = useOnboarding((state) => state.hydrated);
@@ -71,9 +72,22 @@ export function OnboardingSheet() {
     >
       <div className="flex min-h-[min(64dvh,560px)] flex-col gap-6 pt-2">
         <div className="space-y-2">
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
+          <div className="flex items-center justify-between gap-3 text-xs text-muted-foreground">
             <span>{t("onboarding.stepLabel")}</span>
-            <span aria-hidden="true">{step + 1}/5</span>
+            <div className="flex items-center gap-2">
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                aria-label={t("language.switch")}
+                onClick={() => setLocale(locale === "fr" ? "en" : "fr")}
+                className="min-h-11 min-w-11 px-2 text-xs font-semibold"
+              >
+                <Languages aria-hidden="true" className="mr-1 h-4 w-4" />
+                {locale.toUpperCase()}
+              </Button>
+              <span aria-hidden="true">{step + 1}/5</span>
+            </div>
           </div>
           <Progress value={((step + 1) / 5) * 100} aria-label={t("onboarding.progress")} />
         </div>
