@@ -51,7 +51,10 @@ Les composants concernés doivent prévoir les états utiles suivants, selon le 
 - Navigation basse : remplacement de la sémantique de liste d'onglets par une région de navigation nommée ; conservation de `aria-current` sur la destination active.
 - Internationalisation : ajout d'un nom accessible FR/EN pour la navigation principale.
 - Préférences appareil : écoute des changements de `prefers-reduced-motion` et `pointer: coarse` dans `useDevice`.
-- En-tête : ajout d'un contrôle de langue FR/EN visible, avec libellé accessible et bascule via le store i18n.
+- Navigation mobile : cinq destinations dans l'ordre Flash, Scan, Réel (antenne centrale), Radar, 2x2 ; accueil hors barre basse et accessible par l'identité Vitalis et l'icône installée.
+- En-tête : accès à l'accueil, bascule FR/EN, bascule clair/sombre, profil et centre de communication ; contrôles icon-only nommés et cibles tactiles minimales de 44 px.
+- Réel : point d'entrée `/reel` disponible avec état d'attente explicite ; aucune fonctionnalité moteur n'est simulée avant la phase 3.
+- Contrôles partagés : boutons, fermeture des feuilles/dialogues et actions de reprise utilisent une cible tactile minimale de 44 px ; libellé de fermeture localisé FR/EN.
 - Les quatre espaces du centre de communication et leurs règles V1 sont spécifiés dans [Centre de communication V1](../01-product/communication-center-v1.md).
 
 ## 7. Vérifications encore requises avant clôture
