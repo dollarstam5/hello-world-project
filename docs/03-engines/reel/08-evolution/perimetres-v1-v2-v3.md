@@ -6,7 +6,7 @@ Présence manuelle et volontaire ; rayon personnalisable jusqu'à 1 km ; paliers
 Cette liste décrit le périmètre fonctionnel retrouvé, pas une preuve d'implémentation.
 
 ## V2
-Extensions facultatives payantes : micro-paiements pour augmenter certains plafonds ou capacités (notamment le stockage) et, si cela est économiquement viable, accéder à des fonctionnalités complémentaires selon les espaces. Elles ne doivent pas rendre payantes les fonctions essentielles gratuites de V1. Ces options ne seront activées qu'après validation des coûts réels, frais de paiement et capacités d'infrastructure.
+Extensions facultatives payantes : l'utilisateur peut augmenter les plafonds gratuits de certains espaces (notamment le stockage) au moyen d'extensions ou de micro-paiements. Les plafonds deviennent ainsi évolutifs selon les besoins de l'utilisateur, dans des paliers et limites définis par Vitalis. Les revenus générés contribuent au financement des coûts réels de fonctionnement de l'application (infrastructure, stockage, transferts, services et frais associés). Les fonctions essentielles gratuites de V1 restent gratuites. Les offres, prix, limites, renouvellements et conditions de paiement devront être définis après mesure des coûts, prise en compte des frais de paiement et validation de la capacité technique. Aucun stockage illimité ni dépassement des capacités globales ne doit être promis.
 
  Blocage, signalement, anti-abus et raffinements de communication doivent être arbitrés avant affectation.
 
@@ -25,3 +25,8 @@ La V1 vise zéro coût récurrent obligatoire ou un coût quasi nul strictement 
 **Proposition de garde-fous globaux Supabase Free, à valider :** base de données 350 Mo sur 500 Mo ; stockage fichiers 700 Mo sur 1 Go ; egress non mis en cache 3,5 Go sur 5 Go/mois ; egress mis en cache 3,5 Go sur 5 Go/mois ; Realtime 1,4 million de messages sur 2 millions/mois ; 140 connexions simultanées sur 200. Alertes à 50 %, limitation des opérations non essentielles à 65 %, arrêt des nouvelles écritures non indispensables à 70 %. Ces seuils sont internes et ne remplacent pas les limites du fournisseur.
 
 Les valeurs et conditions Supabase doivent être vérifiées avant lancement. Le plan Free peut mettre en pause un projet après une semaine d'inactivité ; il ne constitue pas une garantie de disponibilité ou de sauvegarde de production.
+
+
+## Principe de quotas évolutifs — V2
+
+Le quota gratuit constitue le niveau de base. Un utilisateur qui a besoin de davantage de capacité pourra choisir volontairement une extension payante. Les extensions doivent être compréhensibles, transparentes et proportionnées aux coûts qu'elles génèrent. Les recettes correspondantes ont vocation à contribuer au paiement des factures de fonctionnement de Vitalis. Le modèle économique ne doit pas dégrader les fonctions essentielles gratuites, ni autoriser une vente de capacité que l'infrastructure ne peut pas garantir.
