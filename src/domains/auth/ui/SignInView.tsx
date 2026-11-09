@@ -71,7 +71,7 @@ export function SignInView() {
           size="sm"
           aria-label={t("language.switch")}
           onClick={() => setLocale(locale === "fr" ? "en" : "fr")}
-          className="min-h-11 min-w-11 px-2 text-xs font-semibold"
+          className="min-h-12 min-w-12 px-2 text-xs font-semibold"
         >
           <Languages aria-hidden className="mr-1 h-4 w-4" />
           {locale.toUpperCase()}
@@ -83,7 +83,7 @@ export function SignInView() {
           aria-label={t(isDark ? "theme.switchToLight" : "theme.switchToDark")}
           title={t(isDark ? "theme.switchToLight" : "theme.switchToDark")}
           onClick={() => setMode(isDark ? "light" : "dark")}
-          className="h-11 w-11"
+          className="h-12 w-12"
         >
           {isDark ? <Sun aria-hidden /> : <Moon aria-hidden />}
         </Button>
@@ -106,7 +106,7 @@ export function SignInView() {
               autoComplete="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              className="mt-1 min-h-11 w-full rounded-xl border border-border/60 bg-card/40 px-3 py-2 outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-ring"
+              className="mt-1 min-h-12 w-full rounded-xl border border-border/60 bg-card/40 px-3 py-2 outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-ring"
             />
           </label>
 
@@ -120,12 +120,12 @@ export function SignInView() {
                 autoComplete={mode === "signIn" ? "current-password" : "new-password"}
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                className="mt-1 min-h-11 w-full rounded-xl border border-border/60 bg-card/40 px-3 py-2 outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-ring"
+                className="mt-1 min-h-12 w-full rounded-xl border border-border/60 bg-card/40 px-3 py-2 outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-ring"
               />
             </label>
           ) : null}
 
-          <Button type="submit" disabled={busy} className="min-h-11 w-full">
+          <Button type="submit" disabled={busy} className="min-h-12 w-full">
             {busy
               ? t("app.loading")
               : t(
@@ -155,7 +155,7 @@ export function SignInView() {
                 setAuthMode("forgot");
                 setMessage(null);
               }}
-              className="min-h-11 rounded-md px-3 text-muted-foreground underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="min-h-12 rounded-md px-3 text-muted-foreground underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               {t("auth.forgot")}
             </button>
@@ -166,7 +166,7 @@ export function SignInView() {
               setAuthMode(mode === "signIn" ? "signUp" : "signIn");
               setMessage(null);
             }}
-            className="min-h-11 rounded-md px-3 text-muted-foreground underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="min-h-12 rounded-md px-3 text-muted-foreground underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             {t(mode === "signIn" ? "auth.toSignUp" : "auth.toSignIn")}
           </button>
