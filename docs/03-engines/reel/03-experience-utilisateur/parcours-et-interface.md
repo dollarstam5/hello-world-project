@@ -66,3 +66,10 @@ Demande de confirmation, clôture pour les deux, désactivation de la communicat
 Mobile-first, responsive, faible charge mentale, états vides/chargement/erreur/hors ligne/reprise, animations utiles mais non indispensables, accessibilité et lisibilité.
 
 **À confirmer :** wireframes, libellés exacts, gestes, états détaillés, animations et accessibilité.
+
+
+## Conservation, archivage et limites de stockage V1
+
+Pour les comptes Vitalis, les conversations sont archivées après 3 mois ou plus tôt si le plafond de 50 conversations conservées est dépassé : la plus ancienne est alors archivée. Une conversation archivée est inaccessible à l'utilisateur, sauf demande de celui-ci autorisée par un administrateur pour une durée de 24 heures. Ensuite, elle redevient inaccessible. L'utilisateur peut supprimer son historique, mais ne peut pas l'exporter.
+
+Chaque espace dispose d'un plafond de stockage gratuit en V1. En cas de saturation, l'interface propose deux choix : supprimer des données ou limiter les nouveaux usages/enregistrements dans cet espace. Aucun paiement ni supplément de stockage n'est proposé en V1. Les quotas chiffrés, les seuils d'avertissement et la durée de conservation des archives restent à définir.
