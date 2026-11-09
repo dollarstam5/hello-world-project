@@ -26,7 +26,13 @@ La simplicité prime sur le vocabulaire technique, les effets de style et les fo
 - Garder la même voix dans les parcours, les notifications, les erreurs, les permissions et les messages d'aide.
 - Traduire le sens et le ton en français et en anglais ; ne pas produire une traduction mot à mot qui sonne artificielle.
 
-## 3. Exemples de formulations
+## 3. Noms des espaces
+
+- En français, conserver les noms Flash, Scan, Réel, Radar et 2×2.
+- En anglais, conserver Flash, Scan, Radar et 2×2 ; traduire le nom de l'espace Réel par **Live**, plus naturel pour désigner la présence en temps réel.
+- Utiliser le même nom dans l'accueil, l'onboarding, la navigation, le centre de communication et les pages de destination.
+
+## 4. Exemples de formulations
 
 | À éviter | Préférer |
 | --- | --- |
@@ -40,7 +46,7 @@ La simplicité prime sur le vocabulaire technique, les effets de style et les fo
 
 Les formulations sont des exemples de ton, pas des textes obligatoires dans tous les contextes. Le message doit toujours refléter l'état technique réel.
 
-## 4. Messages selon le contexte
+## 5. Messages selon le contexte
 
 - **Accueil et onboarding :** inviter à découvrir Vitalis à son rythme, sans pression et sans laisser croire qu'un compte est obligatoire lorsque le mode invité est permis.
 - **Actions et confirmations :** expliquer ce qui va se passer avant une action importante ; confirmer uniquement ce qui a réellement été effectué.
@@ -51,13 +57,13 @@ Les formulations sont des exemples de ton, pas des textes obligatoires dans tous
 - **Erreurs et reprise :** dire ce qui n'a pas fonctionné, proposer une prochaine étape simple et ne jamais faire porter la faute à la personne.
 - **Hors ligne :** distinguer une action gardée sur l'appareil, une action envoyée et une action confirmée par le service.
 
-## 5. Cohérence V1 et versions futures
+## 6. Cohérence V1 et versions futures
 
 En V1, la voix humaine s'exprime au moyen de textes localisés et de boîtes de dialogue courtes, simples et déterministes. Cela ne signifie pas que Vitalis comprend librement une conversation.
 
 La compréhension adaptative, les questions générées dynamiquement et l'interaction vocale de type appel relèvent de V2/V3. Leur absence en V1 ne doit pas être masquée par des formulations qui laisseraient croire à une intelligence conversationnelle déjà disponible.
 
-## 6. Contrôle qualité éditorial
+## 7. Contrôle qualité éditorial
 
 Avant publication d'un texte visible, vérifier :
 
