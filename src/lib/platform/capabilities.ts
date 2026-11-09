@@ -1,12 +1,5 @@
 export type PlatformOS = "android" | "ios" | "windows" | "macos" | "linux" | "other" | "unknown";
-export type BrowserName =
-  | "chrome"
-  | "edge"
-  | "samsung"
-  | "firefox"
-  | "safari"
-  | "other"
-  | "unknown";
+export type BrowserName = "chrome" | "edge" | "samsung" | "firefox" | "safari" | "other" | "unknown";
 
 export interface PlatformIdentity {
   os: PlatformOS;
@@ -42,12 +35,7 @@ export function detectPlatformIdentity(input: NavigatorHints): PlatformIdentity 
 
   let os: PlatformOS = "other";
   if (/android/i.test(ua) || normalized === "android") os = "android";
-  else if (
-    /iphone|ipad|ipod/i.test(ua) ||
-    isIPadOS ||
-    /ios/i.test(normalized)
-  )
-    os = "ios";
+  else if (/iphone|ipad|ipod/i.test(ua) || isIPadOS || /ios/i.test(normalized)) os = "ios";
   else if (/win/i.test(normalized) || /windows/i.test(ua)) os = "windows";
   else if (/mac/i.test(normalized) || /macintosh|mac os/i.test(ua)) os = "macos";
   else if (/linux/i.test(normalized) || /linux/i.test(ua)) os = "linux";
@@ -55,13 +43,14 @@ export function detectPlatformIdentity(input: NavigatorHints): PlatformIdentity 
 
   const brands = input.userAgentData?.brands?.map((item) => item.brand.toLowerCase()) ?? [];
   let browser: BrowserName = "other";
-  if (
-    brands.some((brand) => brand.includes("edge")) ||
-    /edg(e|a|ios)?\//i.test(ua)
-  )
+  if (brands.some((brand) => brand.includes("edge")) || /edg(e|a|ios)?\//i.test(ua))
     browser = "edge";
   else if (/samsungbrowser/i.test(ua)) browser = "samsung";
-  else if (brands.some((brand) => brand.includes("chrome")) || /crios|chrome/i.test(ua)) browser = "chrome";
+  else if (
+    brands.some((brand) => brand.includes("chrome")) ||
+    /crios|chrome/i.test(ua)
+  )
+    browser = "chrome";
   else if (/firefox|fxios/i.test(ua)) browser = "firefox";
   else if (/safari/i.test(ua) && !/chrome|crios|android/i.test(ua)) browser = "safari";
   else if (!ua && !platform && brands.length === 0) browser = "unknown";
