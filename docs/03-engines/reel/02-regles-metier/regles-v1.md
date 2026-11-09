@@ -69,7 +69,8 @@ Les règles ci-dessous reflètent les décisions produit retrouvées. VALIDÉ si
 |---|---|---|
 | HIST-005 | Une conversation d'un compte Vitalis est archivée après 3 mois ; le plafond est de 50 conversations conservées et, dès son dépassement, la plus ancienne est archivée même avant 3 mois. | VALIDÉ |
 | HIST-006 | Une conversation archivée est inaccessible à l'utilisateur, sauf demande de celui-ci autorisée par un administrateur pour 24 heures ; après ce délai, elle redevient inaccessible. | VALIDÉ |
-| HIST-007 | L'utilisateur peut supprimer son historique, mais ne peut pas l'exporter. | VALIDÉ |\n| HIST-008 | Le délai d'archivage de 3 mois commence à la date du dernier message échangé ; chaque nouveau message relance ce délai. | VALIDÉ |
+| HIST-007 | L'utilisateur peut supprimer son historique, mais ne peut pas l'exporter. | VALIDÉ |
+| HIST-008 | Le délai d'archivage de 3 mois commence à la date du dernier message échangé ; chaque nouveau message relance ce délai. | VALIDÉ |
 | STO-001 | Chaque espace Vitalis dispose d'un plafond gratuit de stockage en V1 ; les valeurs chiffrées restent à définir. | VALIDÉ — chiffres à définir |
 | STO-002 | À saturation, l'utilisateur choisit entre supprimer des données ou limiter les nouveaux usages/enregistrements de l'espace concerné. | VALIDÉ |
 | STO-003 | Aucun paiement, abonnement ou supplément de stockage n'est proposé en V1 ; les micro-paiements et extensions facultatives sont réservés à V2. | VALIDÉ |
