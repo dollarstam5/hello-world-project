@@ -82,7 +82,8 @@ export const messages = {
     "home.engine.scan.title": "Scan",
     "home.engine.scan.desc": "Repérez les Flash actifs près de vous, sans afficher votre position.",
     "home.engine.reel.title": "Réel",
-    "home.engine.reel.desc": "Cet espace se prépare. Vous pourrez bientôt signaler votre présence et découvrir les personnes à proximité.",
+    "home.engine.reel.desc":
+      "Cet espace se prépare. Vous pourrez bientôt signaler votre présence et découvrir les personnes à proximité.",
     "home.engine.radar.title": "Radar",
     "home.engine.radar.desc":
       "Cet espace se prépare. Vous pourrez bientôt repérer les possibilités autour de vous.",
@@ -491,9 +492,11 @@ export const messages = {
     "home.engine.scan.title": "Scan",
     "home.engine.scan.desc": "Spot active Flash nearby without showing your location.",
     "home.engine.reel.title": "Live",
-    "home.engine.reel.desc": "This space is taking shape. Soon, you will be able to share your presence and discover people nearby.",
+    "home.engine.reel.desc":
+      "This space is taking shape. Soon, you will be able to share your presence and discover people nearby.",
     "home.engine.radar.title": "Radar",
-    "home.engine.radar.desc": "This space is taking shape. Soon, you will be able to spot opportunities around you.",
+    "home.engine.radar.desc":
+      "This space is taking shape. Soon, you will be able to spot opportunities around you.",
     "home.engine.action": "Open this space",
     "home.menuHint":
       "Find complementary spaces and other Vitalis features in the 2x2 menu at the bottom of the screen.",
