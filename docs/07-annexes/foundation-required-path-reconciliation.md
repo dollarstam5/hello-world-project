@@ -235,3 +235,64 @@ Aucune migration n'a été déplacée, fusionnée ou supprimée. Il faut d'abord
 **Limites de preuve :** l'inspection porte sur l'arbre Git et le contenu des fichiers. Aucun SQL n'a été appliqué à une base, aucun test pgTAP n'a été exécuté et aucune chaîne de déploiement/migration n'a été vérifiée. Il serait donc incorrect de qualifier les politiques SQL de « testées en environnement ».
 
 **Action conservatoire :** ne déplacer, fusionner ou supprimer aucune migration. Ne pas retirer de référence Foundation. Clarifier d'abord la source d'autorité entre Drizzle et Supabase, puis arbitrer les exigences fonctionnelles et les tests manquants avec les responsables produit/technique.
+
+
+## Troisième vague — sécurité, release, performance, PWA et observabilité
+
+### Références racine et release readiness
+
+| Chemin Foundation | Résultat sur main | Élément voisin / portée |
+|---|---|---|
+| `SECURITY.md` | Absent | Des règles de sécurité existent dans `docs/05-ai/security-rules.md`, `docs/05-ai/13-AI-SECURITY-RULES.md`, les en-têtes serveur et les tests de sécurité. Ce n'est pas automatiquement un substitut à une politique de sécurité racine pour les contributeurs et signalements. |
+| `CHANGELOG.md` | Absent | Aucun journal de versions racine n'a été identifié dans l'arbre. Les notes de release sont mentionnées par la procédure, mais cela ne prouve pas un historique de versions publié. |
+| `scripts/check-release-readiness.mjs` | Absent | `docs/06-operations/release-readiness.md` existe et décrit la procédure. `package.json` expose un contrôle `check:release` qui enchaîne des commandes, mais aucun script portant ce nom précis n'a été trouvé. |
+| `tests/smoke/release-readiness.test.ts` | Absent | `tests/foundation.smoke.test.ts` existe, mais couvre la normalisation d'une question et l'autorisation de routes de l'assistant. Il ne valide pas la préparation d'une release. |
+
+**Conclusion :** le document de procédure release existe ; les deux artefacts automatisés attendus et les deux documents racine ne sont pas démontrés. Le smoke test présent n'est pas équivalent au smoke test release attendu.
+
+### Performance et Web Vitals
+
+- `scripts/check-performance-budgets.ts` mesure les ressources du build client et appelle `assertPerformanceBudgets`. C'est un candidat réel pour le contrôle de budget, mais son chemin/extension diffère du chemin Foundation.
+- `tests/performance-budgets.test.ts` vérifie les budgets JS/CSS/ressources critiques et une régression JavaScript.
+- `tests/performance-policy.test.ts` vérifie les seuils de classification LCP, INP et CLS.
+- `src/lib/performance/web-vitals.ts` collecte LCP, INP et CLS via PerformanceObserver ; `tests/web-vitals.test.ts` couvre l'absence de PerformanceObserver et le comportement des observers simulés.
+- Le chemin `src/platform/performance/web-vitals.ts` n'est donc pas le chemin réel : le code est dans `src/lib/performance/web-vitals.ts`.
+- Ces tests démontrent des fonctions et politiques unitaires, pas des mesures terrain p75 en production, ni un rapport complet d'expérience réelle sur appareils Android/iOS.
+
+**Conclusion :** couverture partielle et candidats fonctionnels solides ; ne pas déplacer les fichiers uniquement pour aligner les noms. Il faut arbitrer le chemin canonique du script et la portée du contrôle attendu.
+
+### PWA
+
+- `src/platform/pwa.ts` existe et expose l'enregistrement du service worker, l'invite d'installation et l'application d'une mise à jour.
+- `tests/pwa.test.ts` vérifie seulement que l'entrée d'enregistrement est exportée et de type fonction.
+- `src/platform/pwa/install.ts`, `src/platform/pwa/update.ts` et `src/platform/pwa/index.ts` existent également dans l'arborescence.
+- Aucun `scripts/check-pwa.mjs` ni `playwright.config.ts` n'a été trouvé dans l'arbre inspecté. Le script `scripts/test-mobile-e2e.sh` existe, mais son nom seul ne prouve pas qu'il réalise les scénarios PWA attendus.
+- Le test unitaire actuel ne valide pas l'installation réelle, le cycle de mise à jour, le cache offline, ni le comportement sur appareils mobiles.
+
+**Conclusion :** fondation PWA présente, mais vérification automatisée de bout en bout insuffisamment démontrée.
+
+### Santé, maintenance et diagnostic offline
+
+- `src/routes/api/health.ts` et `tests/observability/health.test.ts` existent. Le test contrôle HTTP 200, JSON, no-store, status/service et horodatage.
+- `src/lib/observability/health-policy.ts` et `tests/observability/health-policy.test.ts` couvrent les seuils healthy/warning/critical.
+- Les chemins distincts `src/routes/api/health/live.ts`, `ready.ts` et `src/lib/health.server.ts` ne sont pas présents.
+- `src/platform/offline/diagnostics.ts` et `tests/offline/diagnostics.test.ts` couvrent le nombre de mutations en attente, l'âge de la plus ancienne, la quarantaine et la classification de santé sans exposer le contenu des mutations.
+- `src/lib/maintenance/retention-policy.ts` et `tests/offline/retention-policy.test.ts` couvrent le calcul de cutoff et les entrées invalides ; ils ne démontrent pas l'exécution d'une purge, une route cron ou une migration SQL de rétention.
+- `src/lib/maintenance.server.ts` et `src/routes/api/cron/maintenance.ts` restent absents dans l'arbre examiné.
+
+**Conclusion :** health et diagnostics offline disposent d'une couverture unitaire utile. La maintenance est limitée à une politique pure, sans preuve d'un exécuteur opérationnel. Les routes live/ready ne sont pas nécessaires par simple convention : leur besoin doit être confirmé avant de les créer.
+
+### Qualité des preuves et limites
+
+Les tests et sources ci-dessus ont été lus dans `main`, mais **n'ont pas été exécutés** pendant cette passe. La présence d'un test ne prouve pas qu'il passe sur le commit de référence, et la présence d'une procédure ne prouve pas que la préproduction ou la production a été validée.
+
+### Arbitrages à conserver ouverts
+
+1. Créer ou non une politique de sécurité racine et un changelog racine : décision de gouvernance documentaire.
+2. Choisir le chemin canonique du script de performance et formaliser le contrat du contrôle.
+3. Définir le niveau de tests PWA attendu pour V1 : test unitaire seul ou scénario navigateur/mobile reproductible.
+4. Décider si l'endpoint health minimal suffit à V1 ou si des endpoints live/ready séparés sont réellement requis.
+5. Décider si la rétention est une exigence opérationnelle V1 ; si oui, définir les données, la durée, le mécanisme d'exécution, les permissions, la fréquence et les tests avant d'implémenter.
+6. Définir les preuves minimales de release : les documents canoniques existent, mais le script et le smoke test dédiés ne sont pas présents sous les chemins attendus.
+
+**Action conservatoire :** ne pas créer de fichiers vides, ne pas renommer les artefacts existants, ne pas déclarer la release prête et ne pas retirer de référence Foundation avant arbitrage. Les chemins absents restent comptabilisés jusqu'à décision explicite.
