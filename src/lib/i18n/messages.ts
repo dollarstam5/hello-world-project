@@ -87,7 +87,7 @@ export const messages = {
     "home.engine.radar.title": "Radar",
     "home.engine.radar.desc":
       "Cet espace se prépare. Vous pourrez bientôt repérer les possibilités autour de vous.",
-    "home.engine.action": "Découvrir cet espace",
+    "home.engine.action": "Voir cet espace",
     "home.menuHint":
       "Les espaces complémentaires et les autres fonctionnalités de Vitalis sont accessibles depuis le menu 2×2 en bas de l’écran.",
     "onboarding.title": "Bienvenue dans Vitalis",
@@ -497,7 +497,7 @@ export const messages = {
     "home.engine.radar.title": "Radar",
     "home.engine.radar.desc":
       "This space is taking shape. Soon, you will be able to spot opportunities around you.",
-    "home.engine.action": "Explore this space",
+    "home.engine.action": "View this space",
     "home.menuHint":
       "Find complementary spaces and other Vitalis features in the 2x2 menu at the bottom of the screen.",
     "onboarding.title": "Welcome to Vitalis",
