@@ -51,7 +51,7 @@ Les cartes côte à côte sont souhaitées lorsque pertinentes, avec hiérarchie
 - **Compte Vitalis :** un historique consultable conserve les bips, les mises en relation et les interactions passées liées à Réel.
 - **Invité :** pas d'historique personnel persistant ; les données personnelles liées à la session disparaissent à la fin de celle-ci.
 - L'historique d'un compte est distinct des éléments actifs. Une mise en relation clôturée disparaît du compteur Réel et de Notifications, mais reste consultable dans l'historique.
-- L'historique présente les événements et les conversations selon les règles de rétention, d'archivage et d'accès exceptionnel décrites ci-dessous.
+- L'historique présente les événements et les conversations selon les règles de rétention, d'archivage et d'accès exceptionnel décrites ci-dessous ; les archives sont conservées 6 mois à compter de leur archivage.
 
 ## Accès aux mises en relation
 
