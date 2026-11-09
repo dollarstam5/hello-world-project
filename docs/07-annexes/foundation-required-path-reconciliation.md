@@ -641,3 +641,8 @@ L'inventaire statique du dépôt et le protocole de collecte distant sont consig
 **Résultat à ce stade :** 3 migrations Supabase racine, 6 fichiers sous `src/supabase/migrations/` et 3 migrations Drizzle avec 3 entrées de journal. Le dépôt expose un seul `project_id` Supabase dans `supabase/config.toml`, mais ne permet pas d'identifier s'il correspond à dev, staging ou production. Les valeurs de `.env.example` sont des placeholders. Aucun historique de base distante n'a été consulté.
 
 **Statut du chantier 0 : PARTIEL.** L'inventaire Git est établi. L'état d'application par environnement demeure inconnu et nécessite une collecte en lecture seule (`supabase migration list --linked` et/ou requêtes SELECT sur les historiques existants). Aucune commande d'application, de réparation ou de reset n'a été exécutée.
+
+
+## Vague 8 — réconciliation fonctionnelle ciblée
+
+La revue ciblée des migrations Profile/UDI, onboarding, Flash/Scan, Radar, reçus de synchronisation, tests RLS/CI et rétention est consignée dans [la réconciliation fonctionnelle — vague 8](./foundation-functional-reconciliation-wave-3.md). Elle confirme plusieurs couvertures partielles et divergences ; aucun chemin Foundation n'est retiré et aucune migration n'est modifiée.
