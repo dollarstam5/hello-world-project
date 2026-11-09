@@ -44,7 +44,7 @@ Les règles ci-dessous reflètent les décisions produit retrouvées. VALIDÉ si
 | HIST-001 | Pour un compte Vitalis, l'historique Réel conserve les bips, les mises en relation et les interactions passées associées. | VALIDÉ |
 | HIST-002 | L'historique d'un compte reste distinct des espaces actifs : une mise en relation clôturée disparaît du compteur Réel et de Notifications, mais son entrée historique reste consultable. | VALIDÉ |
 | HIST-003 | En mode invité, aucune histoire personnelle persistante n'est conservée ; les données personnelles liées à la session disparaissent à la fin de celle-ci. | VALIDÉ |
-| HIST-004 | L'historique validé porte sur les événements et statuts ; la conservation du contenu des conversations n'est pas autorisée par cette décision et reste exclue en l'état. | REMPLACÉE par HIST-005 à HIST-007 |
+| HIST-004 | L'historique validé porte sur les événements et statuts ; la conservation du contenu des conversations n'est pas autorisée par cette décision et reste exclue en l'état. | REMPLACÉE par HIST-005 à HIST-007 et DEC-043 |
 | TRC-001 | Les traces techniques minimales nécessaires à la sécurité et à la cohérence sont distinctes de l'historique visible. | VALIDÉ |
 | TRC-002 | La trace technique minimale comprend au moins la date, le statut et l'événement. | VALIDÉ |
 | NET-001 | Les actions en attente sont préservées pendant les perturbations réseau et synchronisées au retour de la connexion. | VALIDÉ — principe produit |
