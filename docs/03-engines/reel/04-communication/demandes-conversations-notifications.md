@@ -16,7 +16,7 @@
 Acceptation directe depuis la liste, sans renvoi de bip. Consultation du profil possible avant décision. L'existence d'une confirmation supplémentaire à l'acceptation reste à confirmer.
 
 ## Conversation
-Pas de messagerie libre autonome. Communication rattachée à une mise en relation/action autorisée. Les conversations sont conservées selon les règles d'archivage V1 : 3 mois maximum avant archivage, ou plus tôt dès dépassement du plafond de 50 conversations (archivage de la plus ancienne). L'archive est inaccessible à l'utilisateur, sauf autorisation administrateur exceptionnelle demandée par l'utilisateur et limitée à 24 heures. L'utilisateur peut supprimer son historique, sans possibilité d'export. Formats, pièces jointes, modération et comportement hors ligne à spécifier.
+Pas de messagerie libre autonome. Communication rattachée à une mise en relation/action autorisée. Les conversations sont conservées selon les règles d'archivage V1 : le délai de 3 mois commence à la date du dernier message échangé et est relancé à chaque nouveau message. Une conversation sans nouveau message pendant 3 mois devient éligible à l'archivage. Le plafond de 50 conversations conservées reste prioritaire : dès son dépassement, la plus ancienne conversation est archivée même si elle a moins de 3 mois. L'archive est inaccessible à l'utilisateur, sauf autorisation administrateur exceptionnelle demandée par l'utilisateur et limitée à 24 heures. L'utilisateur peut supprimer son historique, sans possibilité d'export. Formats, pièces jointes, modération et comportement hors ligne à spécifier.
 
 ## Refus, annulation, blocage
 Refus explicite, annulation par l'émetteur, blocage, signalement, demandes répétées et anti-abus restent à arbitrer ; aucune règle détaillée n'est déclarée validée.
@@ -31,3 +31,4 @@ Les conversations archivées continuent d'occuper du stockage pendant 6 mois à 
 ## Durée de conservation des archives
 
 Après archivage, une conversation reste conservée pendant 6 mois à compter de la date d'archivage, puis sa suppression définitive est prévue. L'accès utilisateur reste soumis à l'autorisation exceptionnelle de 24 heures. Les délais techniques éventuels liés aux sauvegardes et les obligations légales restent à vérifier.
+\n\n## Déclenchement du délai d'archivage\n\nLe délai de 3 mois est un délai glissant calculé à partir de la date du dernier message échangé dans la conversation. Chaque nouveau message échangé réinitialise le point de départ. Une conversation encore utilisée n'est donc pas archivée au seul motif que sa date de création remonte à plus de 3 mois. La règle de plafond de 50 conversations reste prioritaire et peut entraîner l'archivage anticipé de la plus ancienne conversation.\n
