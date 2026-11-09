@@ -7,7 +7,7 @@ Cette section contient les fondations canoniques du projet : architecture, séqu
 - [Architecture](./architecture.md)
 - [Build overview](./build-overview.md)
 - [Build conventions](./build-conventions.md)
-- [Langage de design Vitala](./design-language.md)
+- [Langage de design Vitalis](./design-language.md)
 - [Standards UX et accessibilité — Phase 2](./phase-2-ux-standards.md)
 
 ## Core principle
