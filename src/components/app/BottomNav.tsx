@@ -38,7 +38,7 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
   return (
     <nav
       aria-label={t("nav.primary")}
-      className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center pb-[max(env(safe-area-inset-bottom),0.75rem)]"
+      className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center px-3 pb-[max(env(safe-area-inset-bottom),0.75rem)]"
     >
       <ul className="glass pointer-events-auto flex w-[min(100%,24rem)] items-end justify-between gap-1 rounded-full border border-border-soft px-2 py-1.5 shadow-[var(--shadow-float)]">
         {TABS.map((tab) => {
