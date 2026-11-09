@@ -40,7 +40,7 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
       aria-label={t("nav.primary")}
       className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center pb-[max(env(safe-area-inset-bottom),0.75rem)]"
     >
-      <ul className="glass pointer-events-auto flex items-end gap-1 rounded-full border border-border-soft px-2 py-1.5 shadow-[var(--shadow-float)]">
+      <ul className="glass pointer-events-auto flex w-[min(100%,24rem)] items-end justify-between gap-1 rounded-full border border-border-soft px-2 py-1.5 shadow-[var(--shadow-float)]">
         {TABS.map((tab) => {
           const isMenu = tab.key === "menu";
           const isCenter = tab.key === "reel";
@@ -49,7 +49,7 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
           const label = t(tab.labelKey);
 
           const inner = isCenter ? (
-            <span className="flex min-h-11 flex-col items-center justify-center gap-0.5">
+            <span className="flex min-h-12 flex-col items-center justify-center gap-0.5">
               <span
                 className={cn(
                   "flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[var(--glow-soft)] transition-transform",
@@ -60,7 +60,7 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
               </span>
               <span
                 className={cn(
-                  "text-[10px] font-semibold leading-none",
+                  "text-[11px] font-semibold leading-tight",
                   active ? "text-foreground" : "text-muted-foreground",
                 )}
               >
@@ -70,7 +70,7 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
           ) : (
             <span
               className={cn(
-                "relative flex min-h-11 min-w-11 flex-col items-center justify-center gap-0.5 rounded-full px-2 py-1.5 transition-colors sm:min-w-14 sm:px-3",
+                "relative flex min-h-12 min-w-12 flex-col items-center justify-center gap-0.5 rounded-full px-1 py-1.5 transition-colors",
                 "text-muted-foreground hover:text-foreground",
                 active && "text-primary-foreground",
               )}
@@ -87,12 +87,12 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
                   />
                 ))}
               <Icon className="relative h-5 w-5" aria-hidden />
-              <span className="relative text-[10px] font-medium leading-none">{label}</span>
+              <span className="relative text-[11px] font-medium leading-tight">{label}</span>
             </span>
           );
 
           return (
-            <li key={tab.key}>
+            <li key={tab.key} className="flex min-w-0 flex-1 justify-center">
               {isMenu ? (
                 <button
                   type="button"
@@ -100,7 +100,7 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
                   aria-label={t("nav.open_menu")}
                   aria-haspopup="dialog"
                   aria-expanded={menuOpen}
-                  className="min-h-11 min-w-11 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className="flex min-h-12 min-w-12 items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
                   {inner}
                 </button>
@@ -109,7 +109,7 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
                   to={tab.to!}
                   aria-label={label}
                   aria-current={active ? "page" : undefined}
-                  className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className="flex min-h-12 min-w-12 items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
                   {inner}
                 </Link>
