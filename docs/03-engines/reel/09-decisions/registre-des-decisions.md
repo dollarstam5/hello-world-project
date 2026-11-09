@@ -30,6 +30,10 @@
 | DEC-026 | La poursuite du contact après acceptation relève d'un choix distinct de l'acceptation du bip. | VALIDÉ |
 | DEC-027 | La communication associée à une mise en relation est de type texte dans le périmètre retenu. | VALIDÉ |
 | DEC-028 | Les actions en attente doivent être préservées pendant les perturbations réseau puis synchronisées au retour de la connexion. | VALIDÉ — principe produit |
+| DEC-029 | Réel propose deux modes d'accès : mode rapide sans compte Vitalis et mode complet avec compte Vitalis. | VALIDÉ |
+| DEC-030 | Les deux modes d'accès disposent des mêmes privilèges fonctionnels dans le moteur Réel. | VALIDÉ |
+| DEC-031 | Le mode rapide vise un parcours d'accès en deux ou trois étapes, avec validation des permissions nécessaires et choix/création d'un avatar personnalisé. | VALIDÉ — objectif UX |
+| DEC-032 | Les coordonnées de localisation servent au calcul de proximité et non d'identifiant unique d'un utilisateur. | VALIDÉ — garde-fou de conception |
 
 ## Clarification temporelle
 
@@ -42,4 +46,4 @@ La durée de vie d'une mise en relation acceptée non clôturée reste à arbitr
 
 ## Décisions et détails encore à préciser
 
-Les décisions validées ci-dessus ne déterminent pas à elles seules les détails UX, les cas limites ni l'architecture. Le point de départ des 24 h, les règles de refus/annulation, la durée maximale d'une mise en relation active, les modalités du choix de contact, les limites du texte et les mécanismes techniques de synchronisation restent documentés dans les questions ouvertes.
+Les décisions validées ci-dessus ne déterminent pas à elles seules les détails UX, les cas limites ni l'architecture. Le point de départ des 24 h, les règles de refus/annulation, la durée maximale d'une mise en relation active, les modalités du choix de contact, les limites du texte et les mécanismes techniques de synchronisation restent documentés dans les questions ouvertes. Le mécanisme d'identifiant temporaire, la durée de session invitée, le rattachement éventuel à un compte et les règles de validation des permissions restent également à concevoir.
