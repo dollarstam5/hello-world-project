@@ -120,8 +120,6 @@ export interface FileRoutesByFullPath {
   '/flash': typeof FlashRoute
   '/radar': typeof RadarRoute
   '/reel': typeof ReelRoute
-  '/reel': typeof ReelRoute
-  '/reel': typeof ReelRoute
   '/reset-password': typeof ResetPasswordRoute
   '/scan': typeof ScanRoute
   '/talents': typeof TalentsRoute
@@ -139,6 +137,7 @@ export interface FileRoutesByTo {
   '/espace': typeof EspaceRoute
   '/flash': typeof FlashRoute
   '/radar': typeof RadarRoute
+  '/reel': typeof ReelRoute
   '/reset-password': typeof ResetPasswordRoute
   '/scan': typeof ScanRoute
   '/talents': typeof TalentsRoute
@@ -157,6 +156,7 @@ export interface FileRoutesById {
   '/espace': typeof EspaceRoute
   '/flash': typeof FlashRoute
   '/radar': typeof RadarRoute
+  '/reel': typeof ReelRoute
   '/reset-password': typeof ResetPasswordRoute
   '/scan': typeof ScanRoute
   '/talents': typeof TalentsRoute
@@ -177,8 +177,6 @@ export interface FileRouteTypes {
     | '/flash'
     | '/radar'
     | '/reel'
-    | '/reel'
-    | '/reel'
     | '/reset-password'
     | '/scan'
     | '/talents'
@@ -196,6 +194,7 @@ export interface FileRouteTypes {
     | '/espace'
     | '/flash'
     | '/radar'
+    | '/reel'
     | '/reset-password'
     | '/scan'
     | '/talents'
@@ -213,6 +212,7 @@ export interface FileRouteTypes {
     | '/espace'
     | '/flash'
     | '/radar'
+    | '/reel'
     | '/reset-password'
     | '/scan'
     | '/talents'
