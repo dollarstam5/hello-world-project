@@ -147,7 +147,7 @@ Vitalis propose actuellement le français et l'anglais. Au premier lancement, la
 3. rapprocher les variantes régionales de la langue prise en charge (par exemple `en-GB` → `en`, `fr-CA` → `fr`) ;
 4. utiliser le français si aucune langue prise en charge ne correspond.
 
-Une préférence choisie manuellement dans Vitalis est prioritaire et est conservée dans le stockage local. Tant qu'aucun choix manuel n'a été fait, Vitalis peut suivre un changement de langue du navigateur/système via l'événement `languagechange`. Après un choix manuel, la détection automatique ne doit plus remplacer cette préférence.
+Une préférence choisie manuellement dans Vitalis est prioritaire et est conservée dans le stockage local. Le choix manuel est actuellement proposé pendant l'onboarding et sur l'écran de connexion ; un réglage permanent depuis l'espace personnel reste à spécifier. Tant qu'aucun choix manuel n'a été fait, Vitalis peut suivre un changement de langue du navigateur/système via l'événement `languagechange`. Après un choix manuel, la détection automatique ne doit plus remplacer cette préférence.
 
 La langue effective doit aussi être appliquée à `document.documentElement.lang` afin que les lecteurs d'écran, les outils du navigateur et les fonctions de traduction disposent de la bonne indication. Le document serveur garde le français comme langue de repli initiale ; l'initialisation cliente applique la préférence détectée.
 
