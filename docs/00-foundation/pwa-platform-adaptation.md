@@ -93,6 +93,35 @@ Chaque capacité utilisée dans un parcours V1 doit être testée au minimum dan
 
 Les résultats doivent préciser l'appareil, la version du système, le navigateur, son mode d'exécution, la capacité testée et le résultat observé. Une capture visuelle seule ne prouve pas le fonctionnement d'une API.
 
+### Parcours de tests sur appareils réels
+
+| ID | Appareil réel | Navigateur / mode | Vérifications obligatoires |
+| --- | --- | --- | --- |
+| PWA-REAL-01 | Android récent (Pixel) | Chrome, navigateur | identification Android, capacités, affichage et prompt natif si proposé |
+| PWA-REAL-02 | Android récent (Pixel) | Chrome, application installée | ouverture standalone, démarrage sur `/`, retour, mise à jour |
+| PWA-REAL-03 | Samsung Galaxy récent | Samsung Internet | identification navigateur, installation/ajout à l'écran d'accueil, permissions |
+| PWA-REAL-04 | Android d'une génération antérieure | Chrome | performance, mémoire, réseau lent, reprise après perte réseau |
+| PWA-REAL-05 | iPhone récent | Safari, navigateur | identification iOS, consigne « Sur l'écran d'accueil », géolocalisation et partage |
+| PWA-REAL-06 | iPhone récent | Vitalis depuis l'écran d'accueil | mode autonome, navigation, safe areas, notifications si prises en charge |
+| PWA-REAL-07 | iPhone d'une génération antérieure | Safari et mode installé | compatibilité, performances, reprise après fermeture et retour réseau |
+| PWA-REAL-08 | iPad | Safari, portrait et paysage | identification iPadOS, adaptation responsive, clavier et zones sûres |
+| PWA-REAL-09 | Ordinateur Windows ou macOS | Chrome ou Edge | clavier/souris, redimensionnement, installation si proposée, mise à jour |
+
+Pour chaque appareil, exécuter les scénarios suivants lorsque pertinents :
+
+- **Installation :** première visite, prompt natif disponible/indisponible, ajout manuel, annulation, application déjà installée.
+- **Cycle de vie :** ouverture depuis l'icône, retour navigateur/système, fermeture forcée, réouverture, nouvelle version disponible.
+- **Permissions :** position et notifications non demandées, accordées, refusées, puis retirées dans les réglages.
+- **Réseau :** Wi-Fi stable, réseau mobile, réseau lent, coupure pendant une action, retour réseau et vérification de la reprise.
+- **Accessibilité :** clavier externe si disponible, lecteur d'écran, réduction des animations, zoom et taille du texte.
+- **Affichage :** portrait/paysage, encoche et safe areas, clavier virtuel, petits et grands viewports.
+
+### Fiche de preuve obligatoire
+
+Chaque exécution doit conserver : identifiant du scénario, marque/modèle, version exacte du système, version du navigateur, mode navigateur/standalone, date, réseau, étapes suivies, résultat attendu, résultat observé, capture ou vidéo utile, anomalie et lien vers le ticket éventuel.
+
+**État actuel :** cette matrice est définie, mais les essais sur appareils physiques ne sont pas encore déclarés exécutés. Les tests automatisés de détection ne remplacent pas ces essais.
+
 ## 9. Critères d'acceptation
 
 - Une fonction n'est affichée comme disponible que si la capacité correspondante est vérifiée.
