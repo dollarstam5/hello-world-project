@@ -127,3 +127,92 @@ Chaque carte comprend :
 - La sélection d'une carte affiche son espace dans la même fenêtre, sans navigation inutile ni réactivation de la présence Réel.
 
 Cette décision décrit le comportement et la hiérarchie visuelle attendus ; elle ne signifie pas que l'interface est déjà implémentée.
+
+
+## 10. Cartes de bip reçu et consultation du profil — VALIDÉ le 9 novembre 2026
+
+Chaque bip reçu est présenté dans une carte lisible permettant deux parcours directs :
+
+- **Accepter** : le destinataire peut accepter le bip directement depuis la carte, sans bip retour ni étape intermédiaire obligatoire.
+- **Consulter le profil** : le destinataire peut ouvrir le profil avant de prendre sa décision. La consultation ne vaut jamais acceptation.
+
+Le motif du bip n'est pas affiché et n'est pas inclus dans le périmètre V1.
+
+### Fiche profil superposée
+
+- L'ouverture du profil se fait dans une fiche superposée à la fenêtre du compteur Réel.
+- Une commande de retour permet de retrouver la liste des bips.
+- Le retour conserve la position de consultation dans la liste et le contexte de la fenêtre.
+- Consulter un profil ou revenir à la liste ne réactive pas la présence Réel.
+
+### Visibilité du profil
+
+Depuis ce parcours, seules les informations que le propriétaire a choisi de rendre visibles sont présentées : photo/avatar si disponible, nom affiché et présentation si elle est renseignée et autorisée à être visible. Aucune information privée ou non autorisée ne doit être exposée.
+
+## 11. Acceptation d'un bip — résultat immédiat — VALIDÉ le 9 novembre 2026
+
+Lorsqu'un bip est accepté :
+
+1. Le bip quitte immédiatement « Bips reçus ».
+2. La mise en relation correspondante apparaît immédiatement dans « Mes mises en relation ».
+3. Les compteurs des deux espaces sont actualisés automatiquement.
+4. Une même mise en relation est référencée dans les différents points d'accès ; aucun doublon n'est créé.
+5. Une confirmation discrète et brève affiche le message **« Mise en relation établie ! »**.
+6. Après la confirmation, l'utilisateur reste dans « Bips reçus » et peut poursuivre sa consultation.
+
+L'acceptation établit la mise en relation immédiatement. Elle ne rend pas obligatoire l'envoi d'un message ; la communication reste soumise aux règles du moteur Communication.
+
+## 12. Présentation et classement de « Mes mises en relation » — VALIDÉ le 9 novembre 2026
+
+Chaque mise en relation est présentée dans une carte cohérente avec le langage visuel des cartes de « Bips reçus ». La carte permet notamment :
+
+- de consulter le profil, dans le respect des paramètres de visibilité ;
+- d'accéder à la communication contextuelle autorisée par les règles de Communication ;
+- d'ouvrir les options de gestion de la mise en relation.
+
+Les mises en relation sont classées automatiquement de la plus récente à la plus ancienne. Le classement est actualisé lors de chaque nouvelle acceptation.
+
+**Recherche et filtres :** aucune recherche ni aucun filtre de mise en relation ne sont prévus en V1. Une éventuelle évolution sera réexaminée pour une version ultérieure.
+
+## 13. Clôture d'une mise en relation — VALIDÉ le 9 novembre 2026
+
+L'utilisateur peut mettre fin à une mise en relation depuis les options de la carte correspondante.
+
+- Une confirmation explicite est obligatoire avant la clôture afin d'éviter une action accidentelle.
+- La clôture est réciproque : la mise en relation est clôturée pour les deux personnes.
+- La communication associée est désactivée pour les deux personnes.
+- La personne concernée est informée de la clôture.
+- La connexion clôturée disparaît immédiatement de « Mes mises en relation » pour les deux utilisateurs.
+- Aucun historique visible des mises en relation terminées n'est créé en V1.
+- Une trace technique minimale est conservée pour la cohérence et la traçabilité : date de clôture, dernier statut et événement de clôture.
+- Cette trace technique ne constitue ni un historique de conversation ni une mise en relation active.
+
+La conception technique devra garantir une clôture cohérente pour les deux utilisateurs, y compris en cas de perturbation réseau ou de synchronisation différée. Les modalités techniques et leurs tests restent à spécifier ; la présente décision produit ne prouve pas que le mécanisme est déjà implémenté.
+
+## 14. Traçabilité complémentaire des arbitrages V1 — 9 novembre 2026
+
+| Sujet | Décision |
+|---|---|
+| Actions sur une carte de bip reçu | « Accepter » directement ou « Consulter le profil » — VALIDÉ |
+| Motif du bip | Hors périmètre V1 — VALIDÉ |
+| Consultation du profil | Fiche superposée avec retour à la liste — VALIDÉ |
+| Position de la liste au retour | Conservée — VALIDÉ |
+| Informations du profil | Uniquement les informations rendues visibles par son propriétaire — VALIDÉ |
+| Acceptation | Immédiate, sans bip retour — VALIDÉ |
+| Après acceptation | Bip retiré et mise en relation ajoutée immédiatement — VALIDÉ |
+| Compteurs après acceptation | Actualisation automatique des deux espaces — VALIDÉ |
+| Confirmation d'acceptation | Animation discrète « Mise en relation établie ! » — VALIDÉ |
+| Navigation après acceptation | Rester dans « Bips reçus » — VALIDÉ |
+| Classement des mises en relation | De la plus récente à la plus ancienne — VALIDÉ |
+| Recherche dans les mises en relation | Hors périmètre V1 — VALIDÉ |
+| Fin d'une mise en relation | Action disponible depuis la carte — VALIDÉ |
+| Confirmation avant clôture | Obligatoire — VALIDÉ |
+| Portée de la clôture | Réciproque, pour les deux personnes — VALIDÉ |
+| Communication après clôture | Désactivée pour les deux personnes — VALIDÉ |
+| Information de l'autre personne | Notification de clôture — VALIDÉ |
+| Visibilité après clôture | Retrait immédiat des deux listes « Mes mises en relation » — VALIDÉ |
+| Historique utilisateur des clôtures | Aucun historique visible en V1 — VALIDÉ |
+| Trace technique de clôture | Date, dernier statut et événement — VALIDÉ |
+| Historique de conversation dans la trace | Non — VALIDÉ |
+
+Ces arbitrages complètent les décisions précédentes. Ils restent des exigences produit documentées ; leur réalisation technique, leur résilience réseau et leurs tests doivent être vérifiés séparément avant toute déclaration d'implémentation.
