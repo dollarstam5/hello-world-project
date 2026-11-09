@@ -25,7 +25,6 @@ export const Route = createFileRoute("/scan")({
           render: () => <ScanPanel />,
         },
       ]}
-      footer="Foundation · Scan"
     />
   ),
 });
