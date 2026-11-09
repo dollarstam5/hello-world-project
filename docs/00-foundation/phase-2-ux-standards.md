@@ -327,3 +327,15 @@ L'ancien écran d'accueil minimal est remplacé par un onboarding guidé en **ci
 - `useOnboarding` gère la progression, le passage, la complétion et la persistance versionnée.
 - Les tests couvrent les limites de navigation, la persistance, le stockage indisponible et la réapparition du nouvel onboarding malgré l'ancienne clé.
 - L'accueil `/` reste la destination d'arrivée ; son contenu produit doit être évalué séparément avant de le déclarer terminé.
+
+### Mise à jour — accueil et cohérence des moteurs
+
+- L'accueil provisoire a été remplacé par une entrée claire : bienvenue dans Vitalis, explication courte, puis accès directs à Flash, Scan, Réel et Radar.
+- Les cartes passent d'une colonne sur petit écran à deux colonnes à partir du breakpoint mobile/tablette prévu ; elles réutilisent les surfaces, couleurs et rayons du système existant.
+- Les blocs de flux vides ont été retirés : aucun contenu fictif ni compteur artificiel n'est utilisé pour remplir l'accueil.
+- Les descriptions Réel et Radar indiquent explicitement que ces espaces sont encore en préparation, en français comme en anglais.
+- L'accès 2×2 est expliqué comme le menu des espaces complémentaires et non comme un cinquième moteur.
+- Le libellé anglais du moteur Réel est « Live » dans l'accueil, l'onboarding et la navigation ; le nom français reste « Réel ».
+- Le parcours d'onboarding est conservé en cinq étapes : présentation générale, Flash+Scan, Réel+Radar, 2×2, invitation finale.
+- Contrôle visuel du code : les cartes et étapes utilisent une grille responsive, les liens gardent un focus visible et les icônes décoratives sont masquées aux lecteurs d'écran.
+- À confirmer sur appareils réels : rendu des surfaces translucides, contrastes composites, espacement des cinq destinations et parcours complet avec lecteur d'écran.
