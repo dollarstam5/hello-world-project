@@ -138,3 +138,27 @@ Pour les versions futures intégrant une intelligence, celle-ci pourra préparer
 - Les parcours et formulaires de secours sont testés en FR/EN, sur mobile, au clavier et avec lecteur d'écran.
 
 Les fonctions de compréhension libre, d'adaptation intelligente et de dialogue vocal ne font pas partie des critères d'acceptation V1.
+
+
+## 10. Revue des parcours et états — audit en cours
+
+### Flash
+- Le flux public affiche les données distantes et peut conserver les éléments locaux en mode hors ligne.
+- La création d'un Flash est réservée à une session authentifiée ; un visiteur non connecté reçoit un accès vers l'authentification.
+- Correction appliquée dans `FlashFeed` : une erreur de chargement distante reste visible même lorsque la liste locale est vide ; l'état vide ne masque plus l'erreur.
+- À vérifier : reprise manuelle après erreur, cohérence du message lorsque le réseau revient et parcours complet invité/compte.
+
+### Scan
+- Le parcours demande une position temporaire avant de lancer la recherche de proximité ; le refus de permission est présenté explicitement.
+- Corrections appliquées : état d'attente pendant l'obtention de la position, prévention d'un double lancement, état d'erreur visible si le service de scan échoue et messages FR/EN correspondants.
+- À vérifier : navigateur sans Geolocation API, permission refusée de façon persistante, délai dépassé, réseau interrompu pendant la recherche et relance utilisateur.
+
+### Réel et Radar
+- Les routes actuelles sont des points d'entrée/fondations, pas des moteurs V1 complets. Leurs états métier et parcours invité/compte ne peuvent donc pas être certifiés à cette étape.
+- Les contrats UX propres à Réel seront définis dans la phase 3 ; les écrans Radar et ses états métier seront contrôlés lors de l'harmonisation des moteurs en phase 5.
+- Ne pas présenter ces espaces comme fonctionnels tant que leurs capacités réelles ne sont pas implémentées.
+
+### État de validation
+- Les corrections de cette revue ont été poussées dans la branche de la PR #37.
+- Aucune exécution CI n'a encore été retournée pour le dernier commit ; les corrections ne sont donc pas déclarées testées ou validées par CI.
+- Les validations manuelles (clavier, lecteur d'écran, contraste réel, petits écrans) restent ouvertes.
