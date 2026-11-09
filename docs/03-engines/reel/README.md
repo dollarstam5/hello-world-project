@@ -254,3 +254,14 @@ L'expérience doit être vivante, humaine, simple et lisible. Elle ne doit pas d
 - Le contenu précis de la fiche et les actions proposées après consultation restent **À CONCEVOIR** avec l'utilisateur.
 
 Cette présentation est distincte d'une grande fiche plein écran. Elle préserve la continuité de la découverte locale et limite la charge cognitive.
+
+
+## 21. Décision produit validée — contenu essentiel de la fiche compacte (2026-11-09)
+
+**Statut : VALIDÉ V1.** La fiche compacte affichée lorsqu'un utilisateur sélectionne un profil dans la vue spatiale contient uniquement les éléments essentiels suivants :
+
+1. **Photo ou avatar** de la personne.
+2. **Nom affiché** de la personne.
+3. **Description de présence**, lorsqu'elle a été renseignée.
+
+La description étant facultative, son absence ne doit pas empêcher la consultation du profil ni créer un emplacement vide inutile. La fiche reste compacte et ne présente pas d'autres informations ou actions à ce stade. Toute extension de son contenu devra faire l'objet d'un arbitrage distinct.
