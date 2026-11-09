@@ -14,13 +14,13 @@ const SCAN_LIMIT = 20;
 export function ScanPanel() {
   const { t } = useI18n();
   const { rows, busy, failed, execute } = useScan();
-  const [denied, setDenied] = useState(false);
+  const [locationError, setLocationError] = useState<"permission" | "unavailable" | "timeout" | "unknown" | null>(null);
   const [started, setStarted] = useState(false);
   const [locating, setLocating] = useState(false);
   const [unsupported, setUnsupported] = useState(false);
 
   const start = () => {
-    setDenied(false);
+    setLocationError(null);
     setUnsupported(false);
     setStarted(true);
 
@@ -42,9 +42,17 @@ export function ScanPanel() {
           limit: SCAN_LIMIT,
         });
       },
-      () => {
+      (error) => {
         setLocating(false);
-        setDenied(true);
+        const code =
+          error.code === 1
+            ? "permission"
+            : error.code === 2
+              ? "unavailable"
+              : error.code === 3
+                ? "timeout"
+                : "unknown";
+        setLocationError(code);
       },
       { enableHighAccuracy: false, timeout: 8000 },
     );
@@ -74,9 +82,9 @@ export function ScanPanel() {
           {t("scan.unsupported")}
         </p>
       )}
-      {denied && (
+      {locationError && (
         <p className="text-sm text-destructive" role="alert">
-          {t("scan.denied")}
+          {t(`scan.location.${locationError}`)}
         </p>
       )}
       {failed && (
@@ -85,7 +93,7 @@ export function ScanPanel() {
         </p>
       )}
 
-      {started && !busy && !locating && !denied && !failed && !unsupported && rows.length === 0 && (
+      {started && !busy && !locating && !locationError && !failed && !unsupported && rows.length === 0 && (
         <p className="text-sm text-muted-foreground" role="status">
           {t("scan.empty")}
         </p>
