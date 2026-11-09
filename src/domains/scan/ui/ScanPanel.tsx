@@ -17,10 +17,18 @@ export function ScanPanel() {
   const [denied, setDenied] = useState(false);
   const [started, setStarted] = useState(false);
   const [locating, setLocating] = useState(false);
+  const [unsupported, setUnsupported] = useState(false);
 
   const start = () => {
     setDenied(false);
+    setUnsupported(false);
     setStarted(true);
+
+    if (!navigator.geolocation?.getCurrentPosition) {
+      setUnsupported(true);
+      return;
+    }
+
     setLocating(true);
     navigator.geolocation.getCurrentPosition(
       (pos) => {
@@ -50,16 +58,18 @@ export function ScanPanel() {
         type="button"
         onClick={start}
         disabled={busy || locating}
+        aria-busy={busy || locating}
         className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
       >
         {busy || locating ? <ScanLine className="h-4 w-4 animate-pulse" aria-hidden /> : <LocateFixed className="h-4 w-4" aria-hidden />}
         {busy || locating ? t("scan.busy") : t("scan.start")}
       </button>
 
+      {unsupported && <p className="text-sm text-destructive" role="alert">{t("scan.unsupported")}</p>}
       {denied && <p className="text-sm text-destructive" role="alert">{t("scan.denied")}</p>}
       {failed && <p className="text-sm text-destructive" role="alert">{t("scan.error")}</p>}
 
-      {started && !busy && !locating && !denied && !failed && rows.length === 0 && (
+      {started && !busy && !locating && !denied && !failed && !unsupported && rows.length === 0 && (
         <p className="text-sm text-muted-foreground" role="status">{t("scan.empty")}</p>
       )}
 
