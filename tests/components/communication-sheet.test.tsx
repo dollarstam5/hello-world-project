@@ -33,9 +33,7 @@ describe("CommunicationSheet", () => {
   });
 
   it("keeps each communication space associated with a tab panel", () => {
-    const markup = renderToStaticMarkup(
-      <CommunicationSheet open onOpenChange={() => undefined} />,
-    );
+    const markup = renderToStaticMarkup(<CommunicationSheet open onOpenChange={() => undefined} />);
 
     expect(markup.match(/role="tabpanel"/g)?.length).toBeGreaterThanOrEqual(1);
     expect(markup).toContain('data-state="active"');
