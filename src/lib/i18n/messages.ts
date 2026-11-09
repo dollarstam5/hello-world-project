@@ -61,7 +61,6 @@ export const messages = {
     "communication.notifications": "Notifications",
     "communication.assistant": "Assistant",
     "communication.messages": "Messages",
-    "communication.reel": "Real",
     "communication.reel": "Réel",
     "communication.notifications.empty": "Aucune nouvelle notification.",
     "communication.messages.empty":
@@ -410,6 +409,7 @@ export const messages = {
     "communication.notifications": "Notifications",
     "communication.assistant": "Assistant",
     "communication.messages": "Messages",
+    "communication.reel": "Real",
     "communication.notifications.empty": "No new notifications.",
     "communication.messages.empty":
       "Conversations linked to your actions and connections will appear here.",
