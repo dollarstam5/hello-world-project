@@ -106,7 +106,7 @@ Les durées de conservation des traces, les règles détaillées de synchronisat
 ## Conservation des conversations et plafonds de stockage — décisions V1
 
 - Pour un compte Vitalis, une conversation est archivée après 3 mois.
-- Un plafond de 50 conversations conservées s'applique : dès qu'il est dépassé, la plus ancienne conversation est archivée, même si elle a moins de 3 mois.
+- Un plafond de 50 conversations conservées s'applique : dès qu'il est dépassé, la plus ancienne conversation est archivée, même si elle a moins de 3 mois. Chaque archive est conservée 6 mois à compter de son archivage, puis supprimée définitivement selon la politique de purge.
 - Une conversation archivée devient inaccessible à l'utilisateur. Sur demande de celui-ci, un administrateur peut autoriser un accès exceptionnel pendant 24 heures ; à l'expiration, l'archive redevient inaccessible.
 - L'utilisateur peut supprimer son historique, mais ne peut pas l'exporter.
 - Chaque espace Vitalis dispose d'un plafond de stockage gratuit en V1. À saturation, l'utilisateur choisit entre supprimer des données pour libérer de la place ou limiter les nouveaux usages/enregistrements de l'espace concerné.
