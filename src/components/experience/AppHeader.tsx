@@ -32,7 +32,7 @@ export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => 
             size="sm"
             aria-label={t("language.switch")}
             onClick={() => setLocale(locale === "fr" ? "en" : "fr")}
-            className="min-h-11 min-w-11 px-2 text-xs font-semibold"
+            className="min-h-12 min-w-12 px-2 text-xs font-semibold"
           >
             <Languages aria-hidden className="mr-1 h-4 w-4" />
             {locale.toUpperCase()}
@@ -44,11 +44,11 @@ export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => 
             aria-label={t(isDark ? "theme.switchToLight" : "theme.switchToDark")}
             title={t(isDark ? "theme.switchToLight" : "theme.switchToDark")}
             onClick={() => setMode(isDark ? "light" : "dark")}
-            className="h-11 w-11"
+            className="h-12 w-12"
           >
             {isDark ? <Sun aria-hidden /> : <Moon aria-hidden />}
           </Button>
-          <Button asChild variant="ghost" size="icon" className="h-11 w-11">
+          <Button asChild variant="ghost" size="icon" className="h-12 w-12">
             <Link to="/espace" aria-label={t("menu.espace.open")}>
               <UserRound aria-hidden />
             </Link>
@@ -60,7 +60,7 @@ export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => 
               size="icon"
               aria-label={t("auth.signOut")}
               onClick={() => void signOut().then(() => window.location.assign("/"))}
-              className="h-11 w-11"
+              className="h-12 w-12"
             >
               <LogOut aria-hidden />
             </Button>
@@ -71,7 +71,7 @@ export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => 
             size="icon"
             onClick={onOpenCommunication}
             aria-label={t("communication.open")}
-            className="h-11 w-11"
+            className="h-12 w-12"
           >
             <Bell aria-hidden />
           </Button>
