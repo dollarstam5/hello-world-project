@@ -5,7 +5,7 @@ import { SectionFoundation } from "@/components/experience/SectionFoundation";
 export const Route = createFileRoute("/talents")({
   head: () => ({
     meta: [
-      { title: "Talents — Savoirs Vivants" },
+      { title: "Talents — Vitalis" },
       { name: "description", content: "Connaissances vivantes, échanges humains." },
     ],
   }),
