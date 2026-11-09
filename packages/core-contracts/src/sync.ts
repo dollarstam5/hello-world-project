@@ -124,12 +124,7 @@ export interface PullResult {
 
 /** Anything that survives a round-trip through the sync transport. */
 export type JsonValue =
-  | string
-  | number
-  | boolean
-  | null
-  | JsonValue[]
-  | { [key: string]: JsonValue };
+  string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
 
 export interface SyncRecordEnvelope {
   table: SyncedTable;
@@ -146,5 +141,4 @@ export type SyncWorkerCommand =
   | { type: "token"; ownerId: string; accessToken: string | null };
 
 export type SyncWorkerEvent =
-  | { type: "state"; state: SyncState }
-  | { type: "applied"; tables: SyncedTable[] };
+  { type: "state"; state: SyncState } | { type: "applied"; tables: SyncedTable[] };

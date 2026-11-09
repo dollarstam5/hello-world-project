@@ -1,13 +1,22 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   getWebVitalsSnapshot,
   resetWebVitalsSnapshot,
   startWebVitalsMonitoring,
 } from "@/lib/performance/web-vitals";
 
+const originalObserver = globalThis.PerformanceObserver;
+
+afterEach(() => {
+  Object.defineProperty(globalThis, "PerformanceObserver", {
+    configurable: true,
+    value: originalObserver,
+  });
+  resetWebVitalsSnapshot();
+});
+
 describe("real Web Vitals monitoring", () => {
   it("is browser-safe when PerformanceObserver is unavailable", () => {
-    const original = globalThis.PerformanceObserver;
     Object.defineProperty(globalThis, "PerformanceObserver", {
       configurable: true,
       value: undefined,
@@ -16,44 +25,79 @@ describe("real Web Vitals monitoring", () => {
     const sink = vi.fn();
     expect(startWebVitalsMonitoring(sink)).toBeTypeOf("function");
     expect(sink).not.toHaveBeenCalled();
-
-    Object.defineProperty(globalThis, "PerformanceObserver", {
-      configurable: true,
-      value: original,
-    });
   });
 
-  it("stores and emits valid observations", () => {
+  it("records observed LCP, CLS, and INP metrics and disconnects observers", () => {
     resetWebVitalsSnapshot();
     const sink = vi.fn();
+    const observers: Array<{
+      type: string;
+      callback: PerformanceObserverCallback;
+      disconnect: ReturnType<typeof vi.fn>;
+    }> = [];
 
-    const originalObserver = globalThis.PerformanceObserver;
-    const observe = vi.fn();
-    const disconnect = vi.fn();
-    const Observer = class {
+    class MockPerformanceObserver {
+      private readonly disconnectMock = vi.fn();
+
       constructor(private readonly callback: PerformanceObserverCallback) {}
-      observe = observe;
-      disconnect = disconnect;
-    };
+
+      observe(options: PerformanceObserverInit) {
+        observers.push({
+          type: options.type ?? "",
+          callback: this.callback,
+          disconnect: this.disconnectMock,
+        });
+      }
+
+      disconnect() {
+        this.disconnectMock();
+      }
+    }
 
     Object.defineProperty(globalThis, "PerformanceObserver", {
       configurable: true,
-      value: Observer,
+      value: MockPerformanceObserver,
     });
 
     const stop = startWebVitalsMonitoring(sink);
-    expect(stop).toBeTypeOf("function");
+    expect(observers.map((observer) => observer.type)).toEqual([
+      "largest-contentful-paint",
+      "layout-shift",
+      "event",
+    ]);
 
-    // Unsupported test doubles do not fabricate browser timing entries.
-    expect(getWebVitalsSnapshot()).toEqual({});
-    expect(sink).not.toHaveBeenCalled();
+    const emit = (type: string, entries: PerformanceEntry[]) => {
+      const observer = observers.find((item) => item.type === type);
+      expect(observer).toBeDefined();
+      observer?.callback(
+        { getEntries: () => entries } as PerformanceObserverEntryList,
+        {} as PerformanceObserver,
+      );
+    };
+
+    emit("largest-contentful-paint", [{ startTime: 1200 } as PerformanceEntry]);
+    emit("layout-shift", [
+      {
+        startTime: 1300,
+        value: 0.05,
+        hadRecentInput: false,
+      } as PerformanceEntry,
+    ]);
+    emit("event", [
+      {
+        startTime: 1400,
+        duration: 180,
+        interactionId: 1,
+      } as PerformanceEntry,
+    ]);
+
+    const snapshot = getWebVitalsSnapshot();
+    expect(snapshot.LCP?.value).toBe(1200);
+    expect(snapshot.CLS?.value).toBe(0.05);
+    expect(snapshot.INP?.value).toBe(180);
+    expect(sink).toHaveBeenCalledTimes(3);
 
     stop();
-    expect(disconnect).toHaveBeenCalledTimes(3);
-
-    Object.defineProperty(globalThis, "PerformanceObserver", {
-      configurable: true,
-      value: originalObserver,
-    });
+    expect(observers.every((observer) => observer.disconnect.mock.calls.length === 1)).toBe(true);
   });
 });

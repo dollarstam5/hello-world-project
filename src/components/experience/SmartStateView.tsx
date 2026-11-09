@@ -48,7 +48,7 @@ export function SmartStateView<T>({
             <button
               type="button"
               onClick={onRetry}
-              className="rounded-full bg-destructive/15 px-3 py-1 text-xs font-medium tap"
+              className="min-h-11 rounded-full bg-destructive/15 px-4 py-2 text-xs font-medium tap"
             >
               {t("common.retry")}
             </button>

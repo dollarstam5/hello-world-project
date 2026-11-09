@@ -50,7 +50,7 @@ export function SmartTabs({
               aria-selected={active}
               onClick={() => onChange(tab.id)}
               className={cn(
-                "relative pb-3 text-sm font-medium tap focus-visible:outline-none",
+                "relative min-h-12 min-w-12 pb-3 text-sm font-medium tap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                 active ? "text-foreground" : "text-muted-foreground",
               )}
             >
@@ -90,7 +90,7 @@ export function SmartTabs({
             aria-selected={active}
             onClick={() => onChange(tab.id)}
             className={cn(
-              "relative inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-medium tap focus-visible:outline-none",
+              "relative inline-flex min-h-12 min-w-12 items-center justify-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-medium tap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
               active ? "text-foreground" : "text-muted-foreground hover:text-foreground",
             )}
           >

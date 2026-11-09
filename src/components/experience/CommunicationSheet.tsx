@@ -24,16 +24,31 @@ export function CommunicationSheet({
       title={t("communication.title")}
       className="max-h-[92dvh]"
     >
-      <Tabs defaultValue="assistant">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger className="px-1 text-[11px] sm:text-sm" value="notifications">
+      <Tabs defaultValue="notifications">
+        <TabsList aria-label={t("communication.title")} className="grid w-full grid-cols-4">
+          <TabsTrigger
+            className="min-w-0 whitespace-normal px-1 text-xs leading-tight sm:text-sm"
+            value="notifications"
+          >
             {t("communication.notifications")}
           </TabsTrigger>
-          <TabsTrigger className="px-1 text-[11px] sm:text-sm" value="assistant">
+          <TabsTrigger
+            className="min-w-0 whitespace-normal px-1 text-xs leading-tight sm:text-sm"
+            value="assistant"
+          >
             {t("communication.assistant")}
           </TabsTrigger>
-          <TabsTrigger className="px-1 text-[11px] sm:text-sm" value="conversations">
-            {t("communication.conversations")}
+          <TabsTrigger
+            className="min-w-0 whitespace-normal px-1 text-xs leading-tight sm:text-sm"
+            value="messages"
+          >
+            {t("communication.messages")}
+          </TabsTrigger>
+          <TabsTrigger
+            className="min-w-0 whitespace-normal px-1 text-xs leading-tight sm:text-sm"
+            value="reel"
+          >
+            {t("communication.reel")}
           </TabsTrigger>
         </TabsList>
         <TabsContent
@@ -53,11 +68,11 @@ export function CommunicationSheet({
             <AssistantTab />
           </Suspense>
         </TabsContent>
-        <TabsContent
-          value="conversations"
-          className="py-8 text-center text-sm text-muted-foreground"
-        >
-          {t("communication.conversations.empty")}
+        <TabsContent value="messages" className="py-8 text-center text-sm text-muted-foreground">
+          {t("communication.messages.empty")}
+        </TabsContent>
+        <TabsContent value="reel" className="py-8 text-center text-sm text-muted-foreground">
+          {t("communication.reel.empty")}
         </TabsContent>
       </Tabs>
     </Sheet>

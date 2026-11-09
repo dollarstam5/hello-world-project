@@ -1,23 +1,24 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import type { PublicFlash } from "@eco/core-contracts";
-import { useI18n } from "@/lib/i18n/useI18n";
+import { defaultLocale, messages } from "@/lib/i18n/messages";
+import { useI18nStore } from "@/lib/i18n/useI18n";
 import { useLiveFlashes } from "../data";
 import { getPublicFlashFeed } from "../api/flash.functions";
 
 export type FlashFeedSource = "remote" | "offline";
 
 export function useFlashFeed() {
-  const { t } = useI18n();
-  const localRows = useLiveFlashes() ?? [];
+  const localRows = useLiveFlashes();
   const loadRemote = useServerFn(getPublicFlashFeed);
   const [remoteRows, setRemoteRows] = useState<PublicFlash[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>();
+  const activeRef = useRef(true);
 
   const offlineRows = useMemo<PublicFlash[]>(
     () =>
-      localRows.map((flash) => ({
+      (localRows ?? []).map((flash) => ({
         id: flash.id,
         kind: flash.kind ?? "offer",
         category: flash.category ?? "other",
@@ -30,32 +31,36 @@ export function useFlashFeed() {
     [localRows],
   );
 
-  useEffect(() => {
-    let active = true;
-
-    const refresh = async () => {
-      if (typeof navigator !== "undefined" && !navigator.onLine) return;
-      setLoading(true);
-      try {
-        const rows = await loadRemote();
-        if (active) {
-          setRemoteRows(rows);
-          setError(undefined);
-        }
-      } catch {
-        if (active) setError(t("flash.feed.error"));
-      } finally {
-        if (active) setLoading(false);
+  const refresh = useCallback(async () => {
+    if (typeof navigator !== "undefined" && !navigator.onLine) return;
+    setLoading(true);
+    try {
+      const rows = await loadRemote();
+      if (activeRef.current) {
+        setRemoteRows(rows);
+        setError(undefined);
       }
-    };
+    } catch {
+      if (activeRef.current) {
+        const locale = useI18nStore.getState().locale;
+        setError(
+          messages[locale]["flash.feed.error"] ?? messages[defaultLocale]["flash.feed.error"],
+        );
+      }
+    } finally {
+      if (activeRef.current) setLoading(false);
+    }
+  }, [loadRemote]);
 
+  useEffect(() => {
+    activeRef.current = true;
     void refresh();
     window.addEventListener("online", refresh);
     return () => {
-      active = false;
+      activeRef.current = false;
       window.removeEventListener("online", refresh);
     };
-  }, [loadRemote]);
+  }, [refresh]);
 
   const rows = useMemo<PublicFlash[]>(() => {
     if (!remoteRows) return offlineRows;
@@ -69,5 +74,6 @@ export function useFlashFeed() {
     source: remoteRows ? ("remote" as const) : ("offline" as const),
     loading,
     error,
+    refresh,
   };
 }

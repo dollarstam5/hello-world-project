@@ -4,11 +4,11 @@ import { SignInView } from "@/domains/auth/ui/SignInView";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Connexion — Écosystème" },
-      { name: "description", content: "Rejoignez votre écosystème : identifiez-vous en un geste." },
+      { title: "Connexion — Vitalis" },
+      { name: "description", content: "Connectez-vous à Vitalis en toute sécurité." },
       { name: "robots", content: "noindex" },
-      { property: "og:title", content: "Connexion — Écosystème" },
-      { property: "og:description", content: "Identifiez-vous pour retrouver votre écosystème." },
+      { property: "og:title", content: "Connexion — Vitalis" },
+      { property: "og:description", content: "Connectez-vous à votre espace Vitalis." },
     ],
   }),
   component: SignInView,

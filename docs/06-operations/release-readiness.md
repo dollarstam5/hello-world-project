@@ -106,11 +106,11 @@ Chaque release doit conserver :
 
 ## 8. Références canoniques et historiques
 
-- [Qualité et tests](../QUALITY.md) — contrôles automatisés et règles de fusion.
-- [Reproductibilité](../REPRODUCIBILITY.md) — comparaison des builds.
+- [Qualité et tests](./QUALITY.md) — contrôles automatisés et règles de fusion.
+- [Reproductibilité](./REPRODUCIBILITY.md) — comparaison des builds.
 - [Performance PWA](./performance-pwa.md) — budgets et validation mobile.
 - [Opérations](./operations.md) — santé, diagnostics et seuils de triage.
 - [Registre des problèmes techniques](./technical-issues.md) — incertitudes qui nécessitent des preuves.
-- [Go/No-Go historique](../GO_NO_GO.md), [déploiement historique](../DEPLOYMENT.md) et [opérations historiques](../OPERATIONS.md) — conservés pour la traçabilité.
+- Les anciens chemins `docs/GO_NO_GO.md`, `docs/DEPLOYMENT.md` et `docs/OPERATIONS.md` ne sont pas des fichiers actifs à la racine ; consulter l'[index des archives](../archive/README.md) pour la traçabilité.
 
 Les documents historiques ne sont pas supprimés ni déplacés dans ce lot. La présente référence consolide la procédure et ne prétend pas certifier qu'une release ou un environnement est prêt.

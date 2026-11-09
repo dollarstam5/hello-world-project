@@ -5,7 +5,7 @@ import { SectionFoundation } from "@/components/experience/SectionFoundation";
 export const Route = createFileRoute("/radar")({
   head: () => ({
     meta: [
-      { title: "Radar — Écosystème" },
+      { title: "Radar — Vitalis" },
       { name: "description", content: "Ce qui se passe autour de vous." },
     ],
   }),
@@ -16,11 +16,6 @@ export const Route = createFileRoute("/radar")({
       descKey="page.radar.desc"
       tone="info"
       icon={MapPin}
-      sections={[
-        { key: "near", titleKey: "page.radar.section.near", perf: "short" },
-        { key: "area", titleKey: "page.radar.section.area", perf: "tall" },
-      ]}
-      footer="Foundation · Radar"
     />
   ),
 });

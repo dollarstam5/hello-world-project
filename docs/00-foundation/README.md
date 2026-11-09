@@ -7,7 +7,9 @@ Cette section contient les fondations canoniques du projet : architecture, séqu
 - [Architecture](./architecture.md)
 - [Build overview](./build-overview.md)
 - [Build conventions](./build-conventions.md)
-- [Langage de design Vitala](./design-language.md)
+- [Langage de design Vitalis](./design-language.md)
+- [Standards UX et accessibilité — Phase 2](./phase-2-ux-standards.md)
+- [Adaptation PWA et capacités des plateformes](./pwa-platform-adaptation.md)
 
 ## Core principle
 
@@ -20,6 +22,8 @@ Le projet se construit dans un ordre stable et guidé par les dépendances. Tout
 - [Préparation de release et décision Go/No-Go](../06-operations/release-readiness.md)
 - [Reproducibility](../06-operations/REPRODUCIBILITY.md)
 - [Langage de design](./design-language.md)
+- [Standards UX et accessibilité — Phase 2](./phase-2-ux-standards.md)
+- [Adaptation PWA et capacités des plateformes](./pwa-platform-adaptation.md)
 
 Le document historique `docs/GO_NO_GO.md` reste conservé pour traçabilité et figure parmi les candidats à comparer avant toute proposition de retrait.
 

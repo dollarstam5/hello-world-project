@@ -5,7 +5,7 @@ import { SectionFoundation } from "@/components/experience/SectionFoundation";
 export const Route = createFileRoute("/espace")({
   head: () => ({
     meta: [
-      { title: "Espace — Écosystème" },
+      { title: "Espace — Vitalis" },
       { name: "description", content: "Votre espace personnel." },
     ],
   }),
@@ -20,7 +20,6 @@ export const Route = createFileRoute("/espace")({
         { key: "you", titleKey: "page.espace.section.you", perf: "short" },
         { key: "circles", titleKey: "page.espace.section.circles", perf: "tall" },
       ]}
-      footer="Foundation · Espace"
     />
   ),
 });

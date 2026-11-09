@@ -56,13 +56,22 @@ const NEED_PATTERN =
 
 const CATEGORY_PATTERNS: ReadonlyArray<readonly [FlashCategory, RegExp]> = [
   ["food", /\b(food|meal|restaurant|cook|repas|nourriture|manger|cuisine|livraison)\b/i],
-  ["transport", /\b(transport|taxi|ride|driver|car|moto|chauffeur|voiture|covoiturage|delivery)\b/i],
+  [
+    "transport",
+    /\b(transport|taxi|ride|driver|car|moto|chauffeur|voiture|covoiturage|delivery)\b/i,
+  ],
   ["health", /\b(health|doctor|medic|santé|médecin|docteur|pharmacie|soin|hôpital)\b/i],
   ["education", /\b(cours|formation|tutor|teacher|école|education|apprendre|professeur|étude)\b/i],
   ["events", /\b(event|événement|concert|soirée|meetup|rencontre|réunion|fête|party)\b/i],
-  ["home", /\b(maison|home|plombier|plumber|électricien|réparation|repair|ménage|cleaning|travaux)\b/i],
+  [
+    "home",
+    /\b(maison|home|plombier|plumber|électricien|réparation|repair|ménage|cleaning|travaux)\b/i,
+  ],
   ["commercial", /\b(vends|vendre|sell|selling|acheter|buy|product|produit|shop|boutique|prix)\b/i],
-  ["professional", /\b(job|emploi|mission|freelance|développeur|developer|designer|work|travail|recrute|hire|hiring|service)\b/i],
+  [
+    "professional",
+    /\b(job|emploi|mission|freelance|développeur|developer|designer|work|travail|recrute|hire|hiring|service)\b/i,
+  ],
   ["personal", /\b(ami|friend|personnel|personal|famille|family|compagnon|partner)\b/i],
 ];
 

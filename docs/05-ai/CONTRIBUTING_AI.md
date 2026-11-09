@@ -4,9 +4,13 @@
 
 ## Avant d'écrire une ligne
 
-1. Lire `docs/PROJECT_BIBLE.md` et `ARCHITECTURE.md`.
-2. Identifier la couche propriétaire de la responsabilité concernée.
-3. Vérifier qu'un module existant ne fait pas déjà le travail.
+1. Lire `docs/README.md` et `docs/00-foundation/README.md` pour identifier les références documentaires actives.
+2. Lire `ARCHITECTURE.md` et `docs/05-ai/README.md` pour respecter les frontières et la hiérarchie des règles.
+3. Identifier la couche propriétaire de la responsabilité concernée.
+4. Vérifier qu'un module existant ne fait pas déjà le travail.
+5. Consulter les documents du domaine concerné et leurs statuts d'implémentation.
+
+**Traçabilité documentaire :** le dépôt ne contient pas de fichier actif `docs/PROJECT_BIBLE.md`. Ne pas le traiter comme une référence disponible ni prétendre que son contenu historique a été entièrement consolidé. Les écarts documentaires connus sont suivis dans `docs/07-annexes/documentation-content-coverage.md`.
 
 ## Pendant
 

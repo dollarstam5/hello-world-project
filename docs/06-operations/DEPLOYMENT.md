@@ -1,4 +1,4 @@
-# Déploiement de Vitala
+# Déploiement de Vitalis
 
 Ce guide décrit une mise en production reproductible. Les secrets ne doivent jamais être stockés dans Git, dans une variable `VITE_*`, ni dans les journaux applicatifs.
 
@@ -54,9 +54,10 @@ bun run check:foundation
 bun run security:secrets
 bun run lint
 bun run test:run
-bun run test:offline
+bun run check:protocol
+supabase start
 bun run test:db
-bun run build:check
+supabase stop
 bun run test:e2e
 bun run check:release
 ```
@@ -77,13 +78,13 @@ Le manifeste, le service worker et les icônes doivent être servis par HTTPS. V
 
 Planifier un appel `POST /api/cron/maintenance` avec `Authorization: Bearer <LOVABLE_CRON_SECRET>`. Une exécution quotidienne suffit ; la route est idempotente et les fenêtres acceptées sont bornées entre 7 et 365 jours.
 
-Après publication, vérifier `/api/health/live` puis `/api/health/ready`. Configurer les alertes et procédures selon [`OPERATIONS.md`](OPERATIONS.md).
+Après publication, vérifier `/api/health/live` puis `/api/health/ready`. Configurer les alertes et procédures selon [opérations](./operations.md).
 
-Vérifier également l’installation, la mise à jour du service worker et les budgets selon [`PERFORMANCE_PWA.md`](PERFORMANCE_PWA.md).
+Vérifier également l’installation, la mise à jour du service worker et les budgets selon [performance PWA](./performance-pwa.md).
 
 ## 6. Décision Go/No-Go
 
-Exécuter `bun run certify:p0`, puis compléter la checklist de [`RELEASE_READINESS.md`](RELEASE_READINESS.md). Toute erreur de verrou, de RLS, d’isolation, de sécurité, de build, de budget, de PWA ou de rollback impose un No-Go.
+Exécuter `bun run check:release`, puis compléter la checklist de [préparation de release](./release-readiness.md). Toute erreur de verrou, de RLS, d’isolation, de sécurité, de build, de budget, de PWA ou de rollback impose un No-Go.
 
 La promotion doit référencer un commit immuable et réutiliser le même artefact validé en préproduction. Conserver l’artefact précédent, vérifier sa compatibilité avec les migrations déjà appliquées et tester le rollback avant l’ouverture aux utilisateurs.
 

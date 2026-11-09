@@ -1,41 +1,38 @@
 import { Link } from "@tanstack/react-router";
-import { Bell, LogOut, UserRound } from "lucide-react";
+import { Bell, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n/useI18n";
-import { signOut, useAuth } from "@/domains/auth";
 
 export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => void }) {
   const { t } = useI18n();
-  const { user } = useAuth();
+
   return (
-    <header className="sticky top-0 z-30 border-b border-border-soft bg-background/85 backdrop-blur-xl">
-      <div className="mx-auto flex h-14 w-full max-w-screen-md items-center justify-between px-4">
-        <span className="text-lg font-semibold tracking-tight">{t("app.name")}</span>
+    <header className="sticky top-0 z-30 bg-transparent" style={{ paddingTop: "var(--safe-top)" }}>
+      <div className="mx-auto flex h-14 w-full max-w-screen-md items-center justify-between px-3 sm:px-4">
+        <Link
+          to="/"
+          aria-label={t("nav.home")}
+          className="flex h-12 w-12 items-center justify-center rounded-xl outline-none transition-opacity hover:opacity-85 focus-visible:ring-2 focus-visible:ring-ring"
+        >
+          <img src="/icon-192.svg" alt="" aria-hidden="true" className="h-9 w-9 rounded-xl" />
+        </Link>
+
         <div className="flex items-center gap-1">
-          <Button asChild variant="ghost" size="icon">
-            <Link to="/espace" aria-label={t("profile.open")}>
-              <UserRound aria-hidden />
-            </Link>
-          </Button>
-          {user ? (
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              aria-label={t("auth.signOut")}
-              onClick={() => void signOut().then(() => window.location.assign("/"))}
-            >
-              <LogOut aria-hidden />
-            </Button>
-          ) : null}
           <Button
             type="button"
             variant="ghost"
             size="icon"
             onClick={onOpenCommunication}
             aria-label={t("communication.open")}
+            className="h-12 w-12 rounded-full"
           >
-            <Bell aria-hidden />
+            <Bell aria-hidden className="!size-6" />
+          </Button>
+
+          <Button asChild variant="ghost" size="icon" className="h-12 w-12 rounded-full">
+            <Link to="/espace" aria-label={t("menu.espace.open")}>
+              <UserRound aria-hidden className="!size-6" />
+            </Link>
           </Button>
         </div>
       </div>

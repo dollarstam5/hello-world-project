@@ -23,17 +23,17 @@ export function FlashComposer() {
   const [text, setText] = useState("");
   const [published, setPublished] = useState(false);
   const [pending, setPending] = useState(false);
+  const [failed, setFailed] = useState(false);
 
-  const intent = useMemo(
-    () => (text.trim().length >= 3 ? parseFlashIntent(text) : null),
-    [text],
-  );
+  const intent = useMemo(() => (text.trim().length >= 3 ? parseFlashIntent(text) : null), [text]);
 
   async function submit(event: FormEvent) {
     event.preventDefault();
     const value = text.trim();
     if (!value || !intent || !user || pending) return;
     setPending(true);
+    setFailed(false);
+    setPublished(false);
     try {
       await createFlash({
         authorId: user.id as UserId,
@@ -46,13 +46,24 @@ export function FlashComposer() {
       });
       setText("");
       setPublished(true);
-      window.setTimeout(() => setPublished(false), 4000);
+    } catch {
+      setFailed(true);
     } finally {
       setPending(false);
     }
   }
 
-  if (!loading && !user) {
+  if (loading) {
+    return (
+      <Surface variant="sunken" padding="lg" bordered>
+        <p className="text-sm text-muted-foreground" role="status">
+          {t("app.loading")}
+        </p>
+      </Surface>
+    );
+  }
+
+  if (!user) {
     return (
       <Surface variant="sunken" padding="lg" bordered>
         <p className="text-sm text-muted-foreground">{t("flash.composer.signIn")}</p>
@@ -68,7 +79,11 @@ export function FlashComposer() {
       <form onSubmit={submit} className="stack-3">
         <Textarea
           value={text}
-          onChange={(event) => setText(event.target.value)}
+          onChange={(event) => {
+            setText(event.target.value);
+            setFailed(false);
+            setPublished(false);
+          }}
           maxLength={600}
           rows={3}
           placeholder={t("flash.composer.placeholder")}
@@ -77,9 +92,7 @@ export function FlashComposer() {
 
         {intent ? (
           <div className="flex flex-wrap items-center gap-2" aria-live="polite">
-            <span className="text-xs text-muted-foreground">
-              {t("flash.composer.understood")}
-            </span>
+            <span className="text-xs text-muted-foreground">{t("flash.composer.understood")}</span>
             <Indicator tone="primary" label={t(`flash.kind.${intent.kind}`)} />
             <Indicator tone="info" label={t(`flash.category.${intent.category}`)} />
             <Indicator tone="warning" label={t(`flash.slot.${intent.timeSlot}`)} />
@@ -91,10 +104,15 @@ export function FlashComposer() {
             {t("flash.composer.published")}
           </p>
         ) : null}
+        {failed ? (
+          <p className="text-xs text-destructive" role="alert">
+            {t("flash.composer.error")}
+          </p>
+        ) : null}
 
         <Button type="submit" disabled={!intent || pending} className="w-full">
           <Send aria-hidden className="size-4" />
-          {t("flash.composer.publish")}
+          {pending ? t("app.loading") : t("flash.composer.publish")}
         </Button>
       </form>
     </Surface>

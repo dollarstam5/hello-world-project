@@ -1,21 +1,21 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { House, Zap, ScanLine, Radar, LayoutGrid } from "lucide-react";
+import { Zap, ScanLine, RadioTower, Radar, LayoutGrid } from "lucide-react";
 import { motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useReducedMotion } from "@/lib/design/useReducedMotion";
 import { cn } from "@/lib/utils";
 
 type Tab = {
-  key: "reel" | "flash" | "scan" | "radar" | "menu";
-  to?: string;
+  key: "flash" | "scan" | "reel" | "radar" | "menu";
+  to?: "/flash" | "/scan" | "/reel" | "/radar";
   icon: React.ComponentType<{ className?: string }>;
-  labelKey: "nav.reel" | "nav.flash" | "nav.scan" | "nav.radar" | "nav.menu";
+  labelKey: "nav.flash" | "nav.scan" | "nav.reel" | "nav.radar" | "nav.menu";
 };
 
 const TABS: Tab[] = [
-  { key: "reel", to: "/", icon: House, labelKey: "nav.reel" },
   { key: "flash", to: "/flash", icon: Zap, labelKey: "nav.flash" },
   { key: "scan", to: "/scan", icon: ScanLine, labelKey: "nav.scan" },
+  { key: "reel", to: "/reel", icon: RadioTower, labelKey: "nav.reel" },
   { key: "radar", to: "/radar", icon: Radar, labelKey: "nav.radar" },
   { key: "menu", icon: LayoutGrid, labelKey: "nav.menu" },
 ];
@@ -26,10 +26,9 @@ interface BottomNavProps {
 }
 
 /**
- * Floating bottom navigation — calm, glassy, breathing.
- * Réel, Flash, Scan, Radar + a 2x2 grid that opens the MenuSheet.
- * 2026 pattern: icon + visible label, Scan elevated as the center action.
- * Pure presentation; no business logic.
+ * Five-point mobile navigation.
+ * Réel is the central engine; 2x2 opens the secondary menu.
+ * Home remains outside this bar and is reached from the app identity.
  */
 export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
   const { t } = useI18n();
@@ -38,33 +37,30 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
 
   return (
     <nav
-      aria-label={t("nav.menu")}
-      className="fixed inset-x-0 bottom-0 z-40 flex justify-center pb-[max(env(safe-area-inset-bottom),0.75rem)] pointer-events-none"
+      aria-label={t("nav.primary")}
+      className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center px-3 pb-[max(env(safe-area-inset-bottom),0.75rem)]"
     >
-      <ul
-        role="tablist"
-        className="glass pointer-events-auto flex items-end gap-1 rounded-full border border-border-soft px-2 py-1.5 shadow-[var(--shadow-float)]"
-      >
+      <ul className="glass pointer-events-auto flex w-[min(100%,24rem)] items-end justify-between gap-1 rounded-full border border-border-soft px-2 py-1.5 shadow-[var(--shadow-float)]">
         {TABS.map((tab) => {
           const isMenu = tab.key === "menu";
-          const isCenter = tab.key === "scan";
+          const isCenter = tab.key === "reel";
           const active = isMenu ? menuOpen : tab.to === pathname;
           const Icon = tab.icon;
           const label = t(tab.labelKey);
 
           const inner = isCenter ? (
-            <span className="flex flex-col items-center gap-0.5">
+            <span className="flex min-h-12 flex-col items-center justify-center gap-0.5">
               <span
                 className={cn(
                   "flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[var(--glow-soft)] transition-transform",
                   "hover:scale-105 active:scale-95",
                 )}
               >
-                <Icon className="h-5 w-5" aria-hidden />
+                <Icon className="!h-7 !w-7" aria-hidden />
               </span>
               <span
                 className={cn(
-                  "text-[10px] font-medium leading-none",
+                  "text-[11px] font-semibold leading-tight",
                   active ? "text-foreground" : "text-muted-foreground",
                 )}
               >
@@ -74,7 +70,7 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
           ) : (
             <span
               className={cn(
-                "relative flex min-w-14 flex-col items-center gap-0.5 rounded-full px-3 py-1.5 transition-colors",
+                "relative flex min-h-12 min-w-12 flex-col items-center justify-center gap-0.5 rounded-full px-1 py-1.5 transition-colors",
                 "text-muted-foreground hover:text-foreground",
                 active && "text-primary-foreground",
               )}
@@ -90,13 +86,13 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
                     aria-hidden
                   />
                 ))}
-              <Icon className="relative h-5 w-5" aria-hidden />
-              <span className="relative text-[10px] font-medium leading-none">{label}</span>
+              <Icon className="relative !h-6 !w-6" aria-hidden />
+              <span className="relative text-[11px] font-medium leading-tight">{label}</span>
             </span>
           );
 
           return (
-            <li key={tab.key} role="presentation">
+            <li key={tab.key} className="flex min-w-0 flex-1 justify-center">
               {isMenu ? (
                 <button
                   type="button"
@@ -104,7 +100,7 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
                   aria-label={t("nav.open_menu")}
                   aria-haspopup="dialog"
                   aria-expanded={menuOpen}
-                  className="rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className="flex min-h-12 min-w-12 items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
                   {inner}
                 </button>
@@ -113,7 +109,7 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
                   to={tab.to!}
                   aria-label={label}
                   aria-current={active ? "page" : undefined}
-                  className="rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className="flex min-h-12 min-w-12 items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
                   {inner}
                 </Link>

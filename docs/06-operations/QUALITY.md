@@ -1,4 +1,4 @@
-# Qualité et tests de Vitala
+# Qualité et tests de Vitalis
 
 Les contrôles de ce document sont obligatoires avant fusion vers `main`. Ils protègent les fondations P0 et doivent rester exécutables sans secret de production.
 
@@ -15,20 +15,23 @@ La CI utilise ensuite `bun install --frozen-lockfile`. Elle doit échouer si `pa
 
 ## Commandes
 
-| Commande                   | Rôle                                                    | Bloquante |
-| -------------------------- | ------------------------------------------------------- | --------- |
-| `bun run check:foundation` | lint + tests Vitest du socle actuellement implémenté    | oui       |
-| `bun run security:secrets` | bloque la présence d’un `.env` local suivi par le dépôt | oui       |
-| `bun run lint`             | contrôle statique du code                               | oui       |
-| `bun run test:run`         | exécute une fois les tests Vitest                       | oui       |
-| `bun run test`             | mode interactif local                                   | non       |
-| `bun run test:coverage`    | produit le rapport de couverture                        | revue     |
+| Commande | Rôle | Bloquante |
+| --- | --- | --- |
+| `bun run check:foundation` | Lint et tests Vitest du socle | oui |
+| `bun run security:secrets` | Vérifie l'absence de fichier `.env` suivi par le dépôt | oui |
+| `bun run test:run` | Exécute une fois tous les tests Vitest | oui |
+| `bun run check:release` | Lint, tests, build, budgets, audit documentaire, reproductibilité et Go/No-Go | oui |
+| `bun run build:check` | Construit l'application de production | oui |
+| `bun run check:protocol` | Vérifie le protocole de synchronisation | selon changement |
+| `bun run check:pwa` | Vérifie les exports et comportements PWA couverts | selon changement |
+| `bun run check:web-vitals` | Vérifie le collecteur Web Vitals | selon changement |
+| `bun run check:mobile-e2e` | Vérifie le contrat du smoke test mobile | selon changement |
+| `bun run test:e2e` | Génère les captures Chromium aux viewports et routes de référence | oui en CI |
+| `bun run test:db` | Exécute les tests PostgreSQL/pgTAP avec Supabase local | oui pour les changements DB |
+| `bun run build` | Construit l'artefact de production | oui |
+| `bun run check` | Enchaîne les contrôles bloquants du dépôt | oui |
 
-| `bun run check:release` | lint + tests + build de la fondation actuelle | oui |
-| `bun run build:check` | construit l’application de production | oui |
-
-| `bun run build` | construit l’artefact de production | oui |
-| `bun run check` | enchaîne tous les contrôles bloquants | oui |
+`test:db` nécessite Supabase CLI et Docker ; démarrer la pile locale avec `supabase start`, puis l'arrêter avec `supabase stop`. Les tests ne doivent jamais cibler la production.
 
 ## Matrice P0
 
@@ -41,8 +44,8 @@ La CI utilise ensuite `bun install --frozen-lockfile`. Elle doit échouer si `pa
 | P0.5      | connaissance locale et règles de cache Vita                                      | `tests/assistant/`, `tests/security/`                                                                                                                    |
 | P0.6      | environnement et en-têtes HTTP                                                   | `tests/config/`, `tests/security/`                                                                                                                       |
 | P0.9      | corrélation, health, rétention et diagnostic offline                             | `tests/observability/`, `tests/offline/`                                                                                                                 |
-| P0.10     | PWA, budgets, Web Vitals et écrans mobiles                                       | `tests/pwa/`, `tests/performance/`, `tests/e2e/`                                                                                                         |
-| P0.11     | certification, reproductibilité, Go/No-Go et passage à P1                        | `tests/smoke/`, `docs/RELEASE_READINESS.md`                                                                                                              |
+| P0.10     | PWA, budgets, Web Vitals et écrans mobiles                                       | `tests/pwa.test.ts`, `tests/web-vitals.test.ts`, `tests/performance-policy.test.ts`, `tests/performance-budgets.test.ts`, `tests/mobile-e2e-contract.test.ts`, `scripts/test-mobile-e2e.sh`                                                                                                         |
+| P0.11     | certification, reproductibilité, Go/No-Go et passage à P1                        | `tests/smoke/`, `docs/06-operations/release-readiness.md`                                                                                                              |
 | P1.1      | profil, préférences, progression UDI et champs protégés                          | `tests/profile/`, `supabase/tests/database/70_profile_preferences_rls.test.sql`                                                                          |
 | P1.2      | Auth PKCE, redirections internes et onboarding monotone                          | `tests/auth/`, `tests/onboarding/`, `supabase/tests/database/80_member_onboarding_rls.test.sql`                                                          |
 | P1.3      | brouillons Flash, cycle protégé et projection anonyme                            | `tests/flash/`, `supabase/tests/database/90_flash_lifecycle_rls.test.sql`                                                                                |
@@ -54,11 +57,11 @@ Les politiques RLS PostgreSQL restent la frontière de sécurité. P0.3 vérifie
 
 P0.4 couvre les invariants critiques du moteur de synchronisation : push avant pull, conservation des écritures hors ligne et arrêt sur la limite de sécurité de pagination. Les tests restent exécutables sans secret de production.
 
-Les incidents, seuils d’alerte et objectifs de service sont définis dans [`OPERATIONS.md`](OPERATIONS.md).
+Les incidents, seuils d’alerte et objectifs de service sont définis dans [opérations](./operations.md).
 
-Les budgets et la matrice mobile sont définis dans [`PERFORMANCE_PWA.md`](PERFORMANCE_PWA.md).
+Les budgets et la matrice mobile sont définis dans [performance PWA](./performance-pwa.md).
 
-La décision finale Go/No-Go et les validations manuelles sont définies dans [`RELEASE_READINESS.md`](RELEASE_READINESS.md). Un contrôle automatique vert signifie seulement « candidat Go » : la préproduction, le rollback et la validation humaine restent obligatoires.
+La décision finale Go/No-Go et les validations manuelles sont définies dans [préparation de release](./release-readiness.md). Un contrôle automatique vert signifie seulement « candidat Go » : la préproduction, le rollback et la validation humaine restent obligatoires.
 
 ## Règles de merge
 

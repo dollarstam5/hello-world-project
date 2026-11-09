@@ -5,7 +5,7 @@ import { SectionFoundation } from "@/components/experience/SectionFoundation";
 export const Route = createFileRoute("/talents")({
   head: () => ({
     meta: [
-      { title: "Talents — Savoirs Vivants" },
+      { title: "Talents — Vitalis" },
       { name: "description", content: "Connaissances vivantes, échanges humains." },
     ],
   }),
@@ -20,7 +20,6 @@ export const Route = createFileRoute("/talents")({
         { key: "offer", titleKey: "page.talents.section.offer", perf: "short" },
         { key: "seek", titleKey: "page.talents.section.seek", perf: "tall" },
       ]}
-      footer="Foundation · Talents"
     />
   ),
 });

@@ -12,10 +12,8 @@ import { OnboardingSheet } from "@/components/experience/OnboardingSheet";
 import { InstallBanner } from "@/components/experience/InstallBanner";
 import { UpdateBanner } from "@/components/experience/UpdateBanner";
 import { AILayer } from "@/components/experience/AILayer";
-import { registerServiceWorker } from "@/platform/pwa";
 import { useResponsive } from "@/lib/platform/useResponsive";
 import { duration, easing } from "@/lib/design/tokens";
-import { startWebVitals } from "@/platform/performance";
 
 /**
  * AppShell — single mount-point that boots foundation services
@@ -23,7 +21,7 @@ import { startWebVitals } from "@/platform/performance";
  *  - global navigation (floating bottom nav + menu sheet)
  *  - ambient AI layer
  *  - offline awareness
- *  - first-run onboarding sheet
+ *  - first-run guided Vitalis onboarding
  *  - low-end / reduced-motion gating (Phase 5/5)
  */
 export function AppShell({ children }: { children: ReactNode }) {
@@ -34,11 +32,6 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   useExperienceBoot();
   useSyncEngine();
-
-  useEffect(() => {
-    registerServiceWorker();
-    startWebVitals();
-  }, []);
 
   // Apply low-end gating on <html> so the CSS effects fall back.
   useEffect(() => {

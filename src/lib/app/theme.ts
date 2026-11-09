@@ -23,10 +23,25 @@ function apply(mode: ThemeMode) {
   document.documentElement.classList.toggle("dark", effective === "dark");
 }
 
+let systemPreference: MediaQueryList | null = null;
+
+function handleSystemPreferenceChange() {
+  if (useThemeStore.getState().mode === "system") {
+    apply("system");
+    useThemeStore.setState((state) => ({ ...state, mode: "system" }));
+  }
+}
+
 export const useThemeStore = create<ThemeState>((set) => ({
   mode: "dark",
   setMode: (mode) => {
-    if (typeof window !== "undefined") window.localStorage.setItem(STORAGE_KEY, mode);
+    if (typeof window !== "undefined") {
+      try {
+        window.localStorage.setItem(STORAGE_KEY, mode);
+      } catch {
+        // Keep the selected theme active for this session if persistence is blocked.
+      }
+    }
     apply(mode);
     set({ mode });
   },
@@ -35,10 +50,19 @@ export const useThemeStore = create<ThemeState>((set) => ({
 export function initTheme() {
   if (typeof window === "undefined") return;
   // Dark-first default; user can opt into light/system explicitly.
-  const stored = (window.localStorage.getItem(STORAGE_KEY) as ThemeMode | null) ?? "dark";
+  let storedValue: string | null = null;
+  try {
+    storedValue = window.localStorage.getItem(STORAGE_KEY);
+  } catch {
+    // Fall back to the dark-first default when storage is unavailable.
+  }
+  const stored: ThemeMode =
+    storedValue === "light" || storedValue === "dark" || storedValue === "system"
+      ? storedValue
+      : "dark";
   apply(stored);
   useThemeStore.setState({ mode: stored });
-  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
-    if (useThemeStore.getState().mode === "system") apply("system");
-  });
+  systemPreference?.removeEventListener("change", handleSystemPreferenceChange);
+  systemPreference = window.matchMedia("(prefers-color-scheme: dark)");
+  systemPreference.addEventListener("change", handleSystemPreferenceChange);
 }

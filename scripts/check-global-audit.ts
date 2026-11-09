@@ -1,10 +1,19 @@
 import { existsSync, readFileSync } from "node:fs";
 
 const requiredFiles = [
-  "docs/PROJECT_BIBLE.md",
-  "docs/QUALITY.md",
-  "docs/OPERATIONS.md",
+  "docs/README.md",
+  "docs/00-foundation/README.md",
+  "docs/01-product/README.md",
+  "docs/02-architecture/README.md",
+  "docs/03-engines/README.md",
+  "docs/05-ai/README.md",
+  "docs/06-operations/README.md",
+  "docs/06-operations/QUALITY.md",
+  "docs/06-operations/operations.md",
   "docs/06-operations/performance-pwa.md",
+  "docs/07-annexes/documentation-content-coverage.md",
+  "tests/mobile-e2e-contract.test.ts",
+  "tests/platform/use-network-status.test.tsx",
   "src/lib/performance/performance-policy.ts",
   "src/lib/performance/performance-budget-policy.ts",
   "src/lib/performance/web-vitals.ts",
@@ -14,7 +23,13 @@ const requiredFiles = [
 ];
 
 const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
-const requiredScripts = ["check:pwa", "check:web-vitals", "check:performance-budget", "test:e2e"];
+const requiredScripts = [
+  "check:pwa",
+  "check:web-vitals",
+  "check:performance-budget",
+  "check:mobile-e2e",
+  "test:e2e",
+];
 
 const missingFiles = requiredFiles.filter((path) => !existsSync(path));
 const missingScripts = requiredScripts.filter((name) => !packageJson.scripts?.[name]);

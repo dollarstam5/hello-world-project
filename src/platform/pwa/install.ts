@@ -4,6 +4,7 @@
  */
 import { useEffect, useState } from "react";
 
+import { getPlatformCapabilities, type PlatformOS } from "@/lib/platform/capabilities";
 import { watchForUpdates } from "./update";
 
 interface BeforeInstallPromptEvent extends Event {
@@ -11,7 +12,17 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 }
 
+export function getManualInstallInstructions(
+  os: PlatformOS,
+  secureContext: boolean,
+  standalone: boolean,
+): "ios" | "android" | null {
+  if (standalone || !secureContext) return null;
+  return os === "ios" || os === "android" ? os : null;
+}
+
 let deferredPrompt: BeforeInstallPromptEvent | null = null;
+let registrationScheduled = false;
 const listeners = new Set<() => void>();
 
 function notify() {
@@ -19,29 +30,42 @@ function notify() {
 }
 
 function isStandalone(): boolean {
-  if (typeof window === "undefined") return false;
-  return (
-    window.matchMedia("(display-mode: standalone)").matches ||
-    (window.navigator as { standalone?: boolean }).standalone === true
-  );
+  return getPlatformCapabilities().standalone;
 }
 
-/** Registers the service worker once, in production builds only. */
+/** Registers the service worker once, in production, even when load has passed. */
 export function registerServiceWorker(): void {
-  if (typeof window === "undefined") return;
-  if (!("serviceWorker" in navigator)) return;
-  if (!import.meta.env.PROD) return;
-  window.addEventListener("load", () => {
+  if (
+    typeof window === "undefined" ||
+    !("serviceWorker" in navigator) ||
+    !import.meta.env.PROD ||
+    registrationScheduled
+  ) {
+    return;
+  }
+
+  registrationScheduled = true;
+
+  const register = () => {
     void navigator.serviceWorker
       .register("/sw.js", { scope: "/" })
       .then((registration) => watchForUpdates(registration))
-      .catch(() => undefined);
-  });
+      .catch(() => {
+        registrationScheduled = false;
+      });
+  };
+
+  if (document.readyState === "complete") {
+    register();
+  } else {
+    window.addEventListener("load", register, { once: true });
+  }
 }
 
 export function useInstallPrompt() {
+  const capabilities = getPlatformCapabilities();
   const [available, setAvailable] = useState(deferredPrompt !== null);
-  const [installed, setInstalled] = useState(isStandalone());
+  const [installed, setInstalled] = useState(capabilities.standalone);
 
   useEffect(() => {
     const onListener = () => setAvailable(deferredPrompt !== null);
@@ -78,5 +102,17 @@ export function useInstallPrompt() {
     return outcome;
   }
 
-  return { available: available && !installed, installed, install };
+  const manualInstructions = getManualInstallInstructions(
+    capabilities.os,
+    capabilities.secureContext,
+    installed,
+  );
+  const canOfferManualInstall = manualInstructions !== null;
+
+  return {
+    available: !installed && (available || canOfferManualInstall),
+    installed,
+    install,
+    manualInstructions: available ? null : manualInstructions,
+  };
 }
