@@ -342,3 +342,10 @@ L'ancien écran d'accueil minimal est remplacé par un onboarding guidé en **ci
 - Le parcours d'onboarding est conservé en cinq étapes : présentation générale, Flash+Scan, Réel+Radar, 2×2, invitation finale.
 - Contrôle visuel du code : les cartes et étapes utilisent une grille responsive, les liens gardent un focus visible et les icônes décoratives sont masquées aux lecteurs d'écran.
 - À confirmer sur appareils réels : rendu des surfaces translucides, contrastes composites, espacement des cinq destinations et parcours complet avec lecteur d'écran.
+
+
+### Correction accessibilité — cibles tactiles des fenêtres
+- Les boutons de fermeture partagés des feuilles et dialogues utilisent désormais une cible minimale de 48 × 48 px (`min-h-12 min-w-12`). Cette valeur aligne le composant commun sur le seuil Android documenté et dépasse le minimum iOS de 44 pt.
+- Fichiers corrigés : `src/components/ui/sheet.tsx` et `src/components/ui/dialog.tsx`.
+- Commits : `e21215154727c81e37b7e8eb5d250a12f0495035` et `a5311a74bec40fab2df53adac7c0aa6adf9085d6`.
+- Cette correction de code ne remplace pas la mesure sur appareils réels : l'espacement entre cibles, les zones réellement cliquables et les gestes restent à vérifier sur Android et iOS. La CI doit confirmer les changements avant validation automatisée.
