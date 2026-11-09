@@ -30,7 +30,7 @@
 | 11 | `docs/03A-VITALA-TRUST-ENGINE-V1.md Mise � jour.md` → `docs/03-engines/trust/03A-VITALA-TRUST-ENGINE-V1.md Mise � jour.md` | Index Trust, liens avec les trois parties, chemin Unicode/mal encodé | Lien du nouvel index présent ; nom encodé conservé intentionnellement | Ne pas renommer sans inventaire des liens entrants et validation explicite du chemin |
 | 12 | `docs/8. Trust API.md` → `docs/03-engines/trust/8. Trust API.md` | `trust-api.md`, inventaire runtime, contrat Trust historique | Contenu comparé à l'identique avant résolution du doublon ; liens sortants contrôlés | Conserver une seule copie classée dans la branche ; ne pas assimiler le contrat à des routes runtime disponibles |
 | 13 | `docs/10. Veille API.md` → `docs/03-engines/veille/10. Veille API.md` | Index moteurs/API, UDI transversal, handlers/tests éventuels | Liens sortants contrôlés ; routes Veille non confirmées par l'inventaire runtime | Conserver comme contrat historique ; UDI reste séparée |
-| 14 | `docs/14-VITALA-VEILLE-ENGINE.md Partie 1.md` → `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 1.md` | Partie 1(1) historique, parties 2/3, index | Liens sortants contrôlés ; doublon historique conservé à son ancien chemin | Ne pas supprimer le doublon sans comparaison ligne/section et autorisation explicite |
+| 14 | `docs/14-VITALA-VEILLE-ENGINE.md Partie 1.md` → `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 1.md` | Parties 2/3, index | Liens sortants contrôlés ; la copie exacte `Partie 1(1)` a été retirée dans la PR #25 après comparaison du blob Git | La partie 1 sans suffixe est conservée ; aucune suppression additionnelle n'est proposée ici |
 | 15 | `docs/14-VITALA-VEILLE-ENGINE.md Partie 2.md` → `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 2.md` | Parties 1/3, index, contenu UDI mal nommé à distinguer | Liens sortants contrôlés | Conserver ; s'assurer que les renvois de série pointent vers les trois parties classées |
 | 16 | `docs/14-VITALA-VEILLE-ENGINE.md Partie 3.md` → `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 3.md` | Parties 1/2, index, UDI transversal | Liens sortants contrôlés | Conserver ; aucune consolidation ni suppression déclarée |
 | 17 | `docs/11._Recommendation_API.md` → `docs/03-engines/recommendation/11._Recommendation_API.md` | Index moteurs/API, architecture backend, handlers/tests de recommandation éventuels | Liens sortants contrôlés ; route runtime non confirmée dans l'inventaire actuel | Conserver comme contrat historique ; vérifier méthode/route/auth/schéma avant toute affirmation d'implémentation |
@@ -46,9 +46,9 @@
 | 22 | `docs/03-api/flash-api.md` | Contrat Flash historique, domaine Flash, tests | Lien vers source classée vérifié | Le rôle de page d'entrée doit rester explicite ; ne pas présenter le renvoi comme consolidation complète |
 | 23 | `docs/03-api/trust-api.md` | Contrat Trust classé, domaine Trust, TECH lié | Lien vers source classée vérifié | Garder la distinction Trust Engine / niveaux de confiance / routes runtime |
 | 24 | `docs/03-api/radar-api.md` | Contrat Radar classé, domaine Radar, tests | Lien vers source classée vérifié | Page d'entrée seulement tant que les clauses contractuelles n'ont pas été intégrées et vérifiées |
-| 25 | `docs/documentation-migration-map.md` | Index canonique, index archive, liste de suppressions, TECH-001..006 | Liens ciblés vérifiés | Conserver les statuts « à comparer/non confirmé » ; la cartographie n'est pas une validation de couverture |
+| 25 | `docs/07-annexes/documentation-migration-map.md` | Index canonique, index archive, liste de suppressions, TECH-001..006 | Liens ciblés vérifiés | Conserver les statuts « à comparer/non confirmé » ; la cartographie n'est pas une validation de couverture |
 | 26 | `docs/archive/README.md` | Chemins historiques et liens entrants, encodage des noms | Liens ciblés contrôlés ; certains chemins historiques restent à vérifier exactement | Ne pas corriger les noms encodés à l'aveugle ; faire un inventaire exact avant renommage |
-| 27 | `docs/proposed-document-removals.md` | Audit de couverture, cartographie, liens entrants, approbation utilisateur | Liens ciblés contrôlés | Maintenir les propositions séparées ; aucune suppression additionnelle autorisée |
+| 27 | `docs/07-annexes/proposed-document-removals.md` | Audit de couverture, cartographie, liens entrants, approbation utilisateur | Liens ciblés contrôlés | Maintenir les propositions séparées ; aucune suppression additionnelle autorisée |
 | 28 | `src/scripts/check-foundation.mjs` | Chemins Scan/Radar, contrôle CI Foundation, documents requis | Diff limité aux deux chemins déplacés ; Quality échoue avant la suite à cause d'erreurs format/lint préexistantes sur `main` également | Ne pas lancer de formatage global. Après résolution séparée du blocage CI, vérifier que le script passe et que tous les contrôles aval s'exécutent |
 
 ## C. Dépendances et tests à traiter dans la suite
@@ -78,3 +78,18 @@
 5. validation distincte des problèmes TECH-001 à TECH-006.
 
 Aucune suppression supplémentaire et aucune fusion de PR ne sont autorisées par ce document.
+
+
+## E. Audit complémentaire — chemins consommés par les scripts
+
+L'inspection des scripts sur la branche Lot 12 révèle des dépendances de chemins supplémentaires qui ne sont pas de simples liens Markdown. L'arborescence a été interrogée directement sur cette branche.
+
+| Consommateur | Chemins déclarés | Constat dans l'arborescence | Suite requise |
+|---|---|---|---|
+| `src/scripts/check-foundation.mjs` | `docs/OPERATIONS.md`, `docs/06-operations/performance-pwa.md`, ainsi que les modules Scan/Radar classés | `docs/OPERATIONS.md` est absent ; `docs/06-operations/operations.md`, `docs/06-operations/OPERATIONS.md` et `docs/06-operations/performance-pwa.md` existent. Les chemins Scan/Radar contrôlés sont classés dans leurs dossiers métier. | Aligner le chemin opérations avec la référence canonique décidée et exécuter le script complet après isolement du blocage lint/formatage. |
+| `scripts/check-go-no-go.ts` | `docs/PROJECT_BIBLE.md`, `docs/QUALITY.md`, `docs/OPERATIONS.md`, `docs/06-operations/performance-pwa.md`, `docs/GLOBAL_AUDIT.md`, `docs/REPRODUCIBILITY.md` | Les cinq chemins historiques sous `docs/` racine sont absents. Des sources proches existent notamment en `docs/07-annexes/PROJECT_BIBLE.md`, `docs/02-architecture/GLOBAL_AUDIT.md` et `docs/06-operations/`, mais elles ne sont pas nécessairement des remplacements sémantiquement équivalents. | Décider document par document quel artefact doit être contrôlé ; adapter le script dans un lot technique séparé et exécuter le contrôle Go/No-Go. |
+| `scripts/check-global-audit.ts` | `docs/PROJECT_BIBLE.md`, `docs/QUALITY.md`, `docs/OPERATIONS.md`, `docs/06-operations/performance-pwa.md` | Les trois premiers chemins historiques sont absents ; le document Performance PWA existe au chemin déclaré. | Même traitement distinct : ne pas remplacer les chemins automatiquement sans confirmer l'intention du contrôle. |
+
+Ces constats signifient que la réussite future du lint ne suffira pas, à elle seule, à certifier les contrôles Foundation, Global Audit ou Go/No-Go. Les scripts peuvent échouer ensuite sur des fichiers requis absents. Aucun script n'a été modifié dans la PR #26 et aucun de ces contrôles n'est déclaré réussi.
+
+Les fichiers absents ne doivent pas être recréés sous leurs anciens noms uniquement pour satisfaire `existsSync` : il faut d'abord décider si le script doit cibler la source canonique actuelle, une véritable procédure consolidée ou un document distinct encore manquant. Cette décision doit préserver le sens du contrôle, pas seulement faire passer le test.
