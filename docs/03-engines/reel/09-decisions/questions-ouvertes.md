@@ -27,18 +27,24 @@
 18. Catalogue des notifications ?
 19. Parcours de clôture si l'autre participant est hors ligne ?
 
-## Priorité 5 — technique et données
-20. Durée de conservation des traces minimales ?
-21. Rôles autorisés à consulter les traces ?
-22. Précision et fréquence de localisation ?
-23. Comportement en cas de perte de permission ?
-24. Contrats API, tables, index et règles d'accès ?
-25. Stratégie d'idempotence et autorité serveur en cas de conflit ?
+## Priorité 5 — historique et données
+20. Quelle durée de conservation appliquer à l'historique des comptes Vitalis ?
+21. Quelles actions de consultation, export ou suppression de l'historique proposer à l'utilisateur ?
+22. Quels champs exacts afficher pour chaque bip, mise en relation et interaction passée ?
+23. Confirmer explicitement que le contenu des conversations n'est pas conservé dans l'historique V1.
 
-## Priorité 6 — UX et validation
-26. Libellés définitifs des deux emplacements ?
-27. États/animations d'acceptation ?
-28. États vides, chargement, erreur et hors ligne ?
-29. Scénarios constituant le seuil d'acceptation V1 ?
+## Priorité 6 — technique et données
+24. Durée de conservation des traces techniques minimales ?
+25. Rôles autorisés à consulter les traces ?
+26. Précision et fréquence de localisation ?
+27. Comportement en cas de perte de permission ?
+28. Contrats API, tables, index et règles d'accès ?
+29. Stratégie d'idempotence et autorité serveur en cas de conflit ?
+
+## Priorité 7 — UX et validation
+30. Libellés définitifs des deux emplacements et de l'historique ?
+31. États/animations d'acceptation ?
+32. États vides, chargement, erreur et hors ligne ?
+33. Scénarios constituant le seuil d'acceptation V1 ?
 
 Chaque réponse doit être enregistrée avec ID de décision, statut, date, exigences et tests impactés. Aucune question ouverte ne doit être résolue par supposition.
