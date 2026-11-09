@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { locales, messages } from "@/lib/i18n/messages";
 import { useI18nStore } from "@/lib/i18n/useI18n";
 
@@ -19,6 +19,20 @@ describe("internationalization catalog", () => {
 
     useI18nStore.getState().setLocale("fr");
     expect(document.documentElement.lang).toBe("fr");
+  });
+
+  it("keeps the selected locale active when browser storage is unavailable", () => {
+    const storage = vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      throw new Error("storage unavailable");
+    });
+
+    try {
+      expect(() => useI18nStore.getState().setLocale("en")).not.toThrow();
+      expect(useI18nStore.getState().locale).toBe("en");
+      expect(document.documentElement.lang).toBe("en");
+    } finally {
+      storage.mockRestore();
+    }
   });
 
   it("does not contain empty user-facing messages", () => {
