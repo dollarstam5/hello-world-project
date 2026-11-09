@@ -46,22 +46,22 @@
 | NOT-08 | Anti-bruit | **PROPOSITION** | Regrouper les événements similaires et dédupliquer côté serveur avec une clé idempotente. | Définir fenêtres et règles de regroupement. |
 | NOT-09 | Préférences | **À DÉCIDER** | Paramètres V1 très limités, uniquement si plusieurs catégories de notifications sont réellement livrées. | Éviter un écran de préférences prématuré. |
 
-### 3.1 Catalogue initial d'événements à notifier — proposition
+### 3.1 Catalogue initial d'événements à notifier — décision validée
 
-Ce catalogue sert de base d'arbitrage ; aucun événement ci-dessous n'est encore validé comme livré en V1.
+**État produit : VALIDÉ le 2026-11-09.** La sélection ci-dessous est validée pour le périmètre fonctionnel des notifications V1. Cette validation ne constitue pas une preuve d'implémentation runtime ni l'autorisation de modifier le code.
 
-| Événement candidat | Notification proposée | Justification |
+| Événement | Décision V1 | Justification |
 |---|---|---|
-| Une demande ou action de l'utilisateur est acceptée | **Oui** | Changement d'état qui appelle une suite de l'utilisateur. |
-| Une demande est refusée, annulée ou expire | **À arbitrer par action** | Informer sans générer plusieurs alertes pour une même transition. |
-| Un nouveau message arrive dans une conversation liée à une action | **Oui** | Réponse attendue dans un échange autorisé. |
-| Une action nécessite une confirmation ou une réponse de l'utilisateur | **Oui** | Événement nécessitant une intervention. |
-| Un événement de sécurité ou de compte important survient | **Oui** | Information sensible à ne pas enfouir. |
-| Une simple mise à jour de contenu ou activité passive survient | **Non par défaut** | Reste consultable dans le moteur ; évite le bruit. |
-| Une recommandation ou suggestion non urgente est disponible | **Non en V1 par défaut** | Peut rester dans le moteur, sans notification proactive. |
-| Une action est créée ou modifiée par l'utilisateur lui-même | **Non** | L'utilisateur connaît déjà l'action qu'il vient d'effectuer. |
+| Une demande ou action de l'utilisateur est acceptée | **VALIDÉ — notifier** | Changement d'état qui appelle une suite de l'utilisateur. |
+| Une demande est refusée, annulée ou expire | **À ARBITRER selon l'action** | Informer sans générer plusieurs alertes pour une même transition. |
+| Un nouveau message arrive dans une conversation liée à une action | **VALIDÉ — notifier** | Réponse attendue dans un échange autorisé. |
+| Une action nécessite une confirmation ou une réponse de l'utilisateur | **VALIDÉ — notifier** | Événement nécessitant une intervention. |
+| Un événement de sécurité ou de compte important survient | **VALIDÉ — notifier** | Information sensible à ne pas enfouir. |
+| Une simple mise à jour de contenu ou activité passive survient | **VALIDÉ — ne pas notifier par défaut** | Reste consultable dans le moteur ; évite le bruit. |
+| Une recommandation ou suggestion non urgente est disponible | **VALIDÉ — ne pas notifier par défaut en V1** | Peut rester dans le moteur, sans notification proactive. |
+| Une action est créée ou modifiée par l'utilisateur lui-même | **VALIDÉ — ne pas notifier** | L'utilisateur connaît déjà l'action qu'il vient d'effectuer. |
 
-**Règle proposée :** une notification doit correspondre à un changement d'état utile, une réponse attendue ou un événement de sécurité. Une action utilisateur ne doit pas se notifier elle-même. Les transitions multiples d'une même action doivent être dédupliquées et ne pas produire une rafale d'alertes.
+**Règle validée :** une notification doit correspondre à un changement d'état utile, une réponse attendue ou un événement de sécurité. Une action utilisateur ne doit pas se notifier elle-même. Les transitions multiples d'une même action doivent être dédupliquées et ne pas produire une rafale d'alertes.
 
 ## 4. Parcours Messages liés aux actions
 
@@ -130,7 +130,8 @@ Les niveaux ci-dessous sont des **propositions de cadrage**, pas des engagements
 
 | Date | ID / sujet | Décision utilisateur | Référence / preuve |
 |---|---|---|---|
-| À compléter | COM-01 à COM-04 | Structure de cloche et absence de messagerie libre déjà validées dans les échanges produit. | Réconciliation vague 10 et décisions utilisateur antérieures. |
+| Antérieure au 2026-11-09 | COM-01 à COM-04 | Structure de cloche et absence de messagerie libre validées. | Échanges produit antérieurs, réconciliation vague 10. |
+| 2026-11-09 | NOT-10 — Catalogue initial d'événements | Sélection V1 validée : acceptation, nouveau message lié à une action, réponse/confirmation attendue et événement important de sécurité/compte ; refus/annulation/expiration à arbitrer selon l'action ; pas de notification par défaut pour activité passive, recommandation non urgente ou action initiée par l'utilisateur. | Validation explicite de l'utilisateur dans la conversation du 2026-11-09. |
 
 ---
 **Règle de mise à jour :** après chaque arbitrage utilisateur, mettre à jour l'état, la décision retenue, les impacts V1/V2/V3 et les tests d'acceptation associés. Ne pas effacer les propositions rejetées : les conserver dans l'historique de décision si elles expliquent un choix d'architecture ou de produit.
