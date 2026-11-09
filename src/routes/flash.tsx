@@ -32,7 +32,6 @@ export const Route = createFileRoute("/flash")({
         },
         { key: "soon", titleKey: "page.flash.section.soon", perf: "tall" },
       ]}
-      footer="Foundation · Flash"
     />
   ),
 });
