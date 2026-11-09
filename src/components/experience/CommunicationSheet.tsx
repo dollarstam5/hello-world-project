@@ -56,16 +56,10 @@ export function CommunicationSheet({
             <AssistantTab />
           </Suspense>
         </TabsContent>
-        <TabsContent
-          value="messages"
-          className="py-8 text-center text-sm text-muted-foreground"
-        >
+        <TabsContent value="messages" className="py-8 text-center text-sm text-muted-foreground">
           {t("communication.messages.empty")}
         </TabsContent>
-        <TabsContent
-          value="reel"
-          className="py-8 text-center text-sm text-muted-foreground"
-        >
+        <TabsContent value="reel" className="py-8 text-center text-sm text-muted-foreground">
           {t("communication.reel.empty")}
         </TabsContent>
       </Tabs>
