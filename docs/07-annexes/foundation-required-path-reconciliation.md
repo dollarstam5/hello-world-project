@@ -651,3 +651,17 @@ La revue ciblée des migrations Profile/UDI, onboarding, Flash/Scan, Radar, reç
 ## Vague 9 — santé, performance et PWA
 
 La revue de santé/readiness, budgets de performance, Web Vitals, manifeste, service worker, fallback hors ligne et tests PWA est consignée dans [la réconciliation opérationnelle — vague 9](./foundation-operational-reconciliation-wave-4.md). Elle relève notamment l'absence de `public/offline.html` alors que le service worker le pré-cache, ainsi qu'un décalage des routes PWA avec la navigation Vitalis décidée. Aucun changement runtime n'a été effectué.
+
+
+## Comparaison CI avec la référence main
+
+**Preuve consultée :** logs GitHub Actions du workflow Quality.
+
+| Référence | Commit / run | Résultat | Étape bloquante |
+|---|---|---|---|
+| `main` | `86f4f43cbd6942a8e7df95d3ce53c3db9634a7fb` — run `42134782410`, job `127620045713` | Échec | `Verify foundation and secrets`, pendant `bun run lint` |
+| PR #34, version précédente | run `42542244158`, job `128919086523`, merge commit `355461e5c9c8ba878d37113884cf261dbdb21f21` | Échec | Même étape `Verify foundation and secrets`, pendant `bun run lint` |
+
+Les deux logs rapportent **615 problèmes : 607 erreurs Prettier et 8 avertissements**, sur les mêmes 21 chemins de code. Aucun de ces chemins ne figure dans la liste des fichiers modifiés par la PR #34. La comparaison confirme que cet échec de lint préexiste à la PR et n'est pas introduit par le Lot A.
+
+Conséquence : les étapes suivantes du workflow Quality (tests SQL, release/build et tests mobiles) ont été ignorées pour ces exécutions. Aucun résultat vert n'est donc disponible pour ces étapes. L'exécution Quality du HEAD actuel doit encore être observée séparément ; ne pas assimiler le diagnostic de référence à une validation de la nouvelle tête.
