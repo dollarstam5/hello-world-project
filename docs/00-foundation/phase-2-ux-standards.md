@@ -43,7 +43,7 @@ Ce document fixe les règles vérifiables de la phase 2. Il ne certifie pas les 
 - La barre flottante conserve une marge latérale sur les petits écrans, respecte la zone sûre inférieure et ne touche pas les bords physiques du téléphone.
 - Le centre 2x2 ouvre le menu ; il ne constitue pas une destination métier supplémentaire.
 - L’accueil reste hors de la barre basse : l’icône/identité de l’application ouvre `/`, et le lancement depuis l’icône installée ouvre également l’accueil.
-- Le changement FR/EN est accessible depuis l'en-tête principal et conserve la langue choisie via le mécanisme i18n existant.
+- La langue est détectée automatiquement depuis les préférences du système/navigateur ; le choix manuel reste disponible dans les réglages appropriés, sans encombrer l'en-tête.
 - Pendant l'onboarding initial, le changement FR/EN reste accessible dans le parcours lui-même, même lorsque la feuille modale masque l'en-tête.
 - Le centre de communication conserve quatre espaces indépendants : Notifications, Assistant, Messages et Réel.
 - Aucun compteur ne doit être simulé ; les indicateurs ne seront activés qu'une fois raccordés à des événements métier fiables.
@@ -71,7 +71,7 @@ Les composants concernés doivent prévoir les états utiles suivants, selon le 
 - Langue du document : l'attribut HTML `lang` suit la langue active après détection initiale et lors d'un changement FR/EN ; test de non-régression associé.
 - Préférences appareil : écoute des changements de `prefers-reduced-motion` et `pointer: coarse` dans `useDevice`.
 - Navigation mobile : cinq destinations dans l'ordre Flash, Scan, Réel (antenne centrale), Radar, 2x2 ; accueil hors barre basse et accessible par l'identité Vitalis et l'icône installée.
-- En-tête : accès à l'accueil, bascule FR/EN, bascule clair/sombre, profil et centre de communication ; contrôles icon-only nommés et cibles tactiles minimales de 48 px.
+- En-tête : présentation transparente et minimaliste, avec uniquement l'icône de l'application à gauche, puis les accès Notifications et Profil à droite. Aucun nom, libellé, sélecteur de langue, contrôle de thème ou bouton de déconnexion dans l'en-tête. Les trois accès sont nommés pour les lecteurs d'écran et disposent de cibles tactiles minimales de 48 px.
 - Réel : point d'entrée `/reel` disponible avec état d'attente explicite ; aucune fonctionnalité moteur n'est simulée avant la phase 3.
 - Contrôles partagés : boutons, fermeture des feuilles/dialogues, onglets de communication et actions de reprise utilisent une cible tactile minimale de 48 px ; libellé de fermeture localisé FR/EN.
 - Contraste des tokens clairs : bleu primaire et accents sémantiques ajustés en conservant leurs familles de teinte ; les paires de base texte/fond calculées dépassent 4,5:1. Les surfaces translucides et états composés restent à vérifier visuellement.
@@ -382,3 +382,12 @@ L'ancien écran d'accueil minimal est remplacé par un onboarding guidé en **ci
 - La langue effective est appliquée à `document.documentElement.lang` pour les lecteurs d'écran et les outils du navigateur.
 - Le catalogue V1 reste limité au français et à l'anglais ; toute autre langue non prise en charge revient au français, sans traduction improvisée.
 - Implémentation et tests : `src/lib/i18n/useI18n.ts`, `tests/i18n.test.ts`. Référence détaillée : `docs/00-foundation/pwa-platform-adaptation.md`, section 10.
+
+
+### En-tête — simplification visuelle
+- Le header est transparent, sans bande de fond opaque ni bordure inférieure, avec une hauteur compacte et un alignement horizontal simple.
+- À gauche : uniquement l'icône officielle de l'application, cliquable pour revenir à l'accueil.
+- À droite : uniquement l'icône Notifications puis l'icône Profil/Avatar.
+- Le nom Vitalis, le sélecteur FR/EN, le contrôle clair/sombre et la déconnexion sont retirés du header. La langue est détectée automatiquement ; les préférences et la déconnexion restent accessibles dans leurs espaces dédiés.
+- Les deux actions à droite et le lien de l'icône d'application conservent des noms accessibles, un focus visible et des zones tactiles d'au moins 48 × 48 px.
+- Implémentation : `src/components/experience/AppHeader.tsx`, icône : `public/icon-192.svg`.
