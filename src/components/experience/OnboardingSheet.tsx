@@ -29,15 +29,15 @@ export function OnboardingSheet() {
             <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary text-xs font-medium">
               1
             </span>
-            <span>{t("nav.reel")}</span>
+            <span>
+              {t("nav.flash")} · {t("nav.scan")}
+            </span>
           </li>
           <li className="flex items-start gap-3">
             <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary text-xs font-medium">
               2
             </span>
-            <span>
-              {t("nav.flash")} · {t("nav.scan")}
-            </span>
+            <span>{t("nav.reel")}</span>
           </li>
           <li className="flex items-start gap-3">
             <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary text-xs font-medium">
