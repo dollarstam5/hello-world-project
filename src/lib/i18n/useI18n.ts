@@ -20,13 +20,16 @@ export const useI18nStore = create<I18nState>((set) => ({
   locale: defaultLocale,
   setLocale: (locale) => {
     if (typeof window !== "undefined") window.localStorage.setItem(STORAGE_KEY, locale);
+    if (typeof document !== "undefined") document.documentElement.lang = locale;
     set({ locale });
   },
 }));
 
 export function initI18n() {
   if (typeof window === "undefined") return;
-  useI18nStore.setState({ locale: detectInitialLocale() });
+  const locale = detectInitialLocale();
+  document.documentElement.lang = locale;
+  useI18nStore.setState({ locale });
 }
 
 export function useI18n() {
