@@ -58,7 +58,7 @@ Les règles ci-dessous reflètent les décisions produit retrouvées. VALIDÉ si
 - Le profil détaillé associé à une présence est facultatif ; cela n'empêche pas la consultation du profil de l'émetteur d'un bip.
 - L'acceptation d'un bip et le choix de poursuivre le contact sont deux étapes distinctes.
 - La communication est textuelle dans le périmètre retenu, mais ses limites détaillées restent à spécifier.
-- Les conversations sont conservées jusqu'à leur archivage selon HIST-005 ; l'accès aux archives, la suppression et l'absence d'export suivent HIST-006 et HIST-007. La conservation des archives pendant 6 mois après archivage est définie par DEC-043. Le point de départ exact du délai de 3 mois avant archivage reste à préciser.
+- Les conversations sont conservées jusqu'à leur archivage selon HIST-005 ; l'accès aux archives, la suppression et l'absence d'export suivent HIST-006 et HIST-007. La conservation des archives pendant 6 mois après archivage est définie par DEC-043. Le délai de 3 mois avant archivage est calculé depuis le dernier message échangé ; chaque nouveau message relance le délai.
 - La clôture est bilatérale, jamais un simple retrait local.
 - Les principes réseau sont des exigences produit ; l'architecture et les preuves de leur réalisation restent à établir.
 
@@ -69,7 +69,7 @@ Les règles ci-dessous reflètent les décisions produit retrouvées. VALIDÉ si
 |---|---|---|
 | HIST-005 | Une conversation d'un compte Vitalis est archivée après 3 mois ; le plafond est de 50 conversations conservées et, dès son dépassement, la plus ancienne est archivée même avant 3 mois. | VALIDÉ |
 | HIST-006 | Une conversation archivée est inaccessible à l'utilisateur, sauf demande de celui-ci autorisée par un administrateur pour 24 heures ; après ce délai, elle redevient inaccessible. | VALIDÉ |
-| HIST-007 | L'utilisateur peut supprimer son historique, mais ne peut pas l'exporter. | VALIDÉ |
+| HIST-007 | L'utilisateur peut supprimer son historique, mais ne peut pas l'exporter. | VALIDÉ |\n| HIST-008 | Le délai d'archivage de 3 mois commence à la date du dernier message échangé ; chaque nouveau message relance ce délai. | VALIDÉ |
 | STO-001 | Chaque espace Vitalis dispose d'un plafond gratuit de stockage en V1 ; les valeurs chiffrées restent à définir. | VALIDÉ — chiffres à définir |
 | STO-002 | À saturation, l'utilisateur choisit entre supprimer des données ou limiter les nouveaux usages/enregistrements de l'espace concerné. | VALIDÉ |
 | STO-003 | Aucun paiement, abonnement ou supplément de stockage n'est proposé en V1 ; les micro-paiements et extensions facultatives sont réservés à V2. | VALIDÉ |
