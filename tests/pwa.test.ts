@@ -13,14 +13,14 @@ describe("PWA platform exports", () => {
 
 describe("platform-specific installation guidance", () => {
   it("offers iOS manual installation only in a supported secure PWA context", () => {
-    expect(getManualInstallInstructions("ios", true, true, false)).toBe("ios");
-    expect(getManualInstallInstructions("ios", false, true, false)).toBeNull();
-    expect(getManualInstallInstructions("ios", true, false, false)).toBeNull();
-    expect(getManualInstallInstructions("ios", true, true, true)).toBeNull();
+    expect(getManualInstallInstructions("ios", true, false)).toBe("ios");
+    expect(getManualInstallInstructions("ios", false, false)).toBeNull();
+    expect(getManualInstallInstructions("ios", true, false)).toBeNull();
+    expect(getManualInstallInstructions("ios", true, true)).toBeNull();
   });
 
   it("offers Android manual installation when native prompt is unavailable", () => {
-    expect(getManualInstallInstructions("android", true, true, false)).toBe("android");
-    expect(getManualInstallInstructions("windows", true, true, false)).toBeNull();
+    expect(getManualInstallInstructions("android", true, false)).toBe("android");
+    expect(getManualInstallInstructions("windows", true, false)).toBeNull();
   });
 });
