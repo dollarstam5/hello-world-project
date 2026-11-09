@@ -43,7 +43,7 @@ Ce document fixe les règles vérifiables de la phase 2. Il ne certifie pas les 
 - La barre flottante conserve une marge latérale sur les petits écrans, respecte la zone sûre inférieure et ne touche pas les bords physiques du téléphone.
 - Le centre 2x2 ouvre le menu ; il ne constitue pas une destination métier supplémentaire.
 - L’accueil reste hors de la barre basse : l’icône/identité de l’application ouvre `/`, et le lancement depuis l’icône installée ouvre également l’accueil.
-- La langue est détectée automatiquement depuis les préférences du système/navigateur ; le choix manuel reste disponible dans les réglages appropriés, sans encombrer l'en-tête.
+- La langue est détectée automatiquement depuis les préférences du système/navigateur. Le choix manuel est disponible pendant l'onboarding et sur l'écran de connexion ; aucun sélecteur n'encombre l'en-tête. Un réglage durable depuis l'espace personnel reste à spécifier.
 - Pendant l'onboarding initial, le changement FR/EN reste accessible dans le parcours lui-même, même lorsque la feuille modale masque l'en-tête.
 - Le centre de communication conserve quatre espaces indépendants : Notifications, Assistant, Messages et Réel.
 - Aucun compteur ne doit être simulé ; les indicateurs ne seront activés qu'une fois raccordés à des événements métier fiables.
