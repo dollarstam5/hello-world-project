@@ -215,3 +215,32 @@ Les fonctions de compréhension libre, d'adaptation intelligente et de dialogue 
 - La lecture et l'écriture des préférences de langue, de thème et d'onboarding tolèrent désormais une indisponibilité de `localStorage` : l'interface continue à fonctionner pour la session courante au lieu de bloquer le démarrage ou la fermeture de l'onboarding.
 - Des tests de non-régression couvrent le stockage bloqué pour la langue, le thème et l'onboarding.
 - Le stockage persistant reste la meilleure expérience, mais il n'est plus une condition absolue pour utiliser l'interface courante.
+
+
+## 12. Bilan automatisé final — Quality #550
+
+**Commit contrôlé :** `5b939b5fbcb9e9c4749ae249eb11b7a258a23fae`  
+**Résultat :** Quality #550 réussie ; Dependency review #463 réussie.
+
+Les étapes suivantes ont toutes réussi :
+- installation Bun, Supabase CLI et dépendances verrouillées ;
+- lint et fondations ; **97 tests Vitest réussis sur 27 fichiers** ;
+- contrôle des secrets ;
+- tests RLS de la base ;
+- release check : lint, tests, build de production, budget de performance, audit documentaire, reproductibilité et Go/No-Go ;
+- installation Chromium et captures visuelles mobile.
+
+Le Go/No-Go retourne `GO_CANDIDATE`, avec 17 fichiers et 6 scripts requis présents ; l'approbation externe de release reste explicitement requise.
+
+### Portée exacte des essais mobile et hors ligne
+- Les captures visuelles couvrent les viewports 360×800, 390×844, 412×915 et 768×1024, puis les routes Flash, Scan, Réel, Radar, Talents et Espace à 390×844.
+- Le contrat de ce smoke test est lui-même testé par `tests/mobile-e2e-contract.test.ts`.
+- Le changement d'état navigateur online/offline est testé par `tests/platform/use-network-status.test.tsx` ; le moteur de synchronisation possède aussi un test garantissant qu'aucun transport n'est appelé hors ligne et que les mutations restent en attente.
+- Les captures sont des contrôles visuels de rendu ; elles ne constituent pas un test d'interaction complet ni une certification lecteur d'écran.
+
+### Validation manuelle restant nécessaire
+- Vérifier sur appareil réel le parcours clavier complet, la visibilité et le retour du focus après fermeture des feuilles/dialogues.
+- Vérifier avec lecteur d'écran les noms, états et ordres de lecture des cinq destinations, de l'en-tête et des quatre onglets de communication.
+- Vérifier les contrastes composites et les tailles/espacements tactiles sur les thèmes clair et sombre, à partir de l'interface rendue.
+
+**Décision :** les critères automatisés de la phase 2 sont satisfaits. La phase 2 reste **en attente de validation manuelle finale** ; la phase 3 ne commence pas tant que ces trois contrôles humains ne sont pas confirmés. Aucun changement n'est porté sur `main` et la PR #37 reste en brouillon, sans fusion.
