@@ -5,6 +5,8 @@ HOST="127.0.0.1"
 PORT="4173"
 BASE_URL="http://${HOST}:${PORT}"
 SERVER_LOG="${TMPDIR:-/tmp}/vitalis-e2e.log"
+OUTPUT_DIR="${GITHUB_WORKSPACE:-.}/artifacts/mobile-smoke"
+mkdir -p "$OUTPUT_DIR"
 
 bun run build:check >/dev/null
 bun run dev --host "$HOST" --port "$PORT" >"$SERVER_LOG" 2>&1 &
@@ -24,7 +26,7 @@ if ! curl --silent --fail "$BASE_URL/" >/dev/null; then
 fi
 
 for viewport in "320,720" "360,800" "390,844" "412,915" "768,1024" "1024,768" "1280,800" "844,390"; do
-  output="/tmp/vitalis-mobile-${viewport//,/-}.png"
+  output="$OUTPUT_DIR/vitalis-mobile-${viewport//,/-}.png"
   bunx playwright screenshot \
     --browser=chromium \
     --viewport-size="$viewport" \
@@ -35,7 +37,7 @@ for viewport in "320,720" "360,800" "390,844" "412,915" "768,1024" "1024,768" "1
 done
 
 for route in "/flash" "/scan" "/reel" "/radar" "/talents" "/espace"; do
-  output="/tmp/vitalis-route-${route#/}.png"
+  output="$OUTPUT_DIR/vitalis-route-${route#/}.png"
   bunx playwright screenshot \
     --browser=chromium \
     --viewport-size="390,844" \
