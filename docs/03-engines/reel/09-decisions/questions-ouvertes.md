@@ -32,7 +32,7 @@
 Décisions déjà validées :
 - Conversation archivée après 3 mois ou dès dépassement du plafond de 50 conversations conservées (la plus ancienne est archivée).
 - Archive inaccessible à l'utilisateur sauf autorisation administrateur sur demande, pendant 24 h.
-- Archive conservée 6 mois à compter de son archivage, puis suppression définitive prévue.
+- Archive conservée 6 mois à compter de son archivage, puis suppression définitive prévue.\n- Délai de 3 mois avant archivage calculé depuis le dernier message échangé ; chaque nouveau message relance le délai. Le plafond de 50 conversations reste prioritaire.
 - L'utilisateur peut supprimer son historique ; aucun export.
 - Aucun paiement en V1 ; extensions et micro-paiements réservés à V2.
 
