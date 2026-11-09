@@ -627,3 +627,8 @@ Les nombres 40, 8 et 10 sont les plans d'assertions déclarés dans les fichiers
 | Sécurité RLS globale validée | **Non validée** |
 
 **Conclusion :** le dépôt ne permet pas encore de démontrer une chaîne SQL unique, reproductible et intégralement testée. La présence de migrations et de tests utiles est réelle, mais leur raccordement est incomplet et certaines définitions sont incompatibles entre elles. Aucune migration, aucun test, aucun script de CI et aucun fichier de code n'a été modifié dans cette vague ; seule cette annexe d'audit est complétée. Les TECH-001 à TECH-006 restent ouverts.
+
+
+## Plan de remédiation associé
+
+Le plan opérationnel fichier par fichier est disponible dans [`sql-remediation-plan-file-by-file.md`](./sql-remediation-plan-file-by-file.md). Il détaille les priorités P0/P1/P2, les corrections envisagées, les dépendances, les tests et les critères d'acceptation. Il reste documentaire : aucune remédiation SQL n'est autorisée ou exécutée par ce plan.
