@@ -26,16 +26,28 @@ export function CommunicationSheet({
     >
       <Tabs defaultValue="notifications">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger className="min-w-0 whitespace-normal px-1 text-xs leading-tight sm:text-sm" value="notifications">
+          <TabsTrigger
+            className="min-w-0 whitespace-normal px-1 text-xs leading-tight sm:text-sm"
+            value="notifications"
+          >
             {t("communication.notifications")}
           </TabsTrigger>
-          <TabsTrigger className="min-w-0 whitespace-normal px-1 text-xs leading-tight sm:text-sm" value="assistant">
+          <TabsTrigger
+            className="min-w-0 whitespace-normal px-1 text-xs leading-tight sm:text-sm"
+            value="assistant"
+          >
             {t("communication.assistant")}
           </TabsTrigger>
-          <TabsTrigger className="min-w-0 whitespace-normal px-1 text-xs leading-tight sm:text-sm" value="messages">
+          <TabsTrigger
+            className="min-w-0 whitespace-normal px-1 text-xs leading-tight sm:text-sm"
+            value="messages"
+          >
             {t("communication.messages")}
           </TabsTrigger>
-          <TabsTrigger className="min-w-0 whitespace-normal px-1 text-xs leading-tight sm:text-sm" value="reel">
+          <TabsTrigger
+            className="min-w-0 whitespace-normal px-1 text-xs leading-tight sm:text-sm"
+            value="reel"
+          >
             {t("communication.reel")}
           </TabsTrigger>
         </TabsList>
