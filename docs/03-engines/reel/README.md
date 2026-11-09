@@ -205,3 +205,40 @@ Une carte géographique n'est pas obligatoire pour découvrir les présences. L'
 **Correction produit explicite :** le bouton et le mécanisme « Ça m'intéresse » sont abandonnés. Ils ne doivent pas être renommés ni réintroduits sous une autre forme par défaut. L'utilisateur souhaite définir une nouvelle approche d'interaction à partir de sa propre vision. Aucun libellé, bouton, geste, demande ou enchaînement de mise en relation n'est donc décidé à ce stade.
 
 **Conséquence documentaire :** les anciens passages décrivant « Ça m'intéresse » comme un mécanisme validé sont remplacés par un point ouvert. Les règles déjà validées sur le consentement, la conversation contextualisée, le blocage et le signalement restent des contraintes à prendre en compte lors de la conception du nouveau parcours, sans préjuger de son fonctionnement.
+
+## 19. Vision utilisateur — découverte spatiale et humaine (2026-11-09)
+
+**Statut : VISION UTILISATEUR CONSIGNÉE — spécification et validation détaillée à poursuivre.** Cette section retranscrit la vision exprimée par l'utilisateur ; elle ne transforme pas encore chaque détail d'interface en règle technique définitive.
+
+### 19.1 Vue spatiale centrée sur l'utilisateur
+
+La page Réel doit proposer une représentation vivante de la présence locale : le profil de l'utilisateur se trouve au centre de la zone d'affichage et les profils des autres personnes présentes apparaissent autour de lui, dans une représentation circulaire avec des rayons visuels fixes. Cette représentation est symbolique et ne doit pas révéler les coordonnées GPS exactes des personnes.
+
+Les profils visibles représentent les présences actives et découvrables dans le même environnement local. Leur apparition et leur disparition doivent suivre les changements réels de disponibilité, sans donner l'impression d'une carte géographique précise.
+
+### 19.2 Regroupement et indicateurs numériques
+
+Dans un même lieu (par exemple salle de réunion, salle de classe, événement ou concert), plusieurs profils proches visuellement peuvent être regroupés. Un indicateur numérique affiche le nombre de profils disponibles dans ce regroupement (exemple : 5 ou 6).
+
+L'indicateur est cliquable. Il ouvre un modal ou une liste dynamique présentant les profils concernés. Le nombre indiqué doit correspondre exactement aux profils effectivement affichés dans la liste au moment de son ouverture/actualisation ; les profils devenus indisponibles ne doivent pas être comptés comme présents.
+
+### 19.3 Consultation d'un profil
+
+L'utilisateur peut sélectionner un profil qui attire son attention, notamment à partir de sa description de présence. Le contenu exact de la fiche profil et les actions possibles après consultation restent à concevoir avec l'utilisateur.
+
+### 19.4 Bascule vers une vue liste
+
+L'utilisateur peut transformer la vue spatiale en une vue liste dynamique des présences. Les deux modes doivent représenter le même ensemble de présences locales et rester cohérents lors des actualisations. La bascule de vue ne doit pas changer la présence active de l'utilisateur ni réinitialiser sa durée.
+
+### 19.5 Intention d'expérience
+
+L'expérience doit être vivante, humaine, simple et lisible. Elle ne doit pas devenir un tableau de bord technique ou un radar anxiogène. Les rayons servent à organiser visuellement les profils et les regroupements, pas à communiquer une distance exacte.
+
+### 19.6 Points ouverts
+
+- comportement exact au toucher d'un profil individuel ;
+- contenu de la fiche de profil et informations visibles avant toute interaction ;
+- nouvelle approche d'interaction entre deux personnes, sans reprendre « Ça m'intéresse » ;
+- règles exactes de regroupement spatial et de calcul du nombre affiché ;
+- comportement de la vue spatiale et de la liste lorsque les présences arrivent, disparaissent ou changent de visibilité ;
+- accessibilité et alternative à la représentation spatiale pour les personnes qui préfèrent une liste.
