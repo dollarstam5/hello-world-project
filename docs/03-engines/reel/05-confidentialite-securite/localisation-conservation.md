@@ -18,17 +18,26 @@ Présence manuelle et volontaire ; partage volontaire de la localisation ; rayon
 
 Présence : 30 min, 1 h, 2 h, 3 h, 6 h, 12 h, 24 h. À expiration, le statut est supprimé.
 
+## Historique selon le mode d'accès
+
+- **Compte Vitalis :** l'historique personnel de Réel conserve les bips, les mises en relation et les interactions passées associées, y compris les événements liés à une mise en relation clôturée.
+- **Mode invité :** aucune histoire personnelle persistante. Les données personnelles liées à la session disparaissent à la fin de celle-ci, sous réserve des traces techniques minimales nécessaires et séparées.
+- L'historique visible porte sur les événements et statuts. La conservation du contenu des conversations n'est pas incluse dans la décision validée et reste exclue en l'état.
+- Les durées de conservation, les possibilités de suppression/effacement de l'historique, les modalités d'accès et les données exactes affichées restent à spécifier.
+
 ## Bips non acceptés
 
-Conservation temporaire de 24 h, même après fermeture de Réel, puis expiration. Aucun historique permanent. Le point de départ exact du délai reste à définir.
+Un bip non accepté reste actif pendant 24 h, même après fermeture de Réel, puis expire en tant qu'action. Pour un compte Vitalis, son événement reste consultable dans l'historique après expiration. Le point de départ exact du délai reste à définir.
 
 ## Mises en relation acceptées
 
 Accès dans deux emplacements. À la clôture, retrait immédiat des deux espaces pour les deux participants. Ne pas confondre le délai des bips non acceptés avec la durée de vie des mises en relation acceptées.
 
-## Trace après clôture
+## Clôture et traces
 
-Trace minimale retenue : date, statut et événement, pour cohérence et traçabilité. Pas d'historique de conversation ni de mise en relation active après clôture. Durée de conservation technique, accès, pseudonymisation et suppression à préciser.
+La clôture retire la mise en relation des espaces actifs des deux participants et désactive la communication. Pour les comptes Vitalis, l'événement et la mise en relation passée restent consultables dans l'historique ; cette conservation ne réactive pas la relation. Le contenu des conversations n'est pas inclus dans l'historique validé.
+
+Les traces techniques minimales (date, statut, événement) restent distinctes de l'historique visible. Leur durée de conservation, les accès autorisés, la pseudonymisation et les modalités de suppression restent à préciser.
 
 ## Sécurité à spécifier
 
