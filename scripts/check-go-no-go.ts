@@ -3,12 +3,12 @@ import { existsSync, readFileSync } from "node:fs";
 const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
 
 const requiredFiles = [
-  "docs/PROJECT_BIBLE.md",
-  "docs/QUALITY.md",
-  "docs/OPERATIONS.md",
+  "docs/07-annexes/PROJECT_BIBLE.md",
+  "docs/06-operations/QUALITY.md",
+  "docs/06-operations/OPERATIONS.md",
   "docs/06-operations/performance-pwa.md",
-  "docs/GLOBAL_AUDIT.md",
-  "docs/REPRODUCIBILITY.md",
+  "docs/02-architecture/GLOBAL_AUDIT.md",
+  "docs/06-operations/REPRODUCIBILITY.md",
   "src/lib/performance/performance-budget-policy.ts",
   "src/lib/performance/web-vitals.ts",
   "src/platform/pwa.ts",
