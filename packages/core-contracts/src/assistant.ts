@@ -1,10 +1,6 @@
 export type AssistantRole = "user" | "assistant";
 export type AssistantSource =
-  | "local_exact"
-  | "local_fuzzy"
-  | "promoted_cache"
-  | "gateway"
-  | "offline_fallback";
+  "local_exact" | "local_fuzzy" | "promoted_cache" | "gateway" | "offline_fallback";
 
 export interface AssistantMessage {
   id: string;
