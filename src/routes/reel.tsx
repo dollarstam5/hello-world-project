@@ -16,7 +16,6 @@ export const Route = createFileRoute("/reel")({
       descKey="page.reel.desc"
       tone="primary"
       icon={RadioTower}
-      footer="Vitalis · Réel"
     />
   ),
 });
