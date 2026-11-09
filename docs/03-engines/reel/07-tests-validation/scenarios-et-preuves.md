@@ -22,3 +22,15 @@ Perdre le réseau pendant une action ; restaurer ; vérifier synchronisation et 
 
 ## Preuve attendue par scénario
 ID, préconditions, étapes, résultat attendu/observé, environnement/version, preuve (journal/capture/rapport) et statut : non exécuté, réussi, échoué ou bloqué. Une règle écrite ou un scénario attendu n'est pas une preuve d'exécution.
+
+## Scénarios — archivage, suppression et quotas
+
+- Vérifier l'archivage d'une conversation à 3 mois.
+- Vérifier qu'au-delà de 50 conversations conservées, la plus ancienne est archivée immédiatement, même si elle a moins de 3 mois.
+- Vérifier qu'une archive est inaccessible par défaut.
+- Vérifier qu'une demande de l'utilisateur nécessite une autorisation administrateur et que l'accès cesse exactement après 24 heures.
+- Vérifier que l'utilisateur peut supprimer son historique et qu'aucune fonction d'export n'est proposée.
+- Vérifier les plafonds par espace, les avertissements avant saturation et le choix entre suppression de données et limitation des nouveaux usages/enregistrements.
+- Vérifier qu'aucune option payante n'est proposée en V1 et que les opérations refusées au plafond ne provoquent ni dépassement ni perte silencieuse de données.
+
+Les valeurs chiffrées des quotas et seuils devront être testées après leur arbitrage.
