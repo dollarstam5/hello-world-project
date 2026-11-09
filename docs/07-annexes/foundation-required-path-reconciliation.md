@@ -197,3 +197,41 @@ Aucune migration n'a été déplacée, fusionnée ou supprimée. Il faut d'abord
 | Santé/performance/maintenance | Composants partiels, scripts et endpoints attendus non équivalents à ce stade |
 
 **Action :** conserver les 94 chemins absents dans le contrôle. La prochaine passe doit examiner les migrations de profil, onboarding, Flash, Scan, Radar offline/matching et rétention, puis les tests RLS correspondants. Aucun ticket ou retrait d'exigence n'est créé sans rattachement à la décision produit/technique appropriée.
+
+
+## Deuxième vague — migrations SQL et tests RLS
+
+**Arbre de référence :** `main` (même base de comparaison que cette PR). Les chemins attendus sous `supabase/migrations/` ne sont pas les emplacements effectifs des migrations récentes : celles-ci sont regroupées sous `src/supabase/migrations/`. Les chemins de test correspondants sont majoritairement sous `src/supabase/tests/database/`. Cette différence de racine est importante ; elle ne rend pas pour autant les artefacts manquants équivalents.
+
+### Inventaire des artefacts SQL constatés
+
+| Besoin Foundation | Artefact réel examiné | Constat |
+|---|---|---|
+| Profil / préférences (migration 050 + test 70) | `src/supabase/migrations/20260912000000_protect_identity_trust_system_fields.sql` | Protège les champs système de `profiles`, limite les colonnes modifiables, sécurise UDI et provisionne une identité initiale. Ce n'est pas une migration de préférences de profil dédiée ; aucun test dédié de préférences n'a été trouvé. |
+| Onboarding membre (migration 060 + test 80) | Aucun candidat SQL dédié dans les arbres `supabase/migrations`, `src/supabase/migrations` ou `drizzle/migrations` | Non démontré au niveau base/RLS. Le store local d'onboarding déjà décrit dans la première passe ne remplace pas une persistance serveur. |
+| Cycle de vie Flash (migration 070 + test 90) | `drizzle/migrations/0000_flash_scan_public_functions.sql`, `src/supabase/migrations/20260912009000_secure_public_flash_feed.sql`, test `110_public_flash_feed_security.test.sql` | La migration Drizzle ajoute des champs et fonctions Flash/Scan, dont transition et écriture de position privée ; la migration Supabase ne fournit que la projection publique Flash. Le test 110 vérifie le fil public et ses privilèges, pas le cycle de vie complet. Pas d'équivalent global. |
+| Confidentialité de position Scan (migration 080 + test 100) | Fonction `scan_public_flashes` dans `drizzle/migrations/0000_flash_scan_public_functions.sql`, plus `set_flash_location` | Un candidat fonctionnel existe dans Drizzle : la projection renvoie distance/zone sans coordonnées et la fonction d'écriture est limitée à l'auteur. Mais aucun test SQL spécifique de confidentialité Scan n'est présent dans l'arbre ; la migration Supabase 090 ne contient pas ces fonctions. Équivalence partielle, chaîne d'application non établie. |
+| Radar offline sync (migration 110 + test 130) | `drizzle/migrations/0002_create_sync_mutation_receipts.sql`, `src/supabase/migrations/20260912002000_harden_sync_protocol.sql`, migration Radar 100 | Le schéma de reçus est présent, mais divergence confirmée : Drizzle autorise `radars` dans `logical_table`, la migration Supabase ne l'autorise pas. Le test Radar 120 couvre le cycle de vie/RLS, pas l'idempotence ou la synchronisation offline Radar. Pas d'équivalent validé. |
+| Radar matching / notifications (migration 120 + test 140) | Migration Radar 100 et test 120 | La migration crée la table, les politiques RLS, les transitions de cycle de vie, les index et la fonction `command_radar`. Aucun mécanisme de matching, de correspondance ou de notification Radar n'est démontré dans cette migration ni dans le test 120. |
+| Rétention opérationnelle (migration 040) | `src/lib/maintenance/retention-policy.ts` | Politique applicative repérée, mais aucune migration SQL de rétention, aucun exécuteur cron ni test d'exécution correspondant dans l'arbre. |
+
+### Couverture des tests SQL existants
+
+- `src/supabase/tests/database/110_public_flash_feed_security.test.sql` : 8 assertions planifiées. Vérifie la projection Flash publique, la visibilité des éléments actifs/non expirés, les droits d'exécution et le plafonnement des limites. Ne teste pas la confidentialité géographique Scan ni toutes les transitions Flash.
+- `src/supabase/tests/database/120_radar_lifecycle_rls.test.sql` : 10 assertions planifiées. Vérifie la création d'un brouillon privé, le refus d'une transition directe, l'activation par la fonction autorisée, l'isolation entre membres, les privilèges et une contrainte de durée. Ne teste pas le sync offline ni le matching/notifications.
+- `supabase/tests/database/rls_core.test.sql` : 40 assertions planifiées couvrant plusieurs tables centrales (dont profils, UDI, Flash, notifications, missions et reçus de synchronisation). C'est un test transversal utile, mais il ne remplace pas les suites dédiées Profile preferences, Onboarding, Flash lifecycle, Scan location privacy, Radar offline ou Radar matches.
+- Les migrations `src/supabase/migrations/20260912000000...` à `...03000...` sont présentes. Leurs responsabilités sont identité/protection des champs, transitions de missions, protocole de synchronisation et assistant hybride ; aucune ne fournit les migrations dédiées 040/050/060/070/080/110/120 attendues.
+
+### Conclusions provisoires de la deuxième passe
+
+1. **Profile preferences :** sécurité de profil et UDI existante, mais préférences persistées et tests dédiés non prouvés.
+2. **Onboarding :** absence d'artefact SQL dédié dans l'arbre inspecté ; exigence serveur/RLS non couverte par une preuve disponible.
+3. **Flash :** plusieurs fonctions existent dans Drizzle, mais périmètres divergents avec la migration Supabase et couverture de test partielle.
+4. **Scan :** logique SQL de proximité et protection de position existe uniquement dans la migration Drizzle examinée ; test dédié et intégration à la chaîne Supabase non prouvés.
+5. **Radar offline :** divergence de schéma des reçus confirmée ; pas de preuve de test d'idempotence Radar.
+6. **Radar matching/notifications :** cycle de vie Radar est testé, mais matching et notifications ne sont pas démontrés.
+7. **Rétention :** politique applicative seulement ; exécution opérationnelle et migration SQL non démontrées.
+
+**Limites de preuve :** l'inspection porte sur l'arbre Git et le contenu des fichiers. Aucun SQL n'a été appliqué à une base, aucun test pgTAP n'a été exécuté et aucune chaîne de déploiement/migration n'a été vérifiée. Il serait donc incorrect de qualifier les politiques SQL de « testées en environnement ».
+
+**Action conservatoire :** ne déplacer, fusionner ou supprimer aucune migration. Ne pas retirer de référence Foundation. Clarifier d'abord la source d'autorité entre Drizzle et Supabase, puis arbitrer les exigences fonctionnelles et les tests manquants avec les responsables produit/technique.
