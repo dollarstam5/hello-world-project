@@ -88,7 +88,8 @@ Ces décisions doivent être reliées à leurs exigences et tests dans une matri
 | Fonctionnalités V1 | À détailler |
 | Carte, fiche et informations révélées | À arbitrer |
 | Activation/désactivation de présence et nombre de présences simultanées | À décider |
-| Description de présence et champs visibles | À préciser |
+| Description de présence facultative ; visibilité possible sans texte | **VALIDÉ V1** — la description n'est pas obligatoire pour activer la visibilité |
+| Forme et longueur maximale de la description facultative | À préciser |
 | Découverte simultanée, actualisation et disponibilité locale | À définir |
 | Rayon, présence et expiration | Décisions antérieures à réconcilier et tracer |
 | Demande d'intérêt, acceptation et refus | Base déjà définie ; cas limites à préciser |
@@ -114,3 +115,7 @@ Ces décisions doivent être reliées à leurs exigences et tests dans une matri
 ## 10. Prochaine étape de conception
 
 Définir si un utilisateur peut activer plusieurs présences ou descriptions simultanées, ou si une seule présence active est autorisée à la fois. Cette décision conditionne la simplicité de l'interface, les limites V1 et le modèle de données.
+
+## 11. Décision produit validée — description facultative (2026-11-09)
+
+**Statut : VALIDÉ V1.** Un utilisateur peut activer sa présence Réel et devenir visible à proximité sans renseigner de description. La description est facultative ; elle permet, si l'utilisateur le souhaite, de préciser brièvement sa disponibilité ou son intention actuelle. L'activation de la présence ne dépend donc pas de la rédaction d'un texte. La forme et la longueur maximale de cette description restent à définir.
