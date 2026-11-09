@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 const STORAGE_KEY = "vitalis.onboarding.v2";
+const LEGACY_STORAGE_KEY = "eco.onboarding.v1";
 
 interface OnboardingState {
   hydrated: boolean;
@@ -42,7 +43,10 @@ export const useOnboarding = create<OnboardingState>((set) => ({
     if (typeof window === "undefined") return;
     let done = false;
     try {
-      done = window.localStorage.getItem(STORAGE_KEY) === "1";
+      done =
+        window.localStorage.getItem(STORAGE_KEY) === "1" ||
+        window.localStorage.getItem(LEGACY_STORAGE_KEY) === "1";
+      if (done) persistCompletion();
     } catch {
       // Show onboarding when its completion state cannot be read.
     }
