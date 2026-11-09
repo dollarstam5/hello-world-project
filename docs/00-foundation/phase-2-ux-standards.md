@@ -280,3 +280,31 @@ Les étapes vérifiées sont toutes au vert : contrôle des fondations et secret
 Cette exécution valide les corrections de géolocalisation Scan présentes dans ce commit. Elle ne remplace pas les validations manuelles : clavier et focus, lecteur d'écran, contrastes composites et mesures tactiles sur appareils réels restent ouverts.
 
 **Statut Phase 2 :** automatisation verte sur le dernier commit contrôlé ; phase toujours en attente de validation manuelle finale. La phase 3 ne démarre pas avant ces validations. La PR #37 reste en brouillon et aucune modification n'est portée sur `main`.
+
+
+## 15. Onboarding V1 — parcours de découverte validé
+
+L'ancien écran d'accueil minimal à trois repères est remplacé par un onboarding guidé en quatre écrans :
+
+1. **Vitalis en général** : présenter la promesse globale de l'application. Le rôle de 2x2 comme accès aux espaces et fonctionnalités complémentaires est expliqué ici ; 2x2 n'est pas présenté comme un moteur.
+2. **Flash et Scan** : deux présentations courtes, côte à côte dans la même étape.
+3. **Réel et Radar** : deux présentations courtes, côte à côte dans la même étape. Réel est explicitement accessible en mode invité, sans compte obligatoire.
+4. **Entrer dans Vitalis** : invitation humaine à commencer, avec l'action « C'est parti ! ».
+
+### Règles d'expérience
+
+- L'onboarding est une feuille quasi plein écran, adaptée au mobile, et non une page d'inscription.
+- Une seule progression sur quatre étapes, avec actions Retour/Suivant.
+- L'utilisateur peut passer la découverte ; le passage, la fermeture et la validation finale marquent le parcours comme terminé pour cet appareil.
+- La validation finale et le passage conduisent directement à la route d'accueil `/`.
+- Le parcours est présenté une seule fois après complétion. Une nouvelle clé versionnée permet aux personnes ayant déjà fermé l'ancien écran minimal de découvrir le nouvel onboarding.
+- Les contenus sont disponibles en français et en anglais.
+- Aucun formulaire, création de compte ou dialogue IA n'est ajouté à cette étape.
+- Le parcours explique les capacités attendues sans présenter Flash, Scan, Réel ou Radar comme pleinement opérationnels lorsque leurs moteurs ne le sont pas encore.
+
+### Implémentation et vérification
+
+- `OnboardingSheet` porte désormais les quatre étapes et leurs contenus.
+- `useOnboarding` gère la progression, le passage, la complétion et la persistance versionnée.
+- Les tests couvrent les limites de navigation, la persistance, le stockage indisponible et la réapparition du nouvel onboarding malgré l'ancienne clé.
+- L'accueil `/` reste la destination d'arrivée ; son contenu produit doit être évalué séparément avant de le déclarer terminé.
