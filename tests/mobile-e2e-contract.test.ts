@@ -2,7 +2,7 @@ import script from "../scripts/test-mobile-e2e.sh?raw";
 import { describe, expect, it } from "vitest";
 
 describe("mobile visual smoke contract", () => {
-  it("covers the four agreed responsive reference viewports", () => {
+  it("covers eight responsive reference viewports including compact, tablet, desktop and landscape", () => {
     for (const viewport of ["320,720", "360,800", "390,844", "412,915", "768,1024", "1024,768", "1280,800", "844,390"]) {
       expect(script).toContain(`"${viewport}"`);
     }
