@@ -12,6 +12,7 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 let deferredPrompt: BeforeInstallPromptEvent | null = null;
+let registrationScheduled = false;
 const listeners = new Set<() => void>();
 
 function notify() {
@@ -26,17 +27,33 @@ function isStandalone(): boolean {
   );
 }
 
-/** Registers the service worker once, in production builds only. */
+/** Registers the service worker once, in production, even when load has passed. */
 export function registerServiceWorker(): void {
-  if (typeof window === "undefined") return;
-  if (!("serviceWorker" in navigator)) return;
-  if (!import.meta.env.PROD) return;
-  window.addEventListener("load", () => {
+  if (
+    typeof window === "undefined" ||
+    !("serviceWorker" in navigator) ||
+    !import.meta.env.PROD ||
+    registrationScheduled
+  ) {
+    return;
+  }
+
+  registrationScheduled = true;
+
+  const register = () => {
     void navigator.serviceWorker
       .register("/sw.js", { scope: "/" })
       .then((registration) => watchForUpdates(registration))
-      .catch(() => undefined);
-  });
+      .catch(() => {
+        registrationScheduled = false;
+      });
+  };
+
+  if (document.readyState === "complete") {
+    register();
+  } else {
+    window.addEventListener("load", register, { once: true });
+  }
 }
 
 export function useInstallPrompt() {
