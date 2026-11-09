@@ -11,6 +11,8 @@ export const defaultLocale: Locale = "fr";
 export const messages = {
   fr: {
     "app.name": "Vitalis",
+    "language.switch": "Changer de langue",
+    "language.switch": "Changer de langue",
     "app.tagline": "Vivant, calme, intelligent.",
     "app.loading": "Chargement…",
     "app.offline": "Hors ligne",
@@ -362,6 +364,7 @@ export const messages = {
   },
   en: {
     "app.name": "Vitalis",
+    "language.switch": "Change language",
     "app.tagline": "Alive, calm, intelligent.",
     "app.loading": "Loading…",
     "app.offline": "Offline",
