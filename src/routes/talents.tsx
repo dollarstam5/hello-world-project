@@ -20,7 +20,6 @@ export const Route = createFileRoute("/talents")({
         { key: "offer", titleKey: "page.talents.section.offer", perf: "short" },
         { key: "seek", titleKey: "page.talents.section.seek", perf: "tall" },
       ]}
-      footer="Foundation · Talents"
     />
   ),
 });
