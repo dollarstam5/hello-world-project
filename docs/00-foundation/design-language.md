@@ -1,4 +1,4 @@
-# Langage de design Vitala
+# Langage de design Vitalis
 
 **Statut :** référence active  
 **Périmètre :** principes visuels, tokens, mouvement, responsive, accessibilité et langage d'interface.
