@@ -28,7 +28,7 @@ for viewport in "360,800" "390,844" "412,915" "768,1024"; do
   bunx playwright screenshot \
     --browser=chromium \
     --viewport-size="$viewport" \
-    --wait-for-selector="#main" \
+    --wait-for-selector='button[aria-label="Changer de langue"]' \
     "$BASE_URL/" \
     "$output" >/dev/null
   test -s "$output"
