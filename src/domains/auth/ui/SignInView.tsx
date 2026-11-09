@@ -139,7 +139,7 @@ export function SignInView() {
         </form>
 
         {message ? (
-          <p className="mt-3 text-sm text-muted-foreground" role={messageType}>
+          <p className="mt-3 text-sm text-muted-foreground" role={messageType === "error" ? "alert" : "status"}>
             {message}
           </p>
         ) : null}
