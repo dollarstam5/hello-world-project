@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { locales, messages } from "@/lib/i18n/messages";
-import { useI18nStore } from "@/lib/i18n/useI18n";
+import { initI18n, resolveBrowserLocale, useI18nStore } from "@/lib/i18n/useI18n";
 
 describe("internationalization catalog", () => {
   afterEach(() => {
