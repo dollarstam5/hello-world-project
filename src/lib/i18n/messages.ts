@@ -62,7 +62,8 @@ export const messages = {
     "communication.assistance": "Assistance",
     "communication.messages": "Messages",
     "communication.notifications.empty": "Aucune nouvelle notification.",
-    "communication.messages.empty": "Les conversations liées à vos actions et mises en relation apparaîtront ici.",
+    "communication.messages.empty":
+      "Les conversations liées à vos actions et mises en relation apparaîtront ici.",
     "home.welcome": "Bonjour",
     "home.subtitle": "Voici votre écosystème, posé et vivant.",
     "home.section.flash": "Ce qui passe",
@@ -164,7 +165,8 @@ export const messages = {
     "scan.denied": "Position indisponible. Autorisez la localisation pour scanner.",
     "page.scan.eyebrow": "Proximité",
     "page.scan.title": "Scan",
-    "page.scan.desc": "Repérez les Flash actifs autour de vous, sans jamais révéler votre position.",
+    "page.scan.desc":
+      "Repérez les Flash actifs autour de vous, sans jamais révéler votre position.",
     "page.scan.section.scan": "Scanner",
     "page.radar.title": "Radar",
     "page.radar.desc": "Ce qui se passe autour de vous. À venir.",
@@ -405,7 +407,8 @@ export const messages = {
     "communication.assistance": "Assistance",
     "communication.messages": "Messages",
     "communication.notifications.empty": "No new notifications.",
-    "communication.messages.empty": "Conversations linked to your actions and connections will appear here.",
+    "communication.messages.empty":
+      "Conversations linked to your actions and connections will appear here.",
     "home.welcome": "Hello",
     "home.subtitle": "Here is your ecosystem, calm and alive.",
     "home.section.flash": "What's passing",
