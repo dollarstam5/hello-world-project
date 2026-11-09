@@ -97,3 +97,33 @@ Restent à spécifier et tester techniquement : le point de départ exact du dé
 - Règles techniques de synchronisation, d'horodatage, de déduplication et d'expiration, avec tests d'acceptation.
 
 Aucune de ces questions ouvertes ne doit remettre en cause les décisions déjà validées ci-dessus sans nouvel arbitrage explicite.
+
+
+## 9. Présentation des deux cartes du compteur — VALIDÉE le 9 novembre 2026
+
+La fenêtre du compteur présente les deux espaces sous forme de cartes modernes, côte à côte lorsque la largeur disponible le permet. La priorité reste la lisibilité, la compréhension immédiate et une faible charge cognitive.
+
+Chaque carte comprend :
+- une icône identifiable ;
+- le libellé explicite de l'espace ;
+- un compteur visible correspondant au nombre réel d'éléments ;
+- une courte prévisualisation de profils sous forme d'avatars ;
+- un état visuel clair lorsque la carte / l'espace est sélectionné.
+
+### Prévisualisation des profils
+
+- Afficher au maximum **trois avatars** par carte.
+- S'il existe davantage de profils, afficher un indicateur complémentaire **« +N »** pour représenter les profils non prévisualisés.
+- Les avatars sont secondaires par rapport au libellé et au compteur ; ils ne doivent pas réduire leur lisibilité ni surcharger la carte.
+- Dans « Bips reçus », les avatars représentent les personnes dont les bips sont encore valides.
+- Dans « Mes mises en relation », les avatars représentent les personnes avec lesquelles une mise en relation a été établie.
+- Les aperçus et compteurs sont alimentés par les données réelles ; aucun nombre ou profil fictif ne doit apparaître dans l'interface de production.
+
+### Adaptation aux écrans
+
+- Sur les largeurs permettant une lecture confortable, conserver les deux cartes côte à côte.
+- Sur les écrans étroits, empiler les cartes verticalement plutôt que de comprimer les contenus.
+- Préserver des zones tactiles confortables, des libellés lisibles et un contraste suffisant.
+- La sélection d'une carte affiche son espace dans la même fenêtre, sans navigation inutile ni réactivation de la présence Réel.
+
+Cette décision décrit le comportement et la hiérarchie visuelle attendus ; elle ne signifie pas que l'interface est déjà implémentée.
