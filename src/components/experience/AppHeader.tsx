@@ -1,79 +1,38 @@
 import { Link } from "@tanstack/react-router";
-import { Bell, Languages, LogOut, Moon, Sun, UserRound } from "lucide-react";
+import { Bell, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n/useI18n";
-import { signOut, useAuth } from "@/domains/auth";
-import { useThemeStore } from "@/lib/app/theme";
 
 export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => void }) {
-  const { t, locale, setLocale } = useI18n();
-  const { user } = useAuth();
-  const { mode, setMode } = useThemeStore();
-  const isDark =
-    mode === "dark" ||
-    (mode === "system" &&
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches);
+  const { t } = useI18n();
 
   return (
-    <header className="sticky top-0 z-30 border-b border-border-soft bg-background/85 backdrop-blur-xl">
+    <header className="sticky top-0 z-30 bg-transparent">
       <div className="mx-auto flex h-14 w-full max-w-screen-md items-center justify-between px-3 sm:px-4">
         <Link
           to="/"
           aria-label={t("nav.home")}
-          className="rounded-md text-lg font-semibold tracking-tight outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="flex h-12 w-12 items-center justify-center rounded-xl outline-none transition-opacity hover:opacity-85 focus-visible:ring-2 focus-visible:ring-ring"
         >
-          {t("app.name")}
+          <img src="/icon-192.svg" alt="" aria-hidden="true" className="h-9 w-9 rounded-xl" />
         </Link>
-        <div className="flex items-center gap-0.5 sm:gap-1">
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            aria-label={t("language.switch")}
-            onClick={() => setLocale(locale === "fr" ? "en" : "fr")}
-            className="min-h-12 min-w-12 px-2 text-xs font-semibold"
-          >
-            <Languages aria-hidden className="mr-1 h-4 w-4" />
-            {locale.toUpperCase()}
-          </Button>
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            aria-label={t(isDark ? "theme.switchToLight" : "theme.switchToDark")}
-            title={t(isDark ? "theme.switchToLight" : "theme.switchToDark")}
-            onClick={() => setMode(isDark ? "light" : "dark")}
-            className="h-12 w-12"
-          >
-            {isDark ? <Sun aria-hidden /> : <Moon aria-hidden />}
-          </Button>
-          <Button asChild variant="ghost" size="icon" className="h-12 w-12">
-            <Link to="/espace" aria-label={t("menu.espace.open")}>
-              <UserRound aria-hidden />
-            </Link>
-          </Button>
-          {user ? (
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              aria-label={t("auth.signOut")}
-              onClick={() => void signOut().then(() => window.location.assign("/"))}
-              className="h-12 w-12"
-            >
-              <LogOut aria-hidden />
-            </Button>
-          ) : null}
+
+        <div className="flex items-center gap-1">
           <Button
             type="button"
             variant="ghost"
             size="icon"
             onClick={onOpenCommunication}
             aria-label={t("communication.open")}
-            className="h-12 w-12"
+            className="h-12 w-12 rounded-full"
           >
-            <Bell aria-hidden />
+            <Bell aria-hidden className="h-5 w-5" />
+          </Button>
+
+          <Button asChild variant="ghost" size="icon" className="h-12 w-12 rounded-full">
+            <Link to="/espace" aria-label={t("menu.espace.open")}>
+              <UserRound aria-hidden className="h-5 w-5" />
+            </Link>
           </Button>
         </div>
       </div>
