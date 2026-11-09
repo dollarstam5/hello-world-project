@@ -58,7 +58,7 @@ Les règles ci-dessous reflètent les décisions produit retrouvées. VALIDÉ si
 - Le profil détaillé associé à une présence est facultatif ; cela n'empêche pas la consultation du profil de l'émetteur d'un bip.
 - L'acceptation d'un bip et le choix de poursuivre le contact sont deux étapes distinctes.
 - La communication est textuelle dans le périmètre retenu, mais ses limites détaillées restent à spécifier.
-- L'historique des interactions conserve les événements et statuts, pas le contenu des conversations. Les règles détaillées de contenu, de rétention et de suppression restent à spécifier.
+- Les conversations sont conservées jusqu'à leur archivage selon HIST-005 ; l'accès aux archives, la suppression et l'absence d'export suivent HIST-006 et HIST-007. La durée de conservation des archives après archivage reste à définir.
 - La clôture est bilatérale, jamais un simple retrait local.
 - Les principes réseau sont des exigences produit ; l'architecture et les preuves de leur réalisation restent à établir.
 
