@@ -80,7 +80,8 @@ export const messages = {
     "home.engine.flash.desc":
       "Partagez un besoin ou une proposition, et découvrez les publications utiles.",
     "home.engine.scan.title": "Scan",
-    "home.engine.scan.desc": "Repérez les publications Flash actives près de vous, sans partager votre position.",
+    "home.engine.scan.desc":
+      "Repérez les publications Flash actives près de vous, sans partager votre position.",
     "home.engine.reel.title": "Réel",
     "home.engine.reel.desc":
       "Cet espace se prépare. Vous pourrez bientôt signaler votre présence et découvrir les personnes à proximité.",
