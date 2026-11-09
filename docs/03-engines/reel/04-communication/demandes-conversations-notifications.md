@@ -31,4 +31,8 @@ Les conversations archivées continuent d'occuper du stockage pendant 6 mois à 
 ## Durée de conservation des archives
 
 Après archivage, une conversation reste conservée pendant 6 mois à compter de la date d'archivage, puis sa suppression définitive est prévue. L'accès utilisateur reste soumis à l'autorisation exceptionnelle de 24 heures. Les délais techniques éventuels liés aux sauvegardes et les obligations légales restent à vérifier.
-\n\n## Déclenchement du délai d'archivage\n\nLe délai de 3 mois est un délai glissant calculé à partir de la date du dernier message échangé dans la conversation. Chaque nouveau message échangé réinitialise le point de départ. Une conversation encore utilisée n'est donc pas archivée au seul motif que sa date de création remonte à plus de 3 mois. La règle de plafond de 50 conversations reste prioritaire et peut entraîner l'archivage anticipé de la plus ancienne conversation.\n
+
+
+## Déclenchement du délai d'archivage
+
+Le délai de 3 mois est un délai glissant calculé à partir de la date du dernier message échangé dans la conversation. Chaque nouveau message échangé réinitialise le point de départ. Une conversation encore utilisée n'est donc pas archivée au seul motif que sa date de création remonte à plus de 3 mois. La règle de plafond de 50 conversations reste prioritaire et peut entraîner l'archivage anticipé de la plus ancienne conversation.
