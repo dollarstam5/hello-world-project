@@ -375,11 +375,11 @@ La mise en relation acceptée reste accessible dans les comptes des deux personn
 
 La notification confirmant l'acceptation reste également disponible dans le compte de l'expéditeur selon les règles de conservation des notifications de Vitalis.
 
-Cette conservation ne s'étend pas aux bips non acceptés : ceux-ci restent éphémères et sont supprimés à la fermeture de la présence ou à la déconnexion, conformément à la section 23.
+Cette conservation ne rend pas les bips non acceptés durables : ceux-ci disposent uniquement de l'historique temporaire de 24 heures défini à la section 23, y compris après la fermeture de la présence ou une déconnexion.
 
 ### 24.4 Distinction produit à respecter
 
-- **Bip :** signal temporaire, sans historique.
+- **Bip :** signal temporaire, retrouvable pendant 24 heures, sans historique permanent.
 - **Acceptation :** création immédiate d'une mise en relation durable.
 - **Notification :** confirmation persistante adressée à l'expéditeur.
 - **Conversation :** facultative au moment de l'acceptation ; elle peut commencer immédiatement ou plus tard.
