@@ -28,16 +28,21 @@ describe("Vitalis onboarding", () => {
   });
 
   it("skips the first-run sheet only for the development visual smoke route", () => {
-    window.history.replaceState({}, "", "/?__vitalis_smoke=1");
+    vi.stubEnv("DEV", true);
+    try {
+      window.history.replaceState({}, "", "/?__vitalis_smoke=1");
 
-    useOnboarding.getState().hydrate();
+      useOnboarding.getState().hydrate();
 
-    expect(useOnboarding.getState()).toMatchObject({
-      hydrated: true,
-      completed: true,
-      shouldShow: false,
-    });
-    expect(window.localStorage.getItem("vitalis.onboarding.v2")).toBe("1");
+      expect(useOnboarding.getState()).toMatchObject({
+        hydrated: true,
+        completed: true,
+        shouldShow: false,
+      });
+      expect(window.localStorage.getItem("vitalis.onboarding.v2")).toBe("1");
+    } finally {
+      vi.unstubAllEnvs();
+    }
   });
 
   it("persists completion so the introduction does not reopen next time", () => {
