@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 
 type Tab = {
   key: "flash" | "scan" | "reel" | "radar" | "menu";
-  to?: string;
+  to?: "/flash" | "/scan" | "/reel" | "/radar";
   icon: React.ComponentType<{ className?: string }>;
   labelKey: "nav.flash" | "nav.scan" | "nav.reel" | "nav.radar" | "nav.menu";
 };
@@ -106,7 +106,7 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
                 </button>
               ) : (
                 <Link
-                  to={tab.to! as never}
+                  to={tab.to!}
                   aria-label={label}
                   aria-current={active ? "page" : undefined}
                   className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring"
