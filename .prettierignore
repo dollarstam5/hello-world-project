@@ -6,3 +6,6 @@ pnpm-lock.yaml
 package-lock.json
 bun.lock
 routeTree.gen.ts
+# Generated integration artifacts are maintained by their upstream generators.
+src/integrations/supabase/types.ts
+src/integrations/supabase/previewAuthStorage.ts
