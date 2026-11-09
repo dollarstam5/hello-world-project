@@ -32,3 +32,16 @@ Modèle de données/migrations, contrats API, états et transitions, règles d'a
 - À saturation globale, protéger les données existantes, différer ou refuser les écritures non essentielles, conserver les actions hors ligne en attente et informer clairement l'utilisateur.
 - Automatiser la purge à l'expiration des 6 mois d'archive, avec idempotence, journalisation minimale et tests.
 - Ne pas supposer que le plan gratuit fournit une disponibilité continue, des sauvegardes automatiques ou un SLA ; évaluer le risque de pause pour inactivité avant lancement.
+
+
+## Extensions de quotas payantes — V2 à concevoir
+
+- Distinguer le quota gratuit de base, les extensions achetées et le plafond maximal autorisé par l'infrastructure.
+- Prévoir un registre fiable des droits/quotas accordés, des achats, des expirations et des changements de formule ; le client ne doit jamais pouvoir s'attribuer lui-même une capacité payante.
+- Confirmer les paiements côté serveur auprès du prestataire choisi avant d'activer une extension ; prévoir idempotence, gestion des échecs, remboursements et rapprochement comptable.
+- Définir si les extensions sont ponctuelles ou récurrentes, leur durée, leur renouvellement et les conséquences d'une résiliation ou d'un paiement échoué.
+- Empêcher la vente d'une capacité qui dépasserait les ressources globales disponibles ou les plafonds de sécurité du fournisseur.
+- Afficher clairement le quota actuel, la capacité supplémentaire, le prix, la durée et l'usage avant confirmation de l'achat.
+- Les revenus des extensions contribuent au paiement des coûts de fonctionnement de Vitalis ; les prix devront tenir compte du stockage, des transferts, des services, des frais de paiement, de la fiscalité applicable et d'une marge de sécurité.
+
+Aucun prestataire de paiement, tarif, abonnement ou mécanisme de facturation n'est choisi ou implémenté par cette documentation.
