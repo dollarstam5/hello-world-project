@@ -51,11 +51,19 @@ export function useDevice(): DeviceInfo {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const update = () => setInfo(read());
+    const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
+
     window.addEventListener("resize", update);
     window.addEventListener("orientationchange", update);
+    reducedMotionQuery.addEventListener("change", update);
+    coarsePointerQuery.addEventListener("change", update);
+
     return () => {
       window.removeEventListener("resize", update);
       window.removeEventListener("orientationchange", update);
+      reducedMotionQuery.removeEventListener("change", update);
+      coarsePointerQuery.removeEventListener("change", update);
     };
   }, []);
   return info;
