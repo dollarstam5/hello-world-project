@@ -646,3 +646,8 @@ L'inventaire statique du dépôt et le protocole de collecte distant sont consig
 ## Vague 8 — réconciliation fonctionnelle ciblée
 
 La revue ciblée des migrations Profile/UDI, onboarding, Flash/Scan, Radar, reçus de synchronisation, tests RLS/CI et rétention est consignée dans [la réconciliation fonctionnelle — vague 8](./foundation-functional-reconciliation-wave-3.md). Elle confirme plusieurs couvertures partielles et divergences ; aucun chemin Foundation n'est retiré et aucune migration n'est modifiée.
+
+
+## Vague 9 — santé, performance et PWA
+
+La revue de santé/readiness, budgets de performance, Web Vitals, manifeste, service worker, fallback hors ligne et tests PWA est consignée dans [la réconciliation opérationnelle — vague 9](./foundation-operational-reconciliation-wave-4.md). Elle relève notamment l'absence de `public/offline.html` alors que le service worker le pré-cache, ainsi qu'un décalage des routes PWA avec la navigation Vitalis décidée. Aucun changement runtime n'a été effectué.
