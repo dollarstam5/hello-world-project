@@ -27,6 +27,7 @@ const requiredScripts = [
   "check:performance-budget",
   "check:global-audit",
   "check:reproducibility",
+  "check:mobile-e2e",
   "test:e2e",
 ];
 
