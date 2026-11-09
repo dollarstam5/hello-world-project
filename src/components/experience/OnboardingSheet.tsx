@@ -64,7 +64,7 @@ export function OnboardingSheet() {
   return (
     <Sheet
       open={shouldShow}
-      onOpenChange={(open) => !open && dismiss()}
+      onOpenChange={(open) => !open && handleSkip()}
       title={t("onboarding.title")}
       description={t("onboarding.desc")}
       className="max-h-[88dvh] overflow-y-auto"
