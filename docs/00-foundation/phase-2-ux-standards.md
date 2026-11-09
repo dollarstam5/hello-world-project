@@ -349,3 +349,11 @@ L'ancien écran d'accueil minimal est remplacé par un onboarding guidé en **ci
 - Fichiers corrigés : `src/components/ui/sheet.tsx` et `src/components/ui/dialog.tsx`.
 - Commits : `e21215154727c81e37b7e8eb5d250a12f0495035` et `a5311a74bec40fab2df53adac7c0aa6adf9085d6`.
 - Cette correction de code ne remplace pas la mesure sur appareils réels : l'espacement entre cibles, les zones réellement cliquables et les gestes restent à vérifier sur Android et iOS. La CI doit confirmer les changements avant validation automatisée.
+
+
+### Harmonisation des cibles tactiles — composants communs
+- La revue a trouvé plusieurs contrôles interactifs encore limités à 44 px malgré le seuil Android de 48 dp documenté.
+- Correction appliquée aux boutons communs (toutes tailles), aux onglets, aux commandes de l'en-tête et au sélecteur de langue de l'onboarding : hauteur/largeur minimale portée à 48 px lorsque le contrôle est compact.
+- Fichiers : `src/components/ui/button.tsx`, `src/components/ui/tabs.tsx`, `src/components/experience/AppHeader.tsx`, `src/components/experience/OnboardingSheet.tsx`, en complément des fermetures de fenêtres dans `sheet.tsx` et `dialog.tsx`.
+- Les destinations de la navigation basse étaient déjà en 48 px et n'ont pas été modifiées.
+- Contrôle restant : mesurer les cibles réellement rendues et leur espacement sur Android/iOS, y compris les textes longs, les petits écrans et les éléments adjacents. La règle CSS seule ne vaut pas validation physique.
