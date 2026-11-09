@@ -458,3 +458,39 @@ Le total de 146 obtenu lors d'une extraction antérieure incluait à tort la cha
 Les éléments de navigation et les surfaces de communication sont partiellement amorcés, mais plusieurs décisions Vitalis validées ne sont pas encore prouvées dans le code : page Réel distincte, Home à deux états et parcours d'identification, séquence d'onboarding explicative, sélecteur de langue visible, contenu réel des trois parcours de la cloche, et règles de conversations attachées à une action.
 
 **Aucune correction de code, migration, suppression ou modification de `main` n'a été effectuée.** Cette vague ajoute uniquement des constats documentaires à la branche de réconciliation.
+
+
+---
+
+## Vague 6 — classification des candidats équivalents
+
+**Méthode :** recherche dans l'arbre Git de référence `86f4f43cbd6942a8e7df95d3ce53c3db9634a7fb`. La présence d'un candidat sous un autre chemin ne vaut pas équivalence validée sans comparaison de contenu, couverture de tests et responsabilité.
+
+| Groupe de chemins Foundation absents | Candidats repérés ailleurs | Classement provisoire | Écart restant / preuve requise |
+|---|---|---|---|
+| Profil : contrats, schéma, API, hooks, UI, route, migration préférences, RLS, tests | `src/domains/profile/index.ts`, `src/lib/experience/identity.ts`, migrations identité/trust, documentation `identity-model.md` et UDI | Équivalent partiel | Store identité explicitement local/provisoire ; pas de profil persistant, préférences ni tests RLS dédiés démontrés |
+| Auth : contrats, schéma, hooks, vues, callback/recovery, tests | `src/domains/auth/services/auth.service.ts`, `src/domains/auth/model/useAuth.ts`, `SignInView.tsx`, `ResetPasswordView.tsx`, `src/routes/auth.tsx`, tests auth existants | Équivalent partiel | Authentification présente, mais chemins callback/recovery dédiés et contrat central absent ; vérifier le traitement PKCE / recovery de bout en bout |
+| Onboarding membre : contrat, logique, composant, hook, migration, RLS, tests | `OnboardingSheet.tsx`, `src/lib/experience/onboarding.ts`, `src/features/onboarding/index.ts` | Non équivalent pour le parcours membre | Flag local mono-appareil et feuille d'accueil minimale ; pas de persistance serveur, étapes métier ou tests de parcours |
+| Flash : schéma, mapper, hook composer, vue, route création, migration lifecycle, tests | contrats et logique `flash.ts`, API server/functions, `FlashComposer.tsx`, `FlashFeed.tsx`, route `/flash`, migration feed public, tests feed/intention | Équivalent partiel substantiel | Les contrats et l'interface existent sous une autre organisation ; le cycle de vie complet, les transitions privées et la couverture RLS dédiée restent à prouver |
+| Scan : schéma, service géolocalisation, vue, route, migration confidentialité, tests privacy | contrats/logique `scan.ts`, API server/functions, `useScan.ts`, `ScanPanel.tsx`, service realtime, fonctions SQL Drizzle `0000_flash_scan_public_functions.sql` | Équivalent partiel | Pas de service géolocalisation dédié au chemin attendu ; la migration Supabase publique ne remplace pas les fonctions privées Drizzle ; test SQL de confidentialité dédié absent |
+| Radar : contrats, lifecycle, offline sync, API, hooks, composer/list/view, matching, notifications, maintenance | contrats/logique Radar, schema/mapper, route `/radar`, migration Supabase lifecycle, test RLS lifecycle | Équivalent partiel limité | Pas de parcours composer/list/detail, matching, notifications Radar, maintenance ni sync offline complet démontré ; la page actuelle reste Foundation |
+| Santé / observabilité | `src/routes/api/health.ts`, `src/lib/observability/health-policy.ts`, tests health et policy | Équivalent partiel | Endpoint health simple présent ; routes live/ready distinctes et tests correspondants absents |
+| Rétention / maintenance | `src/lib/maintenance/retention-policy.ts`, tests de politique | Équivalent partiel | Politique et tests présents, mais pas d'exécuteur serveur, cron, migration de rétention ni test d'exécution |
+| Performance / Web Vitals | `scripts/check-performance-budgets.ts`, politiques performance, `src/lib/performance/web-vitals.ts`, tests associés | Équivalent partiel | Budgets et instrumentation présents sous d'autres chemins ; pas de preuve de données p75 réelles en production ni de contrôle E2E Foundation |
+| PWA / offline | `src/platform/pwa.ts`, `src/platform/pwa/*`, `src/platform/offline/*`, tests PWA et offline | Équivalent partiel | Enregistrement et fonctions PWA présents ; tests existants limités, pas de preuve E2E mobile complète ni page offline dédiée |
+| Migrations SQL attendues sous `supabase/migrations` | Plusieurs migrations sous `src/supabase/migrations`, migrations historiques sous `drizzle/migrations` | Divergence de source/emplacement | Ne pas déplacer ni dupliquer avant décision sur la chaîne canonique. Les migrations Drizzle et Supabase ne sont pas toutes équivalentes ; divergences sync receipts déjà identifiées |
+| Tests SQL attendus sous `supabase/tests/database` | Tests existants sous `src/supabase/tests/database` et `supabase/tests/database` | Équivalent partiel / divergence | Quelques tests RLS ciblés existent, mais les chemins attendus et la couverture complète ne correspondent pas ; exécution effective non prouvée |
+
+### Décisions de réconciliation à ne pas prendre automatiquement
+
+1. Ne pas créer des fichiers alias uniquement pour satisfaire les chemins Foundation.
+2. Ne pas déplacer les migrations Drizzle ou Supabase avant d'avoir déterminé la source de vérité et l'ordre d'exécution.
+3. Ne pas considérer un contrat TypeScript comme preuve d'une validation serveur, d'une politique RLS ou d'un parcours utilisateur complet.
+4. Ne pas considérer un test unitaire de politique comme preuve d'une exécution cron, d'un test E2E ou d'une mesure p75 en production.
+5. Ne pas fermer les TECH-001 à TECH-006 sur la seule base de cette réconciliation documentaire.
+
+### Résultat provisoire
+
+Les 113 chemins absents exacts ne sont pas 113 fonctionnalités inexistantes. Plusieurs groupes disposent d'implémentations alternatives ou partielles ; les lacunes les plus nettes concernent le parcours onboarding membre, le profil persistant, les flux Radar complets, la communication/notifications opérationnelles, les exécuteurs de maintenance et les preuves E2E / exploitation.
+
+**Statut de cette vague :** classification documentaire provisoire. Les équivalences ne sont pas toutes confirmées par une comparaison exhaustive fichier-à-fichier ; aucune suppression, migration, modification de code ou intervention sur `main` n'est autorisée par cette étape.
