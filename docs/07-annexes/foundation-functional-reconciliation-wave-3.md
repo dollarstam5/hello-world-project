@@ -86,3 +86,23 @@ Le document annexe historique `docs/07-annexes/SYNC_PROTOCOL.md` est déjà sign
 - Aucun contrôle Foundation, Global Audit, Go/No-Go, CI, RLS ou production n'est déclaré validé.
 
 **Prochaine étape recommandée :** poursuivre la réconciliation des artefacts non SQL et des liens entrants pour les chemins Foundation encore absents, puis traiter séparément la mise à jour du registre des décisions et tickets. Toute remédiation SQL reste conditionnée à la collecte d'historiques distants en lecture seule.
+
+
+## 7. Authentification et onboarding — complément de couverture
+
+| Chemin / besoin Foundation | Artefact réellement observé | Résultat |
+|---|---|---|
+| Contrats Auth dédiés et schéma de validation | `src/domains/auth/services/auth.service.ts`, `useAuth.ts`, `SignInView.tsx` | Connexion, inscription, déconnexion et demande de réinitialisation via Supabase sont présentes. Aucun `auth.schema.ts` ni contrat Zod dédié n'a été confirmé dans le domaine. La validation visible dans les formulaires est essentiellement HTML côté client. |
+| Vue Auth et callback | `src/routes/auth.tsx`, `src/domains/auth/ui/SignInView.tsx`, middleware Supabase | Une route publique `/auth` et une vue connexion/inscription existent. Aucun `AuthCallbackView` ou fichier `auth.callback.tsx` n'a été identifié dans l'arborescence. Le comportement exact du retour de confirmation d'e-mail doit être vérifié dans un parcours navigateur. |
+| Récupération de mot de passe | `src/routes/reset-password.tsx`, `ResetPasswordView.tsx`, `auth.service.ts` | Le parcours de réinitialisation existe sous `/reset-password`, et le service redirige explicitement vers cette route. Il s'agit d'un équivalent fonctionnel partiel du chemin Recovery Foundation, mais pas d'une vue séparée `PasswordRecoveryView`. |
+| Tests Auth dédiés | Arborescence `tests/` et `src/tests/` | Aucun `tests/auth/auth-contract.test.ts` ni test contractuel Auth équivalent n'a été trouvé dans les chemins examinés. Les tests de santé ne remplacent pas les tests Auth. |
+| Documentation Auth / onboarding | `docs/03-api/auth-api.md` et source historique `docs/03-api/4. Auth API.md` | La page canonique `auth-api.md` est un court index vers la source historique substantielle. Aucun `docs/AUTH_ONBOARDING.md` n'a été identifié. La documentation actuelle ne prouve pas à elle seule que tous les flux historiques sont implémentés. |
+
+### Décision Auth / onboarding
+
+- **Auth :** socle opérationnel partiel confirmé (session, connexion, inscription, déconnexion, réinitialisation). Les chemins callback, validation de contrat et tests dédiés restent non démontrés.
+- **Récupération :** conserver la route existante `/reset-password` comme artefact réel ; ne pas créer un alias artificiel `auth.recovery.tsx` avant comparaison de contrat et des consommateurs.
+- **Onboarding :** le store persiste uniquement un indicateur local `eco.onboarding.v1` ; le composant est explicitement décrit comme une coque minimale et apparaît une fois par appareil. Cela ne correspond pas au parcours membre complet ni à une persistance de progression serveur.
+- **Documentation :** conserver la source historique Auth tant que le contrat complet n'est pas repris dans la référence canonique et que les liens entrants ne sont pas contrôlés.
+
+Aucun code Auth ou onboarding n'a été modifié par cette réconciliation.
