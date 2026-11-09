@@ -1,8 +1,8 @@
 {
   "id": "/",
-  "name": "Écosystème",
-  "short_name": "Écosystème",
-  "description": "Votre écosystème vivant : identités, flash, missions et échanges, même hors connexion.",
+  "name": "Vitalis",
+  "short_name": "Vitalis",
+  "description": "Vitalis : identités, proximité, actions et échanges, même hors connexion.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
