@@ -6,8 +6,8 @@ import { ScanPanel } from "@/domains/scan/ui/ScanPanel";
 export const Route = createFileRoute("/scan")({
   head: () => ({
     meta: [
-      { title: "Scan — Écosystème" },
-      { name: "description", content: "Repère les Flash actifs autour de toi." },
+      { title: "Scan — Vitalis" },
+      { name: "description", content: "Repère les Flash actifs autour de vous." },
     ],
   }),
   component: () => (
