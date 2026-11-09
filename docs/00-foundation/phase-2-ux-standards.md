@@ -56,6 +56,7 @@ Ce document fixe les règles vérifiables de la phase 2. Il ne certifie pas les 
 - Ne pas afficher de sections de flux vides, de faux contenus ou de compteurs fictifs pour remplir la page. Les espaces sans contenu réel ne sont présentés que lorsqu'une donnée ou une fonction existe.
 - Les accès vers un moteur encore en préparation doivent l'indiquer clairement ; la page d'accueil ne doit jamais laisser croire qu'une fonction non livrée est déjà disponible.
 - Les libellés de l'accueil sont localisés en français et en anglais et suivent le langage humain de Vitalis.
+- Les deux paires de cartes de l'onboarding restent verticales sur mobile et s'organisent en deux colonnes sur écran moyen ou large, sans réduire les cibles tactiles.
 
 ## 5. Réseau et états d'interface
 
