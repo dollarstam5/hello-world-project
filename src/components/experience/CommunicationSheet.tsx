@@ -24,16 +24,16 @@ export function CommunicationSheet({
       title={t("communication.title")}
       className="max-h-[92dvh]"
     >
-      <Tabs defaultValue="assistant">
+      <Tabs defaultValue="notifications">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger className="px-1 text-[11px] sm:text-sm" value="notifications">
             {t("communication.notifications")}
           </TabsTrigger>
-          <TabsTrigger className="px-1 text-[11px] sm:text-sm" value="assistant">
-            {t("communication.assistant")}
+          <TabsTrigger className="px-1 text-[11px] sm:text-sm" value="assistance">
+            {t("communication.assistance")}
           </TabsTrigger>
-          <TabsTrigger className="px-1 text-[11px] sm:text-sm" value="conversations">
-            {t("communication.conversations")}
+          <TabsTrigger className="px-1 text-[11px] sm:text-sm" value="messages">
+            {t("communication.messages")}
           </TabsTrigger>
         </TabsList>
         <TabsContent
@@ -42,7 +42,7 @@ export function CommunicationSheet({
         >
           {t("communication.notifications.empty")}
         </TabsContent>
-        <TabsContent value="assistant">
+        <TabsContent value="assistance">
           <Suspense
             fallback={
               <p role="status" className="py-8 text-center text-sm text-muted-foreground">
@@ -54,10 +54,10 @@ export function CommunicationSheet({
           </Suspense>
         </TabsContent>
         <TabsContent
-          value="conversations"
+          value="messages"
           className="py-8 text-center text-sm text-muted-foreground"
         >
-          {t("communication.conversations.empty")}
+          {t("communication.messages.empty")}
         </TabsContent>
       </Tabs>
     </Sheet>
