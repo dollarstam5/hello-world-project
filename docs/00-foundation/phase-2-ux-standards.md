@@ -30,6 +30,7 @@ Ce document fixe les règles vérifiables de la phase 2. Il ne certifie pas les 
 - L'état courant d'une destination est exposé avec `aria-current="page"`.
 - Les contrôles interactifs doivent conserver un focus clavier visible.
 - Les animations décoratives respectent `prefers-reduced-motion` et ne doivent pas être nécessaires à la compréhension.
+- Les feuilles et dialogues partagés neutralisent aussi leurs animations et transitions lorsque `prefers-reduced-motion` est actif.
 - Les préférences de réduction du mouvement et de pointeur sont réévaluées lorsque les préférences système changent, sans exiger un redimensionnement de fenêtre.
 
 ## 4. Navigation et langue
@@ -51,6 +52,7 @@ Les composants concernés doivent prévoir les états utiles suivants, selon le 
 - Navigation basse : remplacement de la sémantique de liste d'onglets par une région de navigation nommée ; conservation de `aria-current` sur la destination active.
 - Internationalisation : ajout d'un nom accessible FR/EN pour la navigation principale.
 - Internationalisation : test de non-régression `tests/i18n.test.ts` vérifiant la parité des clés FR/EN et l'absence de messages vides.
+- Langue du document : l'attribut HTML `lang` suit la langue active après détection initiale et lors d'un changement FR/EN ; test de non-régression associé.
 - Préférences appareil : écoute des changements de `prefers-reduced-motion` et `pointer: coarse` dans `useDevice`.
 - Navigation mobile : cinq destinations dans l'ordre Flash, Scan, Réel (antenne centrale), Radar, 2x2 ; accueil hors barre basse et accessible par l'identité Vitalis et l'icône installée.
 - En-tête : accès à l'accueil, bascule FR/EN, bascule clair/sombre, profil et centre de communication ; contrôles icon-only nommés et cibles tactiles minimales de 44 px.
