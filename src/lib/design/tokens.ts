@@ -98,12 +98,7 @@ export const accent = {
  * Use via `var(--surface-{level})` or the Surface component.
  */
 export type SurfaceLevel =
-  | "base"
-  | "sunken"
-  | "elevated"
-  | "floating"
-  | "modal"
-  | "overlay"
+  "base" | "sunken" | "elevated" | "floating" | "modal" | "overlay"
   | "assistant";
 
 /* ----------------------------- Spacing ---------------------------- */
