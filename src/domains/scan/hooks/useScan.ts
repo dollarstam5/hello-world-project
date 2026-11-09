@@ -12,6 +12,7 @@ export function useScan() {
   const inFlightRef = useRef(false);
   const [rows, setRows] = useState<ScanResult[]>([]);
   const [busy, setBusy] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     runRef.current = run;
@@ -22,8 +23,11 @@ export function useScan() {
     inFlightRef.current = true;
     queryRef.current = query;
     setBusy(true);
+    setFailed(false);
     try {
       setRows(rankScanResults(await runRef.current({ data: query })));
+    } catch {
+      setFailed(true);
     } finally {
       inFlightRef.current = false;
       setBusy(false);
@@ -39,5 +43,5 @@ export function useScan() {
     [execute],
   );
 
-  return { rows, busy, execute };
+  return { rows, busy, failed, execute };
 }
