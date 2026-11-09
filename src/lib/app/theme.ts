@@ -26,7 +26,10 @@ function apply(mode: ThemeMode) {
 let systemPreference: MediaQueryList | null = null;
 
 function handleSystemPreferenceChange() {
-  if (useThemeStore.getState().mode === "system") apply("system");
+  if (useThemeStore.getState().mode === "system") {
+    apply("system");
+    useThemeStore.setState((state) => ({ ...state, mode: "system" }));
+  }
 }
 
 export const useThemeStore = create<ThemeState>((set) => ({
