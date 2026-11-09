@@ -1,58 +1,196 @@
 import { Sheet } from "@/components/app/Sheet";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import { useOnboarding } from "@/lib/experience/onboarding";
 import { useI18n } from "@/lib/i18n/useI18n";
+import {
+  ArrowLeft,
+  ArrowRight,
+  LayoutGrid,
+  Radar,
+  RadioTower,
+  ScanSearch,
+  Sparkles,
+  Zap,
+} from "lucide-react";
 
-/**
- * OnboardingSheet — minimal welcome shell.
- * Appears once per device. Real flow steps land later; surface stays stable.
- */
+function EngineCard({
+  icon: Icon,
+  title,
+  description,
+}: {
+  icon: typeof Zap;
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="flex items-start gap-4 rounded-2xl border border-border-soft bg-card/70 p-4">
+      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary">
+        <Icon aria-hidden="true" className="h-5 w-5" />
+      </span>
+      <div className="min-w-0 space-y-1">
+        <h3 className="font-semibold text-foreground">{title}</h3>
+        <p className="text-sm leading-relaxed text-muted-foreground">{description}</p>
+      </div>
+    </div>
+  );
+}
+
+/** A short, four-step introduction to Vitalis, shown once per device. */
 export function OnboardingSheet() {
   const { t } = useI18n();
-  const shouldShow = useOnboarding((s) => s.shouldShow);
-  const hydrated = useOnboarding((s) => s.hydrated);
-  const dismiss = useOnboarding((s) => s.dismiss);
-  const markCompleted = useOnboarding((s) => s.markCompleted);
+  const shouldShow = useOnboarding((state) => state.shouldShow);
+  const hydrated = useOnboarding((state) => state.hydrated);
+  const step = useOnboarding((state) => state.step);
+  const next = useOnboarding((state) => state.next);
+  const previous = useOnboarding((state) => state.previous);
+  const dismiss = useOnboarding((state) => state.dismiss);
+  const complete = useOnboarding((state) => state.complete);
 
   if (!hydrated) return null;
+
+  const isLastStep = step === 3;
 
   return (
     <Sheet
       open={shouldShow}
-      onOpenChange={(o) => !o && dismiss()}
+      onOpenChange={(open) => !open && dismiss()}
       title={t("onboarding.title")}
       description={t("onboarding.desc")}
+      className="max-h-[88dvh] overflow-y-auto"
     >
-      <div className="space-y-4 pt-2">
-        <ol className="space-y-3 text-sm text-muted-foreground">
-          <li className="flex items-start gap-3">
-            <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary text-xs font-medium">
-              1
-            </span>
-            <span>
-              {t("nav.flash")} · {t("nav.scan")}
-            </span>
-          </li>
-          <li className="flex items-start gap-3">
-            <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary text-xs font-medium">
-              2
-            </span>
-            <span>{t("nav.reel")}</span>
-          </li>
-          <li className="flex items-start gap-3">
-            <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary text-xs font-medium">
-              3
-            </span>
-            <span>
-              {t("nav.radar")} · {t("nav.menu")}
-            </span>
-          </li>
-        </ol>
-        <div className="flex items-center justify-end gap-2 pt-2">
-          <Button variant="ghost" onClick={dismiss}>
-            {t("onboarding.skip")}
-          </Button>
-          <Button onClick={markCompleted}>{t("onboarding.start")}</Button>
+      <div className="flex min-h-[min(64dvh,560px)] flex-col gap-6 pt-2">
+        <div className="space-y-2">
+          <div className="flex items-center justify-between text-xs text-muted-foreground">
+            <span>{t("onboarding.step", { current: step + 1, total: 4 })}</span>
+            <span>{t("onboarding.stepLabel")}</span>
+          </div>
+          <Progress
+            value={((step + 1) / 4) * 100}
+            aria-label={t("onboarding.progress")}
+          />
+        </div>
+
+        <div key={step} aria-live="polite" className="flex flex-1 flex-col gap-5">
+          {step === 0 && (
+            <>
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-soft text-primary">
+                <Sparkles aria-hidden="true" className="h-8 w-8" />
+              </div>
+              <div className="space-y-2">
+                <h2 className="text-2xl font-semibold tracking-tight">
+                  {t("onboarding.intro.title")}
+                </h2>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  {t("onboarding.intro.body")}
+                </p>
+              </div>
+              <div className="rounded-2xl border border-border-soft bg-muted/30 p-4">
+                <div className="mb-2 flex items-center gap-2 font-medium">
+                  <LayoutGrid aria-hidden="true" className="h-4 w-4 text-primary" />
+                  {t("onboarding.intro.moreTitle")}
+                </div>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  {t("onboarding.intro.moreBody")}
+                </p>
+              </div>
+            </>
+          )}
+
+          {step === 1 && (
+            <>
+              <div className="space-y-2">
+                <h2 className="text-2xl font-semibold tracking-tight">
+                  {t("onboarding.discovery.title")}
+                </h2>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  {t("onboarding.discovery.body")}
+                </p>
+              </div>
+              <div className="grid gap-3">
+                <EngineCard
+                  icon={Zap}
+                  title={t("onboarding.flash.title")}
+                  description={t("onboarding.flash.body")}
+                />
+                <EngineCard
+                  icon={ScanSearch}
+                  title={t("onboarding.scan.title")}
+                  description={t("onboarding.scan.body")}
+                />
+              </div>
+            </>
+          )}
+
+          {step === 2 && (
+            <>
+              <div className="space-y-2">
+                <h2 className="text-2xl font-semibold tracking-tight">
+                  {t("onboarding.connection.title")}
+                </h2>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  {t("onboarding.connection.body")}
+                </p>
+              </div>
+              <div className="grid gap-3">
+                <EngineCard
+                  icon={RadioTower}
+                  title={t("onboarding.reel.title")}
+                  description={t("onboarding.reel.body")}
+                />
+                <EngineCard
+                  icon={Radar}
+                  title={t("onboarding.radar.title")}
+                  description={t("onboarding.radar.body")}
+                />
+              </div>
+            </>
+          )}
+
+          {step === 3 && (
+            <>
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-soft text-primary">
+                <Sparkles aria-hidden="true" className="h-8 w-8" />
+              </div>
+              <div className="space-y-3">
+                <h2 className="text-2xl font-semibold tracking-tight">
+                  {t("onboarding.ready.title")}
+                </h2>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  {t("onboarding.ready.body")}
+                </p>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                {t("onboarding.ready.guest")}
+              </p>
+            </>
+          )}
+        </div>
+
+        <div className="flex items-center justify-between gap-3 border-t border-border-soft pt-4">
+          <div className="flex gap-2">
+            {step > 0 ? (
+              <Button type="button" variant="ghost" onClick={previous}>
+                <ArrowLeft aria-hidden="true" />
+                {t("onboarding.back")}
+              </Button>
+            ) : (
+              <Button type="button" variant="ghost" onClick={dismiss}>
+                {t("onboarding.skip")}
+              </Button>
+            )}
+          </div>
+          {isLastStep ? (
+            <Button type="button" onClick={complete}>
+              {t("onboarding.enter")}
+              <ArrowRight aria-hidden="true" />
+            </Button>
+          ) : (
+            <Button type="button" onClick={next}>
+              {t("onboarding.next")}
+              <ArrowRight aria-hidden="true" />
+            </Button>
+          )}
         </div>
       </div>
     </Sheet>
