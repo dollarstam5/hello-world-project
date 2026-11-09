@@ -402,3 +402,22 @@ L'ancien écran d'accueil minimal est remplacé par un onboarding guidé en **ci
 - Les noms accessibles et les libellés textuels restent présents : agrandir une icône ne remplace jamais son nom ni l'indication de l'action.
 - Première harmonisation appliquée dans `BottomNav`, `AppHeader`, `HomeFoundation`, `ScanPanel` et le composant partagé `Button`. Les icônes des boutons partagés passent de 16 à 20 px par défaut ; les actions structurantes définissent 24 px explicitement.
 - À confirmer avec les captures mobile et les tests visuels : équilibre avec les libellés, absence de débordement sur les petits écrans et cohérence entre thèmes clair et sombre.
+
+
+### Responsive intelligente — règle de conception V1
+
+La responsivité se décide d'après l'espace réellement disponible et les capacités d'interaction, pas uniquement d'après une étiquette « mobile », « tablette » ou « ordinateur ».
+
+- **Priorité au contenu :** une colonne reste la règle tant que deux colonnes rendraient les cartes, textes ou commandes trop étroits. Passer en deux colonnes, puis en disposition plus large, seulement lorsque chaque bloc conserve une largeur confortable.
+- **Largeur utile, pas diagonale d'écran :** prendre en compte le viewport disponible, les panneaux latéraux, le zoom et le redimensionnement de la fenêtre. Un grand téléphone en paysage ne doit pas être traité comme un desktop par défaut.
+- **Réorganisation plutôt que réduction :** sur petit écran, empiler les blocs et garder les actions essentielles visibles ; sur grand écran, exploiter l'espace avec des colonnes et une largeur de lecture maîtrisée. Ne pas simplement réduire les textes, les icônes ou les cibles tactiles.
+- **Actions adaptées au toucher :** conserver des cibles d'au moins 48 × 48 px lorsque le pointeur est grossier ; avec souris/clavier, les contrôles peuvent être visuellement plus compacts uniquement si leur zone d'interaction et leur focus restent confortables.
+- **Navigation cohérente :** conserver la navigation basse sur les contextes mobiles/tactiles où elle est prévue ; ne pas l'étirer sur toute la largeur des grands écrans. Toute variante tablette/desktop devra préserver les cinq accès et leur ordre sans créer une seconde navigation concurrente.
+- **Orientation et clavier virtuel :** vérifier portrait et paysage, éviter qu'un clavier ouvert masque l'action principale, respecter les zones sûres et autoriser le défilement du contenu sans bloquer les commandes.
+- **Texte et zoom :** permettre les retours à la ligne, éviter les largeurs fixes et les textes tronqués ; la mise en page doit rester utilisable avec agrandissement du texte et zoom navigateur.
+- **Mouvement et performance :** alléger les effets non essentiels selon les capacités observables et respecter la réduction du mouvement, sans supprimer une information ni une fonction.
+- **Pas de duplication métier :** le même contenu et les mêmes actions restent disponibles dans toutes les mises en page ; seule leur organisation change.
+- **Validation par plages réelles :** tester au minimum 320–359 px, 360–389 px, 390–479 px, 480–767 px, 768–1023 px, 1024–1279 px et 1280 px et plus, ainsi que le paysage, le zoom et les fenêtres redimensionnées. Ces plages sont des scénarios de test, pas des breakpoints CSS obligatoires.
+- **Pas de certification par capture :** une capture prouve seulement l'apparence à une dimension donnée ; le clavier, le toucher, le lecteur d'écran, le zoom et les changements d'orientation nécessitent des vérifications séparées.
+
+La fondation actuelle `useDevice` distingue mobile (<768 px), tablette (768–1279 px) et desktop (≥1280 px), mais ces classes ne doivent pas décider seules de la disposition. Les composants doivent privilégier les contraintes de largeur et les tokens de mise en page, puis utiliser les capacités de pointeur et les préférences système pour adapter l'interaction.
