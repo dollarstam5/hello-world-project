@@ -177,7 +177,8 @@ export const messages = {
     "page.scan.section.scan": "Scanner",
     "page.reel.eyebrow": "Moteur central",
     "page.reel.title": "Réel",
-    "page.reel.desc": "Le point d’entrée du moteur Réel est prêt. Ses fonctionnalités seront intégrées dans la prochaine phase.",
+    "page.reel.desc":
+      "Le point d’entrée du moteur Réel est prêt. Ses fonctionnalités seront intégrées dans la prochaine phase.",
     "page.radar.title": "Radar",
     "page.radar.desc": "Ce qui se passe autour de vous. À venir.",
     "page.radar.eyebrow": "Autour de vous",
@@ -531,7 +532,8 @@ export const messages = {
     "page.scan.section.scan": "Scan",
     "page.reel.eyebrow": "Central engine",
     "page.reel.title": "Real",
-    "page.reel.desc": "The Real engine entry point is ready. Its features will be integrated in the next phase.",
+    "page.reel.desc":
+      "The Real engine entry point is ready. Its features will be integrated in the next phase.",
     "page.radar.title": "Radar",
     "page.radar.desc": "What's happening around you. Coming soon.",
     "page.radar.eyebrow": "Around you",
