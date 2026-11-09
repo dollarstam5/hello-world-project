@@ -46,9 +46,16 @@ La visualisation ne doit pas suggérer une précision de localisation supérieur
 
 Les cartes côte à côte sont souhaitées lorsque pertinentes, avec hiérarchie et lecture rapide. L'utilisateur actif consulte ses bips, peut consulter le profil de l'émetteur et accepter directement depuis la liste.
 
+## Historique Réel selon le mode d'accès
+
+- **Compte Vitalis :** un historique consultable conserve les bips, les mises en relation et les interactions passées liées à Réel.
+- **Invité :** pas d'historique personnel persistant ; les données personnelles liées à la session disparaissent à la fin de celle-ci.
+- L'historique d'un compte est distinct des éléments actifs. Une mise en relation clôturée disparaît du compteur Réel et de Notifications, mais reste consultable dans l'historique.
+- L'historique présente les événements et leurs statuts ; il ne signifie pas que le contenu des conversations est conservé.
+
 ## Accès aux mises en relation
 
-Deux emplacements : compteur dans Réel et Notifications. Aucun quatrième espace « Temps réel ».
+Deux emplacements actifs : compteur dans Réel et Notifications. Aucun quatrième espace « Temps réel ». L'historique est un accès rétrospectif distinct, pas un troisième emplacement de mise en relation active.
 
 ## Clôture
 
