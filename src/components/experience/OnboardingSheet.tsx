@@ -37,7 +37,7 @@ function EngineCard({
   );
 }
 
-/** A short, four-step introduction to Vitalis, shown once per device. */
+/** A short, five-step introduction to Vitalis, shown once per device. */
 export function OnboardingSheet() {
   const { t } = useI18n();
   const navigate = useNavigate();
@@ -59,7 +59,7 @@ export function OnboardingSheet() {
 
   if (!hydrated) return null;
 
-  const isLastStep = step === 3;
+  const isLastStep = step === 4;
 
   return (
     <Sheet
@@ -73,10 +73,10 @@ export function OnboardingSheet() {
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs text-muted-foreground">
             <span>{t("onboarding.stepLabel")}</span>
-            <span aria-hidden="true">{step + 1}/4</span>
+            <span aria-hidden="true">{step + 1}/5</span>
           </div>
           <Progress
-            value={((step + 1) / 4) * 100}
+            value={((step + 1) / 5) * 100}
             aria-label={t("onboarding.progress")}
           />
         </div>
@@ -158,6 +158,22 @@ export function OnboardingSheet() {
           )}
 
           {step === 3 && (
+            <>
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-soft text-primary">
+                <LayoutGrid aria-hidden="true" className="h-8 w-8" />
+              </div>
+              <div className="space-y-2">
+                <h2 className="text-2xl font-semibold tracking-tight">
+                  {t("onboarding.spaces.title")}
+                </h2>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  {t("onboarding.spaces.body")}
+                </p>
+              </div>
+            </>
+          )}
+
+          {step === 4 && (
             <>
               <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-soft text-primary">
                 <Sparkles aria-hidden="true" className="h-8 w-8" />
