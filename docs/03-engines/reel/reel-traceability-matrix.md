@@ -5,6 +5,8 @@
 **Statut :** référence documentaire. Les exigences et scénarios sont définis ; implémentation et exécution des tests non vérifiées.  
 **Référence normative :** [Spécification fonctionnelle Réel V1](./reel-engine.md) · [Roadmap V1–V3](./roadmap.md).
 
+> **Complément normatif :** pour les bips, leur validité de 24 h, la reprise réseau et la clôture des mises en relation, consulter [Cycle de vie immédiat Réel V1](./reel-lifecycle-v1.md) et sa [traçabilité dédiée](./reel-lifecycle-traceability.md). Ces règles récentes prévalent sur toute formulation antérieure contradictoire, notamment les anciennes références à un historique de conversation conservé après clôture.
+
 > Les scénarios ci-dessous sont des tests attendus, pas des tests dont l'existence ou l'exécution est attestée. Les chemins de tests réels restent à localiser ; aucun chemin n'est inventé.
 
 ## 1. Légende
@@ -89,17 +91,17 @@
 
 | Décision | Exigence technique | Tests attendus | État |
 | --- | --- | --- | --- |
-| C-04.1 — conversation read-only après fin/blocage ; historique lisible ; input désactivé ; texte informatif | Lecture conservée, écriture retirée côté serveur et UI | T-C04-01 historique lisible ; T-C04-02 UI sans saisie ; T-C04-03 API refuse écriture ; T-C04-04 texte informatif | Validée ; runtime non vérifié |
-| C-04.2 — fin confirmée et définitive ; ancien lien non réactivable | Confirmation explicite et transition terminale | T-C04-05 annulation conserve lien ; T-C04-06 confirmation termine ; T-C04-07 ancienne connexion non réactivable | Validée ; runtime non vérifié |
-| C-04.3 — blocage confirmé ; demandes annulées ; chat read-only ; pas de notification explicite | Transition cohérente blocage/demandes/chat ; message neutre | T-C04-08 confirmation requise ; T-C04-09 demandes annulées ; T-C04-10 messages refusés ; T-C04-11 pas de notification explicite | Validée ; runtime non vérifié |
-| C-04.4 — déblocage depuis liste ; pas de restauration ; nouvelle demande/acceptation ; cooldown respecté | Séparer blocage et connexion ; ancien chat reste read-only | T-C04-12 déblocage depuis liste ; T-C04-13 ancien chat read-only ; T-C04-14 nouveau cycle requis ; T-C04-15 cooldown restant | Validée ; runtime non vérifié |
-| C-04.5 — fin retire connexion et accès au statut via ancien lien ; redécouverte possible après fin ; blocage empêche découverte réciproque | Séparer connexion, visibilité Réel et blocage | T-C04-16 connexion retirée ; T-C04-17 ancien lien n'expose plus statut ; T-C04-18 redécouverte après fin si éligible ; T-C04-19 blocage masque mutuellement | Validée ; runtime non vérifié |
+| C-04.1 — clôture commune ; retrait des deux emplacements ; communication désactivée ; aucun historique consultable | Transition terminale commune aux deux participants ; révocation des accès et traitement définitif du contenu conversationnel | T-C04-01 retrait Réel ; T-C04-02 retrait Notifications ; T-C04-03 messages refusés ; T-C04-04 historique non consultable | Décision produit validée ; runtime non vérifié |
+| C-04.2 — clôture après confirmation explicite ; action commune et définitive | Confirmation avant clôture ; transition atomique et idempotente | T-C04-05 annulation conserve la relation ; T-C04-06 confirmation clôture pour les deux ; T-C04-07 aucune réactivation | Décision produit validée ; runtime non vérifié |
+| C-04.3 — blocage confirmé ; demandes en attente annulées ; aucune nouvelle interaction | Blocage et clôture cohérents ; accès et communication révoqués | T-C04-08 confirmation requise ; T-C04-09 demandes annulées ; T-C04-10 communication refusée ; T-C04-11 aucune interaction permise | Décision produit validée ; runtime non vérifié |
+| C-04.4 — déblocage sans restauration de l'ancienne mise en relation ; nouveau cycle requis | Séparer blocage, visibilité et nouvelle mise en relation ; aucune conversation antérieure restaurée | T-C04-12 déblocage depuis liste ; T-C04-13 ancienne relation absente ; T-C04-14 nouvelle demande/acceptation ; T-C04-15 cooldown restant | Décision produit validée ; runtime non vérifié |
+| C-04.5 — clôture retire la relation active ; blocage empêche découverte et interaction réciproques | Séparer clôture, visibilité Réel et blocage ; aucun accès à l'ancienne relation | T-C04-16 relation retirée ; T-C04-17 accès ancien statut refusé ; T-C04-18 redécouverte après clôture seulement si éligible ; T-C04-19 blocage masque mutuellement | Décision produit validée ; runtime non vérifié |
 
 ## 5. Décisions transversales P-01 à P-04
 
 | Décision | Exigence technique | Tests attendus | État |
 | --- | --- | --- | --- |
-| P-01 — texte neutre « Cette conversation n'est plus disponible pour l'envoi de messages. » ; historique conservé ; blocage non révélé | Même texte après fin et blocage ; ne pas exposer motif du blocage | T-P01-01 texte identique ; T-P01-02 aucune révélation ; T-P01-03 historique lisible | Validée ; runtime non vérifié |
+| P-01 — information neutre après clôture ; aucun historique de conversation conservé ; motif de blocage non révélé | Informer de l'indisponibilité sans exposer les motifs internes ; aucun accès au contenu après clôture | T-P01-01 information cohérente ; T-P01-02 aucune révélation du motif ; T-P01-03 historique non consultable | Décision produit validée ; runtime non vérifié |
 | P-02 — localisation partagée volontairement et ponctuellement sous forme approximative, jamais GPS exact | Conversion en zone avant transmission ; confirmation ; aucun suivi | T-P02-01 partage volontaire ; T-P02-02 zone seulement ; T-P02-03 coordonnées exactes absentes ; T-P02-04 aucun suivi | Validée ; runtime non vérifié |
 | P-03 — auteur masque message chez lui ; copie destinataire conservée ; pas de suppression globale | Visibilité auteur distincte de la copie destinataire ; rétention serveur documentée séparément | T-P03-01 copie destinataire inchangée ; T-P03-02 suppression globale impossible ; T-P03-03 rétention documentée | Validée ; rétention ouverte |
 | P-04 — statut expiré disparaît ; aucun historique visible ; traces techniques séparées | Expiration contenu ; journaux minimisés et rétention distincte | T-P04-01 statut expiré invisible ; T-P04-02 pas de réactivation ; T-P04-03 logs séparés ; T-P04-04 rétention documentée | Validée ; runtime non vérifié |
