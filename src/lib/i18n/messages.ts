@@ -148,10 +148,12 @@ export const messages = {
     "flash.feed.loading": "Chargement des Flash…",
     "flash.feed.remote": "Flash publics actualisés",
     "flash.feed.offline": "Mode hors ligne",
-    "flash.feed.error": "Flux distant indisponible. Les données disponibles localement sont affichées.",
+    "flash.feed.error":
+      "Flux distant indisponible. Les données disponibles localement sont affichées.",
     "flash.composer.placeholder": "Exprimez votre besoin ou votre offre, simplement…",
     "flash.composer.publish": "Diffuser",
-    "flash.composer.published": "Flash enregistré sur cet appareil. Il sera transmis dès que possible.",
+    "flash.composer.published":
+      "Flash enregistré sur cet appareil. Il sera transmis dès que possible.",
     "flash.composer.error": "Impossible d’enregistrer ce Flash. Réessayez.",
     "flash.composer.signIn": "Connectez-vous pour diffuser un Flash.",
     "flash.composer.understood": "Vita a compris :",
@@ -544,8 +546,7 @@ export const messages = {
     "scan.empty": "No active Flash in this area yet.",
     "scan.denied": "Unable to get your location. Check permission and try again.",
     "scan.error": "The scan failed. Please try again.",
-    "scan.unsupported":
-      "This browser cannot provide your location. Try a compatible browser.",
+    "scan.unsupported": "This browser cannot provide your location. Try a compatible browser.",
     "page.scan.eyebrow": "Nearby",
     "page.scan.title": "Scan",
     "page.scan.desc": "Spot active Flash around you, without ever revealing your position.",
