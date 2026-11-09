@@ -13,6 +13,7 @@ import { Route as TalentsRouteImport } from './routes/talents'
 import { Route as ScanRouteImport } from './routes/scan'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RadarRouteImport } from './routes/radar'
+import { Route as ReelRouteImport } from './routes/reel'
 import { Route as FlashRouteImport } from './routes/flash'
 import { Route as EspaceRouteImport } from './routes/espace'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -44,6 +45,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
 const RadarRoute = RadarRouteImport.update({
   id: '/radar',
   path: '/radar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReelRoute = ReelRouteImport.update({
+  id: '/reel',
+  path: '/reel',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FlashRoute = FlashRouteImport.update({
@@ -113,6 +119,9 @@ export interface FileRoutesByFullPath {
   '/espace': typeof EspaceRoute
   '/flash': typeof FlashRoute
   '/radar': typeof RadarRoute
+  '/reel': typeof ReelRoute
+  '/reel': typeof ReelRoute
+  '/reel': typeof ReelRoute
   '/reset-password': typeof ResetPasswordRoute
   '/scan': typeof ScanRoute
   '/talents': typeof TalentsRoute
@@ -167,6 +176,9 @@ export interface FileRouteTypes {
     | '/espace'
     | '/flash'
     | '/radar'
+    | '/reel'
+    | '/reel'
+    | '/reel'
     | '/reset-password'
     | '/scan'
     | '/talents'
@@ -220,6 +232,7 @@ export interface RootRouteChildren {
   EspaceRoute: typeof EspaceRoute
   FlashRoute: typeof FlashRoute
   RadarRoute: typeof RadarRoute
+  ReelRoute: typeof ReelRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ScanRoute: typeof ScanRoute
   TalentsRoute: typeof TalentsRoute
@@ -257,6 +270,13 @@ declare module '@tanstack/react-router' {
       path: '/radar'
       fullPath: '/radar'
       preLoaderRoute: typeof RadarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reel': {
+      id: '/reel'
+      path: '/reel'
+      fullPath: '/reel'
+      preLoaderRoute: typeof ReelRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/flash': {
@@ -377,6 +397,7 @@ const rootRouteChildren: RootRouteChildren = {
   EspaceRoute: EspaceRoute,
   FlashRoute: FlashRoute,
   RadarRoute: RadarRoute,
+  ReelRoute: ReelRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ScanRoute: ScanRoute,
   TalentsRoute: TalentsRoute,
