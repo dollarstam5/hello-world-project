@@ -1,3 +1,4 @@
+import { useNavigate } from "@tanstack/react-router";
 import { Sheet } from "@/components/app/Sheet";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -39,6 +40,7 @@ function EngineCard({
 /** A short, four-step introduction to Vitalis, shown once per device. */
 export function OnboardingSheet() {
   const { t } = useI18n();
+  const navigate = useNavigate();
   const shouldShow = useOnboarding((state) => state.shouldShow);
   const hydrated = useOnboarding((state) => state.hydrated);
   const step = useOnboarding((state) => state.step);
@@ -46,6 +48,14 @@ export function OnboardingSheet() {
   const previous = useOnboarding((state) => state.previous);
   const dismiss = useOnboarding((state) => state.dismiss);
   const complete = useOnboarding((state) => state.complete);
+  const handleEnter = () => {
+    complete();
+    void navigate({ to: "/" });
+  };
+  const handleSkip = () => {
+    dismiss();
+    void navigate({ to: "/" });
+  };
 
   if (!hydrated) return null;
 
@@ -62,8 +72,8 @@ export function OnboardingSheet() {
       <div className="flex min-h-[min(64dvh,560px)] flex-col gap-6 pt-2">
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <span>{t("onboarding.step", { current: step + 1, total: 4 })}</span>
             <span>{t("onboarding.stepLabel")}</span>
+            <span aria-label={t("onboarding.progress")}>{step + 1}/4</span>
           </div>
           <Progress
             value={((step + 1) / 4) * 100}
@@ -175,13 +185,13 @@ export function OnboardingSheet() {
                 {t("onboarding.back")}
               </Button>
             ) : (
-              <Button type="button" variant="ghost" onClick={dismiss}>
+              <Button type="button" variant="ghost" onClick={handleSkip}>
                 {t("onboarding.skip")}
               </Button>
             )}
           </div>
           {isLastStep ? (
-            <Button type="button" onClick={complete}>
+            <Button type="button" onClick={handleEnter}>
               {t("onboarding.enter")}
               <ArrowRight aria-hidden="true" />
             </Button>
