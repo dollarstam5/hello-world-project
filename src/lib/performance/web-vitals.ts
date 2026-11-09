@@ -27,9 +27,7 @@ export function resetWebVitalsSnapshot(): void {
 }
 
 function navigationType(): string {
-  const navigation = performance.getEntriesByType("navigation")[0] as
-    | PerformanceNavigationTiming
-    | undefined;
+  const navigation = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
   return navigation?.type ?? "unknown";
 }
 
