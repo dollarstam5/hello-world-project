@@ -2,12 +2,7 @@ import type { HTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
 type Variant =
-  | "plain"
-  | "elevated"
-  | "sunken"
-  | "glass"
-  | "glass-strong"
-  | "glass-soft"
+  "plain" | "elevated" | "sunken" | "glass" | "glass-strong" | "glass-soft"
   | "assistant";
 type Padding = "none" | "sm" | "md" | "lg";
 
