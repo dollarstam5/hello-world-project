@@ -155,4 +155,16 @@ Cette règle évite qu'une présence masquée puisse être conservée indéfinim
 
 **Motifs produit :** réduire la charge mentale, éviter les intentions contradictoires, simplifier la gestion de la visibilité et de l'expiration, et limiter les données et traitements nécessaires en V1.
 
-**Point à préciser lors de la spécification détaillée :** quelles modifications sont autorisées pendant une présence active et si certaines modifications doivent réinitialiser ou préserver sa durée. Aucune réinitialisation de durée n'est décidée par le présent arbitrage.
+**Règle de modification validée :** la description facultative et le rayon peuvent être modifiés pendant que la présence est active. Les changements prennent effet immédiatement et ne suspendent pas la présence ni ne réinitialisent sa durée.
+
+## 15. Décision produit validée — modification d'une présence active (2026-11-09)
+
+**Statut : VALIDÉ V1.** L'utilisateur peut modifier sa présence Réel pendant qu'elle est active et visible, sans devoir la désactiver ni en créer une nouvelle.
+
+- La description facultative peut être modifiée.
+- Le rayon de visibilité peut être modifié, dans les limites V1 déjà définies.
+- Les changements prennent effet immédiatement pour la découverte à proximité.
+- La modification ne suspend pas la présence et ne remet pas son compte à rebours à zéro : l'heure d'expiration initialement choisie est conservée.
+- La règle d'une seule présence active par utilisateur reste applicable.
+
+Cette décision vise une gestion souple et simple de la présence, sans multiplier les étapes ni permettre de prolonger implicitement sa durée.
