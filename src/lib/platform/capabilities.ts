@@ -1,5 +1,6 @@
 export type PlatformOS = "android" | "ios" | "windows" | "macos" | "linux" | "other" | "unknown";
-export type BrowserName = "chrome" | "edge" | "samsung" | "firefox" | "safari" | "other" | "unknown";
+export type BrowserName =
+  "chrome" | "edge" | "samsung" | "firefox" | "safari" | "other" | "unknown";
 
 export interface PlatformIdentity {
   os: PlatformOS;
@@ -46,10 +47,7 @@ export function detectPlatformIdentity(input: NavigatorHints): PlatformIdentity 
   if (brands.some((brand) => brand.includes("edge")) || /edg(e|a|ios)?\//i.test(ua))
     browser = "edge";
   else if (/samsungbrowser/i.test(ua)) browser = "samsung";
-  else if (
-    brands.some((brand) => brand.includes("chrome")) ||
-    /crios|chrome/i.test(ua)
-  )
+  else if (brands.some((brand) => brand.includes("chrome")) || /crios|chrome/i.test(ua))
     browser = "chrome";
   else if (/firefox|fxios/i.test(ua)) browser = "firefox";
   else if (/safari/i.test(ua) && !/chrome|crios|android/i.test(ua)) browser = "safari";
