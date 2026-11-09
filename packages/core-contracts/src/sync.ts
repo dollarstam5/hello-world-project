@@ -123,7 +123,8 @@ export interface PullResult {
 }
 
 /** Anything that survives a round-trip through the sync transport. */
-export type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
+export type JsonValue =
+  string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
 
 export interface SyncRecordEnvelope {
   table: SyncedTable;
