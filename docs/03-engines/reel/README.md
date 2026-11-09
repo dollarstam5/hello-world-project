@@ -131,4 +131,15 @@ Le passage en mode Invisible est réversible et ne supprime ni le compte, ni le 
 
 **Conséquence UX V1 :** l'état de visibilité doit être compréhensible en un coup d'œil et modifiable simplement, sans parcours complexe. L'interface doit confirmer clairement à l'utilisateur lorsqu'il n'est plus découvrable.
 
-**Points à préciser ultérieurement :** comportement exact d'une présence mise en Invisible (mise en pause ou retrait temporaire du flux de découverte), traitement de sa durée pendant cette période, et reprise de visibilité. Ces détails ne sont pas implicitement décidés ici.
+**Règles associées validées :** le décompte de la durée continue normalement en mode Invisible. Si l'utilisateur repasse en mode Visible avant l'expiration, sa présence redevient découvrable uniquement pour le temps restant. Si la durée arrive à son terme en mode Invisible, la présence expire normalement et ne peut pas être réactivée.
+
+## 13. Décision produit validée — durée pendant l'invisibilité (2026-11-09)
+
+**Statut : VALIDÉ V1.** Le passage en mode Invisible ne suspend et ne réinitialise pas la durée de la présence Réel.
+
+- La présence cesse immédiatement d'être découvrable par les autres utilisateurs.
+- Le compte à rebours continue normalement à partir de l'heure d'expiration initialement définie.
+- Si l'utilisateur repasse en mode Visible avant l'expiration, la présence redevient découvrable pour le temps restant uniquement.
+- Si la durée arrive à son terme pendant que la présence est Invisible, elle expire normalement et ne peut pas être réactivée ; l'utilisateur devra créer/activer une nouvelle présence s'il souhaite redevenir visible.
+
+Cette règle évite qu'une présence masquée puisse être conservée indéfiniment et garantit que la durée choisie par l'utilisateur reste effective.
