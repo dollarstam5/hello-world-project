@@ -41,6 +41,7 @@ Propositions à valider :
 2. Garde-fous globaux Supabase Free : DB 350 Mo/500 Mo ; fichiers 700 Mo/1 Go ; egress cache et non-cache 3,5 Go/5 Go chacun ; Realtime 1,4 M/2 M messages ; 140/200 connexions.
 3. Alertes à 50 %, limitation des opérations non essentielles à 65 %, arrêt des nouvelles écritures non indispensables à 70 %.
 4. Confirmer si le budget logique par compte doit être identique pour tous les utilisateurs ou ajusté selon les besoins d'accessibilité et d'usage.
+5. À partir de quel événement le délai de 3 mois commence-t-il : création de la conversation, dernier message, clôture de la mise en relation ou autre événement ?
 
 Points techniques à préciser :
 - Mesure exacte du stockage attribuable à chaque compte/espace (données, index, médias, métadonnées).
@@ -64,7 +65,11 @@ Points techniques à préciser :
 
 Chaque réponse doit être enregistrée avec ID de décision, statut, date, exigences et tests impactés. Aucune question ouverte ne doit être résolue par supposition.
 
-## Priorité 5 — archivage, suppression et coûts (décisions déjà validées, détails ouverts)
+## Ancienne section — remplacée par la synthèse de priorité 5 ci-dessus
+
+Cette section est conservée uniquement pour signaler que ses questions ont été regroupées plus haut ; ne pas la traiter comme une liste de décisions ouvertes actuelle.
+
+
 
 - Les conversations sont archivées après 3 mois ou dès dépassement du plafond de 50 (la plus ancienne est archivée).
 - Une archive est inaccessible à l'utilisateur, sauf accès exceptionnel autorisé par un administrateur pour 24 h après demande.
