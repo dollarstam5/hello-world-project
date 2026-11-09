@@ -6,11 +6,7 @@ import { useNetworkStatus } from "@/lib/platform/useNetworkStatus";
 
 function NetworkProbe() {
   const { online } = useNetworkStatus();
-  return createElement(
-    "output",
-    { "data-online": String(online) },
-    online ? "online" : "offline",
-  );
+  return createElement("output", { "data-online": String(online) }, online ? "online" : "offline");
 }
 
 describe("network status", () => {
