@@ -12,6 +12,7 @@ Cette section documente la vision produit, les intentions d'usage, les parcours,
 - [Vitalis Experience System](./experience-system.md)
 - [Centre de communication — règles produit V1](./communication-center-v1.md)
 - [Onboarding Vitalis — parcours V1](./onboarding-v1.md)
+- [Langage humain et communication Vitalis](./communication-language.md)
 
 ## Références d'architecture liées
 
