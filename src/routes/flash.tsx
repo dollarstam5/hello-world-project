@@ -7,8 +7,8 @@ import { FlashComposer } from "@/domains/flash/ui/FlashComposer";
 export const Route = createFileRoute("/flash")({
   head: () => ({
     meta: [
-      { title: "Flash — Écosystème" },
-      { name: "description", content: "Moments éphémères de l'écosystème." },
+      { title: "Flash — Vitalis" },
+      { name: "description", content: "Moments éphémères de Vitalis." },
     ],
   }),
   component: () => (
