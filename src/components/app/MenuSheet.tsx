@@ -8,6 +8,7 @@ import {
   SheetDescription,
 } from "@/components/ui/sheet";
 import { useI18n } from "@/lib/i18n/useI18n";
+import { SECONDARY_SPACES } from "@/lib/navigation/secondary-spaces";
 
 interface MenuSheetProps {
   open: boolean;
@@ -22,20 +23,12 @@ interface MenuSheetProps {
 export function MenuSheet({ open, onOpenChange }: MenuSheetProps) {
   const { t } = useI18n();
 
-  const cards = [
-    {
-      to: "/espace",
-      icon: MapPin,
-      title: t("menu.espace"),
-      desc: t("menu.espace.desc"),
-    },
-    {
-      to: "/talents",
-      icon: Sparkles,
-      title: t("menu.talents"),
-      desc: t("menu.talents.desc"),
-    },
-  ] as const;
+  const cards = SECONDARY_SPACES.map((space) => ({
+    to: space.to,
+    icon: space.key === "espace" ? MapPin : Sparkles,
+    title: t(space.titleKey),
+    desc: t(space.descriptionKey),
+  }));
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>

@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -11,8 +10,6 @@ import {
 
 import appCss from "../styles.css?url";
 import { AppShell } from "@/components/app/AppShell";
-import { registerServiceWorker } from "@/platform/pwa";
-import { startWebVitalsMonitoring } from "@/lib/performance/web-vitals";
 
 function NotFoundComponent() {
   return (
@@ -75,18 +72,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { title: "Vitala — l'entraide locale, même hors connexion" },
+      { title: "Vitalis — l'entraide locale, même hors connexion" },
       {
         name: "description",
         content:
-          "Vitala réunit entraide locale, missions et échanges dans une application mobile-first utilisable hors connexion.",
+          "Vitalis réunit entraide locale, missions et échanges dans une application mobile-first utilisable hors connexion.",
       },
       { name: "theme-color", content: "#0b0d11" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
-      { name: "apple-mobile-web-app-title", content: "Vitala" },
+      { name: "apple-mobile-web-app-title", content: "Vitalis" },
       { name: "mobile-web-app-capable", content: "yes" },
-      { property: "og:title", content: "Vitala — votre réseau d'entraide" },
+      { property: "og:title", content: "Vitalis — votre réseau d'entraide" },
       {
         property: "og:description",
         content: "Votre réseau d'entraide locale, disponible même hors connexion.",
@@ -122,8 +119,6 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
-  useEffect(() => startWebVitalsMonitoring(() => undefined), []);
-  registerServiceWorker();
   const { queryClient } = Route.useRouteContext();
 
   return (
