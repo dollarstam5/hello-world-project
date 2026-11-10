@@ -28,7 +28,7 @@ SELECT lives_ok(
     'e5000000-0000-4000-8000-000000000011',
     'Awa', 'avatar-blue', 'Bonamoussadi', 'Disponible pour échanger',
     100, 9.7000, 4.0500, 30, true
-  )$reel_test$$,
+  )$reel_test$,
   'the guest publishes a temporary presence without a member profile'
 );
 
