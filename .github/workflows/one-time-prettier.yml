@@ -1,0 +1,40 @@
+name: One-time Prettier formatting
+
+on:
+  push:
+    branches:
+      - docs/language-audit-v1
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    if: contains(github.event.head_commit.message, '[format-once]')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the active branch
+        uses: actions/checkout@v4
+        with:
+          ref: docs/language-audit-v1
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.2.23"
+
+      - name: Install locked dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Apply the repository Prettier rules
+        run: bun run format
+
+      - name: Commit formatting changes to the same branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: format active Vitalis branch with Prettier"
+            git push origin HEAD:docs/language-audit-v1
+          fi
