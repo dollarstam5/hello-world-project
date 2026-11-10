@@ -194,3 +194,15 @@ Le test `130_reel_presence_security.test.sql` a été réorganisé pour exécute
 - Assertion pgTAP ajoutée pour vérifier que `list_reel_bips()` est bien `VOLATILE`, en cohérence avec le nettoyage qu'elle déclenche.
 
 Le plan pgTAP est maintenant de 24 assertions. **Le fichier a été corrigé, mais le test n'a pas été exécuté sur une base Supabase ; la syntaxe et les comportements doivent encore être confirmés par exécution.**
+
+## Audit statique croisé — migrations et pgTAP 130/131
+
+Une relecture croisée des migrations Réel 100 à 600, des deux tests pgTAP et du schéma de profils a été effectuée sur cette branche.
+
+- Les colonnes utilisées par le test pour les présences (owner_id, status, expires_at), les bips (client_request_id, expires_at) et les relations (participant_low, participant_high, status) correspondent aux définitions SQL consultées.
+- Les signatures appelées par le test correspondent aux fonctions déclarées : démarrage avec six paramètres, envoi de bip avec deux UUID, commande avec UUID et action, liste des bips sans paramètre.
+- L'insertion des utilisateurs de test déclenche le mécanisme existant de création du profil ; le statut par défaut est actif et la suppression est nulle. Les mises à jour de suspension sont volontairement exécutées après retour au rôle propriétaire du test.
+- Les droits attendus par les tests invités correspondent à la migration 200 : accès direct refusé aux rôles navigateur, accès de service réservé au serveur.
+- La migration 600 corrige explicitement la volatilité de list_reel_bips() après le remplacement de fonction de la migration 500.
+
+**Résultat de cet audit :** aucune divergence de nom de colonne ou de signature n'a été relevée dans les éléments relus. Cela ne valide ni la syntaxe par exécution, ni les politiques sur une base réelle, ni les migrations appliquées. Les tests 130 et 131 restent à lancer avec bun run test:db sur une pile Supabase locale/jetable (CLI et Docker requis), jamais sur la production. Aucun résultat CI vert n'est actuellement confirmé pour le SHA de la PR.
