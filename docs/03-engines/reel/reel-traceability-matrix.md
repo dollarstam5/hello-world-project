@@ -72,7 +72,33 @@
 
 **Distinctions importantes :** les bips non acceptés expirent après 24 h et ne disposent pas d'historique permanent. Les mises en relation acceptées sont durables. Le mode invité ne conserve pas les données personnelles de session après la fin de celle-ci ; l'historique d'un compte Vitalis suit des règles de conservation distinctes. La décision d'archivage DEC-046 prévoit six mois de conservation après archivage, puis une suppression définitive, avec suppression de l'historique possible à la demande et sans export. La portée exacte de cet archivage (conversations, relations ou autres éléments) doit être reliée au document source avant implémentation ; elle ne doit pas être appliquée aux bips non acceptés.
 
-## 5. Exigences et tests associés
+## 5. Règles d'accès — membre et invité
+
+| Exigence | Règle fonctionnelle | Statut |
+| --- | --- | --- |
+| ACC-01 | Une personne peut accéder au mode Réel invité sans posséder de compte Vitalis. | VALIDÉE |
+| ACC-02 | Vitalis attribue à l'invité une identité provisoire propre à sa session ; elle ne constitue pas un profil membre et ne doit pas être enregistrée dans les tables durables de profils. | VALIDÉE |
+| ACC-03 | L'accès invité est limité aux services et actions autorisés pour ce mode. Le moteur adapte le parcours selon le mode d'accès, sans inventer de droits ni demander systématiquement les mêmes informations qu'à un membre. | VALIDÉE |
+| ACC-04 | À la fin de la visite ou à l'expiration de la session, l'identité provisoire et les données temporaires associées sont réinitialisées. Aucun historique invité durable n'est conservé. | VALIDÉE |
+| ACC-05 | Les informations temporaires indispensables au fonctionnement temps réel doivent être éphémères, minimisées, protégées et supprimées à la fin de la session ou à leur échéance. Elles ne sont pas un profil Vitalis. | VALIDÉE — architecture technique À SPÉCIFIER |
+| ACC-06 | Vitalis peut proposer à l'invité de créer un compte ou de compléter un profil afin de retrouver des informations et d'accéder à davantage de possibilités. Cette démarche reste facultative et nécessite une action explicite. | VALIDÉE |
+| ACC-07 | Un invité ne devient jamais membre par conversion automatique. Aucun transfert ou rattachement de données temporaires à un compte ne se fait sans consentement explicite. | VALIDÉE |
+| ACC-08 | Un membre n'expose que les informations de son profil nécessaires à l'expérience et autorisées ; les données du profil ne sont pas recopiées intégralement dans chaque présence ou interaction. | VALIDÉE |
+
+### Tests attendus pour les accès
+
+- ACC-01-T01 : ouvrir Réel sans compte et sans créer de profil membre.
+- ACC-02-T01 : vérifier qu'une identité provisoire est distincte de tout identifiant de membre.
+- ACC-03-T01 : vérifier les limites d'actions et de données propres au mode invité.
+- ACC-04-T01 : terminer une visite et vérifier la réinitialisation ; ACC-04-T02 : vérifier le nettoyage après expiration/fermeture inattendue.
+- ACC-05-T01 : vérifier que l'état temps réel temporaire n'est pas écrit dans les tables durables de profils ni conservé en historique.
+- ACC-06-T01 : vérifier que la proposition de création de compte est facultative et n'interrompt pas l'usage invité.
+- ACC-07-T01 : vérifier qu'aucun rattachement de données ne se produit sans consentement explicite.
+- ACC-08-T01 : vérifier la minimisation des champs exposés pour un profil membre.
+
+Ces tests sont des critères à implémenter, pas des tests déjà exécutés.
+
+## 6. Exigences et tests associés
 
 Les identifiants ci-dessous proviennent des repères de traçabilité déjà établis. Ils indiquent des tests attendus, pas des tests dont l'exécution est prouvée.
 
@@ -92,7 +118,7 @@ Le point de départ exact du délai de 24 h reste ouvert. Les événements en at
 
 Les exigences techniques T-01 à T-09 restent des éléments de spécification ouverts. Aucun identifiant de test supplémentaire n'est créé ici pour A, B, C-01 ou C-02 : il doit être relié à une source existante avant d'être ajouté.
 
-## 6. Confrontation au dépôt actuel
+## 7. Confrontation au dépôt actuel
 
 | Élément observé | Constat | Conclusion |
 | --- | --- | --- |
@@ -103,7 +129,7 @@ Les exigences techniques T-01 à T-09 restent des éléments de spécification o
 | Découverte géographique | La première version filtre sur une clé de zone opaque commune ; le rayon métrique est enregistré mais aucun calcul de distance n'est effectué. | Ne pas afficher de distance ni annoncer un filtrage exact par rayon avant l'algorithme spatial et ses tests. |
 | Commandes de bip | Les RPC de création, acceptation, refus et retrait sont ajoutées ; l'acceptation crée une relation unique et le même identifiant client permet de rejouer une demande. | Le raccordement de l'outbox locale et les tests de reprise réseau restent à réaliser. |
 
-## 7. Conditions avant activation du parcours Réel
+## 8. Conditions avant activation du parcours Réel
 
 1. Vérifier la migration dans la chaîne standard, l'appliquer sur une base de test et exécuter le test pgTAP 130 ainsi que les tests RLS existants.
 2. Raccorder Supabase Realtime côté client, avec autorisations, reprise après reconnexion et nettoyage des abonnements.
