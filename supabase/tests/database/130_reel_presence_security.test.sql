@@ -14,10 +14,10 @@ INSERT INTO auth.users (
 -- bip delivery, idempotent retry and acceptance are exercised.
 RESET ROLE;
 SET LOCAL ROLE service_role;
-INSERT INTO public.reel_zone_grants (id, owner_id, zone_key, purpose, expires_at) VALUES
-  ('d1000000-0000-4000-8000-000000000201', 'd1000000-0000-4000-8000-000000000001', 'z1_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'presence', now() + interval '5 minutes'),
-  ('d1000000-0000-4000-8000-000000000202', 'd1000000-0000-4000-8000-000000000002', 'z1_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'presence', now() + interval '5 minutes'),
-  ('d1000000-0000-4000-8000-000000000203', 'd1000000-0000-4000-8000-000000000003', 'z1_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 'presence', now() + interval '5 minutes');
+INSERT INTO public.reel_zone_grants (id, owner_id, zone_key, purpose, expires_at, location) VALUES
+  ('d1000000-0000-4000-8000-000000000201', 'd1000000-0000-4000-8000-000000000001', 'z1_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'presence', now() + interval '5 minutes', extensions.ST_SetSRID(extensions.ST_MakePoint(2.3522, 48.8566), 4326)::extensions.geography),
+  ('d1000000-0000-4000-8000-000000000202', 'd1000000-0000-4000-8000-000000000002', 'z1_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'presence', now() + interval '5 minutes', extensions.ST_SetSRID(extensions.ST_MakePoint(2.35225, 48.8566), 4326)::extensions.geography),
+  ('d1000000-0000-4000-8000-000000000203', 'd1000000-0000-4000-8000-000000000003', 'z1_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 'presence', now() + interval '5 minutes', extensions.ST_SetSRID(extensions.ST_MakePoint(2.36, 48.8566), 4326)::extensions.geography);
 SET LOCAL ROLE authenticated;
 SELECT set_config(
   'request.jwt.claims',
