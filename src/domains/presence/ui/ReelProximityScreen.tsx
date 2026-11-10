@@ -1,5 +1,4 @@
 import { useState, type CSSProperties } from "react";
-import { Link } from "@tanstack/react-router";
 import {
   ArrowLeft, Bell, Bluetooth, Check, ChevronDown, CircleUserRound,
   MapPin, RadioTower, Settings2, SlidersHorizontal, UsersRound, X,
@@ -27,7 +26,7 @@ type ActivityTab = "notifications" | "bips" | "connections";
 
 const MAX_RING_PEOPLE = 9;
 const DURATIONS = ["30 min", "1 h", "2 h", "3 h", "6 h", "12 h", "24 h"];
-const RADII = ["10 m", "25 m", "50 m", "100 m", "250 m", "500 m", "1 km"];
+const RADII = ["10 m", "25 m", "50 m", "100 m", "1 km"];
 
 function PersonAvatar({ person, size = "person" }: { person: Person; size?: "person" | "small" | "me" }) {
   return (
@@ -128,7 +127,6 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
           title="Activité"
         >
           <Bell aria-hidden="true" />
-          <span className="reel-proximity__notification-dot" aria-hidden="true" />
         </button>
       </header>
 
