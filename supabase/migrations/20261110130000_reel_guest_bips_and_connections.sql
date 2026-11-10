@@ -127,7 +127,7 @@ BEGIN
       AND expires_at > (extract(epoch FROM now()) * 1000)::bigint FOR SHARE;
   IF NOT FOUND THEN RAISE EXCEPTION 'active_sender_presence_required' USING ERRCODE = '42501'; END IF;
 
-  SELECT * INTO v_recipient FROM public.reel_guest_presences guest
+  SELECT guest.* INTO v_recipient FROM public.reel_guest_presences guest
     JOIN public.reel_guest_sessions session ON session.id = guest.guest_session_id
     WHERE guest.id = p_recipient_guest_presence_id AND guest.status = 'active'
       AND guest.expires_at > now() AND session.revoked_at IS NULL
@@ -480,6 +480,60 @@ GRANT EXECUTE ON FUNCTION public.list_reel_guest_connections_for_member() TO aut
 GRANT EXECUTE ON FUNCTION public.list_reel_guest_connections_for_session(UUID) TO service_role;
 GRANT EXECUTE ON FUNCTION public.close_reel_guest_connection_member(UUID) TO authenticated;
 GRANT EXECUTE ON FUNCTION public.close_reel_guest_connection_guest(UUID,UUID) TO service_role;
+
+
+CREATE OR REPLACE FUNCTION public.purge_reel_guest_interactions()
+RETURNS INTEGER
+LANGUAGE plpgsql SECURITY DEFINER
+SET search_path = pg_catalog, public
+AS $
+DECLARE
+  v_deleted INTEGER := 0;
+  v_count INTEGER;
+BEGIN
+  DELETE FROM public.reel_guest_bips
+  WHERE expires_at <= now()
+     OR sender_guest_session_id IN (
+       SELECT id FROM public.reel_guest_sessions WHERE revoked_at IS NOT NULL OR expires_at <= now()
+     )
+     OR recipient_guest_session_id IN (
+       SELECT id FROM public.reel_guest_sessions WHERE revoked_at IS NOT NULL OR expires_at <= now()
+     );
+  GET DIAGNOSTICS v_count = ROW_COUNT;
+  v_deleted := v_deleted + v_count;
+
+  DELETE FROM public.reel_guest_connections
+  WHERE expires_at <= now()
+     OR participant_one_guest_session_id IN (
+       SELECT id FROM public.reel_guest_sessions WHERE revoked_at IS NOT NULL OR expires_at <= now()
+     )
+     OR participant_two_guest_session_id IN (
+       SELECT id FROM public.reel_guest_sessions WHERE revoked_at IS NOT NULL OR expires_at <= now()
+     );
+  GET DIAGNOSTICS v_count = ROW_COUNT;
+  v_deleted := v_deleted + v_count;
+  RETURN v_deleted;
+END;
+$;
+REVOKE ALL ON FUNCTION public.purge_reel_guest_interactions() FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.purge_reel_guest_interactions() TO service_role;
+
+DO $cron$
+BEGIN
+  IF EXISTS (SELECT 1 FROM pg_extension WHERE extname = 'pg_cron') THEN
+    BEGIN
+      PERFORM cron.schedule(
+        'reel-guest-interaction-cleanup',
+        '* * * * *',
+        'SELECT public.purge_reel_guest_interactions();'
+      );
+    EXCEPTION
+      WHEN duplicate_object OR unique_violation THEN NULL;
+      WHEN undefined_function OR invalid_schema_name THEN NULL;
+    END;
+  END IF;
+END;
+$cron$;
 
 COMMENT ON TABLE public.reel_guest_bips IS
   'Temporary cross-mode bip requests. Guest identity is a verified short-lived session, never a synthetic member account.';
