@@ -547,6 +547,7 @@ export function ReelProximityScreen() {
             id: person.presence_id,
             name: person.display_name || "Profil Vitalis",
             avatarUrl: null,
+            avatarKey: person.avatar_key,
             initials: (person.display_name || "V")
               .trim()
               .split(/\\s+/)
