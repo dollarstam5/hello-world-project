@@ -4,6 +4,8 @@ import { SmartCard } from "./SmartCard";
 import { Icon } from "./Icon";
 import { Indicator } from "./Indicator";
 import { useI18n } from "@/lib/i18n/useI18n";
+import type { PublicProfilePreview } from "@eco/core-contracts";
+import { PublicProfilePreview as ProfilePreview } from "./PublicProfilePreview";
 
 interface FlashCardProps {
   title: ReactNode;
@@ -13,13 +15,24 @@ interface FlashCardProps {
   /** Action area — usually a small button or chip row. */
   action?: ReactNode;
   onOpen?: () => void;
+  /** Keeps demo content distinct from a real live publication. */
+  origin?: "real" | "demo";
+  authorPreview?: PublicProfilePreview | null;
 }
 
 /**
  * FlashCard — generic surface for ephemeral / time-bound content.
  * Domain-agnostic: any feature can use it for "moments" that fade.
  */
-export function FlashCard({ title, description, ttl, action, onOpen }: FlashCardProps) {
+export function FlashCard({
+  title,
+  description,
+  ttl,
+  action,
+  onOpen,
+  origin = "real",
+  authorPreview,
+}: FlashCardProps) {
   const { t } = useI18n();
   return (
     <SmartCard
@@ -29,13 +42,20 @@ export function FlashCard({ title, description, ttl, action, onOpen }: FlashCard
       eyebrow={
         <span className="inline-flex items-center gap-1.5">
           <Icon as={Zap} size="xs" />
-          {t("status.live")}
+          {origin === "demo" ? t("demo.label") : t("status.live")}
         </span>
       }
       title={title}
       description={description}
       trailing={ttl ? <Indicator tone="warning" label={ttl} /> : undefined}
-      footer={action}
+      footer={
+        authorPreview || action ? (
+          <div className="grid gap-2">
+            {authorPreview ? <ProfilePreview profile={authorPreview} origin={origin} /> : null}
+            {action}
+          </div>
+        ) : undefined
+      }
     />
   );
 }

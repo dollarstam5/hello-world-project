@@ -40,7 +40,7 @@ Un code fonctionnel n'est pas forcément un bon code.
 
 Une revue doit vérifier :
 
-```text id="8kq3mr" Est-ce que ça fonctionne ?
+````text id="8kq3mr" Est-ce que ça fonctionne ?
 
 +
 
@@ -454,3 +454,4 @@ Fin de AI/31-AI-CODE-REVIEW.md
 
 9
 
+````

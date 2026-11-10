@@ -10,6 +10,7 @@ AI-PRODUCTION-RULES.md définit les règles obligatoires avant tout déploiement
 - les données sont protégées;
 - les utilisateurs ne sont pas exposés à des erreurs critiques;
 - les changements sont contrôlés.
+
 # 2. Principe fondamental
 
 Une mise en production est une opération critique. Aucune IA ne doit déployer une modification importante sans validation complète. La priorité est : ```text id="5k3q91" Sécurité ↓ Stabilité ↓ Protection des données ↓ Disponibilité
@@ -40,7 +41,7 @@ Validation proche de la production.
 ## Production
 ```
 
-```
+````
 Objectif :
 Utilisateurs réels.
 ---
@@ -63,7 +64,8 @@ Validation
 Production
 ↓
 Surveillance
-```
+````
+
 # 6. Vérification avant déploiement
 
 Avant publication : L'IA doit vérifier :
@@ -92,7 +94,7 @@ Toute migration production doit :
 - être testée;
 - être réversible si possible;
 - être documentée.
-Interdit :
+  Interdit :
 
 - modification directe en production;
 - suppression dangereuse;
@@ -107,7 +109,7 @@ Avant publication d'une API : Vérifier :
 - sécurité;
 - erreurs;
 - performances.
-Une modification cassant une API existante doit avoir une stratégie de migration.
+  Une modification cassant une API existante doit avoir une stratégie de migration.
 
 # 9. Gestion des utilisateurs
 
@@ -117,6 +119,7 @@ Avant activation d'une fonctionnalité utilisateur : Vérifier :
 - expérience utilisateur;
 - messages d'erreur;
 - protection des données.
+
 # 10. Monitoring obligatoire
 
 Une fonctionnalité importante doit être surveillée. Le monitoring doit suivre :
@@ -125,6 +128,7 @@ Une fonctionnalité importante doit être surveillée. Le monitoring doit suivre
 - performances;
 - disponibilité;
 - comportements inhabituels.
+
 # 11. Logs production
 
 Les logs doivent permettre :
@@ -138,6 +142,7 @@ Ils ne doivent jamais contenir :
 - mots de passe;
 - tokens;
 - données privées inutiles.
+
 # 12. Gestion des incidents
 
 En cas de problème : Procédure : ```text id="9r1p4m" Détection ↓ Analyse ↓ Limitation impact ↓ Correction ↓ Validation ↓ Documentation
@@ -145,6 +150,7 @@ En cas de problème : Procédure : ```text id="9r1p4m" Détection ↓ Analyse �
 - méthode de retour arrière;
 - sauvegarde nécessaire;
 - procédure claire. Une IA doit toujours connaître : "Comment revenir à l'état précédent ?"
+
 ```
 ---
 # 13. Rollback
@@ -163,17 +169,19 @@ Toute modification critique doit prévoir :
 - changements;
 - corrections;
 - risques connus. Format recommandé : ```text id="j5m7q2" MAJOR.MINOR.PATCH
+
 ```
 ---
 # 14. Changements urgents
 Même en urgence :
 L'IA doit respecter :
 ```
+
 Exemple : V1.0.0
 
 # 17. Validation finale IA
 
-Avant de déclarer une release terminée : L'IA doit fournir : ```text id="r3t9kx" Résumé : Fonctionnalités : Tests : Risques : Monitoring : Rollback : ```
+Avant de déclarer une release terminée : L'IA doit fournir : `text id="r3t9kx" Résumé : Fonctionnalités : Tests : Risques : Monitoring : Rollback : `
 
 # 18. Interdictions absolues
 

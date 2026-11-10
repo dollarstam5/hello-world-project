@@ -18,6 +18,7 @@ Le déploiement de Vitala repose sur les principes suivants :
 - Continuous Deployment
 - Haute disponibilité
 - Reproductibilité des environnements
+
 # 3. Architecture de déploiement
 
 ## Frontend
@@ -26,6 +27,7 @@ Le déploiement de Vitala repose sur les principes suivants :
 - TypeScript
 - Vite
 - Déploiement sur Vercel
+
 ## Backend
 
 Supabase fournit :
@@ -36,7 +38,7 @@ Supabase fournit :
 - Storage
 - Realtime
 - Row Level Security (RLS)
-Les Edge Functions pourront être introduites progressivement lorsque le MVP l'exigera.
+  Les Edge Functions pourront être introduites progressivement lorsque le MVP l'exigera.
 
 ## Infrastructure future
 
@@ -46,6 +48,7 @@ L'architecture prévoit l'intégration future de :
 - CDN mondial
 - Cache distribué
 - Services d'observabilité avancés
+
 # 4. Environnements
 
 Les environnements officiels sont :
@@ -81,7 +84,7 @@ Les secrets comprennent notamment :
 - clés API;
 - certificats;
 - secrets de signature.
-Les secrets sont gérés exclusivement par les plateformes sécurisées de déploiement. Ils ne doivent jamais apparaître dans le code source.
+  Les secrets sont gérés exclusivement par les plateformes sécurisées de déploiement. Ils ne doivent jamais apparaître dans le code source.
 
 # 7. Pipeline CI/CD
 
@@ -96,11 +99,12 @@ Les sauvegardes couvrent :
 - PostgreSQL;
 - Storage;
 - configurations critiques.
-Les sauvegardes doivent être :
+  Les sauvegardes doivent être :
 
 - régulières;
 - testées;
 - restaurables.
+
 # 9. Monitoring
 
 La plateforme surveille notamment :
@@ -110,7 +114,7 @@ La plateforme surveille notamment :
 - erreurs;
 - temps de réponse;
 - consommation des ressources.
-Les alertes critiques doivent être remontées rapidement.
+  Les alertes critiques doivent être remontées rapidement.
 
 # 10. Journalisation
 
@@ -121,7 +125,7 @@ Tous les événements importants sont journalisés :
 - erreurs;
 - déploiements;
 - incidents.
-Les journaux respectent les règles de confidentialité.
+  Les journaux respectent les règles de confidentialité.
 
 # 11. Sécurité
 
@@ -133,6 +137,7 @@ Le déploiement applique notamment :
 - authentification sécurisée;
 - gestion des secrets;
 - limitation des privilèges.
+
 # 12. Continuité d'activité
 
 En cas d'incident :
@@ -141,7 +146,7 @@ En cas d'incident :
 - redéploiement automatisé;
 - vérification de l'intégrité;
 - reprise des services.
-Les procédures doivent minimiser l'interruption de service.
+  Les procédures doivent minimiser l'interruption de service.
 
 # 13. Scalabilité
 
@@ -166,7 +171,7 @@ Le MVP repose principalement sur :
 - React
 - TypeScript
 - Vite
-Ces choix pourront évoluer sans remettre en cause l'architecture métier.
+  Ces choix pourront évoluer sans remettre en cause l'architecture métier.
 
 # 15. Documents associés
 
@@ -175,4 +180,4 @@ Ces choix pourront évoluer sans remettre en cause l'architecture métier.
 - 16 — API
 - 18 — Architecture
 - 19 — MVP
-Le Deployment Guide constitue la référence officielle pour le déploiement et l'exploitation de Vitala. Il garantit que chaque environnement reste cohérent, sécurisé et conforme aux principes définis dans le VPS.
+  Le Deployment Guide constitue la référence officielle pour le déploiement et l'exploitation de Vitala. Il garantit que chaque environnement reste cohérent, sécurisé et conforme aux principes définis dans le VPS.

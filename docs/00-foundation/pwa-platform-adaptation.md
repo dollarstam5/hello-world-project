@@ -34,18 +34,18 @@ Implémentation : `src/lib/platform/capabilities.ts`, avec tests Android, iPhone
 
 ## 4. Capacités à prendre en compte
 
-| Domaine | Capacité à vérifier | Comportement attendu si indisponible |
-| --- | --- | --- |
-| Installation | événement d'installation, mode autonome, plateforme compatible | proposer l'accès web et expliquer simplement l'installation manuelle si elle est possible |
-| Service Worker | prise en charge, enregistrement, contrôle de la page, mise à jour | conserver une expérience web fonctionnelle sans promettre le hors-ligne |
-| Réseau | état en ligne/hors ligne, échec réel des requêtes, reprise | conserver localement uniquement les actions prévues et annoncer leur état réel |
-| Position | API, permission, précision et délai | expliquer pourquoi la position manque et permettre de réessayer ou de continuer sans elle lorsque le parcours le permet |
-| Notifications | permission, API et contexte sécurisé | garder les notifications consultables dans l'application |
-| Navigation | historique, bouton retour, clavier, gestes et mode autonome | fournir un retour cohérent sans détourner le comportement natif |
-| Affichage | viewport, orientation, zones sûres, pointeur et densité d'interaction | réorganiser la mise en page sans masquer de fonction essentielle |
-| Mouvement | préférence de réduction des animations | réduire ou supprimer les mouvements non essentiels |
-| Partage et presse-papiers | API disponible et permission/contexte requis | proposer une copie ou un partage manuel explicite |
-| Performance | mémoire, cœurs, visibilité et capacités observables | alléger les effets et le travail non essentiel sans retirer les fonctions utiles |
+| Domaine                   | Capacité à vérifier                                                   | Comportement attendu si indisponible                                                                                    |
+| ------------------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Installation              | événement d'installation, mode autonome, plateforme compatible        | proposer l'accès web et expliquer simplement l'installation manuelle si elle est possible                               |
+| Service Worker            | prise en charge, enregistrement, contrôle de la page, mise à jour     | conserver une expérience web fonctionnelle sans promettre le hors-ligne                                                 |
+| Réseau                    | état en ligne/hors ligne, échec réel des requêtes, reprise            | conserver localement uniquement les actions prévues et annoncer leur état réel                                          |
+| Position                  | API, permission, précision et délai                                   | expliquer pourquoi la position manque et permettre de réessayer ou de continuer sans elle lorsque le parcours le permet |
+| Notifications             | permission, API et contexte sécurisé                                  | garder les notifications consultables dans l'application                                                                |
+| Navigation                | historique, bouton retour, clavier, gestes et mode autonome           | fournir un retour cohérent sans détourner le comportement natif                                                         |
+| Affichage                 | viewport, orientation, zones sûres, pointeur et densité d'interaction | réorganiser la mise en page sans masquer de fonction essentielle                                                        |
+| Mouvement                 | préférence de réduction des animations                                | réduire ou supprimer les mouvements non essentiels                                                                      |
+| Partage et presse-papiers | API disponible et permission/contexte requis                          | proposer une copie ou un partage manuel explicite                                                                       |
+| Performance               | mémoire, cœurs, visibilité et capacités observables                   | alléger les effets et le travail non essentiel sans retirer les fonctions utiles                                        |
 
 Cette matrice est un contrat de conception. Elle ne signifie pas que chaque API ou chaque solution de repli est déjà implémentée.
 
@@ -95,17 +95,17 @@ Les résultats doivent préciser l'appareil, la version du système, le navigate
 
 ### Parcours de tests sur appareils réels
 
-| ID | Appareil réel | Navigateur / mode | Vérifications obligatoires |
-| --- | --- | --- | --- |
-| PWA-REAL-01 | Android récent (Pixel) | Chrome, navigateur | identification Android, capacités, affichage et prompt natif si proposé |
-| PWA-REAL-02 | Android récent (Pixel) | Chrome, application installée | ouverture standalone, démarrage sur `/`, retour, mise à jour |
-| PWA-REAL-03 | Samsung Galaxy récent | Samsung Internet | identification navigateur, installation/ajout à l'écran d'accueil, permissions |
-| PWA-REAL-04 | Android d'une génération antérieure | Chrome | performance, mémoire, réseau lent, reprise après perte réseau |
-| PWA-REAL-05 | iPhone récent | Safari, navigateur | identification iOS, consigne « Sur l'écran d'accueil », géolocalisation et partage |
-| PWA-REAL-06 | iPhone récent | Vitalis depuis l'écran d'accueil | mode autonome, navigation, safe areas, notifications si prises en charge |
-| PWA-REAL-07 | iPhone d'une génération antérieure | Safari et mode installé | compatibilité, performances, reprise après fermeture et retour réseau |
-| PWA-REAL-08 | iPad | Safari, portrait et paysage | identification iPadOS, adaptation responsive, clavier et zones sûres |
-| PWA-REAL-09 | Ordinateur Windows ou macOS | Chrome ou Edge | clavier/souris, redimensionnement, installation si proposée, mise à jour |
+| ID          | Appareil réel                       | Navigateur / mode                | Vérifications obligatoires                                                         |
+| ----------- | ----------------------------------- | -------------------------------- | ---------------------------------------------------------------------------------- |
+| PWA-REAL-01 | Android récent (Pixel)              | Chrome, navigateur               | identification Android, capacités, affichage et prompt natif si proposé            |
+| PWA-REAL-02 | Android récent (Pixel)              | Chrome, application installée    | ouverture standalone, démarrage sur `/`, retour, mise à jour                       |
+| PWA-REAL-03 | Samsung Galaxy récent               | Samsung Internet                 | identification navigateur, installation/ajout à l'écran d'accueil, permissions     |
+| PWA-REAL-04 | Android d'une génération antérieure | Chrome                           | performance, mémoire, réseau lent, reprise après perte réseau                      |
+| PWA-REAL-05 | iPhone récent                       | Safari, navigateur               | identification iOS, consigne « Sur l'écran d'accueil », géolocalisation et partage |
+| PWA-REAL-06 | iPhone récent                       | Vitalis depuis l'écran d'accueil | mode autonome, navigation, safe areas, notifications si prises en charge           |
+| PWA-REAL-07 | iPhone d'une génération antérieure  | Safari et mode installé          | compatibilité, performances, reprise après fermeture et retour réseau              |
+| PWA-REAL-08 | iPad                                | Safari, portrait et paysage      | identification iPadOS, adaptation responsive, clavier et zones sûres               |
+| PWA-REAL-09 | Ordinateur Windows ou macOS         | Chrome ou Edge                   | clavier/souris, redimensionnement, installation si proposée, mise à jour           |
 
 Pour chaque appareil, exécuter les scénarios suivants lorsque pertinents :
 
@@ -136,7 +136,6 @@ Chaque exécution doit conserver : identifiant du scénario, marque/modèle, ver
 - [Standards UX et accessibilité — Phase 2](./phase-2-ux-standards.md)
 - [Performance PWA](../06-operations/performance-pwa.md)
 - [Standards de navigation mobile](../02-architecture/mobile-navigation-standards.md)
-
 
 ## 10. Langue du système et du navigateur
 

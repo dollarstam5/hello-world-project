@@ -69,7 +69,7 @@ représenter une entité métier ou technique clairement identifiée ;
 •
 
 posséder une clé primaire en UUID ;
-inclure les colonnes d'audit standard lorsque pertinentes ( created_at ,  updated_at , etc.) ;
+inclure les colonnes d'audit standard lorsque pertinentes ( created_at , updated_at , etc.) ;
 
 •
 
@@ -79,7 +79,7 @@ Les tables redondantes ou ambiguës sont interdites.
 
 1
 
-4. Standards des relations
+4. Standards des relations
 
 Les relations doivent :
 
@@ -151,7 +151,7 @@ Chaque fonction possède une responsabilité unique, une documentation et des te
 
 2
 
-8. Standards des triggers
+8. Standards des triggers
 
 Les triggers sont limités à des opérations techniques telles que :
 
@@ -249,7 +249,7 @@ Les incidents doivent être détectés avant qu'ils n'impactent les utilisateurs
 
 3
 
-12. Standards de documentation
+12. Standards de documentation
 
 Chaque élément PostgreSQL doit être documenté :
 
@@ -359,13 +359,13 @@ aucune documentation obsolète.
 
 4
 
-15. Erreurs à éviter
+15. Erreurs à éviter
 
 Les pratiques suivantes sont interdites :
 
 •
 
-utiliser  SELECT *  en production ;
+utiliser SELECT * en production ;
 
 •
 
@@ -452,4 +452,3 @@ Ils garantissent une architecture cohérente, sécurisée, performante, évoluti
 évolution de PostgreSQL doit s'y conformer afin de préserver la qualité globale de la plateforme.
 
 5
-

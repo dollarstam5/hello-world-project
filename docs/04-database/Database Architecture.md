@@ -60,7 +60,7 @@ opérations locales (via client)
 
 1
 
-2.4 Security by Design (RLS)
+2.4 Security by Design (RLS)
 
 Toutes les tables sont protégées par des politiques RLS strictes.
 
@@ -76,14 +76,14 @@ Trust, Recommendation).
 
                                 │
 
- ┌──────────────┬───────────────┼───────────────┬──────────────┐
+┌──────────────┬───────────────┼───────────────┬──────────────┐
 
- │              │               │               │              │
-Flash         Mission         Trust          Media        Settings
+│ │ │ │ │
+Flash Mission Trust Media Settings
 
- │              │               │               │              │
+│ │ │ │ │
 
- └──────────────┴───────────────┴───────────────┴──────────────┘
+└──────────────┴───────────────┴───────────────┴──────────────┘
 
                                 │
                 Intelligence Layer (Read-Only)
@@ -134,7 +134,7 @@ udi_projection
 
 2
 
-Rôle
+Rôle
 
 Cœur du système d’identité utilisateur.
 
@@ -232,7 +232,7 @@ Rôle
 
 3
 
-5. DOMAINES D’INTELLIGENCE (READ-ONLY)
+5. DOMAINES D’INTELLIGENCE (READ-ONLY)
 
 5.1 Radar
 
@@ -310,7 +310,7 @@ media_access_log
 
 4
 
-6.2 Notifications
+6.2 Notifications
 
 •
 
@@ -382,7 +382,7 @@ Le système Offline repose sur :
 
 5
 
-Côté client uniquement :
+Côté client uniquement :
 
 •
 
@@ -480,7 +480,7 @@ created_at
 
 6
 
-•
+•
 
 updated_at
 
@@ -571,4 +571,3 @@ compatibilité Offline First
 évolutivité long terme
 
 7
-

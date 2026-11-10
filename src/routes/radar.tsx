@@ -1,12 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { MapPin } from "lucide-react";
+import { EnginePreviewCard } from "@/components/experience/EnginePreviewCard";
 import { SectionFoundation } from "@/components/experience/SectionFoundation";
+import { RadarManagement } from "@/domains/radar/ui/RadarManagement";
 
 export const Route = createFileRoute("/radar")({
   head: () => ({
     meta: [
       { title: "Radar — Vitalis" },
-      { name: "description", content: "Ce qui se passe autour de vous." },
+      { name: "description", content: "Enregistrez les recherches que vous souhaitez suivre." },
     ],
   }),
   component: () => (
@@ -16,6 +18,25 @@ export const Route = createFileRoute("/radar")({
       descKey="page.radar.desc"
       tone="info"
       icon={MapPin}
+      sections={[
+        {
+          key: "example",
+          titleKey: "home.demo.title",
+          perf: "short",
+          render: () => (
+            <EnginePreviewCard
+              titleKey="home.engine.radar.title"
+              descriptionKey="home.engine.radar.example"
+            />
+          ),
+        },
+        {
+          key: "management",
+          titleKey: "radar.section.management",
+          perf: "short",
+          render: () => <RadarManagement />,
+        },
+      ]}
     />
   ),
 });

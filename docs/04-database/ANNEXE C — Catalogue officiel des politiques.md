@@ -70,7 +70,7 @@ Chaque politique doit être documentée selon le modèle suivant.
 
 1
 
-Informations générales
+Informations générales
 
 •
 
@@ -150,8 +150,8 @@ Décrire précisément :
 
 •
 
-les conditions  USING  ;
-les conditions  WITH CHECK  ;
+les conditions USING ;
+les conditions WITH CHECK ;
 
 •
 
@@ -161,7 +161,7 @@ Les règles doivent être simples, explicites et vérifiables.
 
 2
 
-Données protégées
+Données protégées
 
 Documenter :
 
@@ -245,7 +245,7 @@ Les politiques très complexes doivent être décomposées.
 
 3
 
-5. Cas interdits
+5. Cas interdits
 
 Les pratiques suivantes sont interdites :
 
@@ -341,7 +341,7 @@ les migrations associées.
 
 4
 
-9. Critères de conformité
+9. Critères de conformité
 
 Une politique RLS est conforme lorsqu'elle :
 
@@ -384,4 +384,3 @@ que chaque politique respecte les exigences de sécurité, de confidentialité e
 l'architecture de la plateforme.
 
 5
-

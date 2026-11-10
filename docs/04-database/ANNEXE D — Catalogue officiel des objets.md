@@ -74,7 +74,7 @@ Chaque fonction doit être documentée selon le modèle suivant.
 
 1
 
-Informations générales
+Informations générales
 
 •
 
@@ -164,7 +164,7 @@ permissions nécessaires.
 
 2
 
-Tests
+Tests
 
 Documenter :
 
@@ -225,8 +225,8 @@ nom ;
 •
 
 table concernée ;
-événement ( INSERT ,  UPDATE ,  DELETE ) ;
-moment ( BEFORE ,  AFTER ,  INSTEAD OF ) ;
+événement ( INSERT , UPDATE , DELETE ) ;
+moment ( BEFORE , AFTER , INSTEAD OF ) ;
 
 •
 
@@ -268,7 +268,7 @@ performances attendues.
 
 3
 
-Les vues servent à simplifier l'accès aux données, sans contourner les règles de sécurité.
+Les vues servent à simplifier l'accès aux données, sans contourner les règles de sécurité.
 
 7. Catalogue des Materialized Views
 
@@ -362,7 +362,7 @@ Toute création, modification ou suppression d'un objet programmable doit :
 
 4
 
-11. Références croisées
+11. Références croisées
 
 Chaque objet doit être relié à :
 
@@ -433,4 +433,3 @@ Il garantit que chaque objet est documenté, sécurisé, performant et cohérent
 de Vitala.
 
 5
-

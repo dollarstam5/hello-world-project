@@ -66,7 +66,7 @@ Le système doit savoir qu'une erreur existe.
 
 1
 
-Sécurité
+Sécurité
 
 Ne jamais exposer d'informations sensibles.
 
@@ -116,7 +116,7 @@ Informer l'utilisateur.
 
 2
 
-ERROR LEVEL 2 — Recoverable Error
+ERROR LEVEL 2 — Recoverable Error
 
 Erreur récupérable automatiquement.
 
@@ -180,7 +180,7 @@ sécurité ;
 
 3
 
-•
+•
 
 données ;
 
@@ -196,7 +196,7 @@ Blocage immédiat + alerte.
 
 Toute erreur interne doit suivre :
 
-```text id="e7m2qa" Error ID :
+````text id="e7m2qa" Error ID :
 
 Type :
 
@@ -510,3 +510,4 @@ Fin de AI/33-AI-ERROR-HANDBOOK.md
 
 9
 
+````

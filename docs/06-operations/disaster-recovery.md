@@ -20,14 +20,14 @@ La priorité est de préserver les données, de rétablir les parcours critiques
 
 ## 3. Scénarios et première réponse
 
-| Scénario | Première réponse | Preuve nécessaire avant rétablissement |
-| --- | --- | --- |
-| Application ou VPS indisponible | Confirmer l'étendue, examiner les journaux et l'état de l'hébergement, puis appliquer la procédure de redéploiement approuvée. | Version/commit identifié, health checks disponibles et parcours critiques vérifiés. |
-| PostgreSQL/Supabase indisponible | Confirmer l'état du fournisseur et éviter les opérations d'écriture répétées qui aggraveraient la situation. | Connectivité rétablie, intégrité vérifiée et tests d'accès/RLS pertinents réussis. |
-| Corruption ou suppression de données | Suspendre les opérations risquant d'écraser les preuves ou d'aggraver les pertes ; identifier un point de restauration connu. | Restauration testée, pertes mesurées, cohérence des données et accès vérifiés. |
-| Déploiement défectueux | Évaluer le rollback applicatif et la compatibilité des migrations ; ne pas supposer qu'un rollback du code annule une migration. | Version précédente compatible, état du schéma connu et parcours de contrôle réussis. |
-| Compromission d'un compte ou d'un secret | Suivre la procédure de sécurité, limiter l'accès affecté et faire tourner les identifiants selon le processus approuvé. | Accès compromis révoqué, nouveaux secrets validés hors des logs et vérification de sécurité terminée. |
-| Panne réseau ou fournisseur tiers | Déterminer si un mode dégradé sûr est possible et communiquer les limites connues. | Dépendances critiques disponibles ou mode dégradé explicitement accepté. |
+| Scénario                                 | Première réponse                                                                                                                 | Preuve nécessaire avant rétablissement                                                                |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Application ou VPS indisponible          | Confirmer l'étendue, examiner les journaux et l'état de l'hébergement, puis appliquer la procédure de redéploiement approuvée.   | Version/commit identifié, health checks disponibles et parcours critiques vérifiés.                   |
+| PostgreSQL/Supabase indisponible         | Confirmer l'état du fournisseur et éviter les opérations d'écriture répétées qui aggraveraient la situation.                     | Connectivité rétablie, intégrité vérifiée et tests d'accès/RLS pertinents réussis.                    |
+| Corruption ou suppression de données     | Suspendre les opérations risquant d'écraser les preuves ou d'aggraver les pertes ; identifier un point de restauration connu.    | Restauration testée, pertes mesurées, cohérence des données et accès vérifiés.                        |
+| Déploiement défectueux                   | Évaluer le rollback applicatif et la compatibilité des migrations ; ne pas supposer qu'un rollback du code annule une migration. | Version précédente compatible, état du schéma connu et parcours de contrôle réussis.                  |
+| Compromission d'un compte ou d'un secret | Suivre la procédure de sécurité, limiter l'accès affecté et faire tourner les identifiants selon le processus approuvé.          | Accès compromis révoqué, nouveaux secrets validés hors des logs et vérification de sécurité terminée. |
+| Panne réseau ou fournisseur tiers        | Déterminer si un mode dégradé sûr est possible et communiquer les limites connues.                                               | Dépendances critiques disponibles ou mode dégradé explicitement accepté.                              |
 
 Ce tableau est un cadre de triage, pas une procédure fournisseur spécifique. Les commandes et étapes exactes doivent être validées pour l'infrastructure réellement utilisée.
 
@@ -40,12 +40,12 @@ Pour chaque service critique, le responsable métier et l'exploitation doivent a
 
 Aucune valeur RTO/RPO n'est considérée comme approuvée tant qu'elle n'est pas renseignée, acceptée par les responsables et testée. Le tableau suivant est à compléter :
 
-| Service ou donnée | RTO approuvé | RPO approuvé | Point de restauration / source | Responsable | Dernier test de restauration |
-| --- | --- | --- | --- | --- | --- |
-| PostgreSQL / données utilisateur | À définir | À définir | À confirmer | À désigner | Non attesté ici |
-| Application et artefacts de release | À définir | Sans objet ou à définir | Commit et artefact approuvés | À désigner | Non attesté ici |
-| Fichiers persistants et configuration non secrète | À définir | À définir | À confirmer | À désigner | Non attesté ici |
-| Secrets et accès opérationnels | À définir | À définir | Coffre ou mécanisme approuvé à confirmer | À désigner | Non attesté ici |
+| Service ou donnée                                 | RTO approuvé | RPO approuvé            | Point de restauration / source           | Responsable | Dernier test de restauration |
+| ------------------------------------------------- | ------------ | ----------------------- | ---------------------------------------- | ----------- | ---------------------------- |
+| PostgreSQL / données utilisateur                  | À définir    | À définir               | À confirmer                              | À désigner  | Non attesté ici              |
+| Application et artefacts de release               | À définir    | Sans objet ou à définir | Commit et artefact approuvés             | À désigner  | Non attesté ici              |
+| Fichiers persistants et configuration non secrète | À définir    | À définir               | À confirmer                              | À désigner  | Non attesté ici              |
+| Secrets et accès opérationnels                    | À définir    | À définir               | Coffre ou mécanisme approuvé à confirmer | À désigner  | Non attesté ici              |
 
 Ne jamais enregistrer de valeurs de secrets, jetons ou clés dans ce document ou dans les preuves de reprise.
 

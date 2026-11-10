@@ -2,12 +2,16 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ScanLine } from "lucide-react";
 import { SectionFoundation } from "@/components/experience/SectionFoundation";
 import { ScanPanel } from "@/domains/scan/ui/ScanPanel";
+import { EnginePreviewCard } from "@/components/experience/EnginePreviewCard";
 
 export const Route = createFileRoute("/scan")({
   head: () => ({
     meta: [
       { title: "Scan — Vitalis" },
-      { name: "description", content: "Repère les Flash actifs autour de vous." },
+      {
+        name: "description",
+        content: "Repérez les Flash actifs dans la zone que vous choisissez.",
+      },
     ],
   }),
   component: () => (
@@ -23,6 +27,17 @@ export const Route = createFileRoute("/scan")({
           titleKey: "page.scan.section.scan",
           perf: "short",
           render: () => <ScanPanel />,
+        },
+        {
+          key: "example",
+          titleKey: "home.demo.title",
+          perf: "short",
+          render: () => (
+            <EnginePreviewCard
+              titleKey="home.engine.scan.title"
+              descriptionKey="home.engine.scan.example"
+            />
+          ),
         },
       ]}
     />

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Zap } from "lucide-react";
 import { SectionFoundation } from "@/components/experience/SectionFoundation";
+import { MyFlashManagement } from "@/domains/flash/ui/MyFlashManagement";
 import { FlashFeed } from "@/domains/flash/ui/FlashFeed";
 import { FlashComposer } from "@/domains/flash/ui/FlashComposer";
 
@@ -29,6 +30,12 @@ export const Route = createFileRoute("/flash")({
               <FlashFeed />
             </div>
           ),
+        },
+        {
+          key: "mine",
+          titleKey: "flash.mine.title",
+          perf: "short",
+          render: () => <MyFlashManagement />,
         },
       ]}
     />

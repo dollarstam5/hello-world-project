@@ -5,30 +5,37 @@ Ce répertoire regroupe des documents de domaine et des contrats historiques par
 ## Domaines
 
 ### Flash
+
 - [Flash Engine](./flash/11-VITALA-UJ-08-FLASH-ENGINE.md)
 - [Flash API — contrat historique](<./flash/6. Flash API.md>)
 
 ### Scan
+
 - [Scan Engine / module](./scan/12-VITALA-UJ-09-SCAN-ENGINE.md)
 - [Scan module](./scan/SCAN_MODULE.md)
 
 ### Radar
+
 - [Radar module](./radar/RADAR_MODULE.md)
 - [Radar API — contrat historique](<./radar/9. Radar API.md>)
 
 ### Missions
+
 - [Mission API — contrat historique](<./missions/7. Mission API.md>)
 
 ### Veille
+
 - [Veille API — contrat historique](<./veille/10. Veille API.md>)
 - [Veille Engine — partie 1](<./veille/14-VITALA-VEILLE-ENGINE.md Partie 1.md>)
 - [Veille Engine — partie 2](<./veille/14-VITALA-VEILLE-ENGINE.md Partie 2.md>)
 - [Veille Engine — partie 3](<./veille/14-VITALA-VEILLE-ENGINE.md Partie 3.md>)
 
 ### Recommendation
-- [Recommendation API — contrat historique](<./recommendation/11._Recommendation_API.md>)
+
+- [Recommendation API — contrat historique](./recommendation/11._Recommendation_API.md)
 
 ### Trust
+
 - [Trust Engine — partie 1](<./trust/03A-VITALA-TRUST-ENGINE-V1 Partie 1.md>)
 - [Trust Engine — partie 2](<./trust/03A-VITALA-TRUST-ENGINE-V1 Partie 2.md>)
 - [Trust Engine — partie 3](<./trust/03A-VITALA-TRUST-ENGINE-V1 Partie 3.md>)

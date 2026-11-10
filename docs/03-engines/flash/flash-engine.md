@@ -23,13 +23,13 @@ Un Flash est une information diffusée avec un objectif précis. Chaque Flash po
 
 ## Types de Flash
 
-| Type | Exemples |
-| --- | --- |
-| Opportunité | Mission, besoin, recherche, collaboration, partenariat, projet |
-| Disponibilité | Personne, service ou ressource disponible, salle disponible |
-| Information utile | Information locale, alerte, changement important, signalement |
-| Événement | Réunion, rencontre, formation, activité |
-| Offre | Produit, service, ressource, location |
+| Type              | Exemples                                                       |
+| ----------------- | -------------------------------------------------------------- |
+| Opportunité       | Mission, besoin, recherche, collaboration, partenariat, projet |
+| Disponibilité     | Personne, service ou ressource disponible, salle disponible    |
+| Information utile | Information locale, alerte, changement important, signalement  |
+| Événement         | Réunion, rencontre, formation, activité                        |
+| Offre             | Produit, service, ressource, location                          |
 
 ## Modes de création
 
@@ -80,13 +80,13 @@ Les personnes peuvent montrer leur intérêt, répondre, se proposer ou demander
 
 ## Limites par niveau de confiance
 
-| Niveau | Diffusion |
-| --- | --- |
+| Niveau     | Diffusion    |
+| ---------- | ------------ |
 | Consultant | Très limitée |
-| Membre | Limitée |
-| Identifié | Normale |
-| Confirmé | Étendue |
-| Pro | Avancée |
+| Membre     | Limitée      |
+| Identifié  | Normale      |
+| Confirmé   | Étendue      |
+| Pro        | Avancée      |
 
 ## Expérience
 

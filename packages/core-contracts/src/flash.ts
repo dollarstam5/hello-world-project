@@ -24,10 +24,15 @@ export type FlashKind = (typeof FLASH_KINDS)[number];
 export const FLASH_TIME_SLOTS = ["now", "today", "tomorrow", "this_week"] as const;
 export type FlashTimeSlot = (typeof FLASH_TIME_SLOTS)[number];
 
+import type { PublicProfilePreview } from "./profile-preview";
+
 /**
- * The public shape of a flash: no author, no coordinates, only what anyone
- * may see. Precise location stays private on the backend.
+ * The public shape of a Flash. Author details are omitted unless the person
+ * has explicitly enabled the small public profile projection. Coordinates
+ * and private account data always stay on the backend.
  */
+
+/** Public fields of a Flash; precise location and private account data stay server-side. */
 export interface PublicFlash {
   id: string;
   kind: FlashKind;
@@ -37,4 +42,6 @@ export interface PublicFlash {
   areaLabel: string;
   expiresAt: number;
   createdAt: number;
+  /** Present only when the author has explicitly enabled public profile visibility. */
+  authorPreview?: PublicProfilePreview | null;
 }

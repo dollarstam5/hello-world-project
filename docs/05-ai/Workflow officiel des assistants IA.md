@@ -82,7 +82,7 @@ Lorsque plusieurs solutions existent, l'IA doit expliquer les compromis.
 
 1
 
-Étape 4 — Implémenter
+Étape 4 — Implémenter
 
 Le code généré doit être :
 
@@ -168,7 +168,7 @@ L'IA doit privilégier les solutions extensibles plutôt que les solutions spéc
 
 2
 
-Principe final
+Principe final
 
 Une IA intervenant sur Vitala n'est pas un simple générateur de code.
 
@@ -193,4 +193,3 @@ la stabilité des contrats ;
 la vision globale du projet.
 
 3
-

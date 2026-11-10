@@ -10,7 +10,7 @@ Avant toute génération de code, l'IA doit :
 - déterminer le domaine métier concerné;
 - identifier les documents VPS impactés;
 - vérifier si une fonctionnalité similaire existe déjà.
-Aucune implémentation ne doit commencer sans cette analyse.
+  Aucune implémentation ne doit commencer sans cette analyse.
 
 # Étape 2 — Vérifier l'architecture
 
@@ -20,7 +20,7 @@ L'IA doit ensuite vérifier :
 - les contrats API;
 - la structure du projet;
 - les dépendances existantes.
-Elle ne doit jamais proposer une solution qui contourne l'architecture officielle.
+  Elle ne doit jamais proposer une solution qui contourne l'architecture officielle.
 
 # Étape 3 — Concevoir la solution
 
@@ -32,7 +32,7 @@ Avant d'écrire du code, l'IA doit définir :
 - les événements concernés;
 - les impacts sur la synchronisation Offline First;
 - les impacts sur les autres domaines.
-Lorsque plusieurs solutions existent, l'IA doit expliquer les compromis.
+  Lorsque plusieurs solutions existent, l'IA doit expliquer les compromis.
 
 # Étape 4 — Implémenter
 
@@ -43,7 +43,7 @@ Le code généré doit être :
 - documenté lorsque nécessaire;
 - conforme aux conventions du projet;
 - limité au périmètre demandé.
-L'IA doit éviter toute modification inutile.
+  L'IA doit éviter toute modification inutile.
 
 # Étape 5 — Vérifier
 
@@ -55,6 +55,7 @@ Avant de considérer la tâche terminée, l'IA vérifie :
 - la sécurité;
 - la compatibilité avec l'Offline First;
 - l'absence de régression fonctionnelle.
+
 # Étape 6 — Documenter
 
 Si une modification impacte l'architecture, les API ou le comportement fonctionnel, l'IA doit proposer la mise à jour des documents concernés. La documentation fait partie intégrante du développement.
@@ -67,7 +68,7 @@ Toute solution proposée doit rester compatible avec :
 - l'ajout de nouvelles API;
 - les futures applications Flutter;
 - les futures évolutions de l'architecture.
-L'IA doit privilégier les solutions extensibles plutôt que les solutions spécifiques à un cas isolé.
+  L'IA doit privilégier les solutions extensibles plutôt que les solutions spécifiques à un cas isolé.
 
 # Principe final
 

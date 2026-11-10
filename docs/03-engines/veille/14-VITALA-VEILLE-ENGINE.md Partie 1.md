@@ -55,7 +55,7 @@ Cet espace est entièrement privé. Il permet à l'utilisateur de :
 - gérer leurs paramètres;
 - consulter leur historique;
 - recevoir les événements liés à leurs évolutions.
-Toutes les informations affichées concernent uniquement l'utilisateur connecté.
+  Toutes les informations affichées concernent uniquement l'utilisateur connecté.
 
 ## 4.2 Veille collective
 
@@ -66,7 +66,7 @@ Cet espace est construit à partir de données agrégées et anonymisées. Il me
 - les zones où la demande augmente;
 - les services insuffisamment représentés;
 - les opportunités latentes.
-Aucune information permettant d'identifier un utilisateur n'est affichée.
+  Aucune information permettant d'identifier un utilisateur n'est affichée.
 
 # 5. Les principes fondamentaux
 

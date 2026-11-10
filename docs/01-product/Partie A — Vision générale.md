@@ -60,7 +60,7 @@ Supabase appartient à la couche Infrastructure / Plateforme du Build Blueprint.
 
 1
 
-Il fournit les capacités techniques suivantes :
+Il fournit les capacités techniques suivantes :
 
 •
 
@@ -172,7 +172,7 @@ médias des différents domaines.
 
 2
 
-Exécution serveur
+Exécution serveur
 
 Les Edge Functions exécutent les traitements serveur nécessitant :
 
@@ -250,7 +250,7 @@ Cette règle facilite les tests, la maintenance et une éventuelle évolution te
 
 3
 
-7. Interaction avec les APIs
+7. Interaction avec les APIs
 
 Toutes les communications avec Supabase passent par les APIs ou les services d'infrastructure.
 
@@ -348,7 +348,7 @@ BUILD-DATABASE.md ;
 
 4
 
-•
+•
 
 BUILD-APIS.md ;
 
@@ -407,4 +407,3 @@ Cette séparation garantit que Vitala reste modulaire, maintenable, évolutive e
 définis dans le Build Blueprint.
 
 5
-

@@ -6,19 +6,13 @@
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "display_override": [
-    "standalone",
-    "minimal-ui"
-  ],
+  "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait",
   "background_color": "#0b0d11",
   "theme_color": "#0b0d11",
   "lang": "fr",
   "dir": "ltr",
-  "categories": [
-    "social",
-    "productivity"
-  ],
+  "categories": ["social", "productivity"],
   "icons": [
     {
       "src": "/icon-192.svg",

@@ -72,7 +72,7 @@ suppression logique d'une notification.
 
 1
 
-Règles
+Règles
 
 •
 
@@ -156,7 +156,7 @@ documenter les dépendances.
 
 2
 
-6. Pattern 4 — Saga
+6. Pattern 4 — Saga
 
 Cas d'utilisation
 
@@ -242,7 +242,7 @@ génération d'un rapport ;
 
 3
 
-•
+•
 
 traitement d'une image ;
 
@@ -344,7 +344,7 @@ journalisation des synchronisations.
 
 4
 
-11. Gestion des erreurs
+11. Gestion des erreurs
 
 Tous les patterns doivent prévoir :
 
@@ -442,7 +442,7 @@ garantit la cohérence des données.
 
 5
 
-15. Conclusion
+15. Conclusion
 
 Le Catalogue officiel des patterns transactionnels constitue la référence de Vitala pour tous les
 
@@ -453,4 +453,3 @@ Il garantit une architecture robuste, cohérente et évolutive, capable de gére
 simples que les workflows distribués et les synchronisations complexes.
 
 6
-

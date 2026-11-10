@@ -21,7 +21,7 @@ Une IA participant au développement de Vitala doit :
 - préserver la modularité du projet;
 - limiter la dette technique;
 - proposer des améliorations compatibles avec le VPS.
-Son rôle est d'assister les développeurs, jamais de modifier arbitrairement la vision du projet.
+  Son rôle est d'assister les développeurs, jamais de modifier arbitrairement la vision du projet.
 
 # 3. Principes fondamentaux
 
@@ -35,7 +35,7 @@ Toute IA doit respecter les principes suivants :
 - Zero Cross Domain Ownership
 - Security by Design
 - Event Ready
-Aucune proposition ne doit entrer en contradiction avec ces principes.
+  Aucune proposition ne doit entrer en contradiction avec ces principes.
 
 # 4. Règles absolues
 
@@ -48,6 +48,7 @@ Aucune proposition ne doit entrer en contradiction avec ces principes.
 - accéder directement aux données d'un autre domaine;
 - contourner les règles de sécurité;
 - supprimer une fonctionnalité sans validation.
+
 # 5. Génération de code
 
 Le code produit par une IA doit :
@@ -58,7 +59,7 @@ Le code produit par une IA doit :
 - être testable;
 - respecter les conventions du projet;
 - éviter les duplications.
-Les composants d'interface, la logique métier et l'accès aux données doivent rester clairement séparés.
+  Les composants d'interface, la logique métier et l'accès aux données doivent rester clairement séparés.
 
 # 6. Modification du code existant
 
@@ -68,7 +69,7 @@ Les composants d'interface, la logique métier et l'accès aux données doivent 
 - identifier les impacts potentiels;
 - préserver les contrats publics;
 - éviter les effets de bord.
-Les modifications doivent être les plus ciblées possible.
+  Les modifications doivent être les plus ciblées possible.
 
 # 7. Refactoring
 
@@ -79,7 +80,7 @@ Une IA peut proposer un refactoring uniquement si celui-ci :
 - améliore les performances;
 
 - respecte l'architecture existante.
-Un refactoring ne doit jamais modifier le comportement fonctionnel sans validation.
+  Un refactoring ne doit jamais modifier le comportement fonctionnel sans validation.
 
 # 8. Documentation
 
@@ -90,7 +91,7 @@ Toute évolution importante doit être accompagnée de la mise à jour de la doc
 - Database;
 - Architecture;
 - Guides de développement.
-La documentation est considérée comme une partie intégrante du projet.
+  La documentation est considérée comme une partie intégrante du projet.
 
 # 9. Qualité attendue
 
@@ -102,7 +103,7 @@ La documentation est considérée comme une partie intégrante du projet.
 - sécurité;
 - maintenabilité;
 - évolutivité.
-L'IA doit privilégier des solutions robustes plutôt que des optimisations prématurées.
+  L'IA doit privilégier des solutions robustes plutôt que des optimisations prématurées.
 
 # 10. Checklist obligatoire
 
@@ -125,7 +126,7 @@ Avant de considérer une tâche comme terminée, l'IA vérifie que :
 - signaler les impacts importants;
 - proposer plusieurs solutions lorsque des compromis existent;
 - distinguer clairement les faits, les recommandations et les hypothèses.
-La décision finale appartient toujours aux responsables du projet.
+  La décision finale appartient toujours aux responsables du projet.
 
 # 12. Évolutions futures
 
@@ -135,7 +136,7 @@ Ce document pourra évoluer afin d'intégrer :
 - des outils de génération automatique;
 - des agents spécialisés;
 - des workflows multi-agents.
-Les principes fondamentaux définis dans le VPS demeurent la référence.
+  Les principes fondamentaux définis dans le VPS demeurent la référence.
 
 # 13. Documents associés
 
@@ -144,4 +145,4 @@ Les principes fondamentaux définis dans le VPS demeurent la référence.
 - 18 — Architecture
 - 20 — Deployment Guide
 - 21 — Development Guide
-Le présent document constitue la charte officielle des assistants IA de Vitala. Son objectif est d'assurer que toute contribution automatisée reste conforme à la vision, à l'architecture et aux standards de qualité du projet.
+  Le présent document constitue la charte officielle des assistants IA de Vitala. Son objectif est d'assurer que toute contribution automatisée reste conforme à la vision, à l'architecture et aux standards de qualité du projet.

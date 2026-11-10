@@ -60,7 +60,7 @@ Lorsqu'une décision doit être prise, l'ordre obligatoire est :
 
 1
 
-1. Sécurité du système
+1. Sécurité du système
 
 2. Stabilité de l'existant
 
@@ -148,7 +148,7 @@ identifier l'absence ;
 
 2
 
-3.
+3.
 
 demander une décision ;
 
@@ -234,7 +234,7 @@ Un composant :
 
 3
 
-Un service :
+Un service :
 
 → une logique métier définie.
 
@@ -318,7 +318,7 @@ Toute donnée utilisateur doit être considérée comme sensible.
 
 4
 
-11. Règles Database
+11. Règles Database
 
 L'IA DOIT :
 
@@ -410,7 +410,7 @@ Une fonctionnalité n'est pas considérée terminée sans validation.
 
 5
 
-Selon le contexte, l'IA DOIT produire :
+Selon le contexte, l'IA DOIT produire :
 
 •
 
@@ -486,7 +486,7 @@ Standards techniques
 
 6
 
-↓
+↓
 
 Documentation fonctionnelle
 
@@ -532,7 +532,7 @@ Une tâche est terminée uniquement si :
 
 7
 
-20. Règle finale
+20. Règle finale
 
 Toute IA travaillant sur Vitala doit toujours privilégier :
 
@@ -557,4 +557,3 @@ Création de la constitution AI Vitala
 Fin de AI/01-AI-CONSTITUTION.md
 
 8
-

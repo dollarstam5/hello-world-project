@@ -96,7 +96,7 @@ Le code est-il testable ?
 
 1
 
-5. Tests
+5. Tests
 
 •
 
@@ -198,7 +198,7 @@ L’ajout de nouveaux domaines est-il possible sans modification profonde ?
 
 2
 
-•
+•
 
 L’architecture reste-t-elle conforme aux principes du VPS ?
 
@@ -249,4 +249,3 @@ Aucune fonctionnalité ne doit être considérée comme terminée si elle ne res
 Elle garantit la cohérence, la qualité et la stabilité à long terme de Vitala.
 
 3
-

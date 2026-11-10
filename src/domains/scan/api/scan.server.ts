@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import type { ScanQuery, ScanResult } from "@eco/core-contracts";
+import type { PublicProfilePreview, ScanQuery, ScanResult } from "@eco/core-contracts";
 import type { Database } from "@/integrations/supabase/types";
 import { getPublicServerEnvironment } from "@/config/env.server";
 import { callAppRpc } from "@/lib/api/rpc.server";
@@ -14,6 +14,13 @@ interface ScanRow {
   distance_km: number;
   created_at: number;
   expires_at: number;
+  author_preview?: {
+    public_profile_id: string;
+    display_name: string;
+    area_label: string;
+    summary: string;
+    category: string;
+  } | null;
 }
 
 /**
@@ -45,5 +52,17 @@ export async function scanPublicFlashes(query: ScanQuery): Promise<ScanResult[]>
     distanceKm: row.distance_km,
     createdAt: row.created_at,
     expiresAt: row.expires_at,
+    ...(row.author_preview
+      ? {
+          authorPreview: {
+            publicProfileId: row.author_preview.public_profile_id,
+            displayName: row.author_preview.display_name,
+            avatarUrl: null,
+            areaLabel: row.author_preview.area_label,
+            summary: row.author_preview.summary,
+            category: row.author_preview.category as PublicProfilePreview["category"],
+          },
+        }
+      : {}),
   }));
 }

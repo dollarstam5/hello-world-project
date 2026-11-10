@@ -2,8 +2,9 @@ import { useState } from "react";
 import { LocateFixed, ScanLine } from "lucide-react";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useScan } from "../hooks/useScan";
+import { PublicProfilePreview } from "@/components/app/PublicProfilePreview";
 
-const SCAN_RADIUS_KM = 5;
+const SCAN_RADII_KM = [1, 5, 10, 20] as const;
 const SCAN_LIMIT = 20;
 
 /**
@@ -12,14 +13,15 @@ const SCAN_LIMIT = 20;
  * Presentation only; scanning logic lives in useScan.
  */
 export function ScanPanel() {
-  const { t } = useI18n();
-  const { rows, busy, failed, execute } = useScan();
+  const { t, locale } = useI18n();
+  const { rows, busy, failed, execute, history, clearHistory } = useScan();
   const [locationError, setLocationError] = useState<
     "permission" | "unavailable" | "timeout" | "unknown" | null
   >(null);
   const [started, setStarted] = useState(false);
   const [locating, setLocating] = useState(false);
   const [unsupported, setUnsupported] = useState(false);
+  const [radiusKm, setRadiusKm] = useState<number>(5);
 
   const start = () => {
     setLocationError(null);
@@ -40,7 +42,7 @@ export function ScanPanel() {
           category: null,
           latitude: pos.coords.latitude,
           longitude: pos.coords.longitude,
-          radiusKm: SCAN_RADIUS_KM,
+          radiusKm,
           limit: SCAN_LIMIT,
         });
       },
@@ -63,6 +65,23 @@ export function ScanPanel() {
   return (
     <div className="stack-4">
       <p className="text-sm text-muted-foreground">{t("scan.privacy")}</p>
+
+      <label className="stack-1 max-w-xs text-sm font-medium" htmlFor="scan-radius">
+        <span>{t("scan.radius")}</span>
+        <select
+          id="scan-radius"
+          value={radiusKm}
+          onChange={(event) => setRadiusKm(Number(event.target.value))}
+          disabled={busy || locating}
+          className="min-h-12 w-full rounded-xl border border-border bg-surface px-3 text-sm font-normal text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
+        >
+          {SCAN_RADII_KM.map((radius) => (
+            <option key={radius} value={radius}>
+              {radius} {t("scan.radius.unit")}
+            </option>
+          ))}
+        </select>
+      </label>
 
       <button
         type="button"
@@ -126,10 +145,57 @@ export function ScanPanel() {
                 {" · "}
                 {r.areaLabel}
               </p>
+              {r.authorPreview ? (
+                <div className="mt-3 border-t border-border-soft pt-2">
+                  <PublicProfilePreview profile={r.authorPreview} origin="real" />
+                </div>
+              ) : null}
             </li>
           ))}
         </ul>
       )}
+
+      <section className="stack-3" aria-labelledby="scan-history-heading">
+        <div className="flex items-center justify-between gap-3">
+          <h3 id="scan-history-heading" className="text-sm font-semibold">
+            {t("scan.history.title")}
+          </h3>
+          {history.length > 0 ? (
+            <button
+              type="button"
+              onClick={clearHistory}
+              className="min-h-11 rounded-full px-3 text-xs font-medium text-muted-foreground underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              {t("scan.history.clear")}
+            </button>
+          ) : null}
+        </div>
+        <p className="text-xs leading-relaxed text-muted-foreground">{t("scan.history.privacy")}</p>
+        {history.length === 0 ? (
+          <p className="text-sm text-muted-foreground" role="status">
+            {t("scan.history.empty")}
+          </p>
+        ) : (
+          <ul className="stack-2">
+            {history.map((entry, index) => (
+              <li
+                key={`${entry.searchedAt}-${index}`}
+                className="flex items-center justify-between gap-3 rounded-2xl border border-border-soft bg-surface px-4 py-3"
+              >
+                <span className="text-sm">
+                  {new Intl.DateTimeFormat(locale, {
+                    dateStyle: "medium",
+                    timeStyle: "short",
+                  }).format(entry.searchedAt)}
+                </span>
+                <span className="shrink-0 text-xs text-muted-foreground">
+                  {t("scan.history.results").replace("{count}", String(entry.resultCount))}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </div>
   );
 }

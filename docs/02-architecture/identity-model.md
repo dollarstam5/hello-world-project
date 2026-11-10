@@ -13,20 +13,20 @@ Le terme « source de vérité » doit être utilisé avec précision : le domai
 
 Les documents historiques décrivent les vues et modules suivants. Leur présence dans cette liste ne garantit pas qu'ils sont tous implémentés.
 
-| Module / vue | Responsabilité attendue | Domaine propriétaire |
-| --- | --- | --- |
-| Identity | Identifiants et informations d'identité autorisées | Identity / Profile |
-| Capabilities | Compétences, expériences et certifications | Domaine responsable des compétences |
-| Context | Localisation, disponibilité et contexte utile | Domaine responsable de chaque attribut |
-| Intentions | Objectifs et besoins actuels | Domaine produit concerné |
-| Preferences | Préférences de personnalisation | Paramètres / préférences |
-| Privacy | Préférences et règles de visibilité | Domaine de confidentialité et politiques de sécurité |
-| Activity View | Synthèse d'activité | Domaines qui produisent les activités |
-| Trust View | Vue publique ou personnelle de la confiance | Trust |
-| Recommendation View | Recommandations autorisées | Recommendation |
-| Radar View | Informations de recherche autorisées | Radar |
-| Veille View | Informations de veille autorisées | Veille |
-| Statistics | Indicateurs agrégés | Domaine producteur des statistiques |
+| Module / vue        | Responsabilité attendue                            | Domaine propriétaire                                 |
+| ------------------- | -------------------------------------------------- | ---------------------------------------------------- |
+| Identity            | Identifiants et informations d'identité autorisées | Identity / Profile                                   |
+| Capabilities        | Compétences, expériences et certifications         | Domaine responsable des compétences                  |
+| Context             | Localisation, disponibilité et contexte utile      | Domaine responsable de chaque attribut               |
+| Intentions          | Objectifs et besoins actuels                       | Domaine produit concerné                             |
+| Preferences         | Préférences de personnalisation                    | Paramètres / préférences                             |
+| Privacy             | Préférences et règles de visibilité                | Domaine de confidentialité et politiques de sécurité |
+| Activity View       | Synthèse d'activité                                | Domaines qui produisent les activités                |
+| Trust View          | Vue publique ou personnelle de la confiance        | Trust                                                |
+| Recommendation View | Recommandations autorisées                         | Recommendation                                       |
+| Radar View          | Informations de recherche autorisées               | Radar                                                |
+| Veille View         | Informations de veille autorisées                  | Veille                                               |
+| Statistics          | Indicateurs agrégés                                | Domaine producteur des statistiques                  |
 
 Chaque module doit déclarer ses champs, son propriétaire, ses règles de visibilité, son contrat de lecture et ses modalités de mise à jour. Une vue agrégée ne doit pas dupliquer une source éditable indépendante.
 

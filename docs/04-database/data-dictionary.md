@@ -6,17 +6,17 @@ This page describes the **repository-backed PostgreSQL schema**, not an assumed 
 
 The initial schema migration creates these nine `public` tables.
 
-| Table | Domain / purpose | Primary identity and ownership | Important columns |
-|---|---|---|---|
-| `user_roles` | Authorization roles | `id`; `user_id → auth.users.id` | `role app_role`, `created_at`; unique `(user_id, role)` |
-| `profiles` | Member-facing profile | `id → auth.users.id` | `display_name`, unique `handle`, `avatar_media_id`, `status`, `locale`, `trust_score` |
-| `udi` | Progressive digital identity | `id`; unique `user_id → auth.users.id` | `level`, `verified_at`, `attributes jsonb` |
-| `media` | Metadata for media objects | `id`; `owner_id → auth.users.id` | `kind`, `state`, `remote_path`, `mime_type`, `byte_size`, dimensions |
-| `flashes` | Short-lived publications | `id`; `author_id → auth.users.id` | `title`, `body`, `status`, `expires_at`, `media_ids uuid[]` |
-| `missions` | Work / collaboration tasks | `id`; `author_id`, optional `assignee_id → auth.users.id` | `title`, `brief`, `status`, `reward_amount numeric(14,2)`, `reward_currency`, `due_at` |
-| `posts` | Social posts | `id`; `author_id → auth.users.id` | `body`, `visibility`, `media_ids uuid[]`, reaction and reply counts |
-| `notifications` | Per-recipient notifications | `id`; `recipient_id → auth.users.id` | `channel`, translation keys, `params jsonb`, `read_at` |
-| `audit` | Sensitive-action audit entries | `id`; nullable `actor_id → auth.users.id` | `action`, `target_table`, `target_id`, `summary` |
+| Table           | Domain / purpose               | Primary identity and ownership                            | Important columns                                                                      |
+| --------------- | ------------------------------ | --------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `user_roles`    | Authorization roles            | `id`; `user_id → auth.users.id`                           | `role app_role`, `created_at`; unique `(user_id, role)`                                |
+| `profiles`      | Member-facing profile          | `id → auth.users.id`                                      | `display_name`, unique `handle`, `avatar_media_id`, `status`, `locale`, `trust_score`  |
+| `udi`           | Progressive digital identity   | `id`; unique `user_id → auth.users.id`                    | `level`, `verified_at`, `attributes jsonb`                                             |
+| `media`         | Metadata for media objects     | `id`; `owner_id → auth.users.id`                          | `kind`, `state`, `remote_path`, `mime_type`, `byte_size`, dimensions                   |
+| `flashes`       | Short-lived publications       | `id`; `author_id → auth.users.id`                         | `title`, `body`, `status`, `expires_at`, `media_ids uuid[]`                            |
+| `missions`      | Work / collaboration tasks     | `id`; `author_id`, optional `assignee_id → auth.users.id` | `title`, `brief`, `status`, `reward_amount numeric(14,2)`, `reward_currency`, `due_at` |
+| `posts`         | Social posts                   | `id`; `author_id → auth.users.id`                         | `body`, `visibility`, `media_ids uuid[]`, reaction and reply counts                    |
+| `notifications` | Per-recipient notifications    | `id`; `recipient_id → auth.users.id`                      | `channel`, translation keys, `params jsonb`, `read_at`                                 |
+| `audit`         | Sensitive-action audit entries | `id`; nullable `actor_id → auth.users.id`                 | `action`, `target_table`, `target_id`, `summary`                                       |
 
 The migration also defines the `app_role` enum (`member`, `moderator`, `admin`, `owner`), the global `sync_revision_seq` sequence, and the `assign_sync_revision()` trigger function. In the baseline grants, authenticated has only `SELECT` on `user_roles`; the `owners manage roles` RLS policy does not independently grant role-management writes.
 
@@ -44,6 +44,7 @@ Exceptions matter: `user_roles.created_at` is `TIMESTAMPTZ`, and `ai_requests` /
 ## Later schema proposals / candidate migrations
 
 The repository contains additional SQL-like artifacts under `src/supabase/migrations/` for:
+
 - `sync_mutation_receipts` (offline mutation idempotency),
 - `ai_requests`, `ai_cache`, `ai_cache_hits` (assistant quotas and reviewed cache),
 - `radars` (Radar lifecycle),

@@ -8,14 +8,21 @@ Cette section documente la vision produit, les intentions d'usage, les parcours,
 - [Personas](./personas.md)
 - [Parcours utilisateurs](./user-journeys.md)
 - [Navigation produit Vitalis](./navigation.md)
+- [Espaces personnels et gestion indépendante des moteurs — V1](./personal-and-engine-management-v1.md)
 - [Niveaux de confiance](./trust-levels.md)
 - [Vitalis Experience System](./experience-system.md)
 - [Centre de communication — règles produit V1](./communication-center-v1.md)
 - [Onboarding Vitalis — parcours V1](./onboarding-v1.md)
 - [Langage humain et communication Vitalis](./communication-language.md)
+- [Audit du langage humain — V1](./language-audit-v1.md)
+- [Catalogue des contenus d'exemple par interface — V1](./demo-content-catalog-v1.md)
+- [Présentation des pages moteurs — V1](./engine-page-preview-standard-v1.md)
+- [Parcours du profil — V1](./profile-experience-v1.md)
 
 ## Références d'architecture liées
 
+- [Gouvernance des données de démonstration — V1](../02-architecture/demo-data-governance.md)
+- [Charte des micro-interactions et du mouvement — V1](../02-architecture/micro-interactions-motion-charter-v1.md)
 - [Domaine Trust et Trust Engine](../02-architecture/trust-domain.md)
 - [Modèle d'identité numérique unifiée](../02-architecture/identity-model.md)
 - [Standards de navigation mobile Android, iOS et Web](../02-architecture/mobile-navigation-standards.md)

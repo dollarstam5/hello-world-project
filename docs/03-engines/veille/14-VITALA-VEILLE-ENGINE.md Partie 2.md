@@ -30,7 +30,7 @@ Il définit lui-même :
 - les critères;
 - les notifications;
 - les préférences de surveillance.
-Veille construit ensuite la surveillance correspondante.
+  Veille construit ensuite la surveillance correspondante.
 
 # 12. Les paramètres d'une veille
 
@@ -49,6 +49,7 @@ Exemple :
 - service;
 - produit;
 - événement.
+
 ## La zone
 
 Une ville, un quartier, un rayon ou plusieurs zones.
@@ -67,7 +68,7 @@ Une veille possède toujours une durée définie. Par exemple :
 - 1 semaine;
 - 1 mois;
 - 3 mois.
-À son expiration, l'utilisateur peut la renouveler ou la laisser s'arrêter automatiquement.
+  À son expiration, l'utilisateur peut la renouveler ou la laisser s'arrêter automatiquement.
 
 # 13. Les états d'une veille
 
@@ -80,7 +81,7 @@ Chaque veille évolue dans le temps. Elle peut être :
 - Arrivée à échéance.
 - Terminée.
 - Archivée.
-Ces états permettent à l'utilisateur de comprendre immédiatement la situation de chaque surveillance.
+  Ces états permettent à l'utilisateur de comprendre immédiatement la situation de chaque surveillance.
 
 # 14. Les actions disponibles
 
@@ -96,7 +97,7 @@ Depuis une veille, l'utilisateur peut :
 - arrêter;
 - prolonger;
 - archiver.
-Toutes ces actions sont disponibles sans recréer la veille.
+  Toutes ces actions sont disponibles sans recréer la veille.
 
 # 15. Les besoins émergents
 
@@ -105,7 +106,7 @@ Veille observe l'ensemble des signaux anonymisés générés par la plateforme. 
 - plusieurs recherches d'emploi dans une spécialité;
 - plusieurs demandes d'un même produit;
 - plusieurs besoins concernant un service particulier.
-Ces besoins représentent des opportunités potentielles.
+  Ces besoins représentent des opportunités potentielles.
 
 # 16. Les opportunités latentes
 
@@ -122,7 +123,7 @@ Par exemple :
 - services les plus recherchés;
 - besoins en forte progression;
 - nouvelles tendances.
-Ces informations sont présentées sous forme de tableaux de bord anonymisés.
+  Ces informations sont présentées sous forme de tableaux de bord anonymisés.
 
 # 18. Explorer une tendance
 
@@ -134,7 +135,7 @@ Chaque tendance peut être consultée. L'utilisateur accède alors à une fiche 
 - l'évolution observée;
 - les critères les plus fréquents;
 - une explication de la tendance.
-Cette fiche ne révèle jamais l'identité des personnes concernées.
+  Cette fiche ne révèle jamais l'identité des personnes concernées.
 
 # 19. Répondre à un besoin collectif
 
@@ -150,7 +151,7 @@ La mise en relation suit plusieurs étapes.
 4. Information des utilisateurs concernés.
 5. Acceptation éventuelle.
 6. Mise en relation.
-Ce processus garantit la confidentialité de toutes les parties.
+   Ce processus garantit la confidentialité de toutes les parties.
 
 # 21. Les propositions intelligentes
 
@@ -161,7 +162,7 @@ Veille peut suggérer :
 - de prolonger une surveillance;
 - de suivre une tendance émergente;
 - de répondre à une opportunité latente.
-Toutes ces propositions restent facultatives. L'utilisateur conserve toujours la décision finale.
+  Toutes ces propositions restent facultatives. L'utilisateur conserve toujours la décision finale.
 
 # 22. Conclusion de la Partie 2
 

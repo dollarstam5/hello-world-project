@@ -11,16 +11,16 @@ Les budgets contractuels et les commandes de mesure sont décrits dans [Performa
 
 ## Éléments hérités à revalider
 
-| Sujet historique | Statut documentaire | Vérification nécessaire avant action |
-| --- | --- | --- |
-| Volume et usage des composants Radix | Non confirmé par l'ancien document seul | Inventorier les imports réellement utilisés, inspecter le bundle de production et confirmer le tree-shaking. |
-| Coût de Framer Motion | Non confirmé par l'ancien document seul | Mesurer la contribution au bundle et recenser les usages réels avant toute substitution. |
-| Taille et découpage CSS | Mesure historique non datée | Mesurer les CSS réellement référencés par le HTML initial et analyser le découpage par route. |
-| Duplication des workspaces | Hypothèse à mesurer | Examiner le graphe de dépendances et les artefacts de build avant de fusionner ou supprimer des packages. |
-| Chargement des images | Hypothèse à vérifier par parcours | Auditer les images réellement chargées, leur format, leurs dimensions et leur priorité. |
-| Multiplicité des systèmes d'état | Proposition architecturale non validée | Inventorier les usages et les frontières d'état ; ne pas migrer un système sur la seule base d'un nombre de références. |
-| Web Vitals et tests de performance | Le dépôt contient déjà des implémentations de mesure et de budget à évaluer | Vérifier les scripts, tests, intégration CI et qualité des mesures avant de déclarer une lacune. |
-| Session/authentification | Hors périmètre de ce lot documentaire | Ne pas appliquer les recommandations historiques d'authentification dans cette migration. |
+| Sujet historique                     | Statut documentaire                                                         | Vérification nécessaire avant action                                                                                    |
+| ------------------------------------ | --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Volume et usage des composants Radix | Non confirmé par l'ancien document seul                                     | Inventorier les imports réellement utilisés, inspecter le bundle de production et confirmer le tree-shaking.            |
+| Coût de Framer Motion                | Non confirmé par l'ancien document seul                                     | Mesurer la contribution au bundle et recenser les usages réels avant toute substitution.                                |
+| Taille et découpage CSS              | Mesure historique non datée                                                 | Mesurer les CSS réellement référencés par le HTML initial et analyser le découpage par route.                           |
+| Duplication des workspaces           | Hypothèse à mesurer                                                         | Examiner le graphe de dépendances et les artefacts de build avant de fusionner ou supprimer des packages.               |
+| Chargement des images                | Hypothèse à vérifier par parcours                                           | Auditer les images réellement chargées, leur format, leurs dimensions et leur priorité.                                 |
+| Multiplicité des systèmes d'état     | Proposition architecturale non validée                                      | Inventorier les usages et les frontières d'état ; ne pas migrer un système sur la seule base d'un nombre de références. |
+| Web Vitals et tests de performance   | Le dépôt contient déjà des implémentations de mesure et de budget à évaluer | Vérifier les scripts, tests, intégration CI et qualité des mesures avant de déclarer une lacune.                        |
+| Session/authentification             | Hors périmètre de ce lot documentaire                                       | Ne pas appliquer les recommandations historiques d'authentification dans cette migration.                               |
 
 ## Méthode de triage
 

@@ -3,6 +3,7 @@
 ## Critical Issues
 
 ### 1. Radix UI Component Overload
+
 **Status:** 🔴 CRITICAL
 
 - **20+ Radix UI components** imported at bundle level
@@ -11,6 +12,7 @@
 - Most are not used across the app
 
 **Fix:** Tree-shake unused Radix components
+
 ```bash
 # Audit actual usage
 grep -r "from '@radix-ui" src/ | sort | uniq -c
@@ -20,6 +22,7 @@ grep -r "from '@radix-ui" src/ | sort | uniq -c
 ```
 
 ### 2. Framer Motion Bloat
+
 **Status:** 🔴 CRITICAL
 
 - Version: 12.40.0 (~45KB minified)
@@ -27,6 +30,7 @@ grep -r "from '@radix-ui" src/ | sort | uniq -c
 - Can be replaced with CSS animations for 90% of use cases
 
 **Fix:** Replace with Tailwind animations
+
 ```bash
 # Check actual usage
 grep -r "framer-motion\|motion\." src/ | wc -l
@@ -36,6 +40,7 @@ grep -r "framer-motion\|motion\." src/ | wc -l
 ```
 
 ### 3. Styles.css Size (37.8 KB)
+
 **Status:** 🟠 HIGH
 
 - Tailwind 4.2.1 should tree-shake, but doesn't
@@ -43,26 +48,28 @@ grep -r "framer-motion\|motion\." src/ | wc -l
 - CSS is not splitting by route
 
 **Fix:** Enable CSS code splitting
+
 ```javascript
 // vite.config.ts
 export default defineConfig({
   build: {
     cssCodeSplit: true, // Split CSS by chunk
-    minify: 'terser',
+    minify: "terser",
     rollupOptions: {
       output: {
         manualChunks: {
-          'vendor': ['react', 'react-dom'],
-          'ui': ['@radix-ui'],
-          'query': ['@tanstack/react-query']
-        }
-      }
-    }
-  }
+          vendor: ["react", "react-dom"],
+          ui: ["@radix-ui"],
+          query: ["@tanstack/react-query"],
+        },
+      },
+    },
+  },
 });
 ```
 
 ### 4. Monorepo Workspace Duplication
+
 **Status:** 🟠 HIGH
 
 - 4 packages re-bundled together
@@ -70,6 +77,7 @@ export default defineConfig({
 - No shared DLL/cache
 
 **Fix:** Consolidate workspace
+
 ```bash
 # Measure before/after
 du -sh dist/
@@ -79,6 +87,7 @@ du -sh dist/
 ```
 
 ### 5. Image Loading Strategy Missing
+
 **Status:** 🟠 HIGH
 
 - No lazy loading defined
@@ -86,6 +95,7 @@ du -sh dist/
 - All images fetched on first render
 
 **Fix:** Add image optimization
+
 ```typescript
 // src/components/OptimizedImage.tsx
 export function OptimizedImage({ src, alt }) {
@@ -102,6 +112,7 @@ export function OptimizedImage({ src, alt }) {
 ```
 
 ### 6. Triple State Management
+
 **Status:** 🟠 HIGH
 
 - React Query (for server state)
@@ -109,6 +120,7 @@ export function OptimizedImage({ src, alt }) {
 - React Router (for nav state)
 
 **Fix:** Consolidate to React Query + Router
+
 ```bash
 # Audit Zustand usage
 grep -r "useStore\|zustand" src/ | wc -l
@@ -118,6 +130,7 @@ grep -r "useStore\|zustand" src/ | wc -l
 ```
 
 ### 7. Missing Performance Tests
+
 **Status:** 🟡 MEDIUM
 
 - `check:performance-budget` script exists but no budget file
@@ -125,19 +138,21 @@ grep -r "useStore\|zustand" src/ | wc -l
 - No Lighthouse CI
 
 **Fix:** Create performance budgets
+
 ```javascript
 // scripts/check-performance-budgets.ts
 const BUDGETS = {
-  'main.js': 150_000,      // 150KB
-  'vendor.js': 200_000,    // 200KB
-  'styles.css': 50_000,    // 50KB
-  'ttfb': 600,             // 600ms
-  'lcp': 2500,             // 2.5s
-  'cls': 0.1,              // < 0.1
+  "main.js": 150_000, // 150KB
+  "vendor.js": 200_000, // 200KB
+  "styles.css": 50_000, // 50KB
+  ttfb: 600, // 600ms
+  lcp: 2500, // 2.5s
+  cls: 0.1, // < 0.1
 };
 ```
 
 ### 8. Supabase Auth Overhead
+
 **Status:** 🟡 MEDIUM
 
 - Full PKCE flow on every route change
@@ -145,12 +160,13 @@ const BUDGETS = {
 - No session persistence strategy
 
 **Fix:** Implement session cache
+
 ```typescript
 // src/lib/auth-cache.ts
 const sessionCache = new Map();
 
 export function getCachedSession() {
-  const cached = sessionCache.get('auth');
+  const cached = sessionCache.get("auth");
   if (cached && !isExpired(cached)) return cached;
   return null;
 }
@@ -174,6 +190,7 @@ export function getCachedSession() {
 ## Expected Results
 
 After fixes:
+
 - Main bundle: **150KB** (from 300KB)
 - Styles: **30KB** (from 37.8KB)
 - TTI (Time to Interactive): **< 2s** (from 4-5s)

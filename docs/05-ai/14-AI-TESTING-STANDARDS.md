@@ -10,6 +10,7 @@ AI-TESTING-STANDARDS.md définit les règles obligatoires de tests applicables �
 - ne casse pas l'existant;
 - respecte la sécurité;
 - reste maintenable.
+
 # 2. Principe fondamental
 
 Une fonctionnalité sans test approprié est considérée comme incomplète. L'IA ne doit jamais déclarer une tâche terminée uniquement parce que :
@@ -17,6 +18,7 @@ Une fonctionnalité sans test approprié est considérée comme incomplète. L'I
 - le code compile;
 - l'écran s'affiche;
 - une démonstration manuelle fonctionne.
+
 # 3. Cycle obligatoire de validation
 
 Toute fonctionnalité doit suivre : ```text id="q1m7np" Développement ↓ Test automatique
@@ -27,6 +29,7 @@ Toute fonctionnalité doit suivre : ```text id="q1m7np" Développement ↓ Test 
 - service;
 - utilitaire;
 - logique métier. --- ## 4.2 Tests composants Objectif : Vérifier les composants interface. Exemples :
+
 ```
 ---
 # 4. Types de tests obligatoires
@@ -67,6 +70,7 @@ Données vides
 ↓
 Absence de permission
 ```
+
 # 6. Règles de tests Backend
 
 L'IA doit vérifier :
@@ -76,7 +80,7 @@ L'IA doit vérifier :
 - erreurs;
 - sécurité;
 - performances.
-Chaque service important doit avoir une couverture adaptée.
+  Chaque service important doit avoir une couverture adaptée.
 
 # 7. Règles de tests API
 
@@ -109,7 +113,7 @@ Toute modification Database doit vérifier :
 - relations;
 - permissions;
 - RLS.
-Cas obligatoires : ```text id="1v0n8v" Utilisateur autorisé ↓ Accès accepté
+  Cas obligatoires : ```text id="1v0n8v" Utilisateur autorisé ↓ Accès accepté
 
 Utilisateur non autorisé ↓ Accès refusé
 
@@ -155,6 +159,7 @@ Chaque nouvelle politique RLS doit vérifier :
 - tester les parties critiques;
 - tester les règles métier;
 - tester les zones sensibles. --- # 17. Gestion d'un test échoué Si un test échoue : L'IA doit :
+
 ```
 Lorsque nécessaire :
 Tester :
@@ -164,8 +169,10 @@ Tester :
 2. corriger;
 3. relancer les tests;
 4. documenter si nécessaire. Elle ne doit jamais supprimer un test uniquement pour obtenir un résultat positif. --- # 18. Rapport de validation obligatoire À la fin d'une tâche, l'IA doit fournir : ```text id="0kq5fa" Tests réalisés :
+
 - Test 1 : Résultat :
 - Test 2 : Résultat : Problèmes rencontrés : Corrections effectuées :
+
 # 19. Checklist avant livraison
 
 [] Tests unitaires réalisés [] Tests intégration réalisés [] Tests sécurité réalisés [] Tests erreurs réalisés [] Tests régression vérifiés [] Documentation mise à jour

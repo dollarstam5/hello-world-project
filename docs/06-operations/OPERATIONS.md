@@ -4,20 +4,20 @@ Ce document définit les seuils opérationnels utilisés pour diagnostiquer la s
 
 ## 1. Niveaux de santé
 
-| Niveau | Condition principale | Action |
-| --- | --- | --- |
-| healthy | HTTP 2xx/3xx, latence < 500 ms, offline healthy | fonctionnement normal |
-| warning | latence >= 500 ms et < 2 s, ou HTTP 4xx, ou offline warning | surveiller et diagnostiquer |
-| critical | latence >= 2 s, HTTP 5xx, ou offline critical | intervention prioritaire |
+| Niveau   | Condition principale                                        | Action                      |
+| -------- | ----------------------------------------------------------- | --------------------------- |
+| healthy  | HTTP 2xx/3xx, latence < 500 ms, offline healthy             | fonctionnement normal       |
+| warning  | latence >= 500 ms et < 2 s, ou HTTP 4xx, ou offline warning | surveiller et diagnostiquer |
+| critical | latence >= 2 s, HTTP 5xx, ou offline critical               | intervention prioritaire    |
 
 Les seuils sont alignés avec `src/lib/observability/health-policy.ts`.
 
 ## 2. Santé offline
 
-| Niveau | Condition |
-| --- | --- |
-| healthy | aucune mutation en attente ni quarantaine |
-| warning | travail en attente, ou mutation la plus ancienne >= 15 min |
+| Niveau   | Condition                                                     |
+| -------- | ------------------------------------------------------------- |
+| healthy  | aucune mutation en attente ni quarantaine                     |
+| warning  | travail en attente, ou mutation la plus ancienne >= 15 min    |
 | critical | mutation en quarantaine, ou mutation la plus ancienne >= 24 h |
 
 Les seuils offline sont définis dans `src/platform/offline/diagnostics.ts`.
@@ -27,6 +27,7 @@ Les seuils offline sont définis dans `src/platform/offline/diagnostics.ts`.
 `GET /api/health` est un contrôle de disponibilité minimal et sans dépendance externe.
 
 Contrat attendu :
+
 - HTTP 200 ;
 - réponse JSON ;
 - `cache-control: no-store` ;
@@ -54,6 +55,7 @@ Les logs ne doivent jamais contenir de token, secret, mot de passe, clé API ou 
 Les seuils de santé servent au triage opérationnel et ne constituent pas une promesse de disponibilité publique.
 
 Pour une préproduction ou une production, toute définition formelle de SLO doit préciser :
+
 - fenêtre d'observation ;
 - disponibilité cible ;
 - latence cible ;

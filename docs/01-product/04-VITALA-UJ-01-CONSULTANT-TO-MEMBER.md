@@ -5,6 +5,7 @@
 - VITALA-VISION-V1
 - VITALA-PERSONAS-V1
 - VITALA-TRUST-LEVELS-V1
+
 # 1. Objectif
 
 Transformer un visiteur inconnu en membre enregistré sans lui imposer une procédure d'inscription classique. L'utilisateur doit d'abord découvrir la valeur de Vitala avant de fournir des informations personnelles.
@@ -26,7 +27,7 @@ Objectif : Faire ressentir immédiatement la promesse de Vitala. Exemples de mes
 - Valorisez vos compétences.
 - Développez votre confiance.
 - Trouvez des personnes fiables grâce aux recommandations réelles.
-L'animation disparaît automatiquement. Aucune interaction n'est obligatoire.
+  L'animation disparaît automatiquement. Aucune interaction n'est obligatoire.
 
 # 4. Home Consultant
 
@@ -40,6 +41,7 @@ Le consultant arrive sur une version spécifique de la Home. Cette Home est con�
 - Les fonctionnalités Veille.
 - Les recommandations.
 - Les histoires et cas d'usage réels.
+
 # 5. Liberté d'exploration
 
 Le consultant peut :
@@ -49,7 +51,7 @@ Le consultant peut :
 - Découvrir les fonctionnalités.
 - Observer les opportunités visibles.
 - Comprendre le fonctionnement général de la plateforme.
-Aucune inscription n'est demandée. Aucun formulaire n'est affiché.
+  Aucune inscription n'est demandée. Aucun formulaire n'est affiché.
 
 ### Aucune interruption n'est imposée.
 
@@ -63,7 +65,7 @@ Le consultant décide volontairement d'effectuer une action. Exemples :
 - Suivre une veille.
 - Répondre à une opportunité.
 - Publier une opportunité.
-Cette action devient le déclencheur naturel de la progression.
+  Cette action devient le déclencheur naturel de la progression.
 
 # 7. Intervention de Vita
 
@@ -79,7 +81,7 @@ Uniquement lorsque cela devient utile à l'action en cours. Informations accept�
 
 - Téléphone
 - Email
-Exemple : « Où puis-je vous prévenir lorsqu'une opportunité vous concerne ? »
+  Exemple : « Où puis-je vous prévenir lorsqu'une opportunité vous concerne ? »
 
 # 10. Création silencieuse du compte
 
@@ -87,12 +89,12 @@ Une fois les informations minimales obtenues :
 
 - Prénom
 - Téléphone ou Email
-Le système crée automatiquement un compte. Aucune page :
+  Le système crée automatiquement un compte. Aucune page :
 
 - Inscription
 - Créer un compte
 - Bienvenue dans votre compte
-n'est affichée. L'expérience doit rester naturelle.
+  n'est affichée. L'expérience doit rester naturelle.
 
 # 11. Confirmation naturelle
 
@@ -106,6 +108,7 @@ Membre enregistré Informations connues :
 
 - Prénom
 - Téléphone ou Email
+
 # 13. Capacités obtenues
 
 Le membre enregistré peut désormais :
@@ -118,6 +121,7 @@ Le membre enregistré peut désormais :
 - Sauvegarder des découvertes.
 - Recevoir des alertes.
 - Participer à l'écosystème Vitala.
+
 # 14. Contrôle de sécurité automatique
 
 Toute publication passe automatiquement par : Safety & Trust Filter Engine Contrôles réalisés :
@@ -127,7 +131,7 @@ Toute publication passe automatiquement par : Safety & Trust Filter Engine Contr
 - Analyse de cohérence.
 - Détection de contenus interdits.
 - Évaluation du niveau de confiance.
-L'utilisateur ne voit jamais les mécanismes internes.
+  L'utilisateur ne voit jamais les mécanismes internes.
 
 # 15. Principes UX
 

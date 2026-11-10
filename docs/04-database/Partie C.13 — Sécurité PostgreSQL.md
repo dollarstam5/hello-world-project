@@ -74,7 +74,7 @@ Les rôles techniques sont réservés à l'infrastructure.
 
 1
 
-4. Autorisation
+4. Autorisation
 
 Les permissions doivent être accordées uniquement lorsque nécessaires.
 
@@ -152,7 +152,7 @@ informations de confiance ;
 
 2
 
-Lorsque nécessaire, ces informations doivent être chiffrées ou masquées.
+Lorsque nécessaire, ces informations doivent être chiffrées ou masquées.
 
 8. Fonctions sécurisées
 
@@ -160,9 +160,9 @@ Les fonctions SQL doivent utiliser :
 
 •
 
-SECURITY INVOKER  par défaut.
+SECURITY INVOKER par défaut.
 
-SECURITY DEFINER  n'est autorisé que lorsque :
+SECURITY DEFINER n'est autorisé que lorsque :
 
 •
 
@@ -232,7 +232,7 @@ au repos (mécanismes fournis par Supabase) ;
 
 3
 
-•
+•
 
 au niveau applicatif lorsque le contexte l'exige.
 
@@ -314,7 +314,7 @@ les impacts éventuels.
 
 4
 
-16. Évolution
+16. Évolution
 
 Toute modification des règles de sécurité doit :
 
@@ -371,4 +371,3 @@ Une application rigoureuse des politiques d'accès, de la Row Level Security, de
 moindre privilège garantit une plateforme robuste, fiable et conforme aux exigences du Build Blueprint.
 
 5
-

@@ -6,13 +6,13 @@ Présenter Vitalis avant la première utilisation sans imposer de compte, de for
 
 ## Parcours validé — cinq écrans
 
-| Étape | Contenu | Intention |
-|---|---|---|
-| 1. Vitalis | Vision, promesse et utilité globale de l'application | Comprendre Vitalis avant ses fonctionnalités |
-| 2. Flash + Scan | Présentation courte des deux moteurs | Découvrir et explorer |
-| 3. Réel + Radar | Présentation courte des deux moteurs ; Réel est utilisable en mode invité | Comprendre la présence locale et le repérage |
-| 4. 2×2 | Présentation du menu et des espaces/fonctionnalités complémentaires | Comprendre où trouver les espaces secondaires |
-| 5. Entrer dans Vitalis | Invitation humaine et bouton « C'est parti ! » | Rejoindre directement Home |
+| Étape                  | Contenu                                                                   | Intention                                     |
+| ---------------------- | ------------------------------------------------------------------------- | --------------------------------------------- |
+| 1. Vitalis             | Vision, promesse et utilité globale de l'application                      | Comprendre Vitalis avant ses fonctionnalités  |
+| 2. Flash + Scan        | Présentation courte des deux moteurs                                      | Découvrir et explorer                         |
+| 3. Réel + Radar        | Présentation courte des deux moteurs ; Réel est utilisable en mode invité | Comprendre la présence locale et le repérage  |
+| 4. 2×2                 | Présentation du menu et des espaces/fonctionnalités complémentaires       | Comprendre où trouver les espaces secondaires |
+| 5. Entrer dans Vitalis | Invitation humaine et bouton « C'est parti ! »                            | Rejoindre directement Home                    |
 
 2×2 est un accès aux espaces complémentaires, pas un cinquième moteur. La navigation principale conserve cinq icônes : Flash, Scan, Réel, Radar et 2×2 ; le dernier contrôle ouvre le menu secondaire.
 

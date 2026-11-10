@@ -68,7 +68,7 @@ Chaque table contient les informations suivantes :
 
 1
 
-3.1 Informations générales
+3.1 Informations générales
 
 •
 
@@ -126,8 +126,8 @@ Chaque règle doit préciser :
 
 •
 
-la clause  USING
-la clause  WITH CHECK
+la clause USING
+la clause WITH CHECK
 
 •
 
@@ -165,7 +165,7 @@ Chaque rôle doit être explicitement justifié.
 
 2
 
-4. Exemple de matrice (modèle)
+4. Exemple de matrice (modèle)
 
 Table : profiles
 
@@ -225,8 +225,8 @@ Conditions
 
 •
 
-SELECT :  user_id = auth.uid()
-UPDATE :  user_id = auth.uid()
+SELECT : user_id = auth.uid()
+UPDATE : user_id = auth.uid()
 
 •
 
@@ -284,7 +284,7 @@ Ces données doivent être strictement protégées.
 
 3
 
-7. Exceptions
+7. Exceptions
 
 Toute exception aux règles RLS doit :
 
@@ -378,7 +378,7 @@ logique métier applicative.
 
 4
 
-11. Maintenance
+11. Maintenance
 
 Toute modification de la base de données doit entraîner :
 
@@ -423,4 +423,3 @@ Elle garantit une protection stricte des données, une séparation claire des ac
 sécurisée par conception, indispensable à la fiabilité et à la confiance du système.
 
 5
-

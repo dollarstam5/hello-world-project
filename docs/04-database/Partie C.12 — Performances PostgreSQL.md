@@ -80,7 +80,7 @@ utiliser les index disponibles.
 
 1
 
-L'utilisation de  SELECT *  est interdite dans le code de production.
+L'utilisation de SELECT * est interdite dans le code de production.
 
 4. Pagination
 
@@ -153,7 +153,7 @@ Les transactions longues sont interdites sauf justification exceptionnelle.
 
 2
 
-8. Gestion des écritures
+8. Gestion des écritures
 
 Les opérations d'écriture doivent :
 
@@ -239,7 +239,7 @@ maintenir les performances dans le temps.
 
 3
 
-12. Évolutivité
+12. Évolutivité
 
 L'architecture PostgreSQL doit rester performante malgré :
 
@@ -329,7 +329,7 @@ les optimisations sont documentées.
 
 4
 
-16. Conclusion
+16. Conclusion
 
 Les performances PostgreSQL constituent un élément essentiel de la qualité de Vitala.
 
@@ -338,4 +338,3 @@ Une approche fondée sur la conception, la mesure et l'amélioration continue ga
 rapide, fiable et capable d'évoluer avec la croissance du projet.
 
 5
-

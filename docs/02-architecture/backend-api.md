@@ -8,17 +8,17 @@ Cette référence distingue les comportements observés dans le code des intenti
 
 ## Sources de vérité
 
-| Sujet | Source examinée |
-| --- | --- |
-| Entrée HTTP et enveloppe des réponses serveur | `src/server.ts` |
-| Middleware de démarrage et traitement d'erreurs | `src/start.ts` |
-| Déclaration des routes HTTP | `src/routes/api/` |
-| Session utilisée par les routes de synchronisation | `src/lib/sync/session.server.ts` |
-| Exécution du protocole de synchronisation | `src/lib/sync/transport.server.ts` |
-| Validation des messages de synchronisation | `src/lib/sync/validate.ts` et `@eco/core-contracts` |
-| Client Supabase privilégié côté serveur | `src/integrations/supabase/client.server.ts` |
-| Règles backend existantes | [BACKEND_RULES.md](../BACKEND_RULES.md) |
-| Contrats API canoniques | [Répertoire API](../03-api/README.md) |
+| Sujet                                              | Source examinée                                     |
+| -------------------------------------------------- | --------------------------------------------------- |
+| Entrée HTTP et enveloppe des réponses serveur      | `src/server.ts`                                     |
+| Middleware de démarrage et traitement d'erreurs    | `src/start.ts`                                      |
+| Déclaration des routes HTTP                        | `src/routes/api/`                                   |
+| Session utilisée par les routes de synchronisation | `src/lib/sync/session.server.ts`                    |
+| Exécution du protocole de synchronisation          | `src/lib/sync/transport.server.ts`                  |
+| Validation des messages de synchronisation         | `src/lib/sync/validate.ts` et `@eco/core-contracts` |
+| Client Supabase privilégié côté serveur            | `src/integrations/supabase/client.server.ts`        |
+| Règles backend existantes                          | [BACKEND_RULES.md](../BACKEND_RULES.md)             |
+| Contrats API canoniques                            | [Répertoire API](../03-api/README.md)               |
 
 ## Cycle d'une requête
 
@@ -32,12 +32,12 @@ Cette séquence décrit les points d'entrée présents dans le code ; elle ne ga
 
 ## Routes HTTP vérifiées
 
-| Route | Méthode | Comportement constaté |
-| --- | --- | --- |
-| `/api/health` | `GET` | Renvoie un statut `ok`, le nom de service et un horodatage ISO ; réponse `no-store`. |
-| `/api/sync/pull` | `POST` | Valide une session, un corps JSON de taille limitée et la requête de pull, puis lit les changements avec le client Supabase de l'appelant. |
-| `/api/sync/push` | `POST` | Valide une session, un corps JSON de taille limitée et les mutations, puis applique les écritures permises avec l'identité de l'appelant. |
-| `/api/public/assistant` | `POST` | Malgré le segment `public`, le handler exige une session. Il valide les messages, appelle la passerelle IA côté serveur et transmet le flux de réponse. |
+| Route                   | Méthode | Comportement constaté                                                                                                                                   |
+| ----------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/api/health`           | `GET`   | Renvoie un statut `ok`, le nom de service et un horodatage ISO ; réponse `no-store`.                                                                    |
+| `/api/sync/pull`        | `POST`  | Valide une session, un corps JSON de taille limitée et la requête de pull, puis lit les changements avec le client Supabase de l'appelant.              |
+| `/api/sync/push`        | `POST`  | Valide une session, un corps JSON de taille limitée et les mutations, puis applique les écritures permises avec l'identité de l'appelant.               |
+| `/api/public/assistant` | `POST`  | Malgré le segment `public`, le handler exige une session. Il valide les messages, appelle la passerelle IA côté serveur et transmet le flux de réponse. |
 
 L'inventaire est limité aux handlers repérés sous `src/routes/api/` lors du Lot 5. Il ne constitue pas une preuve d'absence d'autres points d'entrée, par exemple des fonctions serveur TanStack.
 

@@ -54,7 +54,7 @@ Vérifier que :
 ☐ Les conventions de nommage ( snake_case ) sont respectées.
 ☐ Les clés primaires utilisent des UUID lorsque requis.
 ☐ Les colonnes d'audit sont présentes lorsque nécessaires.
-☐ Les contraintes ( NOT NULL ,  CHECK ,  UNIQUE , etc.) sont définies.
+☐ Les contraintes ( NOT NULL , CHECK , UNIQUE , etc.) sont définies.
 ☐ Aucune redondance inutile n'a été introduite.
 
 3. Relations
@@ -73,13 +73,13 @@ Vérifier que :
 
 ☐ Toutes les clés étrangères sont définies.
 ☐ Les relations respectent le Domain Model.
-☐ Les règles  ON DELETE  et  ON UPDATE  sont appropriées.
+☐ Les règles ON DELETE et ON UPDATE sont appropriées.
 ☐ Les tables de liaison sont utilisées pour les relations plusieurs-à-plusieurs.
 ☐ L'intégrité référentielle est garantie.
 
 1
 
-4. Index
+4. Index
 
 Vérifier que :
 
@@ -155,7 +155,7 @@ Vérifier que :
 
 2
 
-8. Sécurité
+8. Sécurité
 
 Vérifier que :
 
@@ -173,7 +173,7 @@ Vérifier que :
 ☐ Les politiques RLS sont définies et testées.
 ☐ Les permissions respectent le principe du moindre privilège.
 ☐ Les données sensibles sont correctement protégées.
-☐ Les fonctions utilisant  SECURITY DEFINER  sont justifiées.
+☐ Les fonctions utilisant SECURITY DEFINER sont justifiées.
 
 9. Transactions
 
@@ -230,7 +230,7 @@ Vérifier que :
 
 3
 
-12. Sauvegarde et restauration
+12. Sauvegarde et restauration
 
 Vérifier que :
 
@@ -309,7 +309,7 @@ Vérifier que les évolutions restent cohérentes avec :
 
 4
 
-16. Validation finale
+16. Validation finale
 
 Avant toute mise en production, confirmer que :
 
@@ -369,4 +369,3 @@ Son application systématique garantit que chaque évolution de la base de donn�
 exigences de qualité, de sécurité, de performance et de maintenabilité définies pour Vitala.
 
 5
-

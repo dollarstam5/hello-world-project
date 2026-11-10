@@ -14,7 +14,7 @@ AI-CODING-STANDARDS.md définit les standards obligatoires de production de code
 - Scripts;
 - Tests;
 - Automatisations.
-Toute IA produisant du code Vitala doit respecter ce document.
+  Toute IA produisant du code Vitala doit respecter ce document.
 
 # 2. Principes fondamentaux du code
 
@@ -27,7 +27,7 @@ Le code Vitala doit être :
 - maintenable;
 - testable;
 - évolutif.
-La quantité de code produite n'est jamais un objectif. La qualité du code est prioritaire.
+  La quantité de code produite n'est jamais un objectif. La qualité du code est prioritaire.
 
 # 3. Règles générales obligatoires
 
@@ -38,24 +38,26 @@ L'IA DOIT :
 - éviter les raccourcis incompréhensibles;
 - respecter l'architecture;
 - supprimer le code mort.
-L'IA NE DOIT PAS :
+  L'IA NE DOIT PAS :
 
 - produire du code temporaire non documenté;
 - copier du code inutilement;
 - utiliser des noms vagues.
+
 # 4. Convention de nommage
 
 ## Fichiers
 
 Les noms doivent être explicites. Correct : ```text id="3c4z7s" UserProfile.tsx FlashEditor.tsx sync-service.ts
 
-```
+````
 Incorrect :
 ```text id="bx8t1w"
 Component1.tsx
 NewFile.ts
 test2.ts
-```
+````
+
 # 5. Composants React
 
 Les composants doivent :
@@ -63,13 +65,14 @@ Les composants doivent :
 - utiliser PascalCase;
 
 - représenter une responsabilité claire.
-Exemple : ```text id="c9jq9f" FlashCard.tsx RadarMap.tsx UserAvatar.tsx
+  Exemple : ```text id="c9jq9f" FlashCard.tsx RadarMap.tsx UserAvatar.tsx
 
-```
+````
 Interdit :
 ```text id="6j2x8a"
 EverythingComponent.tsx
-```
+````
+
 # 6. Fonctions
 
 Les fonctions doivent :
@@ -77,13 +80,14 @@ Les fonctions doivent :
 - avoir un nom décrivant l'action;
 - être courtes;
 - avoir un comportement prévisible.
-Exemple :
+  Exemple :
 
 ```
 createFlashDraft()
 syncPendingOperations()
 validateUserProfile()
 ```
+
 Éviter :
 
 ```
@@ -91,6 +95,7 @@ processData()
 handleStuff()
 doAction()
 ```
+
 # 7. Variables
 
 Les variables doivent être explicites.
@@ -102,6 +107,7 @@ userProfile
 flashDraftId
 pendingSyncOperations
 ```
+
 Incorrect :
 
 ```
@@ -109,6 +115,7 @@ data
 item
 value
 ```
+
 sauf contexte évident.
 
 # 8. TypeScript obligatoire
@@ -118,11 +125,12 @@ Tout nouveau code doit utiliser TypeScript correctement. L'IA doit :
 - définir les types;
 - éviter any;
 - utiliser les interfaces lorsque nécessaire.
-Interdit :
+  Interdit :
 
 ```
 const data:any
 ```
+
 sauf justification documentée.
 
 # 9. Organisation du code
@@ -145,11 +153,13 @@ try {
 catch {
 }
 ```
+
 sans gestion. Obligatoire :
 
 - capturer l'erreur;
 - fournir un contexte;
 - gérer le comportement attendu.
+
 # 11. Commentaires dans le code
 
 Les commentaires doivent expliquer :
@@ -157,18 +167,20 @@ Les commentaires doivent expliquer :
 - pourquoi une décision existe;
 - une logique complexe;
 - une contrainte importante.
-Ils ne doivent pas expliquer une évidence. Mauvais :
+  Ils ne doivent pas expliquer une évidence. Mauvais :
 
 ```
 // Ajouter 1
 counter++
 ```
+
 Bon :
 
 ```
 // Conservation de l'ancien index pour maintenir
 // la compatibilité avec les synchronisations offline
 ```
+
 # 12. Logique métier
 
 La logique métier ne doit pas être placée :
@@ -176,11 +188,12 @@ La logique métier ne doit pas être placée :
 - dans les composants UI;
 - dans les fichiers de configuration;
 - dans les utilitaires génériques.
-Elle doit être dans :
+  Elle doit être dans :
 
 - services;
 - domaines;
 - modules appropriés.
+
 # 13. Gestion des états
 
 L'IA doit éviter :
@@ -188,7 +201,7 @@ L'IA doit éviter :
 - états dupliqués;
 - états inutiles;
 - logique complexe dans les composants.
-Chaque état doit avoir une raison claire.
+  Chaque état doit avoir une raison claire.
 
 # 14. Performance
 
@@ -198,7 +211,7 @@ L'IA doit considérer :
 - appels réseau excessifs;
 - requêtes lourdes;
 - taille des bundles.
-Optimiser uniquement lorsque nécessaire. Pas d'optimisation prématurée.
+  Optimiser uniquement lorsque nécessaire. Pas d'optimisation prématurée.
 
 # 15. Sécurité dans le code
 
@@ -207,7 +220,7 @@ L'IA ne doit jamais :
 - exposer des secrets;
 - faire confiance aux entrées utilisateur;
 - contourner les permissions.
-Toute donnée externe doit être validée.
+  Toute donnée externe doit être validée.
 
 # 16. Code Database
 
@@ -216,11 +229,12 @@ Les requêtes doivent :
 - être sécurisées;
 - être optimisées;
 - respecter les modèles officiels.
-Interdit :
+  Interdit :
 
 - SQL non contrôlé;
 - accès sans permission;
 - logique métier cachée dans des requêtes.
+
 # 17. Code API
 
 Chaque endpoint doit avoir :
@@ -229,6 +243,7 @@ Chaque endpoint doit avoir :
 - réponse typée;
 - gestion erreur;
 - sécurité.
+
 # 18. Code IA
 
 Toute intégration IA doit préciser :

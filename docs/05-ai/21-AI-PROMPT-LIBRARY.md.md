@@ -9,6 +9,7 @@ AI-PROMPT-LIBRARY.md contient les modèles de prompts officiels utilisés pour g
 - AI-CONSTITUTION.md;
 - AI-PROMPT-STANDARD.md;
 - AI-ARCHITECTURE-RULES.md.
+
 # 2. Règles d'utilisation
 
 Avant d'utiliser un prompt : L'IA ou l'utilisateur doit :
@@ -17,6 +18,7 @@ Avant d'utiliser un prompt : L'IA ou l'utilisateur doit :
 - choisir le modèle adapté;
 - compléter les informations manquantes;
 - respecter les documents de référence.
+
 # 3. Prompt général de développement
 
 ## Usage
@@ -31,6 +33,7 @@ Tu travailles sur le projet Vitala.
 2. Consulte les documents de référence.
 3. Identifie les fichiers concernés.
 4. Propose un plan. Objectif : [Décrire la fonctionnalité] Contraintes :
+
 - respecter l'architecture modulaire;
 - ne pas supprimer l'existant;
 - utiliser les conventions Vitala;
@@ -39,9 +42,11 @@ Tu travailles sur le projet Vitala.
 - fichiers modifiés;
 - tests;
 - documentation.
+
 ```
 Avant toute modification :
 ```
+
 # 4. Prompt correction de bug
 
 ## Usage
@@ -52,6 +57,7 @@ Corriger un problème existant.
 - vérifie les impacts;
 - identifie les fichiers concernés. Ne fais pas :
 - correction temporaire;
+
 ```
 Tu interviens sur Vitala pour corriger un bug.
 Bug :
@@ -65,6 +71,7 @@ Avant de corriger :
 - correction appliquée;
 - tests effectués;
 - risques éventuels.
+
 # 5. Prompt audit architecture
 
 ## Usage
@@ -77,15 +84,18 @@ Vérifier la qualité d'un module.
 - sécurité;
 - maintenabilité;
 - performances. Produit :
+
 1. Problèmes trouvés.
 2. Niveau de gravité.
 3. Recommandations.
 4. Plan d'amélioration.
+
 ```
 Réalise un audit architectural du module :
 [Nom du module]
 Vérifie :
 ```
+
 # 6. Prompt création d'un module complet
 
 ## Usage
@@ -102,11 +112,13 @@ Créer un nouveau domaine Vitala.
 - sécurisé;
 - scalable;
 - maintenable. Avant de coder : présente l'architecture proposée.
+
 ```
 Crée le module :
 [Nom du module]
 Respecte :
 ```
+
 # 7. Prompt Supabase / Database
 
 ## Usage
@@ -117,6 +129,7 @@ Modifier la base de données.
 - migrations versionnées;
 - DATABASE-DICTIONARY.md;
 - DATABASE-RLS-MATRIX.md. Avant modification :
+
 ```
 Tu travailles sur la couche Database Vitala.
 Objectif :
@@ -132,9 +145,11 @@ Respecte :
 - changements RLS;
 - tests;
 - documentation.
+
 ```
 analyse :
 ```
+
 # 8. Prompt API
 
 ## Usage
@@ -151,6 +166,7 @@ Créer ou modifier une API.
 - réponses;
 - erreurs possibles;
 - tests.
+
 ```
 Travaille sur l'API Vitala.
 Objectif :
@@ -175,11 +191,13 @@ Créer une interface.
 - hooks;
 - services nécessaires;
 - tests.
+
 ```
 Crée ou améliore l'interface :
 [Nom]
 Respecte :
 ```
+
 # 10. Prompt sécurité
 
 ## Usage
@@ -187,6 +205,7 @@ Respecte :
 Audit sécurité.
 
 - authentification;
+
 ```
 Réalise un audit sécurité de :
 [Module]
@@ -202,6 +221,7 @@ Analyse :
 - vulnérabilités;
 - gravité;
 - corrections recommandées.
+
 # 11. Prompt refactoring
 
 ## Usage
@@ -211,10 +231,12 @@ Améliorer du code existant.
 - risques;
 - dépendances;
 - tests existants. Propose :
+
 1. Problème actuel.
 2. Solution.
 3. Plan progressif.
 4. Validation.
+
 ```
 Analyse ce code avant refactoring.
 Objectif :
@@ -236,11 +258,13 @@ Améliorer la vitesse.
 - sécurité;
 - lisibilité;
 - architecture.
+
 ```
 Analyse les performances de :
 [Module]
 Cherche :
 ```
+
 # 13. Prompt préparation production
 
 ## Usage
@@ -253,6 +277,7 @@ Valider une release.
 - monitoring;
 - documentation;
 - rollback. Retour attendu :
+
 ```
 Prépare cette fonctionnalité pour production.
 Vérifie :
@@ -261,6 +286,7 @@ Vérifie :
 ```
 Checklist complète de production.
 ```
+
 # 14. Prompt analyse d'un projet existant Lovable
 
 ## Usage
@@ -275,12 +301,14 @@ Reprendre un projet généré automatiquement.
 - état actuel;
 - problèmes;
 - plan de reconstruction progressive.
+
 ```
 Analyse le projet existant.
 Objectif :
 Transformer le projet vers l'architecture Vitala.
 Analyse :
 ```
+
 # 15. Prompt multi-IA
 
 ## Usage
@@ -295,6 +323,7 @@ Respecte :
 - AI-CONSTITUTION;
 - architecture officielle;
 - documentation existante. Ne modifie pas les domaines hors périmètre. Documente chaque décision importante.
+
 # 16. Checklist utilisation d'un prompt
 
 [] Type de tâche identifié [] Documents consultés [] Objectif clair [] Contraintes définies [] Validation définie [] Résultat attendu précisé

@@ -69,7 +69,7 @@ Les noms des tables doivent :
 •
 
 être en minuscules ;
-utiliser le  snake_case  ;
+utiliser le snake_case ;
 
 •
 
@@ -81,7 +81,7 @@ utiliser le  snake_case  ;
 
 1
 
-Exemples :
+Exemples :
 
 •
 
@@ -121,7 +121,7 @@ Règles :
 
 •
 
-type  UUID  ;
+type UUID ;
 
 •
 
@@ -171,14 +171,14 @@ created_by
 
 updated_by
 
-deleted_at  (si suppression logique)
-version  (gestion de concurrence)
+deleted_at (si suppression logique)
+version (gestion de concurrence)
 
 Ces champs doivent conserver la même signification dans tous les domaines.
 
 2
 
-6. Colonnes métier
+6. Colonnes métier
 
 Les colonnes métier doivent :
 
@@ -198,7 +198,7 @@ utiliser le type de données le plus adapté ;
 
 éviter les redondances.
 
-Les colonnes génériques telles que  data ,  value  ou  info  sont interdites sauf justification
+Les colonnes génériques telles que data , value ou info sont interdites sauf justification
 
 exceptionnelle.
 
@@ -244,14 +244,14 @@ Lorsque le domaine le nécessite, la suppression logique est privilégiée.
 
 3
 
-Convention :
+Convention :
 
 •
 
 •
 
-colonne  deleted_at
-éventuellement  deleted_by
+colonne deleted_at
+éventuellement deleted_by
 
 Les données supprimées logiquement ne doivent plus être visibles pour les utilisateurs non autorisés.
 
@@ -319,7 +319,7 @@ les règles particulières.
 
 4
 
-14. Évolution
+14. Évolution
 
 Toute modification d'une table doit :
 
@@ -380,4 +380,3 @@ Les conventions de création des tables garantissent une base de données homog�
 Le respect de ces règles est obligatoire pour toutes les tables présentes et futures de Vitala.
 
 5
-

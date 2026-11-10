@@ -40,7 +40,7 @@ Aucune modification ne doit arriver directement dans le système.
 
 Toute évolution doit suivre un cycle contrôlé.
 
-```text id="b7k2qm" Idée
+````text id="b7k2qm" Idée
 
 ↓
 
@@ -516,3 +516,4 @@ Fin de AI/34-AI-TASK-LIFECYCLE.md
 
 9
 
+````

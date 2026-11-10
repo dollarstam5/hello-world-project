@@ -33,6 +33,7 @@ Représente les capacités de la personne :
 - expériences
 - certifications
 - centres d'intérêt
+
 ## Context
 
 Décrit le contexte actuel :
@@ -41,6 +42,7 @@ Décrit le contexte actuel :
 - disponibilité
 - mobilité
 - fuseau horaire
+
 ## Intentions
 
 Décrit les objectifs actuels de l'utilisateur. Exemples :
@@ -51,7 +53,7 @@ Décrit les objectifs actuels de l'utilisateur. Exemples :
 - trouver des partenaires;
 - recruter;
 - rechercher des investisseurs.
-Les intentions sont dynamiques et peuvent évoluer au fil du temps.
+  Les intentions sont dynamiques et peuvent évoluer au fil du temps.
 
 ## Preferences
 
@@ -75,7 +77,7 @@ Vue agrégée de l'activité de l'utilisateur :
 - missions;
 - interactions;
 - historique.
-Cette vue est alimentée par les domaines responsables.
+  Cette vue est alimentée par les domaines responsables.
 
 ## Trust View
 
@@ -85,7 +87,7 @@ Vue produite par le Trust Engine. Elle expose notamment :
 - niveau de confiance;
 - historique du Trust;
 - preuves de confiance.
-Le calcul reste entièrement sous la responsabilité du Trust Engine.
+  Le calcul reste entièrement sous la responsabilité du Trust Engine.
 
 ## Recommendation View
 
@@ -111,6 +113,7 @@ Chaque donnée appartient à un seul domaine métier. Les autres domaines ne doi
 - l'absence de duplication;
 - la facilité d'évolution;
 - la maintenabilité de la plateforme.
+
 # 5. Relations avec les autres domaines
 
 L'UDI interagit avec les domaines suivants :
@@ -126,7 +129,7 @@ L'UDI interagit avec les domaines suivants :
 - Mission
 - Notification
 - Media
-Ces domaines restent autonomes. L'UDI agit comme un agrégateur métier et une représentation unifiée de l'utilisateur.
+  Ces domaines restent autonomes. L'UDI agit comme un agrégateur métier et une représentation unifiée de l'utilisateur.
 
 # 6. Principes d'évolution
 

@@ -15,5 +15,6 @@ export * from "./roles";
 export * from "./write-policy";
 export * from "./assistant";
 export * from "./flash";
+export * from "./profile-preview";
 export * from "./scan";
 export * from "./radar";

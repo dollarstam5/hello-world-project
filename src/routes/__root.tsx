@@ -11,6 +11,7 @@ import {
 
 import appCss from "../styles.css?url";
 import { AppShell } from "@/components/app/AppShell";
+import { AccessModeProvider } from "@/domains/access-mode";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { registerServiceWorker } from "@/platform/pwa";
 import { startWebVitalsMonitoring } from "@/lib/performance/web-vitals";
@@ -131,10 +132,12 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AppShell>
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
-      </AppShell>
+      <AccessModeProvider>
+        <AppShell>
+          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+          <Outlet />
+        </AppShell>
+      </AccessModeProvider>
     </QueryClientProvider>
   );
 }

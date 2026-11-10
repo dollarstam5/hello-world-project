@@ -80,7 +80,7 @@ normalisation de données ;
 
 1
 
-•
+•
 
 validation technique ;
 
@@ -145,7 +145,7 @@ Les fonctions doivent respecter les conventions suivantes :
 •
 
 minuscules ;
-snake_case  ;
+snake_case ;
 
 •
 
@@ -169,7 +169,7 @@ Les préfixes techniques peuvent être utilisés lorsque cela améliore la lisib
 
 2
 
-7. Paramètres
+7. Paramètres
 
 Les paramètres doivent :
 
@@ -185,7 +185,7 @@ avoir des noms explicites ;
 
 être validés lorsque nécessaire.
 
-Les paramètres génériques tels que  value  ou  data  sont à éviter.
+Les paramètres génériques tels que value ou data sont à éviter.
 
 8. Valeurs de retour
 
@@ -213,7 +213,7 @@ Le type de retour doit être clairement documenté.
 
 Les fonctions doivent respecter les politiques de sécurité de Vitala.
 
-Lorsque  SECURITY DEFINER  est utilisé, cela doit être :
+Lorsque SECURITY DEFINER est utilisé, cela doit être :
 
 •
 
@@ -227,7 +227,7 @@ documenté ;
 
 audité.
 
-Par défaut, les fonctions utilisent  SECURITY INVOKER .
+Par défaut, les fonctions utilisent SECURITY INVOKER .
 
 10. Gestion des erreurs
 
@@ -251,7 +251,7 @@ Les erreurs détaillées sont consignées dans les journaux techniques.
 
 3
 
-11. Performances
+11. Performances
 
 Les fonctions doivent :
 
@@ -267,7 +267,7 @@ limiter les boucles coûteuses ;
 
 privilégier les opérations SQL optimisées.
 
-Les fonctions fréquemment utilisées doivent être analysées avec  EXPLAIN ANALYZE .
+Les fonctions fréquemment utilisées doivent être analysées avec EXPLAIN ANALYZE .
 
 12. Réutilisabilité
 
@@ -325,7 +325,7 @@ préserver la compatibilité lorsque cela est possible.
 
 4
 
-15. Tests
+15. Tests
 
 Les fonctions critiques doivent être testées pour vérifier :
 
@@ -386,4 +386,3 @@ Leur utilisation doit rester limitée aux responsabilités d'infrastructure afin
 Domain-Driven claire, évolutive et maintenable.
 
 5
-

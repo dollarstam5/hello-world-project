@@ -8,6 +8,7 @@
 - VITALA-PERSONAS-V1
 - VITALA-TRUST-LEVELS-V1
 - VITALA-UJ-01-CONSULTANT-TO-MEMBER
+
 # 1. Objectif
 
 Transformer progressivement un membre enregistré en utilisateur identifié sans lui imposer un formulaire traditionnel. L'objectif n'est pas de remplir un profil. L'objectif est de construire une identité utile permettant :
@@ -16,6 +17,7 @@ Transformer progressivement un membre enregistré en utilisateur identifié sans
 - d'améliorer les recommandations;
 - d'améliorer la pertinence des opportunités;
 - d'améliorer les mises en relation.
+
 # 2. Philosophie
 
 Vitala ne demande jamais une information sans raison compréhensible. Chaque information demandée doit être liée à une action réelle ou à un bénéfice immédiat. L'utilisateur ne doit jamais avoir l'impression de remplir un dossier administratif.
@@ -26,7 +28,7 @@ Statut actuel : Membre enregistré Informations connues :
 
 - Prénom
 - Téléphone ou Email
-Le membre utilise déjà Vitala. Il peut :
+  Le membre utilise déjà Vitala. Il peut :
 
 - Publier des opportunités.
 - Répondre à des opportunités.
@@ -34,6 +36,7 @@ Le membre utilise déjà Vitala. Il peut :
 - Utiliser Radar.
 - Utiliser Veille.
 - Recevoir des alertes.
+
 # 4. Objectif du niveau Identifié
 
 Le niveau Identifié permet à Vitala de mieux reconnaître l'utilisateur. Il augmente :
@@ -42,6 +45,7 @@ Le niveau Identifié permet à Vitala de mieux reconnaître l'utilisateur. Il au
 - la visibilité;
 - la crédibilité;
 - la qualité des recommandations.
+
 # 5. Conditions du statut Identifié
 
 Les informations minimales requises sont :
@@ -50,7 +54,7 @@ Les informations minimales requises sont :
 - Prénom
 - Téléphone vérifié
 - Ville principale
-Une fois ces éléments obtenus et validés : Statut obtenu :
+  Une fois ces éléments obtenus et validés : Statut obtenu :
 
 Identifié
 
@@ -85,6 +89,7 @@ Les réponses fournissent également des informations utiles. Exemples :
 - Disponibilités.
 - Domaines d'activité.
 - Zones de déplacement.
+
 ## 6.4 Utilisation de Radar
 
 Les recherches Radar permettent d'identifier :
@@ -92,6 +97,7 @@ Les recherches Radar permettent d'identifier :
 - les zones habituelles;
 - les intérêts récurrents;
 - les besoins fréquents.
+
 ## 6.5 Utilisation de Flash
 
 Les Flash publiés ou consultés enrichissent la compréhension du profil utilisateur.
@@ -111,7 +117,7 @@ Les informations suivantes ne sont pas nécessaires pour devenir Identifié :
 - Compétences détaillées.
 - Organisation.
 - Entreprise.
-Ces informations peuvent être ajoutées plus tard.
+  Ces informations peuvent être ajoutées plus tard.
 
 # 8. Intervention de Vita
 
@@ -133,7 +139,7 @@ Lorsque les conditions sont réunies :
 - Prénom.
 - Téléphone vérifié.
 - Ville principale.
-Le système attribue automatiquement : Identifié
+  Le système attribue automatiquement : Identifié
 
 # 10. Confirmation
 
@@ -148,6 +154,7 @@ Le statut Identifié apporte :
 - Plus de confiance.
 - Plus de pertinence dans les recommandations.
 - Meilleure qualité des mises en relation.
+
 # 12. Principes UX
 
 ## Principe 1

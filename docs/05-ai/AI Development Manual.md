@@ -62,7 +62,7 @@ Implémenter
 
 1
 
-↓
+↓
 
 Tester
 
@@ -156,7 +156,7 @@ documents Database ;
 
 2
 
-•
+•
 
 documents API ;
 
@@ -224,7 +224,7 @@ Les structures exactes doivent toujours suivre BUILD-ARCHITECTURE.md.
 
 3
 
-5. Règle de séparation des responsabilités
+5. Règle de séparation des responsabilités
 
 Une IA doit séparer :
 
@@ -290,7 +290,7 @@ contrats.
 
 4
 
-Utils
+Utils
 
 Responsable :
 
@@ -336,7 +336,7 @@ L'IA ne doit pas mélanger toutes les couches dans un seul fichier.
 
 5
 
-7. Règles Frontend
+7. Règles Frontend
 
 L'IA doit :
 
@@ -434,7 +434,7 @@ Toute modification Supabase doit considérer :
 
 6
 
-Database
+Database
 
 •
 
@@ -540,7 +540,7 @@ paramètres ;
 
 7
 
-•
+•
 
 réponse ;
 
@@ -636,7 +636,7 @@ tests interactions.
 
 8
 
-Backend
+Backend
 
 •
 
@@ -718,7 +718,7 @@ Une tâche est livrée seulement si :
 
 9
 
-[ ] Sécurité vérifiée
+[ ] Sécurité vérifiée
 
 [ ] Documentation mise à jour
 
@@ -755,4 +755,3 @@ Création du manuel de développement IA
 Fin de AI/10-AI-DEVELOPMENT-MANUAL.md
 
 10
-

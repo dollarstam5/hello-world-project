@@ -32,6 +32,7 @@ Les conversations locales sont persistées dans le stockage du navigateur avec u
 `src/domains/assistant/services/localSearch.service.ts` cherche d'abord dans le jeu de connaissances local (`src/data/knowledge.json`) et dans les réponses promues chargées depuis la base locale. Les correspondances exactes et floues peuvent répondre sans appel à un modèle distant.
 
 Si aucune réponse locale ne convient :
+
 - hors ligne, l'interface affiche une erreur d'indisponibilité réseau ;
 - sans jeton de session, l'appel distant est refusé côté client et l'endpoint exige également une session ;
 - en ligne et authentifié, le client transmet la conversation au service de streaming.
@@ -43,6 +44,7 @@ La recherche locale est un mécanisme de réponse déterministe à partir des en
 `src/domains/assistant/services/assistant-stream.service.ts` appelle `POST /api/public/assistant` avec un jeton Bearer et traite les événements de flux. Malgré le segment `public` du chemin, le handler de `src/routes/api/public/assistant.ts` appelle `readSyncSession` et renvoie `401` si aucune session n'est reconnue.
 
 Le handler :
+
 - valide la structure du corps avec Zod ;
 - construit une instruction système en français ou en anglais et ajoute le chemin d'écran transmis ;
 - appelle `https://ai.gateway.lovable.dev/v1/responses` avec `LOVABLE_API_KEY` côté serveur ;
@@ -58,6 +60,7 @@ Si la clé Lovable manque, le handler renvoie `503`. Le contenu et les erreurs d
 `src/domains/assistant/api/assistant.functions.ts` définit `askAssistant`, protégé par `requireSupabaseAuth`. Il applique un schéma de validation et `validateConversation`, puis délègue à `src/lib/ai/assistant.server.ts`.
 
 Cette voie implémente :
+
 - le refus de certaines demandes détectées comme contenant des secrets sensibles ;
 - des limites de conversation et de taille définies dans `src/lib/ai/assistant-policy.ts` ;
 - des quotas via les fonctions PostgreSQL `claim_assistant_request`, `complete_assistant_request` et `fail_assistant_request` ;
@@ -71,11 +74,11 @@ Cette voie et son mécanisme de cache dépendent de fonctions et tables décrite
 
 ## 4. Fournisseurs et configuration
 
-| Voie | Fournisseur observé dans le code | Configuration | Statut documentaire |
-| --- | --- | --- | --- |
-| Streaming relié à `AssistantTab` | Passerelle IA Lovable, modèle nommé dans le handler | `LOVABLE_API_KEY` côté serveur | Appel présent dans le handler ; déploiement et disponibilité à vérifier |
-| Fonction serveur `askAssistant` | Passerelle Cloudflare AI, modèle principal et secours configurables | `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_AI_API_TOKEN`, options `AI_*` côté serveur | Chemin présent dans le dépôt ; usage effectif à inventorier |
-| Abstraction `AssistantProvider` | Fournisseur mock par défaut | `setAssistantProvider` en mémoire | Fondation d'extension, pas preuve d'une intégration distante |
+| Voie                             | Fournisseur observé dans le code                                    | Configuration                                                                   | Statut documentaire                                                     |
+| -------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Streaming relié à `AssistantTab` | Passerelle IA Lovable, modèle nommé dans le handler                 | `LOVABLE_API_KEY` côté serveur                                                  | Appel présent dans le handler ; déploiement et disponibilité à vérifier |
+| Fonction serveur `askAssistant`  | Passerelle Cloudflare AI, modèle principal et secours configurables | `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_AI_API_TOKEN`, options `AI_*` côté serveur | Chemin présent dans le dépôt ; usage effectif à inventorier             |
+| Abstraction `AssistantProvider`  | Fournisseur mock par défaut                                         | `setAssistantProvider` en mémoire                                               | Fondation d'extension, pas preuve d'une intégration distante            |
 
 Les noms de fournisseurs et de modèles ci-dessus décrivent le code versionné, pas les paramètres réels des environnements déployés. Ne jamais publier les valeurs des secrets.
 
@@ -92,10 +95,12 @@ Les noms de fournisseurs et de modèles ci-dessus décrivent le code versionné,
 ## 6. Contrats et tests existants
 
 Les tests présents comprennent notamment :
+
 - `tests/assistant-policy.test.ts` : validation de conversation, secrets, éligibilité au cache et normalisation de routes ;
 - `tests/assistant/privacy-isolation.test.ts` : séparation des clés de conversations locales par compte et du périmètre local.
 
 Ces tests prouvent les propriétés qu'ils exercent dans le code testé. Ils ne prouvent pas à eux seuls :
+
 - que les deux chemins serveur appliquent les mêmes contrôles ;
 - que les tables/fonctions IA existent dans la base hébergée ;
 - que la rétention fournisseur correspond à la configuration attendue ;

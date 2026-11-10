@@ -1,34 +1,50 @@
 # Moteur Radar
 
-Radar porte les recherches programmÃ©es qui durent plus de deux jours. Une veille possÃ¨de une durÃ©e minimale de 3 jours et une durÃ©e maximale de 90 jours. Elle est privÃ©e : seul son propriÃ©taire peut lire ses critÃ¨res et exÃ©cuter ses commandes.
+Radar permet d'enregistrer une recherche que la personne souhaite suivre sur plusieurs jours. Une veille dure au minimum 3 jours et au maximum 90 jours. Elle reste privée : seul son propriétaire peut lire ses critères et commander son cycle de vie.
 
-## FrontiÃ¨re avec les missions
+## Frontière avec les autres moteurs
 
-Un Radar est une veille susceptible de produire plusieurs correspondances. Une mission est un engagement entre un auteur et un intervenant, avec attribution, rÃ©alisation et validation. Les deux entitÃ©s restent sÃ©parÃ©es. Une correspondance Radar pourra crÃ©er une mission dans une phase ultÃ©rieure, aprÃ¨s une action explicite du membre.
+- **Flash** publie un besoin ou une proposition ponctuelle.
+- **Scan** recherche les Flash actifs dans une zone choisie, à la demande.
+- **Radar** conserve une intention de recherche dans le temps et pourra, lorsque le moteur de correspondances sera raccordé, détecter plusieurs possibilités.
+- **Mission** représente un engagement entre un auteur et un intervenant, avec attribution, réalisation et validation.
+
+Une correspondance Radar ne crée jamais automatiquement une mission. Une action explicite de la personne sera nécessaire.
 
 ## Cycle de vie
 
-| Ã‰tat       | Signification                          | Sorties autorisÃ©es                                         |
-| ----------- | -------------------------------------- | ----------------------------------------------------------- |
-| `draft`     | CritÃ¨res modifiables, veille inactive | activation, annulation                                      |
-| `active`    | Veille activÃ©e et planifiÃ©e          | surveillance, pause, revalidation, expiration, annulation   |
-| `watching`  | Moteur en recherche                    | correspondance, pause, revalidation, expiration, annulation |
-| `matched`   | Au moins une correspondance disponible | pause, revalidation, expiration, annulation                 |
-| `paused`    | Veille suspendue par le membre         | reprise, expiration, annulation                             |
-| `expired`   | Ã‰chÃ©ance atteinte                    | terminal                                                    |
-| `cancelled` | ArrÃªt volontaire                      | terminal                                                    |
+| État        | Signification                                        | Sorties autorisées                                          |
+| ----------- | ---------------------------------------------------- | ----------------------------------------------------------- |
+| `draft`     | Critères enregistrés et modifiables, veille inactive | activation, annulation                                      |
+| `active`    | Veille activée et échéance de revue programmée       | surveillance, pause, revalidation, expiration, annulation   |
+| `watching`  | Moteur de correspondances en recherche               | correspondance, pause, revalidation, expiration, annulation |
+| `matched`   | Au moins une correspondance est disponible           | pause, revalidation, expiration, annulation                 |
+| `paused`    | Veille suspendue par la personne                     | reprise, expiration, annulation                             |
+| `expired`   | Échéance atteinte                                    | état terminal                                               |
+| `cancelled` | Arrêt volontaire                                     | état terminal                                               |
 
-Lâ€™activation et la reprise calculent `next_review_at` Ã sept jours au maximum, sans dÃ©passer lâ€™expiration. La revalidation renseigne `last_reviewed_at` et programme la suivante.
+L'activation et la reprise programment une prochaine revue dans un délai maximal de sept jours, sans dépasser l'expiration. La revalidation renseigne `last_reviewed_at` et programme la suivante.
 
-## SÃ©curitÃ©
+## Confidentialité et sécurité
 
-- RLS limite la lecture et la crÃ©ation au propriÃ©taire.
-- Les critÃ¨res ne sont modifiables directement quâ€™Ã lâ€™Ã©tat `draft`.
-- `status`, les Ã©chÃ©ances de revue, lâ€™identitÃ© du propriÃ©taire, la rÃ©vision et les dates systÃ¨me sont protÃ©gÃ©s.
-- `command_radar` verrouille la ligne et applique les commandes propriÃ©taire cÃ´tÃ© PostgreSQL.
+- RLS limite la lecture et la création au propriétaire.
+- Les critères ne sont modifiables directement qu'à l'état `draft`.
+- Le statut, les échéances de revue, le propriétaire, la révision et les dates système sont protégés.
+- `command_radar` verrouille la ligne et applique les commandes de cycle de vie côté PostgreSQL.
 - Les visiteurs anonymes ne peuvent ni lire ni commander une veille.
-- La migration ne stocke aucune latitude ou longitude prÃ©cise.
+- Le modèle Radar ne stocke aucune latitude ni longitude précise.
 
-## Ã‰tapes suivantes
+## État de l'interface V1
 
-P1.5.2 ajoutera le dÃ©pÃ´t IndexedDB, lâ€™outbox, lâ€™API authentifiÃ©e, les hooks et le formulaire mobile-first. Les coordonnÃ©es Ã©ventuelles resteront dans une table privÃ©e sÃ©parÃ©e. P1.5.3 ajoutera le moteur de correspondances, le traitement planifiÃ© et les notifications.
+La page Radar permet maintenant d'enregistrer une veille privée en brouillon, de modifier ses critères et de l'annuler après confirmation. Les données sont enregistrées dans IndexedDB et passent par l'outbox de synchronisation.
+
+La détection automatique, le traitement planifié des correspondances, les résultats et les alertes ne sont pas encore raccordés. Un état `active` dans le modèle de données ne doit donc pas être présenté comme la preuve d'une recherche automatique en cours.
+
+Voir [l'état d'implémentation Radar V1](./radar-v1-implementation-status.md).
+
+## Étapes suivantes
+
+1. Ajouter le dépôt local, l'outbox, les hooks et le formulaire mobile-first — réalisés pour la gestion des brouillons.
+2. Vérifier les transitions synchronisées et les tests RLS sur le dernier commit.
+3. Ajouter le moteur de correspondances, le traitement planifié et les notifications.
+4. Ajouter les vues de résultats et les alertes uniquement après validation des règles de confidentialité et de pertinence.

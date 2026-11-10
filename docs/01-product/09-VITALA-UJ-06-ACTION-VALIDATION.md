@@ -12,6 +12,7 @@
 - VITALA-UJ-03-PUBLISH-OPPORTUNITY
 - VITALA-UJ-04-RESPOND-OPPORTUNITY
 - VITALA-UJ-05-SELECT-CANDIDATE
+
 # 1. Objectif
 
 Permettre à Vitala de confirmer qu'une opportunité a produit un résultat réel. La validation constitue le point de départ de la création de confiance. Sans validation, il n'existe aucune preuve que l'action a réellement eu lieu.
@@ -24,7 +25,7 @@ Vitala valorise les actions réelles. La confiance ne provient pas :
 - des likes;
 - des abonnés;
 - de la popularité.
-La confiance provient des résultats obtenus.
+  La confiance provient des résultats obtenus.
 
 # 3. Définition
 
@@ -37,18 +38,20 @@ La validation devient disponible lorsque :
 - une sélection a été effectuée;
 - une mise en relation a été créée;
 - l'opportunité est considérée comme terminée ou exécutable.
+
 # 5. Parties concernées
 
 Une validation peut impliquer :
 
 - Auteur de l'opportunité
 - Participant sélectionné
-Selon le contexte :
+  Selon le contexte :
 
 - plusieurs participants
 - une organisation
 - une entreprise
 - une association
+
 # 6. Validation progressive
 
 La validation repose sur la participation des parties concernées. Exemple : Auteur ↓ Confirme ↓ Participant ↓
@@ -85,7 +88,7 @@ Chaque partie peut ajouter une explication. Exemples :
 - Problème technique.
 
 - Conditions modifiées.
-Le commentaire reste facultatif.
+  Le commentaire reste facultatif.
 
 # 9. Validation complète
 
@@ -110,6 +113,7 @@ Le système enregistre simplement :
 - les déclarations;
 - les preuves éventuelles;
 - l'historique.
+
 # 13. Gestion interne
 
 Le moteur Trust & Safety peut analyser :
@@ -118,7 +122,7 @@ Le moteur Trust & Safety peut analyser :
 - comportements suspects;
 - abus éventuels;
 - fraudes potentielles.
-Ces analyses restent internes.
+  Ces analyses restent internes.
 
 # 14. Effets de la validation
 
@@ -128,6 +132,7 @@ Une validation enrichit :
 - les preuves de confiance;
 - les statistiques internes;
 - les recommandations futures.
+
 # 15. Aucun score public
 
 Vitala ne montre jamais :
@@ -135,7 +140,7 @@ Vitala ne montre jamais :
 - note sur 5;
 - score de réputation;
 - classement.
-Les résultats servent uniquement à construire la confiance.
+  Les résultats servent uniquement à construire la confiance.
 
 # 16. Notifications
 
@@ -146,6 +151,7 @@ Les parties concernées reçoivent :
 - Validation complétée.
 
 - Désaccord détecté.
+
 # 17. Historique
 
 Chaque validation est enregistrée dans l'historique de l'opportunité. Exemples :
@@ -154,6 +160,7 @@ Chaque validation est enregistrée dans l'historique de l'opportunité. Exemples
 - Partiellement réalisé
 - Non réalisé
 - Annulé
+
 # 18. Préparation à la recommandation
 
 Après une validation réussie : Vitala peut proposer : « Souhaitez-vous recommander cette personne ? » ou « Souhaitez-vous recommander cette organisation ? »
@@ -166,6 +173,7 @@ La validation constitue la base du moteur de confiance Vitala. Chaque validation
 - la fiabilité;
 - les recommandations;
 - les niveaux de confiance.
+
 # 20. Principes UX
 
 ## Principe 1

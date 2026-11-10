@@ -13,6 +13,7 @@
 - VITALA-UJ-04-RESPOND-OPPORTUNITY
 - VITALA-UJ-05-SELECT-CANDIDATE
 - VITALA-UJ-06-ACTION-VALIDATION
+
 # 1. Objectif
 
 Permettre à Vitala de construire un écosystème fondé sur la confiance réelle plutôt que sur la popularité. La confiance constitue l'un des piliers fondamentaux de Vitala. Elle permet aux utilisateurs de prendre des décisions plus éclairées tout en conservant leur liberté de choix.
@@ -39,6 +40,7 @@ Une recommandation Vitala n'est jamais une garantie. Une recommandation représe
 - de garants;
 - de la continuité d'activité;
 - de signaux de confiance disponibles.
+
 # 6. Confiance universelle
 
 Le moteur de confiance Vitala s'applique à toute entité ayant produit une expérience réelle. La confiance n'est pas limitée aux personnes.
@@ -60,7 +62,7 @@ Exemples :
 - Projet
 - Lieu
 - Zone
-Toute nouvelle entité Vitala peut intégrer le moteur de confiance.
+  Toute nouvelle entité Vitala peut intégrer le moteur de confiance.
 
 # 8. Sources de confiance
 
@@ -75,6 +77,7 @@ Exemples :
 - Vente conclue
 - Besoin satisfait
 - Projet accompli
+
 ## Recommandations
 
 Recommandations issues d'expériences réelles validées.
@@ -97,6 +100,7 @@ Exemples :
 - Activité régulière
 - Présence durable
 - Historique cohérent
+
 ## Validation d'identité
 
 Exemples :
@@ -104,6 +108,7 @@ Exemples :
 - Vérifié
 - Confirmé
 - Pro
+
 # 9. Ce qui ne crée pas la confiance
 
 Les éléments suivants ne constituent pas des preuves de confiance.
@@ -114,6 +119,7 @@ Les éléments suivants ne constituent pas des preuves de confiance.
 - Nombre de likes
 - Tendances virales
 - Influence sociale
+
 # 10. Transparence
 
 Toute recommandation doit être explicable. L'utilisateur doit pouvoir comprendre pourquoi une entité est recommandée.
@@ -130,6 +136,7 @@ Le système affiche alors :
 - 4 recommandations réelles
 - Actif depuis 18 mois
 - Aucun incident majeur enregistré
+
 # 12. Preuves de confiance
 
 Les preuves de confiance constituent les fondations du moteur. Exemples :
@@ -140,6 +147,7 @@ Les preuves de confiance constituent les fondations du moteur. Exemples :
 - Recommandation
 - Vérification
 - Participation
+
 # 13. Recommandations
 
 Les recommandations sont possibles uniquement après une expérience réelle validée.
@@ -151,7 +159,7 @@ Peuvent recommander :
 - Auteur de l'action
 - Participant de l'action
 - Parties directement impliquées
-Ne peuvent pas recommander :
+  Ne peuvent pas recommander :
 
 - Visiteurs
 - Observateurs
@@ -198,6 +206,7 @@ Le statut Fiable ne repose jamais sur une seule information. Il est construit à
 - Recommandations
 - Continuité
 - Absence d'incidents majeurs
+
 # 18. Aucun score public
 
 Vitala interdit :
@@ -208,6 +217,7 @@ Vitala interdit :
 - Scores visibles
 - Étoiles
 - Podiums
+
 # 19. Scores internes
 
 Le moteur de confiance peut utiliser des calculs internes. Exemples :
@@ -216,7 +226,7 @@ Le moteur de confiance peut utiliser des calculs internes. Exemples :
 - Risk Score
 - Consistency Score
 - Recommendation Score
-Ces indicateurs restent invisibles aux utilisateurs.
+  Ces indicateurs restent invisibles aux utilisateurs.
 
 # 20. Neutralité
 
@@ -233,7 +243,7 @@ Une entité peut être recommandée dans un contexte précis. Exemples :
 - Zone recommandée
 - Entreprise recommandée
 - Opportunité recommandée
-La recommandation reste liée aux preuves observées.
+  La recommandation reste liée aux preuves observées.
 
 # 22. Gestion des incidents
 
@@ -243,7 +253,7 @@ Les incidents peuvent influencer les preuves de confiance. Exemples :
 - Informations trompeuses
 - Abus répétés
 - Comportements interdits
-L'analyse reste réalisée par les moteurs internes.
+  L'analyse reste réalisée par les moteurs internes.
 
 # 23. Évolution
 
@@ -265,6 +275,7 @@ Le moteur de confiance est utilisé par :
 - Associations
 - Organisations
 - Opportunités
+
 # 25. Architecture recommandée
 
 ```
@@ -277,6 +288,7 @@ packages/
 ├── trust-engine/
 └── trust.types.ts
 ```
+
 Le moteur de confiance doit être transversal à toute la plateforme.
 
 # 26. Principes UX

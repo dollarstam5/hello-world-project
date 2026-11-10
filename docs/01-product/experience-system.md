@@ -60,14 +60,14 @@ Le clavier, le focus visible, le contraste, la structure sémantique, les libell
 
 Ces descriptions expriment une intention produit et ne garantissent pas à elles seules une implémentation complète.
 
-| Moteur | Intention d'expérience |
-| --- | --- |
-| Flash | Rapide, énergique, immédiat : réduire la distance entre intention et action. |
-| Scan | Précis et orienté résolution : rendre la progression vers une réponse lisible. |
-| Radar | Exploratoire et curieux : favoriser la découverte sans surcharger l'écran. |
-| Veille | Calme et prévisionnelle : donner une impression de continuité et d'anticipation. |
-| Recommendation | Pertinente et rassurante : présenter des suggestions compréhensibles et utiles. |
-| Trust Engine | Stable et transparent : soutenir la confiance sans jugement ni opacité. |
+| Moteur         | Intention d'expérience                                                           |
+| -------------- | -------------------------------------------------------------------------------- |
+| Flash          | Rapide, énergique, immédiat : réduire la distance entre intention et action.     |
+| Scan           | Précis et orienté résolution : rendre la progression vers une réponse lisible.   |
+| Radar          | Exploratoire et curieux : favoriser la découverte sans surcharger l'écran.       |
+| Veille         | Calme et prévisionnelle : donner une impression de continuité et d'anticipation. |
+| Recommendation | Pertinente et rassurante : présenter des suggestions compréhensibles et utiles.  |
+| Trust Engine   | Stable et transparent : soutenir la confiance sans jugement ni opacité.          |
 
 ## Ce que Vitalis refuse
 

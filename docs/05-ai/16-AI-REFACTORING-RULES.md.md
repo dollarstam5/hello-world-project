@@ -10,6 +10,7 @@ AI-REFACTORING-RULES.md définit les règles obligatoires pour toute améliorati
 - améliorent la qualité;
 - préservent les fonctionnalités existantes;
 - ne créent pas de régression.
+
 # 2. Définition du refactoring
 
 Le refactoring est une modification interne du système visant à améliorer sa structure sans changer son comportement fonctionnel attendu. Exemples :
@@ -18,7 +19,7 @@ Le refactoring est une modification interne du système visant à améliorer sa 
 - réduire la duplication;
 - améliorer l'organisation;
 - améliorer la lisibilité.
-Le refactoring ne doit pas modifier le comportement utilisateur sans validation.
+  Le refactoring ne doit pas modifier le comportement utilisateur sans validation.
 
 # 3. Principe fondamental
 
@@ -34,6 +35,7 @@ Un refactoring est justifié si :
 - la sécurité est améliorée;
 - les performances sont réellement problématiques;
 - l'architecture est violée.
+
 # 5. Raisons insuffisantes
 
 L'IA ne doit pas refactoriser parce que :
@@ -42,13 +44,14 @@ L'IA ne doit pas refactoriser parce que :
 - une nouvelle librairie existe;
 - une nouvelle syntaxe est disponible;
 - le code fonctionne déjà correctement.
+
 # 6. Analyse obligatoire avant refactoring
 
 Avant toute modification importante : L'IA doit analyser : ```text id="b8q3mt" Code actuel ↓ Problème identifié ↓ Impact ↓ Solution proposée ↓ Risques
 
 ↓ Plan de migration
 
-```
+````
 ---
 # 7. Principe de modification progressive
 Les gros refactorings doivent être divisés.
@@ -63,7 +66,8 @@ Test
 Validation
 ↓
 Étape suivante
-```
+````
+
 # 8. Conservation du comportement
 
 Un refactoring doit conserver :
@@ -73,7 +77,7 @@ Un refactoring doit conserver :
 - contrats;
 - données;
 - permissions.
-Toute modification comportementale doit être traitée comme une nouvelle fonctionnalité.
+  Toute modification comportementale doit être traitée comme une nouvelle fonctionnalité.
 
 # 9. Refactoring frontend
 
@@ -83,11 +87,12 @@ L'IA peut améliorer :
 - duplication UI;
 - logique répétée;
 - performances de rendu.
-Elle doit préserver :
+  Elle doit préserver :
 
 - interface utilisateur;
 - expérience utilisateur;
 - accessibilité.
+
 # 10. Refactoring backend
 
 L'IA peut améliorer :
@@ -96,11 +101,12 @@ L'IA peut améliorer :
 - séparation des responsabilités;
 - validation;
 - gestion des erreurs.
-Elle doit préserver :
+  Elle doit préserver :
 
 - contrats API;
 - logique métier;
 - sécurité.
+
 # 11. Refactoring Database
 
 Les modifications Database sont critiques. Avant tout changement : Vérifier :
@@ -109,12 +115,13 @@ Les modifications Database sont critiques. Avant tout changement : Vérifier :
 - dépendances;
 - API utilisant les données;
 - règles RLS.
-Interdit :
+  Interdit :
 
 - modifier une migration déjà exécutée;
 
 - supprimer une colonne sans stratégie;
 - changer un schéma critique sans plan.
+
 # 12. Refactoring architecture
 
 Un changement architectural nécessite :
@@ -123,7 +130,7 @@ Un changement architectural nécessite :
 - proposition;
 - validation;
 - documentation.
-Une IA ne doit jamais restructurer tout Vitala automatiquement.
+  Une IA ne doit jamais restructurer tout Vitala automatiquement.
 
 # 13. Refactoring de sécurité
 
@@ -133,7 +140,7 @@ Un refactoring améliorant la sécurité doit vérifier :
 - authentification;
 - accès données;
 - logs.
-Une simplification qui réduit la sécurité est interdite.
+  Une simplification qui réduit la sécurité est interdite.
 
 # 14. Mesure d'amélioration
 
@@ -141,10 +148,10 @@ Après un refactoring, l'IA doit pouvoir expliquer : Avant :
 
 - problème;
 - limitation.
-Après :
+  Après :
 
 - amélioration obtenue.
-Exemples :
+  Exemples :
 
 - moins de duplication;
 - meilleure lisibilité;
@@ -157,7 +164,7 @@ Après toute modification significative : L'IA doit vérifier : [] Tests existan
 
 # 16. Gestion des risques
 
-Pour chaque refactoring important : Documenter : ```text id="x4r8ko" Objectif : Fichiers concernés : Risques : Plan de retour arrière : Résultat : ```
+Pour chaque refactoring important : Documenter : `text id="x4r8ko" Objectif : Fichiers concernés : Risques : Plan de retour arrière : Résultat : `
 
 # 17. Refactoring interdit automatique
 
@@ -170,7 +177,7 @@ La dette technique doit être :
 - identifiée;
 - documentée;
 - priorisée.
-Elle ne doit pas être cachée.
+  Elle ne doit pas être cachée.
 
 # 19. Checklist avant validation
 

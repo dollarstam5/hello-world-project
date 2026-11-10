@@ -19,7 +19,7 @@ Le Trust Engine a pour mission de :
 - valoriser les comportements positifs;
 - alimenter les autres moteurs avec des indicateurs de fiabilité;
 - garantir une évolution juste et explicable du Capital de Confiance.
-Il constitue un moteur transversal utilisé par l'ensemble de la plateforme.
+  Il constitue un moteur transversal utilisé par l'ensemble de la plateforme.
 
 # 3. Philosophie
 
@@ -40,7 +40,7 @@ Le Trust Engine introduit le concept de **Capital de Confiance**. Ce capital rep
 - régularité de l'activité;
 - événements positifs;
 - événements négatifs.
-Le Capital de Confiance évolue en permanence.
+  Le Capital de Confiance évolue en permanence.
 
 # 5. Les principes fondateurs
 
@@ -94,7 +94,7 @@ Le Trust Engine n'est pas :
 - un système de classement des personnes;
 - un outil de jugement moral;
 - un mécanisme de popularité.
-Il est exclusivement destiné à mesurer la fiabilité des interactions réalisées dans l'écosystème Vitala.
+  Il est exclusivement destiné à mesurer la fiabilité des interactions réalisées dans l'écosystème Vitala.
 
 # 7. Rôle dans la plateforme
 
@@ -110,7 +110,7 @@ Le Trust Engine intervient notamment dans :
 - modération;
 - API;
 - base de données.
-Tous ces moteurs utilisent les indicateurs produits par le Trust Engine sans modifier directement le Capital de Confiance.
+  Tous ces moteurs utilisent les indicateurs produits par le Trust Engine sans modifier directement le Capital de Confiance.
 
 # 8. Objectifs de qualité
 

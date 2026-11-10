@@ -8,6 +8,7 @@
 La communication de Vitalis doit être humaine, chaleureuse, naturelle, directe et respectueuse. Elle doit ressembler à celle d'une personne serviable qui accompagne sans juger, sans infantiliser et sans compliquer.
 
 Chaque message doit aider la personne à comprendre :
+
 - ce qui vient de se passer ;
 - ce qu'elle peut faire maintenant ;
 - ce qui dépend d'elle et ce qui est pris en charge par Vitalis.
@@ -34,14 +35,14 @@ La simplicité prime sur le vocabulaire technique, les effets de style et les fo
 
 ## 4. Exemples de formulations
 
-| À éviter | Préférer |
-| --- | --- |
-| « Opération exécutée avec succès » | « C'est fait ! » |
-| « Erreur de synchronisation » | « Nous n'avons pas pu terminer. Réessayons. » |
-| « Aucun résultat disponible » | « Nous n'avons rien trouvé pour le moment. » |
-| « Authentification requise » | « Connectez-vous pour continuer. » |
-| « Autorisation de géolocalisation refusée » | « Nous n'avons pas accès à votre position. Vous pouvez nous l'autoriser. » |
-| « Requête en cours de traitement » | « Nous nous en occupons… » |
+| À éviter                                       | Préférer                                                                      |
+| ---------------------------------------------- | ----------------------------------------------------------------------------- |
+| « Opération exécutée avec succès »             | « C'est fait ! »                                                              |
+| « Erreur de synchronisation »                  | « Nous n'avons pas pu terminer. Réessayons. »                                 |
+| « Aucun résultat disponible »                  | « Nous n'avons rien trouvé pour le moment. »                                  |
+| « Authentification requise »                   | « Connectez-vous pour continuer. »                                            |
+| « Autorisation de géolocalisation refusée »    | « Nous n'avons pas accès à votre position. Vous pouvez nous l'autoriser. »    |
+| « Requête en cours de traitement »             | « Nous nous en occupons… »                                                    |
 | « Données locales en attente de transmission » | « Votre action est gardée ici. Elle sera envoyée dès que le réseau revient. » |
 
 Les formulations sont des exemples de ton, pas des textes obligatoires dans tous les contextes. Le message doit toujours refléter l'état technique réel.

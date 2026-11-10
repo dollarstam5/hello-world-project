@@ -10,6 +10,9 @@ Cette section rassemble les documents d'architecture technique, les frontières 
 - [Backend and API architecture](./backend-api.md)
 - [Database architecture](./database-architecture.md)
 - [Synchronization, offline mode and realtime](./synchronization-offline-realtime.md)
+- [Demo data governance — V1](./demo-data-governance.md)
+- [Scan history — V1](./scan-history-v1.md) — historique local minimal, données exclues et règles de suppression.
+- [SQL demo fixture adapter — V1](./demo-sql-fixture-adapter-v1.md)
 - [AI architecture and integrations](./ai-architecture-integrations.md)
 - [Unified Digital Identity model](./identity-model.md)
 - [Trust domain and Trust Engine](./trust-domain.md)
@@ -23,3 +26,5 @@ Cette section rassemble les documents d'architecture technique, les frontières 
 - Les sources historiques UDI et Trust restent conservées dans `docs/` jusqu'à validation et autorisation explicite.
 
 Les nouveaux changements doivent viser les références canoniques et respecter la propriété des données par domaine. Une référence documentaire n'est pas une preuve que le composant décrit est déjà implémenté.
+
+- [Aperçus publics de profil — V1](./public-profile-preview-v1.md) — champs autorisés, consentement, présentation compacte et consultation des profils.

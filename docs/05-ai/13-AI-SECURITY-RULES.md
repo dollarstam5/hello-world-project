@@ -21,6 +21,7 @@ Lorsqu'une décision implique un compromis : L'ordre obligatoire est :
 5. Performance
 
 6. Simplicité d'implémentation
+
 # 4. Gestion des données utilisateurs
 
 Toute donnée utilisateur doit être considérée comme sensible. L'IA doit :
@@ -29,11 +30,12 @@ Toute donnée utilisateur doit être considérée comme sensible. L'IA doit :
 - protéger le stockage;
 - contrôler les accès;
 - éviter les copies inutiles.
-L'IA ne doit jamais :
+  L'IA ne doit jamais :
 
 - exposer des données privées;
 - afficher des informations non autorisées;
 - transmettre des données sensibles inutilement.
+
 # 5. Authentification
 
 Toute fonctionnalité nécessitant une identité doit utiliser le système d'authentification officiel Vitala. L'IA ne doit jamais créer :
@@ -41,6 +43,7 @@ Toute fonctionnalité nécessitant une identité doit utiliser le système d'aut
 - un système d'identification parallèle;
 - une gestion de mot de passe indépendante;
 - une session non contrôlée.
+
 # 6. Autorisation et permissions
 
 L'authentification répond à : "Qui es-tu ?" L'autorisation répond à : "Que peux-tu faire ?" Ces deux concepts doivent toujours être séparés. L'IA doit vérifier les permissions avant toute action sensible.
@@ -52,11 +55,12 @@ La sécurité des données PostgreSQL doit utiliser :
 - Row Level Security;
 - politiques explicites;
 - contrôle des rôles.
-Interdit :
+  Interdit :
 
 - désactiver RLS;
 - contourner les politiques;
 - donner un accès global inutile.
+
 # 8. Règles Supabase
 
 Toute IA travaillant avec Supabase doit respecter :
@@ -66,16 +70,19 @@ Toute IA travaillant avec Supabase doit respecter :
 - sessions sécurisées;
 - utilisateurs contrôlés;
 - permissions cohérentes.
+
 ## Database
 
 - migrations contrôlées;
 - RLS activé;
 - schéma documenté.
+
 ## Storage
 
 - règles d'accès;
 - validation des fichiers;
 - limitation des tailles.
+
 ## Edge Functions
 
 - validation des entrées;
@@ -89,10 +96,11 @@ L'IA ne doit jamais :
 - écrire une clé API dans le code;
 - exposer une variable privée;
 - publier un secret dans un repository.
-Les secrets doivent utiliser :
+  Les secrets doivent utiliser :
 
 - variables d'environnement;
 - systèmes de secrets officiels.
+
 # 10. Sécurité API
 
 Toute API doit :
@@ -102,11 +110,12 @@ Toute API doit :
 - valider les entrées;
 - limiter les abus;
 - retourner des erreurs contrôlées.
-Interdit :
+  Interdit :
 
 - endpoint public sans justification;
 - données sensibles dans les réponses;
 - absence de validation.
+
 # 11. Validation des entrées
 
 Toutes les données provenant de l'extérieur doivent être considérées comme non fiables. Sources concernées :
@@ -116,7 +125,7 @@ Toutes les données provenant de l'extérieur doivent être considérées comme 
 - fichier;
 - formulaire;
 - IA.
-L'IA doit prévoir :
+  L'IA doit prévoir :
 
 - validation;
 - nettoyage;
@@ -130,7 +139,7 @@ Le frontend ne doit jamais être considéré comme sécurisé. L'IA ne doit pas 
 - règles critiques;
 - secrets;
 - logique de sécurité.
-Toute protection importante doit exister côté serveur.
+  Toute protection importante doit exister côté serveur.
 
 # 13. Sécurité des fichiers
 
@@ -141,11 +150,12 @@ Pour les fichiers utilisateurs : L'IA doit gérer :
 - permissions;
 - stockage;
 - accès.
-Interdit :
+  Interdit :
 
 - accepter n'importe quel fichier;
 - exposer un chemin privé;
 - permettre un accès non contrôlé.
+
 # 14. Sécurité des fonctionnalités IA
 
 Toute fonctionnalité IA doit protéger :
@@ -154,7 +164,7 @@ Toute fonctionnalité IA doit protéger :
 - les réponses générées;
 - les permissions;
 - les coûts.
-L'IA ne doit jamais :
+  L'IA ne doit jamais :
 
 - envoyer des données privées sans justification;
 - accepter une commande dangereuse générée automatiquement;
@@ -168,7 +178,7 @@ Les fonctionnalités administratives doivent avoir :
 - journalisation;
 - séparation des rôles;
 - traçabilité.
-Une interface admin ne doit jamais être considérée comme une zone de confiance automatique.
+  Une interface admin ne doit jamais être considérée comme une zone de confiance automatique.
 
 # 16. Logs et surveillance
 
@@ -177,11 +187,12 @@ Les logs doivent aider à détecter :
 - erreurs;
 - abus;
 - comportements suspects.
-Les logs ne doivent jamais contenir :
+  Les logs ne doivent jamais contenir :
 
 - mots de passe;
 - tokens;
 - données privées inutiles.
+
 # 17. Gestion des incidents
 
 En cas de problème de sécurité : L'IA doit :
@@ -190,7 +201,7 @@ En cas de problème de sécurité : L'IA doit :
 2. limiter l'impact;
 3. documenter;
 4. proposer une correction.
-Elle ne doit jamais masquer un problème.
+   Elle ne doit jamais masquer un problème.
 
 # 18. Vérification avant livraison
 

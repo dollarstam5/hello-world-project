@@ -2,15 +2,19 @@ import { Link } from "@tanstack/react-router";
 import { Compass, Radar, RadioTower, ScanLine, Zap, ArrowUpRight } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Surface } from "@/components/app/Surface";
+import { PublicProfilePreview } from "@/components/app/PublicProfilePreview";
 import { Indicator } from "@/components/app/Indicator";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useIdentity } from "@/lib/experience/identity";
+import { createDemoFlashes } from "@/domains/flash/model/demo-flashes";
 
 type EngineCardProps = {
   to: "/flash" | "/scan" | "/reel" | "/radar";
   icon: LucideIcon;
   title: string;
   description: string;
+  example: string;
+  exampleLabel: string;
   action: string;
   tone: "warm" | "info" | "primary" | "violet";
 };
@@ -22,7 +26,16 @@ const toneClasses = {
   violet: "bg-intelligence-soft text-intelligence",
 } as const;
 
-function EngineCard({ to, icon: Icon, title, description, action, tone }: EngineCardProps) {
+function EngineCard({
+  to,
+  icon: Icon,
+  title,
+  description,
+  example,
+  exampleLabel,
+  action,
+  tone,
+}: EngineCardProps) {
   return (
     <Link
       to={to}
@@ -49,6 +62,10 @@ function EngineCard({ to, icon: Icon, title, description, action, tone }: Engine
         <div className="stack-2">
           <h3 className="text-title-sm">{title}</h3>
           <p className="text-sm leading-relaxed text-muted-foreground">{description}</p>
+          <div className="stack-1 rounded-xl bg-surface/70 px-3 py-2.5">
+            <span className="text-xs font-semibold text-muted-foreground">{exampleLabel}</span>
+            <p className="text-sm leading-relaxed">{example}</p>
+          </div>
           <span className="pt-1 text-xs font-semibold text-primary">{action}</span>
         </div>
       </Surface>
@@ -56,10 +73,11 @@ function EngineCard({ to, icon: Icon, title, description, action, tone }: Engine
   );
 }
 
-/** Home is the calm entry point; engines keep their own dedicated spaces. */
+/** Home is the calm entry point; examples are previews, never live activity. */
 export function HomeFoundation() {
   const { t } = useI18n();
   const tier = useIdentity((s) => s.tier);
+  const displayName = useIdentity((s) => s.displayName);
 
   const identityLabel =
     tier === "trusted"
@@ -68,15 +86,59 @@ export function HomeFoundation() {
         ? t("identity.identified")
         : t("identity.guest");
 
+  const greeting =
+    tier !== "guest" && displayName?.trim()
+      ? t("home.welcome.named").replace("{name}", displayName.trim())
+      : t("home.welcome.guest");
+
+  const demoFlashes = createDemoFlashes();
+  const demoTitles: Record<string, string> = {
+    "demo:flash:childcare-weekend": t("home.demo.childcare"),
+    "demo:flash:moving-urgent": t("home.demo.moving"),
+    "demo:flash:meeting-dishes": t("home.demo.meeting"),
+  };
+
   return (
     <div className="page-shell stack-8">
       <header className="stack-3 motion-rise-in">
         <Indicator tone="primary" label={identityLabel} dot />
         <div className="stack-2">
-          <h1 className="text-fluid-display-sm">{t("home.welcome")}</h1>
+          <h1 className="text-fluid-display-lg max-w-[14ch]">{greeting}</h1>
           <p className="text-subtitle max-w-prose">{t("home.subtitle")}</p>
         </div>
       </header>
+
+      <section className="stack-4" aria-labelledby="home-demo-title">
+        <div className="stack-1">
+          <h2 id="home-demo-title" className="text-title-md">
+            {t("home.demo.title")}
+          </h2>
+          <p className="text-sm text-muted-foreground">{t("home.demo.desc")}</p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          {demoFlashes.map((flash) => (
+            <Surface
+              key={flash.id}
+              variant="elevated"
+              padding="md"
+              bordered
+              className="flex min-h-32 flex-col justify-between gap-4"
+            >
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-xs font-medium text-muted-foreground">Flash</span>
+                <Indicator tone="primary" label={t("demo.label")} />
+              </div>
+              <p className="text-base font-semibold leading-snug">
+                {demoTitles[flash.id] ?? t("home.demo.fallback")}
+              </p>
+              {flash.authorPreview ? (
+                <PublicProfilePreview profile={flash.authorPreview} origin="demo" />
+              ) : null}
+            </Surface>
+          ))}
+        </div>
+      </section>
 
       <section className="stack-4" aria-labelledby="home-engines-title">
         <div className="stack-1">
@@ -92,6 +154,8 @@ export function HomeFoundation() {
             icon={Zap}
             title={t("home.engine.flash.title")}
             description={t("home.engine.flash.desc")}
+            example={t("home.engine.flash.example")}
+            exampleLabel={t("home.engine.exampleLabel")}
             action={t("home.engine.action")}
             tone="warm"
           />
@@ -100,6 +164,8 @@ export function HomeFoundation() {
             icon={ScanLine}
             title={t("home.engine.scan.title")}
             description={t("home.engine.scan.desc")}
+            example={t("home.engine.scan.example")}
+            exampleLabel={t("home.engine.exampleLabel")}
             action={t("home.engine.action")}
             tone="info"
           />
@@ -108,6 +174,8 @@ export function HomeFoundation() {
             icon={RadioTower}
             title={t("home.engine.reel.title")}
             description={t("home.engine.reel.desc")}
+            example={t("home.engine.reel.example")}
+            exampleLabel={t("home.engine.exampleLabel")}
             action={t("home.engine.action")}
             tone="primary"
           />
@@ -116,6 +184,8 @@ export function HomeFoundation() {
             icon={Radar}
             title={t("home.engine.radar.title")}
             description={t("home.engine.radar.desc")}
+            example={t("home.engine.radar.example")}
+            exampleLabel={t("home.engine.exampleLabel")}
             action={t("home.engine.action")}
             tone="violet"
           />

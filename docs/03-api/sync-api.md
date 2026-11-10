@@ -11,6 +11,7 @@ Cette page décrit le contrat visible dans le dépôt. Elle ne certifie pas la d
 Les deux routes exigent une session de synchronisation valide et un jeton Bearer. Les requêtes sont traitées avec un client Supabase lié à l'appelant, de sorte que les grants et politiques RLS de cet utilisateur s'appliquent. Le corps doit être du JSON et ne pas dépasser 256 KiB.
 
 Erreurs HTTP observées dans les handlers :
+
 - `401` : session absente ou invalide ;
 - `415` : type de contenu autre que JSON ;
 - `413` : corps trop volumineux ;
@@ -24,6 +25,7 @@ Les réponses sont marquées `no-store`. Le contrat partagé applique également
 **Requête :** `POST /api/sync/push`
 
 Le corps contient :
+
 - `protocolVersion` : version du contrat ;
 - `entries` : liste ordonnée de mutations locales, jusqu'à 50 par requête.
 
@@ -32,6 +34,7 @@ Chaque mutation comprend un identifiant de mutation, son propriétaire local, la
 Le serveur vérifie le propriétaire, la politique d'écriture de la table et les champs modifiables. Les écritures sont traduites du modèle logique camelCase vers les tables et colonnes PostgreSQL. Les champs serveur tels que la révision ne sont pas contrôlables par le client.
 
 **Réponse :**
+
 - `accepted` : identifiants des mutations acceptées ;
 - `rejected` : mutations refusées avec code et caractère réessayable ;
 - `records` : enregistrements autoritaires renvoyés après fusion.
@@ -43,11 +46,13 @@ Le transport utilise `sync_mutation_receipts` pour tenter de rejouer une répons
 **Requête :** `POST /api/sync/pull`
 
 Le corps contient :
+
 - `protocolVersion` ;
 - `cursors` : un couple table/révision par table synchronisée ;
 - `limit` : nombre maximal de lignes pour la page, jusqu'à 100.
 
 Le serveur lit les lignes dont la révision est supérieure au curseur demandé et les ordonne par révision croissante. La réponse contient :
+
 - `records` : enveloppes avec table logique, révision, indicateur de suppression et données ;
 - `cursors` : curseurs résultants par table ;
 - `hasMore` : indique si d'autres pages doivent être demandées.

@@ -70,7 +70,7 @@ enregistrement.
 
 1
 
-Exemples :
+Exemples :
 
 •
 
@@ -80,7 +80,7 @@ un utilisateur ↔ une identité numérique principale (UDI) ;
 
 un média ↔ ses métadonnées spécifiques.
 
-Une contrainte  UNIQUE  doit garantir cette relation.
+Une contrainte UNIQUE doit garantir cette relation.
 
 4. Relation One-to-Many (1:N)
 
@@ -158,7 +158,7 @@ supplémentaires.
 
 2
 
-7. Relations inter-domaines
+7. Relations inter-domaines
 
 Les relations entre domaines doivent être limitées au strict nécessaire.
 
@@ -192,7 +192,7 @@ SET NULL
 
 SET DEFAULT
 
-CASCADE  (exceptionnel)
+CASCADE (exceptionnel)
 
 Le choix doit être documenté dans les migrations.
 
@@ -204,7 +204,7 @@ Dans ce cas :
 
 •
 
-la clé étrangère peut accepter  NULL  ;
+la clé étrangère peut accepter NULL ;
 
 •
 
@@ -232,7 +232,7 @@ validées au niveau de l'architecture.
 
 3
 
-11. Intégrité référentielle
+11. Intégrité référentielle
 
 Toute relation doit être protégée par une clé étrangère.
 
@@ -304,7 +304,7 @@ préserver les données existantes ;
 
 4
 
-15. Critères de conformité
+15. Critères de conformité
 
 Les relations sont conformes lorsque :
 
@@ -341,4 +341,3 @@ Une conception rigoureuse des relations garantit une plateforme cohérente, évo
 fidèle au Domain Model défini dans le Build Blueprint.
 
 5
-

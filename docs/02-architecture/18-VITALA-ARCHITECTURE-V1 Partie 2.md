@@ -50,7 +50,7 @@ Elle applique les règles métier de Vitala.
 
 1
 
-Couche des moteurs
+Couche des moteurs
 
 Les moteurs représentent le cœur intelligent de la plateforme.
 
@@ -144,7 +144,7 @@ Elle constitue la mémoire permanente de la plateforme.
 
 2
 
-8. Les moteurs de Vitala
+8. Les moteurs de Vitala
 
 Chaque moteur possède un objectif précis.
 
@@ -190,7 +190,7 @@ une faible dépendance ;
 
 3
 
-•
+•
 
 une meilleure évolutivité ;
 
@@ -286,7 +286,7 @@ autorisations ;
 
 4
 
-•
+•
 
 notifications ;
 
@@ -363,4 +363,3 @@ Cette organisation garantit une plateforme modulaire, cohérente et capable d'é
 en limitant les dépendances entre les différents composants.
 
 5
-

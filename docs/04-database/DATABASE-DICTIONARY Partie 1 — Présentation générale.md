@@ -94,7 +94,7 @@ dans leurs référentiels spécialisés.
 
 1
 
-3. Public concerné
+3. Public concerné
 
 Ce document est destiné à :
 
@@ -162,7 +162,7 @@ Le présent dictionnaire constitue la référence officielle concernant les stru
 
 2
 
-En cas de divergence entre plusieurs documents :
+En cas de divergence entre plusieurs documents :
 
 1.
 
@@ -202,8 +202,8 @@ Les conventions suivantes s'appliquent à l'ensemble du dictionnaire :
 
 •
 
-noms de tables en  snake_case  ;
-noms de colonnes en  snake_case  ;
+noms de tables en snake_case ;
+noms de colonnes en snake_case ;
 
 •
 
@@ -259,7 +259,7 @@ Ces documents doivent rester cohérents avec le présent dictionnaire.
 
 3
 
-9. Gouvernance
+9. Gouvernance
 
 Le dictionnaire est placé sous la responsabilité de l'architecte logiciel de Vitala.
 
@@ -292,4 +292,3 @@ Il garantit une compréhension commune de la base de données, facilite les dév
 la cohérence entre les différents composants de la plateforme tout au long de son évolution.
 
 4
-

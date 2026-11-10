@@ -15,20 +15,23 @@ The concrete baseline schema is summarized in the [data dictionary](../04-databa
 
 ## Repository-backed migration chain
 
-The standard Supabase migration directory is `supabase/migrations/`. It currently contains:
+The standard Supabase migration directory is `supabase/migrations/`. It contains:
+
 1. The initial nine-table schema, baseline grants/RLS policies, Auth user trigger, revision sequence/function, and sync revision triggers.
 2. Revocations/grants for selected helper and trigger functions.
 3. Storage-object policies for the `avatars` and `media` buckets.
+4. The Reel presence, bip and connection foundation in `20261110010000_reel_presence_and_bips.sql`.
 
-The project configuration at `supabase/config.toml` only declares the project ID; it does not configure `src/supabase/migrations/` as an alternate migration directory.
+The project configuration at `supabase/config.toml` does not configure `src/supabase/migrations/` as an alternate migration directory.
 
-A separate `src/supabase/migrations/` directory contains six later SQL-like artifacts for profile/UDI hardening, mission transitions, sync receipts, assistant quota/cache, a public Flash projection, and Radar. They are not in the standard migration path. In addition, the mission-transition file is a Markdown document containing a fenced SQL block rather than a raw migration script. Their intended application path and deployment status are unresolved.
+A separate `src/supabase/migrations/` directory still contains later SQL-like artifacts for profile/UDI hardening, mission transitions, sync receipts, assistant quota/cache, a public Flash projection, and Radar. They are not in the standard migration path. In addition, the mission-transition file is a Markdown document containing a fenced SQL block rather than a raw migration script. Their intended application path and deployment status are unresolved.
 
-**Consequence:** the source tree alone cannot establish that the later tables/functions/policies are present in the live database. The correct next step is to establish a single ordered migration source and verify it against a disposable/test database and, separately, the hosted schema before describing the effective production model.
+**Consequence:** the Reel foundation is now authored in the standard migration path, but the source tree alone cannot establish that it has been applied to the hosted database. The new migration and pgTAP test must pass on a disposable/test database before any production-readiness claim. The separate Radar and other candidate artifacts remain unresolved.
 
 ## Synchronization contract
 
 The shared contracts in `packages/core-contracts/src/records.ts` define a client record envelope with UUID identity, epoch-millisecond timestamps, nullable revision, and soft deletion. The mapper in `src/lib/sync/mapping.ts` maps:
+
 - logical `users` to physical `profiles`,
 - logical `udi`, `flashes`, `missions`, `radars`, `posts`, `media`, `notifications`, and `audit` to similarly named tables,
 - camelCase fields to snake_case columns,
@@ -39,6 +42,7 @@ The database baseline assigns `revision` server-side via `sync_revision_seq`; th
 ## Security layers
 
 Database authorization is layered:
+
 1. Table/column grants decide whether a database role may perform an operation.
 2. RLS policies scope rows by caller identity and, for privileged actions, role checks.
 3. Triggers enforce server-owned revision fields and selected protected state transitions.

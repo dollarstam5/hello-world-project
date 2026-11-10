@@ -62,7 +62,7 @@ Mission API
 
 1
 
-•
+•
 
 Social API
 
@@ -136,7 +136,7 @@ Toute API est considérée comme protégée par défaut.
 
 2
 
-Les principes suivants s'appliquent :
+Les principes suivants s'appliquent :
 
 •
 
@@ -234,7 +234,7 @@ les traitements inutiles.
 
 3
 
-Les optimisations ne doivent jamais compromettre la lisibilité ni la sécurité.
+Les optimisations ne doivent jamais compromettre la lisibilité ni la sécurité.
 
 2.11 Observabilité
 
@@ -316,7 +316,7 @@ Une API non documentée est considérée comme incomplète.
 
 4
 
-2.14 Alignement architectural
+2.14 Alignement architectural
 
 Toutes les API doivent être cohérentes avec :
 
@@ -357,4 +357,3 @@ une expérience homogène aux développeurs, aux applications clientes et aux in
 qui interagiront avec la plateforme.
 
 5
-

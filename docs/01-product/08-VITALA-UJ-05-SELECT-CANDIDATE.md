@@ -11,6 +11,7 @@
 - VITALA-UJ-02-MEMBER-TO-IDENTIFIED
 - VITALA-UJ-03-PUBLISH-OPPORTUNITY
 - VITALA-UJ-04-RESPOND-OPPORTUNITY
+
 # 1. Objectif
 
 Permettre à l'auteur d'une opportunité de choisir la ou les personnes les plus adaptées à son besoin. Vitala ne remplace jamais le jugement humain. Le système accompagne la décision sans l'imposer.
@@ -23,7 +24,7 @@ La sélection ne repose pas sur :
 - Des notes publiques
 - Des classements
 - Des concours de popularité
-La sélection repose sur :
+  La sélection repose sur :
 
 - La confiance
 - Les preuves réelles
@@ -31,15 +32,17 @@ La sélection repose sur :
 
 - Les recommandations
 - La pertinence
+
 # 3. Déclenchement
 
 La sélection devient disponible lorsque :
 
 - L'opportunité est active
 - Au moins une réponse valide existe
-ou
+  ou
 
 - Le nombre maximal de réponses est atteint
+
 # 4. Informations visibles
 
 Pour chaque répondant, Vitala affiche uniquement les éléments utiles.
@@ -54,6 +57,7 @@ Exemples :
 - Recommandé
 - Actif
 - Fiable
+
 ## Historique utile
 
 Exemples :
@@ -61,6 +65,7 @@ Exemples :
 - 5 actions validées
 - 3 recommandations reçues
 - Membre depuis 12 mois
+
 ## Informations contextuelles
 
 Selon l'opportunité :
@@ -71,6 +76,7 @@ Selon l'opportunité :
 - Disponibilité
 - Compétences déclarées
 - Expériences pertinentes
+
 # 5. Informations masquées
 
 Vitala ne montre jamais :
@@ -80,7 +86,7 @@ Vitala ne montre jamais :
 - Notes sur 5
 - Pourcentage de popularité
 - Scores internes
-Les moteurs internes restent privés.
+  Les moteurs internes restent privés.
 
 # 6. Sélection simple
 
@@ -103,6 +109,7 @@ Exemples :
 - Confiance
 - Historique pertinent
 - Recommandations
+
 ## Liberté de décision
 
 Les suggestions de Vita ne sont jamais obligatoires. L'auteur reste libre de choisir.
@@ -115,6 +122,7 @@ L'auteur peut :
 - Accepter plusieurs candidats
 - Reporter sa décision
 - Ne sélectionner personne
+
 # 10. Notification des candidats retenus
 
 Les candidats retenus reçoivent une notification. Exemple : Votre participation a été retenue pour cette opportunité.
@@ -145,6 +153,7 @@ L'auteur peut réouvrir la sélection si :
 - Le candidat annule
 - Le candidat devient indisponible
 - La mission évolue
+
 # 16. Nouvelle sélection
 
 Après réouverture : L'auteur peut :
@@ -152,6 +161,7 @@ Après réouverture : L'auteur peut :
 - Choisir un autre candidat
 - Ajouter un candidat
 - Relancer la recherche
+
 # 17. Contrôle qualité
 
 Le Safety & Trust Filter Engine continue de surveiller :
@@ -160,6 +170,7 @@ Le Safety & Trust Filter Engine continue de surveiller :
 - Abus
 - Comportements suspects
 - Manipulations
+
 # 18. Principes UX
 
 ## Principe 1

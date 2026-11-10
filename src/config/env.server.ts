@@ -146,3 +146,11 @@ export function getMaintenanceEnvironment(): MaintenanceEnvironment {
     aiRequestDays: boundedInteger("AI_REQUEST_RETENTION_DAYS", 30, 7, 365),
   };
 }
+
+export function getReelZoneHmacSecret(): string {
+  const value = required("REEL_ZONE_HMAC_SECRET");
+  if (value.length < 32) {
+    throw new Error("REEL_ZONE_HMAC_SECRET must contain at least 32 characters.");
+  }
+  return value;
+}

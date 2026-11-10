@@ -1,25 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { User } from "lucide-react";
-import { SectionFoundation } from "@/components/experience/SectionFoundation";
+import { PersonalDashboard } from "@/components/experience/PersonalDashboard";
 
 export const Route = createFileRoute("/espace")({
   head: () => ({
     meta: [
-      { title: "Espace — Vitalis" },
-      { name: "description", content: "Votre espace personnel." },
+      { title: "Mon espace — Vitalis" },
+      { name: "description", content: "Retrouvez vos informations et les réglages de Vitalis." },
     ],
   }),
-  component: () => (
-    <SectionFoundation
-      eyebrowKey="page.espace.eyebrow"
-      titleKey="page.espace.title"
-      descKey="page.espace.desc"
-      tone="primary"
-      icon={User}
-      sections={[
-        { key: "you", titleKey: "page.espace.section.you", perf: "short" },
-        { key: "circles", titleKey: "page.espace.section.circles", perf: "tall" },
-      ]}
-    />
-  ),
+  component: PersonalDashboard,
 });

@@ -18,6 +18,7 @@ import {
   type SyncRejectionCode,
 } from "@eco/core-contracts";
 import { isReadOnlyTable, ownerColumn, physicalTable, toRecord, toRow } from "./mapping";
+import { radarCommandForTransition } from "./radar-command";
 
 export type SyncClient = SupabaseClient;
 
@@ -40,7 +41,7 @@ function classifyDatabaseError(error: { code?: string }): {
   if (error.code === "23505" || error.code === "23P01") {
     return { code: "conflict", retryable: false };
   }
-  if (error.code?.startsWith("23") || error.code === "P0001") {
+  if (error.code?.startsWith("23") || error.code === "P0001" || error.code === "22023") {
     return { code: "invalid_mutation", retryable: false };
   }
   return { code: "server_error", retryable: true };
@@ -187,7 +188,42 @@ export async function runPush(
         error: { code?: string; message?: string } | null;
       };
 
-      if (entry.kind === "create") {
+      if (
+        entry.table === "radars" &&
+        entry.kind === "update" &&
+        typeof row["status"] === "string"
+      ) {
+        if (Object.keys(row).some((field) => field !== "status")) {
+          rejected.push({ id: entry.id, code: "invalid_mutation", retryable: false });
+          continue;
+        }
+
+        const { data: current, error: readError } = await db
+          .from("radars")
+          .select("status")
+          .eq("id", entry.recordId)
+          .maybeSingle();
+
+        if (readError) throw new Error("radar_state_read_failed");
+        if (!current) {
+          rejected.push({ id: entry.id, code: "record_not_found", retryable: false });
+          continue;
+        }
+
+        const action = radarCommandForTransition(
+          String((current as { status: string }).status),
+          String(row["status"]),
+        );
+        if (!action) {
+          rejected.push({ id: entry.id, code: "invalid_mutation", retryable: false });
+          continue;
+        }
+
+        result = await db.rpc("command_radar", {
+          p_radar_id: entry.recordId,
+          p_action: action,
+        });
+      } else if (entry.kind === "create") {
         row["id"] = entry.recordId;
         if (owner) row[owner] = userId;
         result = await db.from(table).insert(row).select("*").maybeSingle();
