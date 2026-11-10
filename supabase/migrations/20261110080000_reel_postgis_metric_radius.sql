@@ -297,6 +297,9 @@ BEGIN
   INSERT INTO public.reel_presence_locations (presence_id, location, created_at, expires_at)
   VALUES (v_presence.id, v_grant.location, now(), to_timestamp(v_presence.expires_at / 1000.0));
 
+  -- The one-use grant has served its purpose; remove its duplicate exact point.
+  DELETE FROM public.reel_zone_grants WHERE id = v_grant.id;
+
   RETURN v_presence;
 END;
 $$;
