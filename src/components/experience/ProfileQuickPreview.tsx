@@ -23,37 +23,43 @@ function getInitials(name: string): string {
     .toLocaleUpperCase();
 }
 
-/** First level of the profile: a quick identity preview with a clear route to the full page. */
+/** First level of the profile: useful identity details and a clear route to full management. */
 export function ProfileQuickPreview({ open, onOpenChange }: ProfileQuickPreviewProps) {
   const { t } = useI18n();
   const displayName = useIdentity((state) => state.displayName);
   const setDisplayName = useIdentity((state) => state.setDisplayName);
   const [loadedName, setLoadedName] = useState(displayName ?? "");
+  const [loadedHandle, setLoadedHandle] = useState<string | null>(null);
 
   useEffect(() => {
     if (!open) return;
     let active = true;
+    setLoadedName(displayName ?? "");
+    setLoadedHandle(null);
 
-    async function loadName() {
+    async function loadProfilePreview() {
       const { data: authData } = await supabase.auth.getUser();
       if (!active || !authData.user) return;
 
       const { data } = await supabase
         .from("profiles")
-        .select("display_name")
+        .select("display_name,handle")
         .eq("id", authData.user.id)
         .maybeSingle();
 
-      if (!active || !data?.display_name) return;
-      setLoadedName(data.display_name);
-      setDisplayName(data.display_name);
+      if (!active || !data) return;
+      if (data.display_name) {
+        setLoadedName(data.display_name);
+        setDisplayName(data.display_name);
+      }
+      setLoadedHandle(data.handle);
     }
 
-    void loadName();
+    void loadProfilePreview();
     return () => {
       active = false;
     };
-  }, [open, setDisplayName]);
+  }, [displayName, open, setDisplayName]);
 
   const name = loadedName.trim() || displayName?.trim() || t("identity.guest");
 
@@ -77,7 +83,15 @@ export function ProfileQuickPreview({ open, onOpenChange }: ProfileQuickPreviewP
         </Avatar>
         <div className="min-w-0 flex-1">
           <p className="truncate font-semibold">{name}</p>
-          <p className="mt-1 text-sm text-muted-foreground">{t("profile.quickPreview.cardHint")}</p>
+          {loadedHandle ? (
+            <p className="mt-1 truncate text-sm text-muted-foreground">
+              @{loadedHandle}
+            </p>
+          ) : (
+            <p className="mt-1 text-sm text-muted-foreground">
+              {t("profile.quickPreview.cardHint")}
+            </p>
+          )}
         </div>
       </div>
       <p className="py-4 text-sm leading-relaxed text-muted-foreground">
