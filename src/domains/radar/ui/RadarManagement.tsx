@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { Pencil, Radar as RadarIcon, X } from "lucide-react";
 import type { RadarRadiusKm, RadarRecord, RadarStatus } from "@eco/core-contracts";
 import type { MessageKey } from "@/lib/i18n/messages";
@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Indicator } from "@/components/app/Indicator";
 import { Surface } from "@/components/app/Surface";
-import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/domains/auth/model/useAuth";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { cancelRadar, createRadarDraft, editRadarDraft, useMyRadars } from "../data";
 
@@ -52,7 +52,8 @@ const statusTones: Record<RadarStatus, "neutral" | "primary" | "success" | "warn
  */
 export function RadarManagement() {
   const { t, locale } = useI18n();
-  const [userId, setUserId] = useState<string | null | undefined>(undefined);
+  const { user, loading: authLoading } = useAuth();
+  const userId = user?.id ?? null;
   const [query, setQuery] = useState("");
   const [areaLabel, setAreaLabel] = useState("");
   const [radiusKm, setRadiusKm] = useState<RadarRadiusKm>(5);
@@ -62,22 +63,7 @@ export function RadarManagement() {
   const [actionError, setActionError] = useState(false);
   const [pendingCancel, setPendingCancel] = useState<RadarRecord | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const records = useMyRadars(userId);
-
-  useEffect(() => {
-    let active = true;
-    void supabase.auth
-      .getUser()
-      .then(({ data, error }) => {
-        if (active) setUserId(error || !data.user ? null : data.user.id);
-      })
-      .catch(() => {
-        if (active) setUserId(null);
-      });
-    return () => {
-      active = false;
-    };
-  }, []);
+  const records = useMyRadars(authLoading ? undefined : userId);
 
   async function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -128,7 +114,7 @@ export function RadarManagement() {
     }
   }
 
-  if (userId === undefined) {
+  if (authLoading) {
     return (
       <p className="text-sm text-muted-foreground" role="status">
         {t("app.loading")}
