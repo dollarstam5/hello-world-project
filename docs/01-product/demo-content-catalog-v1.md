@@ -205,3 +205,45 @@ Pour chaque interface, vérifier :
 8. Administration et environnements de démonstration isolés.
 
 **Important :** ce catalogue prépare les contenus et les règles de présentation. Il ne prouve pas que les jeux de données sont déjà codés ni que les écrans sont déjà conformes. La création des fixtures doit suivre l'inspection des contrats de chaque domaine.
+
+
+## 7. Contrats techniques vérifiés — préparation des fixtures
+
+Cette section remplace les suppositions éditoriales par les formes réellement présentes dans le dépôt (lecture de main, commit 9d8446c). Elle ne crée pas encore de données dans l'application.
+
+### Flash — deux formes à ne pas confondre
+
+- FlashRecord (packages/core-contracts/src/records.ts) est l'enregistrement local synchronisable : enveloppe id, createdAt, updatedAt, revision, deletedAt, puis authorId, title, body, status, expiresAt, mediaIds et les champs optionnels kind, category, timeSlot, areaLabel.
+- PublicFlash (packages/core-contracts/src/flash.ts) est la forme publique minimale : id, kind, category, title, timeSlot, areaLabel, expiresAt, createdAt. Elle n'expose ni auteur, ni coordonnées, ni corps complet.
+- Les catégories autorisées sont personal, professional, commercial, home, transport, food, education, health, events, other. Les types sont offer / need, les créneaux now / today / tomorrow / this_week.
+- Décision d'implémentation : ne jamais réutiliser une fixture publique comme enregistrement local ni contourner l'enveloppe synchronisable. Les exemples d'interface restent séparés du dépôt local et ne sont pas créés via createFlash.
+
+### Scan — résultat public avec distance obligatoire
+
+ScanResult (packages/core-contracts/src/scan.ts) contient id, kind, category, title, timeSlot, areaLabel, distanceKm, createdAt et expiresAt. L'écran affiche explicitement distanceKm.
+
+Le scan envoie actuellement latitude et longitude au serveur dans ScanQuery, avec rayon et limite. La position n'est pas affichée comme coordonnée publique, mais il serait inexact de dire qu'elle n'est jamais partagée. En conséquence :
+- aucun faux ScanResult ne sera injecté dans les résultats réels ;
+- l'aperçu de démonstration sera une scène explicative distincte, sans distance inventée ;
+- le texte de confidentialité devra dire que la position est utilisée temporairement pour effectuer la recherche et n'est pas affichée aux autres personnes, après vérification du traitement serveur.
+
+### Radar — demandes et cycle de vie
+
+RadarDraftInput contient exactement title, query, category, areaLabel, radiusKm, startsAt, expiresAt. RadarRecord ajoute l'enveloppe BaseRecord, ownerId, status, nextReviewAt, lastReviewedAt.
+
+- Rayons autorisés : 1, 3, 5, 10, 25 ou 50 km.
+- Durée autorisée : 3 à 90 jours.
+- Statuts connus : draft, active, watching, matched, paused, expired, cancelled.
+- Les aperçus ne sont pas des RadarRecord activables : ne pas inventer de propriétaire, de correspondance, de date de contrôle ou d'état métier.
+
+### Assistant — messages de conversation
+
+Le hook V1 utilise des messages d'interface { id, role, content }, avec role égal à user ou assistant. Les suggestions de départ sont des raccourcis de questions, pas des messages de conversation déjà envoyés. Les réponses d'exemple doivent rester dans une carte pédagogique séparée et ne jamais être ajoutées à l'historique réel.
+
+### Surfaces sans contrat de données démonstratif vérifié
+
+Pour Réel, notifications, messages, profil, compte, menu 2×2 et administration, cette passe n'a pas validé de contrat de fixture sûr et complet. La règle reste donc : aperçu statique séparé ou état vide utile ; aucune injection dans les listes, compteurs, historiques, événements ou boîtes de réception réels.
+
+## 8. Règle d'implémentation après cette vérification
+
+Avant d'ajouter un fichier de fixtures dans un domaine, vérifier son contrat public, ses imports autorisés et son chemin de rendu. Les exemples doivent être des données de présentation explicitement typées et marquées comme démonstration ; ils ne doivent jamais être convertis en enregistrements métier ni passer par les repositories, l'outbox ou les fonctions serveur. Le marquage « Exemple » doit être visible sur chaque carte ou scène pédagogique, en FR et EN.
