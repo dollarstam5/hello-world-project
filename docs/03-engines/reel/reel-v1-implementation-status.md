@@ -11,6 +11,29 @@
 - Les onglets Alertes, Bips reçus et Rencontres affichent des états vides honnêtes ; aucun compteur ou événement n'est simulé.
 - La page ne démarre ni n'arrête encore une présence réelle. Les actions Réel ne doivent pas être présentées comme actives avant le raccordement des RPC et la validation de la clé de zone.
 
+## Règle produit confirmée — accès membre et invité
+
+Réel doit accueillir une personne sans lui imposer la création d'un compte Vitalis. Le moteur adapte les possibilités et la conservation au mode d'accès, sans confondre identité provisoire et profil enregistré.
+
+### Membre avec profil enregistré
+
+- Réutiliser uniquement les informations du profil qui sont nécessaires à l'expérience demandée et autorisées par la personne.
+- Ne pas recopier automatiquement toutes les données du profil dans chaque présence ou interaction.
+- Conserver l'historique uniquement selon les règles validées propres aux comptes et aux éléments concernés.
+
+### Visiteur en mode invité
+
+- Autoriser l'accès aux services Réel prévus pour les invités sans exiger un compte permanent.
+- Attribuer une identité provisoire limitée à la session, distincte d'un identifiant de membre et d'un profil Vitalis.
+- Ne pas créer ni enregistrer de profil invité dans les tables durables de profils Vitalis.
+- Limiter les données à ce qui est indispensable à la session et aux services utilisés. Les éléments temporaires nécessaires au fonctionnement temps réel devront avoir une durée de vie courte, ne pas devenir un historique et être supprimés à la fin de la visite ou à l'expiration de la session.
+- À la fin de la visite, réinitialiser l'identité provisoire et les données temporaires associées. Aucun rattachement rétroactif à un compte ne doit être fait sans action et consentement explicites.
+- Proposer, sans pression et au bon moment, de créer un compte ou d'enrichir un profil pour retrouver des informations et accéder aux possibilités réservées aux membres.
+
+### Conséquence technique
+
+Le modèle actuel, qui exige un utilisateur Supabase authentifié et un profil actif pour démarrer une présence, **ne satisfait pas encore cette règle**. Il ne faut pas le contourner en créant un faux profil membre. Il faut concevoir un parcours invité séparé, avec identité temporaire, autorisations limitées et mécanisme d'expiration/nettoyage. La présence en direct peut nécessiter un état technique éphémère pour être visible aux autres appareils ; cet état ne doit pas être confondu avec un enregistrement durable dans la base des profils Vitalis. Le choix du transport temporaire et sa politique de suppression restent à spécifier et tester.
+
 ## Ce qui est ajouté
 
 - Présences éphémères liées à un compte authentifié actif.
