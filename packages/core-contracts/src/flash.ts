@@ -28,6 +28,9 @@ export type FlashTimeSlot = (typeof FLASH_TIME_SLOTS)[number];
  * The public shape of a flash: no author, no coordinates, only what anyone
  * may see. Precise location stays private on the backend.
  */
+import type { PublicProfilePreview } from "./profile-preview";
+
+/** Public fields of a Flash; precise location and private account data stay server-side. */
 export interface PublicFlash {
   id: string;
   kind: FlashKind;
@@ -37,4 +40,6 @@ export interface PublicFlash {
   areaLabel: string;
   expiresAt: number;
   createdAt: number;
+  /** Present only when the author has explicitly enabled public profile visibility. */
+  authorPreview?: PublicProfilePreview | null;
 }
