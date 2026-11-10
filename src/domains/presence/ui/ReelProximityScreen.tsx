@@ -277,9 +277,7 @@ export function ReelProximityScreen() {
         setBipsMessage(null);
       } catch (error) {
         setBipsMessage(
-          error instanceof Error
-            ? error.message
-            : "Vos bips n’ont pas pu être chargés.",
+          error instanceof Error ? error.message : "Vos bips n’ont pas pu être chargés.",
         );
       } finally {
         setBipsLoading(false);
@@ -1435,12 +1433,12 @@ export function ReelProximityScreen() {
                       !connectionsLoading &&
                       connections.length === 0 &&
                       guestConnections.length === 0 && (
-                      <div className="reel-panel__empty">
-                        <UsersRound aria-hidden="true" />
-                        <strong>Vous n’avez pas encore de mise en relation</strong>
-                        <span>Les personnes qui acceptent votre signe apparaîtront ici.</span>
-                      </div>
-                    )}
+                        <div className="reel-panel__empty">
+                          <UsersRound aria-hidden="true" />
+                          <strong>Vous n’avez pas encore de mise en relation</strong>
+                          <span>Les personnes qui acceptent votre signe apparaîtront ici.</span>
+                        </div>
+                      )}
                     {connections.map((connection) => (
                       <div className="reel-people-list__item" key={connection.connection_id}>
                         <span className="reel-avatar reel-avatar--small">
