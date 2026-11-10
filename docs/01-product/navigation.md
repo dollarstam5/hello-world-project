@@ -14,8 +14,8 @@
 ## Espaces indépendants et gestion
 
 Chaque moteur expose ses sections propres et un accès de gestion dédié :
-- Flash : découverte, Mes Flash, brouillons, terminés/archivés et préférences Flash.
-- Scan : recherche, filtres, recherche en cours, dix recherches récentes conservées localement (date et nombre de résultats uniquement), et préférences Scan.
+- Flash : découverte, création, modification des Flash actifs, archivage et suppression des enregistrements disponibles localement. Les brouillons et préférences dédiées restent à raccorder lorsqu’ils auront un stockage et des règles métier réels.
+- Scan : recherche de proximité, choix du rayon (1, 5, 10 ou 20 km), états de recherche, dix recherches récentes conservées localement (date et nombre de résultats uniquement). Les filtres avancés et préférences dédiées restent à construire.
 - Réel : présence, bips, mises en relation, historique et préférences Réel.
 - Radar : suivis, alertes, résultats confirmés, éléments en pause/archivés et préférences Radar.
 
