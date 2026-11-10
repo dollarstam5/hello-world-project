@@ -412,16 +412,22 @@ AS $$
 DECLARE
   v_member UUID := public.reel_require_active_profile();
   v_bip public.reel_guest_bips;
+  v_next_status TEXT;
 BEGIN
   IF auth.role() <> 'authenticated' OR p_action IS NULL
     OR p_action NOT IN ('accept','decline','withdraw') THEN
     RAISE EXCEPTION 'invalid_member_bip_action' USING ERRCODE = '42501';
   END IF;
+  v_next_status := CASE p_action
+    WHEN 'accept' THEN 'accepted'
+    WHEN 'decline' THEN 'declined'
+    ELSE 'withdrawn'
+  END;
   SELECT * INTO v_bip FROM public.reel_guest_bips
     WHERE id = p_bip_id AND (sender_member_id = v_member OR recipient_member_id = v_member)
     FOR UPDATE;
   IF NOT FOUND THEN RAISE EXCEPTION 'guest_bip_not_found' USING ERRCODE = '42501'; END IF;
-  IF p_action = v_bip.status THEN
+  IF v_next_status = v_bip.status THEN
     RETURN QUERY SELECT v_bip.id, v_bip.status, v_bip.expires_at;
     RETURN;
   END IF;
@@ -437,7 +443,7 @@ BEGIN
   IF p_action = 'withdraw' AND v_bip.sender_member_id <> v_member THEN
     RAISE EXCEPTION 'sender_action_required' USING ERRCODE = '42501';
   END IF;
-  UPDATE public.reel_guest_bips SET status = p_action,
+  UPDATE public.reel_guest_bips SET status = v_next_status,
     resolved_at = now(), updated_at = now()
     WHERE id = p_bip_id RETURNING * INTO v_bip;
   IF p_action = 'accept' THEN PERFORM public.create_reel_guest_connection_from_bip(p_bip_id); END IF;
@@ -454,6 +460,7 @@ SET search_path = pg_catalog, public
 AS $$
 DECLARE
   v_bip public.reel_guest_bips;
+  v_next_status TEXT;
 BEGIN
   IF auth.role() <> 'service_role' OR p_action IS NULL
     OR p_action NOT IN ('accept','decline','withdraw') THEN
@@ -464,12 +471,17 @@ BEGIN
       AND revoked_at IS NULL AND expires_at > now()) THEN
     RAISE EXCEPTION 'active_guest_session_required' USING ERRCODE = '42501';
   END IF;
+  v_next_status := CASE p_action
+    WHEN 'accept' THEN 'accepted'
+    WHEN 'decline' THEN 'declined'
+    ELSE 'withdrawn'
+  END;
   SELECT * INTO v_bip FROM public.reel_guest_bips
     WHERE id = p_bip_id
       AND (sender_guest_session_id = p_guest_session_id OR recipient_guest_session_id = p_guest_session_id)
     FOR UPDATE;
   IF NOT FOUND THEN RAISE EXCEPTION 'guest_bip_not_found' USING ERRCODE = '42501'; END IF;
-  IF p_action = v_bip.status THEN
+  IF v_next_status = v_bip.status THEN
     RETURN QUERY SELECT v_bip.id, v_bip.status, v_bip.expires_at;
     RETURN;
   END IF;
@@ -485,7 +497,7 @@ BEGIN
   IF p_action = 'withdraw' AND v_bip.sender_guest_session_id <> p_guest_session_id THEN
     RAISE EXCEPTION 'sender_action_required' USING ERRCODE = '42501';
   END IF;
-  UPDATE public.reel_guest_bips SET status = p_action,
+  UPDATE public.reel_guest_bips SET status = v_next_status,
     resolved_at = now(), updated_at = now()
     WHERE id = p_bip_id RETURNING * INTO v_bip;
   IF p_action = 'accept' THEN PERFORM public.create_reel_guest_connection_from_bip(p_bip_id); END IF;
