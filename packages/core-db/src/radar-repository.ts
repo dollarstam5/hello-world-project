@@ -31,6 +31,10 @@ async function execute(id: string, action: MemberRadarAction): Promise<RadarReco
     throw new Error("Only the owner can manage this Radar.");
   }
 
+  if (action !== "cancel" && Date.now() >= current.expiresAt) {
+    throw new Error("This Radar has expired.");
+  }
+
   const patch = radarTransition(current, action);
   const next = stampUpdate({ ...current, ...patch });
 
