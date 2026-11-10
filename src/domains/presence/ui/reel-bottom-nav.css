@@ -101,9 +101,9 @@
 }
 
 .dark .reel-page-nav__bar {
-    border-color: rgb(255 255 255 / 10%);
-    background: rgb(24 30 42 / 90%);
-    box-shadow: 0 0.65rem 2rem rgb(0 0 0 / 32%);
+  border-color: rgb(255 255 255 / 10%);
+  background: rgb(24 30 42 / 90%);
+  box-shadow: 0 0.65rem 2rem rgb(0 0 0 / 32%);
 }
 
 .dark .reel-page-nav__item {
