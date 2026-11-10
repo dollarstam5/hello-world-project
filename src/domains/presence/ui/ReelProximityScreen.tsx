@@ -144,7 +144,7 @@ export function ReelProximityScreen() {
       })
       .subscribe();
     return () => { void supabase.removeChannel(channel); };
-  }, [panel, activityTab, refreshBips, access.memberId]);
+  }, [panel, activityTab, refreshBips, access.memberId, canUseMemberReel]);
 
   const refreshConnections = useCallback(async () => {
     if (!canUseMemberReel || !access.memberId) return;
