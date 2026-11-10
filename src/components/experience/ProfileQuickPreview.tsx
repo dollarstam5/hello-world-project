@@ -77,9 +77,7 @@ export function ProfileQuickPreview({ open, onOpenChange }: ProfileQuickPreviewP
         </Avatar>
         <div className="min-w-0 flex-1">
           <p className="truncate font-semibold">{name}</p>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {t("profile.quickPreview.cardHint")}
-          </p>
+          <p className="mt-1 text-sm text-muted-foreground">{t("profile.quickPreview.cardHint")}</p>
         </div>
       </div>
       <p className="py-4 text-sm leading-relaxed text-muted-foreground">
