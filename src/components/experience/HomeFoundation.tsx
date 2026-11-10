@@ -5,6 +5,7 @@ import { Surface } from "@/components/app/Surface";
 import { Indicator } from "@/components/app/Indicator";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useIdentity } from "@/lib/experience/identity";
+import { createDemoFlashes } from "@/domains/flash/model/demo-flashes";
 
 type EngineCardProps = {
   to: "/flash" | "/scan" | "/reel" | "/radar";
@@ -56,10 +57,11 @@ function EngineCard({ to, icon: Icon, title, description, action, tone }: Engine
   );
 }
 
-/** Home is the calm entry point; engines keep their own dedicated spaces. */
+/** Home is the calm entry point; examples are previews, never live activity. */
 export function HomeFoundation() {
   const { t } = useI18n();
   const tier = useIdentity((s) => s.tier);
+  const displayName = useIdentity((s) => s.displayName);
 
   const identityLabel =
     tier === "trusted"
@@ -68,15 +70,56 @@ export function HomeFoundation() {
         ? t("identity.identified")
         : t("identity.guest");
 
+  const greeting =
+    tier !== "guest" && displayName?.trim()
+      ? t("home.welcome.named").replace("{name}", displayName.trim())
+      : t("home.welcome.guest");
+
+  const demoFlashes = createDemoFlashes();
+  const demoTitles: Record<string, string> = {
+    "demo:flash:sql-besoin-002": t("home.demo.plumbing"),
+    "demo:flash:sql-besoin-009": t("home.demo.math"),
+    "demo:flash:sql-besoin-017": t("home.demo.help"),
+  };
+
   return (
     <div className="page-shell stack-8">
       <header className="stack-3 motion-rise-in">
         <Indicator tone="primary" label={identityLabel} dot />
         <div className="stack-2">
-          <h1 className="text-fluid-display-sm">{t("home.welcome")}</h1>
+          <h1 className="text-fluid-display-lg max-w-[14ch]">{greeting}</h1>
           <p className="text-subtitle max-w-prose">{t("home.subtitle")}</p>
         </div>
       </header>
+
+      <section className="stack-4" aria-labelledby="home-demo-title">
+        <div className="stack-1">
+          <h2 id="home-demo-title" className="text-title-md">
+            {t("home.demo.title")}
+          </h2>
+          <p className="text-sm text-muted-foreground">{t("home.demo.desc")}</p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          {demoFlashes.map((flash) => (
+            <Surface
+              key={flash.id}
+              variant="elevated"
+              padding="md"
+              bordered
+              className="flex min-h-32 flex-col justify-between gap-4"
+            >
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-xs font-medium text-muted-foreground">Flash</span>
+                <Indicator tone="primary" label={t("demo.label")} />
+              </div>
+              <p className="text-base font-semibold leading-snug">
+                {demoTitles[flash.id] ?? t("home.demo.fallback")}
+              </p>
+            </Surface>
+          ))}
+        </div>
+      </section>
 
       <section className="stack-4" aria-labelledby="home-engines-title">
         <div className="stack-1">
