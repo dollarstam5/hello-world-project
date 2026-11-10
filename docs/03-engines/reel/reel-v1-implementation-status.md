@@ -34,6 +34,18 @@ Réel doit accueillir une personne sans lui imposer la création d'un compte Vit
 
 Le modèle actuel, qui exige un utilisateur Supabase authentifié et un profil actif pour démarrer une présence, **ne satisfait pas encore cette règle**. Il ne faut pas le contourner en créant un faux profil membre. Il faut concevoir un parcours invité séparé, avec identité temporaire, autorisations limitées et mécanisme d'expiration/nettoyage. La présence en direct peut nécessiter un état technique éphémère pour être visible aux autres appareils ; cet état ne doit pas être confondu avec un enregistrement durable dans la base des profils Vitalis. Le choix du transport temporaire et sa politique de suppression restent à spécifier et tester.
 
+
+## Gestion centrale des modes d'accès — fondation ajoutée
+
+Le domaine partagé `src/domains/access-mode/` est maintenant monté à la racine de l'application via `AccessModeProvider`. Les moteurs peuvent lire `useAccessMode()` pour distinguer visiteur, invité et membre, sans dupliquer la détection de session.
+
+- Le mode membre repose sur la session Supabase Auth existante ; le gestionnaire ne prétend pas encore vérifier l'état du profil métier.
+- Le mode invité crée uniquement un identifiant aléatoire conservé en mémoire côté application. Il n'est pas écrit dans Supabase Auth, `profiles`, `localStorage` ou `sessionStorage`.
+- L'identité temporaire est effacée à la fin de la session de page, à la connexion d'un membre ou par fermeture explicite.
+- Cette fondation ne fournit pas encore de session invitée multi-appareils, de jeton serveur, de transport temps réel ou de droits Réel. Les opérations invitées restent désactivées jusqu'à livraison et test de ces protections.
+
+Document d'architecture : [Gestionnaire central des modes d'accès](../../02-architecture/access-mode-manager.md).
+
 ## Ce qui est ajouté
 
 - Présences éphémères liées à un compte authentifié actif.
