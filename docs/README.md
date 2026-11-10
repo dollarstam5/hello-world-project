@@ -19,6 +19,7 @@ Ce répertoire suit une structure canonique pour la documentation active.
 - [Langage de design Vitalis](./00-foundation/design-language.md)
 - [Vitalis Experience System](./01-product/experience-system.md)
 - [Navigation produit Vitalis](./01-product/navigation.md)
+- [Espaces personnels et gestion indépendante des moteurs — V1](./01-product/personal-and-engine-management-v1.md)
 - [Parcours utilisateurs](./01-product/user-journeys.md)
 - [Présentation des pages moteurs — V1](./01-product/engine-page-preview-standard-v1.md)
 - [Parcours du profil — V1](./01-product/profile-experience-v1.md)
