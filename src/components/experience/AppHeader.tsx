@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Bell } from "lucide-react";
+import { Bell, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProfileQuickPreview } from "./ProfileQuickPreview";
 import { useI18n } from "@/lib/i18n/useI18n";
@@ -42,8 +42,7 @@ export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => 
               className="h-12 w-12 rounded-full"
             >
               <span className="flex h-9 w-9 items-center justify-center rounded-full border border-border-soft bg-surface text-foreground">
-                <span className="sr-only">{t("profile.title")}</span>
-                <span aria-hidden className="text-sm font-medium">{t("profile.avatarFallback")}</span>
+                <UserRound className="h-5 w-5" aria-hidden />
               </span>
             </Button>
           </div>
