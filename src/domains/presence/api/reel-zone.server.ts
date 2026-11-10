@@ -1,0 +1,108 @@
+import { createClient } from "@supabase/supabase-js";
+import { getPublicServerEnvironment, getReelZoneHmacSecret, getSupabaseServiceRoleKey } from "@/config/env.server";
+
+export type ReelZonePurpose = "discover" | "presence";
+export interface ReelZoneResolution {
+  zoneKeys: string[];
+  zoneKey?: string;
+  grantId?: string;
+  areaLabel: string;
+  expiresAt: string;
+}
+
+function createAdminClient() {
+  const { supabaseUrl } = getPublicServerEnvironment();
+  return createClient(supabaseUrl, getSupabaseServiceRoleKey(), {
+    auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
+  });
+}
+
+function cellFor(latitude: number, longitude: number) {
+  // A 200 m grid intentionally reduces precision before any zone token is made.
+  const latitudeStep = 200 / 111_320;
+  const longitudeStep = 200 / (111_320 * Math.max(Math.cos(latitude * Math.PI / 180), 0.01));
+  return {
+    latitude: Math.floor(latitude / latitudeStep),
+    longitude: Math.floor(longitude / longitudeStep),
+  };
+}
+
+async function tokenForCell(latitudeCell: number, longitudeCell: number, secret: string) {
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  const signature = await crypto.subtle.sign(
+    "HMAC",
+    key,
+    new TextEncoder().encode(`v1:${latitudeCell}:${longitudeCell}`),
+  );
+  const hex = Array.from(new Uint8Array(signature), (byte) => byte.toString(16).padStart(2, "0")).join("");
+  return `z1_${hex.slice(0, 56)}`;
+}
+
+/**
+ * Converts a one-shot, user-authorized device fix into a coarse opaque zone.
+ * Raw coordinates are never written to a database or returned to the client.
+ */
+export async function resolveReelZoneForUser(
+  userId: string,
+  latitude: number,
+  longitude: number,
+  purpose: ReelZonePurpose,
+): Promise<ReelZoneResolution> {
+  if (!Number.isFinite(latitude) || latitude < -90 || latitude > 90 ||
+      !Number.isFinite(longitude) || longitude < -180 || longitude > 180) {
+    throw new Error("La position reçue n’est pas valide.");
+  }
+
+  const admin = createAdminClient();
+  const { data: profile, error: profileError } = await admin
+    .from("profiles")
+    .select("id")
+    .eq("id", userId)
+    .eq("status", "active")
+    .is("deleted_at", null)
+    .maybeSingle();
+  if (profileError || !profile) throw new Error("Un profil Vitalis actif est nécessaire pour cette action.");
+
+  const secret = getReelZoneHmacSecret();
+  const cell = cellFor(latitude, longitude);
+  const centerKey = await tokenForCell(cell.latitude, cell.longitude, secret);
+  const expiresAt = new Date(Date.now() + (purpose === "discover" ? 15 : 5) * 60_000).toISOString();
+
+  if (purpose === "discover") {
+    const zoneKeys: string[] = [];
+    for (let latOffset = -1; latOffset <= 1; latOffset += 1) {
+      for (let lonOffset = -1; lonOffset <= 1; lonOffset += 1) {
+        zoneKeys.push(await tokenForCell(cell.latitude + latOffset, cell.longitude + lonOffset, secret));
+      }
+    }
+    const rows = zoneKeys.map((zone_key) => ({
+      user_id: userId,
+      zone_key,
+      expires_at: expiresAt,
+    }));
+    const { error } = await admin
+      .from("reel_discovery_sessions")
+      .upsert(rows, { onConflict: "user_id,zone_key" });
+    if (error) throw new Error("Impossible d’ouvrir la découverte à proximité pour le moment.");
+    return { zoneKeys, areaLabel: "Votre secteur approximatif", expiresAt };
+  }
+
+  const { data: grant, error } = await admin
+    .from("reel_zone_grants")
+    .insert({
+      owner_id: userId,
+      zone_key: centerKey,
+      purpose: "presence",
+      expires_at: expiresAt,
+    })
+    .select("id")
+    .single();
+  if (error || !grant) throw new Error("Impossible de préparer votre présence pour le moment.");
+  return { zoneKeys: [centerKey], zoneKey: centerKey, grantId: grant.id, areaLabel: "Votre secteur approximatif", expiresAt };
+}
