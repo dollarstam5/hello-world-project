@@ -109,10 +109,7 @@ export function MyFlashManagement() {
   if (records.length === 0) {
     return (
       <Surface variant="sunken" padding="none" bordered>
-        <EmptyState
-          title={t("flash.mine.empty.title")}
-          description={t("flash.mine.empty.desc")}
-        />
+        <EmptyState title={t("flash.mine.empty.title")} description={t("flash.mine.empty.desc")} />
       </Surface>
     );
   }
@@ -135,9 +132,7 @@ export function MyFlashManagement() {
               <p className="mt-1 text-xs text-muted-foreground">
                 {t(statusKeys[record.status])}
                 {" · "}
-                {new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(
-                  record.createdAt,
-                )}
+                {new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(record.createdAt)}
               </p>
             </div>
 
@@ -183,9 +178,7 @@ export function MyFlashManagement() {
             <AlertDialogDescription>{t("flash.mine.deleteConfirm")}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={busyId !== null}>
-              {t("common.cancel")}
-            </AlertDialogCancel>
+            <AlertDialogCancel disabled={busyId !== null}>{t("common.cancel")}</AlertDialogCancel>
             <AlertDialogAction
               disabled={!pendingDelete || busyId !== null}
               onClick={() => {
