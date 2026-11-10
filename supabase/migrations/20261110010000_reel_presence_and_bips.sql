@@ -464,11 +464,10 @@ BEGIN
     RAISE EXCEPTION 'bip_not_found' USING ERRCODE = '42501';
   END IF;
 
-  IF v_bip.status = CASE p_action
-    WHEN 'accept' THEN 'accepted'
-    WHEN 'decline' THEN 'declined'
-    WHEN 'withdraw' THEN 'withdrawn'
-  END THEN
+  IF (p_action = 'accept' AND v_bip.status = 'accepted')
+    OR (p_action = 'decline' AND v_bip.status = 'declined')
+    OR (p_action = 'withdraw' AND v_bip.status = 'withdrawn')
+  THEN
     RETURN v_bip;
   END IF;
 
