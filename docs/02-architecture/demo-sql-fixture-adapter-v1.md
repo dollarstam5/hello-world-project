@@ -98,7 +98,7 @@ Le convertisseur et les sélecteurs doivent tester :
 Le premier raccordement porte uniquement sur Flash :
 
 - Fixture locale typée `PublicFlash` dans `src/domains/flash/model/demo-flashes.ts`.
-- Trois scénarios non sensibles issus du fichier SQL : besoin d'un plombier (besoin_002), recherche de cours de mathématiques (besoin_009), coup de main domestique (besoin_017).
+- Trois scénarios éditoriaux synthétiques : garde d’enfants le week-end, aide au déménagement dans deux heures et aide à la vaisselle après une réunion du dimanche vers 15 h à Dakar. Ils remplacent les anciens exemples génériques ; aucune identité, coordonnée ni annonce SQL n'est réutilisée.
 - Les auteurs, contacts, e-mails, téléphones, descriptions privées, compteurs SQL et dates anciennes sont écartés.
 - Les identifiants sont isolés sous le préfixe `demo:flash:` ; les lieux génériques ou explicitement indiqués comme exemples ne représentent pas une position réelle.
 - Les dates d'affichage sont recalculées à partir d'une horloge fournie au générateur : aucune annonce de juillet 2026 n'est présentée comme actuelle.
