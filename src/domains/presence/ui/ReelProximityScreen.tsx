@@ -508,7 +508,9 @@ export function ReelProximityScreen() {
           <div className="reel-location-card__copy">
             <strong>
               {discoveryAccess === "prompt" && !canUseMemberReel
-                ? "La découverte locale demande un compte Vitalis actif"
+                ? access.mode === "guest"
+                  ? "Vous découvrez Réel en invité"
+                  : "Découvrez Réel sans créer de compte"
                 : discoveryAccess === "prompt"
                   ? "Envie de découvrir ce qui se passe près de vous ?"
                   : discoveryAccess === "requesting"
@@ -520,8 +522,8 @@ export function ReelProximityScreen() {
             <p>
               {discoveryAccess === "prompt" && !canUseMemberReel
                 ? access.mode === "guest"
-                  ? "Le parcours invité permet de découvrir Réel, mais la découverte réelle autour de vous n’est pas encore ouverte aux invités."
-                  : "Connectez-vous avec un compte Vitalis actif pour observer les activités autour de vous."
+                  ? "Votre session invitée est active. Les fonctions de proximité invitées sont encore en préparation."
+                  : "Commencez avec une session temporaire. Elle ne crée pas de compte ni de profil permanent."
                 : discoveryAccess === "prompt"
                   ? "Autorisez Réel à utiliser votre position pour observer les personnes et les activités autour de vous. Votre choix reste libre."
                   : discoveryAccess === "requesting"
@@ -553,7 +555,7 @@ export function ReelProximityScreen() {
                 </button>
               )}
               {guestSessionMessage && (
-                <p className="reel-location-card__message" role="status">
+                <p role="status">
                   {guestSessionMessage}
                 </p>
               )}
