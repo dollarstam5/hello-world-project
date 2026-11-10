@@ -556,7 +556,7 @@ COMMENT ON TABLE public.reel_bips IS
 COMMENT ON TABLE public.reel_connections IS
   'Durable pairwise relationship created when a recipient accepts a Reel bip.';
 
-DO $
+DO $cron$
 BEGIN
   IF EXISTS (SELECT 1 FROM pg_extension WHERE extname = 'pg_cron') THEN
     BEGIN
@@ -571,14 +571,14 @@ BEGIN
     END;
   END IF;
 END;
-$;
+$cron$;
 
 -- Supabase Postgres Changes can fan out only rows permitted by each subscriber's RLS.
 ALTER TABLE public.reel_presences REPLICA IDENTITY FULL;
 ALTER TABLE public.reel_bips REPLICA IDENTITY FULL;
 ALTER TABLE public.reel_connections REPLICA IDENTITY FULL;
 
-DO $
+DO $publication$
 DECLARE
   v_table TEXT;
 BEGIN
@@ -592,6 +592,6 @@ BEGIN
     END LOOP;
   END IF;
 END;
-$;
+$publication$;
 
 COMMIT;
