@@ -27,6 +27,11 @@ describe("mobile visual smoke contract", () => {
     }
   });
 
+  it("waits for the Réel engine itself before capturing its route", () => {
+    expect(script).toContain('selector=".reel-proximity"');
+    expect(script).toContain('--wait-for-selector="$selector"');
+  });
+
   it("waits for rendered application content and verifies screenshot artifacts", () => {
     expect(script).toContain('--wait-for-selector="#main"');
     expect(script).toContain('test -s "$output"');
