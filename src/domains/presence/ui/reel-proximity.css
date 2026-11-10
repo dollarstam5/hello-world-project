@@ -1504,3 +1504,19 @@
   background: #2b405a;
   color: #b9d8fb;
 }
+
+
+@media (orientation: landscape) and (max-height: 520px) {
+  .reel-proximity {
+    --reel-radar-size: min(40vw, 16rem);
+    padding-top: var(--space-1);
+  }
+
+  .reel-proximity__radar {
+    margin-top: 0.5rem;
+  }
+
+  .reel-nearby {
+    gap: var(--space-1);
+  }
+}
