@@ -182,3 +182,15 @@ La migration `20261110060000_reel_bip_listing_volatile.sql` fixe explicitement `
 ## Audit des tests SQL — points à corriger avant exécution
 
 La lecture du test pgTAP 130 a également révélé des blocs dollar-quoted mal formés (délimiteurs `$SELECT ... $`) et un ordre de scénarios incohérent : certains profils sont suspendus avant les opérations ultérieures que le test attend pourtant comme réussies. Le test ne doit donc pas être considéré comme exécutable ou probant dans son état actuel. Il faut réorganiser les scénarios pour créer et accepter le bip avec deux profils actifs, puis tester séparément les refus après suspension, sans empêcher les scénarios nominaux. Aucun résultat de test n'est revendiqué.
+
+## Tests pgTAP — scénario de sécurité réorganisé
+
+Le test `130_reel_presence_security.test.sql` a été réorganisé pour exécuter d'abord le parcours nominal avec trois profils actifs : démarrage avec consentement, découverte dans une zone partagée, visibilité RLS, envoi et répétition idempotente d'un bip, fin de présence, acceptation et création de la relation. Les suspensions sont maintenant testées à la fin, sans invalider les scénarios nominaux.
+
+- Correction des délimiteurs dollar-quoted qui étaient syntaxiquement incorrects.
+- Vérification qu'un profil suspendu ne peut plus consulter les bips ni rejouer une commande d'acceptation.
+- Vérification qu'un profil suspendu peut toujours arrêter sa propre présence.
+- Vérification qu'un expéditeur suspendu ne peut pas rejouer un ancien identifiant de requête.
+- Assertion pgTAP ajoutée pour vérifier que `list_reel_bips()` est bien `VOLATILE`, en cohérence avec le nettoyage qu'elle déclenche.
+
+Le plan pgTAP est maintenant de 24 assertions. **Le fichier a été corrigé, mais le test n'a pas été exécuté sur une base Supabase ; la syntaxe et les comportements doivent encore être confirmés par exécution.**
