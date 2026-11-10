@@ -25,3 +25,4 @@ Cette section rassemble les documents d'architecture technique, les frontières 
 - Les sources historiques UDI et Trust restent conservées dans `docs/` jusqu'à validation et autorisation explicite.
 
 Les nouveaux changements doivent viser les références canoniques et respecter la propriété des données par domaine. Une référence documentaire n'est pas une preuve que le composant décrit est déjà implémenté.
+- [Aperçus publics de profil — V1](./public-profile-preview-v1.md) — champs autorisés, consentement, présentation compacte et consultation des profils.
