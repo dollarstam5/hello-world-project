@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Sparkles } from "lucide-react";
+import { EnginePreviewCard } from "@/components/experience/EnginePreviewCard";
 import { SectionFoundation } from "@/components/experience/SectionFoundation";
 
 export const Route = createFileRoute("/talents")({
@@ -17,6 +18,17 @@ export const Route = createFileRoute("/talents")({
       tone="intelligence"
       icon={Sparkles}
       sections={[
+        {
+          key: "example",
+          titleKey: "home.demo.title",
+          perf: "short",
+          render: () => (
+            <EnginePreviewCard
+              titleKey="page.talents.example.title"
+              descriptionKey="page.talents.example.desc"
+            />
+          ),
+        },
         { key: "offer", titleKey: "page.talents.section.offer", perf: "short" },
         { key: "seek", titleKey: "page.talents.section.seek", perf: "tall" },
       ]}
