@@ -80,13 +80,18 @@ Valeurs à valider : durée absolue maximale, délai d'inactivité, fréquence d
 - Deux navigateurs/appareils n'obtiennent pas la même identité sans transfert explicite.
 - Les droits de découverte, présence, bip et relation sont testés séparément.
 
-## 8. Points de blocage avant implémentation
+## 8. État de livraison et points de blocage
 
-1. Confirmer l'API cookie/headers de la version TanStack Start installée et son comportement en Server Function.
-2. Confirmer la chaîne de migration réellement utilisée et l'état des migrations Réel dans une base de test. La présence d'un fichier SQL dans Git ne prouve pas son application.
-3. Valider les droits invités précis pour chaque action Réel.
-4. Valider les durées, quotas, règles de purge et comportement multi-appareil.
-5. Ajouter migration, tests pgTAP et tests serveur ensemble ; ne pas activer le parcours avant leur exécution réussie.
+Le dépôt contient maintenant la migration `20261110020000_reel_guest_sessions.sql`, le service serveur `reel-guest-session.server.ts`, les fonctions Start `reel-guest-session.functions.ts` et le test pgTAP 131. Le service crée un secret aléatoire de 256 bits, stocke uniquement son SHA-256, le transmet par cookie `__Host-` HttpOnly/Secure/SameSite=Lax, vérifie expiration/révocation et permet la fermeture explicite. La présence d'un en-tête d'authentification membre empêche le démarrage invité et révoque une éventuelle session invitée lors de sa lecture.
+
+Cela ne signifie pas que le parcours invité Réel complet est activé : aucune opération de découverte, présence, bip ou relation n'accepte encore cette session. Les points restant à prouver avant activation sont :
+
+1. Exécuter la migration sur une base Supabase de test issue de la chaîne standard et exécuter les tests pgTAP 130 et 131.
+2. Exécuter lint, tests et build pour confirmer les imports et types du runtime TanStack Start installé.
+3. Configurer et vérifier la limitation anti-abus à la couche d'hébergement avant exposition publique.
+4. Vérifier que `pg_cron` est présent ou fournir un mécanisme de purge garanti.
+5. Valider la durée d'une heure et les droits invités précis pour chaque action Réel.
+6. Ajouter des tests serveur de cookies, origine, révocation et transitions membre/invité.
 
 ## 9. Règle de livraison
 
