@@ -73,7 +73,7 @@ Le statut `server_check` signifie précisément que le client ne doit pas exécu
 
 Le document [Architecture de session invitée éphémère](../03-engines/reel/reel-guest-session-architecture.md) définit le cycle de vie attendu : secret aléatoire généré côté serveur, empreinte stockée seule, cookie HttpOnly, vérification serveur à chaque opération, rotation, révocation et purge. Il interdit toute création de compte Auth ou de profil permanent.
 
-Cette spécification ne constitue pas une fonctionnalité livrée. L'API cookie de TanStack Start doit être confirmée avant codage. Les droits invités par action, les durées, les quotas et les règles de purge restent à valider.
+Le service technique initial est maintenant présent dans `src/domains/presence/api/` : migration dédiée, cookie `__Host-` HttpOnly/Secure, secret aléatoire 256 bits dont seule l'empreinte SHA-256 est stockée, vérification d'expiration/révocation et fermeture explicite. Il n'autorise encore aucune opération métier Réel. La durée d'une heure est provisoire ; les limites anti-abus d'hébergement et la purge effective doivent être vérifiées avant exposition publique.
 
 ## 8. Limites et prochaines étapes
 
