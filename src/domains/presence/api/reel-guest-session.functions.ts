@@ -44,3 +44,16 @@ export const endReelGuestPresence = createServerFn({ method: "POST" })
     const { endReelGuestPresence: end } = await import("./reel-guest-session.server");
     return end(data.presenceId);
   });
+
+
+const guestDiscoveryInput = z.object({
+  latitude: z.number().min(-90).max(90),
+  longitude: z.number().min(-180).max(180),
+});
+
+export const discoverReelGuestNearby = createServerFn({ method: "POST" })
+  .inputValidator(guestDiscoveryInput)
+  .handler(async ({ data }) => {
+    const { discoverReelGuestNearby: discover } = await import("./reel-guest-session.server");
+    return discover(data.latitude, data.longitude);
+  });
