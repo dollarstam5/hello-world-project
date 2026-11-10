@@ -1005,3 +1005,116 @@
     font-size: 0.66rem;
   }
 }
+
+
+/* Independent location choice and calm mode. */
+.reel-location-card {
+  display: flex;
+  width: 100%;
+  max-width: 38rem;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid rgb(69 124 220 / 16%);
+  border-radius: var(--reel-round-xl);
+  background: rgb(255 255 255 / 88%);
+  box-shadow: var(--reel-shadow-soft);
+  color: var(--reel-ink);
+}
+
+.reel-location-card__icon {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: var(--reel-round-lg);
+  background: #e8f2ff;
+  color: var(--reel-blue-start);
+}
+
+.reel-location-card__icon svg {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+.reel-location-card__copy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.reel-location-card__copy strong {
+  font-size: var(--text-sm);
+  line-height: var(--leading-tight);
+}
+
+.reel-location-card__copy p {
+  margin: 0;
+  color: #60718a;
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+}
+
+.reel-location-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.reel-location-card__primary,
+.reel-location-card__secondary {
+  min-height: 2.65rem;
+  padding: 0.65rem 1rem;
+  border-radius: 9999px;
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.reel-location-card__primary {
+  border: 0;
+  background: linear-gradient(100deg, var(--reel-blue-start), var(--reel-blue-end));
+  color: #fff;
+}
+
+.reel-location-card__secondary {
+  border: 1px solid rgb(38 54 77 / 14%);
+  background: transparent;
+  color: var(--reel-ink);
+}
+
+.reel-location-card--requesting {
+  opacity: 0.82;
+}
+
+.reel-proximity__radar--calm .reel-radar__outer-halo,
+.reel-proximity__radar--calm .reel-radar__core {
+  animation: none;
+  opacity: 0.48;
+  box-shadow: none;
+}
+
+.reel-proximity__radar--calm .reel-radar__outer-ring {
+  filter: saturate(0.45);
+  box-shadow: none;
+}
+
+.reel-proximity .reel-panel__tabs button:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+@media (max-width: 420px) {
+  .reel-location-card {
+    gap: var(--space-2);
+    padding: var(--space-2);
+  }
+
+  .reel-location-card__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
