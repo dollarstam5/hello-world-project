@@ -15,7 +15,10 @@ import {
   UsersRound,
   X,
 } from "lucide-react";
-import { useReelProximityController, type Person } from "@/domains/presence/model/useReelProximityController";
+import {
+  useReelProximityController,
+  type Person,
+} from "@/domains/presence/model/useReelProximityController";
 import "./reel-proximity.css";
 
 const DURATIONS = ["30 min", "1 h", "2 h", "3 h", "6 h", "12 h", "24 h"];
