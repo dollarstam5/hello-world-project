@@ -29,4 +29,15 @@ describe("Réel architecture boundaries", () => {
     expect(service).not.toContain("guest_session_id");
     expect(service).not.toContain("presence_id");
   });
+
+  it("does not couple guest presence activation to nearby discovery consent", () => {
+    const controller = readSource("src/domains/presence/model/useReelProximityController.ts");
+    const start = controller.indexOf("const activateGuestPresence = async");
+    const end = controller.indexOf("const stopGuestPresence = async", start);
+    expect(start).toBeGreaterThanOrEqual(0);
+    expect(end).toBeGreaterThan(start);
+    const guestPresenceActivation = controller.slice(start, end);
+    expect(guestPresenceActivation).toContain("startReelGuestPresence");
+    expect(guestPresenceActivation).not.toContain("requestDiscovery()");
+  });
 });
