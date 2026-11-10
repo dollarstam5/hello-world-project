@@ -267,7 +267,8 @@ export const messages = {
     "flash.category.events": "Événement",
     "flash.category.other": "Autre",
     "scan.title": "Scanner les Flash",
-    "scan.privacy": "Votre position sert à rechercher les Flash proches. Elle n’est pas montrée aux autres personnes.",
+    "scan.privacy":
+      "Votre position sert à rechercher les Flash proches. Elle n’est pas montrée aux autres personnes.",
     "scan.radius": "Jusqu’où chercher ? ",
     "scan.radius.unit": "km",
     "scan.start": "Scanner autour de moi",
@@ -821,7 +822,8 @@ export const messages = {
     "flash.category.events": "Event",
     "flash.category.other": "Other",
     "scan.title": "Scan Flash",
-    "scan.privacy": "Your position helps find nearby Flash posts. It is never shown to other people.",
+    "scan.privacy":
+      "Your position helps find nearby Flash posts. It is never shown to other people.",
     "scan.radius": "How far should we search?",
     "scan.radius.unit": "km",
     "scan.start": "Scan around me",
