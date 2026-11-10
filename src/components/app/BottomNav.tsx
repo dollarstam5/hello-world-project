@@ -1,23 +1,24 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Bluetooth, CircleGauge, Ellipsis, Globe2, MapPinned, UsersRound } from "lucide-react";
+import { Zap, ScanLine, RadioTower, Radar, LayoutGrid } from "lucide-react";
 import { motion } from "framer-motion";
+import { useI18n } from "@/lib/i18n/useI18n";
 import { useReducedMotion } from "@/lib/design/useReducedMotion";
 import { cn } from "@/lib/utils";
 import "./reel-bottom-nav.css";
 
 type Tab = {
-  key: "interactions" | "events" | "reel" | "geo-drops" | "more";
+  key: "flash" | "scan" | "reel" | "radar" | "menu";
   to?: "/flash" | "/scan" | "/reel" | "/radar";
   icon: React.ComponentType<{ className?: string }>;
-  label: string;
+  labelKey: "nav.flash" | "nav.scan" | "nav.reel" | "nav.radar" | "nav.menu";
 };
 
 const TABS: Tab[] = [
-  { key: "interactions", to: "/flash", icon: UsersRound, label: "Interactions" },
-  { key: "events", to: "/scan", icon: Globe2, label: "Events" },
-  { key: "reel", to: "/reel", icon: CircleGauge, label: "" },
-  { key: "geo-drops", to: "/radar", icon: MapPinned, label: "Geo-Drops" },
-  { key: "more", icon: Ellipsis, label: "More" },
+  { key: "flash", to: "/flash", icon: Zap, labelKey: "nav.flash" },
+  { key: "scan", to: "/scan", icon: ScanLine, labelKey: "nav.scan" },
+  { key: "reel", to: "/reel", icon: RadioTower, labelKey: "nav.reel" },
+  { key: "radar", to: "/radar", icon: Radar, labelKey: "nav.radar" },
+  { key: "menu", icon: LayoutGrid, labelKey: "nav.menu" },
 ];
 
 interface BottomNavProps {
@@ -25,32 +26,34 @@ interface BottomNavProps {
   menuOpen: boolean;
 }
 
-/**
- * Réel proximity navigation presentation.
- * Existing destinations remain unchanged; only this navigation's presentation
- * follows the approved proximity-screen reference.
- */
+/** Five-point navigation with Réel centered; all existing destinations are preserved. */
 export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
+  const { t } = useI18n();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const reduce = useReducedMotion();
 
   return (
     <nav
-      aria-label="Primary navigation"
-      className={cn("reel-bottom-nav pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center", pathname === "/reel" && "is-proximity") }
+      aria-label={t("nav.primary")}
+      className={cn(
+        "reel-bottom-nav pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center",
+        pathname === "/reel" && "is-proximity",
+      )}
     >
       <ul className="reel-bottom-nav__bar pointer-events-auto flex w-full items-end justify-between">
         {TABS.map((tab) => {
-          const isMenu = tab.key === "more";
+          const isMenu = tab.key === "menu";
           const isCenter = tab.key === "reel";
           const active = isMenu ? menuOpen : tab.to === pathname;
           const Icon = tab.icon;
+          const label = t(tab.labelKey);
 
           const inner = isCenter ? (
             <span className="reel-bottom-nav__center-wrap">
               <span className="reel-bottom-nav__center">
                 <Icon aria-hidden="true" />
               </span>
+              <span className="reel-bottom-nav__center-label">{label}</span>
             </span>
           ) : (
             <span className={cn("reel-bottom-nav__item", active && "is-active")}>
@@ -66,7 +69,7 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
                   />
                 ))}
               <Icon aria-hidden="true" />
-              <span>{tab.label}</span>
+              <span>{label}</span>
             </span>
           );
 
@@ -76,7 +79,7 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
                 <button
                   type="button"
                   onClick={onOpenMenu}
-                  aria-label="More"
+                  aria-label={t("nav.open_menu")}
                   aria-haspopup="dialog"
                   aria-expanded={menuOpen}
                   className="reel-bottom-nav__control"
@@ -86,7 +89,7 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
               ) : (
                 <Link
                   to={tab.to!}
-                  aria-label={isCenter ? "Temps Réel" : tab.label}
+                  aria-label={label}
                   aria-current={active ? "page" : undefined}
                   className="reel-bottom-nav__control"
                 >
