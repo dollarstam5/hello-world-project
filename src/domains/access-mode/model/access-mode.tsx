@@ -27,8 +27,7 @@ export type MemberProfileState =
   | "error";
 
 export interface TemporaryGuestIdentity {
-  /** Random, memory-only identifier. Never a Vitalis account or profile ID. */
-  sessionId: string;
+  /** Local UI timestamp only; no guest session identifier is exposed to the browser. */
   startedAt: number;
   expiresAt?: string;
 }
@@ -47,10 +46,7 @@ export interface AccessModeState {
 const AccessModeContext = createContext<AccessModeState | null>(null);
 
 function createTemporaryIdentity(): TemporaryGuestIdentity {
-  if (typeof crypto === "undefined" || typeof crypto.randomUUID !== "function") {
-    throw new Error("Cette session ne peut pas démarrer sur cet appareil.");
-  }
-  return { sessionId: crypto.randomUUID(), startedAt: Date.now() };
+  return { startedAt: Date.now() };
 }
 
 function isMemberProfileState(
@@ -126,11 +122,7 @@ export function AccessModeProvider({ children }: { children: ReactNode }) {
       .then((session) => {
         if (cancelled || !session.active) return;
         if (Date.parse(session.expiresAt) <= Date.now()) return;
-        setGuest({
-          sessionId: createTemporaryIdentity().sessionId,
-          startedAt: Date.now(),
-          expiresAt: session.expiresAt,
-        });
+        setGuest({ startedAt: Date.now(), expiresAt: session.expiresAt });
       })
       .catch(() => {
         if (!cancelled) setGuest(null);
@@ -151,7 +143,7 @@ export function AccessModeProvider({ children }: { children: ReactNode }) {
     if (user) throw new Error("Vous êtes déjà connecté à votre compte Vitalis.");
     const identity = createTemporaryIdentity();
     // The interface only enters guest mode after the server confirms its
-    // opaque HttpOnly session. A local random ID is never server authority.
+    // opaque HttpOnly session. No guest session identifier is exposed here.
     const session = await startReelGuestSession();
     if (!session.active) throw new Error("La session invitée n’a pas pu être ouverte.");
     const guestIdentity = { ...identity, expiresAt: session.expiresAt };
