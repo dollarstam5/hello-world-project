@@ -132,8 +132,8 @@ BEGIN
   SELECT guest.* INTO v_recipient FROM public.reel_guest_presences guest
     JOIN public.reel_guest_sessions session ON session.id = guest.guest_session_id
     WHERE guest.id = p_recipient_guest_presence_id AND guest.status = 'active'
-      AND guest.expires_at > now() AND session.revoked_at IS NULL
-      AND session.expires_at > now() FOR SHARE OF guest;
+      AND guest.expires_at > now() AND session.purpose = 'reel_guest'
+      AND session.revoked_at IS NULL AND session.expires_at > now() FOR SHARE OF guest;
   IF NOT FOUND THEN RAISE EXCEPTION 'active_guest_recipient_required' USING ERRCODE = '42501'; END IF;
 
   SELECT location INTO v_sender_location FROM public.reel_presence_locations
@@ -141,7 +141,11 @@ BEGIN
   IF v_sender_location IS NULL OR NOT extensions.ST_DWithin(v_sender_location, v_recipient.location, v_recipient.radius_m) THEN
     RAISE EXCEPTION 'recipient_outside_visibility_radius' USING ERRCODE = '42501';
   END IF;
-  SELECT LEAST(now() + interval '24 hours', session.expires_at) INTO v_expiry
+  SELECT LEAST(
+    now() + interval '24 hours',
+    session.expires_at,
+    to_timestamp(v_sender.expires_at / 1000.0)
+  ) INTO v_expiry
     FROM public.reel_guest_sessions session WHERE session.id = v_recipient.guest_session_id;
 
   INSERT INTO public.reel_guest_bips (
@@ -241,7 +245,8 @@ BEGIN
   ) VALUES (
     p_client_request_id, p_guest_session_id, v_recipient_member_id,
     v_recipient_session_id, v_sender.id, p_recipient_presence_id,
-    LEAST(now() + interval '24 hours', v_sender_session.expires_at, v_recipient_expiry)
+    LEAST(now() + interval '24 hours', v_sender_session.expires_at,
+      v_sender.expires_at, v_recipient_expiry)
   ) ON CONFLICT DO NOTHING RETURNING * INTO v_bip;
 
   IF NOT FOUND THEN
@@ -299,6 +304,66 @@ BEGIN
 END;
 $$;
 
+
+CREATE OR REPLACE FUNCTION public.reel_guest_bip_participants_active(p_bip_id UUID)
+RETURNS BOOLEAN
+LANGUAGE plpgsql SECURITY DEFINER
+SET search_path = pg_catalog, public
+AS $
+DECLARE
+  v_bip public.reel_guest_bips;
+BEGIN
+  SELECT * INTO v_bip FROM public.reel_guest_bips WHERE id = p_bip_id;
+  IF NOT FOUND THEN RETURN FALSE; END IF;
+
+  IF v_bip.sender_member_id IS NOT NULL THEN
+    IF NOT EXISTS (
+      SELECT 1 FROM public.reel_presences presence
+      JOIN public.profiles profile ON profile.id = presence.owner_id
+      WHERE presence.id = v_bip.sender_presence_id
+        AND presence.owner_id = v_bip.sender_member_id
+        AND presence.status = 'active'
+        AND presence.expires_at > (extract(epoch FROM now()) * 1000)::bigint
+        AND profile.status = 'active' AND profile.deleted_at IS NULL
+    ) THEN RETURN FALSE; END IF;
+  ELSE
+    IF NOT EXISTS (
+      SELECT 1 FROM public.reel_guest_presences presence
+      JOIN public.reel_guest_sessions session ON session.id = presence.guest_session_id
+      WHERE presence.id = v_bip.sender_presence_id
+        AND presence.guest_session_id = v_bip.sender_guest_session_id
+        AND presence.status = 'active' AND presence.expires_at > now()
+        AND session.purpose = 'reel_guest' AND session.revoked_at IS NULL
+        AND session.expires_at > now()
+    ) THEN RETURN FALSE; END IF;
+  END IF;
+
+  IF v_bip.recipient_member_id IS NOT NULL THEN
+    IF NOT EXISTS (
+      SELECT 1 FROM public.reel_presences presence
+      JOIN public.profiles profile ON profile.id = presence.owner_id
+      WHERE presence.id = v_bip.recipient_presence_id
+        AND presence.owner_id = v_bip.recipient_member_id
+        AND presence.status = 'active'
+        AND presence.expires_at > (extract(epoch FROM now()) * 1000)::bigint
+        AND profile.status = 'active' AND profile.deleted_at IS NULL
+    ) THEN RETURN FALSE; END IF;
+  ELSE
+    IF NOT EXISTS (
+      SELECT 1 FROM public.reel_guest_presences presence
+      JOIN public.reel_guest_sessions session ON session.id = presence.guest_session_id
+      WHERE presence.id = v_bip.recipient_presence_id
+        AND presence.guest_session_id = v_bip.recipient_guest_session_id
+        AND presence.status = 'active' AND presence.expires_at > now()
+        AND session.purpose = 'reel_guest' AND session.revoked_at IS NULL
+        AND session.expires_at > now()
+    ) THEN RETURN FALSE; END IF;
+  END IF;
+  RETURN TRUE;
+END;
+$;
+REVOKE ALL ON FUNCTION public.reel_guest_bip_participants_active(UUID) FROM PUBLIC, anon, authenticated;
+
 CREATE OR REPLACE FUNCTION public.command_reel_guest_bip_member(p_bip_id UUID, p_action TEXT)
 RETURNS TABLE (bip_id UUID, bip_status TEXT, bip_expires_at TIMESTAMPTZ)
 LANGUAGE plpgsql SECURITY DEFINER
@@ -315,8 +380,15 @@ BEGIN
     WHERE id = p_bip_id AND (sender_member_id = v_member OR recipient_member_id = v_member)
     FOR UPDATE;
   IF NOT FOUND THEN RAISE EXCEPTION 'guest_bip_not_found' USING ERRCODE = '42501'; END IF;
+  IF p_action = v_bip.status THEN
+    RETURN QUERY SELECT v_bip.id, v_bip.status, v_bip.expires_at;
+    RETURN;
+  END IF;
   IF v_bip.status <> 'pending' OR v_bip.expires_at <= now() THEN
     RAISE EXCEPTION 'guest_bip_no_longer_pending' USING ERRCODE = '22023';
+  END IF;
+  IF p_action = 'accept' AND NOT public.reel_guest_bip_participants_active(p_bip_id) THEN
+    RAISE EXCEPTION 'bip_participant_presence_ended' USING ERRCODE = '42501';
   END IF;
   IF p_action IN ('accept','decline') AND v_bip.recipient_member_id <> v_member THEN
     RAISE EXCEPTION 'recipient_action_required' USING ERRCODE = '42501';
@@ -355,8 +427,15 @@ BEGIN
       AND (sender_guest_session_id = p_guest_session_id OR recipient_guest_session_id = p_guest_session_id)
     FOR UPDATE;
   IF NOT FOUND THEN RAISE EXCEPTION 'guest_bip_not_found' USING ERRCODE = '42501'; END IF;
+  IF p_action = v_bip.status THEN
+    RETURN QUERY SELECT v_bip.id, v_bip.status, v_bip.expires_at;
+    RETURN;
+  END IF;
   IF v_bip.status <> 'pending' OR v_bip.expires_at <= now() THEN
     RAISE EXCEPTION 'guest_bip_no_longer_pending' USING ERRCODE = '22023';
+  END IF;
+  IF p_action = 'accept' AND NOT public.reel_guest_bip_participants_active(p_bip_id) THEN
+    RAISE EXCEPTION 'bip_participant_presence_ended' USING ERRCODE = '42501';
   END IF;
   IF p_action IN ('accept','decline') AND v_bip.recipient_guest_session_id <> p_guest_session_id THEN
     RAISE EXCEPTION 'recipient_action_required' USING ERRCODE = '42501';
