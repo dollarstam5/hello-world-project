@@ -225,3 +225,57 @@ Lors du contrôle du commit courant de la PR, GitHub ne retourne toutefois aucun
 - L'accord de localisation ne démarre pas automatiquement la présence publique. Le partage de sa propre présence exige toujours le consentement métier distinct reel_presence.
 
 **Limite d'intégration à conserver visible :** après l'accord de localisation, la découverte réelle n'est pas encore activée. Aucun résolveur de zone opaque fiable n'a été identifié et le client de présence ne doit pas fabriquer une clé de zone à partir du GPS. Le raccordement de la zone, le filtrage spatial et les abonnements temps réel restent à livrer et à tester. Les propositions globales et la reprise de la dernière activité ne disposent pas encore de sources métier connectées ; aucun contenu fictif ne doit être affiché.
+
+
+## Mise à jour — découverte indépendante et présence approximative (10 novembre 2026)
+
+Cette section remplace les descriptions antérieures qui liaient la découverte à la publication d'une présence.
+
+### Deux autorisations distinctes
+
+1. **Découverte** — autorise Réel à observer les activités dans le secteur approximatif de l'utilisateur. Elle ne rend pas son propre profil visible.
+2. **Ma présence** — autorise séparément la publication d'une présence approximative, avec une description, un rayon enregistré et une durée. Elle ne donne pas automatiquement accès à la découverte.
+
+L'autorisation du système d'exploitation est demandée uniquement après l'action volontaire correspondante dans Réel. Une permission accordée à Flash, Scan ou Radar n'est jamais réutilisée comme consentement Réel. La présence publique exige aussi le consentement métier distinct `reel_presence`.
+
+### Résolveur de zone ajouté
+
+- `src/domains/presence/api/reel-zone.functions.ts` expose une fonction serveur protégée par `requireSupabaseAuth`.
+- `src/domains/presence/api/reel-zone.server.ts` réduit la position reçue à une cellule de grille d'environ 200 m, puis produit un jeton opaque HMAC côté serveur.
+- Les coordonnées GPS brutes ne sont ni enregistrées ni renvoyées au navigateur par le résolveur.
+- Pour la découverte, le serveur ouvre une session de découverte de 15 minutes sur la cellule et ses huit cellules voisines.
+- Pour publier sa présence, le serveur émet une autorisation à usage unique de 5 minutes. La fonction SQL consomme cette autorisation et choisit elle-même la zone ; le navigateur ne peut plus fournir librement une clé de zone.
+- Le secret `REEL_ZONE_HMAC_SECRET` (32 caractères aléatoires minimum) doit être configuré dans l'environnement serveur avant l'activation du résolveur.
+
+### Découverte connectée
+
+- La page demande son propre accord de découverte à chaque nouvelle entrée.
+- Après accord, elle obtient une position ponctuelle, demande au serveur la zone approximative et charge les présences réelles via `list_reel_discovery_presence`.
+- La fonction SQL permet de découvrir sans publier sa propre présence.
+- Seuls les profils actifs et les présences actives renvoyés par le serveur sont affichés. Aucun résultat de démonstration, distance exacte ou avatar public non autorisé n'est inventé.
+- La session de découverte expire après 15 minutes ; elle est réouverte après un nouveau consentement.
+
+### Activation de sa propre présence
+
+- Le panneau de gestion présente un accord séparé, une courte description, un choix de rayon et une durée.
+- Une nouvelle lecture ponctuelle de position est demandée après l'action « Activer ma présence ».
+- La publication utilise un jeton serveur à usage unique et le consentement `reel_presence`.
+- L'utilisateur peut retrouver sa présence active à l'ouverture de la page et l'arrêter. L'arrêt reste distinct du consentement à publier.
+
+### Limites toujours ouvertes
+
+- La grille d'environ 200 m est une approximation de zone, pas une distance réelle. La recherche couvre la cellule et ses huit voisines ; le rayon choisi (10 m à 1 km) est enregistré mais n'est pas encore appliqué à un calcul de distance fiable. Aucun libellé de distance exacte ne doit être affiché.
+- Le temps réel multi-appareils, les abonnements Realtime, les bips dans l'interface et les notifications ne sont pas encore raccordés.
+- Le mode invité peut entrer dans Réel, mais ses opérations métier restent bloquées : la session invitée serveur n'est pas reliée au résolveur ni aux RPC de découverte/présence. Le visiteur reste limité aux présentations publiques.
+- Les propositions globales et l'historique affichés en mode calme restent des emplacements honnêtes tant que leurs sources ne sont pas connectées.
+
+### Matrice réelle des modes d'accès
+
+| Mode | Entrée Réel | Découverte | Publication de présence | Bips |
+| --- | --- | --- | --- | --- |
+| Visiteur | Présentation publique seulement | Non | Non | Non |
+| Invité | Parcours Réel accessible | Non, pas encore raccordée | Non, pas encore raccordée | Non |
+| Membre avec profil actif | Oui | Oui, après accord propre à Réel | Oui, après accord séparé `reel_presence` | RPC serveur disponibles, interface à raccorder |
+| Profil membre invité/incomplet, suspendu, fermé, manquant ou en erreur | Accès métier refusé | Non | Non | Non |
+
+Les statuts ci-dessus décrivent le code présent dans la branche, pas une validation sur une base déployée. Les migrations et tests doivent encore être exécutés.
