@@ -72,14 +72,12 @@ export async function resolveReelZoneForUser(
   const secret = getReelZoneHmacSecret();
   const { error: cleanupError } = await admin.rpc("purge_reel_location_sessions");
   if (cleanupError) throw new Error("Impossible de préparer la découverte à proximité.");
-  const cell = cellFor(latitude, longitude);
-  const centerKey = await tokenForCell(cell.latitude, cell.longitude, secret);
   const expiresAt = new Date(Date.now() + (purpose === "discover" ? 15 : 5) * 60_000).toISOString();
-
   const throttleSince = new Date(Date.now() - 5_000).toISOString();
+
   if (purpose === "discover") {
     const { data: recentDiscovery, error: throttleError } = await admin
-      .from("reel_discovery_sessions")
+      .from("reel_discovery_locations")
       .select("user_id")
       .eq("user_id", userId)
       .gt("created_at", throttleSince)
@@ -88,31 +86,18 @@ export async function resolveReelZoneForUser(
     if (throttleError) throw new Error("Impossible de vérifier votre demande de découverte.");
     if (recentDiscovery) throw new Error("Patientez quelques secondes avant de relancer la découverte.");
 
-    const zoneKeys: string[] = [];
-    for (let latOffset = -1; latOffset <= 1; latOffset += 1) {
-      for (let lonOffset = -1; lonOffset <= 1; lonOffset += 1) {
-        zoneKeys.push(await tokenForCell(cell.latitude + latOffset, cell.longitude + lonOffset, secret));
-      }
-    }
-    const { error: clearError } = await admin
-      .from("reel_discovery_sessions")
-      .delete()
-      .eq("user_id", userId);
-    if (clearError) throw new Error("Impossible de renouveler votre zone de découverte.");
-
-    const rows = zoneKeys.map((zone_key) => ({
-      user_id: userId,
-      zone_key,
-      created_at: new Date().toISOString(),
-      expires_at: expiresAt,
-    }));
-    const { error } = await admin
-      .from("reel_discovery_sessions")
-      .upsert(rows, { onConflict: "user_id,zone_key" });
+    const { error } = await admin.rpc("create_reel_discovery_location", {
+      p_user_id: userId,
+      p_latitude: latitude,
+      p_longitude: longitude,
+      p_expires_at: expiresAt,
+    });
     if (error) throw new Error("Impossible d’ouvrir la découverte à proximité pour le moment.");
-    return { zoneKeys, areaLabel: "Votre secteur approximatif", expiresAt };
+    return { zoneKeys: [], areaLabel: "Votre secteur approximatif", expiresAt };
   }
 
+  const cell = cellFor(latitude, longitude);
+  const centerKey = await tokenForCell(cell.latitude, cell.longitude, secret);
   const { data: recentGrant, error: grantThrottleError } = await admin
     .from("reel_zone_grants")
     .select("id")
@@ -123,16 +108,13 @@ export async function resolveReelZoneForUser(
   if (grantThrottleError) throw new Error("Impossible de vérifier votre demande de présence.");
   if (recentGrant) throw new Error("Patientez quelques secondes avant de réessayer.");
 
-  const { data: grant, error } = await admin
-    .from("reel_zone_grants")
-    .insert({
-      owner_id: userId,
-      zone_key: centerKey,
-      purpose: "presence",
-      expires_at: expiresAt,
-    })
-    .select("id")
-    .single();
-  if (error || !grant) throw new Error("Impossible de préparer votre présence pour le moment.");
-  return { zoneKeys: [centerKey], zoneKey: centerKey, grantId: grant.id, areaLabel: "Votre secteur approximatif", expiresAt };
+  const { data: grantId, error } = await admin.rpc("create_reel_zone_grant_with_location", {
+    p_owner_id: userId,
+    p_zone_key: centerKey,
+    p_latitude: latitude,
+    p_longitude: longitude,
+    p_expires_at: expiresAt,
+  });
+  if (error || !grantId) throw new Error("Impossible de préparer votre présence pour le moment.");
+  return { zoneKeys: [centerKey], zoneKey: centerKey, grantId: grantId as string, areaLabel: "Votre secteur approximatif", expiresAt };
 }
