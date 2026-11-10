@@ -834,7 +834,9 @@ export function ReelProximityScreen() {
               {discoveryAccess === "prompt" && !canUseMemberReel
                 ? access.mode === "guest"
                   ? "Vous découvrez Réel en invité"
-                  : "Découvrez Réel sans créer de compte"
+                  : access.mode === "visitor"
+                    ? "Découvrez Réel sans créer de compte"
+                    : "Votre compte n’a pas encore accès à Réel"
                 : discoveryAccess === "prompt"
                   ? "Envie de découvrir ce qui se passe près de vous ?"
                   : discoveryAccess === "requesting"
@@ -847,7 +849,9 @@ export function ReelProximityScreen() {
               {discoveryAccess === "prompt" && !canUseMemberReel
                 ? access.mode === "guest"
                   ? "Votre session est temporaire. Vous pouvez découvrir les présences autour de vous sans créer de compte."
-                  : "Commencez avec une session temporaire. Elle ne crée pas de compte ni de profil permanent."
+                  : access.mode === "visitor"
+                    ? "Commencez avec une session temporaire. Elle ne crée pas de compte ni de profil permanent."
+                    : "L’accès à Réel sera disponible lorsque votre profil Vitalis sera actif."
                 : discoveryAccess === "prompt"
                   ? "Autorisez Réel à utiliser votre position pour observer les personnes et les activités autour de vous. Votre choix reste libre."
                   : discoveryAccess === "requesting"
@@ -1410,9 +1414,16 @@ export function ReelProximityScreen() {
                     {connectionsLoading && (
                       <p className="reel-panel__note">Chargement de vos rencontres…</p>
                     )}
-                    {!canUseMemberReel && access.mode !== "guest" && (
+                    {access.mode === "visitor" && (
                       <p className="reel-panel__note">
-                        Connectez-vous à votre compte Vitalis pour retrouver vos mises en relation.
+                        Ouvrez une session invitée ou connectez-vous pour accéder à vos mises en
+                        relation.
+                      </p>
+                    )}
+                    {access.mode === "member" && !canUseMemberReel && (
+                      <p className="reel-panel__note">
+                        Vos mises en relation seront accessibles lorsque votre profil Vitalis sera
+                        actif.
                       </p>
                     )}
                     {access.mode === "guest" &&
