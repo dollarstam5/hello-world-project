@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Archive, Trash2 } from "lucide-react";
 import type { FlashRecord } from "@eco/core-contracts";
 import { EmptyState } from "@/components/app/EmptyState";
@@ -34,15 +34,27 @@ export function MyFlashManagement() {
   const [pendingDelete, setPendingDelete] = useState<PendingDelete>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [actionError, setActionError] = useState(false);
+  const [userId, setUserId] = useState<string | null | undefined>(undefined);
+
+  useEffect(() => {
+    let active = true;
+    void supabase.auth.getUser().then(({ data, error }) => {
+      if (active) setUserId(error || !data.user ? null : data.user.id);
+    }).catch(() => {
+      if (active) setUserId(null);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const records = useLocalQuery(async () => {
-    const { data, error } = await supabase.auth.getUser();
-    if (error || !data.user) return null;
+    if (userId === undefined || !userId) return null;
     const all = await flashesRepository.list();
     return all
-      .filter((flash) => flash.authorId === data.user.id && !flash.deletedAt)
+      .filter((flash) => flash.authorId === userId && !flash.deletedAt)
       .sort((a, b) => b.createdAt - a.createdAt);
-  }, []);
+  }, [userId]);
 
   async function archive(record: FlashRecord) {
     setBusyId(record.id);
@@ -69,7 +81,7 @@ export function MyFlashManagement() {
     }
   }
 
-  if (records === undefined) {
+  if (userId === undefined || records === undefined) {
     return <p className="text-sm text-muted-foreground" role="status">{t("app.loading")}</p>;
   }
 
