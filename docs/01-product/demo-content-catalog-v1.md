@@ -256,3 +256,12 @@ Le fichier `donnees_sql.sql` est confirmé comme source de données fictives des
 Son contenu doit passer par la spécification [Adaptation du jeu SQL de démonstration aux domaines Vitalis — V1](../02-architecture/demo-sql-fixture-adapter-v1.md). Les annonces ne sont réutilisées que si elles peuvent être converties vers un contrat existant du domaine. Les utilisateurs SQL ne deviennent jamais des comptes ou identités Vitalis. Les contacts, mots de passe, compteurs et dates périmées sont exclus ou neutralisés.
 
 Objectif : faire passer les fixtures dans les mêmes chemins de lecture, validations et règles de présentation que les données réelles, tout en conservant `origin: "demo"` et en interdisant toute écriture ou synchronisation.
+
+
+## 10. Première intégration effective — Flash
+
+Une première tranche de fixtures est désormais ajoutée dans `src/domains/flash/model/demo-flashes.ts`, sur la branche de travail. Elle reprend trois scénarios neutres du SQL (plomberie, cours de mathématiques, aide domestique), en écartant les coordonnées, identités, descriptions privées, compteurs et dates historiques.
+
+Le flux Flash conserve ses sources réelles (publications distantes et publications locales hors connexion), puis utilise un sélecteur de présentation commun sur la forme `PublicFlash`. Les contenus réels sont toujours prioritaires ; les exemples ne complètent l'affichage jusqu'à trois cartes qu'après la résolution du chargement réel. Chaque carte garde sa provenance et affiche « Exemple » / « Example » à la place de « En direct ».
+
+Tests ajoutés : `tests/flash-demo-feed.test.ts`. L'exécution CI est en attente ; cette intégration n'est donc pas encore déclarée validée. Aucun autre moteur n'a reçu de données fictives dans ses résultats réels.
