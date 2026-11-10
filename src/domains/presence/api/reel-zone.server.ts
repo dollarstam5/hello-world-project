@@ -94,6 +94,12 @@ export async function resolveReelZoneForUser(
         zoneKeys.push(await tokenForCell(cell.latitude + latOffset, cell.longitude + lonOffset, secret));
       }
     }
+    const { error: clearError } = await admin
+      .from("reel_discovery_sessions")
+      .delete()
+      .eq("user_id", userId);
+    if (clearError) throw new Error("Impossible de renouveler votre zone de découverte.");
+
     const rows = zoneKeys.map((zone_key) => ({
       user_id: userId,
       zone_key,
