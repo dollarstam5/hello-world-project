@@ -321,3 +321,5 @@ La branche ajoute une nouvelle migration `20261110080000_reel_postgis_metric_rad
 4. Les propositions globales et l’historique des activités non liées à une relation n’ont pas encore de source métier connectée. L’écran conserve un état vide honnête.
 5. REEL_ZONE_HMAC_SECRET est validé par le code serveur et documenté dans .env.example. Il doit encore être défini dans l’environnement serveur de déploiement ; il ne doit jamais être placé dans une variable VITE_*.
 6. Les contrôles finaux restent à exécuter : lint, Vitest, migrations, pgTAP, build et tests sur deux appareils.
+
+- Le test pgTAP 135 a été ajouté pour vérifier la lecture privée des relations, la projection limitée du partenaire, la fermeture par un participant, la visibilité commune de l'état fermé, l'idempotence et le refus d'un tiers.
