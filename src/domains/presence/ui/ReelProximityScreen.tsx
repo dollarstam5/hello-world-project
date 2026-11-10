@@ -201,6 +201,7 @@ export function ReelProximityScreen() {
     setDiscoveredPeople([]);
     setLocationMessage(null);
   };
+  const canUseMemberReel = access.mode === "member" && access.memberProfileState === "active" && !access.loading;
   const discoveryEnabled = discoveryAccess === "granted";
   const availablePeople = discoveryEnabled ? discoveredPeople : [];
 
@@ -256,10 +257,10 @@ export function ReelProximityScreen() {
         <section className={`reel-location-card reel-location-card--${discoveryAccess}`} aria-label="Accès à la position">
           <div className="reel-location-card__icon"><MapPin aria-hidden="true" /></div>
           <div className="reel-location-card__copy">
-            <strong>{discoveryAccess === "prompt" ? "Envie de découvrir ce qui se passe près de vous ?" : discoveryAccess === "requesting" ? "Nous vérifions votre position…" : discoveryAccess === "denied" ? "Votre position reste privée" : "Vous découvrez Réel à votre rythme"}</strong>
-            <p>{discoveryAccess === "prompt" ? "Autorisez Réel à utiliser votre position pour observer les personnes et les activités autour de vous. Votre choix reste libre." : discoveryAccess === "requesting" ? "Cela ne prend que quelques instants." : locationMessage || "Vous pouvez parcourir Réel sans localisation. Les découvertes proches, les bips et les réactions resteront en pause."}</p>
+            <strong>{discoveryAccess === "prompt" && !canUseMemberReel ? "La découverte locale demande un compte Vitalis actif" : discoveryAccess === "prompt" ? "Envie de découvrir ce qui se passe près de vous ?" : discoveryAccess === "requesting" ? "Nous vérifions votre position…" : discoveryAccess === "denied" ? "Votre position reste privée" : "Vous découvrez Réel à votre rythme"}</strong>
+            <p>{discoveryAccess === "prompt" && !canUseMemberReel ? (access.mode === "guest" ? "Le parcours invité permet de découvrir Réel, mais la découverte réelle autour de vous n’est pas encore ouverte aux invités." : "Connectez-vous avec un compte Vitalis actif pour observer les activités autour de vous.") : discoveryAccess === "prompt" ? "Autorisez Réel à utiliser votre position pour observer les personnes et les activités autour de vous. Votre choix reste libre." : discoveryAccess === "requesting" ? "Cela ne prend que quelques instants." : locationMessage || "Vous pouvez parcourir Réel sans localisation. Les découvertes proches, les bips et les réactions resteront en pause."}</p>
             <div className="reel-location-card__actions">
-              {(discoveryAccess === "prompt" || discoveryAccess === "ignored" || discoveryAccess === "denied") && <button type="button" className="reel-location-card__primary" onClick={() => void requestDiscovery()}>{discoveryAccess === "prompt" ? "Activer la découverte" : "Réessayer"}</button>}
+              {canUseMemberReel && (discoveryAccess === "prompt" || discoveryAccess === "ignored" || discoveryAccess === "denied") && <button type="button" className="reel-location-card__primary" onClick={() => void requestDiscovery()}>{discoveryAccess === "prompt" ? "Activer la découverte" : "Réessayer"}</button>}
               {discoveryAccess === "prompt" && <button type="button" className="reel-location-card__secondary" onClick={ignoreLocation}>Pas maintenant</button>}
             </div>
           </div>
@@ -396,7 +397,7 @@ export function ReelProximityScreen() {
                 <div className="reel-panel__section">
                   <h3>Ma visibilité</h3>
                   <p className="reel-panel__note">La découverte vous permet d’observer les activités autour de vous. Activer votre présence est un choix séparé : les autres personnes pourront alors vous voir dans votre secteur approximatif, pendant la durée choisie.</p>
-                  {currentPresence ? (
+                  {!canUseMemberReel ? <p className="reel-panel__note">L’activation de votre présence est actuellement réservée aux membres avec un profil actif. Le mode invité n’est pas encore raccordé à cette fonction.</p> : currentPresence ? (
                     <>
                       <p className="reel-panel__status">Votre présence est active jusqu’à la fin de la durée choisie.</p>
                       <button type="button" className="reel-panel__secondary" disabled={presenceLoading} onClick={() => void stopPresence()}>Arrêter ma présence</button>
