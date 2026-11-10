@@ -296,12 +296,12 @@ Les scénarios suivants constituent un référentiel éditorial partagé, pas de
 | Scan | « Je cherche de l’aide pour déménager » ; « Je cherche une personne pour garder les enfants » | Scène explicative séparée, jamais de faux résultat, distance ou disponibilité |
 | Réel | « Je suis à une réunion et je souhaite signaler ma présence » | Tutoriel statique ; aucune fausse personne, présence, distance ou bip |
 | Radar | « Je cherche une garde pour le week-end » ; « Je cherche un emploi avec une prise de poste rapide » ; « Je souhaite être accompagné auprès d’un parent âgé pendant une période définie » | Aperçu de recherche non activable, sans correspondance ni activité inventée |
-| 2×2 | « Aide à domicile », « Emploi », « Services pour les réunions » | Catégories explicatives seulement si elles existent réellement dans le menu |
-| Profil | Présentation d’une personne qui propose de l’aide pour préparer des repas | Profil de démonstration isolé, jamais un compte ou une réputation réelle |
+| 2×2 | Espace et Talents | Menu de navigation vers le profil personnel et la page Talents, sans faux compteurs |
+| Profil | Nom affiché et identifiant public de la personne connectée, si renseigné | Aperçu privé du compte ; aucune fiche fictive ou réputation inventée |
 | Notifications / Messages | « Votre demande a reçu une réponse » | Exemple pédagogique isolé, jamais injecté dans les boîtes réelles |
 | Assistant Vita | « Aide-moi à expliquer mon besoin pour dimanche à 15 h » | Suggestion de question, pas de conversation préchargée |
 
-Aucun moteur autre que Flash et l'aperçu Accueil n'est activé par cette mise à jour. Les exemples des autres espaces restent des repères éditoriaux jusqu'à l'audit de leurs contrats et de leurs parcours.
+Aucun moteur métier supplémentaire n'est activé par cette mise à jour. Les pages Scan, Réel, Radar et Talents affichent des cartes pédagogiques statiques marquées « Exemple » ; elles ne créent aucun résultat, présence, recherche suivie ou activité métier. La cloche conserve ses quatre onglets et des états vides explicites tant que les sources réelles ne sont pas raccordées.
 
 
 
