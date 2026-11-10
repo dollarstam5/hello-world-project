@@ -1,6 +1,6 @@
 BEGIN;
 CREATE EXTENSION IF NOT EXISTS pgtap WITH SCHEMA extensions;
-SELECT plan(8);
+SELECT plan(10);
 
 INSERT INTO auth.users (
   id, aud, role, email, encrypted_password, email_confirmed_at,
@@ -88,10 +88,23 @@ SELECT is(
   'a third member cannot list another pair relationship'
 );
 SELECT throws_ok(
-  $$SELECT public.close_reel_connection('d5000000-0000-4000-8000-000000000101')$$,
+  $SELECT public.close_reel_connection('d5000000-0000-4000-8000-000000000101')$,
   '42501',
   'connection_not_found',
   'a third member cannot close another pair relationship'
+);
+
+RESET ROLE;
+SET LOCAL ROLE service_role;
+SELECT lives_ok(
+  $SELECT public.purge_reel_connection_history()$,
+  'server cleanup can purge relationship history older than six months'
+);
+SELECT is(
+  (SELECT count(*)::integer FROM public.reel_connections
+   WHERE id = 'd5000000-0000-4000-8000-000000000102'),
+  0,
+  'closed relationship history older than six months is deleted'
 );
 
 SELECT * FROM finish();
