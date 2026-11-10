@@ -529,22 +529,55 @@ CREATE OR REPLACE FUNCTION public.list_reel_guest_connections_for_member()
 RETURNS TABLE (connection_id UUID, status TEXT, created_at TIMESTAMPTZ, expires_at TIMESTAMPTZ, closed_at TIMESTAMPTZ, partner_display_name TEXT)
 LANGUAGE sql STABLE SECURITY DEFINER
 SET search_path = pg_catalog, public
-AS $$
+AS $
   SELECT history.source_connection_id,
-    CASE WHEN history.status = 'active' AND history.expires_at > now() THEN 'active' ELSE 'closed' END,
+    CASE WHEN history.status = 'active'
+      AND connection.status = 'active'
+      AND connection.expires_at > now()
+      AND (
+        connection.participant_one_guest_session_id IS NULL
+        OR EXISTS (
+          SELECT 1 FROM public.reel_guest_sessions session
+          WHERE session.id = connection.participant_one_guest_session_id
+            AND session.revoked_at IS NULL AND session.expires_at > now()
+        )
+      )
+      AND (
+        connection.participant_two_guest_session_id IS NULL
+        OR EXISTS (
+          SELECT 1 FROM public.reel_guest_sessions session
+          WHERE session.id = connection.participant_two_guest_session_id
+            AND session.revoked_at IS NULL AND session.expires_at > now()
+        )
+      )
+      THEN 'active' ELSE 'closed' END,
     history.created_at,
     history.expires_at,
-    CASE WHEN history.status = 'closed' OR history.expires_at <= now()
-      THEN COALESCE(history.closed_at, history.expires_at) ELSE NULL END,
+    CASE WHEN history.status = 'closed'
+      OR connection.id IS NULL
+      OR connection.status = 'closed'
+      OR connection.expires_at <= now()
+      OR history.expires_at <= now()
+      OR EXISTS (
+        SELECT 1 FROM public.reel_guest_sessions session
+        WHERE session.id IN (
+          connection.participant_one_guest_session_id,
+          connection.participant_two_guest_session_id
+        ) AND (session.revoked_at IS NOT NULL OR session.expires_at <= now())
+      )
+      THEN COALESCE(history.closed_at, connection.closed_at, history.expires_at)
+      ELSE NULL END,
     history.partner_display_name
   FROM public.reel_guest_connection_history history
+  LEFT JOIN public.reel_guest_connections connection
+    ON connection.id = history.source_connection_id
   WHERE history.member_id = auth.uid()
     AND (
       (history.status = 'active' AND history.expires_at > now())
       OR COALESCE(history.closed_at, history.expires_at) >= now() - interval '6 months'
     )
   ORDER BY history.created_at DESC LIMIT 100;
-$$;
+$;
 
 CREATE OR REPLACE FUNCTION public.list_reel_guest_connections_for_session(p_guest_session_id UUID)
 RETURNS TABLE (connection_id UUID, status TEXT, created_at TIMESTAMPTZ, expires_at TIMESTAMPTZ, closed_at TIMESTAMPTZ, partner_display_name TEXT)
