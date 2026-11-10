@@ -178,7 +178,7 @@ Les Server Functions et l'interface sont raccordées aux RPC croisées. Le test 
 
 ### Événements temps réel et confidentialité
 
-- Les membres reçoivent les changements croisés via un canal Broadcast privé `reel-member:<auth.uid()>`. La politique de lecture lie strictement le sujet du canal à `auth.uid()`.
+- Les membres reçoivent les changements croisés via un canal Broadcast privé `reel-member:<auth.uid()>`. La politique de lecture lie strictement le sujet du canal à `auth.uid()`. Dans les réglages Supabase Realtime, l'option « Allow public access » doit être désactivée pour imposer les canaux privés.
 - Le message Broadcast ne contient qu'un type d'événement générique (`bip_received`, `bip_updated` ou `connection_updated`). Il ne contient aucun identifiant de session invité, identifiant de bip, identifiant de présence, nom, coordonnée ou distance.
 - Les invités ne s'abonnent pas directement à Supabase Realtime : l'écran actualise leurs bips et relations toutes les trois secondes uniquement lorsque le panneau correspondant est ouvert. Chaque appel passe par une Server Function qui retrouve la session depuis le cookie HttpOnly.
 - Aucun identifiant de session invité n'est conservé dans l'état React. Le navigateur ne reçoit que les projections d'affichage minimales.
