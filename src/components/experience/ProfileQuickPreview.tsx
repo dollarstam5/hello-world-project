@@ -87,9 +87,7 @@ export function ProfileQuickPreview({ open, onOpenChange }: ProfileQuickPreviewP
         <div className="min-w-0 flex-1">
           <p className="truncate font-semibold">{name}</p>
           {loadedHandle ? (
-            <p className="mt-1 truncate text-sm text-muted-foreground">
-              @{loadedHandle}
-            </p>
+            <p className="mt-1 truncate text-sm text-muted-foreground">@{loadedHandle}</p>
           ) : (
             <p className="mt-1 text-sm text-muted-foreground">
               {t("profile.quickPreview.cardHint")}
