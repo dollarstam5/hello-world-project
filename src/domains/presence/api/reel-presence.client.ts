@@ -240,7 +240,6 @@ export async function closeReelConnection(connectionId: string): Promise<void> {
   await callReelRpc<unknown>("close_reel_connection", { p_connection_id: connectionId });
 }
 
-
 export interface ReelGuestBip {
   id: string;
   status: "pending" | "accepted" | "declined" | "withdrawn" | "expired";
