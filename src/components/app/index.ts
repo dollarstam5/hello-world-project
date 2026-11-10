@@ -24,3 +24,4 @@ export { EmptyState } from "./EmptyState";
 export { StatusBanner } from "./StatusBanner";
 export { FormField } from "./FormField";
 export { SkeletonLine, SkeletonText, SkeletonCard, SkeletonList } from "./Skeletons";
+export { PublicProfilePreview } from "./PublicProfilePreview";
