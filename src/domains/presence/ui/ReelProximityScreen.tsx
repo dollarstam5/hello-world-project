@@ -223,9 +223,9 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
           <button
             className="reel-nearby__bluetooth"
             type="button"
-            onClick={() => setPanel("settings")}
+            disabled
             aria-label="Bluetooth — prévu en version 3"
-            title="Bluetooth — prévu en version 3"
+            title="Bluetooth — sera développé en version 3"
           >
             <Bluetooth aria-hidden="true" />
           </button>
