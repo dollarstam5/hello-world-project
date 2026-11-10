@@ -111,7 +111,10 @@ export function MyFlashManagement() {
       <div className="stack-3">
         <p className="text-xs text-muted-foreground">{t("flash.mine.localHint")}</p>
         <Surface variant="sunken" padding="none" bordered>
-          <EmptyState title={t("flash.mine.empty.title")} description={t("flash.mine.empty.desc")} />
+          <EmptyState
+            title={t("flash.mine.empty.title")}
+            description={t("flash.mine.empty.desc")}
+          />
         </Surface>
       </div>
     );
