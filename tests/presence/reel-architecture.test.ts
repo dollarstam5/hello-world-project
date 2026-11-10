@@ -24,10 +24,8 @@ describe("Réel architecture boundaries", () => {
   });
 
   it("keeps private Realtime channel ownership inside its service", () => {
-    const service = readSource(
-      "src/domains/presence/services/reel-activity-realtime.service.ts",
-    );
-    expect(service).toContain('config: { private: true }');
+    const service = readSource("src/domains/presence/services/reel-activity-realtime.service.ts");
+    expect(service).toContain("config: { private: true }");
     expect(service).toContain("supabase.removeChannel(channel)");
     expect(service).not.toContain("guest_session_id");
     expect(service).not.toContain("presence_id");
