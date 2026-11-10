@@ -39,6 +39,7 @@ BEGIN
     ON profile.id = CASE WHEN connection.participant_low = v_user_id
       THEN connection.participant_high ELSE connection.participant_low END
   WHERE v_user_id IN (connection.participant_low, connection.participant_high)
+    AND (connection.status = 'active' OR connection.closed_at >= now() - interval '6 months')
   ORDER BY connection.created_at DESC
   LIMIT 200;
 END;
