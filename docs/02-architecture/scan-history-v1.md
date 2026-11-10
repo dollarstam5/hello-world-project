@@ -3,6 +3,7 @@
 ## Comportement disponible
 
 Après chaque recherche Scan réussie, Vitalis peut conserver sur l'appareil un petit historique des dix dernières recherches. Une entrée contient uniquement :
+
 - la date et l'heure de la recherche ;
 - le nombre de résultats renvoyés.
 
@@ -11,6 +12,7 @@ L'historique est affiché dans la page Scan, sous les résultats. La personne pe
 ## Données exclues
 
 L'historique ne conserve jamais :
+
 - les coordonnées GPS ou une adresse précise ;
 - le rayon ou la zone recherchée ;
 - le texte de recherche ou la catégorie ;

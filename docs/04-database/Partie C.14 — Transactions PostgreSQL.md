@@ -74,7 +74,7 @@ toutes les opérations réussissent ;
 
 1
 
-•
+•
 
 aucune opération n'est conservée.
 
@@ -146,11 +146,11 @@ validée lors de la revue d'architecture.
 
 7. Gestion des erreurs
 
-Toute erreur dans une transaction entraîne un  ROLLBACK .
+Toute erreur dans une transaction entraîne un ROLLBACK .
 
 2
 
-Les erreurs doivent être :
+Les erreurs doivent être :
 
 •
 
@@ -208,7 +208,7 @@ workflows ou des stratégies de compensation) doivent être privilégiés plutô
 
 3
 
-12. Documentation
+12. Documentation
 
 Chaque transaction importante doit être documentée avec :
 
@@ -303,7 +303,7 @@ elle est couverte par des tests.
 
 4
 
-16. Conclusion
+16. Conclusion
 
 Les transactions PostgreSQL assurent la cohérence et la fiabilité des données de Vitala.
 
@@ -312,4 +312,3 @@ Leur utilisation doit rester ciblée, performante et conforme aux principes du B
 garantir une plateforme robuste et évolutive.
 
 5
-

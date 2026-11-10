@@ -64,7 +64,7 @@ Les triggers peuvent être utilisés pour :
 
 •
 
-mettre à jour automatiquement  updated_at  ;
+mettre à jour automatiquement updated_at ;
 
 •
 
@@ -80,7 +80,7 @@ maintenir des tables techniques ;
 
 1
 
-•
+•
 
 déclencher des notifications techniques ;
 
@@ -160,7 +160,7 @@ Les chaînes de triggers successifs sont fortement déconseillées.
 
 2
 
-7. Performance
+7. Performance
 
 Les triggers doivent :
 
@@ -242,7 +242,7 @@ Les journaux d'audit doivent respecter la politique de conservation définie par
 
 3
 
-11. Documentation
+11. Documentation
 
 Chaque trigger doit être documenté avec :
 
@@ -338,7 +338,7 @@ il ne dégrade pas les performances de la base de données.
 
 4
 
-15. Conclusion
+15. Conclusion
 
 Les triggers PostgreSQL constituent un mécanisme puissant pour automatiser certaines opérations
 
@@ -349,4 +349,3 @@ Leur utilisation doit rester limitée, transparente et parfaitement documentée 
 architecture claire, performante et conforme aux principes du Build Blueprint.
 
 5
-

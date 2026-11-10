@@ -70,7 +70,7 @@ Développement individuel sur la machine du développeur.
 
 1
 
-Utilisation :
+Utilisation :
 
 •
 
@@ -158,7 +158,7 @@ La configuration doit être aussi proche que possible de la production.
 
 2
 
-3.4 Production
+3.4 Production
 
 Objectif :
 
@@ -256,7 +256,7 @@ Aucune valeur de production ne doit être utilisée en développement.
 
 3
 
-6. Variables d'environnement
+6. Variables d'environnement
 
 Toutes les informations sensibles doivent être fournies via des variables d'environnement.
 
@@ -338,7 +338,7 @@ définies dans les sections suivantes du document.
 
 4
 
-9. Gestion des accès
+9. Gestion des accès
 
 Les accès aux environnements doivent être limités selon les rôles :
 
@@ -412,7 +412,7 @@ Les journaux doivent être conservés conformément à la politique de rétentio
 
 5
 
-12. Sauvegarde des configurations
+12. Sauvegarde des configurations
 
 Les éléments suivants doivent être versionnés ou documentés :
 
@@ -505,4 +505,3 @@ Le respect de cette structure garantit des développements fiables, des déploie
 exploitation durable de la plateforme.
 
 6
-

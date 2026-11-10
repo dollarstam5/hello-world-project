@@ -6,20 +6,20 @@
 
 ## Sources de vérité
 
-| Sujet | Source de vérité actuelle |
-| --- | --- |
-| Règles de dépendance et responsabilité des couches | [Architecture du dépôt](../../ARCHITECTURE.md) |
-| Routage fichier par fichier | [Conventions des routes](../../src/routes/README.md) et `src/routes/` |
-| Variables CSS, couleurs, surfaces, typographie et utilitaires | `src/styles.css` |
-| Tokens TypeScript utilisés par les animations et contextes sans CSS | `src/lib/design/tokens.ts` |
-| Point d'entrée de compatibilité des tokens | `src/shared/tokens/index.ts` |
-| Variantes de mouvement | `src/lib/design/motion.ts` |
-| Réduction de mouvement côté React | `src/lib/design/useReducedMotion.ts` |
-| Composition d'expérience réutilisable | `src/components/experience/` |
-| Composants UI génériques | `src/components/ui/` |
-| Shell global et point d'insertion des routes | `src/routes/__root.tsx` et `src/components/app/AppShell` |
-| Intention produit et principes d'interaction | [Vitala Experience System](../01-product/experience-system.md) |
-| Budgets et validation de performance | [Performance PWA](../06-operations/performance-pwa.md) |
+| Sujet                                                               | Source de vérité actuelle                                             |
+| ------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| Règles de dépendance et responsabilité des couches                  | [Architecture du dépôt](../../ARCHITECTURE.md)                        |
+| Routage fichier par fichier                                         | [Conventions des routes](../../src/routes/README.md) et `src/routes/` |
+| Variables CSS, couleurs, surfaces, typographie et utilitaires       | `src/styles.css`                                                      |
+| Tokens TypeScript utilisés par les animations et contextes sans CSS | `src/lib/design/tokens.ts`                                            |
+| Point d'entrée de compatibilité des tokens                          | `src/shared/tokens/index.ts`                                          |
+| Variantes de mouvement                                              | `src/lib/design/motion.ts`                                            |
+| Réduction de mouvement côté React                                   | `src/lib/design/useReducedMotion.ts`                                  |
+| Composition d'expérience réutilisable                               | `src/components/experience/`                                          |
+| Composants UI génériques                                            | `src/components/ui/`                                                  |
+| Shell global et point d'insertion des routes                        | `src/routes/__root.tsx` et `src/components/app/AppShell`              |
+| Intention produit et principes d'interaction                        | [Vitala Experience System](../01-product/experience-system.md)        |
+| Budgets et validation de performance                                | [Performance PWA](../06-operations/performance-pwa.md)                |
 
 Les valeurs de design doivent être modifiées dans leur source exécutable appropriée. Cette documentation explique les responsabilités et les contrôles ; elle ne doit pas devenir une copie manuelle des tokens.
 

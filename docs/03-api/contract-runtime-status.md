@@ -7,12 +7,12 @@
 
 La référence [Backend et architecture des API](../02-architecture/backend-api.md) inventorie les handlers HTTP observés sous `src/routes/api/`. À la dernière revue documentaire, les routes confirmées dans cet inventaire sont :
 
-| Méthode | Route | Responsabilité constatée | Référence |
-| --- | --- | --- | --- |
-| `GET` | `/api/health` | Réponse de santé de base, statut, nom de service et horodatage | [Architecture backend/API](../02-architecture/backend-api.md) |
-| `POST` | `/api/sync/pull` | Lecture des changements distants par curseurs | [Contrat de synchronisation](./sync-api.md) |
-| `POST` | `/api/sync/push` | Soumission de mutations locales | [Contrat de synchronisation](./sync-api.md) |
-| `POST` | `/api/public/assistant` | Assistant IA en flux ; malgré le segment `public`, une session est requise | [Architecture backend/API](../02-architecture/backend-api.md) |
+| Méthode | Route                   | Responsabilité constatée                                                   | Référence                                                     |
+| ------- | ----------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| `GET`   | `/api/health`           | Réponse de santé de base, statut, nom de service et horodatage             | [Architecture backend/API](../02-architecture/backend-api.md) |
+| `POST`  | `/api/sync/pull`        | Lecture des changements distants par curseurs                              | [Contrat de synchronisation](./sync-api.md)                   |
+| `POST`  | `/api/sync/push`        | Soumission de mutations locales                                            | [Contrat de synchronisation](./sync-api.md)                   |
+| `POST`  | `/api/public/assistant` | Assistant IA en flux ; malgré le segment `public`, une session est requise | [Architecture backend/API](../02-architecture/backend-api.md) |
 
 Cette liste est limitée à l'inventaire existant. Elle ne prouve pas l'absence d'autres points d'entrée TanStack Start ou de services intégrés.
 
@@ -20,14 +20,14 @@ Cette liste est limitée à l'inventaire existant. Elle ne prouve pas l'absence 
 
 Les contrats historiques décrivent des chemins REST métier. Les pages canoniques restent des points d'entrée et doivent signaler explicitement que ces chemins ne sont pas confirmés par l'inventaire runtime ci-dessus.
 
-| Domaine | Exemples de chemins historiques | Statut dans cet inventaire |
-| --- | --- | --- |
-| Flash | `POST /flash`, `GET /flash/{id}`, `PATCH /flash/{id}`, `POST /flash/{id}/publish` | Contrat cible historique ; route runtime non confirmée ici |
-| Trust | `GET /trust/me`, `GET /trust/me/history`, `GET /trust/me/badges` | Contrat cible historique ; route runtime non confirmée ici |
-| Radar | `GET /radar`, `GET /radar/{id}`, `POST /radar/{id}/save` | Contrat cible historique ; route runtime non confirmée ici |
-| Veille | `GET /veille`, `GET /veille/{id}`, `POST /veille/{id}/read` | Contrat cible historique ; route runtime non confirmée ici |
-| Recommendation | `GET /recommendations`, `GET /recommendations/{id}` | Contrat cible historique ; route runtime non confirmée ici |
-| Auth | Les contrats historiques décrivent inscription, connexion, renouvellement et récupération de compte | Inventaire runtime distinct à mener avant toute conclusion sur les routes disponibles |
+| Domaine        | Exemples de chemins historiques                                                                     | Statut dans cet inventaire                                                            |
+| -------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Flash          | `POST /flash`, `GET /flash/{id}`, `PATCH /flash/{id}`, `POST /flash/{id}/publish`                   | Contrat cible historique ; route runtime non confirmée ici                            |
+| Trust          | `GET /trust/me`, `GET /trust/me/history`, `GET /trust/me/badges`                                    | Contrat cible historique ; route runtime non confirmée ici                            |
+| Radar          | `GET /radar`, `GET /radar/{id}`, `POST /radar/{id}/save`                                            | Contrat cible historique ; route runtime non confirmée ici                            |
+| Veille         | `GET /veille`, `GET /veille/{id}`, `POST /veille/{id}/read`                                         | Contrat cible historique ; route runtime non confirmée ici                            |
+| Recommendation | `GET /recommendations`, `GET /recommendations/{id}`                                                 | Contrat cible historique ; route runtime non confirmée ici                            |
+| Auth           | Les contrats historiques décrivent inscription, connexion, renouvellement et récupération de compte | Inventaire runtime distinct à mener avant toute conclusion sur les routes disponibles |
 
 Les chemins ci-dessus sont des exemples tirés des documents historiques, non une liste exhaustive et non des endpoints garantis. Ne pas générer de client, d'intégration ou de test d'acceptation en supposant leur disponibilité.
 
@@ -56,7 +56,7 @@ Les garanties liées aux reçus d'idempotence et au schéma distant restent non 
 - [Répertoire des contrats API](./README.md)
 - [Contrat API de synchronisation](./sync-api.md)
 - [Registre des problèmes techniques](../06-operations/technical-issues.md)
-- Sources historiques conservées : [`docs/03-engines/flash/6. Flash API.md`](<../03-engines/flash/6. Flash API.md>), [`docs/03-engines/trust/8. Trust API.md`](<../03-engines/trust/8. Trust API.md>), [`docs/03-engines/radar/9. Radar API.md`](<../03-engines/radar/9. Radar API.md>), [`docs/03-engines/veille/10. Veille API.md`](<../03-engines/veille/10. Veille API.md>), [`docs/03-engines/recommendation/11._Recommendation_API.md`](<../03-engines/recommendation/11._Recommendation_API.md>), `docs/4. Auth API.md`. L'UDI API demeure à `docs/5. Unified Digital Identity API.md` en tant que contrat transversal historique.
+- Sources historiques conservées : [`docs/03-engines/flash/6. Flash API.md`](<../03-engines/flash/6. Flash API.md>), [`docs/03-engines/trust/8. Trust API.md`](<../03-engines/trust/8. Trust API.md>), [`docs/03-engines/radar/9. Radar API.md`](<../03-engines/radar/9. Radar API.md>), [`docs/03-engines/veille/10. Veille API.md`](<../03-engines/veille/10. Veille API.md>), [`docs/03-engines/recommendation/11._Recommendation_API.md`](../03-engines/recommendation/11._Recommendation_API.md), `docs/4. Auth API.md`. L'UDI API demeure à `docs/5. Unified Digital Identity API.md` en tant que contrat transversal historique.
 
 ## 6. Limites
 

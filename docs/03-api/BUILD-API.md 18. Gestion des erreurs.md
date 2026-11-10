@@ -68,20 +68,20 @@ Les champs suivants sont obligatoires :
 
 •
 
-success  : indique que la requête a échoué ( false ) ;
-error  : code métier de l'erreur ;
+success : indique que la requête a échoué ( false ) ;
+error : code métier de l'erreur ;
 
 1
 
-•
-
 •
 
 •
 
-message  : message lisible destiné au client ;
-request_id  : identifiant unique de la requête pour faciliter le diagnostic ;
-timestamp  : date et heure de l'erreur.
+•
+
+message : message lisible destiné au client ;
+request_id : identifiant unique de la requête pour faciliter le diagnostic ;
+timestamp : date et heure de l'erreur.
 
 Des informations complémentaires peuvent être ajoutées si elles sont documentées.
 
@@ -155,7 +155,7 @@ règle métier violée.
 
 2
 
-Erreurs techniques
+Erreurs techniques
 
 Exemples :
 
@@ -245,7 +245,7 @@ Chaque erreur métier doit posséder un identifiant unique.
 
 3
 
-Exemples :
+Exemples :
 
 •
 
@@ -307,7 +307,7 @@ Les données sensibles ne doivent jamais être enregistrées en clair.
 
 18.9 Traçabilité
 
-Chaque erreur doit pouvoir être reliée à une requête unique grâce au  request_id .
+Chaque erreur doit pouvoir être reliée à une requête unique grâce au request_id .
 
 Cet identifiant facilite :
 
@@ -345,7 +345,7 @@ les erreurs système (attendre ou contacter le support).
 
 4
 
-Le comportement attendu doit être documenté pour chaque catégorie.
+Le comportement attendu doit être documenté pour chaque catégorie.
 
 18.11 Tests
 
@@ -404,4 +404,3 @@ plateforme garantit une meilleure expérience développeur, une intégration sim
 applications et une capacité de diagnostic rapide en production.
 
 5
-

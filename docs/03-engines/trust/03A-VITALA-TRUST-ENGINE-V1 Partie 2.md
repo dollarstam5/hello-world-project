@@ -17,6 +17,7 @@ Un événement de confiance représente une action, une validation ou une situat
 - une justification;
 - un état (actif, annulé, expiré);
 - une référence vers l'objet métier concerné lorsque cela est applicable.
+
 # 12. Les familles d'événements
 
 Les événements sont regroupés en grandes familles.
@@ -28,7 +29,7 @@ Exemples :
 - identité validée;
 - document vérifié;
 - informations mises à jour.
-Ces événements renforcent la crédibilité de l'utilisateur.
+  Ces événements renforcent la crédibilité de l'utilisateur.
 
 ## 12.2 Activité
 
@@ -38,7 +39,7 @@ Exemples :
 - création d'une Veille;
 - lancement d'un Radar;
 - participation à une mission.
-Ils valorisent l'engagement dans la plateforme.
+  Ils valorisent l'engagement dans la plateforme.
 
 ## 12.3 Réussite
 
@@ -47,7 +48,7 @@ Exemples :
 - mission terminée avec succès;
 - collaboration confirmée;
 - recommandation validée.
-Ils renforcent fortement le Capital de Confiance.
+  Ils renforcent fortement le Capital de Confiance.
 
 ## 12.4 Qualité des interactions
 
@@ -56,7 +57,7 @@ Exemples :
 - retours positifs;
 - réponses utiles;
 - comportements collaboratifs.
-Ils reflètent la qualité des échanges.
+  Ils reflètent la qualité des échanges.
 
 ## 12.5 Signalements
 
@@ -65,7 +66,7 @@ Exemples :
 - signalement confirmé;
 - fraude avérée;
 - non-respect des règles.
-Ces événements diminuent le Capital de Confiance.
+  Ces événements diminuent le Capital de Confiance.
 
 ## 12.6 Ancienneté et régularité
 
@@ -74,6 +75,7 @@ Le Trust Engine valorise également :
 - la présence durable;
 - l'activité régulière;
 - la stabilité dans le temps.
+
 # 13. Pondération
 
 Tous les événements n'ont pas le même impact. Leur poids dépend :
@@ -83,7 +85,7 @@ Tous les événements n'ont pas le même impact. Leur poids dépend :
 - de leur gravité;
 - de leur ancienneté;
 - du contexte.
-Le Trust Engine applique des règles de pondération afin d'obtenir une évaluation équilibrée. Les valeurs numériques exactes ne sont pas figées dans ce document afin de permettre leur ajustement sans modifier la philosophie du moteur.
+  Le Trust Engine applique des règles de pondération afin d'obtenir une évaluation équilibrée. Les valeurs numériques exactes ne sont pas figées dans ce document afin de permettre leur ajustement sans modifier la philosophie du moteur.
 
 # 14. Vieillissement des événements
 
@@ -92,7 +94,7 @@ Le Trust Capital évolue dans le temps. Certains événements peuvent perdre pro
 - une activité ancienne;
 - une compétence non utilisée depuis longtemps;
 - une identité nécessitant une nouvelle vérification.
-À l'inverse, certains événements conservent leur importance durablement, comme une fraude confirmée ou une vérification officielle.
+  À l'inverse, certains événements conservent leur importance durablement, comme une fraude confirmée ou une vérification officielle.
 
 # 15. Trust History
 
@@ -106,12 +108,13 @@ Cet historique contient notamment :
 - la justification;
 - l'impact relatif;
 - l'état de l'événement.
-Le Trust History garantit :
+  Le Trust History garantit :
 
 - la transparence;
 - la traçabilité;
 - les audits;
 - les corrections éventuelles.
+
 # 16. Réversibilité
 
 Un événement peut être annulé lorsqu'une erreur est détectée. Dans ce cas :
@@ -119,7 +122,7 @@ Un événement peut être annulé lorsqu'une erreur est détectée. Dans ce cas 
 - l'événement initial est conservé;
 - un événement correctif est ajouté;
 - le Capital de Confiance est recalculé.
-Aucune modification n'efface l'historique.
+  Aucune modification n'efface l'historique.
 
 # 17. Visibilité
 
@@ -136,7 +139,7 @@ Les autres utilisateurs voient uniquement :
 - le niveau actuel;
 - la tendance générale;
 - les badges ou certifications publiques.
-Les détails des événements restent confidentiels.
+  Les détails des événements restent confidentiels.
 
 ## Système
 
@@ -152,7 +155,7 @@ Le Trust Engine alimente :
 - Veille;
 - Recommendation;
 - Sélection des candidats.
-Ces moteurs utilisent le Capital de Confiance pour améliorer leurs décisions, sans jamais le modifier directement.
+  Ces moteurs utilisent le Capital de Confiance pour améliorer leurs décisions, sans jamais le modifier directement.
 
 # 19. Objectifs du fonctionnement
 
@@ -163,6 +166,7 @@ Le fonctionnement du Trust Engine vise à :
 - renforcer la qualité des interactions;
 - garantir des décisions cohérentes;
 - préserver la confiance dans l'écosystème.
+
 # 20. Conclusion de la Partie 2
 
 Le Trust Engine repose sur un historique d'événements, une pondération contextuelle et une transparence maîtrisée. Cette approche garantit une évaluation évolutive, explicable et robuste de la fiabilité des interactions, tout en protégeant les utilisateurs contre les jugements arbitraires et les manipulations.

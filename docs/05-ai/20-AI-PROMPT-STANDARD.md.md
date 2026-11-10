@@ -11,6 +11,7 @@ AI-PROMPT-STANDARD.md définit la structure obligatoire utilisée pour communiqu
 - complète;
 - vérifiable;
 - compatible avec l'architecture Vitala.
+
 # 2. Principe fondamental
 
 Un bon prompt Vitala ne demande pas uniquement : "Créer une fonctionnalité." Il précise :
@@ -21,11 +22,12 @@ Un bon prompt Vitala ne demande pas uniquement : "Créer une fonctionnalité." I
 - les fichiers concernés;
 - les contraintes;
 - les critères de validation.
+
 # 3. Structure obligatoire d'un prompt Vitala
 
 Tout prompt doit suivre :
 
-```text id="a1k5bz" 1. Contexte
+````text id="a1k5bz" 1. Contexte
 
 1. Objectif
 2. Périmètre
@@ -47,15 +49,19 @@ L'objectif est d'éviter que l'IA travaille hors contexte.
 
 Définir précisément le résultat attendu. Mauvais :
 
-```
+````
+
 Améliore le système Flash.
+
 ```
 Bon :
 
 ```
+
 Créer le système FlashDraft permettant
 la création locale d'un brouillon Flash
 avec synchronisation différée.
+
 ```
 # 6. Section Périmètre
 
@@ -72,11 +78,13 @@ Exclus :
 L'IA doit connaître les documents à consulter. Exemple :
 
 ```
+
 Références obligatoires :
 AI-CONSTITUTION.md
 AI-ARCHITECTURE-RULES.md
 DATABASE-DICTIONARY.md
 FLASH-BUILD.md
+
 ```
 
 # 8. Section Règles obligatoires
@@ -88,16 +96,20 @@ Définir les contraintes. Exemple :
 - sécurité RLS;
 - tests obligatoires.
 ```
+
 Respecter :
+
 ```
 # 9. Section Travail demandé
 
 La tâche doit être découpée. Format :
 
 ```
+
 Étape 1 :
 Étape 2 :
 Étape 3 :
+
 ```
 Une IA doit savoir exactement quoi produire.
 
@@ -112,12 +124,16 @@ Préciser :
 Exemple :
 
 ```
+
 Ne pas utiliser de nouvelle dépendance.
 Utiliser les services existants.
+
 ```
 
 ```
+
 Respecter les types actuels.
+
 ```
 # 11. Section Tests attendus
 
@@ -127,24 +143,29 @@ Chaque prompt doit préciser : Quels tests doivent être réalisés. Exemple :
 - tests intégration;
 - validation sécurité.
 ```
+
 Ajouter :
+
 ```
 # 12. Section Critères de validation
 
 Définir quand la tâche est considérée terminée. Exemple :
 
 ```
+
 La tâche est terminée uniquement si :
 [] Code créé
 [] Tests réussis
 [] Documentation mise à jour
 [] Architecture respectée
+
 ```
 # 13. Format de réponse obligatoire demandé à l'IA
 
 Une IA travaillant sur Vitala doit répondre :
 
 ```
+
 Analyse :
 Plan :
 Fichiers modifiés :
@@ -152,6 +173,7 @@ Code réalisé :
 Tests :
 Points d'attention :
 Résultat final :
+
 ```
 # 14. Types de prompts Vitala
 
@@ -219,3 +241,4 @@ Un prompt Vitala doit permettre à une IA qui ne connaît pas le projet de compr
 Version Modification V1.0 Création du standard de prompts IA
 
 # Fin de AI/20-AI-PROMPT-STANDARD.md
+```

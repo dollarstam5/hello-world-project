@@ -15,12 +15,12 @@ Ce document décrit les conventions de design vérifiables dans le dépôt. Les 
 
 ## Sources de vérité dans le code
 
-| Domaine | Source à consulter |
-| --- | --- |
-| Variables CSS, couleurs, surfaces, ombres, rayons et typographie | `src/styles.css` |
-| Tokens TypeScript (mouvement, espacement, typographie, couches, icônes) | `src/lib/design/tokens.ts` |
-| Point d'entrée partagé des tokens | `src/shared/tokens/index.ts` |
-| Principes d'expérience et intentions produit | [Experience System](../01-product/experience-system.md) |
+| Domaine                                                                 | Source à consulter                                      |
+| ----------------------------------------------------------------------- | ------------------------------------------------------- |
+| Variables CSS, couleurs, surfaces, ombres, rayons et typographie        | `src/styles.css`                                        |
+| Tokens TypeScript (mouvement, espacement, typographie, couches, icônes) | `src/lib/design/tokens.ts`                              |
+| Point d'entrée partagé des tokens                                       | `src/shared/tokens/index.ts`                            |
+| Principes d'expérience et intentions produit                            | [Experience System](../01-product/experience-system.md) |
 
 Ne pas recopier ici la totalité des valeurs déjà définies dans le code : documenter leur intention et renvoyer vers leur source exécutable.
 

@@ -50,7 +50,7 @@ les interactions, informations et services de ses utilisateurs.
 
 1
 
-Vitala combine :
+Vitala combine :
 
 •
 
@@ -150,7 +150,7 @@ L'UDI est un concept central.
 
 2
 
-Flash
+Flash
 
 Définition
 
@@ -240,7 +240,7 @@ objets.
 
 3
 
-Radar
+Radar
 
 Définition
 
@@ -322,7 +322,7 @@ statistiques.
 
 4
 
-Trust
+Trust
 
 Définition
 
@@ -404,7 +404,7 @@ recommandations.
 
 5
 
-Vitala Copilot
+Vitala Copilot
 
 Définition
 
@@ -480,7 +480,7 @@ Supabase.
 
 6
 
-Offline First
+Offline First
 
 Définition
 
@@ -524,7 +524,7 @@ PostgreSQL ;
 
 7
 
-•
+•
 
 Auth ;
 
@@ -594,7 +594,7 @@ Nom global du système administratif Vitala.
 
 8
 
-Analytics
+Analytics
 
 Définition
 
@@ -652,7 +652,7 @@ Environnement utilisé pour construire et tester les fonctionnalités avant prod
 
 9
 
-Migration
+Migration
 
 Définition
 
@@ -708,7 +708,7 @@ données ;
 
 10
 
-•
+•
 
 services ;
 
@@ -733,4 +733,3 @@ Création du glossaire officiel Vitala
 Fin de AI/03-AI-GLOSSARY.md
 
 11
-

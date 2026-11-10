@@ -11,14 +11,14 @@ La définition métier historique contient six étapes. Le modèle actuellement 
 
 ## Progression fonctionnelle historique
 
-| Niveau métier | Sens | Éléments historiques | État de validation |
-| --- | --- | --- | --- |
-| Consultant | Visiteur non engagé | Découverte et consultation des contenus publics | Le concept existe dans la documentation ; correspondance avec `guest` à confirmer au niveau des parcours |
-| Membre enregistré | Compte créé | Prénom et téléphone ou courriel selon la source historique | Pas de valeur dédiée dans `udi.level` ; ne pas assimiler automatiquement à un niveau de base de données |
-| Identifié | Informations minimales validées | Nom, prénom, téléphone vérifié et ville principale selon la source historique | Valeur `identified` présente dans la contrainte SQL ; critères métier exacts à vérifier |
-| Vérifié | Identité contrôlée à partir d'une preuve reconnue | Document officiel ou méthode approuvée | Valeur `verified` présente ; procédure réelle de vérification à auditer |
-| Confirmé | Fiabilité démontrée par des résultats réels | La source historique propose cinq actions et deux recommandations validées, sans incident majeur | Pas de valeur dédiée dans `udi.level` ; seuils historiques non confirmés comme règle active |
-| Pro | Activité professionnelle ou organisationnelle reconnue | Preuve d'activité professionnelle lorsque nécessaire | Pas de valeur dédiée dans `udi.level` ; ne pas confondre avec un simple persona Professionnel |
+| Niveau métier     | Sens                                                   | Éléments historiques                                                                             | État de validation                                                                                       |
+| ----------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------- |
+| Consultant        | Visiteur non engagé                                    | Découverte et consultation des contenus publics                                                  | Le concept existe dans la documentation ; correspondance avec `guest` à confirmer au niveau des parcours |
+| Membre enregistré | Compte créé                                            | Prénom et téléphone ou courriel selon la source historique                                       | Pas de valeur dédiée dans `udi.level` ; ne pas assimiler automatiquement à un niveau de base de données  |
+| Identifié         | Informations minimales validées                        | Nom, prénom, téléphone vérifié et ville principale selon la source historique                    | Valeur `identified` présente dans la contrainte SQL ; critères métier exacts à vérifier                  |
+| Vérifié           | Identité contrôlée à partir d'une preuve reconnue      | Document officiel ou méthode approuvée                                                           | Valeur `verified` présente ; procédure réelle de vérification à auditer                                  |
+| Confirmé          | Fiabilité démontrée par des résultats réels            | La source historique propose cinq actions et deux recommandations validées, sans incident majeur | Pas de valeur dédiée dans `udi.level` ; seuils historiques non confirmés comme règle active              |
+| Pro               | Activité professionnelle ou organisationnelle reconnue | Preuve d'activité professionnelle lorsque nécessaire                                             | Pas de valeur dédiée dans `udi.level` ; ne pas confondre avec un simple persona Professionnel            |
 
 Les seuils, quotas et avantages mentionnés dans les sources historiques sont des propositions à valider. Ils ne doivent pas être appliqués comme règles de production sans confirmation dans les contrats, politiques et tests actuels.
 

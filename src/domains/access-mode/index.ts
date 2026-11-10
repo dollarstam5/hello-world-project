@@ -5,10 +5,7 @@ export type {
   MemberProfileState,
   TemporaryGuestIdentity,
 } from "./model/access-mode";
-export {
-  evaluateEngineAccess,
-  evaluateVitalisDecision,
-} from "./model/engine-access";
+export { evaluateEngineAccess, evaluateVitalisDecision } from "./model/engine-access";
 export type {
   AccessDecision,
   AccessDecisionStatus,

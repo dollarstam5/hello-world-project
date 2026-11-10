@@ -62,7 +62,7 @@ Statut :
 
 1
 
-Obligatoire.
+Obligatoire.
 
 3.2 uuid-ossp
 
@@ -132,7 +132,7 @@ Recommandée pour les environnements de développement, préproduction et produc
 
 2
 
-4. Extensions conditionnelles
+4. Extensions conditionnelles
 
 Certaines extensions pourront être activées uniquement si un besoin est validé.
 
@@ -218,7 +218,7 @@ Les permissions associées doivent respecter le principe du moindre privilège.
 
 3
 
-8. Performances
+8. Performances
 
 Avant d'adopter une extension, une analyse doit vérifier :
 
@@ -302,7 +302,7 @@ les politiques de sécurité de Vitala.
 
 4
 
-12. Critères de conformité
+12. Critères de conformité
 
 Une extension est conforme lorsqu'elle :
 
@@ -337,4 +337,3 @@ Leur utilisation doit rester limitée, justifiée et documentée afin de garanti
 pérennité de la plateforme.
 
 5
-

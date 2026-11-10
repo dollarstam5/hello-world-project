@@ -72,7 +72,10 @@ async function callReelRpc<T>(name: ReelRpcName, args: ReelRpcArgs = {}): Promis
   // The generated Supabase schema snapshot predates the Reel migration.
   // Keep the cast local until the generated types are refreshed from Supabase.
   const client = supabase as unknown as {
-    rpc: (fn: ReelRpcName, params: ReelRpcArgs) => Promise<{ data: unknown; error: { message: string } | null }>;
+    rpc: (
+      fn: ReelRpcName,
+      params: ReelRpcArgs,
+    ) => Promise<{ data: unknown; error: { message: string } | null }>;
   };
   const { data, error } = await client.rpc(name, args);
   if (error) throw new Error(error.message || "Cette action n’a pas pu aboutir.");
@@ -96,7 +99,9 @@ function requireUuid(value: string, message: string): string {
 function createRequestId(): string {
   const randomUUID = globalThis.crypto?.randomUUID;
   if (typeof randomUUID !== "function") {
-    throw new Error("Votre appareil ne permet pas encore de sécuriser cette demande. Réessayez dans un navigateur à jour.");
+    throw new Error(
+      "Votre appareil ne permet pas encore de sécuriser cette demande. Réessayez dans un navigateur à jour.",
+    );
   }
   return randomUUID.call(globalThis.crypto);
 }
@@ -121,8 +126,18 @@ export async function startReelPresence(input: StartReelPresenceInput): Promise<
     throw new Error("Choisissez une durée proposée.");
   }
 
-  const areaLabel = requireText(input.areaLabel, "Précisez un lieu entre 2 et 80 caractères.", 2, 80);
-  const description = requireText(input.description, "La description doit contenir entre 1 et 180 caractères.", 1, 180);
+  const areaLabel = requireText(
+    input.areaLabel,
+    "Précisez un lieu entre 2 et 80 caractères.",
+    2,
+    80,
+  );
+  const description = requireText(
+    input.description,
+    "La description doit contenir entre 1 et 180 caractères.",
+    1,
+    180,
+  );
   return callReelRpc<ReelPresence>("start_reel_presence_from_grant", {
     p_zone_grant_id: input.zoneGrantId,
     p_area_label: areaLabel,
@@ -188,7 +203,8 @@ export async function listReelBips(): Promise<ReelBip[]> {
 
 export async function listReelConnections(): Promise<ReelConnection[]> {
   const rows = await callReelRpc<ReelConnection[]>("list_reel_connections");
-  if (!Array.isArray(rows)) throw new Error("Votre historique de rencontres n’a pas pu être chargé.");
+  if (!Array.isArray(rows))
+    throw new Error("Votre historique de rencontres n’a pas pu être chargé.");
   return rows;
 }
 

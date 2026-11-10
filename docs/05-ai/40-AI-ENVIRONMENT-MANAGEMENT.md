@@ -54,7 +54,7 @@ perturbation utilisateurs.
 
 Vitala doit utiliser au minimum :
 
-```text id="x7m2qa" LOCAL
+````text id="x7m2qa" LOCAL
 
 ↓
 
@@ -371,3 +371,4 @@ MANAGEMENT.md
 
 7
 
+````

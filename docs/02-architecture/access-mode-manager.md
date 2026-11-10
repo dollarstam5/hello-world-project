@@ -7,6 +7,7 @@
 Le gestionnaire central fournit un contexte d'accès commun. Le moteur de décision évalue une demande avant que l'interface ne propose une action.
 
 Il couvre les cinq espaces Vitalis :
+
 - Réel ;
 - Flash ;
 - Scan ;
@@ -17,11 +18,11 @@ Il évite que chaque moteur réinvente les règles d'identité, de compte, de co
 
 ## 2. Modes reconnus
 
-| Mode | Signification |
-| --- | --- |
-| Visiteur | Personne sans compte connecté ni session invitée |
-| Invité | Personne avec une identité temporaire, sans profil durable |
-| Membre | Personne disposant d'une session Supabase Auth |
+| Mode     | Signification                                              |
+| -------- | ---------------------------------------------------------- |
+| Visiteur | Personne sans compte connecté ni session invitée           |
+| Invité   | Personne avec une identité temporaire, sans profil durable |
+| Membre   | Personne disposant d'une session Supabase Auth             |
 
 Le mode décrit l'identité de la session, pas à lui seul les droits d'une personne.
 
@@ -34,6 +35,7 @@ API principale : `evaluateVitalisDecision(context, engine, action)`.
 Moteurs : `reel`, `flash`, `scan`, `radar`, `grid` (2×2).
 
 Actions génériques reconnues :
+
 - `view_intro`, `read_public` : présentation ou information publique ;
 - `enter` : ouvrir l'espace d'un moteur ;
 - `discover` : demander une découverte/recherche ;
@@ -47,12 +49,12 @@ Actions génériques reconnues :
 
 Le résultat comporte quatre états :
 
-| État | Signification |
-| --- | --- |
-| `allow` | L'interface peut poursuivre l'étape non protégée indiquée |
-| `deny` | L'action doit être bloquée |
-| `server_check` | Le serveur doit autoriser explicitement l'opération |
-| `defer` | Seule une action explicitement compatible avec l'outbox hors ligne peut être mise en attente |
+| État           | Signification                                                                                |
+| -------------- | -------------------------------------------------------------------------------------------- |
+| `allow`        | L'interface peut poursuivre l'étape non protégée indiquée                                    |
+| `deny`         | L'action doit être bloquée                                                                   |
+| `server_check` | Le serveur doit autoriser explicitement l'opération                                          |
+| `defer`        | Seule une action explicitement compatible avec l'outbox hors ligne peut être mise en attente |
 
 **Important :** `allow` ne donne jamais accès à une donnée protégée et ne remplace pas une autorisation serveur.
 
@@ -73,13 +75,13 @@ Les informations non fournies ne sont pas inventées. Les contrôles métier abs
 
 ## 5. Politique d'accès actuelle
 
-| Situation | Présentation publique | Entrée moteur | Action métier |
-| --- | --- | --- | --- |
-| Visiteur | Autorisée | Refusée | Refusée |
-| Invité | Autorisée | Réel uniquement | Vérification serveur obligatoire, sans autorisation implicite |
-| Membre actif | Autorisée | Espaces des moteurs | Vérification serveur obligatoire |
-| Profil invité/incomplet | Présentation uniquement | Refusée | Refusée |
-| Profil suspendu/fermé/invérifiable | Présentation uniquement | Refusée | Refusée |
+| Situation                          | Présentation publique   | Entrée moteur       | Action métier                                                 |
+| ---------------------------------- | ----------------------- | ------------------- | ------------------------------------------------------------- |
+| Visiteur                           | Autorisée               | Refusée             | Refusée                                                       |
+| Invité                             | Autorisée               | Réel uniquement     | Vérification serveur obligatoire, sans autorisation implicite |
+| Membre actif                       | Autorisée               | Espaces des moteurs | Vérification serveur obligatoire                              |
+| Profil invité/incomplet            | Présentation uniquement | Refusée             | Refusée                                                       |
+| Profil suspendu/fermé/invérifiable | Présentation uniquement | Refusée             | Refusée                                                       |
 
 L'entrée invité dans Réel ouvre uniquement le parcours d'accueil invité. Les opérations Réel pour invités ne sont pas encore activées par ce moteur central.
 
@@ -117,6 +119,7 @@ La matrice de référence pour Réel, Flash, Scan, Radar et 2×2 est maintenue d
 Les tests unitaires couvrent les cinq moteurs, les modes visiteur/invité/membre, les profils bloqués, les consentements, les quotas, la propriété des ressources, la disponibilité et la mise en attente hors ligne. Ils sont écrits mais leur exécution n'est pas encore confirmée.
 
 À compléter avant activation réelle :
+
 1. Ajouter les politiques métier détaillées et les droits par action dans chaque moteur.
 2. Répliquer les contrôles sensibles dans les fonctions serveur/RPC et les politiques RLS.
 3. Définir les consentements précis et leurs preuves, durées et révocations.

@@ -1,4 +1,12 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import { useAuth } from "@/domains/auth";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -39,7 +47,9 @@ function createTemporaryIdentity(): TemporaryGuestIdentity {
   return { sessionId: crypto.randomUUID(), startedAt: Date.now() };
 }
 
-function isMemberProfileState(value: string): value is Exclude<MemberProfileState, "not_applicable" | "loading" | "missing" | "error"> {
+function isMemberProfileState(
+  value: string,
+): value is Exclude<MemberProfileState, "not_applicable" | "loading" | "missing" | "error"> {
   return value === "active" || value === "invited" || value === "suspended" || value === "closed";
 }
 
@@ -50,7 +60,8 @@ function isMemberProfileState(value: string): value is Exclude<MemberProfileStat
 export function AccessModeProvider({ children }: { children: ReactNode }) {
   const { user, loading: authLoading } = useAuth();
   const [guest, setGuest] = useState<TemporaryGuestIdentity | null>(null);
-  const [memberProfileState, setMemberProfileState] = useState<MemberProfileState>("not_applicable");
+  const [memberProfileState, setMemberProfileState] =
+    useState<MemberProfileState>("not_applicable");
 
   useEffect(() => {
     if (!user) {
@@ -80,9 +91,7 @@ export function AccessModeProvider({ children }: { children: ReactNode }) {
           setMemberProfileState("closed");
           return;
         }
-        setMemberProfileState(
-          isMemberProfileState(data.status) ? data.status : "error",
-        );
+        setMemberProfileState(isMemberProfileState(data.status) ? data.status : "error");
       })
       .catch(() => {
         if (!cancelled) setMemberProfileState("error");
@@ -113,16 +122,19 @@ export function AccessModeProvider({ children }: { children: ReactNode }) {
 
   const endGuestSession = useCallback(() => setGuest(null), []);
 
-  const value = useMemo<AccessModeState>(() => ({
-    mode: user ? "member" : guest ? "guest" : "visitor",
-    loading: authLoading || (Boolean(user) && memberProfileState === "loading"),
-    memberId: user?.id ?? null,
-    memberProfileState: user ? memberProfileState : "not_applicable",
-    guest,
-    isAuthenticated: Boolean(user),
-    startGuestSession,
-    endGuestSession,
-  }), [user, authLoading, memberProfileState, guest, startGuestSession, endGuestSession]);
+  const value = useMemo<AccessModeState>(
+    () => ({
+      mode: user ? "member" : guest ? "guest" : "visitor",
+      loading: authLoading || (Boolean(user) && memberProfileState === "loading"),
+      memberId: user?.id ?? null,
+      memberProfileState: user ? memberProfileState : "not_applicable",
+      guest,
+      isAuthenticated: Boolean(user),
+      startGuestSession,
+      endGuestSession,
+    }),
+    [user, authLoading, memberProfileState, guest, startGuestSession, endGuestSession],
+  );
 
   return <AccessModeContext.Provider value={value}>{children}</AccessModeContext.Provider>;
 }

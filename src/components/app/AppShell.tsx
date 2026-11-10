@@ -87,12 +87,8 @@ export function AppShell({ children }: { children: ReactNode }) {
         </AnimatePresence>
       </main>
 
-      {!isEngineRoute && (
-        <BottomNav onOpenMenu={() => setMenuOpen(true)} menuOpen={menuOpen} />
-      )}
-      {isReelRoute && (
-        <ReelBottomNav onOpenMenu={() => setMenuOpen(true)} menuOpen={menuOpen} />
-      )}
+      {!isEngineRoute && <BottomNav onOpenMenu={() => setMenuOpen(true)} menuOpen={menuOpen} />}
+      {isReelRoute && <ReelBottomNav onOpenMenu={() => setMenuOpen(true)} menuOpen={menuOpen} />}
       <MenuSheet open={menuOpen} onOpenChange={setMenuOpen} />
       <CommunicationSheet open={communicationOpen} onOpenChange={setCommunicationOpen} />
       <InstallBanner />

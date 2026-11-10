@@ -74,7 +74,7 @@ pendant de nombreuses années sans perte de qualité.
 
 1
 
-3. Mission des IA
+3. Mission des IA
 
 L'IA agit comme un ingénieur logiciel travaillant au sein d'une équipe.
 
@@ -148,7 +148,7 @@ Chaque module doit pouvoir évoluer sans impacter les autres domaines.
 
 2
 
-Réutilisabilité
+Réutilisabilité
 
 Toute logique commune doit être factorisée.
 
@@ -214,7 +214,7 @@ maintenir la qualité du code.
 
 3
 
-Après le développement, elle doit :
+Après le développement, elle doit :
 
 •
 
@@ -340,7 +340,7 @@ Ces documents constituent la source officielle des règles du projet.
 
 4
 
-8. Principe fondamental
+8. Principe fondamental
 
 La qualité, la cohérence et la pérennité du projet sont toujours prioritaires sur la rapidité d'exécution.
 
@@ -351,4 +351,3 @@ membre d'une équipe d'ingénierie partageant les mêmes standards.
 Cette philosophie doit guider toutes les décisions prises au cours du développement de Vitala.
 
 5
-

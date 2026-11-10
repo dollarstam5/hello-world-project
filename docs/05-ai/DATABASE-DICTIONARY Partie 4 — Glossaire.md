@@ -58,7 +58,7 @@ Ensemble des informations publiques et privées associées à un utilisateur.
 
 1
 
-UDI (Universal Digital Identity)
+UDI (Universal Digital Identity)
 
 Identité numérique unique permettant d'identifier un utilisateur de manière fiable au sein de la
 
@@ -98,7 +98,7 @@ Situation où plusieurs modifications incompatibles sont détectées lors d'une 
 
 2
 
-Trust Score
+Trust Score
 
 Indicateur représentant le niveau de confiance calculé pour un utilisateur, un contenu ou une
 
@@ -138,7 +138,7 @@ Structure optimisant les performances des recherches dans PostgreSQL.
 
 3
 
-Politique RLS
+Politique RLS
 
 Règle PostgreSQL définissant les droits d'accès aux lignes d'une table.
 
@@ -191,4 +191,3 @@ limite les ambiguïtés lors du développement, des revues d'architecture et de 
 les intelligences artificielles.
 
 4
-

@@ -1,5 +1,9 @@
 import { createClient } from "@supabase/supabase-js";
-import { getPublicServerEnvironment, getReelZoneHmacSecret, getSupabaseServiceRoleKey } from "@/config/env.server";
+import {
+  getPublicServerEnvironment,
+  getReelZoneHmacSecret,
+  getSupabaseServiceRoleKey,
+} from "@/config/env.server";
 
 export type ReelZonePurpose = "discover" | "presence";
 export interface ReelZoneResolution {
@@ -20,7 +24,7 @@ function createAdminClient() {
 function cellFor(latitude: number, longitude: number) {
   // A 200 m grid intentionally reduces precision before any zone token is made.
   const latitudeStep = 200 / 111_320;
-  const longitudeStep = 200 / (111_320 * Math.max(Math.cos(latitude * Math.PI / 180), 0.01));
+  const longitudeStep = 200 / (111_320 * Math.max(Math.cos((latitude * Math.PI) / 180), 0.01));
   return {
     latitude: Math.floor(latitude / latitudeStep),
     longitude: Math.floor(longitude / longitudeStep),
@@ -40,7 +44,9 @@ async function tokenForCell(latitudeCell: number, longitudeCell: number, secret:
     key,
     new TextEncoder().encode(`v1:${latitudeCell}:${longitudeCell}`),
   );
-  const hex = Array.from(new Uint8Array(signature), (byte) => byte.toString(16).padStart(2, "0")).join("");
+  const hex = Array.from(new Uint8Array(signature), (byte) =>
+    byte.toString(16).padStart(2, "0"),
+  ).join("");
   return `z1_${hex.slice(0, 56)}`;
 }
 
@@ -55,8 +61,14 @@ export async function resolveReelZoneForUser(
   longitude: number,
   purpose: ReelZonePurpose,
 ): Promise<ReelZoneResolution> {
-  if (!Number.isFinite(latitude) || latitude < -90 || latitude > 90 ||
-      !Number.isFinite(longitude) || longitude < -180 || longitude > 180) {
+  if (
+    !Number.isFinite(latitude) ||
+    latitude < -90 ||
+    latitude > 90 ||
+    !Number.isFinite(longitude) ||
+    longitude < -180 ||
+    longitude > 180
+  ) {
     throw new Error("La position reçue n’est pas valide.");
   }
 
@@ -68,7 +80,8 @@ export async function resolveReelZoneForUser(
     .eq("status", "active")
     .is("deleted_at", null)
     .maybeSingle();
-  if (profileError || !profile) throw new Error("Un profil Vitalis actif est nécessaire pour cette action.");
+  if (profileError || !profile)
+    throw new Error("Un profil Vitalis actif est nécessaire pour cette action.");
 
   const secret = getReelZoneHmacSecret();
   const { error: cleanupError } = await admin.rpc("purge_reel_location_sessions");
@@ -85,7 +98,8 @@ export async function resolveReelZoneForUser(
       .limit(1)
       .maybeSingle();
     if (throttleError) throw new Error("Impossible de vérifier votre demande de découverte.");
-    if (recentDiscovery) throw new Error("Patientez quelques secondes avant de relancer la découverte.");
+    if (recentDiscovery)
+      throw new Error("Patientez quelques secondes avant de relancer la découverte.");
 
     const { error } = await admin.rpc("create_reel_discovery_location", {
       p_user_id: userId,
@@ -117,5 +131,11 @@ export async function resolveReelZoneForUser(
     p_expires_at: expiresAt,
   });
   if (error || !grantId) throw new Error("Impossible de préparer votre présence pour le moment.");
-  return { zoneKeys: [centerKey], zoneKey: centerKey, grantId: grantId as string, areaLabel: "Votre secteur approximatif", expiresAt };
+  return {
+    zoneKeys: [centerKey],
+    zoneKey: centerKey,
+    grantId: grantId as string,
+    areaLabel: "Votre secteur approximatif",
+    expiresAt,
+  };
 }

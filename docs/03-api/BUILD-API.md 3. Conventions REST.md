@@ -74,7 +74,7 @@ des noms explicites ;
 
 1
 
-•
+•
 
 des noms au pluriel ;
 
@@ -83,7 +83,7 @@ des noms au pluriel ;
 •
 
 des caractères minuscules ;
-le séparateur  -  uniquement lorsque nécessaire.
+le séparateur - uniquement lorsque nécessaire.
 
 Exemples :
 
@@ -149,7 +149,7 @@ Aucune méthode ne doit être détournée de son usage.
 
 2
 
-3.5 Structure des URI
+3.5 Structure des URI
 
 Les URI suivent la structure :
 
@@ -211,7 +211,7 @@ Les données métier ne doivent jamais être transmises dans l'URL.
 
 3
 
-3.7 Corps des requêtes
+3.7 Corps des requêtes
 
 Les requêtes utilisent le format JSON.
 
@@ -289,7 +289,7 @@ Exemple :
 
 4
 
-/status=active
+/status=active
 
 /category=health
 
@@ -367,7 +367,7 @@ Exemples :
 
 5
 
-Les codes doivent refléter précisément le résultat de la requête.
+Les codes doivent refléter précisément le résultat de la requête.
 
 3.14 Sécurité
 
@@ -458,4 +458,3 @@ Elles assurent une expérience cohérente pour les applications clientes, les d�
 intelligences artificielles, tout en facilitant la maintenance et l'évolution de la plateforme.
 
 6
-

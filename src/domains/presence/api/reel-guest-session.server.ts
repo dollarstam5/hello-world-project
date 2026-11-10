@@ -1,5 +1,11 @@
 import { createClient } from "@supabase/supabase-js";
-import { getCookie, getRequest, setCookie, deleteCookie, setResponseHeader } from "@tanstack/react-start/server";
+import {
+  getCookie,
+  getRequest,
+  setCookie,
+  deleteCookie,
+  setResponseHeader,
+} from "@tanstack/react-start/server";
 import { getPublicServerEnvironment, getSupabaseServiceRoleKey } from "@/config/env.server";
 
 const COOKIE_NAME = "__Host-vitalis_reel_guest";
@@ -89,7 +95,10 @@ export async function createReelGuestSession() {
 
   const existing = await currentSession();
   if (existing) {
-    const remaining = Math.max(1, Math.floor((Date.parse(existing.expires_at) - Date.now()) / 1000));
+    const remaining = Math.max(
+      1,
+      Math.floor((Date.parse(existing.expires_at) - Date.now()) / 1000),
+    );
     setCookie(COOKIE_NAME, getCookie(COOKIE_NAME)!, cookieOptions(remaining));
     return { active: true, expiresAt: existing.expires_at };
   }
@@ -158,4 +167,3 @@ export async function revokeReelGuestSession() {
   deleteCookie(COOKIE_NAME, cookieOptions(0));
   return { active: false as const };
 }
-

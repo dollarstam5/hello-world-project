@@ -58,21 +58,21 @@ Une checklist ne constitue pas une certification WCAG : des tests automatisés e
 
 ## 7. Décisions Vitalis V1
 
-| ID | Décision | Acceptation |
-| --- | --- | --- |
-| VNS-01 | Home distincte de Réel | Identité Vitalis et icône de lancement ouvrent Home ; Réel a sa route |
-| VNS-02 | Quatre moteurs | Réel, Flash, Scan et Radar accessibles et identifiables |
-| VNS-03 | Barre mobile à cinq icônes | Flash, Scan, Réel, Radar, 2×2 dans cet ordre |
-| VNS-04 | 2×2 secondaire | Le cinquième contrôle ouvre le menu, pas un moteur |
-| VNS-05 | Cibles tactiles | ≥48 dp Android et ≥44 pt iOS natif |
-| VNS-06 | WCAG | SC 2.5.8 évalué séparément en CSS px et exceptions |
-| VNS-07 | Insets | Aucun contrôle essentiel masqué |
-| VNS-08 | Adaptation | Layout adapté à l'espace disponible, tablette vérifiée |
-| VNS-09 | Retour | Gestes système et historique navigateur préservés |
-| VNS-10 | Contexte | État moteur restauré selon session et permissions |
-| VNS-11 | Accessibilité | Clavier, lecteurs d'écran, contraste, zoom et mouvement vérifiés |
-| VNS-12 | PWA | Installation testée séparément Android/iOS |
-| VNS-13 | Langues | FR/EN vérifié dans routes, panneaux et annonces |
+| ID     | Décision                   | Acceptation                                                           |
+| ------ | -------------------------- | --------------------------------------------------------------------- |
+| VNS-01 | Home distincte de Réel     | Identité Vitalis et icône de lancement ouvrent Home ; Réel a sa route |
+| VNS-02 | Quatre moteurs             | Réel, Flash, Scan et Radar accessibles et identifiables               |
+| VNS-03 | Barre mobile à cinq icônes | Flash, Scan, Réel, Radar, 2×2 dans cet ordre                          |
+| VNS-04 | 2×2 secondaire             | Le cinquième contrôle ouvre le menu, pas un moteur                    |
+| VNS-05 | Cibles tactiles            | ≥48 dp Android et ≥44 pt iOS natif                                    |
+| VNS-06 | WCAG                       | SC 2.5.8 évalué séparément en CSS px et exceptions                    |
+| VNS-07 | Insets                     | Aucun contrôle essentiel masqué                                       |
+| VNS-08 | Adaptation                 | Layout adapté à l'espace disponible, tablette vérifiée                |
+| VNS-09 | Retour                     | Gestes système et historique navigateur préservés                     |
+| VNS-10 | Contexte                   | État moteur restauré selon session et permissions                     |
+| VNS-11 | Accessibilité              | Clavier, lecteurs d'écran, contraste, zoom et mouvement vérifiés      |
+| VNS-12 | PWA                        | Installation testée séparément Android/iOS                            |
+| VNS-13 | Langues                    | FR/EN vérifié dans routes, panneaux et annonces                       |
 
 ## Sources officielles consultées
 

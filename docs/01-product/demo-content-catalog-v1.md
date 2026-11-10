@@ -30,6 +30,7 @@ Les contenus ci-dessous sont des scénarios éditoriaux. Avant leur implémentat
 **Rôle de l'écran :** aider à comprendre où commencer et montrer les possibilités de Vitalis.
 
 Contenus préparés et première présentation intégrée :
+
 - une grande salutation en haut de page, lisible sur mobile et adaptée à la langue ; en mode invité : « Bonjour et bienvenue chez Vitalis ! » ;
 - une courte phrase d'accueil qui explique simplement l'utilité de Vitalis ;
 - quatre accès aux espaces principaux : Flash, Scan, Réel et Radar ;
@@ -42,6 +43,7 @@ Les cartes moteur gardent une hiérarchie simple : icône lisible, nom, explicat
 Les aperçus d'accueil sont des exemples de présentation, pas une activité en direct : ils ne sont ni des publications d'utilisateurs, ni des notifications, ni des compteurs. Leurs textes sont localisés en français et en anglais. Ils ne sont jamais interactifs et ne sont pas injectés dans un flux métier.
 
 Exemple de salutation :
+
 - FR : « Bonjour et bienvenue chez Vitalis ! »
 - EN : « Hello, and welcome to Vitalis! »
 
@@ -52,6 +54,7 @@ Ne pas afficher de faux compteurs d'activité, de personnes connectées ou de no
 **Rôle :** publier et consulter des besoins, offres, opportunités ou disponibilités.
 
 Jeu éditorial révisé — des demandes formulées comme une personne les exprimerait :
+
 1. « Je cherche une personne de confiance pour garder mes enfants ce week-end. »
 2. « J’aurais besoin d’un coup de main pour mon déménagement dans deux heures. »
 3. « Je cherche une personne pour veiller auprès d’un parent âgé pendant quelques heures chaque jour cette semaine. »
@@ -68,6 +71,7 @@ Chaque élément doit utiliser uniquement les catégories, créneaux et champs d
 **Rôle :** montrer comment rechercher ou identifier des informations utiles autour d'un besoin.
 
 Préparer 3 résultats pédagogiques, pas des identifications prétendument vérifiées :
+
 - « Aide pour un déménagement » — exemple de mots-clés pour retrouver un service adapté ;
 - « Garde d’enfants le week-end » — exemple de besoin à rechercher, sans afficher de profil ni de disponibilité fictive ;
 - « Préparation de repas pour une réunion à Dakar » — exemple de recherche formulée en langage courant.
@@ -85,6 +89,7 @@ Si Scan ne peut pas afficher des exemples sans les faire passer pour des résult
 Ne jamais injecter de profils fictifs dans le rayon réel, dans le compteur de personnes proches, dans la liste des personnes présentes ou dans les bips reçus.
 
 Pour préparer l'interface :
+
 - utiliser une scène d'aperçu séparée, explicitement marquée « Exemple » ;
 - montrer une carte illustrative d'un profil fictif sans distance ni position réelle ;
 - montrer le fonctionnement du bouton de signal dans un tutoriel non interactif ou désactivé ;
@@ -97,6 +102,7 @@ Aucun bip, lien, message ou compteur fictif ne doit être généré.
 **Rôle :** découvrir et suivre des recherches ou opportunités dans une zone et pendant une période définies.
 
 Préparer 3 à 4 exemples de recherches, adaptés au schéma réel :
+
 - « Trouver une personne de confiance pour garder les enfants ce week-end »
 - « Trouver une aide pour un déménagement dans deux heures »
 - « Chercher un emploi avec une prise de poste rapide »
@@ -110,6 +116,7 @@ Les exemples sont consultables en aperçu mais ne peuvent pas être activés, re
 ### 3.6 Menu 2×2 et espaces complémentaires
 
 Le menu doit expliquer chaque espace sans simuler une activité :
+
 - une description claire de son utilité ;
 - une illustration ou un exemple statique marqué « Exemple » lorsqu'elle apporte une vraie compréhension ;
 - un état « bientôt disponible » uniquement si la fonction n'est réellement pas implémentée.
@@ -119,6 +126,7 @@ Ne pas remplir les tuiles avec des faux nombres, des badges de nouveauté artifi
 ### 3.7 Profil et identité
 
 Préparer un profil de démonstration isolé, présenté dans un aperçu et non comme un compte connecté :
+
 - prénom fictif ;
 - courte présentation ;
 - domaines d'intérêt ;
@@ -132,10 +140,12 @@ Ne pas attribuer de niveau de confiance, de vérification, de badge officiel ou 
 Le centre comporte quatre onglets : Notifications, Assistant, Messages et Réel.
 
 **Notifications**
+
 - Ne pas injecter de fausses notifications dans la boîte réelle.
 - Si une explication est utile, afficher un aperçu pédagogique isolé montrant à quoi ressemble une notification, marqué « Exemple » et sans compteur non lu.
 
 **Assistant**
+
 - Préparer 3 questions d'exemple que la personne peut choisir pour découvrir l'assistant :
   - « Comment publier un besoin ? »
   - « Quelle est la différence entre Flash et Radar ? »
@@ -143,17 +153,20 @@ Le centre comporte quatre onglets : Notifications, Assistant, Messages et Réel.
 - Les questions suggérées ne doivent pas être présentées comme des messages déjà envoyés.
 
 **Messages**
+
 - Ne pas créer de fausses conversations dans la boîte réelle.
 - Prévoir un état vide chaleureux qui explique que les échanges apparaissent après une mise en relation ou une action acceptée.
 - Une scène de démonstration éventuelle doit être séparée de la boîte et porter le marqueur « Exemple ».
 
 **Réel**
+
 - Ne pas créer de faux bips ni de relations.
 - Expliquer que les bips reçus apparaissent lorsque la présence est active et qu'une personne envoie réellement un signal.
 
 ### 3.9 Assistant Vita
 
 Préparer des suggestions de départ et quelques exemples de réponses courtes :
+
 - aide à choisir le bon moteur ;
 - explication des règles de confidentialité ;
 - aide à comprendre les étapes d'une action V1.
@@ -163,6 +176,7 @@ Les exemples doivent rester cohérents avec les capacités réellement disponibl
 ### 3.10 Compte, connexion et permissions
 
 Préparer des explications et exemples de saisie uniquement pour illustrer les champs existants :
+
 - exemple de format d'adresse e-mail ;
 - exemple de nom d'affichage ;
 - explication de la permission de position avant Scan ou Réel.
@@ -178,6 +192,7 @@ Pour présenter l'interface, utiliser un environnement de démonstration distinc
 ## 4. Seuils de suffisance
 
 Ne pas appliquer un seuil numérique global. Le seuil est défini pour chaque surface en fonction de son objectif :
+
 - Accueil : assez de données pour expliquer les usages, sans faux indicateurs d'activité.
 - Flash : diversité suffisante pour comprendre les principaux types de publications.
 - Scan : ne pas mélanger les résultats réels et les scénarios pédagogiques.
@@ -193,6 +208,7 @@ Le domaine doit définir et tester le critère exact avant de coder le sélecteu
 ## 5. Critères de validation avant implémentation
 
 Pour chaque interface, vérifier :
+
 1. Le contrat ou type réel qui décrit les données.
 2. Le propriétaire du domaine et l'emplacement des fixtures.
 3. Les surfaces où le marqueur « Exemple » doit rester visible.
@@ -215,7 +231,6 @@ Pour chaque interface, vérifier :
 
 **Important :** ce catalogue prépare les contenus et les règles de présentation. Il ne prouve pas que les jeux de données sont déjà codés ni que les écrans sont déjà conformes. La création des fixtures doit suivre l'inspection des contrats de chaque domaine.
 
-
 ## 7. Contrats techniques vérifiés — préparation des fixtures
 
 Cette section remplace les suppositions éditoriales par les formes réellement présentes dans le dépôt (lecture de main, commit 9d8446c). Elle ne crée pas encore de données dans l'application.
@@ -232,6 +247,7 @@ Cette section remplace les suppositions éditoriales par les formes réellement 
 ScanResult (packages/core-contracts/src/scan.ts) contient id, kind, category, title, timeSlot, areaLabel, distanceKm, createdAt et expiresAt. L'écran affiche explicitement distanceKm.
 
 Le scan envoie actuellement latitude et longitude au serveur dans ScanQuery, avec rayon et limite. La position n'est pas affichée comme coordonnée publique, mais il serait inexact de dire qu'elle n'est jamais partagée. En conséquence :
+
 - aucun faux ScanResult ne sera injecté dans les résultats réels ;
 - l'aperçu de démonstration sera une scène explicative distincte, sans distance inventée ;
 - le texte de confidentialité devra dire que la position est utilisée temporairement pour effectuer la recherche et n'est pas affichée aux autres personnes, après vérification du traitement serveur.
@@ -257,7 +273,6 @@ Pour Réel, notifications, messages, profil, compte, menu 2×2 et administration
 
 Avant d'ajouter un fichier de fixtures dans un domaine, vérifier son contrat public, ses imports autorisés et son chemin de rendu. Les exemples doivent être des données de présentation explicitement typées et marquées comme démonstration ; ils ne doivent jamais être convertis en enregistrements métier ni passer par les repositories, l'outbox ou les fonctions serveur. Le marquage « Exemple » doit être visible sur chaque carte ou scène pédagogique, en FR et EN.
 
-
 ## 9. Source SQL fictive fournie — règle d'utilisation
 
 Le fichier `donnees_sql.sql` est confirmé comme source de données fictives destinée à remplir les interfaces. Il ne doit pas être importé tel quel dans la base Vitalis.
@@ -266,7 +281,6 @@ Son contenu doit passer par la spécification [Adaptation du jeu SQL de démonst
 
 Objectif : faire passer les fixtures dans les mêmes chemins de lecture, validations et règles de présentation que les données réelles, tout en conservant `origin: "demo"` et en interdisant toute écriture ou synchronisation.
 
-
 ## 10. Première intégration effective — Flash
 
 La fixture locale de `src/domains/flash/model/demo-flashes.ts` présente désormais trois besoins concrets : garde d’enfants pour le week-end, aide au déménagement dans deux heures et deux personnes pour aider à faire la vaisselle après une réunion du dimanche vers 15 h à Dakar. Les lieux génériques et la mention « Dakar (exemple) » évitent de faire croire à une annonce locale réelle.
@@ -274,7 +288,6 @@ La fixture locale de `src/domains/flash/model/demo-flashes.ts` présente désorm
 Le flux Flash conserve ses sources réelles (publications distantes et publications locales hors connexion), puis utilise un sélecteur de présentation commun sur la forme `PublicFlash`. Les contenus réels sont toujours prioritaires ; les exemples ne complètent l'affichage jusqu'à trois cartes qu'après la résolution du chargement réel. Chaque carte garde sa provenance et affiche « Exemple » / « Example » à la place de « En direct ».
 
 Les tests de `tests/flash-demo-feed.test.ts` vérifient aussi les intitulés de ces scénarios et le libellé de zone pédagogique. Scan, Réel, Radar et les autres espaces ne reçoivent pas de fausses données métier : leurs exemples restent des scènes explicatives séparées jusqu'à validation de leurs contrats.
-
 
 ## 7. Scénarios sensibles et limites de publication
 
@@ -289,25 +302,24 @@ Les tests de `tests/flash-demo-feed.test.ts` vérifient aussi les intitulés de 
 
 Les scénarios suivants constituent un référentiel éditorial partagé, pas des données injectées dans les résultats métier :
 
-| Moteur / espace | Exemple de langage naturel | Présentation autorisée |
-| --- | --- | --- |
-| Accueil | Garde d’enfants ce week-end ; déménagement dans deux heures ; aide à la vaisselle après une réunion à Dakar | Trois cartes pédagogiques Flash, marquées « Exemple » |
-| Flash | Besoin de garde ; déménagement urgent ; veille d’un parent âgé ; recherche d’emploi rapide ; vaisselle après réunion ; préparation de cuisine à Dakar | Fixtures Flash seulement après validation des contrats et protections du domaine |
-| Scan | « Je cherche de l’aide pour déménager » ; « Je cherche une personne pour garder les enfants » | Scène explicative séparée, jamais de faux résultat, distance ou disponibilité |
-| Réel | « Je suis à une réunion et je souhaite signaler ma présence » | Tutoriel statique ; aucune fausse personne, présence, distance ou bip |
-| Radar | « Je cherche une garde pour le week-end » ; « Je cherche un emploi avec une prise de poste rapide » ; « Je souhaite être accompagné auprès d’un parent âgé pendant une période définie » | Aperçu de recherche non activable, sans correspondance ni activité inventée |
-| 2×2 | Espace et Talents | Menu de navigation vers le profil personnel et la page Talents, sans faux compteurs |
-| Profil | Nom affiché et identifiant public de la personne connectée, si renseigné | Aperçu privé du compte ; aucune fiche fictive ou réputation inventée |
-| Notifications / Messages | « Votre demande a reçu une réponse » | Exemple pédagogique isolé, jamais injecté dans les boîtes réelles |
-| Assistant Vita | « Aide-moi à expliquer mon besoin pour dimanche à 15 h » | Suggestion de question, pas de conversation préchargée |
+| Moteur / espace          | Exemple de langage naturel                                                                                                                                                               | Présentation autorisée                                                              |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Accueil                  | Garde d’enfants ce week-end ; déménagement dans deux heures ; aide à la vaisselle après une réunion à Dakar                                                                              | Trois cartes pédagogiques Flash, marquées « Exemple »                               |
+| Flash                    | Besoin de garde ; déménagement urgent ; veille d’un parent âgé ; recherche d’emploi rapide ; vaisselle après réunion ; préparation de cuisine à Dakar                                    | Fixtures Flash seulement après validation des contrats et protections du domaine    |
+| Scan                     | « Je cherche de l’aide pour déménager » ; « Je cherche une personne pour garder les enfants »                                                                                            | Scène explicative séparée, jamais de faux résultat, distance ou disponibilité       |
+| Réel                     | « Je suis à une réunion et je souhaite signaler ma présence »                                                                                                                            | Tutoriel statique ; aucune fausse personne, présence, distance ou bip               |
+| Radar                    | « Je cherche une garde pour le week-end » ; « Je cherche un emploi avec une prise de poste rapide » ; « Je souhaite être accompagné auprès d’un parent âgé pendant une période définie » | Aperçu de recherche non activable, sans correspondance ni activité inventée         |
+| 2×2                      | Espace et Talents                                                                                                                                                                        | Menu de navigation vers le profil personnel et la page Talents, sans faux compteurs |
+| Profil                   | Nom affiché et identifiant public de la personne connectée, si renseigné                                                                                                                 | Aperçu privé du compte ; aucune fiche fictive ou réputation inventée                |
+| Notifications / Messages | « Votre demande a reçu une réponse »                                                                                                                                                     | Exemple pédagogique isolé, jamais injecté dans les boîtes réelles                   |
+| Assistant Vita           | « Aide-moi à expliquer mon besoin pour dimanche à 15 h »                                                                                                                                 | Suggestion de question, pas de conversation préchargée                              |
 
 Aucun moteur métier supplémentaire n'est activé par cette mise à jour. Les pages Scan, Réel, Radar et Talents affichent des cartes pédagogiques statiques marquées « Exemple » ; elles ne créent aucun résultat, présence, recherche suivie ou activité métier. La cloche conserve ses quatre onglets et des états vides explicites tant que les sources réelles ne sont pas raccordées.
-
-
 
 ## 9. Aperçu des personnes et consultation d’un profil
 
 Les cartes de résultat qui disposent d'un aperçu public autorisé peuvent présenter, sans surcharge :
+
 - un avatar compact (photo publique consentie ou initiales) ;
 - le nom d'affichage ;
 - une zone large, par exemple une ville ou un quartier volontairement partagé ;

@@ -16,6 +16,7 @@ The concrete baseline schema is summarized in the [data dictionary](../04-databa
 ## Repository-backed migration chain
 
 The standard Supabase migration directory is `supabase/migrations/`. It contains:
+
 1. The initial nine-table schema, baseline grants/RLS policies, Auth user trigger, revision sequence/function, and sync revision triggers.
 2. Revocations/grants for selected helper and trigger functions.
 3. Storage-object policies for the `avatars` and `media` buckets.
@@ -30,6 +31,7 @@ A separate `src/supabase/migrations/` directory still contains later SQL-like ar
 ## Synchronization contract
 
 The shared contracts in `packages/core-contracts/src/records.ts` define a client record envelope with UUID identity, epoch-millisecond timestamps, nullable revision, and soft deletion. The mapper in `src/lib/sync/mapping.ts` maps:
+
 - logical `users` to physical `profiles`,
 - logical `udi`, `flashes`, `missions`, `radars`, `posts`, `media`, `notifications`, and `audit` to similarly named tables,
 - camelCase fields to snake_case columns,
@@ -40,6 +42,7 @@ The database baseline assigns `revision` server-side via `sync_revision_seq`; th
 ## Security layers
 
 Database authorization is layered:
+
 1. Table/column grants decide whether a database role may perform an operation.
 2. RLS policies scope rows by caller identity and, for privileged actions, role checks.
 3. Triggers enforce server-owned revision fields and selected protected state transitions.

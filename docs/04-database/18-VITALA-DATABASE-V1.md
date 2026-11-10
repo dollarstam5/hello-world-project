@@ -74,7 +74,7 @@ Chaque table possède une responsabilité précise.
 
 1
 
-Table : User
+Table : User
 
 Objectif
 
@@ -144,7 +144,7 @@ Accès extrêmement restreint.
 
 2
 
-Lecture et écriture contrôlées par Supabase Auth et les politiques RLS.
+Lecture et écriture contrôlées par Supabase Auth et les politiques RLS.
 
 Cycle de vie
 
@@ -228,7 +228,7 @@ Conversations.
 
 3
 
-Synchronisation
+Synchronisation
 
 Hybride.
 
@@ -280,7 +280,7 @@ Cloud uniquement.
 
 4
 
-Sécurité
+Sécurité
 
 Très sensible.
 
@@ -344,7 +344,7 @@ Les mises à jour proviennent du serveur.
 
 5
 
-Table : Settings
+Table : Settings
 
 Objectif
 
@@ -416,7 +416,7 @@ la synchronisation multi-appareils.
 
 6
 
-Synchronisation
+Synchronisation
 
 Cloud.
 
@@ -466,7 +466,7 @@ Les relations sont établies par des identifiants uniques garantissant la cohér
 
 7
 
-Principes de qualité
+Principes de qualité
 
 Le Domaine Utilisateur respecte les règles suivantes :
 
@@ -503,4 +503,3 @@ Il garantit une identité unique, une gestion progressive de la confiance, une s
 responsabilités et une base solide pour tous les moteurs de la plateforme.
 
 8
-

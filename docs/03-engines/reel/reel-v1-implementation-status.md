@@ -34,7 +34,6 @@ Réel doit accueillir une personne sans lui imposer la création d'un compte Vit
 
 Le modèle actuel, qui exige un utilisateur Supabase authentifié et un profil actif pour démarrer une présence, **ne satisfait pas encore cette règle**. Il ne faut pas le contourner en créant un faux profil membre. Il faut concevoir un parcours invité séparé, avec identité temporaire, autorisations limitées et mécanisme d'expiration/nettoyage. La présence en direct peut nécessiter un état technique éphémère pour être visible aux autres appareils ; cet état ne doit pas être confondu avec un enregistrement durable dans la base des profils Vitalis. Le choix du transport temporaire et sa politique de suppression restent à spécifier et tester.
 
-
 ## Gestion centrale des modes d'accès — fondation ajoutée
 
 Le domaine partagé `src/domains/access-mode/` est maintenant monté à la racine de l'application via `AccessModeProvider`. Les moteurs peuvent lire `useAccessMode()` pour distinguer visiteur, invité et membre, sans dupliquer la détection de session.
@@ -45,6 +44,7 @@ Le domaine partagé `src/domains/access-mode/` est maintenant monté à la racin
 - Cette fondation ne fournit pas encore de session invitée multi-appareils, de jeton serveur, de transport temps réel ou de droits Réel. Les opérations invitées restent désactivées jusqu'à livraison et test de ces protections.
 
 Document d'architecture : [Gestionnaire central des modes d'accès](../../02-architecture/access-mode-manager.md).
+
 - Le moteur commun `evaluateEngineAccess()` distingue présentation, entrée dans un moteur et opération métier. Un invité peut ouvrir le parcours d'entrée Réel, mais toute opération Réel reste soumise à une vérification serveur. Les autres entrées invitées restent refusées par défaut.
 - Les décisions sont couvertes par `tests/access-mode/engine-access.test.ts` ; ces tests sont ajoutés au dépôt mais ne sont pas encore exécutés dans cet environnement.
 
@@ -95,13 +95,11 @@ Document d'architecture : [Gestionnaire central des modes d'accès](../../02-arc
 
 **Le socle SQL n'est pas une preuve que le parcours Réel est déjà disponible dans l'application.**
 
-
 ## Session invitée serveur — conception préparée
 
 Le document [Architecture de session invitée éphémère](./reel-guest-session-architecture.md) fixe les garde-fous du prochain lot : secret généré côté serveur, empreinte seule en base, cookie HttpOnly, contrôle serveur par opération, rotation, révocation et purge. Il sépare strictement la session invitée de la table des présences membre qui référence auth.users.
 
 **Aucune session invitée serveur n'est encore implémentée.** La fondation front-end reste une identité en mémoire et n'autorise aucune opération métier. Le parcours invité réel reste désactivé jusqu'à validation des durées et droits, confirmation de l'API cookie TanStack Start, livraison des migrations et réussite des tests.
-
 
 ## Session invitée serveur — première tranche technique ajoutée
 
@@ -112,7 +110,6 @@ Le document [Architecture de session invitée éphémère](./reel-guest-session-
 - Test pgTAP 131 : privilèges, RLS, absence de données membre/GPS et droit de purge.
 
 **Limites actuelles :** les opérations métier Réel n'acceptent pas encore cette session ; aucune interface ne la démarre automatiquement. La durée d'une heure est un paramètre technique provisoire, sans renouvellement. Les limites anti-abus de la couche d'hébergement et la présence effective de pg_cron doivent être vérifiées. Migration, tests et build n'ont pas été exécutés ici.
-
 
 ## Politique d’accès Réel — première tranche
 
@@ -126,7 +123,6 @@ Le document [Architecture de session invitée éphémère](./reel-guest-session-
 - Tests Vitest ajoutés dans `tests/access-mode/reel-access-policy.test.ts`.
 
 **État de preuve :** code et tests ajoutés à la branche ; exécution Vitest, lint, build, migration Supabase et tests pgTAP non effectués. Cette politique ne rend pas le moteur activable en production à elle seule.
-
 
 ## Service client Réel — première connexion aux RPC
 
@@ -162,7 +158,6 @@ Le document [Architecture de session invitée éphémère](./reel-guest-session-
 **Limite à vérifier :** une répétition idempotente d'un ancien identifiant de requête peut encore retrouver le bip déjà créé avant la suspension ; elle ne crée pas de nouvelle action métier. Ce comportement devra être confirmé par un test SQL dédié et éventuellement resserré selon la politique produit.
 
 **Vérifications :** les deux migrations et les tests SQL correspondants sont ajoutés à la branche, mais n'ont pas été appliqués sur une base de test. pgTAP, lint, build et tests sur appareils restent à exécuter.
-
 
 ## Audit SQL complémentaire — suspension et idempotence
 
@@ -213,7 +208,6 @@ Le workflow `.github/workflows/quality.yml` contient bien une étape `Database R
 
 Lors du contrôle du commit courant de la PR, GitHub ne retourne toutefois aucun workflow associé et aucun statut de vérification. La présence de cette étape dans le fichier YAML ne prouve donc pas qu'elle a été exécutée. Il faut vérifier que GitHub Actions est activé pour le dépôt et que le workflow `Quality` est autorisé, puis obtenir un run associé au SHA exact de la PR. Si aucun run ne démarre après un nouveau commit, le déclenchement ou les permissions Actions doivent être corrigés avant de considérer les tests comme validés.
 
-
 ## Consentement de position propre à Réel — tranche interface
 
 - À chaque nouvelle entrée dans la page Réel, le moteur présente son propre choix d'utilisation de la position, même si un autre moteur Vitalis a déjà obtenu une autorisation.
@@ -225,7 +219,6 @@ Lors du contrôle du commit courant de la PR, GitHub ne retourne toutefois aucun
 - L'accord de localisation ne démarre pas automatiquement la présence publique. Le partage de sa propre présence exige toujours le consentement métier distinct reel_presence.
 
 **Limite d'intégration à conserver visible :** après l'accord de localisation, la découverte réelle n'est pas encore activée. Aucun résolveur de zone opaque fiable n'a été identifié et le client de présence ne doit pas fabriquer une clé de zone à partir du GPS. Le raccordement de la zone, le filtrage spatial et les abonnements temps réel restent à livrer et à tester. Les propositions globales et la reprise de la dernière activité ne disposent pas encore de sources métier connectées ; aucun contenu fictif ne doit être affiché.
-
 
 ## Mise à jour — découverte indépendante et présence approximative (10 novembre 2026)
 
@@ -271,18 +264,16 @@ L'autorisation du système d'exploitation est demandée uniquement après l'acti
 
 ### Matrice réelle des modes d'accès
 
-| Mode | Entrée Réel | Découverte | Publication de présence | Bips |
-| --- | --- | --- | --- | --- |
-| Visiteur | Présentation publique seulement | Non | Non | Non |
-| Invité | Parcours Réel accessible | Non, pas encore raccordée | Non, pas encore raccordée | Non |
-| Membre avec profil actif | Oui | Oui, après accord propre à Réel | Oui, après accord séparé `reel_presence` | RPC serveur disponibles, interface à raccorder |
-| Profil membre invité/incomplet, suspendu, fermé, manquant ou en erreur | Accès métier refusé | Non | Non | Non |
+| Mode                                                                   | Entrée Réel                     | Découverte                      | Publication de présence                  | Bips                                           |
+| ---------------------------------------------------------------------- | ------------------------------- | ------------------------------- | ---------------------------------------- | ---------------------------------------------- |
+| Visiteur                                                               | Présentation publique seulement | Non                             | Non                                      | Non                                            |
+| Invité                                                                 | Parcours Réel accessible        | Non, pas encore raccordée       | Non, pas encore raccordée                | Non                                            |
+| Membre avec profil actif                                               | Oui                             | Oui, après accord propre à Réel | Oui, après accord séparé `reel_presence` | RPC serveur disponibles, interface à raccorder |
+| Profil membre invité/incomplet, suspendu, fermé, manquant ou en erreur | Accès métier refusé             | Non                             | Non                                      | Non                                            |
 
 Les statuts ci-dessus décrivent le code présent dans la branche, pas une validation sur une base déployée. Les migrations et tests doivent encore être exécutés.
 
-
 **Mise à jour de référence :** la section « Mise à jour — découverte indépendante et présence approximative » ci-dessous décrit l'état le plus récent et prévaut sur les descriptions historiques antérieures.
-
 
 ## Mise à jour — rayon métrique réel avec PostGIS
 

@@ -64,7 +64,7 @@ Fournit les éléments fondamentaux communs à l'ensemble de la plateforme.
 
 1
 
-Responsabilités
+Responsabilités
 
 •
 
@@ -168,7 +168,7 @@ Mission
 
 2
 
-3.4 Flash
+3.4 Flash
 
 Rôle
 
@@ -258,7 +258,7 @@ Gestion des interactions entre utilisateurs.
 
 3
 
-Responsabilités
+Responsabilités
 
 •
 
@@ -364,7 +364,7 @@ Flash
 
 4
 
-•
+•
 
 Mission
 
@@ -452,7 +452,7 @@ Gestion des traitements intelligents de la plateforme.
 
 5
 
-Responsabilités
+Responsabilités
 
 •
 
@@ -542,7 +542,7 @@ Tous les domaines.
 
 6
 
-3.14 Configuration
+3.14 Configuration
 
 Rôle
 
@@ -618,7 +618,7 @@ Les interactions complexes doivent être décrites dans le Domain Model et les A
 
 7
 
-5. Évolution des domaines
+5. Évolution des domaines
 
 Toute création, modification ou suppression d'un domaine doit entraîner :
 
@@ -645,4 +645,3 @@ Il fournit une vision globale de la structure fonctionnelle de la base de donné
 avant la consultation détaillée des tables dans la Partie 3.
 
 8
-

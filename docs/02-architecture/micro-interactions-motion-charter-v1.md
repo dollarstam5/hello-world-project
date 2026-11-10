@@ -21,15 +21,15 @@ Les animations de Vitalis doivent rendre l'application plus claire et agréable,
 
 Ces plages sont des repères de conception, pas des délais à appliquer mécaniquement. La sensation sur téléphone réel prime sur la valeur théorique.
 
-| Interaction | Durée indicative |
-| --- | ---: |
-| Retour immédiat au toucher | 80–120 ms |
-| Survol, sélection ou mise en évidence | 120–180 ms |
-| Changement d'état d'un contrôle | 150–220 ms |
-| Apparition légère d'une carte | 200–280 ms |
-| Panneau ou feuille inférieure | 220–300 ms |
-| Transition entre écrans | 180–250 ms |
-| Mouvement décoratif exceptionnel | lent, limité et interrompu hors contexte |
+| Interaction                           |                         Durée indicative |
+| ------------------------------------- | ---------------------------------------: |
+| Retour immédiat au toucher            |                                80–120 ms |
+| Survol, sélection ou mise en évidence |                               120–180 ms |
+| Changement d'état d'un contrôle       |                               150–220 ms |
+| Apparition légère d'une carte         |                               200–280 ms |
+| Panneau ou feuille inférieure         |                               220–300 ms |
+| Transition entre écrans               |                               180–250 ms |
+| Mouvement décoratif exceptionnel      | lent, limité et interrompu hors contexte |
 
 Éviter d'enchaîner plusieurs délais qui donnent l'impression que l'interface attend. Les animations longues ne doivent pas retarder la navigation, la validation ou l'accès au contenu.
 
@@ -47,29 +47,34 @@ Une même interaction ne doit pas être animée simultanément par Tailwind, CSS
 ## 5. Comportement attendu par espace
 
 ### Flash
+
 - Faire apparaître les cartes sans déplacement excessif.
 - Donner un retour immédiat au toucher et à la sélection.
 - Confirmer une publication uniquement après son enregistrement réel.
 - Garder le marqueur « Exemple » visible sur les contenus de démonstration ; son animation ne doit pas le rendre temporairement illisible.
 
 ### Scan
+
 - Garder le cadre et les indications de lecture sobres et stables.
 - Animer une recherche uniquement pendant une opération réellement en cours.
 - Distinguer clairement résultat, absence de résultat et erreur.
 - Ne jamais faire croire qu'une identification est réussie avant réception et validation du résultat.
 
 ### Réel
+
 - Réserver les halos ou pulsations à l'indication d'une présence réellement active.
 - N'animer un bip reçu qu'après réception d'un signal réel.
 - N'afficher l'animation de mise en relation qu'après acceptation confirmée.
 - Ne jamais utiliser un effet animé pour simuler une personne, un bip, une relation ou une activité.
 
 ### Radar
+
 - Montrer un balayage uniquement pendant une recherche réellement active.
 - Arrêter le mouvement dès que la recherche se termine, échoue ou est mise en pause.
 - Ne pas animer de faux résultats, de correspondances ou de disponibilité.
 
 ### Espaces communs et menu 2×2
+
 - Garder des transitions cohérentes entre menus, dialogues, panneaux et pages.
 - Fournir un retour immédiat à chaque action, même si le contenu détaillé arrive ensuite.
 - Ne pas ajouter d'animation à un compteur ou badge lorsqu'aucun événement réel ne le justifie.
@@ -98,6 +103,7 @@ Une même interaction ne doit pas être animée simultanément par Tailwind, CSS
 Le projet possède déjà un socle partagé de mouvement dans `src/lib/design/motion.ts`, un hook de réduction du mouvement dans `src/lib/design/useReducedMotion.ts` et des exports partagés dans `src/shared/animations/`.
 
 Conserver ces points d'entrée comme références communes. Avant d'ajouter un nouveau variant ou une nouvelle animation :
+
 1. vérifier si un variant partagé répond déjà au besoin ;
 2. réutiliser les conventions existantes lorsque c'est pertinent ;
 3. éviter de dupliquer les mêmes transitions dans chaque moteur ;

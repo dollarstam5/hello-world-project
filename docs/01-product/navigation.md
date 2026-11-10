@@ -14,6 +14,7 @@
 ## Espaces indépendants et gestion
 
 Chaque moteur expose ses sections propres et un accès de gestion dédié :
+
 - Flash : découverte, création, modification des Flash actifs, archivage et suppression des enregistrements disponibles localement. Les brouillons et préférences dédiées restent à raccorder lorsqu’ils auront un stockage et des règles métier réels.
 - Scan : recherche de proximité, choix du rayon (1, 5, 10 ou 20 km), états de recherche, dix recherches récentes conservées localement (date et nombre de résultats uniquement). Les filtres avancés et préférences dédiées restent à construire.
 - Réel : accès Présence, Bips reçus, Mises en relation et Historique. Ces espaces restent informatifs tant que le transport temps réel partagé, les données sécurisées et les parcours métier ne sont pas raccordés.

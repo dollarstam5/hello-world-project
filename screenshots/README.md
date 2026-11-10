@@ -7,6 +7,7 @@ Il accueille les captures et maquettes d'écran fournies ou validées par l'équ
 ## 1. Règle de référence
 
 Avant de créer ou modifier un écran :
+
 1. consulter le dossier correspondant dans `screenshots/` ;
 2. lire les documents fonctionnels et techniques liés dans `docs/` ;
 3. respecter les états, interactions, textes et règles décrits ;
@@ -57,6 +58,7 @@ Utiliser des noms courts, explicites, en minuscules, sans espace ni accent :
 `<espace>-<écran>-<état>-v<version>.<extension>`
 
 Exemples :
+
 - `home-main-default-v1.png`
 - `reel-presence-active-v1.png`
 - `reel-request-empty-v1.png`
@@ -105,21 +107,21 @@ Pour les écrans adaptatifs, distinguer clairement mobile, tablette et desktop. 
 
 ## 9. Suivi des références
 
-| Espace | Référence principale | Version | Statut | Notes |
-|---|---|---|---|---|
-| Design system | À ajouter | — | À VALIDER | |
-| Onboarding | À ajouter | — | À VALIDER | |
-| Accueil | À ajouter | — | À VALIDER | |
-| Navigation | À ajouter | — | À VALIDER | |
-| Réel | À ajouter | — | À VALIDER | |
-| Flash | À ajouter | — | À VALIDER | |
-| Scan | À ajouter | — | À VALIDER | |
-| Radar | À ajouter | — | À VALIDER | |
-| Catégories | À ajouter | — | À VALIDER | |
-| Notifications | À ajouter | — | À VALIDER | |
-| Messages | À ajouter | — | À VALIDER | |
-| Assistance | À ajouter | — | À VALIDER | |
-| Profil | À ajouter | — | À VALIDER | |
-| Fenêtres et dialogues | À ajouter | — | À VALIDER | |
+| Espace                | Référence principale | Version | Statut    | Notes |
+| --------------------- | -------------------- | ------- | --------- | ----- |
+| Design system         | À ajouter            | —       | À VALIDER |       |
+| Onboarding            | À ajouter            | —       | À VALIDER |       |
+| Accueil               | À ajouter            | —       | À VALIDER |       |
+| Navigation            | À ajouter            | —       | À VALIDER |       |
+| Réel                  | À ajouter            | —       | À VALIDER |       |
+| Flash                 | À ajouter            | —       | À VALIDER |       |
+| Scan                  | À ajouter            | —       | À VALIDER |       |
+| Radar                 | À ajouter            | —       | À VALIDER |       |
+| Catégories            | À ajouter            | —       | À VALIDER |       |
+| Notifications         | À ajouter            | —       | À VALIDER |       |
+| Messages              | À ajouter            | —       | À VALIDER |       |
+| Assistance            | À ajouter            | —       | À VALIDER |       |
+| Profil                | À ajouter            | —       | À VALIDER |       |
+| Fenêtres et dialogues | À ajouter            | —       | À VALIDER |       |
 
 > Les dossiers sont prêts à recevoir les images. Leur présence ne signifie pas que les maquettes sont déjà définies ou validées.

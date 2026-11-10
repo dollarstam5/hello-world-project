@@ -8,6 +8,7 @@
 - VITALA-PERSONAS-V1
 - VITALA-TRUST-LEVELS-V1
 - VITALA-UJ-01 à UJ-07
+
 # 1. Objectif
 
 Flash est le moteur de diffusion principal de Vitala. Sa mission est de permettre à un utilisateur de diffuser rapidement une information, un besoin, une opportunité ou une disponibilité vers les personnes les plus pertinentes de l'écosystème.
@@ -20,7 +21,7 @@ Flash ne fonctionne pas comme un réseau social. Flash ne cherche pas à maximis
 - les likes;
 - les commentaires;
 - la viralité.
-Flash cherche à maximiser :
+  Flash cherche à maximiser :
 
 - la pertinence;
 - la rapidité;
@@ -37,6 +38,7 @@ Un Flash est une information diffusée dans Vitala avec un objectif précis. Cha
 - une zone d'application;
 - une catégorie;
 - un niveau de visibilité.
+
 # 4. Types de Flash
 
 Le moteur Flash peut diffuser plusieurs catégories.
@@ -51,6 +53,7 @@ Exemples :
 - Collaboration
 - Partenariat
 - Projet
+
 ## Disponibilité
 
 Exemples :
@@ -59,6 +62,7 @@ Exemples :
 - Service disponible
 - Ressource disponible
 - Salle disponible
+
 ## Information utile
 
 Exemples :
@@ -68,6 +72,7 @@ Exemples :
 
 - Changement important
 - Signalement utile
+
 ## Événement
 
 Exemples :
@@ -76,6 +81,7 @@ Exemples :
 - Rencontre
 - Formation
 - Activité
+
 ## Offre
 
 Exemples :
@@ -84,6 +90,7 @@ Exemples :
 - Service
 - Ressource
 - Location
+
 # 5. Modes d'entrée
 
 Flash doit accepter plusieurs modes de création.
@@ -109,6 +116,7 @@ L'utilisateur parle naturellement. Vita extrait automatiquement :
 - Document
 - Pièce jointe
 - Import externe
+
 # 6. Assistance Vita
 
 Vita accompagne la création. Exemple :
@@ -116,6 +124,7 @@ Vita accompagne la création. Exemple :
 ```
 J'ai besoin de deux serveurs pour demain à Bonanjo.
 ```
+
 Vita comprend :
 
 ```
@@ -125,6 +134,7 @@ Lieu : Bonanjo
 Date : Demain
 Quantité : 2
 ```
+
 Puis complète uniquement les informations manquantes.
 
 # 7. Structure d'un Flash
@@ -144,6 +154,7 @@ Chaque Flash possède :
 - Niveau de confiance requis
 
 - Statut
+
 # 8. Statuts
 
 Un Flash peut être :
@@ -158,6 +169,7 @@ Expiré
 Archivé
 Supprimé
 ```
+
 # 9. Validation automatique
 
 Avant diffusion : Flash passe par les contrôles internes.
@@ -169,6 +181,7 @@ Avant diffusion : Flash passe par les contrôles internes.
 - Fraude potentielle
 - Contenu interdit
 - Cohérence minimale
+
 ## Résultat
 
 ```
@@ -179,6 +192,7 @@ Refusé
 ```
 À compléter
 ```
+
 # 10. Durée de vie
 
 Chaque Flash possède une durée limitée.
@@ -191,6 +205,7 @@ Chaque Flash possède une durée limitée.
 - 3 jours
 - 7 jours
 - 30 jours
+
 ## Expiration
 
 À expiration :
@@ -200,6 +215,7 @@ Expiré
 ↓
 Archivé
 ```
+
 # 11. Diffusion intelligente
 
 Flash ne diffuse jamais à toute la plateforme.
@@ -227,6 +243,7 @@ Quartier
 Commune
 Ville
 ```
+
 ## Régional
 
 Exemple :
@@ -235,6 +252,7 @@ Exemple :
 Département
 Région
 ```
+
 ## National
 
 Exemple :
@@ -242,6 +260,7 @@ Exemple :
 ```
 Pays entier
 ```
+
 ## Flexible
 
 Selon la volonté de l'auteur.
@@ -255,7 +274,7 @@ Les utilisateurs peuvent :
 - Répondre
 - Se proposer
 - Demander des précisions
-Les réponses sont encadrées par les règles Vitala.
+  Les réponses sont encadrées par les règles Vitala.
 
 # 14. Limites selon le niveau
 
@@ -325,6 +344,7 @@ VEILLE
 ↓
 Rester informé
 ```
+
 # 19. Architecture recommandée
 
 ```
@@ -339,6 +359,7 @@ packages/
 ├── notifications/
 └── flash.types.ts
 ```
+
 # 20. Principes UX
 
 ## Principe 1
@@ -384,6 +405,7 @@ Réponses pertinentes
 ↓
 Action réelle
 ```
+
 avec un minimum d'effort pour l'utilisateur.
 
 # Fin du document

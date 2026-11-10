@@ -58,7 +58,7 @@ Le type le plus adapté doit toujours être privilégié.
 
 3. UUID
 
-Le type  UUID  est utilisé pour tous les identifiants métier.
+Le type UUID est utilisé pour tous les identifiants métier.
 
 Utilisations :
 
@@ -76,7 +76,7 @@ identifiants publics.
 
 1
 
-Avantages :
+Avantages :
 
 •
 
@@ -94,7 +94,7 @@ Les identifiants auto-incrémentés sont réservés aux besoins techniques excep
 
 4. TEXT
 
-Le type  TEXT  est le type par défaut pour les contenus textuels dont la longueur n'est pas limitée.
+Le type TEXT est le type par défaut pour les contenus textuels dont la longueur n'est pas limitée.
 
 Exemples :
 
@@ -112,11 +112,11 @@ commentaires ;
 biographies ;
 contenus rédigés.
 
-TEXT  est préféré à  VARCHAR  lorsqu'aucune limite métier n'est nécessaire.
+TEXT est préféré à VARCHAR lorsqu'aucune limite métier n'est nécessaire.
 
 5. VARCHAR
 
-VARCHAR(n)  est utilisé uniquement lorsqu'une longueur maximale fait partie de la règle métier.
+VARCHAR(n) est utilisé uniquement lorsqu'une longueur maximale fait partie de la règle métier.
 
 Exemples :
 
@@ -140,7 +140,7 @@ La longueur maximale doit être documentée.
 
 6. BOOLEAN
 
-Le type  BOOLEAN  représente uniquement deux états :
+Le type BOOLEAN représente uniquement deux états :
 
 •
 
@@ -154,9 +154,9 @@ Il ne doit pas être utilisé pour représenter plusieurs états métier.
 
 2
 
-7. INTEGER
+7. INTEGER
 
-Le type  INTEGER  est utilisé pour les valeurs numériques entières de taille standard.
+Le type INTEGER est utilisé pour les valeurs numériques entières de taille standard.
 
 Exemples :
 
@@ -174,7 +174,7 @@ durées en secondes.
 
 8. BIGINT
 
-BIGINT  est réservé aux valeurs pouvant dépasser les limites d'un  INTEGER .
+BIGINT est réservé aux valeurs pouvant dépasser les limites d'un INTEGER .
 
 Exemples :
 
@@ -188,7 +188,7 @@ compteurs globaux.
 
 9. NUMERIC
 
-Le type  NUMERIC  est utilisé lorsqu'une précision exacte est indispensable.
+Le type NUMERIC est utilisé lorsqu'une précision exacte est indispensable.
 
 Exemples :
 
@@ -210,7 +210,7 @@ scores nécessitant une précision décimale.
 
 10. DATE
 
-Le type  DATE  est utilisé lorsqu'une heure n'est pas nécessaire.
+Le type DATE est utilisé lorsqu'une heure n'est pas nécessaire.
 
 Exemples :
 
@@ -228,9 +228,9 @@ anniversaire.
 
 3
 
-11. TIMESTAMPTZ
+11. TIMESTAMPTZ
 
-Le type  TIMESTAMPTZ  est le standard officiel pour tous les événements horodatés.
+Le type TIMESTAMPTZ est le standard officiel pour tous les événements horodatés.
 
 Exemples :
 
@@ -254,7 +254,7 @@ Toutes les dates et heures doivent être stockées avec le fuseau horaire.
 
 12. JSONB
 
-Le type  JSONB  est réservé aux données semi-structurées.
+Le type JSONB est réservé aux données semi-structurées.
 
 Exemples :
 
@@ -292,7 +292,7 @@ Sinon, une table dédiée est préférable.
 
 14. ENUM
 
-Les  ENUM  sont utilisés pour des listes fermées de valeurs.
+Les ENUM sont utilisés pour des listes fermées de valeurs.
 
 Exemples :
 
@@ -310,7 +310,7 @@ catégories fixes.
 
 4
 
-Toute évolution d'un  ENUM  doit être accompagnée d'une migration.
+Toute évolution d'un ENUM doit être accompagnée d'une migration.
 
 15. Types interdits ou à éviter
 
@@ -324,10 +324,10 @@ Les pratiques suivantes sont déconseillées :
 
 •
 
-utilisation systématique de  VARCHAR(255)  sans justification ;
-stockage de données relationnelles dans un champ  JSONB  ;
-utilisation de  TEXT  pour représenter des nombres ;
-multiplication de colonnes génériques ( value ,  data ,  info ) sans signification métier.
+utilisation systématique de VARCHAR(255) sans justification ;
+stockage de données relationnelles dans un champ JSONB ;
+utilisation de TEXT pour représenter des nombres ;
+multiplication de colonnes génériques ( value , data , info ) sans signification métier.
 
 16. Évolution des types
 
@@ -395,7 +395,7 @@ la documentation est synchronisée.
 
 5
 
-19. Conclusion
+19. Conclusion
 
 Le choix des types de données constitue un élément fondamental de la qualité de la base PostgreSQL
 
@@ -406,4 +406,3 @@ Le respect de ces conventions garantit une base de données cohérente, performa
 compatible avec les principes du Build Blueprint.
 
 6
-

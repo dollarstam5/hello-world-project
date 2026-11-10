@@ -156,18 +156,18 @@ Les pages restent simples sur mobile : cartes lisibles, actions prioritaires vis
 
 ## 7. État de réalisation et ordre de mise en place
 
-| Domaine | Mise en place actuelle | Limite ou étape suivante |
-| --- | --- | --- |
-| Tableau de bord personnel | Cartes d'accès vers profil, informations, paramètres du profil, aperçu et paramètres de l'application | Enrichir seulement lorsque de nouvelles données réelles sont disponibles |
-| Mes informations | Adresse de connexion et date de création lues depuis la session authentifiée | Ajouter d'autres champs uniquement s'ils existent et sont autorisés |
-| Mon profil | Nom affiché et identifiant public modifiables ; identifiant supprimable avec confirmation | Ajouter avatar/description après validation du stockage et du consentement |
-| Paramètres du profil | Page dédiée expliquant que la visibilité n'est pas encore configurable et que le profil reste privé par défaut | Définir les permissions et la projection serveur avant d'activer les réglages |
-| Aperçu du profil | Page dédiée qui explique pourquoi aucun aperçu public n'est encore présenté | Raccorder une projection publique fidèle et sécurisée |
-| Paramètres de l'application | Langue et thème sombre/clair/automatique persistés sur l'appareil | Ajouter uniquement les préférences réellement prises en charge |
-| Flash | Flux public, création et section « Mes Flash » basée sur les enregistrements locaux du compte ; archivage et suppression disponibles | Étendre aux brouillons/archives distants après validation de leur source et de leur synchronisation |
-| Scan | Recherche de proximité existante et explication claire de l'absence d'historique enregistré | Ne proposer un historique que lorsqu'une persistance réelle et contrôlable existe |
-| Réel | Sections Présence, Bips, Mises en relation et Historique présentées en cartes « Bientôt » | Raccorder les services métier avant d'activer les actions |
-| Radar | Sections Suivis, Alertes et Résultats présentées en cartes « Bientôt » | Raccorder les suivis et résultats confirmés avant d'activer les actions |
+| Domaine                     | Mise en place actuelle                                                                                                               | Limite ou étape suivante                                                                            |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| Tableau de bord personnel   | Cartes d'accès vers profil, informations, paramètres du profil, aperçu et paramètres de l'application                                | Enrichir seulement lorsque de nouvelles données réelles sont disponibles                            |
+| Mes informations            | Adresse de connexion et date de création lues depuis la session authentifiée                                                         | Ajouter d'autres champs uniquement s'ils existent et sont autorisés                                 |
+| Mon profil                  | Nom affiché et identifiant public modifiables ; identifiant supprimable avec confirmation                                            | Ajouter avatar/description après validation du stockage et du consentement                          |
+| Paramètres du profil        | Page dédiée expliquant que la visibilité n'est pas encore configurable et que le profil reste privé par défaut                       | Définir les permissions et la projection serveur avant d'activer les réglages                       |
+| Aperçu du profil            | Page dédiée qui explique pourquoi aucun aperçu public n'est encore présenté                                                          | Raccorder une projection publique fidèle et sécurisée                                               |
+| Paramètres de l'application | Langue et thème sombre/clair/automatique persistés sur l'appareil                                                                    | Ajouter uniquement les préférences réellement prises en charge                                      |
+| Flash                       | Flux public, création et section « Mes Flash » basée sur les enregistrements locaux du compte ; archivage et suppression disponibles | Étendre aux brouillons/archives distants après validation de leur source et de leur synchronisation |
+| Scan                        | Recherche de proximité existante et explication claire de l'absence d'historique enregistré                                          | Ne proposer un historique que lorsqu'une persistance réelle et contrôlable existe                   |
+| Réel                        | Sections Présence, Bips, Mises en relation et Historique présentées en cartes « Bientôt »                                            | Raccorder les services métier avant d'activer les actions                                           |
+| Radar                       | Sections Suivis, Alertes et Résultats présentées en cartes « Bientôt »                                                               | Raccorder les suivis et résultats confirmés avant d'activer les actions                             |
 
 La réalisation doit suivre les contrats, services et politiques d'accès existants. Aucun changement de schéma, RPC, migration ou politique RLS n'est autorisé par cette seule spécification.
 

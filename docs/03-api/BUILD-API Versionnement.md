@@ -64,7 +64,7 @@ Exemples :
 
 1
 
-/api/v1/users
+/api/v1/users
 
 /api/v1/flashes
 
@@ -146,7 +146,7 @@ Aucune version ne doit être supprimée sans préavis.
 
 2
 
-19.7 Coexistence des versions
+19.7 Coexistence des versions
 
 Pendant une période de migration, plusieurs versions peuvent coexister.
 
@@ -227,7 +227,7 @@ Les anciennes versions encore supportées doivent continuer à être testées.
 
 3
 
-19.11 Références croisées
+19.11 Références croisées
 
 Cette section est liée à :
 
@@ -286,4 +286,3 @@ En définissant des règles claires de compatibilité, de dépréciation et de m
 les partenaires et les futures intégrations.
 
 4
-

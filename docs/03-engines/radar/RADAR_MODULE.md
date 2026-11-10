@@ -13,15 +13,15 @@ Une correspondance Radar ne crée jamais automatiquement une mission. Une action
 
 ## Cycle de vie
 
-| État | Signification | Sorties autorisées |
-| --- | --- | --- |
-| `draft` | Critères enregistrés et modifiables, veille inactive | activation, annulation |
-| `active` | Veille activée et échéance de revue programmée | surveillance, pause, revalidation, expiration, annulation |
-| `watching` | Moteur de correspondances en recherche | correspondance, pause, revalidation, expiration, annulation |
-| `matched` | Au moins une correspondance est disponible | pause, revalidation, expiration, annulation |
-| `paused` | Veille suspendue par la personne | reprise, expiration, annulation |
-| `expired` | Échéance atteinte | état terminal |
-| `cancelled` | Arrêt volontaire | état terminal |
+| État        | Signification                                        | Sorties autorisées                                          |
+| ----------- | ---------------------------------------------------- | ----------------------------------------------------------- |
+| `draft`     | Critères enregistrés et modifiables, veille inactive | activation, annulation                                      |
+| `active`    | Veille activée et échéance de revue programmée       | surveillance, pause, revalidation, expiration, annulation   |
+| `watching`  | Moteur de correspondances en recherche               | correspondance, pause, revalidation, expiration, annulation |
+| `matched`   | Au moins une correspondance est disponible           | pause, revalidation, expiration, annulation                 |
+| `paused`    | Veille suspendue par la personne                     | reprise, expiration, annulation                             |
+| `expired`   | Échéance atteinte                                    | état terminal                                               |
+| `cancelled` | Arrêt volontaire                                     | état terminal                                               |
 
 L'activation et la reprise programment une prochaine revue dans un délai maximal de sept jours, sans dépasser l'expiration. La revalidation renseigne `last_reviewed_at` et programme la suivante.
 

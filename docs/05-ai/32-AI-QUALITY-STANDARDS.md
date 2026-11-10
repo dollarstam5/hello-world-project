@@ -48,7 +48,7 @@ documentation.
 
 Une fonctionnalité Vitala doit être :
 
-```text id="k9m3vq" Fonctionnelle
+````text id="k9m3vq" Fonctionnelle
 
 +
 
@@ -561,3 +561,4 @@ Fin de AI/32-AI-QUALITY-STANDARDS.md
 
 9
 
+````

@@ -6,11 +6,11 @@ Ce document définit les seuils de référence pour la PWA et les écrans mobile
 
 ### Web Vitals
 
-| Signal | Healthy | Warning | Critical |
-| --- | ---: | ---: | ---: |
-| LCP p75 | < 2.5 s | 2.5–4.0 s | > 4.0 s |
+| Signal  |  Healthy |    Warning | Critical |
+| ------- | -------: | ---------: | -------: |
+| LCP p75 |  < 2.5 s |  2.5–4.0 s |  > 4.0 s |
 | INP p75 | < 200 ms | 200–500 ms | > 500 ms |
-| CLS p75 | < 0.10 | 0.10–0.25 | > 0.25 |
+| CLS p75 |   < 0.10 |  0.10–0.25 |   > 0.25 |
 
 ### Budgets de chargement
 
@@ -24,12 +24,12 @@ Ce document définit les seuils de référence pour la PWA et les écrans mobile
 
 Les contrôles manuels et E2E devront couvrir au minimum :
 
-| Profil | Viewport de référence | Priorité |
-| --- | --- | --- |
-| Petit téléphone | 360×800 | P0 |
-| Téléphone standard | 390×844 | P0 |
-| Grand téléphone | 412×915 | P1 |
-| Tablette portrait | 768×1024 | P1 |
+| Profil             | Viewport de référence | Priorité |
+| ------------------ | --------------------- | -------- |
+| Petit téléphone    | 360×800               | P0       |
+| Téléphone standard | 390×844               | P0       |
+| Grand téléphone    | 412×915               | P1       |
+| Tablette portrait  | 768×1024              | P1       |
 
 Les tests doivent vérifier : navigation principale, débordement horizontal, lisibilité, zones tactiles, état offline et retour online.
 
@@ -46,7 +46,6 @@ Les tests doivent vérifier : navigation principale, débordement horizontal, li
 P0.10.1 formalise uniquement les contrats et seuils. La collecte Web Vitals, les budgets automatisés, la PWA installable et les parcours E2E seront traités dans les sous-milestones suivants.
 
 L'authentification n'est pas modifiée par P0.10.1.
-
 
 ## P0.10.3 — socle PWA/installabilité
 
@@ -79,7 +78,6 @@ Les seuils sont ceux du contrat P0.10.1 :
 Le script `check:performance-budget` échoue avec le détail du budget dépassé et est intégré à `check:release`, donc une régression de budget bloque automatiquement le contrôle Quality.
 
 L'agrégation p75 des mesures LCP/INP/CLS reste distincte de ces budgets de fichiers et sera traitée avec les données de mesure réelles.
-
 
 ## P0.10.6 — validation mobile/E2E
 

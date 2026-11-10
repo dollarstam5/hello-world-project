@@ -16,11 +16,11 @@ Ces décisions concernent le comportement produit attendu. Ce document ne préte
 
 Les systèmes doivent distinguer trois catégories qui ne sont jamais interchangeables :
 
-| Catégorie | Définition | Cycle de vie |
-| --- | --- | --- |
-| Réelle | Contenu effectivement créé, reçu ou confirmé par un utilisateur ou un service autorisé | Stockage local Dexie, puis synchronisation vers le backend selon les contrats et politiques applicables |
-| Démonstration | Contenu fictif, préparé pour expliquer l'expérience et éviter les espaces vides | Fixtures locales, lecture seule, jamais synchronisées |
-| Test | Donnée contrôlée utilisée pour vérifier le comportement du logiciel | Environnements et suites de tests isolés |
+| Catégorie     | Définition                                                                             | Cycle de vie                                                                                            |
+| ------------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| Réelle        | Contenu effectivement créé, reçu ou confirmé par un utilisateur ou un service autorisé | Stockage local Dexie, puis synchronisation vers le backend selon les contrats et politiques applicables |
+| Démonstration | Contenu fictif, préparé pour expliquer l'expérience et éviter les espaces vides        | Fixtures locales, lecture seule, jamais synchronisées                                                   |
+| Test          | Donnée contrôlée utilisée pour vérifier le comportement du logiciel                    | Environnements et suites de tests isolés                                                                |
 
 Une donnée de démonstration ne devient jamais réelle par simple interaction, copie, synchronisation ou changement d'écran.
 
@@ -98,15 +98,15 @@ Les critères de suffisance doivent être documentés, testables et propres au c
 
 ## 7. Responsabilités par domaine
 
-| Domaine | Exemples autorisés | Limite particulière |
-| --- | --- | --- |
-| Flash | Besoins et propositions illustratifs | Ne pas simuler une contribution publiée par un utilisateur réel |
-| Scan | Objets, services et résultats explicatifs | Ne pas présenter un résultat fictif comme une identification vérifiée |
-| Réel | Scénarios guidés de fonctionnement | Ne jamais simuler une personne réellement présente dans la zone |
-| Radar | Exemples de catégories ou de découvertes | Ne pas inventer une disponibilité ou une activité en direct |
-| 2x2 | Catégories et contenus illustratifs | Toujours distinguer l'exemple d'un contenu utilisateur |
-| Profil | Profil fictif de démonstration | Ne pas créer de faux compte utilisateur |
-| Assistant | Exemples de demandes et de réponses | Ne pas prétendre qu'une capacité V2/V3 est disponible en V1 |
+| Domaine   | Exemples autorisés                        | Limite particulière                                                   |
+| --------- | ----------------------------------------- | --------------------------------------------------------------------- |
+| Flash     | Besoins et propositions illustratifs      | Ne pas simuler une contribution publiée par un utilisateur réel       |
+| Scan      | Objets, services et résultats explicatifs | Ne pas présenter un résultat fictif comme une identification vérifiée |
+| Réel      | Scénarios guidés de fonctionnement        | Ne jamais simuler une personne réellement présente dans la zone       |
+| Radar     | Exemples de catégories ou de découvertes  | Ne pas inventer une disponibilité ou une activité en direct           |
+| 2x2       | Catégories et contenus illustratifs       | Toujours distinguer l'exemple d'un contenu utilisateur                |
+| Profil    | Profil fictif de démonstration            | Ne pas créer de faux compte utilisateur                               |
+| Assistant | Exemples de demandes et de réponses       | Ne pas prétendre qu'une capacité V2/V3 est disponible en V1           |
 
 Chaque domaine peut refuser les exemples lorsque le risque de confusion est trop élevé.
 
@@ -160,7 +160,6 @@ En cas de conflit apparent, préserver les frontières de données et de synchro
 
 Décisions produit validées. Règles d'architecture documentées dans cette proposition. Les seuils propres aux domaines, les modèles de provenance définitifs, les fixtures et les tests restent à auditer et à implémenter séparément. La présence de ce document ne constitue pas une preuve d'implémentation.
 
-
 ## 13. Précision — fixtures issues d'une source SQL
 
 Le fichier `donnees_sql.sql` fourni par le produit est une source de données fictives, et non une base métier à importer. Les fixtures qui en sont dérivées doivent utiliser les mêmes contrats, validateurs, normaliseurs, sélecteurs et règles de lecture que les données réelles.
@@ -169,13 +168,11 @@ Cette réutilisation concerne exclusivement le chemin de lecture et de présenta
 
 Le mapping, les exclusions de sécurité, le traitement des dates anciennes et les tests du convertisseur sont définis dans [Adaptation du jeu SQL de démonstration aux domaines Vitalis — V1](./demo-sql-fixture-adapter-v1.md). En cas de différence entre le schéma SQL et un contrat Vitalis, le contrat Vitalis prévaut ; aucune nouvelle valeur d'enum ou aucun champ métier ne doit être inventé pour faire entrer une ligne SQL.
 
-
 ## 14. Première intégration contrôlée — Flash
 
 Une première intégration de démonstration est ajoutée sur la branche de travail pour le domaine Flash uniquement. Elle utilise le contrat public `PublicFlash`, conserve la provenance jusqu'à la carte, complète progressivement le flux après résolution des sources réelles et n'écrit jamais dans les dépôts métier.
 
 La sélection et les tests sont décrits dans [Adaptation du jeu SQL de démonstration aux domaines Vitalis — V1](./demo-sql-fixture-adapter-v1.md). L'intégration reste en attente des contrôles CI et ne doit pas être considérée comme fusionnée dans `main`. Aucun autre domaine n'est activé par cette tranche.
-
 
 ## 15. Identités et profils dans les exemples
 

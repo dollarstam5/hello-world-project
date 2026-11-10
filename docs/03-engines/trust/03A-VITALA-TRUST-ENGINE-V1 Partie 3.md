@@ -23,7 +23,7 @@ Le Trust Profile peut notamment refléter :
 - la stabilité dans le temps;
 - les certifications obtenues;
 - les tendances positives ou négatives.
-Ces dimensions évoluent continuellement en fonction des événements validés.
+  Ces dimensions évoluent continuellement en fonction des événements validés.
 
 # 24. Analyse des tendances
 
@@ -35,7 +35,7 @@ Le Trust Engine ne se limite pas à enregistrer des événements. Il identifie �
 - regain d'activité;
 - spécialisation dans un domaine;
 - diversification des compétences.
-Ces tendances enrichissent le Trust Profile sans remplacer les événements qui les ont produites.
+  Ces tendances enrichissent le Trust Profile sans remplacer les événements qui les ont produites.
 
 # 25. Collaboration avec les moteurs
 
@@ -69,7 +69,7 @@ Le Trust Engine n'impose jamais une décision. Il fournit :
 - des tendances;
 - des niveaux de confiance;
 - des éléments d'explication.
-Les utilisateurs conservent toujours leur capacité de choix. Les décisions importantes restent sous le contrôle des utilisateurs ou des processus de modération définis par la plateforme.
+  Les utilisateurs conservent toujours leur capacité de choix. Les décisions importantes restent sous le contrôle des utilisateurs ou des processus de modération définis par la plateforme.
 
 # 27. Transparence
 
@@ -78,7 +78,7 @@ Le Trust Engine favorise une transparence maîtrisée. Chaque utilisateur peut c
 - l'évolution de son Capital de Confiance;
 - les grandes catégories d'événements qui l'ont influencé;
 - les recommandations générales permettant d'améliorer sa fiabilité.
-Les informations sensibles concernant la modération ou la sécurité restent protégées conformément aux règles de confidentialité de Vitala.
+  Les informations sensibles concernant la modération ou la sécurité restent protégées conformément aux règles de confidentialité de Vitala.
 
 # 28. Éthique
 
@@ -114,12 +114,14 @@ Le Trust Engine constitue l'un des piliers fondamentaux de Vitala. En transforma
 - 13-VITALA-UJ-10-VEILLE.md
 - 16-VITALA-API-V1.md
 - 18-VITALA-DATABASE-V1.md
+
 ### Documents dépendants
 
 - Recommendation Engine
 - Database
 - API
 - Architecture
+
 ### Impact
 
 Le Trust Engine devient le référentiel officiel du Capital de Confiance et du Trust Profile au sein de Vitala. ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

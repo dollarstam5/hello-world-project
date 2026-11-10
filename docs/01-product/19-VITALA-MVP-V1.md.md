@@ -29,6 +29,7 @@ L'utilisateur peut :
 
 - joindre des médias si nécessaire;
 - modifier ou supprimer son Flash.
+
 ## 3.2 Découvrir des opportunités
 
 L'utilisateur peut :
@@ -38,6 +39,7 @@ L'utilisateur peut :
 - effectuer une recherche;
 - filtrer les résultats;
 - consulter les opportunités pertinentes.
+
 ## 3.3 Recevoir une assistance intelligente
 
 Le MVP inclut :
@@ -46,6 +48,7 @@ Le MVP inclut :
 - Veille personnalisée;
 - notifications essentielles;
 - suggestions contextualisées.
+
 ## 3.4 Construire la confiance
 
 Le MVP comprend :
@@ -55,6 +58,7 @@ Le MVP comprend :
 - historique des interactions;
 - preuves de confiance disponibles;
 - évolution du niveau de confiance.
+
 ## 3.5 Finaliser une mise en relation
 
 Le MVP permet :
@@ -75,7 +79,7 @@ Le MVP intègre les moteurs suivants :
 - Veille
 - Recommendation
 - Trust Engine
-Tous les moteurs fonctionnent ensemble conformément aux principes définis dans le VPS.
+  Tous les moteurs fonctionnent ensemble conformément aux principes définis dans le VPS.
 
 # 5. Fonctionnalités transversales
 
@@ -90,6 +94,7 @@ Le MVP comprend également :
 - synchronisation offline-first;
 - historique personnel;
 - paramètres utilisateur.
+
 # 6. Architecture du MVP
 
 Le MVP repose sur :
@@ -100,7 +105,7 @@ Le MVP repose sur :
 - stockage des médias;
 - synchronisation offline-first;
 - monorepo prêt à accueillir Flutter.
-L'architecture doit déjà être compatible avec les évolutions futures.
+  L'architecture doit déjà être compatible avec les évolutions futures.
 
 # 7. Critères de réussite
 
@@ -113,6 +118,7 @@ Le MVP est considéré comme réussi si :
 - la plateforme reste utilisable hors connexion pour les fonctions essentielles;
 - les données sont correctement synchronisées au retour du réseau;
 - l'expérience utilisateur est simple, fluide et cohérente.
+
 # 8. Ce qui est volontairement reporté
 
 Les éléments suivants ne font pas partie du MVP :
@@ -126,7 +132,7 @@ Les éléments suivants ne font pas partie du MVP :
 - automatisations complexes;
 - application Flutter;
 - client Desktop.
-Ces fonctionnalités sont prévues pour les versions ultérieures.
+  Ces fonctionnalités sont prévues pour les versions ultérieures.
 
 # 9. Roadmap d'évolution
 

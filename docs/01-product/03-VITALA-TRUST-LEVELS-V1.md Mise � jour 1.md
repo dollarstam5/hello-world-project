@@ -23,7 +23,7 @@ Les niveaux de confiance ne sont plus déterminés par un calcul statique. Ils r
 - les signalements confirmés;
 - les tendances comportementales;
 - le contexte des interactions.
-Le niveau de confiance représente ainsi une synthèse du Capital de Confiance calculé par le Trust Engine.
+  Le niveau de confiance représente ainsi une synthèse du Capital de Confiance calculé par le Trust Engine.
 
 # Nouvelle section
 
@@ -66,7 +66,7 @@ Les niveaux de confiance sont utilisés par :
 - Sélection des candidats;
 - Sécurité;
 - Modération.
-Ils permettent d'améliorer la qualité des interactions sans remplacer le jugement des utilisateurs.
+  Ils permettent d'améliorer la qualité des interactions sans remplacer le jugement des utilisateurs.
 
 # Conclusion (mise à jour)
 

@@ -14,6 +14,7 @@ La frontière reste stricte : les fixtures ne sont jamais créées via les comma
 ## 2. Ce que contient la source
 
 Le fichier définit :
+
 - `utilisateurs` : identifiant UUID, pseudo, e-mail, téléphone, ville, quartier, avatar, rôle, dates de compte, état actif et tags préférés ;
 - `annonces` : identifiant, type, sous-catégorie, titre, description, lieu, heure, date, auteur, contact, urgence, gain, type d'aide, statut, tags et compteurs de vues/réponses ;
 - cinq familles d'annonces : `besoin`, `opportunite`, `rencontre`, `evenement`, `service`.
@@ -22,16 +23,16 @@ Ces champs décrivent le modèle du fichier SQL, pas les contrats publics actuel
 
 ## 3. Conversion par domaine
 
-| Source SQL | Destination Vitalis | Règle |
-| --- | --- | --- |
-| Annonce `besoin` / `opportunite` | Flash, si le contenu correspond à un Flash autorisé | Mapper vers les enums et champs de `FlashRecord` puis la projection publique `PublicFlash` ; ne jamais exposer auteur, téléphone ou description privée dans la projection publique |
-| Annonce de type `service` | Flash ou catalogue 2×2 selon le contrat réellement disponible | Ne pas inventer un type métier ; si aucun contrat ne correspond, garder un aperçu pédagogique séparé |
-| Annonce `rencontre` / `evenement` | Aperçu éditorial ou domaine événementiel seulement si son contrat est vérifié | Ne pas créer de présence Réel, rendez-vous confirmé ou événement actif |
-| Lieu, quartier, ville | `areaLabel` / libellé de zone lorsque le contrat le permet | Ne pas fabriquer de latitude, longitude ou distance |
-| `urgence`, `gain`, `type_aide`, `tags` | Champs de présentation ou filtres uniquement si le domaine les prend en charge | Normaliser et rejeter les valeurs inconnues ; ne pas étendre les enums par supposition |
-| Utilisateur SQL | Profil de démonstration isolé | Jamais un compte Vitalis, une identité authentifiée ou un auteur réel |
-| `contact`, téléphone, e-mail | Données internes de fixture uniquement si nécessaires au scénario | Ne jamais afficher ni rendre cliquable par défaut ; utiliser des valeurs synthétiques neutralisées dans l'interface |
-| `nombre_vues`, `nombre_reponses` | Aucun compteur réel | Les omettre ; ne pas simuler une popularité ou une activité |
+| Source SQL                             | Destination Vitalis                                                            | Règle                                                                                                                                                                              |
+| -------------------------------------- | ------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Annonce `besoin` / `opportunite`       | Flash, si le contenu correspond à un Flash autorisé                            | Mapper vers les enums et champs de `FlashRecord` puis la projection publique `PublicFlash` ; ne jamais exposer auteur, téléphone ou description privée dans la projection publique |
+| Annonce de type `service`              | Flash ou catalogue 2×2 selon le contrat réellement disponible                  | Ne pas inventer un type métier ; si aucun contrat ne correspond, garder un aperçu pédagogique séparé                                                                               |
+| Annonce `rencontre` / `evenement`      | Aperçu éditorial ou domaine événementiel seulement si son contrat est vérifié  | Ne pas créer de présence Réel, rendez-vous confirmé ou événement actif                                                                                                             |
+| Lieu, quartier, ville                  | `areaLabel` / libellé de zone lorsque le contrat le permet                     | Ne pas fabriquer de latitude, longitude ou distance                                                                                                                                |
+| `urgence`, `gain`, `type_aide`, `tags` | Champs de présentation ou filtres uniquement si le domaine les prend en charge | Normaliser et rejeter les valeurs inconnues ; ne pas étendre les enums par supposition                                                                                             |
+| Utilisateur SQL                        | Profil de démonstration isolé                                                  | Jamais un compte Vitalis, une identité authentifiée ou un auteur réel                                                                                                              |
+| `contact`, téléphone, e-mail           | Données internes de fixture uniquement si nécessaires au scénario              | Ne jamais afficher ni rendre cliquable par défaut ; utiliser des valeurs synthétiques neutralisées dans l'interface                                                                |
+| `nombre_vues`, `nombre_reponses`       | Aucun compteur réel                                                            | Les omettre ; ne pas simuler une popularité ou une activité                                                                                                                        |
 
 Le mapping doit être explicite et testé. Une ligne non convertible est ignorée de la liste métier et peut être conservée dans un rapport de validation des fixtures, sans correction silencieuse.
 
@@ -66,6 +67,7 @@ Le sélecteur combine les deux sources selon le seuil propre à l'écran, après
 ## 6. Tests de conformité du convertisseur
 
 Le convertisseur et les sélecteurs doivent tester :
+
 1. mapping de chaque famille SQL prise en charge vers un contrat réellement existant ;
 2. rejet explicite des types, statuts et catégories inconnus ;
 3. absence de coordonnées géographiques ou de distances inventées ;
@@ -89,7 +91,6 @@ Le convertisseur et les sélecteurs doivent tester :
 7. Activer progressivement les surfaces qui passent les tests.
 
 **Limite actuelle :** cette spécification ne prouve pas que les fixtures ou le convertisseur sont déjà implémentés. Elle prépare leur réalisation sans importer le SQL brut dans Vitalis.
-
 
 ## 8. Première tranche réalisée — Flash
 

@@ -70,11 +70,11 @@ Règles :
 
 •
 
-type  UUID  ;
+type UUID ;
 
 1
 
-•
+•
 
 valeur unique ;
 
@@ -110,7 +110,7 @@ Toute clé étrangère doit être documentée.
 
 5. UNIQUE
 
-Une contrainte  UNIQUE  est utilisée lorsqu'une valeur ne peut apparaître qu'une seule fois.
+Une contrainte UNIQUE est utilisée lorsqu'une valeur ne peut apparaître qu'une seule fois.
 
 Exemples :
 
@@ -134,19 +134,19 @@ Lorsque l'unicité dépend de plusieurs colonnes, une contrainte composite doit 
 
 6. NOT NULL
 
-Toute colonne indispensable au fonctionnement du domaine doit être déclarée  NOT NULL .
+Toute colonne indispensable au fonctionnement du domaine doit être déclarée NOT NULL .
 
 Les colonnes facultatives doivent être justifiées.
 
-Le recours aux valeurs  NULL  ne doit jamais servir à contourner une règle métier.
+Le recours aux valeurs NULL ne doit jamais servir à contourner une règle métier.
 
 7. CHECK
 
-Les contraintes  CHECK  permettent de limiter les valeurs autorisées.
+Les contraintes CHECK permettent de limiter les valeurs autorisées.
 
 2
 
-Exemples :
+Exemples :
 
 •
 
@@ -224,11 +224,11 @@ NO ACTION
 
 Le choix dépend du comportement attendu du domaine métier.
 
-L'utilisation de  CASCADE  doit être exceptionnelle et justifiée.
+L'utilisation de CASCADE doit être exceptionnelle et justifiée.
 
 3
 
-11. Contraintes métier
+11. Contraintes métier
 
 Les règles métier complexes doivent être implémentées dans la couche Domaine.
 
@@ -296,7 +296,7 @@ techniques internes.
 
 4
 
-16. Critères de conformité
+16. Critères de conformité
 
 Les contraintes sont conformes lorsque :
 
@@ -311,8 +311,8 @@ chaque table possède une clé primaire ;
 •
 
 les relations utilisent des clés étrangères ;
-les champs obligatoires sont protégés par  NOT NULL  ;
-les règles simples sont appliquées via  CHECK  ou  UNIQUE  lorsque pertinent ;
+les champs obligatoires sont protégés par NOT NULL ;
+les règles simples sont appliquées via CHECK ou UNIQUE lorsque pertinent ;
 
 •
 
@@ -331,4 +331,3 @@ Elles complètent les validations réalisées par les APIs et les domaines méti
 plateforme fiable, cohérente et durable.
 
 5
-

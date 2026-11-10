@@ -9,7 +9,7 @@ Les personas Vitala ne représentent pas des catégories sociales, des métiers 
 - Découvreuse le matin.
 - Demandeuse à midi.
 - Recommandeuse le soir.
-Vitala s'intéresse principalement à ce que l'utilisateur cherche à accomplir à un instant donné.
+  Vitala s'intéresse principalement à ce que l'utilisateur cherche à accomplir à un instant donné.
 
 # 2. Principe Fondamental
 
@@ -31,17 +31,20 @@ Le consultant découvre Vitala pour la première fois. Il n'est pas encore engag
 - Comprendre son utilité.
 - Observer sans engagement.
 - Explorer les possibilités.
+
 ## Motivations
 
 - Curiosité.
 - Recherche d'opportunités.
 - Découverte.
+
 ## Actions principales
 
 - Consulter la Home.
 - Explorer les fonctionnalités.
 - Visualiser les opportunités publiques.
 - Découvrir les avantages de Vitala.
+
 ## Niveau de confiance
 
 Inconnu.
@@ -63,23 +66,27 @@ Le découvreur cherche à trouver quelque chose d'utile. Il commence à interagi
 - Trouver des opportunités.
 - Explorer son environnement.
 - Découvrir des solutions.
+
 ## Motivations
 
 - Gagner du temps.
 - Trouver rapidement des réponses.
 - Identifier des ressources utiles.
+
 ## Actions principales
 
 - Utiliser Radar.
 - Utiliser Flash.
 - Consulter les recommandations.
 - Sauvegarder des opportunités.
+
 ## Opportunités recherchées
 
 - Services.
 - Recommandations.
 - Informations.
 - Opportunités locales.
+
 ## Évolution possible
 
 Découvreur
@@ -98,17 +105,20 @@ Le demandeur cherche une solution à un besoin précis.
 - Trouver une personne.
 - Trouver une ressource.
 - Trouver une information.
+
 ## Motivations
 
 - Besoin immédiat.
 - Besoin planifié.
 - Recherche d'efficacité.
+
 ## Actions principales
 
 - Publier un Flash.
 - Créer une opportunité.
 - Lancer une recherche Radar.
 - Sélectionner des candidats.
+
 ## Exemples
 
 - Recherche d'une ménagère.
@@ -117,6 +127,7 @@ Le demandeur cherche une solution à un besoin précis.
 - Recherche d'un chauffeur.
 
 - Recherche d'un partenaire.
+
 ## Niveau de confiance attendu
 
 Membre enregistré minimum.
@@ -136,12 +147,14 @@ Le contributeur apporte une solution.
 - Mettre ses compétences à disposition.
 - Valoriser ses ressources.
 - Répondre aux opportunités.
+
 ## Motivations
 
 - Générer un revenu.
 - Aider.
 - Développer sa réputation.
 - Se faire connaître.
+
 ## Actions principales
 
 - Répondre à une opportunité.
@@ -157,6 +170,7 @@ Le contributeur apporte une solution.
 - Artisan.
 - Enseignant.
 - Prestataire.
+
 ## Niveau de confiance attendu
 
 Identifié recommandé.
@@ -182,18 +196,21 @@ Le recommandeur partage sa confiance. Il contribue à renforcer la qualité de l
 - Confiance.
 - Entraide.
 - Réputation.
+
 ## Actions principales
 
 - Recommander une personne.
 - Recommander une organisation.
 - Valider une expérience réussie.
 - Partager une référence.
+
 ## Exemples
 
 - Recommander un voisin.
 - Recommander un professionnel.
 - Recommander une association.
 - Recommander un prestataire.
+
 ## Niveau de confiance attendu
 
 Utilisateur vérifié minimum.
@@ -217,6 +234,7 @@ Exemples :
 - Association.
 - Organisation.
 - Référence reconnue.
+
 # Persona 7 : Acteur Local
 
 Anime et mobilise un environnement local. Exemples :
@@ -225,6 +243,7 @@ Anime et mobilise un environnement local. Exemples :
 - Responsable de groupe.
 - Leader local.
 - Organisateur.
+
 # Persona 8 : Professionnel
 
 Utilise Vitala pour développer durablement une activité. Exemples :
@@ -233,6 +252,7 @@ Utilise Vitala pour développer durablement une activité. Exemples :
 - Entrepreneur.
 - Prestataire.
 - Entreprise.
+
 # 5. Profils de Contexte
 
 Les profils de contexte ne sont pas des personas. Ils servent à personnaliser l'expérience utilisateur. Exemples :
@@ -248,7 +268,7 @@ Les profils de contexte ne sont pas des personas. Ils servent à personnaliser l
 - Association.
 - Entreprise.
 - Organisation.
-Un utilisateur peut posséder plusieurs profils de contexte simultanément.
+  Un utilisateur peut posséder plusieurs profils de contexte simultanément.
 
 # 6. Cycle Naturel d'Évolution
 

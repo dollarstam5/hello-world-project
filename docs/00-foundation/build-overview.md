@@ -27,6 +27,7 @@ The platform is built on:
 Objective: establish the technical base.
 
 Includes:
+
 - repository initialization
 - project configuration
 - backend setup
@@ -41,6 +42,7 @@ Includes:
 Objective: build shared platform services.
 
 Includes:
+
 - authentication
 - unified digital identity
 - database
@@ -55,6 +57,7 @@ Includes:
 Build domains in a strict order.
 
 Priority order:
+
 1. UDI
 2. Flash
 3. Mission
@@ -67,6 +70,7 @@ Each domain should include models, services, repositories, API contracts, valida
 This phase is mandatory before intelligence modules.
 
 Includes:
+
 - local workspace
 - drafts
 - outbox
@@ -77,6 +81,7 @@ Includes:
 ### Phase 5 — Intelligence engines
 
 Build:
+
 - radar
 - veille / monitoring
 - recommendation
@@ -87,6 +92,7 @@ These engines should never bypass the business domain layer.
 ### Phase 6 — User interface
 
 Build progressively:
+
 - design system
 - components
 - screens
@@ -97,6 +103,7 @@ Build progressively:
 ### Phase 7 — Integration
 
 Validate:
+
 - frontend ↔ backend
 - backend ↔ database
 - offline ↔ sync
@@ -105,6 +112,7 @@ Validate:
 ### Phase 8 — Quality
 
 Run:
+
 - unit tests
 - integration tests
 - offline tests
@@ -115,6 +123,7 @@ Run:
 ### Phase 9 — Production readiness
 
 Configure:
+
 - monitoring
 - backups
 - observability

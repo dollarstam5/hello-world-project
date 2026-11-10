@@ -5,6 +5,7 @@
 ## 1. Présentation compacte
 
 Ordre de lecture d'une carte :
+
 1. Avatar de 36 à 40 px et nom d'affichage.
 2. Zone large partagée volontairement et catégorie courte.
 3. Besoin ou proposition, qui reste l'information principale.
@@ -15,6 +16,7 @@ Ne pas afficher plusieurs lignes de biographie, d'indicateurs ou de statistiques
 ## 2. Contrat public minimal
 
 `PublicProfilePreview` ne contient que :
+
 - `publicProfileId` : identifiant opaque public, jamais l'identifiant interne du compte ;
 - `displayName` : nom d'affichage choisi par la personne ;
 - `avatarUrl` : photo uniquement si elle provient d'un stockage public approuvé et si la personne l'a autorisée ; sinon `null` et initiales ;
@@ -36,6 +38,7 @@ L'aperçu n'inclut pas de contact, d'adresse précise, de distance, de présence
 ## 4. Fiche de consultation
 
 L'appui sur l'avatar ou le nom ouvre une feuille de consultation mobile :
+
 - avatar ou initiales ;
 - nom d'affichage ;
 - zone large ;
@@ -47,15 +50,15 @@ Aucun moyen de contact n'est proposé depuis cette fiche de base. Une mise en re
 
 ## 5. Adaptation par moteur
 
-| Moteur | Affichage autorisé |
-| --- | --- |
-| Accueil | Trois aperçus pédagogiques Flash ; avatar à initiales, nom fictif, zone, catégorie et besoin. |
-| Flash | Aperçu public de l'auteur si consentement ; fiche courte au toucher. Sinon, carte sans identité. |
-| Scan | Même aperçu facultatif pour les résultats publics Flash ; la distance reste distincte du lieu du profil et ne remplace jamais `areaLabel`. |
-| Réel | Aucun profil fictif dans les personnes présentes. Une carte réelle ne montre un profil que si sa présence et sa visibilité sont actives et autorisées. |
-| Radar | Profil facultatif lié à une opportunité publique ; aucun faux match, statut ou dernière activité. |
-| 2×2 / Talents | Catégorie et présentation publique uniquement si la personne les a rendues visibles dans ce contexte. |
-| Notifications / Messages | Ne jamais injecter des profils fictifs dans les communications réelles. |
+| Moteur                   | Affichage autorisé                                                                                                                                     |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Accueil                  | Trois aperçus pédagogiques Flash ; avatar à initiales, nom fictif, zone, catégorie et besoin.                                                          |
+| Flash                    | Aperçu public de l'auteur si consentement ; fiche courte au toucher. Sinon, carte sans identité.                                                       |
+| Scan                     | Même aperçu facultatif pour les résultats publics Flash ; la distance reste distincte du lieu du profil et ne remplace jamais `areaLabel`.             |
+| Réel                     | Aucun profil fictif dans les personnes présentes. Une carte réelle ne montre un profil que si sa présence et sa visibilité sont actives et autorisées. |
+| Radar                    | Profil facultatif lié à une opportunité publique ; aucun faux match, statut ou dernière activité.                                                      |
+| 2×2 / Talents            | Catégorie et présentation publique uniquement si la personne les a rendues visibles dans ce contexte.                                                  |
+| Notifications / Messages | Ne jamais injecter des profils fictifs dans les communications réelles.                                                                                |
 
 ## 6. État de l'intégration
 

@@ -80,7 +80,7 @@ Domaines concernés
 
 1
 
-4. Organisation du catalogue
+4. Organisation du catalogue
 
 Les erreurs sont regroupées par domaine fonctionnel.
 
@@ -160,7 +160,7 @@ USER_
 
 2
 
-Exemples :
+Exemples :
 
 •
 
@@ -236,7 +236,7 @@ TRUST_
 
 3
 
-I. Media
+I. Media
 
 Préfixe :
 
@@ -286,7 +286,7 @@ AUDIT_
 
 4
 
-O. Configuration
+O. Configuration
 
 Préfixe :
 
@@ -311,7 +311,7 @@ Tous les codes doivent :
 •
 
 être écrits en majuscules ;
-utiliser le séparateur  _  ;
+utiliser le séparateur _ ;
 
 •
 
@@ -359,7 +359,7 @@ Les erreurs obsolètes doivent être conservées comme historiques et ne jamais 
 
 5
 
-8. Conclusion
+8. Conclusion
 
 Le API-ERROR-CATALOG constitue le référentiel officiel des codes d'erreur de Vitala.
 
@@ -370,4 +370,3 @@ améliore le diagnostic des incidents et assure une cohérence durable entre tou
 plateforme.
 
 6
-

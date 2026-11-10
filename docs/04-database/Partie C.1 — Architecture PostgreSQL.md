@@ -56,7 +56,7 @@ Utilisateur
 
 1
 
-Interface utilisateur
+Interface utilisateur
 
 ↓
 
@@ -138,7 +138,7 @@ remplacer les moteurs d'intelligence.
 
 2
 
-Les fonctions SQL et les triggers doivent rester limités à des besoins techniques clairement identifiés.
+Les fonctions SQL et les triggers doivent rester limités à des besoins techniques clairement identifiés.
 
 6. Organisation par domaines
 
@@ -214,7 +214,7 @@ Toutes les opérations critiques doivent être exécutées dans des transactions
 
 3
 
-Les propriétés ACID doivent être respectées :
+Les propriétés ACID doivent être respectées :
 
 •
 
@@ -310,7 +310,7 @@ Les optimisations doivent préserver la lisibilité et la maintenabilité.
 
 4
 
-13. Sécurité
+13. Sécurité
 
 Toutes les données sont protégées par :
 
@@ -404,7 +404,7 @@ les domaines restent autonomes ;
 
 5
 
-•
+•
 
 l'intégrité des données est garantie ;
 
@@ -437,4 +437,3 @@ Cette architecture garantit une plateforme évolutive, fiable et conforme aux pr
 Blueprint.
 
 6
-

@@ -48,12 +48,32 @@
   opacity: 0.06;
   background-color: var(--reel-canvas);
   background-image:
-    linear-gradient(90deg, transparent 0 12%, var(--reel-map-ink) 12.2% 12.8%, transparent 13% 100%),
+    linear-gradient(
+      90deg,
+      transparent 0 12%,
+      var(--reel-map-ink) 12.2% 12.8%,
+      transparent 13% 100%
+    ),
     linear-gradient(0deg, transparent 0 19%, var(--reel-map-ink) 19.2% 19.8%, transparent 20% 100%),
-    linear-gradient(90deg, transparent 0 44%, var(--reel-map-ink) 44.2% 44.8%, transparent 45% 100%),
+    linear-gradient(
+      90deg,
+      transparent 0 44%,
+      var(--reel-map-ink) 44.2% 44.8%,
+      transparent 45% 100%
+    ),
     linear-gradient(0deg, transparent 0 62%, var(--reel-map-ink) 62.2% 62.8%, transparent 63% 100%),
-    repeating-linear-gradient(32deg, transparent 0 4.2rem, var(--reel-map-ink) 4.25rem 4.32rem, transparent 4.38rem 7.4rem),
-    repeating-linear-gradient(122deg, transparent 0 5.2rem, var(--reel-map-ink) 5.25rem 5.32rem, transparent 5.38rem 8.4rem);
+    repeating-linear-gradient(
+      32deg,
+      transparent 0 4.2rem,
+      var(--reel-map-ink) 4.25rem 4.32rem,
+      transparent 4.38rem 7.4rem
+    ),
+    repeating-linear-gradient(
+      122deg,
+      transparent 0 5.2rem,
+      var(--reel-map-ink) 5.25rem 5.32rem,
+      transparent 5.38rem 8.4rem
+    );
   mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
 }
 
@@ -80,7 +100,12 @@
 .reel-radar__outer-halo {
   z-index: -3;
   inset: -19%;
-  background: radial-gradient(circle, rgb(91 155 255 / 24%) 0%, rgb(91 155 255 / 11%) 48%, transparent 72%);
+  background: radial-gradient(
+    circle,
+    rgb(91 155 255 / 24%) 0%,
+    rgb(91 155 255 / 11%) 48%,
+    transparent 72%
+  );
   filter: blur(0.4rem);
   animation: reel-halo-breathe 4s ease-in-out infinite;
 }
@@ -102,7 +127,12 @@
   z-index: -1;
   inset: 21%;
   border: 1px solid rgb(255 255 255 / 78%);
-  background: radial-gradient(circle, rgb(255 255 255 / 85%), rgb(104 160 255 / 13%) 72%, transparent);
+  background: radial-gradient(
+    circle,
+    rgb(255 255 255 / 85%),
+    rgb(104 160 255 / 13%) 72%,
+    transparent
+  );
   box-shadow: 0 0 2.2rem rgb(91 155 255 / 18%);
 }
 
@@ -112,7 +142,9 @@
   aspect-ratio: 1;
   place-items: center;
   background: radial-gradient(circle at 36% 28%, #ffffff 0%, #d6eaff 52%, #91c4ff 100%);
-  box-shadow: var(--reel-shadow-glow), inset 0 0.25rem 1rem rgb(255 255 255 / 55%);
+  box-shadow:
+    var(--reel-shadow-glow),
+    inset 0 0.25rem 1rem rgb(255 255 255 / 55%);
   animation: reel-halo-breathe 4s ease-in-out infinite;
 }
 
@@ -181,7 +213,9 @@
 
 .reel-avatar--person:has(img) {
   border: 3px solid var(--reel-blue-start);
-  box-shadow: 0 0 0 1px var(--reel-white), 0 0.2rem 0.8rem rgb(49 83 133 / 14%);
+  box-shadow:
+    0 0 0 1px var(--reel-white),
+    0 0.2rem 0.8rem rgb(49 83 133 / 14%);
 }
 
 .reel-avatar img {
@@ -316,7 +350,8 @@
 }
 
 @keyframes reel-halo-breathe {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(0.985);
     opacity: 0.82;
   }
@@ -349,7 +384,6 @@
     --reel-radar-size: min(70vw, 34rem);
   }
 }
-
 
 .reel-proximity__header {
   display: grid;
@@ -415,7 +449,6 @@
   }
 }
 
-
 /* Profile preview — light glass sheet, matching the airy Réel reference. */
 .reel-profile-backdrop {
   position: fixed;
@@ -472,7 +505,9 @@
   width: 5.25rem;
   margin-bottom: 0.25rem;
   border: 3px solid #ffffff;
-  box-shadow: 0 0 0 1px #cfe3ff, 0 0.45rem 1.2rem rgb(52 111 190 / 16%);
+  box-shadow:
+    0 0 0 1px #cfe3ff,
+    0 0.45rem 1.2rem rgb(52 111 190 / 16%);
 }
 
 .reel-profile-sheet h2 {
@@ -559,7 +594,6 @@
     border-radius: 2rem;
   }
 }
-
 
 /* Fast access to Réel preferences, activity and the complete nearby list. */
 .reel-proximity__header-action,
@@ -972,7 +1006,6 @@
   }
 }
 
-
 /* Réel first-screen hierarchy: clear engine name and human explanation. */
 .reel-proximity__heading {
   min-width: 0;
@@ -1005,7 +1038,6 @@
     font-size: 0.66rem;
   }
 }
-
 
 /* Independent location choice and calm mode. */
 .reel-location-card {
@@ -1119,7 +1151,6 @@
   }
 }
 
-
 .reel-calm-shortcuts {
   display: grid;
   width: 100%;
@@ -1185,7 +1216,6 @@
   cursor: not-allowed;
   opacity: 0.42;
 }
-
 
 .reel-setting-row--stacked {
   align-items: stretch;

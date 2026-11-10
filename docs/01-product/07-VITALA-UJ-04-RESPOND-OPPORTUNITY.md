@@ -10,6 +10,7 @@
 - VITALA-UJ-01-CONSULTANT-TO-MEMBER
 - VITALA-UJ-02-MEMBER-TO-IDENTIFIED
 - VITALA-UJ-03-PUBLISH-OPPORTUNITY
+
 # 1. Objectif
 
 Permettre à un utilisateur de manifester son intérêt pour une opportunité de manière simple, rapide et sans créer de surcharge pour l'auteur. Vitala privilégie l'intention et la pertinence plutôt que la compétition.
@@ -22,7 +23,7 @@ Vitala n'utilise pas le modèle classique :
 - CV obligatoire;
 - messagerie ouverte;
 - commentaires publics.
-L'objectif est de permettre une expression d'intérêt claire et contrôlée.
+  L'objectif est de permettre une expression d'intérêt claire et contrôlée.
 
 # 3. Définition
 
@@ -37,6 +38,7 @@ Statut minimum : Membre enregistré L'opportunité doit être :
 - Active
 - Visible pour l'utilisateur
 - Encore ouverte aux réponses
+
 # 5. Déclenchement
 
 L'utilisateur consulte une opportunité. Exemple : Recherche d'une ménagère demain matin à Bonanjo. Il choisit :
@@ -45,7 +47,7 @@ L'utilisateur consulte une opportunité. Exemple : Recherche d'une ménagère de
 - Je suis disponible
 - Je peux aider
 - Répondre
-Selon le contexte de l'opportunité.
+  Selon le contexte de l'opportunité.
 
 # 6. Réponse minimale
 
@@ -66,7 +68,7 @@ Lorsqu'une réponse est envoyée, Vitala transmet automatiquement :
 - Historique pertinent
 - Disponibilité éventuelle
 - Métadonnées système
-Aucun document supplémentaire n'est exigé.
+  Aucun document supplémentaire n'est exigé.
 
 # 9. Contrôle de capacité
 
@@ -84,7 +86,7 @@ Les répondants ne voient jamais :
 - Les autres répondants
 - Les profils des autres répondants
 - Les échanges internes
-Chaque réponse reste privée.
+  Chaque réponse reste privée.
 
 # 12. Contrôle qualité
 
@@ -95,6 +97,7 @@ Avant validation : Safety & Trust Filter Engine analyse :
 - Réponses abusives
 - Contenus interdits
 - Comportements suspects
+
 # 13. Réception côté auteur
 
 L'auteur reçoit :
@@ -104,7 +107,7 @@ L'auteur reçoit :
 
 - Les statuts de confiance
 - Les éléments de crédibilité disponibles
-Présentation recommandée : Référencé Vérifié Confirmé Recommandé Actif Fiable
+  Présentation recommandée : Référencé Vérifié Confirmé Recommandé Actif Fiable
 
 # 14. Décision de l'auteur
 
@@ -114,7 +117,7 @@ L'auteur reste libre de :
 - Refuser
 - Ignorer
 - Reporter
-une réponse. Aucune sélection automatique n'est imposée.
+  une réponse. Aucune sélection automatique n'est imposée.
 
 # 15. Notification des répondants
 
@@ -124,7 +127,7 @@ Les répondants sont informés :
 - Réponse consultée
 - Réponse retenue
 - Réponse non retenue
-Les messages restent simples et respectueux.
+  Les messages restent simples et respectueux.
 
 # 16. Mise en relation
 
@@ -144,7 +147,7 @@ La messagerie Vitala n'est pas conçue comme :
 - Messenger
 - Telegram
 - Réseau social classique
-Elle sert uniquement à faciliter l'exécution de l'opportunité.
+  Elle sert uniquement à faciliter l'exécution de l'opportunité.
 
 # 19. Échec de sélection
 

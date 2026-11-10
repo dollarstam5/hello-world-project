@@ -9,6 +9,7 @@
 La release est **GO** uniquement lorsque toutes les conditions applicables sont vérifiées et documentées. Un contrôle rouge, absent, non concluant ou exécuté sur un autre commit entraîne **NO-GO** jusqu'à résolution ou décision d'exception explicitement approuvée.
 
 Ne pas confondre :
+
 - **CI verte** : les contrôles automatisés déclarés ont réussi ;
 - **candidat Go** : les contrôles automatisés et artefacts sont disponibles, mais la préproduction et les validations opérationnelles restent à terminer ;
 - **Go production** : la revue humaine a confirmé les critères, la préproduction, la procédure de retour arrière et les autorisations de publication.
@@ -94,6 +95,7 @@ Si un secret est exposé, le révoquer ou le faire tourner dans la console du fo
 ## 7. Dossier de preuve minimal
 
 Chaque release doit conserver :
+
 - commit et PR approuvés ;
 - liens vers Quality et Dependency review ;
 - résultats du build, de la reproductibilité et des contrôles de performance ;

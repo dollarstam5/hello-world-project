@@ -66,7 +66,7 @@ les accès autorisés.
 
 1
 
-C.3 — Conventions de création des tables
+C.3 — Conventions de création des tables
 
 Décrit :
 
@@ -184,7 +184,7 @@ Toutes les contraintes officielles doivent être documentées.
 
 2
 
-C.6 — Relations entre tables
+C.6 — Relations entre tables
 
 Décrit :
 
@@ -290,7 +290,7 @@ Les fonctions métier restent limitées afin de préserver l'architecture Domain
 
 3
 
-C.10 — Triggers
+C.10 — Triggers
 
 Décrit :
 
@@ -394,7 +394,7 @@ isolation.
 
 4
 
-Complète les règles définies dans BUILD-SECURITY.
+Complète les règles définies dans BUILD-SECURITY.
 
 C.14 — Transactions
 
@@ -498,7 +498,7 @@ observabilité.
 
 5
 
-C.18 — Checklist PostgreSQL
+C.18 — Checklist PostgreSQL
 
 Avant toute mise en production :
 
@@ -539,4 +539,3 @@ Toutes les implémentations PostgreSQL doivent respecter cette structure afin de
 données cohérente, performante, sécurisée et durable.
 
 6
-

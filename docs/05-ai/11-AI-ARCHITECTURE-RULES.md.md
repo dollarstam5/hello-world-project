@@ -11,7 +11,7 @@ AI-ARCHITECTURE-RULES.md définit les règles obligatoires concernant l'organisa
 - la scalabilité;
 - la séparation des responsabilités;
 - l'évolution future.
-Toute IA intervenant sur l'architecture Vitala DOIT respecter ces règles.
+  Toute IA intervenant sur l'architecture Vitala DOIT respecter ces règles.
 
 # 2. Principe architectural fondamental
 
@@ -22,7 +22,7 @@ Vitala doit être construit comme un système modulaire. Chaque domaine fonction
 - documenté;
 - testable;
 - évolutif.
-Une fonctionnalité ne doit jamais être développée comme un bloc isolé sans respecter l'écosystème global.
+  Une fonctionnalité ne doit jamais être développée comme un bloc isolé sans respecter l'écosystème global.
 
 # 3. Architecture par domaines
 
@@ -30,7 +30,7 @@ Vitala doit privilégier une organisation orientée fonctionnalités.
 
 Structure recommandée : ```text id="7f9f4p" src/ features/ ├── auth/ ├── profile/ ├── flash/ ├── scan/ ├── radar/ ├── veille/ ├── missions/ ├── trust/ ├── referral/ ├── notifications/ ├── admin/ ├── analytics/ └── ai/
 
-```
+````
 Chaque domaine possède sa propre logique.
 ---
 # 4. Règle d'isolation des modules
@@ -41,7 +41,7 @@ Interdit :
 flash/
 importe directement :
 scan/components/internal/File.tsx
-```
+````
 
 ## Autorisé :
 
@@ -52,6 +52,7 @@ services publics
 ↓
 interfaces définies
 ```
+
 Chaque module communique via des contrats clairs.
 
 # 5. Structure interne d'un module
@@ -62,6 +63,7 @@ Chaque feature doit suivre une organisation cohérente : ```text id="v6o9jd" fea
 - être réutilisable si nécessaire;
 - être indépendant;
 - avoir des propriétés explicites.
+
 ```
 ---
 # 6. Règle des composants
@@ -81,6 +83,7 @@ Un composant doit :
 - état;
 - logique utilisateur;
 - comportements réutilisables. Un hook ne doit pas devenir un fichier contenant toute l'application. --- # 9. Règle des types Les types doivent être centralisés et cohérents. Une IA ne doit pas créer plusieurs versions du même modèle. Exemple interdit : ```text User UserType
+
 ```
 Un composant ne doit pas :
 ```
@@ -89,6 +92,7 @@ Un composant ne doit pas :
 UserModel
 UserData
 ```
+
 pour représenter la même entité sans justification.
 
 # 10. Gestion des dépendances
@@ -99,11 +103,11 @@ Avant d'ajouter une dépendance externe, l'IA doit vérifier :
 2. La dépendance est-elle nécessaire ?
 3. La sécurité est-elle acceptable ?
 4. L'impact maintenance est-il acceptable ?
-Une dépendance inutile est interdite.
+   Une dépendance inutile est interdite.
 
 # 11. Communication entre couches
 
-Architecture obligatoire : ```text id="b1p4s6" UI ↓ Hooks ↓ Services ↓ Data Layer ↓ Database/API ``` Les couches ne doivent pas être contournées.
+Architecture obligatoire : `text id="b1p4s6" UI ↓ Hooks ↓ Services ↓ Data Layer ↓ Database/API ` Les couches ne doivent pas être contournées.
 
 # 12. Règle Database
 
@@ -112,6 +116,7 @@ Le frontend ne doit jamais :
 - exécuter une logique métier critique;
 - contourner les règles backend;
 - accéder directement à des données sensibles sans contrôle.
+
 # 13. Règle Backend
 
 Le backend doit gérer :
@@ -120,7 +125,7 @@ Le backend doit gérer :
 - permissions;
 - logique métier;
 - sécurité.
-Le frontend ne doit jamais être considéré comme une source fiable.
+  Le frontend ne doit jamais être considéré comme une source fiable.
 
 # 14. Règle d'évolution architecturale
 
@@ -131,7 +136,7 @@ Une modification architecturale importante nécessite :
 3. validation;
 4. documentation;
 5. implémentation.
-Une IA ne doit jamais restructurer Vitala seule.
+   Une IA ne doit jamais restructurer Vitala seule.
 
 # 15. Règles contre la dette technique
 
@@ -141,7 +146,7 @@ L'IA ne doit pas :
 - copier-coller du code;
 - ignorer une mauvaise structure;
 - ajouter une dette volontaire.
-Si une dette existe : elle doit être documentée.
+  Si une dette existe : elle doit être documentée.
 
 # 16. Règles de fichiers
 
@@ -150,11 +155,12 @@ L'IA doit :
 - respecter les conventions de nommage;
 - créer les fichiers au bon endroit;
 - éviter les fichiers inutilisés.
-Interdit :
+  Interdit :
 
 - fichiers temporaires oubliés;
 - doublons;
 - composants abandonnés.
+
 # 17. Scalabilité obligatoire
 
 Chaque décision doit considérer :
@@ -163,6 +169,7 @@ Chaque décision doit considérer :
 - augmentation des données;
 - augmentation des modules;
 - multiplication des IA intervenantes.
+
 # 18. Architecture et Intelligence Artificielle
 
 Les modules IA doivent être isolés. Une fonctionnalité IA doit définir :
@@ -173,6 +180,7 @@ Les modules IA doivent être isolés. Une fonctionnalité IA doit définir :
 - permissions;
 - limites;
 - coûts.
+
 # 19. Validation architecturale
 
 Avant validation : [] Module correctement isolé [] Responsabilités séparées

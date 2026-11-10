@@ -68,7 +68,7 @@ Les connexions HTTP non sécurisées sont interdites.
 
 1
 
-17.4 Authentification
+17.4 Authentification
 
 Toute API protégée exige une authentification valide.
 
@@ -150,7 +150,7 @@ injections SQL ;
 
 2
 
-•
+•
 
 injections NoSQL ;
 
@@ -256,7 +256,7 @@ ne jamais être exposées inutilement ;
 
 3
 
-Les réponses API ne doivent retourner que les informations strictement nécessaires.
+Les réponses API ne doivent retourner que les informations strictement nécessaires.
 
 17.11 Gestion des secrets
 
@@ -348,7 +348,7 @@ Toutes les règles de sécurité doivent rester cohérentes entre ces documents.
 
 4
 
-17.15 Conclusion
+17.15 Conclusion
 
 La Sécurité commune constitue le cadre de référence pour toutes les API de Vitala.
 
@@ -359,4 +359,3 @@ d'accès et une défense robuste contre les principales menaces, tout en assuran
 l'intégrité et la disponibilité des données.
 
 5
-

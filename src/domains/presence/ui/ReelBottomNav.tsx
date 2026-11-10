@@ -25,7 +25,12 @@ export function ReelBottomNav({ onOpenMenu, menuOpen }: ReelBottomNavProps) {
           </Link>
         </li>
         <li className="reel-page-nav__center-slot">
-          <Link to="/reel" className="reel-page-nav__center" aria-current="page" aria-label="Temps Réel">
+          <Link
+            to="/reel"
+            className="reel-page-nav__center"
+            aria-current="page"
+            aria-label="Temps Réel"
+          >
             <RadioTower aria-hidden="true" />
           </Link>
         </li>

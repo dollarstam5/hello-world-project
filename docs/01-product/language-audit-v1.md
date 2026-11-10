@@ -9,6 +9,7 @@
 Le document canonique reste [Langage humain et communication Vitalis](./communication-language.md). Cet audit le traduit en contrôles concrets sur les textes réellement présents dans le dépôt.
 
 Chaque texte doit :
+
 - être compris immédiatement, sans jargon inutile ;
 - expliquer la situation et la prochaine étape lorsqu'il y en a une ;
 - respecter la personne, sans ton infantilisant ni enthousiasme forcé ;
@@ -18,18 +19,18 @@ Chaque texte doit :
 
 ## 2. Constats prioritaires
 
-| Priorité | Emplacement / clé | Constat | Orientation proposée |
-| --- | --- | --- | --- |
-| P1 | `common.empty.desc` | « Cet espace est encore calme. Revenez bientôt. » / “This space is still quiet. Come back soon.” est artificiel et pousse à revenir sans raison utile. | « Rien à afficher pour le moment. » / “Nothing to show here yet.” |
-| P1 | `common.error`, `common.error.desc` | « Une pause inattendue » et « Réessayez doucement » ne disent pas clairement ce qui s'est passé. L'anglais “An unexpected pause” / “Try again gently” a le même défaut. | Titre : « Un problème est survenu. » / “Something went wrong.” Description : « Nous n'avons pas pu terminer. Vous pouvez réessayer. » / “We couldn't complete that. You can try again.” |
-| P1 | `flash.composer.publish`, `flash.composer.signIn` | « Diffuser » / “Broadcast” décrit le mécanisme plutôt que le geste attendu. | Préférer « Publier » / “Post” (à confirmer avec le vocabulaire produit Flash). |
-| P1 | `flash.feed.error` | « Flux distant indisponible » expose une notion technique et ne guide pas la personne. | « Nous n'avons pas pu actualiser les Flash. Voici ceux déjà disponibles. » / “We couldn't refresh Flash. Here's what is already available.” |
-| P1 | `assistant.signInRequired` | « Je vous répondrai en direct » / “I will answer you live” promet un mode de réponse qui peut être compris comme une disponibilité ou une capacité garantie. | « Connectez-vous pour poser votre question à Vita. » / “Sign in to ask Vita a question.” |
-| P1 | `communication.title`, `communication.open` | « Communications » / “Communications” et « Ouvrir les communications » sont froids et institutionnels. | Rechercher un titre court qui couvre les quatre onglets sans laisser croire à une messagerie libre. Proposition de travail : « Votre espace de suivi » / “Your updates”. À valider avant remplacement. |
-| P2 | `home.engine.reel.desc`, `home.engine.radar.desc` | « Cet espace se prépare » / “This space is taking shape” est vague alors que les cartes sont cliquables. | Vérifier d'abord l'état fonctionnel réel de chaque espace. Ne pas annoncer une capacité disponible ni masquer une page encore en construction. |
-| P2 | `onboarding.intro.title`, `onboarding.intro.moreBody`, `onboarding.ready.body` | Quelques formulations sont génériques (« tout un monde à découvrir », « une expérience qui vous ressemble », « toute l'expérience vous attend ») et se répètent. | Raccourcir et expliquer concrètement ce que la personne peut faire dès maintenant. |
-| P2 | `scan.privacy` et erreurs de position | Le texte est rassurant, mais toute promesse sur la durée ou l'affichage de la position doit être vérifiée contre le comportement réel et les permissions. | Audit fonctionnel nécessaire avant reformulation. |
-| P2 | `offline.banner.desc`, clés `sync.*` | « synchronisées », « synchronisation » et « en attente du réseau » sont compréhensibles mais techniques selon le contexte. | Préférer « gardées sur cet appareil » et « envoyées dès que le réseau revient », uniquement lorsque cela décrit exactement l'état. |
+| Priorité | Emplacement / clé                                                              | Constat                                                                                                                                                                 | Orientation proposée                                                                                                                                                                                   |
+| -------- | ------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| P1       | `common.empty.desc`                                                            | « Cet espace est encore calme. Revenez bientôt. » / “This space is still quiet. Come back soon.” est artificiel et pousse à revenir sans raison utile.                  | « Rien à afficher pour le moment. » / “Nothing to show here yet.”                                                                                                                                      |
+| P1       | `common.error`, `common.error.desc`                                            | « Une pause inattendue » et « Réessayez doucement » ne disent pas clairement ce qui s'est passé. L'anglais “An unexpected pause” / “Try again gently” a le même défaut. | Titre : « Un problème est survenu. » / “Something went wrong.” Description : « Nous n'avons pas pu terminer. Vous pouvez réessayer. » / “We couldn't complete that. You can try again.”                |
+| P1       | `flash.composer.publish`, `flash.composer.signIn`                              | « Diffuser » / “Broadcast” décrit le mécanisme plutôt que le geste attendu.                                                                                             | Préférer « Publier » / “Post” (à confirmer avec le vocabulaire produit Flash).                                                                                                                         |
+| P1       | `flash.feed.error`                                                             | « Flux distant indisponible » expose une notion technique et ne guide pas la personne.                                                                                  | « Nous n'avons pas pu actualiser les Flash. Voici ceux déjà disponibles. » / “We couldn't refresh Flash. Here's what is already available.”                                                            |
+| P1       | `assistant.signInRequired`                                                     | « Je vous répondrai en direct » / “I will answer you live” promet un mode de réponse qui peut être compris comme une disponibilité ou une capacité garantie.            | « Connectez-vous pour poser votre question à Vita. » / “Sign in to ask Vita a question.”                                                                                                               |
+| P1       | `communication.title`, `communication.open`                                    | « Communications » / “Communications” et « Ouvrir les communications » sont froids et institutionnels.                                                                  | Rechercher un titre court qui couvre les quatre onglets sans laisser croire à une messagerie libre. Proposition de travail : « Votre espace de suivi » / “Your updates”. À valider avant remplacement. |
+| P2       | `home.engine.reel.desc`, `home.engine.radar.desc`                              | « Cet espace se prépare » / “This space is taking shape” est vague alors que les cartes sont cliquables.                                                                | Vérifier d'abord l'état fonctionnel réel de chaque espace. Ne pas annoncer une capacité disponible ni masquer une page encore en construction.                                                         |
+| P2       | `onboarding.intro.title`, `onboarding.intro.moreBody`, `onboarding.ready.body` | Quelques formulations sont génériques (« tout un monde à découvrir », « une expérience qui vous ressemble », « toute l'expérience vous attend ») et se répètent.        | Raccourcir et expliquer concrètement ce que la personne peut faire dès maintenant.                                                                                                                     |
+| P2       | `scan.privacy` et erreurs de position                                          | Le texte est rassurant, mais toute promesse sur la durée ou l'affichage de la position doit être vérifiée contre le comportement réel et les permissions.               | Audit fonctionnel nécessaire avant reformulation.                                                                                                                                                      |
+| P2       | `offline.banner.desc`, clés `sync.*`                                           | « synchronisées », « synchronisation » et « en attente du réseau » sont compréhensibles mais techniques selon le contexte.                                              | Préférer « gardées sur cet appareil » et « envoyées dès que le réseau revient », uniquement lorsque cela décrit exactement l'état.                                                                     |
 
 ## 3. Vérifications de cohérence déjà faites
 
@@ -52,6 +53,7 @@ Chaque texte doit :
 ## 5. Prochaine passe d'audit
 
 Poursuivre le relevé sur :
+
 - Réel, Radar, 2×2, profil et identité ;
 - notifications, messages, permissions et états de connexion ;
 - états de chargement, vide, erreur, réussite, attente et reprise hors ligne ;
@@ -64,7 +66,6 @@ Chaque correction sera reliée à une clé i18n et à son écran. Les textes don
 ## 6. Limites de cette livraison
 
 Cette passe est un audit éditorial et de cohérence, pas une preuve de conformité fonctionnelle. Aucun composant, comportement applicatif, contrat de données ou texte de production n'est modifié par ce document. Les propositions sont des pistes de rédaction à valider avant leur application au code.
-
 
 ## 7. Correction importante — formulation de confidentialité de Scan
 

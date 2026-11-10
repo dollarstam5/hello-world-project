@@ -25,15 +25,15 @@ Le cookie doit être posé/effacé par une API serveur officiellement prise en c
 
 Table technique envisagée : public.reel_guest_sessions.
 
-| Champ | Rôle |
-| --- | --- |
-| id | Identifiant interne aléatoire de la session |
-| token_hash | Empreinte unique du secret, jamais le secret brut |
-| created_at | Date de création |
+| Champ        | Rôle                                                        |
+| ------------ | ----------------------------------------------------------- |
+| id           | Identifiant interne aléatoire de la session                 |
+| token_hash   | Empreinte unique du secret, jamais le secret brut           |
+| created_at   | Date de création                                            |
 | last_seen_at | Dernière activité, mise à jour avec limitation de fréquence |
-| expires_at | Échéance absolue |
-| revoked_at | Révocation explicite, si présente |
-| purpose | Usage limité à Réel invité, pas une autorisation générale |
+| expires_at   | Échéance absolue                                            |
+| revoked_at   | Révocation explicite, si présente                           |
+| purpose      | Usage limité à Réel invité, pas une autorisation générale   |
 
 Aucun auth.users, profiles, email, téléphone, nom civil, coordonnées GPS exactes ou historique de navigation ne doit être créé pour cette session. Ne pas ajouter d'adresse IP ou d'empreinte d'appareil persistante par défaut. Les journaux de sécurité doivent être minimisés et soumis à une durée distincte documentée.
 

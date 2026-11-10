@@ -134,7 +134,10 @@
 @media (prefers-reduced-motion: no-preference) {
   .reel-page-nav__item,
   .reel-page-nav__center {
-    transition: color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+    transition:
+      color 160ms ease,
+      transform 160ms ease,
+      box-shadow 160ms ease;
   }
 
   .reel-page-nav__item:active,

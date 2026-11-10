@@ -44,7 +44,7 @@ Appliquer la priorité correcte
 
 1
 
-Exécuter uniquement si autorisé
+Exécuter uniquement si autorisé
 
 Si aucune règle n'existe :
 
@@ -98,7 +98,7 @@ modifier uniquement ce qui est nécessaire.
 
 2
 
-Non
+Non
 
 L'IA doit vérifier :
 
@@ -152,7 +152,7 @@ L'IA ne doit pas modifier automatiquement.
 
 3
 
-Procédure :
+Procédure :
 
 Identifier l'amélioration
 
@@ -200,7 +200,7 @@ Tester
 
 4
 
-↓
+↓
 
 Documenter si nécessaire
 
@@ -248,7 +248,7 @@ Non
 
 5
 
-Est-elle indispensable ?
+Est-elle indispensable ?
 
 Oui
 
@@ -312,7 +312,7 @@ Avant création :
 
 6
 
-Vérifier :
+Vérifier :
 
 •
 
@@ -376,7 +376,7 @@ choisir celle qui respecte :
 
 7
 
-3.
+3.
 
 sécurité ;
 
@@ -436,7 +436,7 @@ Architecture
 
 8
 
-↓
+↓
 
 Standards techniques
 
@@ -500,7 +500,7 @@ L'IA doit vérifier :
 
 9
 
-Seulement après :
+Seulement après :
 
 La tâche peut être déclarée terminée.
 
@@ -529,4 +529,3 @@ Création du système de décision IA
 Fin de AI/02-AI-DECISION-TREE.md
 
 10
-

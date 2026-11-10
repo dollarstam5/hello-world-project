@@ -15,7 +15,7 @@ Cet espace regroupe toutes les veilles de l'utilisateur. Il permet notamment de 
 - les veilles arrivant prochainement à expiration;
 - les veilles terminées;
 - les archives.
-Chaque veille affiche son état, sa progression et les derniers événements associés.
+  Chaque veille affiche son état, sa progression et les derniers événements associés.
 
 ## 23.2 Veille collective
 
@@ -27,7 +27,7 @@ Cet espace présente les observations globales de Vitala. Il met en avant :
 - les zones où la demande évolue;
 - les services insuffisamment représentés;
 - les nouvelles tendances détectées.
-Toutes les informations sont agrégées et anonymisées.
+  Toutes les informations sont agrégées et anonymisées.
 
 # 24. Résumé intelligent
 
@@ -38,7 +38,7 @@ Toutes les informations sont agrégées et anonymisées.
 - veilles arrivant à expiration;
 - besoins émergents dans les catégories suivies;
 - nouvelles tendances collectives.
-L'objectif est de permettre à l'utilisateur de comprendre rapidement les évolutions importantes sans devoir parcourir chaque veille.
+  L'objectif est de permettre à l'utilisateur de comprendre rapidement les évolutions importantes sans devoir parcourir chaque veille.
 
 # 25. Explorer une tendance
 
@@ -48,11 +48,12 @@ Les tendances proposées par Veille sont interactives. L'utilisateur peut consul
 - comment elle évolue;
 - quelles zones sont concernées;
 - quels types de besoins sont les plus représentés.
-Lorsque cela est pertinent, Vitala peut également suggérer :
+  Lorsque cela est pertinent, Vitala peut également suggérer :
 
 - de créer une veille similaire;
 - d'étendre une veille existante;
 - de répondre à un besoin collectif.
+
 # 26. Répondre à un besoin collectif
 
 Lorsqu'un utilisateur estime pouvoir répondre à une tendance observée, il peut manifester son intérêt. Cette action ne donne jamais accès aux personnes concernées. Vitala informe uniquement les utilisateurs ayant exprimé un besoin compatible. Chaque utilisateur conserve la liberté :
@@ -72,7 +73,7 @@ Veille attribue un Indice d'Opportunité aux besoins collectifs observés. Cet i
 - évolution de la demande;
 - durée moyenne d'attente;
 - concentration géographique.
-Les niveaux proposés sont : 🟢 Faible 🟡 Modéré 🟠 Fort 🔴 Prioritaire Chaque indice est accompagné d'une explication permettant à l'utilisateur de comprendre son niveau. L'IOV constitue une aide à la décision. Il ne représente jamais une garantie de résultat.
+  Les niveaux proposés sont : 🟢 Faible 🟡 Modéré 🟠 Fort 🔴 Prioritaire Chaque indice est accompagné d'une explication permettant à l'utilisateur de comprendre son niveau. L'IOV constitue une aide à la décision. Il ne représente jamais une garantie de résultat.
 
 # 28. Les notifications intelligentes
 
@@ -95,7 +96,7 @@ Les veilles terminées restent accessibles. Chaque archive conserve notamment :
 - les événements importants;
 - les opportunités détectées;
 - le résultat obtenu.
-Les archives permettent à l'utilisateur de retrouver facilement ses anciennes surveillances et de s'en inspirer pour de futures veilles.
+  Les archives permettent à l'utilisateur de retrouver facilement ses anciennes surveillances et de s'en inspirer pour de futures veilles.
 
 # 30. Principes UX
 
@@ -108,6 +109,7 @@ Veille repose sur plusieurs principes d'expérience utilisateur.
 - Faciliter la prise de décision.
 - Maintenir une interface simple malgré la richesse des informations.
 - Toujours laisser le contrôle à l'utilisateur.
+
 # 31. Checklist d'implémentation
 
 Avant de considérer Veille comme terminé, les éléments suivants doivent être vérifiés. ✓ Gestion des veilles personnelles. ✓ Gestion des états. ✓ Paramètres de surveillance. ✓ Tableau de bord personnel. ✓ Tableau de bord collectif. ✓ Détection des besoins émergents.
@@ -130,6 +132,7 @@ Les règles suivantes constituent les décisions officielles du moteur Veille.
 - L'identité des utilisateurs reste protégée tant que les deux parties n'ont pas accepté le contact.
 - Les notifications privilégient la pertinence plutôt que la fréquence.
 - Les archives restent accessibles tant que l'utilisateur ne les supprime pas.
+
 # Conclusion
 
 Veille constitue le moteur de supervision et d'intelligence collective de Vitala. À l'échelle individuelle, il permet à chaque utilisateur de suivre efficacement ses surveillances et d'en comprendre l'évolution. À l'échelle collective, il transforme des milliers de signaux anonymisés en tendances, en besoins émergents et en opportunités concrètes.

@@ -82,7 +82,7 @@ corruption de la base de données ;
 
 1
 
-•
+•
 
 perte du stockage ;
 
@@ -176,7 +176,7 @@ Les procédures doivent être reproductibles.
 
 2
 
-7. Sauvegardes
+7. Sauvegardes
 
 Le plan de reprise s'appuie sur :
 
@@ -264,7 +264,7 @@ les délais de reprise ;
 
 3
 
-•
+•
 
 la coordination des intervenants.
 
@@ -362,7 +362,7 @@ lors de l'ajout d'un nouveau service critique ;
 
 4
 
-•
+•
 
 au minimum une fois par an.
 
@@ -379,4 +379,3 @@ Il constitue le référentiel officiel permettant de protéger les données, de 
 systèmes et d'assurer une exploitation fiable et durable de la plateforme.
 
 5
-

@@ -44,7 +44,7 @@ La plateforme est organisée autour de domaines métier clairement identifiés.
 
 1
 
-Chaque domaine possède ses propres responsabilités, ses modèles de données et ses services.
+Chaque domaine possède ses propres responsabilités, ses modèles de données et ses services.
 
 Les domaines collaborent entre eux sans créer de dépendances inutiles.
 
@@ -92,7 +92,7 @@ lorsque la connexion est rétablie.
 
 2
 
-3.7 Synchronisation intelligente
+3.7 Synchronisation intelligente
 
 La synchronisation privilégie la cohérence des données tout en limitant les échanges inutiles.
 
@@ -136,7 +136,7 @@ Elle ne remplace jamais le jugement humain pour les décisions importantes.
 
 3
 
-3.12 Évolutivité
+3.12 Évolutivité
 
 L'architecture est conçue pour accompagner la croissance de Vitala.
 
@@ -189,4 +189,3 @@ Toutes les décisions techniques devront être compatibles avec cette philosophi
 cohérence de l'écosystème Vitala.
 
 4
-

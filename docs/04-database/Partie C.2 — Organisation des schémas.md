@@ -70,7 +70,7 @@ Les schémas gérés par Supabase sont réservés à l'infrastructure.
 
 1
 
-Ils comprennent notamment :
+Ils comprennent notamment :
 
 •
 
@@ -80,10 +80,10 @@ Les schémas gérés par Supabase sont réservés à l'infrastructure.
 
 •
 
-auth  : gestion des utilisateurs, sessions et authentification.
-storage  : gestion des buckets et des fichiers.
-extensions  : extensions PostgreSQL activées.
-graphql_public  (si utilisé) : exposition GraphQL.
+auth : gestion des utilisateurs, sessions et authentification.
+storage : gestion des buckets et des fichiers.
+extensions : extensions PostgreSQL activées.
+graphql_public (si utilisé) : exposition GraphQL.
 
 Ces schémas ne doivent pas être modifiés directement sauf lorsque la documentation officielle de
 
@@ -91,7 +91,7 @@ Supabase le prévoit.
 
 4. Schéma public
 
-Le schéma  public  constitue le schéma principal des données métier.
+Le schéma public constitue le schéma principal des données métier.
 
 Il contient :
 
@@ -117,7 +117,7 @@ Toutes les conventions définies dans BUILD-DATABASE.md et BUILD-DOMAINS.md s'y 
 
 5. Organisation logique des domaines
 
-Même si les tables résident dans le schéma  public , elles sont organisées par domaine grâce à des
+Même si les tables résident dans le schéma public , elles sont organisées par domaine grâce à des
 
 conventions de nommage cohérentes.
 
@@ -159,7 +159,7 @@ Cette convention facilite la lecture, la maintenance et les migrations.
 
 2
 
-6. Schémas techniques futurs
+6. Schémas techniques futurs
 
 Si les besoins de Vitala évoluent, des schémas supplémentaires pourront être créés pour des usages
 
@@ -223,7 +223,7 @@ Ils ne doivent pas implémenter des règles métier complexes.
 
 3
 
-10. Sécurité des schémas
+10. Sécurité des schémas
 
 Chaque schéma possède ses propres règles d'accès.
 
@@ -301,11 +301,10 @@ L'organisation des schémas PostgreSQL constitue l'un des fondements de la maint
 
 4
 
-Une structure claire des schémas permet d'assurer une évolution maîtrisée, une meilleure sécurité et
+Une structure claire des schémas permet d'assurer une évolution maîtrisée, une meilleure sécurité et
 
 une compréhension immédiate de la base de données par les développeurs comme par les
 
 intelligences artificielles.
 
 5
-

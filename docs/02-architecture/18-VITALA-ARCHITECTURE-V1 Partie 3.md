@@ -76,7 +76,7 @@ validation d'une mission ;
 
 1
 
-•
+•
 
 évolution du Trust ;
 
@@ -178,7 +178,7 @@ compatibilité avec les principes de l'architecture officielle.
 
 2
 
-22. Organisation des modules
+22. Organisation des modules
 
 Chaque module comprend, lorsque cela est nécessaire :
 
@@ -268,7 +268,7 @@ Ces informations facilitent la maintenance et les audits.
 
 3
 
-25. Sécurité
+25. Sécurité
 
 La sécurité est intégrée à tous les niveaux :
 
@@ -374,7 +374,7 @@ La documentation officielle précède toujours les développements majeurs.
 
 4
 
-28. Constitution technique
+28. Constitution technique
 
 Le présent document constitue la Constitution technique de Vitala.
 
@@ -452,7 +452,6 @@ Documents liés
 
 5
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 6
-

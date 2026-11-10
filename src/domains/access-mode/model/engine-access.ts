@@ -62,14 +62,14 @@ export type EngineAction = "view_intro" | "enter" | "operate";
 
 const ENGINES: readonly VitalisEngine[] = ["reel", "flash", "scan", "radar", "grid"];
 const MEMBER_PROFILE_BLOCKED: readonly MemberProfileState[] = [
-  "invited", "suspended", "closed", "missing", "error",
+  "invited",
+  "suspended",
+  "closed",
+  "missing",
+  "error",
 ];
 
-function result(
-  status: DecisionStatus,
-  reason: DecisionReason,
-  message: string,
-): VitalisDecision {
+function result(status: DecisionStatus, reason: DecisionReason, message: string): VitalisDecision {
   return {
     status,
     allowed: status === "allow",
@@ -105,11 +105,15 @@ export function evaluateVitalisDecision(
   }
 
   if (access.mode === "visitor") {
-    return result("deny", "account_required", "Cette possibilité demande un accès adapté. Vous pouvez commencer en invité si elle le permet, ou vous connecter.");
+    return result(
+      "deny",
+      "account_required",
+      "Cette possibilité demande un accès adapté. Vous pouvez commencer en invité si elle le permet, ou vous connecter.",
+    );
   }
 
   if (access.mode === "guest") {
-    if (engine !== "reel" || action === "enter" && engine !== "reel") {
+    if (engine !== "reel" || (action === "enter" && engine !== "reel")) {
       return result("deny", "account_required", "Cette possibilité demande un compte Vitalis.");
     }
     if (action === "enter") {
@@ -117,11 +121,16 @@ export function evaluateVitalisDecision(
     }
     // Guest business operations remain blocked until their dedicated server
     // policy, consent and abuse controls have been validated.
-    return result("server_check", "guest_server_validation", "Nous devons vérifier cette possibilité avant de continuer.");
+    return result(
+      "server_check",
+      "guest_server_validation",
+      "Nous devons vérifier cette possibilité avant de continuer.",
+    );
   }
 
   if (MEMBER_PROFILE_BLOCKED.includes(access.memberProfileState)) {
-    const incomplete = access.memberProfileState === "invited" || access.memberProfileState === "missing";
+    const incomplete =
+      access.memberProfileState === "invited" || access.memberProfileState === "missing";
     return result(
       "deny",
       incomplete ? "profile_incomplete" : "account_unavailable",
@@ -145,21 +154,37 @@ export function evaluateVitalisDecision(
     return result("deny", "consent_required", "Votre accord est nécessaire avant de continuer.");
   }
   if (context.quotaAvailable === false) {
-    return result("deny", "quota_reached", "Vous avez atteint la limite disponible pour le moment.");
+    return result(
+      "deny",
+      "quota_reached",
+      "Vous avez atteint la limite disponible pour le moment.",
+    );
   }
 
   if (context.online === false) {
     if (context.queueableOffline) {
-      return result("defer", "offline_queue", "Votre demande sera gardée sur cet appareil et envoyée dès le retour de la connexion.");
+      return result(
+        "defer",
+        "offline_queue",
+        "Votre demande sera gardée sur cet appareil et envoyée dès le retour de la connexion.",
+      );
     }
-    return result("deny", "offline_not_queueable", "Cette action nécessite une connexion internet.");
+    return result(
+      "deny",
+      "offline_not_queueable",
+      "Cette action nécessite une connexion internet.",
+    );
   }
 
   if (action === "enter") {
     return result("allow", "active_member", "Vous pouvez accéder à cet espace.");
   }
 
-  return result("server_check", "server_authorization_required", "Nous vérifions votre autorisation avant de continuer.");
+  return result(
+    "server_check",
+    "server_authorization_required",
+    "Nous vérifions votre autorisation avant de continuer.",
+  );
 }
 
 /** Compatibility adapter for the first access-manager API. */

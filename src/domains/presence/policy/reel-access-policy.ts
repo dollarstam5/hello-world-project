@@ -44,7 +44,10 @@ const DENIED: VitalisDecision = {
   mayQueueOffline: false,
 };
 
-function denied(message: string, reason: VitalisDecision["reason"] = "resource_not_owned"): VitalisDecision {
+function denied(
+  message: string,
+  reason: VitalisDecision["reason"] = "resource_not_owned",
+): VitalisDecision {
   return {
     status: "deny",
     allowed: false,
@@ -70,11 +73,17 @@ export function evaluateReelAccess(
   // Guest sessions exist as a separate server-side identity, but no Réel
   // business RPC currently accepts them. Do not imply that they can act.
   if (context.access.mode === "guest") {
-    return denied("Le parcours Réel invité n’est pas encore ouvert pour cette action.", "account_required");
+    return denied(
+      "Le parcours Réel invité n’est pas encore ouvert pour cette action.",
+      "account_required",
+    );
   }
 
   if (operation === "discover_presence" && context.discoveryConsent !== true) {
-    return denied("Autorisez la découverte pour observer les activités autour de vous.", "consent_required");
+    return denied(
+      "Autorisez la découverte pour observer les activités autour de vous.",
+      "consent_required",
+    );
   }
 
   const presenceGatedOperations: readonly ReelOperation[] = [
@@ -86,7 +95,10 @@ export function evaluateReelAccess(
     "withdraw_bip",
   ];
   if (presenceGatedOperations.includes(operation) && context.presenceConsent !== true) {
-    return denied("Activez séparément votre présence pour utiliser ces possibilités.", "consent_required");
+    return denied(
+      "Activez séparément votre présence pour utiliser ces possibilités.",
+      "consent_required",
+    );
   }
 
   const requiredRoles: Partial<Record<ReelOperation, ReelActorRole>> = {
@@ -111,7 +123,9 @@ export function evaluateReelAccess(
     return denied("Vous ne pouvez pas agir sur cette présence ou cette interaction.");
   }
 
-  const actionByOperation: Partial<Record<ReelOperation, Parameters<typeof evaluateVitalisDecision>[2]>> = {
+  const actionByOperation: Partial<
+    Record<ReelOperation, Parameters<typeof evaluateVitalisDecision>[2]>
+  > = {
     start_presence: "create",
     stop_presence: "delete",
     discover_presence: "discover",

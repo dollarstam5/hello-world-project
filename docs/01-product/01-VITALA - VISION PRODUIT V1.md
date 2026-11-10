@@ -22,7 +22,7 @@ Permettre à chaque utilisateur de :
 - Développer sa crédibilité.
 - Mobiliser son entourage.
 - Construire des relations de confiance durables.
-Vitala aide les utilisateurs à découvrir, créer, partager et exploiter des opportunités utiles, qu'elles prennent la forme d'un besoin, d'une proposition, d'une recommandation, d'un service, d'une vente, d'une mission ou d'une information.
+  Vitala aide les utilisateurs à découvrir, créer, partager et exploiter des opportunités utiles, qu'elles prennent la forme d'un besoin, d'une proposition, d'une recommandation, d'un service, d'une vente, d'une mission ou d'une information.
 
 # 4. Positionnement
 
@@ -33,7 +33,7 @@ Vitala n'est pas :
 - Une marketplace traditionnelle.
 - Une plateforme de divertissement.
 - Une plateforme de création de contenu viral.
-Vitala est : Un moteur de découverte, de confiance et d'opportunités orienté vers les actions réelles.
+  Vitala est : Un moteur de découverte, de confiance et d'opportunités orienté vers les actions réelles.
 
 # 5. Utilisateur Cible
 
@@ -55,7 +55,7 @@ Une opportunité représente toute intention, besoin, proposition, ressource, re
 - Demande d'aide.
 - Opportunité professionnelle.
 - Opportunité communautaire.
-Toutes les fonctionnalités Vitala gravitent autour des opportunités.
+  Toutes les fonctionnalités Vitala gravitent autour des opportunités.
 
 # 7. Les Moteurs Stratégiques
 
@@ -108,6 +108,7 @@ La proximité est importante mais n'est jamais le seul critère. Les moteurs Vit
 - Confiance.
 - Historique.
 - Références.
+
 ## Principe 4 : Découverte permanente
 
 L'utilisateur doit continuellement découvrir des opportunités utiles.
@@ -162,7 +163,7 @@ La confiance constitue le cœur de Vitala. Elle est construite à partir de :
 - Participation locale.
 - Transactions réussies.
 - Actions validées.
-Les garants peuvent être :
+  Les garants peuvent être :
 
 - Utilisateurs confirmés.
 - Utilisateurs Pro.
@@ -170,6 +171,7 @@ Les garants peuvent être :
 - Organisations.
 - Entreprises.
 - Références externes reconnues.
+
 # 11. Réputation
 
 Vitala n'utilise pas de système classique de notation par étoiles.
@@ -184,7 +186,7 @@ La crédibilité est représentée par des statuts et preuves de confiance :
 - Actif.
 - Fiable.
 - Pro.
-L'objectif est de valoriser la confiance réelle plutôt que la popularité.
+  L'objectif est de valoriser la confiance réelle plutôt que la popularité.
 
 # 12. Assistant Vita
 
@@ -197,7 +199,7 @@ Vita est l'assistant officiel de Vitala. Ses missions sont :
 - Faciliter la découverte.
 - Aider à compléter progressivement le profil.
 - Accompagner la montée en confiance.
-Vita ne remplace pas les interactions humaines. Vita facilite les interactions humaines.
+  Vita ne remplace pas les interactions humaines. Vita facilite les interactions humaines.
 
 # 13. Cycle de Valeur Vitala
 

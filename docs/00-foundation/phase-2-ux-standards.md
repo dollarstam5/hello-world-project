@@ -97,7 +97,6 @@ Les composants concernés doivent prévoir les états utiles suivants, selon le 
 
 La phase 2 ne peut être déclarée terminée qu'après revue des composants partagés et des parcours V1, corrections des anomalies bloquantes, preuves de tests automatisés et validation manuelle responsive/accessibilité. Les sujets non couverts restent explicitement ouverts ; ils ne sont pas réputés conformes par défaut.
 
-
 ## 9. Dialogue guidé et formulaires — périmètre par version
 
 ### Principe directeur
@@ -127,6 +126,7 @@ Le fournisseur, l'architecture, les coûts, les quotas, les règles de confident
 ### Formulaire classique : recours secondaire
 
 Un formulaire classique peut être proposé dans une seconde étape ou dans un cas particulier, notamment :
+
 - lorsqu'une exigence légale, réglementaire ou technique impose un format précis ;
 - lorsqu'un ensemble de données structurées doit être consulté ou corrigé en une seule fois ;
 - lorsqu'une donnée complexe nécessite un contrôle visuel précis ;
@@ -157,34 +157,37 @@ Pour les versions futures intégrant une intelligence, celle-ci pourra préparer
 
 Les fonctions de compréhension libre, d'adaptation intelligente et de dialogue vocal ne font pas partie des critères d'acceptation V1.
 
-
 ## 10. Revue des parcours et états — audit en cours
 
 ### Flash
+
 - Le flux public affiche les données distantes et peut conserver les éléments locaux en mode hors ligne.
 - La création d'un Flash est réservée à une session authentifiée ; un visiteur non connecté reçoit un accès vers l'authentification.
 - Correction appliquée dans `FlashFeed` : une erreur de chargement distante reste visible même lorsque la liste locale est vide ; l'état vide ne masque plus l'erreur.
 - À vérifier : reprise manuelle après erreur, cohérence du message lorsque le réseau revient et parcours complet invité/compte.
 
 ### Scan
+
 - Le parcours demande une position temporaire avant de lancer la recherche de proximité ; le refus de permission est présenté explicitement.
 - Corrections appliquées : état d'attente pendant l'obtention de la position, prévention d'un double lancement, état d'erreur visible si le service de scan échoue et messages FR/EN correspondants.
 - À vérifier : navigateur sans Geolocation API, permission refusée de façon persistante, délai dépassé, réseau interrompu pendant la recherche et relance utilisateur.
 
 ### Réel et Radar
+
 - Les routes actuelles sont des points d'entrée/fondations, pas des moteurs V1 complets. Leurs états métier et parcours invité/compte ne peuvent donc pas être certifiés à cette étape.
 - Les contrats UX propres à Réel seront définis dans la phase 3 ; les écrans Radar et ses états métier seront contrôlés lors de l'harmonisation des moteurs en phase 5.
 - Ne pas présenter ces espaces comme fonctionnels tant que leurs capacités réelles ne sont pas implémentées.
 
 ### État de validation
+
 - Les corrections de cette revue ont été poussées dans la branche de la PR #37.
 - Aucune exécution CI n'a encore été retournée pour le dernier commit ; les corrections ne sont donc pas déclarées testées ou validées par CI.
 - Les validations manuelles (clavier, lecteur d'écran, contraste réel, petits écrans) restent ouvertes.
 
-
 ## 11. Dernière passe de stabilisation et preuves
 
 ### Corrections supplémentaires appliquées
+
 - Flash : l'erreur d'enregistrement local est interceptée et affichée ; le bouton reste réutilisable après échec. Le compositeur attend la fin du chargement de session avant de présenter le parcours invité ou authentifié.
 - Flash : le message de confirmation décrit désormais un enregistrement local en attente de transmission, et non une publication serveur déjà garantie.
 - Flash : le libellé d'erreur du flux précise que seules les données réellement disponibles localement sont affichées.
@@ -193,6 +196,7 @@ Les fonctions de compréhension libre, d'adaptation intelligente et de dialogue 
 - FR/EN : les nouveaux messages d'erreur et de repli sont présents dans les deux catalogues ; le test de parité i18n couvre leur présence.
 
 ### CI — état vérifiable
+
 - La dernière exécution disponible au moment de cette revue est Quality #504, sur le commit antérieur aux dernières corrections de formatage.
 - Cette exécution a échoué pendant `bun run check:foundation`, avant les étapes RLS, release/build et tests mobile/offline.
 - Le journal relevait 611 erreurs Prettier. Onze concernaient trois fichiers modifiés dans cette série (`FlashComposer.tsx`, `ScanPanel.tsx`, `messages.ts`) ; ces onze écarts ont été corrigés dans la branche.
@@ -200,22 +204,23 @@ Les fonctions de compréhension libre, d'adaptation intelligente et de dialogue 
 - Les commits de correction les plus récents n'ont pas encore de résultat CI récupérable. Tests, build, RLS et tests navigateur ne sont donc toujours pas certifiés.
 
 ### Conditions restantes pour clôturer la phase 2
+
 - Obtenir une exécution CI exploitable après les derniers commits et résoudre le blocage de qualité restant sans désactiver les contrôles.
 - Valider manuellement sur appareils réels les parcours clavier/focus, lecteur d'écran, contrastes composites et tailles mobiles ; les vérifications de code seules ne remplacent pas ces essais.
 - Vérifier les états réseau et les parcours invité/compte sur les écrans effectivement implémentés. Réel et Radar restent des fondations d'attente : leurs comportements métier relèvent respectivement des phases 3 et 5, et ne sont pas certifiés par cette phase.
 
 **Statut de sortie : non clôturée.** La phase 2 ne sera déclarée terminée qu'après obtention de preuves CI et validation manuelle des critères transversaux. Aucun passage à la phase 3 n'est autorisé avant ces conditions.
 
-
 ### Reprise Flash et seconde passe de qualité
+
 - Le flux Flash expose maintenant une action explicite de nouvelle tentative après erreur ; elle est désactivée pendant le chargement et réutilise la même opération de récupération que le retour réseau.
 - La fonction de reprise reste stable entre les rendus ; les données locales absentes ne créent pas de tableau vide instable et le message d'erreur suit la langue active.
 - Quality #514, exécutée après la première correction du lint, a révélé sept écarts de formatage supplémentaires dans les contrats, Surface, les tokens, les traductions et les permissions. Ces sept écarts ont été corrigés dans la branche.
 - Les deux avertissements de hooks liés au flux Flash ont également été traités. Les avertissements Fast Refresh restants dans les composants UI partagés sont non bloquants, mais restent à examiner dans le cadre de l'hygiène technique.
 - Une nouvelle exécution Quality #521 est en attente sur le commit suivant ; elle doit confirmer les corrections précédentes. Aucun test ou build n'est réputé réussi avant son résultat.
 
-
 ### Authentification — cohérence invité/compte et accès système
+
 - La route de connexion est volontairement sans chrome global ; elle possède maintenant ses propres contrôles FR/EN et clair/sombre afin que ces réglages restent disponibles pendant l'authentification.
 - Les champs, le bouton principal et les actions secondaires respectent une cible tactile minimale de 48 px et un focus visible.
 - Les erreurs inattendues d'authentification sont interceptées et présentées avec un rôle accessible ; le retour de succès reste distinct.
@@ -223,17 +228,17 @@ Les fonctions de compréhension libre, d'adaptation intelligente et de dialogue 
 - Le parcours Flash reste réservé à un compte pour publier ; le parcours Scan public ne requiert pas de compte. Le profil et les moteurs Réel/Radar restent des espaces incomplets et ne sont pas déclarés fonctionnels par anticipation.
 
 ### Dernière vérification Quality #521
+
 - La seconde tentative de Quality #521 a passé l'installation des dépendances et du Supabase CLI, puis a atteint le lint.
 - Le lint a échoué sur un unique écart Prettier dans le callback de reprise Flash ; cet écart a été corrigé dans le commit suivant.
 - Six avertissements Fast Refresh restent dans des composants UI génériques partagés. Aucun avertissement n'est bloquant dans la configuration actuelle.
 - Les étapes RLS, release/build et tests mobile/offline ont été ignorées après cet échec de lint. Une nouvelle exécution est nécessaire après les dernières corrections Auth/Flash.
 
-
 ### Résilience des préférences locales
+
 - La lecture et l'écriture des préférences de langue, de thème et d'onboarding tolèrent désormais une indisponibilité de `localStorage` : l'interface continue à fonctionner pour la session courante au lieu de bloquer le démarrage ou la fermeture de l'onboarding.
 - Des tests de non-régression couvrent le stockage bloqué pour la langue, le thème et l'onboarding.
 - Le stockage persistant reste la meilleure expérience, mais il n'est plus une condition absolue pour utiliser l'interface courante.
-
 
 ## 12. Bilan automatisé final — Quality #550
 
@@ -241,6 +246,7 @@ Les fonctions de compréhension libre, d'adaptation intelligente et de dialogue 
 **Résultat :** Quality #550 réussie ; Dependency review #463 réussie.
 
 Les étapes suivantes ont toutes réussi :
+
 - installation Bun, Supabase CLI et dépendances verrouillées ;
 - lint et fondations ; **97 tests Vitest réussis sur 27 fichiers** ;
 - contrôle des secrets ;
@@ -251,18 +257,19 @@ Les étapes suivantes ont toutes réussi :
 Le Go/No-Go retourne `GO_CANDIDATE`, avec 17 fichiers et 6 scripts requis présents ; l'approbation externe de release reste explicitement requise.
 
 ### Portée exacte des essais mobile et hors ligne
+
 - Les captures visuelles couvrent les viewports 360×800, 390×844, 412×915 et 768×1024, puis les routes Flash, Scan, Réel, Radar, Talents et Espace à 390×844.
 - Le contrat de ce smoke test est lui-même testé par `tests/mobile-e2e-contract.test.ts`.
 - Le changement d'état navigateur online/offline est testé par `tests/platform/use-network-status.test.tsx` ; le moteur de synchronisation possède aussi un test garantissant qu'aucun transport n'est appelé hors ligne et que les mutations restent en attente.
 - Les captures sont des contrôles visuels de rendu ; elles ne constituent pas un test d'interaction complet ni une certification lecteur d'écran.
 
 ### Validation manuelle restant nécessaire
+
 - Vérifier sur appareil réel le parcours clavier complet, la visibilité et le retour du focus après fermeture des feuilles/dialogues.
 - Vérifier avec lecteur d'écran les noms, états et ordres de lecture des cinq destinations, de l'en-tête et des quatre onglets de communication.
 - Vérifier les contrastes composites et les tailles/espacements tactiles sur les thèmes clair et sombre, à partir de l'interface rendue.
 
 **Décision :** les critères automatisés de la phase 2 sont satisfaits. La phase 2 reste **en attente de validation manuelle finale** ; la phase 3 ne commence pas tant que ces trois contrôles humains ne sont pas confirmés. Aucun changement n'est porté sur `main` et la PR #37 reste en brouillon, sans fusion.
-
 
 ## 13. Preuve CI actualisée — Quality #551
 
@@ -270,6 +277,7 @@ Le Go/No-Go retourne `GO_CANDIDATE`, avec 17 fichiers et 6 scripts requis prése
 **Résultat :** Quality #551 réussie ; Dependency review #464 réussie.
 
 La dernière exécution confirme à nouveau :
+
 - lint sans erreur (six avertissements non bloquants de Fast Refresh dans les composants partagés) ;
 - 27 fichiers de tests Vitest réussis ;
 - contrôle des secrets et tests RLS réussis ;
@@ -280,13 +288,12 @@ Le smoke visuel confirme le rendu et la disponibilité des routes ; il ne valide
 
 **État actualisé :** tous les contrôles automatisés requis sont verts sur le commit ci-dessus. Les trois validations manuelles listées en section 12 restent obligatoires avant clôture de la phase 2. La PR #37 reste en brouillon ; aucune modification n'a été portée sur `main` et aucune fusion n'a été effectuée.
 
-
 ### Dernière correction ciblée — erreurs de géolocalisation Scan
+
 - Scan distingue désormais les quatre résultats possibles de la demande de position : permission refusée, position indisponible, délai dépassé et erreur inconnue.
 - Chaque cas dispose d'un message FR/EN dédié ; le message de refus n'est plus affiché pour un simple délai dépassé ou une indisponibilité du fournisseur de position.
 - Correction portée dans `ScanPanel.tsx` et `messages.ts`, dans la branche existante de la PR #37.
 - La nouvelle exécution Quality #556 est en cours ; cette correction ne sera considérée vérifiée qu'après son résultat.
-
 
 ## 14. Preuve CI actualisée — Quality #557
 
@@ -298,7 +305,6 @@ Les étapes vérifiées sont toutes au vert : contrôle des fondations et secret
 Cette exécution valide les corrections de géolocalisation Scan présentes dans ce commit. Elle ne remplace pas les validations manuelles : clavier et focus, lecteur d'écran, contrastes composites et mesures tactiles sur appareils réels restent ouverts.
 
 **Statut Phase 2 :** automatisation verte sur le dernier commit contrôlé ; phase toujours en attente de validation manuelle finale. La phase 3 ne démarre pas avant ces validations. La PR #37 reste en brouillon et aucune modification n'est portée sur `main`.
-
 
 ## 15. Onboarding V1 — parcours de découverte validé
 
@@ -343,23 +349,23 @@ L'ancien écran d'accueil minimal est remplacé par un onboarding guidé en **ci
 - Contrôle visuel du code : les cartes et étapes utilisent une grille responsive, les liens gardent un focus visible et les icônes décoratives sont masquées aux lecteurs d'écran.
 - À confirmer sur appareils réels : rendu des surfaces translucides, contrastes composites, espacement des cinq destinations et parcours complet avec lecteur d'écran.
 
-
 ### Correction accessibilité — cibles tactiles des fenêtres
+
 - Les boutons de fermeture partagés des feuilles et dialogues utilisent désormais une cible minimale de 48 × 48 px (`min-h-12 min-w-12`). Cette valeur aligne le composant commun sur le seuil Android documenté et dépasse le minimum iOS de 44 pt.
 - Fichiers corrigés : `src/components/ui/sheet.tsx` et `src/components/ui/dialog.tsx`.
 - Commits : `e21215154727c81e37b7e8eb5d250a12f0495035` et `a5311a74bec40fab2df53adac7c0aa6adf9085d6`.
 - Cette correction de code ne remplace pas la mesure sur appareils réels : l'espacement entre cibles, les zones réellement cliquables et les gestes restent à vérifier sur Android et iOS. La CI doit confirmer les changements avant validation automatisée.
 
-
 ### Harmonisation des cibles tactiles — composants communs
+
 - La revue a trouvé plusieurs contrôles interactifs encore limités à 44 px malgré le seuil Android de 48 dp documenté.
 - Correction appliquée aux boutons communs (toutes tailles), aux onglets, aux commandes de l'en-tête et au sélecteur de langue de l'onboarding : hauteur/largeur minimale portée à 48 px lorsque le contrôle est compact.
 - Fichiers : `src/components/ui/button.tsx`, `src/components/ui/tabs.tsx`, `src/components/experience/AppHeader.tsx`, `src/components/experience/OnboardingSheet.tsx`, en complément des fermetures de fenêtres dans `sheet.tsx` et `dialog.tsx`.
 - Les destinations de la navigation basse étaient déjà en 48 px et n'ont pas été modifiées.
 - Contrôle restant : mesurer les cibles réellement rendues et leur espacement sur Android/iOS, y compris les textes longs, les petits écrans et les éléments adjacents. La règle CSS seule ne vaut pas validation physique.
 
-
 ### Derniers contrôles tactiles et focus — actions contextuelles
+
 - La passe complémentaire a repéré des actions de fermeture et d'installation/mise à jour, le bouton de démarrage Scan et les commandes de connexion qui conservaient une hauteur de 44 px.
 - Les cibles interactives concernées passent à 48 px minimum : bannières d'installation et de mise à jour (action et fermeture), contrôles de connexion (langue, thème, champs, soumission et actions secondaires), et lancement Scan.
 - Les boutons des bannières et le lancement Scan disposent maintenant d'un indicateur de focus visible explicite.
@@ -367,24 +373,24 @@ L'ancien écran d'accueil minimal est remplacé par un onboarding guidé en **ci
 - Les éléments décoratifs de 44 px (par exemple une icône sans action) ne sont pas agrandis artificiellement.
 - Vérification à compléter : parcours clavier intégral, retour du focus à l'ouverture/fermeture des feuilles, lecteur d'écran, espacement entre cibles et mesures sur appareils réels.
 
-
 ### Dernière passe des composants réutilisables et récupération de compte
+
 - `SmartTabs` avait des boutons trop bas et supprimait le contour de focus sans fournir de remplacement visible : les deux variantes ont maintenant une cible minimale de 48 × 48 px et un anneau de focus visible.
 - Le bouton de reprise du flux Flash passe à 48 px minimum.
 - La page de réinitialisation du mot de passe dispose maintenant de champs et d'un bouton d'au moins 48 px, avec un focus visible explicite.
 - Fichiers : `SmartTabs.tsx`, `FlashFeed.tsx` et `ResetPasswordView.tsx`.
 - `SmartTabs` n'était pas directement utilisé dans les écrans audités ; sa correction prévient une réintroduction du défaut si le composant est adopté ultérieurement.
 
-
 ### Détection automatique de la langue — PWA
+
 - Au premier lancement, Vitalis utilise la première langue prise en charge dans `navigator.languages`, puis `navigator.language` en repli. Les variantes régionales sont reconnues (`en-GB` → `en`, `fr-CA` → `fr`).
 - Une préférence manuelle déjà enregistrée reste prioritaire. Sans choix manuel, Vitalis suit les changements du navigateur/système via `languagechange`.
 - La langue effective est appliquée à `document.documentElement.lang` pour les lecteurs d'écran et les outils du navigateur.
 - Le catalogue V1 reste limité au français et à l'anglais ; toute autre langue non prise en charge revient au français, sans traduction improvisée.
 - Implémentation et tests : `src/lib/i18n/useI18n.ts`, `tests/i18n.test.ts`. Référence détaillée : `docs/00-foundation/pwa-platform-adaptation.md`, section 10.
 
-
 ### En-tête — simplification visuelle
+
 - Le header est transparent, sans bande de fond opaque ni bordure inférieure, avec une hauteur compacte et un alignement horizontal simple.
 - À gauche : uniquement l'icône officielle de l'application, cliquable pour revenir à l'accueil.
 - À droite : uniquement l'icône Notifications puis l'icône Profil/Avatar.
@@ -392,8 +398,8 @@ L'ancien écran d'accueil minimal est remplacé par un onboarding guidé en **ci
 - Les deux actions à droite et le lien de l'icône d'application conservent des noms accessibles, un focus visible et des zones tactiles d'au moins 48 × 48 px.
 - Implémentation : `src/components/experience/AppHeader.tsx`, icône : `public/icon-192.svg`.
 
-
 ### Hiérarchie visuelle des icônes — actions principales
+
 - Les icônes des cinq destinations principales de la navigation basse doivent être immédiatement repérables : 24 px minimum pour Flash, Scan, Radar et 2×2 ; 28 px pour Réel, mis en avant au centre.
 - Les accès Notifications et Profil dans l'en-tête utilisent des icônes de 24 px dans des zones tactiles de 48 × 48 px.
 - Les cartes d'accès aux quatre moteurs sur l'accueil utilisent des icônes de 24 px dans des conteneurs de 48 × 48 px.
@@ -402,7 +408,6 @@ L'ancien écran d'accueil minimal est remplacé par un onboarding guidé en **ci
 - Les noms accessibles et les libellés textuels restent présents : agrandir une icône ne remplace jamais son nom ni l'indication de l'action.
 - Première harmonisation appliquée dans `BottomNav`, `AppHeader`, `HomeFoundation`, `ScanPanel` et le composant partagé `Button`. Les icônes des boutons partagés passent de 16 à 20 px par défaut ; les actions structurantes définissent 24 px explicitement.
 - À confirmer avec les captures mobile et les tests visuels : équilibre avec les libellés, absence de débordement sur les petits écrans et cohérence entre thèmes clair et sombre.
-
 
 ### Responsive intelligente — règle de conception V1
 

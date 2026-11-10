@@ -15,17 +15,17 @@ This page records the SQL-backed baseline and the boundaries of what has actuall
 
 The matrix below describes policies and grants in the initial SQL migration under `supabase/migrations/`. It is a source-code inventory, not a complete security audit.
 
-| Table | Authenticated SQL grants in baseline | RLS policies in baseline | Intended boundary expressed by policy |
-|---|---|---|---|
-| `user_roles` | `SELECT` | `own roles are readable`; `owners manage roles` | Read own role rows; an owner-management policy is present, but authenticated has no DML grant in this baseline |
-| `profiles` | `SELECT, INSERT, UPDATE` | `profiles readable by members`; `own profile insert`; `own profile update` | Signed-in members can read non-deleted profiles; insert/update own profile |
-| `udi` | `SELECT, INSERT, UPDATE` | `own identity readable`; `own identity insert`; `own identity update` | Own-row access plus admin read access in the initial policy; owner writes |
-| `media` | `SELECT, INSERT, UPDATE, DELETE` | `media readable by members`; `own media write` | Signed-in members can read non-deleted metadata; writes require ownership |
-| `flashes` | `SELECT, INSERT, UPDATE, DELETE` | `flashes readable by members`; `own flashes write`; `moderators moderate flashes` | Draft visibility is limited by author; author writes; moderator/admin update path |
-| `missions` | `SELECT, INSERT, UPDATE, DELETE` | `missions readable by members`; `own missions write`; `assignee advances mission` | Authenticated reads of non-deleted rows; author and assignee write paths |
-| `posts` | `SELECT, INSERT, UPDATE, DELETE` | `posts readable by members`; `own posts write` | Private posts are limited to their author; author writes |
-| `notifications` | `SELECT, UPDATE` | `own notifications readable`; `own notifications update` | Recipient reads and updates own notifications |
-| `audit` | `SELECT` | `audit readable by admins` | Admin/owner role required to read audit rows |
+| Table           | Authenticated SQL grants in baseline | RLS policies in baseline                                                          | Intended boundary expressed by policy                                                                          |
+| --------------- | ------------------------------------ | --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `user_roles`    | `SELECT`                             | `own roles are readable`; `owners manage roles`                                   | Read own role rows; an owner-management policy is present, but authenticated has no DML grant in this baseline |
+| `profiles`      | `SELECT, INSERT, UPDATE`             | `profiles readable by members`; `own profile insert`; `own profile update`        | Signed-in members can read non-deleted profiles; insert/update own profile                                     |
+| `udi`           | `SELECT, INSERT, UPDATE`             | `own identity readable`; `own identity insert`; `own identity update`             | Own-row access plus admin read access in the initial policy; owner writes                                      |
+| `media`         | `SELECT, INSERT, UPDATE, DELETE`     | `media readable by members`; `own media write`                                    | Signed-in members can read non-deleted metadata; writes require ownership                                      |
+| `flashes`       | `SELECT, INSERT, UPDATE, DELETE`     | `flashes readable by members`; `own flashes write`; `moderators moderate flashes` | Draft visibility is limited by author; author writes; moderator/admin update path                              |
+| `missions`      | `SELECT, INSERT, UPDATE, DELETE`     | `missions readable by members`; `own missions write`; `assignee advances mission` | Authenticated reads of non-deleted rows; author and assignee write paths                                       |
+| `posts`         | `SELECT, INSERT, UPDATE, DELETE`     | `posts readable by members`; `own posts write`                                    | Private posts are limited to their author; author writes                                                       |
+| `notifications` | `SELECT, UPDATE`                     | `own notifications readable`; `own notifications update`                          | Recipient reads and updates own notifications                                                                  |
+| `audit`         | `SELECT`                             | `audit readable by admins`                                                        | Admin/owner role required to read audit rows                                                                   |
 
 The `user_roles` policy named `owners manage roles` does not itself grant write privileges: authenticated has only `SELECT` on this table in the baseline, so that policy alone does not enable owner DML. The baseline grants `ALL` to `service_role` on these tables. That role bypasses RLS; use it only in trusted server code after authorization, never as a substitute for checking the caller.
 
@@ -45,6 +45,7 @@ A policy does not grant SQL privileges by itself. Conversely, a table grant does
 ## Test coverage currently visible
 
 `rls_core.test.sql` asserts the existence of the nine baseline tables, RLS enabled on those tables, expected policy names, and a set of user A/user B access boundaries. It is valuable baseline coverage, but it does not by itself prove:
+
 - every column grant is minimal,
 - every possible write or role escalation is blocked,
 - candidate tables in `src/supabase/migrations/` exist,

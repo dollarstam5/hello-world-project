@@ -17,6 +17,7 @@ Le Trust Engine est responsable de :
 - recalculer les scores lorsque les règles évoluent;
 - produire les événements liés au Trust;
 - publier la Trust View destinée à l'Unified Digital Identity.
+
 # 3. Principe de publication
 
 Le Trust Engine ne modifie jamais directement l'interface utilisateur. Il publie uniquement des informations vers le domaine Trust. L'Unified Digital Identity récupère ces informations afin de construire la Trust View présentée dans le profil utilisateur. Chaîne de responsabilité : Trust Engine → Trust Domain → Trust View → Unified Digital Identity → Interface utilisateur
@@ -32,7 +33,7 @@ Le Trust Engine peut recevoir des événements provenant de plusieurs domaines m
 - Activité utilisateur;
 - Validations communautaires;
 - Signalements confirmés.
-Ces événements constituent des preuves (Trust Evidence). Ils n'entraînent jamais directement une modification du Trust. Ils sont analysés selon les règles du moteur avant toute décision.
+  Ces événements constituent des preuves (Trust Evidence). Ils n'entraînent jamais directement une modification du Trust. Ils sont analysés selon les règles du moteur avant toute décision.
 
 # 5. Gouvernance
 
@@ -43,6 +44,7 @@ Le Trust Engine applique les principes suivants :
 - possibilité de recalcul global;
 - évolution des modèles de pondération sans modifier les autres domaines;
 - séparation entre production des données et présentation.
+
 # 6. Publication de la Trust View
 
 Le moteur produit une projection destinée à l'UDI. Cette projection peut contenir :
@@ -53,7 +55,7 @@ Le moteur produit une projection destinée à l'UDI. Cette projection peut conte
 - badges;
 - historique synthétique;
 - indicateurs de progression.
-Les algorithmes internes et les pondérations restent exclusivement gérés par le Trust Engine.
+  Les algorithmes internes et les pondérations restent exclusivement gérés par le Trust Engine.
 
 # 7. Intégration avec l'UDI
 
@@ -63,6 +65,7 @@ L'Unified Digital Identity n'est jamais propriétaire des données de confiance.
 - l'absence de duplication;
 - une évolution indépendante du moteur de confiance;
 - une architecture modulaire.
+
 # 8. Compatibilité avec les autres moteurs
 
 Le Trust Engine fonctionne indépendamment des moteurs :
@@ -72,7 +75,7 @@ Le Trust Engine fonctionne indépendamment des moteurs :
 - Recommendation;
 - Flash;
 - Mission.
-Ces domaines publient des événements ou des preuves. Le Trust Engine décide seul de leur impact éventuel sur la confiance.
+  Ces domaines publient des événements ou des preuves. Le Trust Engine décide seul de leur impact éventuel sur la confiance.
 
 # 9. Préparation des évolutions futures
 

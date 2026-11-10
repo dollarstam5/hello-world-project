@@ -54,7 +54,7 @@ Compréhension
 
 1
 
-[ ] Documents consultés
+[ ] Documents consultés
 
 [ ] Impacts analysés
 
@@ -100,7 +100,7 @@ Tests
 
 2
 
-Documentation
+Documentation
 
 [ ] Documentation mise à jour
 
@@ -144,7 +144,7 @@ Interface
 
 3
 
-Performance
+Performance
 
 [ ] Rendus inutiles évités
 
@@ -190,7 +190,7 @@ Avant création/modification :
 
 4
 
-[ ] Authentification vérifiée
+[ ] Authentification vérifiée
 
 [ ] Permissions vérifiées
 
@@ -236,7 +236,7 @@ Pour Admin Dashboard :
 
 5
 
-[ ] Permissions configurées
+[ ] Permissions configurées
 
 [ ] Actions sensibles protégées
 
@@ -278,7 +278,7 @@ Pour changement majeur :
 
 L'IA doit fournir :
 
-```text id="7v9d2m" Résumé :
+````text id="7v9d2m" Résumé :
 
 6
 
@@ -334,3 +334,4 @@ Fin de AI/30-AI-CHECKLISTS.md
 
 7
 
+````

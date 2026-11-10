@@ -38,7 +38,7 @@ la stabilité du modèle de données.
 
 •
 
-Format :  snake_case
+Format : snake_case
 
 •
 
@@ -63,7 +63,7 @@ flash_contents
 
 •
 
-Format :  snake_case
+Format : snake_case
 
 •
 
@@ -81,7 +81,7 @@ created_at
 
 1
 
-•
+•
 
 •
 
@@ -97,7 +97,7 @@ flash_id
 
 •
 
-Format :  idx_<table>_<columns>
+Format : idx_<table>_<columns>
 
 •
 
@@ -118,15 +118,15 @@ idx_flash_created_at
 
 •
 
-Format :  ck_<table>_<rule>  pour CHECK
-Format :  fk_<table>_<reference>  pour FOREIGN KEY
-Format :  uq_<table>_<column>  pour UNIQUE
+Format : ck_<table>_<rule> pour CHECK
+Format : fk_<table>_<reference> pour FOREIGN KEY
+Format : uq_<table>_<column> pour UNIQUE
 
 2.5 Fonctions
 
 •
 
-Format :  fn_<domain>_<action>
+Format : fn_<domain>_<action>
 
 •
 
@@ -159,27 +159,27 @@ Les types suivants sont privilégiés dans Vitala :
 
 •
 
-uuid  → identifiants uniques
+uuid → identifiants uniques
 
-text  → chaînes longues
+text → chaînes longues
 
-varchar(n)  → chaînes limitées
+varchar(n) → chaînes limitées
 
-boolean  → vrai/faux
+boolean → vrai/faux
 
-timestamp with time zone  → dates globales
+timestamp with time zone → dates globales
 
-jsonb  → données flexibles structurées
+jsonb → données flexibles structurées
 
-int / bigint  → valeurs numériques
+int / bigint → valeurs numériques
 
-numeric  → valeurs précises (scores, montants)
+numeric → valeurs précises (scores, montants)
 
-L'utilisation de  jsonb  doit être justifiée.
+L'utilisation de jsonb doit être justifiée.
 
 2
 
-4. Abbréviations officielles
+4. Abbréviations officielles
 
 Les abréviations suivantes sont autorisées :
 
@@ -285,7 +285,7 @@ privilégier la lisibilité à la complexité ;
 
 3
 
-•
+•
 
 documenter toute exception ;
 
@@ -344,4 +344,3 @@ Ce cadre assure que la base de données reste lisible, maintenable et évolutive
 grande échelle.
 
 4
-

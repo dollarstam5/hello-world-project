@@ -7,20 +7,20 @@
 
 Les valeurs sont évaluées au **p75** sur une fenêtre et une population documentées. Une mesure locale isolée ne suffit pas à déclarer un Go.
 
-| Signal | Healthy | Warning | Critical |
-| --- | ---: | ---: | ---: |
-| LCP p75 | < 2,5 s | 2,5–4,0 s | > 4,0 s |
+| Signal  |  Healthy |    Warning | Critical |
+| ------- | -------: | ---------: | -------: |
+| LCP p75 |  < 2,5 s |  2,5–4,0 s |  > 4,0 s |
 | INP p75 | < 200 ms | 200–500 ms | > 500 ms |
-| CLS p75 | < 0,10 | 0,10–0,25 | > 0,25 |
+| CLS p75 |   < 0,10 |  0,10–0,25 |   > 0,25 |
 
 Le dépôt contient une collecte navigateur LCP/INP/CLS dans `src/lib/performance/web-vitals.ts`. Elle utilise `PerformanceObserver` lorsque disponible et conserve les dernières observations en mémoire. La collecte de ces observations ne constitue pas, à elle seule, une agrégation p75 représentative en production.
 
 ## Budgets du build initial
 
-| Mesure | Limite |
-| --- | ---: |
-| JavaScript initial gzip | ≤ 250 kB |
-| CSS initial gzip | ≤ 75 kB |
+| Mesure                              |   Limite |
+| ----------------------------------- | -------: |
+| JavaScript initial gzip             | ≤ 250 kB |
+| CSS initial gzip                    |  ≤ 75 kB |
 | Ressources critiques initiales gzip | ≤ 500 kB |
 
 Le contrôle est implémenté dans `scripts/check-performance-budgets.ts`, avec les seuils partagés par `src/lib/performance/performance-policy.ts` et `src/lib/performance/performance-budget-policy.ts`.
@@ -29,12 +29,12 @@ Le script mesure les fichiers JS/CSS référencés par le HTML du build et certa
 
 ## Matrice mobile minimale
 
-| Profil | Viewport de référence | Priorité |
-| --- | --- | --- |
-| Petit téléphone | 360×800 | P0 |
-| Téléphone standard | 390×844 | P0 |
-| Grand téléphone | 412×915 | P1 |
-| Tablette portrait | 768×1024 | P1 |
+| Profil             | Viewport de référence | Priorité |
+| ------------------ | --------------------- | -------- |
+| Petit téléphone    | 360×800               | P0       |
+| Téléphone standard | 390×844               | P0       |
+| Grand téléphone    | 412×915               | P1       |
+| Tablette portrait  | 768×1024              | P1       |
 
 Les tests E2E décrits dans le dépôt couvrent le rendu initial de routes principales à ces viewports. Ce smoke test ne remplace pas les vérifications manuelles des zones tactiles, du débordement horizontal, de la lisibilité, des transitions offline/online ni l'essai sur appareils physiques.
 

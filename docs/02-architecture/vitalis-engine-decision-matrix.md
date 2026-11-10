@@ -18,44 +18,44 @@ Le moteur central ne remplace pas les règles propres aux domaines. Il garantit 
 
 ## 2. Socle commun par mode
 
-| Mode | Découverte publique | Ouvrir un espace | Créer/modifier/supprimer | Publier ou contacter | Données privées |
-| --- | --- | --- | --- | --- | --- |
-| Visiteur | Oui, si la ressource est publique | Non par défaut | Non | Non | Non |
-| Invité | Oui, si public | Parcours Réel invité uniquement | Refus par défaut ; exception future uniquement après politique serveur dédiée | Refus par défaut | Session éphémère strictement limitée |
-| Membre actif | Oui, selon visibilité | Oui | Vérification serveur et propriété | Vérification serveur, consentement et règles du moteur | Selon droits, consentements et RLS |
-| Profil incomplet/invité | Présentation publique seulement | Non | Non | Non | Non |
-| Profil suspendu/fermé | Présentation publique seulement | Non | Non | Non | Non |
-| État inconnu ou erreur | Présentation publique seulement | Non | Non | Non | Non |
+| Mode                    | Découverte publique               | Ouvrir un espace                | Créer/modifier/supprimer                                                      | Publier ou contacter                                   | Données privées                      |
+| ----------------------- | --------------------------------- | ------------------------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------ | ------------------------------------ |
+| Visiteur                | Oui, si la ressource est publique | Non par défaut                  | Non                                                                           | Non                                                    | Non                                  |
+| Invité                  | Oui, si public                    | Parcours Réel invité uniquement | Refus par défaut ; exception future uniquement après politique serveur dédiée | Refus par défaut                                       | Session éphémère strictement limitée |
+| Membre actif            | Oui, selon visibilité             | Oui                             | Vérification serveur et propriété                                             | Vérification serveur, consentement et règles du moteur | Selon droits, consentements et RLS   |
+| Profil incomplet/invité | Présentation publique seulement   | Non                             | Non                                                                           | Non                                                    | Non                                  |
+| Profil suspendu/fermé   | Présentation publique seulement   | Non                             | Non                                                                           | Non                                                    | Non                                  |
+| État inconnu ou erreur  | Présentation publique seulement   | Non                             | Non                                                                           | Non                                                    | Non                                  |
 
 La présentation publique ne donne pas accès aux détails privés, aux résultats réservés ni aux opérations.
 
 ## 3. Matrice par moteur
 
-| Moteur | Finalité | Actions à contrôler | Consentements / données sensibles | Règles métier V1 connues | Décisions encore nécessaires |
-| --- | --- | --- | --- | --- | --- |
-| Réel | Présence locale immédiate et mises en relation | Entrer, démarrer/arrêter présence, découvrir, envoyer/recevoir bip, accepter/refuser, fermer relation | Partage volontaire de présence/localisation approximative ; visibilité du profil ; durée de présence | Durées et rayons autorisés définis ; présence membre avec consentement ; bips privés ; acceptation crée une relation ; invité non encore raccordé aux opérations | Parcours invité sécurisé ; calcul spatial réel ; application du rayon ; transport temps réel ; règles de blocage/signalement ; conservation détaillée |
-| Flash | Partager une information utile, temporaire et située dans une zone | Lire, créer, modifier, archiver, supprimer, publier, signaler, contacter si prévu | Zone et visibilité ; identité affichée ; éventuelles pièces jointes | Exemples pédagogiques séparés des données réelles ; gestion locale « Mes Flash » existante | Visibilité publique/privée ; durée et expiration ; modération ; quotas ; règles de contact ; synchronisation et droits serveur |
-| Scan | Rechercher des informations ou besoins à proximité | Lancer recherche, lire résultats, consulter profil, conserver/effacer historique | Localisation ou zone ; paramètres de rayon ; historique minimal | Choix de rayon 1/5/10/20 km ; historique local limité à date et nombre de résultats ; pas de coordonnées conservées dans l'historique | Contrat exact des sources ; précision de zone ; consentement ; visibilité des profils ; anti-abus ; quotas et accès invité |
-| Radar | Enregistrer une veille pour un besoin | Créer, modifier, annuler, consulter, synchroniser, recevoir correspondance/alerte | Intention, zone approximative, rayon, durée ; consentement aux alertes | Veilles privées en brouillon ; rayons 1/3/5/10/25/50 km ; durée 3 à 90 jours ; stockage local et synchronisation existants | Correspondances automatiques ; traitement planifié ; alertes ; quotas ; visibilité des correspondances ; rétention et règles de notification |
-| 2×2 | Accéder aux espaces Espace et Talents et à leurs fonctions | Entrer, consulter, gérer profil/espace, publier une offre ou une compétence si livré, contacter si prévu | Identité, informations de profil, visibilité, données liées aux talents | Le menu donne accès à Espace et Talents ; aperçus pédagogiques explicitement marqués « Exemple » | Définir si 2×2 est un conteneur ou un moteur métier ; droits Espace/Talents ; publication ; recherche ; visibilité ; mise en relation et modération |
+| Moteur | Finalité                                                           | Actions à contrôler                                                                                      | Consentements / données sensibles                                                                    | Règles métier V1 connues                                                                                                                                         | Décisions encore nécessaires                                                                                                                          |
+| ------ | ------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Réel   | Présence locale immédiate et mises en relation                     | Entrer, démarrer/arrêter présence, découvrir, envoyer/recevoir bip, accepter/refuser, fermer relation    | Partage volontaire de présence/localisation approximative ; visibilité du profil ; durée de présence | Durées et rayons autorisés définis ; présence membre avec consentement ; bips privés ; acceptation crée une relation ; invité non encore raccordé aux opérations | Parcours invité sécurisé ; calcul spatial réel ; application du rayon ; transport temps réel ; règles de blocage/signalement ; conservation détaillée |
+| Flash  | Partager une information utile, temporaire et située dans une zone | Lire, créer, modifier, archiver, supprimer, publier, signaler, contacter si prévu                        | Zone et visibilité ; identité affichée ; éventuelles pièces jointes                                  | Exemples pédagogiques séparés des données réelles ; gestion locale « Mes Flash » existante                                                                       | Visibilité publique/privée ; durée et expiration ; modération ; quotas ; règles de contact ; synchronisation et droits serveur                        |
+| Scan   | Rechercher des informations ou besoins à proximité                 | Lancer recherche, lire résultats, consulter profil, conserver/effacer historique                         | Localisation ou zone ; paramètres de rayon ; historique minimal                                      | Choix de rayon 1/5/10/20 km ; historique local limité à date et nombre de résultats ; pas de coordonnées conservées dans l'historique                            | Contrat exact des sources ; précision de zone ; consentement ; visibilité des profils ; anti-abus ; quotas et accès invité                            |
+| Radar  | Enregistrer une veille pour un besoin                              | Créer, modifier, annuler, consulter, synchroniser, recevoir correspondance/alerte                        | Intention, zone approximative, rayon, durée ; consentement aux alertes                               | Veilles privées en brouillon ; rayons 1/3/5/10/25/50 km ; durée 3 à 90 jours ; stockage local et synchronisation existants                                       | Correspondances automatiques ; traitement planifié ; alertes ; quotas ; visibilité des correspondances ; rétention et règles de notification          |
+| 2×2    | Accéder aux espaces Espace et Talents et à leurs fonctions         | Entrer, consulter, gérer profil/espace, publier une offre ou une compétence si livré, contacter si prévu | Identité, informations de profil, visibilité, données liées aux talents                              | Le menu donne accès à Espace et Talents ; aperçus pédagogiques explicitement marqués « Exemple »                                                                 | Définir si 2×2 est un conteneur ou un moteur métier ; droits Espace/Talents ; publication ; recherche ; visibilité ; mise en relation et modération   |
 
 **Attention :** les éléments de la colonne « décisions encore nécessaires » sont des travaux à spécifier, pas des fonctions disponibles. Ne pas afficher de boutons actifs ni simuler de résultats pour ces capacités.
 
 ## 4. Contrôles obligatoires selon l'action
 
-| Famille d'action | Contrôles minimum avant exécution |
-| --- | --- |
-| Lire une information publique | Ressource réellement publique, statut publié, projection de données minimale |
-| Lire une information privée | Session valide, propriétaire ou droit explicite, RLS/serveur |
-| Créer | Moteur activé, compte autorisé, champs valides, consentement requis, quota, anti-abus |
-| Modifier | Tous les contrôles de création + propriété ou permission explicite + état modifiable |
-| Supprimer/annuler | Propriété ou permission explicite, confirmation adaptée, conséquences et révocation des accès associés |
-| Publier | Contrôles de création + visibilité choisie + consentement de diffusion + modération si nécessaire |
-| Découvrir/rechercher | Source activée, zone et rayon autorisés, consentement si localisation, limitation de fréquence, filtrage des données |
-| Contacter / mise en relation | Identité autorisée, destinataire éligible, consentement/choix explicite, anti-spam, blocage et signalement |
-| Synchroniser | Session encore valide, propriétaire, version/état, idempotence, revalidation des droits et conflits |
-| Exporter | Droit explicite, périmètre défini, protection des données et confirmation |
-| Recevoir une notification | Événement réel, préférence/permission applicable, absence de doublon et contenu non sensible |
+| Famille d'action              | Contrôles minimum avant exécution                                                                                    |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| Lire une information publique | Ressource réellement publique, statut publié, projection de données minimale                                         |
+| Lire une information privée   | Session valide, propriétaire ou droit explicite, RLS/serveur                                                         |
+| Créer                         | Moteur activé, compte autorisé, champs valides, consentement requis, quota, anti-abus                                |
+| Modifier                      | Tous les contrôles de création + propriété ou permission explicite + état modifiable                                 |
+| Supprimer/annuler             | Propriété ou permission explicite, confirmation adaptée, conséquences et révocation des accès associés               |
+| Publier                       | Contrôles de création + visibilité choisie + consentement de diffusion + modération si nécessaire                    |
+| Découvrir/rechercher          | Source activée, zone et rayon autorisés, consentement si localisation, limitation de fréquence, filtrage des données |
+| Contacter / mise en relation  | Identité autorisée, destinataire éligible, consentement/choix explicite, anti-spam, blocage et signalement           |
+| Synchroniser                  | Session encore valide, propriétaire, version/état, idempotence, revalidation des droits et conflits                  |
+| Exporter                      | Droit explicite, périmètre défini, protection des données et confirmation                                            |
+| Recevoir une notification     | Événement réel, préférence/permission applicable, absence de doublon et contenu non sensible                         |
 
 ## 5. Règles de confidentialité communes
 
@@ -70,16 +70,16 @@ La présentation publique ne donne pas accès aux détails privés, aux résulta
 
 ## 6. Décision hors ligne
 
-| Action | Mise en attente par défaut |
-| --- | --- |
-| Brouillon privé Radar | Oui, selon le contrat offline-first existant |
-| Gestion locale de Flash appartenant au membre | Oui, dans les limites du dépôt local existant |
-| Démarrage/arrêt d'une présence Réel | Non |
-| Bip, acceptation ou fermeture de relation | Non |
-| Recherche de proximité et lecture de résultats | Non |
-| Publication ou prise de contact | Non |
-| Changement de droits, consentements ou visibilité | Non |
-| Synchronisation d'une commande déjà mise en attente | Revalidation serveur obligatoire |
+| Action                                              | Mise en attente par défaut                    |
+| --------------------------------------------------- | --------------------------------------------- |
+| Brouillon privé Radar                               | Oui, selon le contrat offline-first existant  |
+| Gestion locale de Flash appartenant au membre       | Oui, dans les limites du dépôt local existant |
+| Démarrage/arrêt d'une présence Réel                 | Non                                           |
+| Bip, acceptation ou fermeture de relation           | Non                                           |
+| Recherche de proximité et lecture de résultats      | Non                                           |
+| Publication ou prise de contact                     | Non                                           |
+| Changement de droits, consentements ou visibilité   | Non                                           |
+| Synchronisation d'une commande déjà mise en attente | Revalidation serveur obligatoire              |
 
 Une décision `defer` indique uniquement qu'une commande peut rejoindre une file locale contrôlée. Elle n'est jamais une autorisation de l'exécuter plus tard sans revalidation.
 

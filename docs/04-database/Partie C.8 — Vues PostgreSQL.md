@@ -66,7 +66,7 @@ Vitala distingue deux catégories principales :
 
 1
 
-Vues classiques ( VIEW )
+Vues classiques ( VIEW )
 
 Utilisées pour :
 
@@ -152,7 +152,7 @@ effectuer des traitements complexes qui relèvent de la couche Domaine.
 
 2
 
-6. Nommage
+6. Nommage
 
 Les vues doivent respecter les conventions suivantes :
 
@@ -161,7 +161,7 @@ Les vues doivent respecter les conventions suivantes :
 •
 
 minuscules ;
-snake_case  ;
+snake_case ;
 
 •
 
@@ -181,7 +181,7 @@ vw_active_missions
 
 vw_trust_summary
 
-Le préfixe  vw_  est recommandé afin de distinguer immédiatement une vue d'une table.
+Le préfixe vw_ est recommandé afin de distinguer immédiatement une vue d'une table.
 
 7. Sécurité
 
@@ -233,7 +233,7 @@ de tables ;
 
 3
 
-•
+•
 
 d'autres vues.
 
@@ -327,7 +327,7 @@ elle applique les règles de sécurité ;
 
 4
 
-•
+•
 
 elle est documentée ;
 
@@ -346,4 +346,3 @@ Leur utilisation doit rester maîtrisée afin de préserver une architecture cla
 aux principes du Build Blueprint.
 
 5
-

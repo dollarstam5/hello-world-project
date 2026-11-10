@@ -9,6 +9,7 @@
 - VITALA-TRUST-LEVELS-V1
 - VITALA-UJ-01 à UJ-07
 - VITALA-FLASH-ENGINE
+
 # 1. Objectif
 
 Scan est le moteur de découverte instantanée de Vitala. Sa mission est d'explorer les informations actives de l'écosystème afin de répondre immédiatement à une intention utilisateur. Scan privilégie les résultats disponibles **maintenant**, proches dans le temps et pertinents.
@@ -31,7 +32,7 @@ Scan travaille uniquement sur les informations récentes. Par défaut :
 - Aujourd'hui
 - Demain
 - Jusqu'à 48 heures
-Au-delà, les recherches sont prises en charge par Radar.
+  Au-delà, les recherches sont prises en charge par Radar.
 
 # 5. Sources analysées
 
@@ -48,6 +49,7 @@ Scan interroge les Flash encore actifs. Il peut retrouver :
 - Alertes
 - Partenariats
 - Ressources
+
 # 6. Déclenchement
 
 Le moteur peut être lancé :
@@ -67,6 +69,7 @@ L'utilisateur peut simplement dire : « Je cherche un photographe disponible auj
 - la localisation;
 - la période;
 - les critères importants.
+
 # 8. Critères de recherche
 
 Scan prend en compte :
@@ -78,6 +81,7 @@ Scan prend en compte :
 - Niveau de confiance
 - Compatibilité avec la demande
 - Préférences utilisateur
+
 # 9. Animation Scan
 
 Lors du lancement : Le moteur affiche son analyse. Exemple : 📍 Localisation… 📂 Analyse des catégories… ⚡ Recherche des informations actives… 🤝 Recherche des correspondances…
@@ -95,6 +99,7 @@ Les résultats sont classés par pertinence. Chaque résultat présente :
 - Statuts de confiance
 - Pourquoi ce résultat est proposé
 - Actions disponibles
+
 # 11. Aucun résultat exact
 
 Scan ne répond jamais simplement : « Aucun résultat. » Il accompagne l'utilisateur.
@@ -108,6 +113,7 @@ Lorsque la recherche exacte échoue, Scan propose :
 - Zone voisine
 - Dates alternatives
 - Disponibilités compatibles
+
 # 13. Explication
 
 Chaque suggestion peut être justifiée.
@@ -179,6 +185,7 @@ packages/
 ├── transition/
 └── scan.types.ts
 ```
+
 # 21. Critère de réussite
 
 Le moteur Scan est réussi lorsque : Intention utilisateur ↓ Compréhension Vita ↓ Analyse instantanée ↓ Résultats pertinents ↓ Suggestions intelligentes si nécessaire ↓ Transition vers Radar si besoin sans jamais laisser l'utilisateur sans solution.

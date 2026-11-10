@@ -70,7 +70,7 @@ centres d'intérêt
 
 1
 
-Domaine Context
+Domaine Context
 
 Responsable de :
 
@@ -166,7 +166,7 @@ Trust Profile
 
 2
 
-•
+•
 
 Trust Score
 
@@ -232,7 +232,7 @@ Elle constitue une vue métier unifiée.
 
 3
 
-Cette approche garantit :
+Cette approche garantit :
 
 •
 
@@ -269,4 +269,3 @@ L'UDI pourra intégrer ces nouveaux domaines sous forme de nouvelles vues, sans 
 rôle d'agrégateur.
 
 4
-

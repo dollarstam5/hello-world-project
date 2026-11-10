@@ -5,18 +5,18 @@
 
 ## Parcours et opérations
 
-| Opération | Membre avec profil actif | Invité | Visiteur | Contrôle requis |
-| --- | --- | --- | --- | --- |
-| Entrer dans Réel | Autorisé | Autorisé pour découvrir le parcours | Refusé | Le parcours invité ne donne aucun droit métier |
-| Démarrer une présence | Vérification serveur après accord distinct de publication | Refusé pour le moment | Refusé | Consentement explicite `reel_presence`, profil actif, jeton de zone serveur à usage unique, validation des paramètres et absence d’autre présence active |
-| Terminer sa présence | Vérification serveur | Refusé | Refusé | Propriété de la présence |
-| Découvrir les présences | Vérification serveur après accord indépendant de découverte | Refusé pour le moment | Refusé | Session de découverte serveur courte dans les cellules voisines ; profil visible actif ; aucune présence personnelle exigée |
-| Voir ses bips en attente | Vérification serveur | Refusé | Refusé | Participant du bip et état encore en attente |
-| Envoyer un bip | Vérification serveur | Refusé | Refusé | Présence active de l’émetteur et du destinataire, zone commune, unicité de la demande |
-| Accepter / refuser un bip | Vérification serveur | Refusé | Refusé | Destinataire uniquement, bip en attente et non expiré |
-| Retirer un bip | Vérification serveur | Refusé | Refusé | Émetteur uniquement, bip en attente et non expiré |
-| Fermer une mise en relation | Vérification serveur | Refusé | Refusé | L’un des deux participants, fermeture définitive |
-| Conversation, message, partage de zone, signalement | Refusé tant que non implémenté | Refusé | Refusé | Aucun faux accès ni faux écran actif |
+| Opération                                           | Membre avec profil actif                                    | Invité                              | Visiteur | Contrôle requis                                                                                                                                          |
+| --------------------------------------------------- | ----------------------------------------------------------- | ----------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Entrer dans Réel                                    | Autorisé                                                    | Autorisé pour découvrir le parcours | Refusé   | Le parcours invité ne donne aucun droit métier                                                                                                           |
+| Démarrer une présence                               | Vérification serveur après accord distinct de publication   | Refusé pour le moment               | Refusé   | Consentement explicite `reel_presence`, profil actif, jeton de zone serveur à usage unique, validation des paramètres et absence d’autre présence active |
+| Terminer sa présence                                | Vérification serveur                                        | Refusé                              | Refusé   | Propriété de la présence                                                                                                                                 |
+| Découvrir les présences                             | Vérification serveur après accord indépendant de découverte | Refusé pour le moment               | Refusé   | Session de découverte serveur courte dans les cellules voisines ; profil visible actif ; aucune présence personnelle exigée                              |
+| Voir ses bips en attente                            | Vérification serveur                                        | Refusé                              | Refusé   | Participant du bip et état encore en attente                                                                                                             |
+| Envoyer un bip                                      | Vérification serveur                                        | Refusé                              | Refusé   | Présence active de l’émetteur et du destinataire, zone commune, unicité de la demande                                                                    |
+| Accepter / refuser un bip                           | Vérification serveur                                        | Refusé                              | Refusé   | Destinataire uniquement, bip en attente et non expiré                                                                                                    |
+| Retirer un bip                                      | Vérification serveur                                        | Refusé                              | Refusé   | Émetteur uniquement, bip en attente et non expiré                                                                                                        |
+| Fermer une mise en relation                         | Vérification serveur                                        | Refusé                              | Refusé   | L’un des deux participants, fermeture définitive                                                                                                         |
+| Conversation, message, partage de zone, signalement | Refusé tant que non implémenté                              | Refusé                              | Refusé   | Aucun faux accès ni faux écran actif                                                                                                                     |
 
 ## Règles appliquées dans le client
 
@@ -40,7 +40,6 @@
 
 Le fichier `tests/access-mode/reel-access-policy.test.ts` couvre les modes visiteur/invité/membre, le consentement, la propriété, le rôle émetteur/destinataire, l’absence de mise en file hors ligne, les fonctions non livrées et l’obligation d’une autorisation serveur.
 
-
 ## Consentement de localisation propre à Réel
 
 - L'entrée dans Réel demande un accord propre au moteur, indépendant des autorisations données à Flash, Scan, Radar ou à tout autre espace Vitalis.
@@ -49,7 +48,6 @@ Le fichier `tests/access-mode/reel-access-policy.test.ts` couvre les modes visit
 - Les réglages et la consultation des relations déjà établies restent accessibles sans localisation. Fermer une relation existante ne doit pas être bloqué par l'absence de position.
 - Le consentement de localisation ne vaut jamais consentement à publier sa propre présence : reel_presence reste exigé séparément.
 - Le choix « pas maintenant » est appliqué pour l'entrée courante ; le dialogue pourra être proposé à la prochaine entrée dans Réel. Il ne faut pas redemander à chaque rendu React.
-
 
 ## Mise à jour — séparation découverte / présence
 
@@ -64,11 +62,11 @@ Les permissions ne sont pas interchangeables :
 
 ### Modes actuellement raccordés
 
-| Mode | Entrée | Découverte | Présence propre | Bips |
-| --- | --- | --- | --- | --- |
-| Visiteur | Présentation publique uniquement | Refusée | Refusée | Refusés |
-| Invité | Entrée dans le parcours | Refusée en attendant le raccordement de la session invitée | Refusée | Refusés |
-| Membre actif | Autorisée | Vérification serveur après consentement de découverte | Vérification serveur après consentement `reel_presence` et jeton de zone à usage unique | RPC SQL, UI non raccordée |
-| Profil non actif ou invérifiable | Refus des opérations métier | Refusée | Refusée | Refusés |
+| Mode                             | Entrée                           | Découverte                                                 | Présence propre                                                                         | Bips                      |
+| -------------------------------- | -------------------------------- | ---------------------------------------------------------- | --------------------------------------------------------------------------------------- | ------------------------- |
+| Visiteur                         | Présentation publique uniquement | Refusée                                                    | Refusée                                                                                 | Refusés                   |
+| Invité                           | Entrée dans le parcours          | Refusée en attendant le raccordement de la session invitée | Refusée                                                                                 | Refusés                   |
+| Membre actif                     | Autorisée                        | Vérification serveur après consentement de découverte      | Vérification serveur après consentement `reel_presence` et jeton de zone à usage unique | RPC SQL, UI non raccordée |
+| Profil non actif ou invérifiable | Refus des opérations métier      | Refusée                                                    | Refusée                                                                                 | Refusés                   |
 
 Le résolveur utilise une grille approximative de 200 m et des jetons HMAC serveur. Les coordonnées GPS exactes ne sont pas conservées. Le filtrage métrique par rayon n'est pas encore livré : le rayon enregistré ne doit pas être présenté comme une distance effectivement calculée.

@@ -6,12 +6,12 @@ La cloche ouvre un centre unique de contrôle des communications et événements
 
 ## Les quatre espaces
 
-| Ordre | Espace | Responsabilité V1 |
-|---|---|---|
-| 1 | Notifications | Informations système, alertes et changements d'état utiles à la personne. |
-| 2 | Assistant | Accès à Vita, aide contextuelle et suivi des demandes d'assistance. |
-| 3 | Messages | Conversations rattachées à une action ou à une mise en relation acceptée. Aucune messagerie libre. |
-| 4 | Réel | Demandes, invitations, acceptations et interactions Réel qui nécessitent une décision ou une action. |
+| Ordre | Espace        | Responsabilité V1                                                                                    |
+| ----- | ------------- | ---------------------------------------------------------------------------------------------------- |
+| 1     | Notifications | Informations système, alertes et changements d'état utiles à la personne.                            |
+| 2     | Assistant     | Accès à Vita, aide contextuelle et suivi des demandes d'assistance.                                  |
+| 3     | Messages      | Conversations rattachées à une action ou à une mise en relation acceptée. Aucune messagerie libre.   |
+| 4     | Réel          | Demandes, invitations, acceptations et interactions Réel qui nécessitent une décision ou une action. |
 
 L'onglet Réel est un point de contrôle et d'accès aux événements du moteur. Il ne constitue pas un second moteur Réel et ne duplique pas ses écrans opérationnels.
 
@@ -36,6 +36,7 @@ L'onglet Réel est un point de contrôle et d'accès aux événements du moteur.
 ## États attendus
 
 Chaque espace doit pouvoir distinguer au minimum :
+
 - vide ;
 - contenu disponible ;
 - élément non lu ;
