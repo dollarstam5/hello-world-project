@@ -1,7 +1,7 @@
-import { useState, type CSSProperties } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { requestReelLocation } from "@/domains/presence/api/reel-location.client";
 import { resolveReelZone } from "@/domains/presence/api/reel-zone.functions";
-import { listReelNearbyPresence } from "@/domains/presence/api/reel-presence.client";
+import { endReelPresence, getMyActiveReelPresence, listReelNearbyPresence, startReelPresence, type ReelPresence } from "@/domains/presence/api/reel-presence.client";
 import { useAccessMode } from "@/domains/access-mode";
 import { evaluateReelAccess } from "@/domains/presence/policy/reel-access-policy";
 import {
@@ -84,11 +84,83 @@ export function ReelProximityScreen() {
   const [activityTab, setActivityTab] = useState<ActivityTab>("notifications");
   const [radius, setRadius] = useState("100 m");
   const [duration, setDuration] = useState("2 h");
+  const [currentPresence, setCurrentPresence] = useState<ReelPresence | null>(null);
+  const [presenceConsent, setPresenceConsent] = useState(false);
+  const [presenceDescription, setPresenceDescription] = useState("Disponible pour échanger autour de moi");
+  const [presenceLoading, setPresenceLoading] = useState(false);
+  const [presenceMessage, setPresenceMessage] = useState<string | null>(null);
   const [preferences, setPreferences] = useState({
     showDistance: true,
     allowBips: true,
     showOnlyAvailable: true,
   });
+
+  useEffect(() => {
+    let cancelled = false;
+    if (access.mode !== "member" || access.memberProfileState !== "active" || access.loading) {
+      setCurrentPresence(null);
+      return;
+    }
+    void getMyActiveReelPresence()
+      .then((presence) => { if (!cancelled) setCurrentPresence(presence); })
+      .catch(() => { if (!cancelled) setPresenceMessage("Votre présence actuelle n’a pas pu être vérifiée."); });
+    return () => { cancelled = true; };
+  }, [access.mode, access.memberProfileState, access.loading]);
+
+  const activatePresence = async () => {
+    const decision = evaluateReelAccess(
+      { access, presenceConsent: true, consents: ["reel_presence"], online: typeof navigator === "undefined" ? false : navigator.onLine },
+      "start_presence",
+    );
+    if (decision.status !== "server_check" || !presenceConsent) {
+      setPresenceMessage(!presenceConsent ? "Confirmez d’abord que vous acceptez d’être visible dans votre secteur approximatif." : decision.message);
+      return;
+    }
+
+    setPresenceLoading(true);
+    setPresenceMessage(null);
+    try {
+      const fix = await requestReelLocation();
+      const zone = await resolveReelZone({
+        data: { latitude: fix.latitude, longitude: fix.longitude, purpose: "presence", consent: true },
+      });
+      if (!zone.grantId) throw new Error("Votre autorisation de présence n’a pas pu être préparée. Réessayez.");
+      const radiusMeters = radius === "1 km" ? 1000 : Number.parseInt(radius, 10);
+      const durationMinutes: Record<string, number> = {
+        "30 min": 30, "1 h": 60, "2 h": 120, "3 h": 180,
+        "6 h": 360, "12 h": 720, "24 h": 1440,
+      };
+      const presence = await startReelPresence({
+        zoneGrantId: zone.grantId,
+        areaLabel: zone.areaLabel,
+        description: presenceDescription,
+        radiusMeters: radiusMeters as 10 | 25 | 50 | 100 | 1000,
+        durationMinutes: durationMinutes[duration] as 30 | 60 | 120 | 180 | 360 | 720 | 1440,
+        consent: true,
+      });
+      setCurrentPresence(presence);
+      setPresenceMessage("Votre présence est maintenant visible dans votre secteur approximatif.");
+    } catch (error) {
+      setPresenceMessage(error instanceof Error ? error.message : "Votre présence n’a pas pu être activée.");
+    } finally {
+      setPresenceLoading(false);
+    }
+  };
+
+  const stopPresence = async () => {
+    if (!currentPresence) return;
+    setPresenceLoading(true);
+    setPresenceMessage(null);
+    try {
+      const ended = await endReelPresence(currentPresence.id);
+      setCurrentPresence(ended.status === "active" ? ended : null);
+      setPresenceMessage("Votre présence n’est plus visible.");
+    } catch (error) {
+      setPresenceMessage(error instanceof Error ? error.message : "Votre présence n’a pas pu être arrêtée.");
+    } finally {
+      setPresenceLoading(false);
+    }
+  };
 
   const requestDiscovery = async () => {
     const decision = evaluateReelAccess(
@@ -106,7 +178,7 @@ export function ReelProximityScreen() {
     try {
       const fix = await requestReelLocation();
       const zone = await resolveReelZone({
-        data: { latitude: fix.latitude, longitude: fix.longitude, purpose: "discover" },
+        data: { latitude: fix.latitude, longitude: fix.longitude, purpose: "discover", consent: true },
       });
       const rows = await listReelNearbyPresence();
       setDiscoveredPeople(rows.map((person, index) => ({
@@ -319,6 +391,32 @@ export function ReelProximityScreen() {
                       </button>
                     ))}
                   </div>
+                </div>
+
+                <div className="reel-panel__section">
+                  <h3>Ma visibilité</h3>
+                  <p className="reel-panel__note">La découverte vous permet d’observer les activités autour de vous. Activer votre présence est un choix séparé : les autres personnes pourront alors vous voir dans votre secteur approximatif, pendant la durée choisie.</p>
+                  {currentPresence ? (
+                    <>
+                      <p className="reel-panel__status">Votre présence est active jusqu’à la fin de la durée choisie.</p>
+                      <button type="button" className="reel-panel__secondary" disabled={presenceLoading} onClick={() => void stopPresence()}>Arrêter ma présence</button>
+                    </>
+                  ) : (
+                    <>
+                      <label className="reel-setting-row reel-setting-row--stacked">
+                        <span><strong>Ce que les autres verront</strong><small>Une courte description de votre présence.</small></span>
+                        <textarea maxLength={180} value={presenceDescription} onChange={(event) => setPresenceDescription(event.target.value)} rows={2} />
+                      </label>
+                      <label className="reel-setting-row">
+                        <span><strong>Je souhaite être visible</strong><small>Ma position sera indiquée de façon approximative, jamais sous forme de coordonnées GPS exactes.</small></span>
+                        <input type="checkbox" checked={presenceConsent} onChange={(event) => setPresenceConsent(event.target.checked)} />
+                      </label>
+                      <button type="button" className="reel-panel__primary" disabled={presenceLoading || !presenceConsent || !presenceDescription.trim()} onClick={() => void activatePresence()}>
+                        {presenceLoading ? "Activation…" : "Activer ma présence"}
+                      </button>
+                    </>
+                  )}
+                  {presenceMessage && <p className="reel-panel__note" role="status">{presenceMessage}</p>}
                 </div>
 
                 <div className="reel-panel__section">
