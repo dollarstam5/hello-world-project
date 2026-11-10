@@ -66,7 +66,6 @@ export const getMyReelGuestPresence = createServerFn({ method: "GET" }).handler(
   return getPresence();
 });
 
-
 const guestBipSendInput = z.object({
   recipientActorKind: z.enum(["member", "guest"]),
   recipientPresenceId: z.string().uuid(),
