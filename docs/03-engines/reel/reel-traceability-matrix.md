@@ -269,3 +269,5 @@ Les tests pgTAP 130, 132 et 133 sont des scénarios ajoutés/modifiés dans la b
 
 | Rétention des relations | Les relations actives restent visibles ; les relations fermées sont affichées pendant six mois | Test pgTAP 135 : une relation fermée depuis sept mois est exclue |
 | Événements de résolution des bips | RLS permet aux deux participants de recevoir les événements acceptation/refus pendant la rétention courte ; la liste RPC reste limitée aux bips en attente | Test multi-appareils à exécuter ; confirmer que l’événement Postgres Changes actualise l’expéditeur et le destinataire |
+
+| Nettoyage de l’historique | purge_reel_connection_history() supprime les relations fermées de plus de six mois ; planification quotidienne à 03 h via pg_cron | Test pgTAP 135 ajouté ; vérifier l’exécution planifiée sur Supabase |
