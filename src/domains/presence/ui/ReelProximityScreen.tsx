@@ -180,12 +180,6 @@ export function ReelProximityScreen() {
   const [guestConnections, setGuestConnections] = useState<ReelGuestConnection[]>([]);
   const [connectionsLoading, setConnectionsLoading] = useState(false);
   const [connectionsMessage, setConnectionsMessage] = useState<string | null>(null);
-  const [preferences, setPreferences] = useState({
-    showDistance: true,
-    allowBips: true,
-    showOnlyAvailable: true,
-  });
-
   const currentPresence =
     access.mode === "member" &&
     access.memberProfileState === "active" &&
@@ -1273,61 +1267,9 @@ export function ReelProximityScreen() {
                   )}
                 </div>
 
-                <div className="reel-panel__section">
-                  <h3>Ce que je souhaite autoriser</h3>
-                  <label className="reel-setting-row">
-                    <span>
-                      <strong>Afficher ma distance</strong>
-                      <small>Les personnes voient à quelle distance vous êtes.</small>
-                    </span>
-                    <input
-                      type="checkbox"
-                      checked={preferences.showDistance}
-                      onChange={(event) =>
-                        setPreferences((current) => ({
-                          ...current,
-                          showDistance: event.target.checked,
-                        }))
-                      }
-                    />
-                  </label>
-                  <label className="reel-setting-row">
-                    <span>
-                      <strong>Recevoir des bips</strong>
-                      <small>Les personnes peuvent vous faire signe.</small>
-                    </span>
-                    <input
-                      type="checkbox"
-                      checked={preferences.allowBips}
-                      onChange={(event) =>
-                        setPreferences((current) => ({
-                          ...current,
-                          allowBips: event.target.checked,
-                        }))
-                      }
-                    />
-                  </label>
-                  <label className="reel-setting-row">
-                    <span>
-                      <strong>Voir les personnes disponibles</strong>
-                      <small>Mettre en avant celles qui sont présentes maintenant.</small>
-                    </span>
-                    <input
-                      type="checkbox"
-                      checked={preferences.showOnlyAvailable}
-                      onChange={(event) =>
-                        setPreferences((current) => ({
-                          ...current,
-                          showOnlyAvailable: event.target.checked,
-                        }))
-                      }
-                    />
-                  </label>
-                </div>
                 <p className="reel-panel__note">
-                  <MapPin aria-hidden="true" /> Ces préférences d’affichage restent locales pour le
-                  moment. Elles ne modifient pas encore les règles de visibilité enregistrées sur le
-                  serveur.
+                  Les réglages de visibilité sont appliqués uniquement lorsqu’ils sont confirmés
+                  par Vitalis. Vous gardez le contrôle sur l’activation et l’arrêt de votre présence.
                 </p>
                 <button
                   type="button"
@@ -1464,12 +1406,21 @@ export function ReelProximityScreen() {
                     {connectionsLoading && (
                       <p className="reel-panel__note">Chargement de vos rencontres…</p>
                     )}
-                    {!canUseMemberReel && (
+                    {!canUseMemberReel && access.mode !== "guest" && (
                       <p className="reel-panel__note">
                         Connectez-vous à votre compte Vitalis pour retrouver vos mises en relation.
                       </p>
                     )}
-                    {canUseMemberReel && !connectionsLoading && connections.length === 0 && (
+                    {access.mode === "guest" &&
+                      !connectionsLoading &&
+                      guestConnections.length === 0 && (
+                        <div className="reel-panel__empty">
+                          <UsersRound aria-hidden="true" />
+                          <strong>Aucune rencontre pour le moment</strong>
+                          <span>Les personnes qui acceptent votre signe apparaîtront ici pendant votre session invitée.</span>
+                        </div>
+                      )}
+                    {canUseMemberReel && !connectionsLoading && connections.length === 0 && guestConnections.length === 0 && (
                       <div className="reel-panel__empty">
                         <UsersRound aria-hidden="true" />
                         <strong>Vous n’avez pas encore de mise en relation</strong>
