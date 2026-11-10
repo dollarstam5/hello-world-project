@@ -12,6 +12,12 @@ INSERT INTO auth.users (
 
 -- Nominal path first: all three profiles remain active while discovery,
 -- bip delivery, idempotent retry and acceptance are exercised.
+RESET ROLE;
+SET LOCAL ROLE service_role;
+INSERT INTO public.reel_zone_grants (id, owner_id, zone_key, purpose, expires_at) VALUES
+  ('d1000000-0000-4000-8000-000000000201', 'd1000000-0000-4000-8000-000000000001', 'z1_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'presence', now() + interval '5 minutes'),
+  ('d1000000-0000-4000-8000-000000000202', 'd1000000-0000-4000-8000-000000000002', 'z1_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'presence', now() + interval '5 minutes'),
+  ('d1000000-0000-4000-8000-000000000203', 'd1000000-0000-4000-8000-000000000003', 'z1_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 'presence', now() + interval '5 minutes');
 SET LOCAL ROLE authenticated;
 SELECT set_config(
   'request.jwt.claims',
@@ -20,8 +26,8 @@ SELECT set_config(
 );
 
 SELECT throws_ok(
-  $$SELECT public.start_reel_presence(
-    'douala-zone-0001', 'Akwa', 'Disponible pour un coup de main', 100, 60, false
+  $$SELECT public.start_reel_presence_from_grant(
+    'd1000000-0000-4000-8000-000000000201', 'Votre secteur approximatif', 'Disponible pour un coup de main', 100, 60, false
   )$$,
   '42501',
   'presence_consent_required',
@@ -29,8 +35,8 @@ SELECT throws_ok(
 );
 
 SELECT lives_ok(
-  $$SELECT public.start_reel_presence(
-    'douala-zone-0001', 'Akwa', 'Disponible pour un coup de main', 100, 60, true
+  $$SELECT public.start_reel_presence_from_grant(
+    'd1000000-0000-4000-8000-000000000201', 'Votre secteur approximatif', 'Disponible pour un coup de main', 100, 60, true
   )$$,
   'member A starts an opted-in presence'
 );
@@ -48,8 +54,8 @@ SELECT set_config(
 );
 
 SELECT lives_ok(
-  $$SELECT public.start_reel_presence(
-    'douala-zone-0001', 'Akwa', 'Je peux aider pour un déménagement', 100, 120, true
+  $$SELECT public.start_reel_presence_from_grant(
+    'd1000000-0000-4000-8000-000000000202', 'Votre secteur approximatif', 'Je peux aider pour un déménagement', 100, 120, true
   )$$,
   'member B starts in the same approximate zone'
 );
@@ -61,8 +67,8 @@ SELECT set_config(
 );
 
 SELECT lives_ok(
-  $$SELECT public.start_reel_presence(
-    'bonanjo-zone-0001', 'Bonanjo', 'Disponible pour une course', 1000, 30, true
+  $$SELECT public.start_reel_presence_from_grant(
+    'd1000000-0000-4000-8000-000000000203', 'Votre secteur approximatif', 'Disponible pour une course', 1000, 30, true
   )$$,
   'member C starts in a different approximate zone'
 );
@@ -74,7 +80,7 @@ SELECT set_config(
 );
 
 SELECT is(
-  (SELECT count(*)::integer FROM public.list_reel_presence('douala-zone-0001', 50)),
+  (SELECT count(*)::integer FROM public.list_reel_presence('z1_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 50)),
   1,
   'presence discovery returns only the other active member in the same zone'
 );
@@ -194,7 +200,7 @@ SELECT ok(
 SELECT ok(
   NOT has_table_privilege('anon', 'public.reel_presences', 'SELECT')
   AND NOT has_table_privilege('anon', 'public.reel_bips', 'SELECT')
-  AND NOT has_function_privilege('anon', 'public.start_reel_presence(text,text,text,integer,integer,boolean)', 'EXECUTE'),
+  AND NOT has_function_privilege('anon', 'public.start_reel_presence_from_grant(uuid,text,text,integer,integer,boolean)', 'EXECUTE'),
   'anonymous visitors cannot read or start a presence'
 );
 
