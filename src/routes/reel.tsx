@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { ClientOnly, createFileRoute } from "@tanstack/react-router";
 import { ReelProximityScreen } from "@/domains/presence/ui/ReelProximityScreen";
 
 export const Route = createFileRoute("/reel")({
@@ -11,12 +11,19 @@ export const Route = createFileRoute("/reel")({
       },
     ],
   }),
-  // Réel depends on browser-only location and Supabase client modules.
-  // Keep its interactive route component out of the server render graph.
-  ssr: false,
   component: ReelRoute,
 });
 
 function ReelRoute() {
-  return <ReelProximityScreen />;
+  return (
+    <ClientOnly
+      fallback={
+        <section className="reel-screen" aria-busy="true" aria-live="polite">
+          <p className="reel-panel__note">Préparation de votre espace Réel…</p>
+        </section>
+      }
+    >
+      <ReelProximityScreen />
+    </ClientOnly>
+  );
 }
