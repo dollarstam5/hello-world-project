@@ -86,7 +86,8 @@ SELECT is(
 
 RESET ROLE;
 UPDATE public.reel_discovery_locations
-SET expires_at = now() - interval '1 second'
+SET created_at = now() - interval '2 minutes',
+    expires_at = now() - interval '1 second'
 WHERE user_id = 'd3000000-0000-4000-8000-000000000001';
 SET LOCAL ROLE service_role;
 SELECT public.purge_reel_location_sessions();
