@@ -1,0 +1,349 @@
+/* Réel proximity screen — scoped visual tokens and responsive composition. */
+.reel-proximity {
+  --reel-canvas: #f5f8fd;
+  --reel-ink: #3a4152;
+  --reel-blue-start: #2f6bff;
+  --reel-blue-end: #5b9bff;
+  --reel-night: #0e1630;
+  --reel-map-ink: #8fa2bc;
+  --reel-white: #ffffff;
+  --reel-avatar-size: clamp(3rem, 14.36vw, 3.5rem);
+  --reel-small-avatar-size: clamp(2.8rem, 14.36vw, 3.5rem);
+  --reel-center-avatar-size: 4rem;
+  --reel-radar-size: min(88vw, 34rem);
+  --reel-ring-radius: calc(var(--reel-radar-size) * 0.43);
+  --reel-header-size: 3.5rem;
+  --reel-round-lg: 1.125rem;
+  --reel-round-xl: 1.5rem;
+  --reel-round-full: 9999px;
+  --reel-shadow-soft: 0 0.75rem 2rem rgb(50 91 160 / 12%);
+  --reel-shadow-glow: 0 0 2.5rem rgb(66 132 255 / 30%);
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  width: 100%;
+  height: calc(100svh - var(--safe-top) - var(--safe-bottom) - 7rem);
+  min-height: 35rem;
+  max-height: 54rem;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  padding: var(--space-2) var(--space-3) var(--space-3);
+  color: var(--reel-ink);
+  background: var(--reel-canvas);
+}
+
+.reel-proximity *,
+.reel-proximity *::before,
+.reel-proximity *::after {
+  box-sizing: border-box;
+}
+
+.reel-proximity__map {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  opacity: 0.06;
+  background-color: var(--reel-canvas);
+  background-image:
+    linear-gradient(90deg, transparent 0 12%, var(--reel-map-ink) 12.2% 12.8%, transparent 13% 100%),
+    linear-gradient(0deg, transparent 0 19%, var(--reel-map-ink) 19.2% 19.8%, transparent 20% 100%),
+    linear-gradient(90deg, transparent 0 44%, var(--reel-map-ink) 44.2% 44.8%, transparent 45% 100%),
+    linear-gradient(0deg, transparent 0 62%, var(--reel-map-ink) 62.2% 62.8%, transparent 63% 100%),
+    repeating-linear-gradient(32deg, transparent 0 4.2rem, var(--reel-map-ink) 4.25rem 4.32rem, transparent 4.38rem 7.4rem),
+    repeating-linear-gradient(122deg, transparent 0 5.2rem, var(--reel-map-ink) 5.25rem 5.32rem, transparent 5.38rem 8.4rem);
+  mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+}
+
+.reel-proximity__radar {
+  position: relative;
+  display: grid;
+  width: var(--reel-radar-size);
+  aspect-ratio: 1;
+  flex: 0 0 auto;
+  place-items: center;
+  margin-top: clamp(1.5rem, 5vh, 3rem);
+  isolation: isolate;
+}
+
+.reel-radar__outer-halo,
+.reel-radar__outer-ring,
+.reel-radar__inner-ring,
+.reel-radar__core {
+  position: absolute;
+  border-radius: var(--reel-round-full);
+  pointer-events: none;
+}
+
+.reel-radar__outer-halo {
+  z-index: -3;
+  inset: -19%;
+  background: radial-gradient(circle, rgb(91 155 255 / 24%) 0%, rgb(91 155 255 / 11%) 48%, transparent 72%);
+  filter: blur(0.4rem);
+  animation: reel-halo-breathe 4s ease-in-out infinite;
+}
+
+.reel-radar__outer-ring {
+  z-index: -2;
+  inset: 0;
+  border: clamp(1.9rem, 7vw, 3rem) solid transparent;
+  background:
+    linear-gradient(145deg, rgb(255 255 255 / 75%), rgb(91 155 255 / 18%)) padding-box,
+    linear-gradient(145deg, rgb(91 155 255 / 50%), rgb(47 107 255 / 25%)) border-box;
+  box-shadow:
+    inset 0 0.35rem 1.5rem rgb(255 255 255 / 82%),
+    inset 0 -0.65rem 1.4rem rgb(67 126 235 / 19%),
+    0 0.5rem 1.8rem rgb(69 124 220 / 12%);
+}
+
+.reel-radar__inner-ring {
+  z-index: -1;
+  inset: 21%;
+  border: 1px solid rgb(255 255 255 / 78%);
+  background: radial-gradient(circle, rgb(255 255 255 / 85%), rgb(104 160 255 / 13%) 72%, transparent);
+  box-shadow: 0 0 2.2rem rgb(91 155 255 / 18%);
+}
+
+.reel-radar__core {
+  display: grid;
+  width: 32%;
+  aspect-ratio: 1;
+  place-items: center;
+  background: radial-gradient(circle at 36% 28%, #dceaff 0%, #91baff 52%, #4f8fff 100%);
+  box-shadow: var(--reel-shadow-glow), inset 0 0.25rem 1rem rgb(255 255 255 / 55%);
+  animation: reel-halo-breathe 4s ease-in-out infinite;
+}
+
+.reel-radar__me {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--reel-ink);
+  font-size: var(--text-base);
+  font-weight: 600;
+}
+
+.reel-radar__me-avatar {
+  display: grid;
+  width: var(--reel-center-avatar-size);
+  aspect-ratio: 1;
+  place-items: center;
+  overflow: hidden;
+  border: 3px solid var(--reel-white);
+  border-radius: var(--reel-round-full);
+  background: linear-gradient(145deg, #dce5f1, #aabbd2);
+  color: #687b97;
+}
+
+.reel-radar__me-avatar svg {
+  width: 72%;
+  height: 72%;
+  stroke-width: 1.4;
+}
+
+.reel-radar__me-label {
+  line-height: 1.1;
+}
+
+.reel-ring-person {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  width: calc(var(--reel-avatar-size) + 1.5rem);
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.reel-avatar {
+  position: relative;
+  display: grid;
+  width: var(--reel-avatar-size);
+  aspect-ratio: 1;
+  flex: 0 0 auto;
+  place-items: center;
+  overflow: hidden;
+  border: 2px solid rgb(255 255 255 / 92%);
+  border-radius: var(--reel-round-full);
+  background: linear-gradient(145deg, #e4ebf4, #aebfd4);
+  box-shadow: 0 0.2rem 0.8rem rgb(49 83 133 / 14%);
+  color: var(--reel-white);
+}
+
+.reel-avatar--small {
+  width: var(--reel-small-avatar-size);
+}
+
+.reel-avatar--person:has(img) {
+  border: 3px solid var(--reel-blue-start);
+  box-shadow: 0 0 0 1px var(--reel-white), 0 0.2rem 0.8rem rgb(49 83 133 / 14%);
+}
+
+.reel-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+}
+
+.reel-avatar__initials {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  border-radius: inherit;
+  background: linear-gradient(140deg, var(--reel-blue-start), var(--reel-blue-end));
+  color: var(--reel-white);
+  font-size: var(--text-lg);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.reel-avatar__silhouette {
+  width: 68%;
+  height: 68%;
+  color: #71839d;
+  stroke-width: 1.35;
+}
+
+.reel-avatar--failed::after {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: inherit;
+  background: linear-gradient(145deg, #e4ebf4, #aebfd4);
+  color: #71839d;
+  content: " ";
+  mask: none;
+}
+
+.reel-avatar--failed::before {
+  position: absolute;
+  z-index: 1;
+  width: 38%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #71839d;
+  content: "";
+  transform: translateY(-28%);
+}
+
+.reel-ring-person__name {
+  max-width: 5.5rem;
+  overflow: hidden;
+  color: var(--reel-ink);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: var(--leading-tight);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reel-nearby {
+  z-index: 3;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: auto;
+  padding-top: var(--space-2);
+}
+
+.reel-nearby__title {
+  margin: 0;
+  color: var(--reel-ink);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: var(--leading-tight);
+}
+
+.reel-nearby__row {
+  display: flex;
+  width: min(100%, 22rem);
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
+.reel-nearby__avatars {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+}
+
+.reel-nearby__avatars > * + * {
+  margin-left: calc(var(--space-3) * -1);
+}
+
+.reel-nearby__count {
+  display: grid;
+  width: var(--reel-small-avatar-size);
+  aspect-ratio: 1;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 2px solid var(--reel-white);
+  border-radius: var(--reel-round-full);
+  background: #eef2f8;
+  color: var(--reel-ink);
+  font-size: var(--text-md);
+  font-weight: 600;
+}
+
+.reel-nearby__bluetooth {
+  display: grid;
+  width: 4rem;
+  aspect-ratio: 1;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 0;
+  border-radius: var(--reel-round-xl);
+  background: var(--reel-night);
+  color: var(--reel-white);
+  box-shadow: var(--reel-shadow-soft);
+}
+
+.reel-nearby__bluetooth svg {
+  width: 1.75rem;
+  height: 1.75rem;
+  stroke-width: 2.2;
+}
+
+@keyframes reel-halo-breathe {
+  0%, 100% {
+    transform: scale(0.985);
+    opacity: 0.82;
+  }
+  50% {
+    transform: scale(1.025);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reel-radar__outer-halo,
+  .reel-radar__core {
+    animation: none;
+  }
+}
+
+@media (max-width: 360px) {
+  .reel-proximity {
+    --reel-radar-size: min(91vw, 30rem);
+    padding-inline: var(--space-2);
+  }
+
+  .reel-nearby__row {
+    gap: var(--space-2);
+  }
+}
+
+@media (min-width: 640px) {
+  .reel-proximity {
+    --reel-radar-size: min(70vw, 34rem);
+  }
+}
