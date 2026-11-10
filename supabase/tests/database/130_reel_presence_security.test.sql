@@ -1,6 +1,6 @@
 BEGIN;
 CREATE EXTENSION IF NOT EXISTS pgtap WITH SCHEMA extensions;
-SELECT plan(24);
+SELECT plan(25);
 
 INSERT INTO auth.users (
   id, aud, role, email, encrypted_password, email_confirmed_at,
@@ -46,6 +46,20 @@ SELECT is(
   1,
   'member A has one active presence'
 );
+SELECT throws_ok(
+  $SELECT public.start_reel_presence_from_grant(
+    'd1000000-0000-4000-8000-000000000201',
+    'Votre secteur approximatif',
+    'Tentative de réutilisation',
+    100,
+    60,
+    true
+  )$,
+  '42501',
+  'reel_zone_grant_invalid_or_expired',
+  'a one-use zone grant cannot be replayed'
+);
+
 
 SELECT set_config(
   'request.jwt.claims',
