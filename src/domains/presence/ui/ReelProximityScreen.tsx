@@ -300,9 +300,7 @@ export function ReelProximityScreen() {
       setBipsMessage(null);
     } catch (error) {
       setBipsMessage(
-        error instanceof Error
-          ? error.message
-          : "Vos bips n’ont pas pu être chargés.",
+        error instanceof Error ? error.message : "Vos bips n’ont pas pu être chargés.",
       );
     } finally {
       setBipsLoading(false);
