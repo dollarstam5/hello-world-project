@@ -300,3 +300,24 @@ La branche ajoute une nouvelle migration `20261110080000_reel_postgis_metric_rad
 
 - Le contrôle des bips utilise également PostGIS : l'envoi est refusé si le point de l'expéditeur ne se trouve pas dans le rayon de visibilité de la présence destinataire. Deux personnes dans des cellules HMAC différentes peuvent donc interagir si le calcul métrique l'autorise.
 - Le test pgTAP 134 couvre l'envoi d'un bip entre deux cellules HMAC distinctes lorsque la distance réelle est dans le rayon du destinataire.
+
+## Mise à jour — bips et mises en relation raccordés à l’interface
+
+- L’écran Réel appelle list_reel_bips() lorsque l’onglet « Bips reçus » est ouvert. Les résultats sont filtrés côté interface pour ne montrer que les demandes reçues par le compte connecté.
+- Les actions « Accepter » et « Refuser » appellent command_reel_bip(). L’acceptation déclenche la création de la relation dans la fonction SQL existante ; le bip en attente disparaît de la liste.
+- Un membre qui a une présence active peut envoyer un bip depuis la fiche d’une personne réellement découverte. L’appel reste soumis aux contrôles SQL : présence active des deux personnes, identité, rayon métrique du destinataire et idempotence.
+- Un abonnement Supabase Postgres Changes actualise les bips lorsque la table reel_bips change. Il est fermé lorsque le panneau est quitté.
+- Nouvelle migration 20261110090000_reel_connection_history_and_close.sql : list_reel_connections() retourne uniquement les relations du compte connecté avec le nom public limité de l’autre participant ; close_reel_connection() permet à l’un ou l’autre participant de fermer la relation pour les deux.
+- L’onglet « Rencontres » charge désormais l’historique des relations et permet de terminer une relation active. Un abonnement Postgres Changes actualise la liste.
+- Les visiteurs et invités ne reçoivent pas de droits membre : les onglets métier restent protégés et l’historique exige un compte membre actif.
+
+**État de preuve :** les raccordements client, l’abonnement temps réel, la nouvelle migration et les actions d’interface sont ajoutés à la branche. Ils ne sont pas encore validés par une exécution Vitest/TypeScript, une migration Supabase réelle ou un test multi-appareils. Les bips utilisent une identité générique dans l’interface car la RPC de liste ne renvoie pas encore le profil du correspondant ; aucun nom privé n’est deviné.
+
+## Points restant ouverts parmi les six
+
+1. Le rayon métrique PostGIS est codé ; migration et tests pgTAP restent à exécuter et à vérifier sur Supabase.
+2. Le raccordement des bips et des mises en relation est ajouté ; les tests serveur et le test multi-appareils restent à faire. Les notifications générales ne sont pas encore reliées à leur source métier.
+3. Le mode invité dispose d’une session serveur temporaire séparée, mais aucune opération métier Réel ne l’accepte encore. Il ne reçoit aucun droit membre.
+4. Les propositions globales et l’historique des activités non liées à une relation n’ont pas encore de source métier connectée. L’écran conserve un état vide honnête.
+5. REEL_ZONE_HMAC_SECRET est validé par le code serveur et documenté dans .env.example. Il doit encore être défini dans l’environnement serveur de déploiement ; il ne doit jamais être placé dans une variable VITE_*.
+6. Les contrôles finaux restent à exécuter : lint, Vitest, migrations, pgTAP, build et tests sur deux appareils.
