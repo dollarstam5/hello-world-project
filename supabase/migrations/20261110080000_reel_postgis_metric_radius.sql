@@ -282,6 +282,24 @@ $$;
 REVOKE ALL ON FUNCTION public.purge_reel_location_sessions() FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.purge_reel_location_sessions() TO service_role;
 
+
+DO $cron$
+BEGIN
+  IF EXISTS (SELECT 1 FROM pg_extension WHERE extname = 'pg_cron') THEN
+    BEGIN
+      PERFORM cron.schedule(
+        'reel-private-location-cleanup',
+        '* * * * *',
+        'SELECT public.purge_reel_location_sessions();'
+      );
+    EXCEPTION
+      WHEN duplicate_object OR unique_violation THEN NULL;
+      WHEN undefined_function OR invalid_schema_name THEN NULL;
+    END;
+  END IF;
+END;
+$cron$;
+
 CREATE OR REPLACE FUNCTION public.reel_delete_presence_location_on_end()
 RETURNS TRIGGER
 LANGUAGE plpgsql
