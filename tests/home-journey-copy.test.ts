@@ -29,4 +29,35 @@ describe("Home journey guidance", () => {
     expect(messages.fr["home.engine.scan.desc"]).not.toContain("sans partager votre position");
     expect(messages.en["home.engine.scan.desc"]).toContain("area you choose");
   });
+  it("provides complete personal-space navigation in both languages", () => {
+    const personalSections = [
+      "space.card.profile.title",
+      "space.card.info.title",
+      "space.card.profileSettings.title",
+      "space.card.preview.title",
+      "space.card.settings.title",
+    ] as const;
+
+    for (const key of personalSections) {
+      expect(messages.fr[key]).toBeTruthy();
+      expect(messages.en[key]).toBeTruthy();
+    }
+
+    expect(messages.fr["profile.visibility.private.desc"]).toContain("Aucun réglage");
+    expect(messages.en["profile.visibility.private.desc"]).toContain("No visibility setting");
+    expect(messages.fr["profile.preview.unavailable.desc"]).toContain("Aucun aperçu fictif");
+    expect(messages.en["profile.preview.unavailable.desc"]).toContain("No made-up preview");
+  });
+
+  it("keeps engine management states honest and localized", () => {
+    expect(messages.fr["flash.mine.empty.title"]).toBeTruthy();
+    expect(messages.en["flash.mine.empty.title"]).toBeTruthy();
+    expect(messages.fr["scan.history.desc"]).toContain("pas encore enregistrées");
+    expect(messages.en["scan.history.desc"]).toContain("not saved yet");
+    expect(messages.fr["reel.section.unavailable"]).toContain("Aucune présence");
+    expect(messages.en["reel.section.unavailable"]).toContain("No presence");
+    expect(messages.fr["radar.section.unavailable"]).toContain("Aucun résultat");
+    expect(messages.en["radar.section.unavailable"]).toContain("No results");
+  });
+
 });
