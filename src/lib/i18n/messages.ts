@@ -395,7 +395,8 @@ export const messages = {
     "reel.section.presence.desc":
       "Préparer et gérer votre présence autour de vous lorsque cette fonction sera prête.",
     "reel.section.bips.desc": "Retrouver les bips reçus pendant vos présences actives.",
-    "reel.section.connections.desc": "Retrouver les personnes avec qui vous avez accepté une mise en relation.",
+    "reel.section.connections.desc":
+      "Retrouver les personnes avec qui vous avez accepté une mise en relation.",
     "reel.section.history.desc":
       "Retrouver vos anciennes mises en relation et conversations, selon les règles de conservation.",
     "reel.section.unavailable":
@@ -981,7 +982,8 @@ export const messages = {
       "Prepare and manage your nearby presence when this feature is ready.",
     "reel.section.bips.desc": "Find the bips you receive while your presence is active.",
     "reel.section.connections.desc": "Find the people you have connected with.",
-    "reel.section.history.desc": "Find past connections and conversations, according to the retention rules.",
+    "reel.section.history.desc":
+      "Find past connections and conversations, according to the retention rules.",
     "reel.section.unavailable":
       "This section will be ready when Réel can share presence and manage interactions securely. No presence or connection is simulated.",
     "radar.manage.intro":
