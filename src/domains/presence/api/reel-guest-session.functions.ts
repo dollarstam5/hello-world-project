@@ -50,7 +50,6 @@ export const endReelGuestPresence = createServerFn({ method: "POST" })
     return end(data.presenceId);
   });
 
-
 const guestDiscoveryInput = z.object({
   latitude: z.number().min(-90).max(90),
   longitude: z.number().min(-180).max(180),
