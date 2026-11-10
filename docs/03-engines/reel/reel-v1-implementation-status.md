@@ -358,3 +358,13 @@ La migration `20261110130000_reel_guest_bips_and_connections.sql` ajoute des tab
 - Interface : l'action « Faire signe » est maintenant proposée aux membres et invités disposant d'une présence active ; les bips croisés et les relations temporaires sont chargés dans les onglets Réel correspondants.
 
 Le test pgTAP 137 couvre les deux directions et la suppression à la révocation. **La migration et le test ne sont pas encore déclarés réussis** ; la validation CI et les essais sur deux appareils restent ouverts. Les événements croisés n'ont pas encore de diffusion temps réel dédiée.
+
+
+## Événements croisés membre/invité — 10 novembre 2026
+
+- Bips et relations membre ↔ invité et invité ↔ invité : RPC dédiées, contrôles serveur et projections sans identifiant de session invité.
+- Les événements destinés aux membres utilisent un Broadcast privé par compte ; le message ne transporte qu'un type d'événement générique.
+- Les invités ne rejoignent aucun canal Realtime : l'écran interroge les Server Functions toutes les trois secondes lorsque le panneau des bips ou relations est ouvert. Le serveur retrouve l'invité exclusivement depuis le cookie HttpOnly.
+- L'identifiant temporaire local a été supprimé du contexte React. Aucun identifiant de session invité n'est transmis dans le navigateur.
+- Migration `20261110140000_reel_private_activity_broadcasts.sql` et pgTAP 138 ajoutés. La table `realtime.messages` est gérée par Supabase : sa RLS existante est utilisée sans tentative de la modifier. Le réglage Supabase « Allow public access » doit être désactivé.
+- **État : à valider.** Aucun run CI n'est associé au dernier SHA de la branche ; la migration, pgTAP 137/138, le build, les tests multi-appareils et la réception effective des Broadcasts restent à vérifier.
