@@ -1,5 +1,5 @@
 BEGIN;
-SELECT plan(4);
+SELECT plan(5);
 
 SELECT has_function(
   'public',
@@ -13,6 +13,11 @@ SELECT has_policy(
   'messages',
   'reel_member_activity_read',
   'Only the matching authenticated member can read their private activity topic'
+);
+
+SELECT ok(
+  (SELECT relrowsecurity FROM pg_class WHERE oid = 'realtime.messages'::regclass),
+  'Supabase Realtime messages already has row-level security enabled'
 );
 
 SELECT ok(
