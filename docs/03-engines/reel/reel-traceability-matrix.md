@@ -286,3 +286,6 @@ Les tests pgTAP 130, 132 et 133 sont des scénarios ajoutés/modifiés dans la b
 | BIP-INV-10 | Aucun faux compte membre n'est créé. | Identité invité portée uniquement par `reel_guest_sessions`. | pgTAP 137 : absence de profil invité. | Ajouté, à exécuter |
 
 Les bips croisés ne disposent pas encore d'un canal de diffusion temps réel dédié. La validation multi-appareils et les cas de tests complémentaires restent ouverts ; ne pas considérer cette tranche comme activée en production avant le succès des migrations, pgTAP et tests d'intégration.
+
+
+| BIP-INV-11 | Les événements croisés doivent actualiser les membres sans révéler d'identifiants invités. | Broadcast privé `reel-member:<auth.uid()>` avec payload limité à un type d'événement ; invités actualisés côté serveur via cookie HttpOnly. | pgTAP 138 : politique du sujet privé et inspection du contenu Broadcast ; test multi-appareils à compléter. | Ajouté, à exécuter |
