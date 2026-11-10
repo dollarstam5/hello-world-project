@@ -212,3 +212,16 @@ Une relecture croisée des migrations Réel 100 à 600, des deux tests pgTAP et 
 Le workflow `.github/workflows/quality.yml` contient bien une étape `Database RLS tests` qui démarre Supabase, vérifie la présence des fichiers pgTAP puis exécute `bun run test:db`, avant d'arrêter la pile locale. Le workflow est configuré pour les pull requests ciblant `main`.
 
 Lors du contrôle du commit courant de la PR, GitHub ne retourne toutefois aucun workflow associé et aucun statut de vérification. La présence de cette étape dans le fichier YAML ne prouve donc pas qu'elle a été exécutée. Il faut vérifier que GitHub Actions est activé pour le dépôt et que le workflow `Quality` est autorisé, puis obtenir un run associé au SHA exact de la PR. Si aucun run ne démarre après un nouveau commit, le déclenchement ou les permissions Actions doivent être corrigés avant de considérer les tests comme validés.
+
+
+## Consentement de position propre à Réel — tranche interface
+
+- À chaque nouvelle entrée dans la page Réel, le moteur présente son propre choix d'utilisation de la position, même si un autre moteur Vitalis a déjà obtenu une autorisation.
+- Aucune demande de position ne part au chargement : le navigateur ou le téléphone n'est sollicité qu'après le bouton explicite « Activer ma position ».
+- L'autorisation système et l'accord d'utilisation dans Réel sont deux contrôles distincts. Une autorisation déjà accordée au niveau du téléphone ne vaut pas accord Réel.
+- « Pas maintenant » laisse la page accessible en mode calme. La découverte locale, les réactions, les bips et les alertes locales sont suspendus ; les réglages et les relations déjà établies restent consultables.
+- Une demande refusée ou indisponible laisse également Réel en mode calme, avec une explication et une possibilité de réessayer.
+- La demande technique est une lecture ponctuelle (getCurrentPosition), sans suivi continu, sans arrière-plan et sans sauvegarde locale des coordonnées dans cette tranche.
+- L'accord de localisation ne démarre pas automatiquement la présence publique. Le partage de sa propre présence exige toujours le consentement métier distinct reel_presence.
+
+**Limite d'intégration à conserver visible :** après l'accord de localisation, la découverte réelle n'est pas encore activée. Aucun résolveur de zone opaque fiable n'a été identifié et le client de présence ne doit pas fabriquer une clé de zone à partir du GPS. Le raccordement de la zone, le filtrage spatial et les abonnements temps réel restent à livrer et à tester. Les propositions globales et la reprise de la dernière activité ne disposent pas encore de sources métier connectées ; aucun contenu fictif ne doit être affiché.
