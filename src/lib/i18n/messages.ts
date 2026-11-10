@@ -400,7 +400,8 @@ export const messages = {
       "Consulter les traces utiles de vos anciennes présences et interactions.",
     "reel.section.unavailable":
       "Cette partie sera accessible lorsque le parcours Réel et ses données sécurisées seront prêts. Aucune présence ni relation n'est simulée.",
-    "radar.manage.intro": "Enregistrez une recherche et gardez ses critères à portée de main. La détection automatique n'est pas encore active.",
+    "radar.manage.intro":
+      "Enregistrez une recherche et gardez ses critères à portée de main. La détection automatique n'est pas encore active.",
     "radar.manage.edit.title": "Modifier ma veille",
     "radar.manage.edit": "Modifier",
     "radar.manage.edit.action": "Enregistrer les changements",
@@ -420,7 +421,8 @@ export const messages = {
     "radar.manage.until": "Jusqu'au {date}",
     "radar.manage.cancel": "Annuler la veille",
     "radar.manage.cancel.title": "Annuler cette veille ?",
-    "radar.manage.cancel.confirm": "Cette veille sera marquée comme annulée. Vous pourrez en créer une nouvelle si besoin.",
+    "radar.manage.cancel.confirm":
+      "Cette veille sera marquée comme annulée. Vous pourrez en créer une nouvelle si besoin.",
     "radar.manage.status.draft": "Enregistrée",
     "radar.manage.status.active": "Programmée",
     "radar.manage.status.watching": "Surveillance",
@@ -429,7 +431,8 @@ export const messages = {
     "radar.manage.status.expired": "Terminée",
     "radar.manage.status.cancelled": "Annulée",
     "radar.manage.results.title": "Résultats et alertes",
-    "radar.manage.results.desc": "La recherche automatique n'est pas encore raccordée. Vos critères sont enregistrés, mais aucune correspondance n'est recherchée ni affichée pour le moment.",
+    "radar.manage.results.desc":
+      "La recherche automatique n'est pas encore raccordée. Vos critères sont enregistrés, mais aucune correspondance n'est recherchée ni affichée pour le moment.",
     "radar.manage.alerts.desc": "Aucune alerte n'est envoyée pour le moment.",
     "radar.section.management": "Gérer Radar",
     "radar.section.followed": "Mes suivis",
@@ -981,7 +984,8 @@ export const messages = {
     "reel.section.history.desc": "Review useful records of past presences and interactions.",
     "reel.section.unavailable":
       "This section will be available when the Réel journey and its secure data are ready. No presence or connection is simulated.",
-    "radar.manage.intro": "Save a search and keep its criteria close at hand. Automatic matching is not active yet.",
+    "radar.manage.intro":
+      "Save a search and keep its criteria close at hand. Automatic matching is not active yet.",
     "radar.manage.edit.title": "Edit my watch",
     "radar.manage.edit": "Edit",
     "radar.manage.edit.action": "Save changes",
@@ -1001,7 +1005,8 @@ export const messages = {
     "radar.manage.until": "Until {date}",
     "radar.manage.cancel": "Cancel watch",
     "radar.manage.cancel.title": "Cancel this watch?",
-    "radar.manage.cancel.confirm": "This watch will be marked as cancelled. You can create another one whenever you need.",
+    "radar.manage.cancel.confirm":
+      "This watch will be marked as cancelled. You can create another one whenever you need.",
     "radar.manage.status.draft": "Saved",
     "radar.manage.status.active": "Scheduled",
     "radar.manage.status.watching": "Watching",
@@ -1010,7 +1015,8 @@ export const messages = {
     "radar.manage.status.expired": "Ended",
     "radar.manage.status.cancelled": "Cancelled",
     "radar.manage.results.title": "Results and alerts",
-    "radar.manage.results.desc": "Automatic search is not connected yet. Your criteria are saved, but no matches are being searched for or displayed at this time.",
+    "radar.manage.results.desc":
+      "Automatic search is not connected yet. Your criteria are saved, but no matches are being searched for or displayed at this time.",
     "radar.manage.alerts.desc": "No alerts are being sent yet.",
     "radar.section.management": "Manage Radar",
     "radar.section.followed": "My followed searches",
