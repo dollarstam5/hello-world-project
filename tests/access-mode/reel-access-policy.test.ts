@@ -46,9 +46,9 @@ describe("evaluateReelAccess", () => {
   it("limits bip decisions to the correct participant", () => {
     expect(evaluateReelAccess({ access: member, presenceConsent: true, actorRole: "sender" }, "accept_bip").status)
       .toBe("deny");
-    expect(evaluateReelAccess({ access: member, locationConsent: true, actorRole: "recipient", resourceOwned: true }, "accept_bip").status)
+    expect(evaluateReelAccess({ access: member, presenceConsent: true, actorRole: "recipient", resourceOwned: true }, "accept_bip").status)
       .toBe("server_check");
-    expect(evaluateReelAccess({ access: member, locationConsent: true, actorRole: "recipient", resourceOwned: true }, "withdraw_bip").status)
+    expect(evaluateReelAccess({ access: member, presenceConsent: true, actorRole: "recipient", resourceOwned: true }, "withdraw_bip").status)
       .toBe("deny");
   });
 
