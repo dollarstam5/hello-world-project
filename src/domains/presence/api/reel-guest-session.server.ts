@@ -138,6 +138,11 @@ export async function readReelGuestSession() {
       if (lookupError) throw new Error("Impossible de vérifier la session invitée.");
       if (session) {
         const now = new Date().toISOString();
+        const { error: discoveryError } = await admin
+          .from("reel_guest_discovery_locations")
+          .delete()
+          .eq("guest_session_id", session.id);
+        if (discoveryError) throw new Error("Impossible de fermer la découverte invitée.");
         const { error: presenceError } = await admin
           .from("reel_guest_presences")
           .delete()
@@ -183,6 +188,11 @@ export async function revokeReelGuestSession() {
     if (lookupError) throw new Error("Impossible de vérifier la session invitée.");
     if (session) {
       const now = new Date().toISOString();
+      const { error: discoveryError } = await admin
+        .from("reel_guest_discovery_locations")
+        .delete()
+        .eq("guest_session_id", session.id);
+      if (discoveryError) throw new Error("Impossible de fermer la découverte invitée.");
       const { error: presenceError } = await admin
         .from("reel_guest_presences")
         .delete()
@@ -259,4 +269,63 @@ export async function endReelGuestPresence(presenceId: string) {
   });
   if (error) throw new Error("Impossible de terminer votre présence invitée.");
   return { ended: data === true };
+}
+
+
+export interface ReelGuestDiscoveryCard {
+  presence_id: string;
+  actor_kind: "member" | "guest";
+  display_name: string;
+  avatar_media_id: string | null;
+  avatar_key: string | null;
+  area_label: string;
+  description: string;
+  radius_m: number;
+  started_at: number;
+  expires_at: number;
+}
+
+export async function discoverReelGuestNearby(latitude: number, longitude: number) {
+  assertSameOrigin(true);
+  noStore();
+  const request = getRequest();
+  if (request.headers.has("authorization")) {
+    throw new Error("Une session membre doit utiliser son propre accès Réel.");
+  }
+  const session = await currentSession();
+  if (!session) throw new Error("Votre accès invité a expiré. Ouvrez une nouvelle session.");
+  if (
+    !Number.isFinite(latitude) || latitude < -90 || latitude > 90 ||
+    !Number.isFinite(longitude) || longitude < -180 || longitude > 180
+  ) throw new Error("La position reçue n’est pas valide.");
+
+  const admin = createAdminClient();
+  const throttleSince = new Date(Date.now() - 5_000).toISOString();
+  const { data: recent, error: throttleError } = await admin
+    .from("reel_guest_discovery_locations")
+    .select("guest_session_id")
+    .eq("guest_session_id", session.id)
+    .gt("created_at", throttleSince)
+    .limit(1)
+    .maybeSingle();
+  if (throttleError) throw new Error("Impossible de vérifier votre demande de découverte.");
+  if (recent) throw new Error("Patientez quelques secondes avant de relancer la découverte.");
+
+  const expiresAt = new Date(Date.now() + 15 * 60_000).toISOString();
+  const { error: locationError } = await admin.rpc("create_reel_guest_discovery_location", {
+    p_guest_session_id: session.id,
+    p_latitude: latitude,
+    p_longitude: longitude,
+    p_expires_at: expiresAt,
+  });
+  if (locationError) throw new Error("Impossible d’ouvrir la découverte à proximité pour le moment.");
+
+  const { data, error } = await admin.rpc("list_reel_guest_discovery_presence", {
+    p_guest_session_id: session.id,
+    p_limit: 30,
+  });
+  if (error || !Array.isArray(data)) {
+    throw new Error("Les personnes à proximité n’ont pas pu être chargées.");
+  }
+  return data as ReelGuestDiscoveryCard[];
 }
