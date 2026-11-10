@@ -370,6 +370,7 @@ export const messages = {
       "Cette liste reprend les Flash de votre compte disponibles sur cet appareil. Les changements en attente seront synchronisés au retour du réseau.",
     "flash.mine.actionError": "Cette action n'a pas pu être effectuée. Réessayez.",
     "flash.mine.archive": "Archiver",
+    "flash.mine.edit": "Modifier",
     "flash.mine.delete": "Supprimer",
     "flash.mine.deleteTitle": "Supprimer ce Flash ?",
     "flash.mine.deleteConfirm":
@@ -919,6 +920,7 @@ export const messages = {
       "This list shows your account Flash posts available on this device. Pending changes will sync when the connection returns.",
     "flash.mine.actionError": "That action could not be completed. Please try again.",
     "flash.mine.archive": "Archive",
+    "flash.mine.edit": "Edit",
     "flash.mine.delete": "Delete",
     "flash.mine.deleteTitle": "Delete this Flash?",
     "flash.mine.deleteConfirm":
