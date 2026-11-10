@@ -169,8 +169,8 @@ Les bips membre-membre continuent d'utiliser le parcours déjà en place. Un bip
 - L'acceptation revalide les deux présences et les sessions avant de créer une relation temporaire.
 - Une paire ne reçoit pas plusieurs relations croisées en double.
 - L'un ou l'autre participant peut fermer la relation.
-- Toute relation impliquant un invité expire au plus tard avec sa session. La révocation de session supprime immédiatement les bips et relations temporaires associés.
-- Les projections envoyées au navigateur n'exposent aucun identifiant de session invité ni identifiant membre interne du partenaire. Elles renvoient uniquement l'identifiant d'interaction, son état, ses dates et un nom d'affichage limité pour une relation acceptée.
+- Toute relation impliquant un invité expire au plus tard avec sa session. La révocation supprime immédiatement les bips et la relation active côté invité ; le membre conserve uniquement une trace minimale de la relation acceptée pendant six mois, sans identifiant de session invité.
+- Les projections envoyées au navigateur n'exposent aucun identifiant de session invité ni identifiant membre interne du partenaire. Elles renvoient uniquement l'identifiant d'interaction, son état, ses dates et un nom d'affichage limité pour une relation acceptée. La table membre `reel_guest_connection_history` conserve la trace minimale de la relation acceptée pendant six mois ; elle ne contient aucun identifiant de session invité et n'est jamais lisible directement par le navigateur.
 
 ### Limites et validation
 
