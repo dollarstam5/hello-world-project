@@ -3,6 +3,7 @@ import { Bluetooth, CircleGauge, Ellipsis, Globe2, MapPinned, UsersRound } from 
 import { motion } from "framer-motion";
 import { useReducedMotion } from "@/lib/design/useReducedMotion";
 import { cn } from "@/lib/utils";
+import "./reel-bottom-nav.css";
 
 type Tab = {
   key: "interactions" | "events" | "reel" | "geo-drops" | "more";
@@ -36,7 +37,7 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
   return (
     <nav
       aria-label="Primary navigation"
-      className="reel-bottom-nav pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center"
+      className={cn("reel-bottom-nav pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center", pathname === "/reel" && "is-proximity") }
     >
       <ul className="reel-bottom-nav__bar pointer-events-auto flex w-full items-end justify-between">
         {TABS.map((tab) => {
