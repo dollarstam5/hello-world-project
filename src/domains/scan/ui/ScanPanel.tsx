@@ -4,7 +4,7 @@ import { useI18n } from "@/lib/i18n/useI18n";
 import { useScan } from "../hooks/useScan";
 import { PublicProfilePreview } from "@/components/app/PublicProfilePreview";
 
-const SCAN_RADIUS_KM = 5;
+const SCAN_RADII_KM = [1, 5, 10, 20] as const;
 const SCAN_LIMIT = 20;
 
 /**
@@ -21,6 +21,7 @@ export function ScanPanel() {
   const [started, setStarted] = useState(false);
   const [locating, setLocating] = useState(false);
   const [unsupported, setUnsupported] = useState(false);
+  const [radiusKm, setRadiusKm] = useState<number>(5);
 
   const start = () => {
     setLocationError(null);
@@ -41,7 +42,7 @@ export function ScanPanel() {
           category: null,
           latitude: pos.coords.latitude,
           longitude: pos.coords.longitude,
-          radiusKm: SCAN_RADIUS_KM,
+          radiusKm,
           limit: SCAN_LIMIT,
         });
       },
@@ -64,6 +65,23 @@ export function ScanPanel() {
   return (
     <div className="stack-4">
       <p className="text-sm text-muted-foreground">{t("scan.privacy")}</p>
+
+      <label className="stack-1 max-w-xs text-sm font-medium" htmlFor="scan-radius">
+        <span>{t("scan.radius")}</span>
+        <select
+          id="scan-radius"
+          value={radiusKm}
+          onChange={(event) => setRadiusKm(Number(event.target.value))}
+          disabled={busy || locating}
+          className="min-h-12 w-full rounded-xl border border-border bg-surface px-3 text-sm font-normal text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
+        >
+          {SCAN_RADII_KM.map((radius) => (
+            <option key={radius} value={radius}>
+              {radius} {t("scan.radius.unit")}
+            </option>
+          ))}
+        </select>
+      </label>
 
       <button
         type="button"
