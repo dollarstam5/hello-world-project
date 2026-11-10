@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties } from "react";
+import { useCallback, useEffect, useState, type CSSProperties } from "react";
 import { requestReelLocation } from "@/domains/presence/api/reel-location.client";
 import { commandReelBip, listReelBips, sendReelBip, type ReelBip } from "@/domains/presence/api/reel-presence.client";
 import { supabase } from "@/integrations/supabase/client";
@@ -105,6 +105,7 @@ export function ReelProximityScreen() {
     loadedPresence?.memberId === access.memberId
       ? loadedPresence.presence
       : null;
+  const canUseMemberReel = access.mode === "member" && access.memberProfileState === "active" && !access.loading;
 
   useEffect(() => {
     let cancelled = false;
@@ -116,8 +117,8 @@ export function ReelProximityScreen() {
     return () => { cancelled = true; };
   }, [access.mode, access.memberProfileState, access.loading, access.memberId]);
 
-  const refreshBips = async () => {
-    if (!canUseMemberReel) return;
+  const refreshBips = useCallback(async () => {
+    if (!canUseMemberReel || !access.memberId) return;
     setBipsLoading(true);
     try {
       const rows = await listReelBips();
@@ -128,7 +129,7 @@ export function ReelProximityScreen() {
     } finally {
       setBipsLoading(false);
     }
-  };
+  }, [canUseMemberReel, access.memberId]);
 
   useEffect(() => {
     if (panel !== "activity" || activityTab !== "bips" || !canUseMemberReel) return;
@@ -140,7 +141,7 @@ export function ReelProximityScreen() {
       })
       .subscribe();
     return () => { void supabase.removeChannel(channel); };
-  }, [panel, activityTab, canUseMemberReel, access.memberId]);
+  }, [panel, activityTab, refreshBips, access.memberId]);
 
   const sendBipToSelectedPerson = async () => {
     if (!selectedPerson || !currentPresence || !preferences.allowBips) return;
@@ -257,7 +258,6 @@ export function ReelProximityScreen() {
     setDiscoveredPeople([]);
     setLocationMessage(null);
   };
-  const canUseMemberReel = access.mode === "member" && access.memberProfileState === "active" && !access.loading;
   const discoveryEnabled = discoveryAccess === "granted";
   const activityEnabled = discoveryEnabled || Boolean(currentPresence);
   const availablePeople = discoveryEnabled ? discoveredPeople : [];
