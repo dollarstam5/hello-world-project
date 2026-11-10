@@ -953,10 +953,113 @@ export function ReelProximityScreen() {
                     présence est un choix séparé : les autres personnes pourront alors vous voir
                     dans votre secteur approximatif, pendant la durée choisie.
                   </p>
-                  {!canUseMemberReel ? (
+                  {access.mode === "guest" ? (
+                    guestPresence ? (
+                      <>
+                        <p className="reel-panel__status">
+                          Votre présence est visible sous le nom {guestPresence.display_name}, dans
+                          le secteur « {guestPresence.area_label} », jusqu’à la fin de votre session
+                          invitée.
+                        </p>
+                        <button
+                          type="button"
+                          className="reel-panel__secondary"
+                          disabled={presenceLoading}
+                          onClick={() => void stopGuestPresence()}
+                        >
+                          Arrêter ma présence
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <label className="reel-setting-row reel-setting-row--stacked">
+                          <span>
+                            <strong>Le prénom à afficher</strong>
+                            <small>Un prénom ou un nom court, sans créer de compte.</small>
+                          </span>
+                          <input
+                            type="text"
+                            autoComplete="nickname"
+                            maxLength={40}
+                            value={guestDisplayName}
+                            onChange={(event) => setGuestDisplayName(event.target.value)}
+                            placeholder="Ex. Awa"
+                          />
+                        </label>
+                        <label className="reel-setting-row reel-setting-row--stacked">
+                          <span>
+                            <strong>Mon secteur</strong>
+                            <small>Un repère général, jamais votre adresse exacte.</small>
+                          </span>
+                          <input
+                            type="text"
+                            maxLength={80}
+                            value={guestAreaLabel}
+                            onChange={(event) => setGuestAreaLabel(event.target.value)}
+                            placeholder="Ex. Bonamoussadi"
+                          />
+                        </label>
+                        <label className="reel-setting-row reel-setting-row--stacked">
+                          <span>
+                            <strong>Mon avatar</strong>
+                            <small>Choisissez une couleur pour vous reconnaître.</small>
+                          </span>
+                          <select
+                            value={guestAvatarKey}
+                            onChange={(event) => setGuestAvatarKey(event.target.value)}
+                          >
+                            <option value="avatar-blue">Bleu</option>
+                            <option value="avatar-violet">Violet</option>
+                            <option value="avatar-green">Vert</option>
+                            <option value="avatar-orange">Orange</option>
+                          </select>
+                        </label>
+                        <label className="reel-setting-row reel-setting-row--stacked">
+                          <span>
+                            <strong>Ce que les autres verront</strong>
+                            <small>Une phrase courte pour expliquer votre présence.</small>
+                          </span>
+                          <textarea
+                            maxLength={180}
+                            value={presenceDescription}
+                            onChange={(event) => setPresenceDescription(event.target.value)}
+                            rows={2}
+                          />
+                        </label>
+                        <label className="reel-setting-row">
+                          <span>
+                            <strong>Je souhaite être visible</strong>
+                            <small>
+                              Ma position précise reste privée. Seule ma présence dans le rayon
+                              choisi sera proposée aux personnes proches.
+                            </small>
+                          </span>
+                          <input
+                            type="checkbox"
+                            checked={guestPresenceConsent}
+                            onChange={(event) => setGuestPresenceConsent(event.target.checked)}
+                          />
+                        </label>
+                        <button
+                          type="button"
+                          className="reel-panel__primary"
+                          disabled={
+                            presenceLoading ||
+                            !guestPresenceConsent ||
+                            !guestDisplayName.trim() ||
+                            !guestAreaLabel.trim() ||
+                            !presenceDescription.trim()
+                          }
+                          onClick={() => void activateGuestPresence()}
+                        >
+                          {presenceLoading ? "Activation…" : "Rendre ma présence visible"}
+                        </button>
+                      </>
+                    )
+                  ) : !canUseMemberReel ? (
                     <p className="reel-panel__note">
-                      L’activation de votre présence est actuellement réservée aux membres avec un
-                      profil actif. Le mode invité n’est pas encore raccordé à cette fonction.
+                      Pour publier votre présence, commencez par ouvrir une session invitée ou
+                      utilisez votre compte Vitalis.
                     </p>
                   ) : currentPresence ? (
                     <>
