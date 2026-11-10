@@ -2,6 +2,16 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Check, Pencil, Plus, Trash2, X } from "lucide-react";
 import { Surface } from "@/components/app/Surface";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
@@ -23,6 +33,7 @@ export function ProfileManagementPage() {
   const [userId, setUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [confirmRemoveHandle, setConfirmRemoveHandle] = useState(false);
   const [editing, setEditing] = useState<EditableField | null>(null);
   const [draft, setDraft] = useState("");
   const [notice, setNotice] = useState<MessageKey | "">("");
@@ -108,7 +119,6 @@ export function ProfileManagementPage() {
 
   async function removeHandle() {
     if (!profile || !userId || !profile.handle) return;
-    if (!window.confirm(t("profile.handle.removeConfirm"))) return;
 
     setSaving(true);
     setError("");
@@ -264,7 +274,7 @@ export function ProfileManagementPage() {
                   variant="ghost"
                   size="sm"
                   disabled={saving}
-                  onClick={() => void removeHandle()}
+                  onClick={() => setConfirmRemoveHandle(true)}
                   className="mt-2 h-10 px-2 text-muted-foreground"
                 >
                   <Trash2 className="mr-2 h-4 w-4" aria-hidden />
@@ -310,6 +320,25 @@ export function ProfileManagementPage() {
           </p>
         </Surface>
       </section>
+
+      <AlertDialog open={confirmRemoveHandle} onOpenChange={setConfirmRemoveHandle}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t("profile.handle.removeTitle")}</AlertDialogTitle>
+            <AlertDialogDescription>{t("profile.handle.removeConfirm")}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              disabled={saving}
+              onClick={() => void removeHandle()}
+            >
+              {t("profile.handle.remove")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
