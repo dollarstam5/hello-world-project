@@ -57,5 +57,15 @@ describe("Flash demo feed", () => {
       "Après notre réunion de dimanche, vers 15 h, nous cherchons deux personnes pour aider à faire la vaisselle.",
     ]);
     expect(fixtures[2]?.areaLabel).toBe("Dakar (exemple)");
+    expect(fixtures.map((row) => row.authorPreview.displayName)).toEqual([
+      "Aïssatou Ndiaye",
+      "Ibrahima Sarr",
+      "Mariama Fall",
+    ]);
+    expect(fixtures.every((row) => row.authorPreview.avatarUrl === null)).toBe(true);
+    expect(fixtures.every((row) => row.authorPreview.publicProfileId.startsWith("demo:"))).toBe(
+      true,
+    );
+    expect(fixtures.every((row) => row.authorPreview.summary.length <= 100)).toBe(true);
   });
 });
