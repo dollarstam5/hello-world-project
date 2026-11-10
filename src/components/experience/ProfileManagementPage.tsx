@@ -228,6 +228,9 @@ export function ProfileManagementPage() {
   return (
     <div className="page-shell stack-6">
       <header className="stack-2 motion-rise-in">
+        <Button asChild variant="ghost" className="-ml-3 w-fit">
+          <Link to="/espace">{t("space.back")}</Link>
+        </Button>
         <p className="text-sm font-medium text-primary">{t("profile.eyebrow")}</p>
         <h1 className="text-fluid-display-sm">{t("profile.title")}</h1>
         <p className="text-subtitle max-w-prose">{t("profile.subtitle")}</p>
