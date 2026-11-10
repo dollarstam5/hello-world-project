@@ -215,14 +215,14 @@ LANGUAGE sql
 STABLE
 SECURITY DEFINER
 SET search_path = pg_catalog, public
-AS $
+AS $$
   SELECT presence.*
   FROM public.reel_presences presence
   WHERE presence.owner_id = public.reel_require_active_profile()
     AND presence.status = 'active'
     AND presence.expires_at > (extract(epoch FROM now()) * 1000)::bigint
   LIMIT 1;
-$;
+$$;
 REVOKE ALL ON FUNCTION public.get_my_active_reel_presence() FROM PUBLIC, anon;
 GRANT EXECUTE ON FUNCTION public.get_my_active_reel_presence() TO authenticated;
 
