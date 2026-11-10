@@ -8,10 +8,13 @@ SELECT has_function(
   'The member activity broadcaster exists'
 );
 
-SELECT has_policy(
-  'realtime',
-  'messages',
-  'reel_member_activity_read',
+SELECT ok(
+  EXISTS (
+    SELECT 1 FROM pg_policies
+    WHERE schemaname = 'realtime'
+      AND tablename = 'messages'
+      AND policyname = 'reel_member_activity_read'
+  ),
   'Only the matching authenticated member can read their private activity topic'
 );
 
