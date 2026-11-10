@@ -61,7 +61,6 @@ export const discoverReelGuestNearby = createServerFn({ method: "POST" })
     return discover(data.latitude, data.longitude);
   });
 
-
 export const getMyReelGuestPresence = createServerFn({ method: "GET" }).handler(async () => {
   const { getMyReelGuestPresence: getPresence } = await import("./reel-guest-session.server");
   return getPresence();
