@@ -300,3 +300,21 @@ Les scénarios suivants constituent un référentiel éditorial partagé, pas de
 
 Aucun moteur autre que Flash et l'aperçu Accueil n'est activé par cette mise à jour. Les exemples des autres espaces restent des repères éditoriaux jusqu'à l'audit de leurs contrats et de leurs parcours.
 
+
+
+## 9. Aperçu des personnes et consultation d’un profil
+
+Les cartes de résultat qui disposent d'un aperçu public autorisé peuvent présenter, sans surcharge :
+- un avatar compact (photo publique consentie ou initiales) ;
+- le nom d'affichage ;
+- une zone large, par exemple une ville ou un quartier volontairement partagé ;
+- une catégorie courte ;
+- le besoin ou la proposition, qui reste l'information principale de la carte.
+
+Un appui sur le nom ou l'avatar ouvre une fiche courte : avatar, nom, zone, catégorie et présentation personnelle. La fiche ne montre ni téléphone, ni adresse précise, ni coordonnées, ni réputation, ni disponibilité, ni statut de vérification non confirmés.
+
+Pour les exemples, utiliser des noms fictifs, des avatars à initiales et la mention « Exemple ». Les identités et lieux fictifs ne doivent jamais être présentés comme des membres présents ou disponibles.
+
+Pour les résultats réels, afficher le profil uniquement si la personne a activé sa visibilité publique et si le moteur reçoit la projection publique autorisée. Si le profil n'est pas public, conserver la carte sans identité plutôt que d'inventer un nom ou de révéler un compte privé.
+
+Les profils complets, les moyens de contact et les interactions ne sont accessibles qu'au travers des parcours et permissions dédiés, jamais depuis une carte de résultat anonyme.
