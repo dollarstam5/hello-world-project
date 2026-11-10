@@ -401,6 +401,9 @@ export const messages = {
     "reel.section.unavailable":
       "Cette partie sera accessible lorsque le parcours Réel et ses données sécurisées seront prêts. Aucune présence ni relation n'est simulée.",
     "radar.manage.intro": "Enregistrez une recherche et gardez ses critères à portée de main. La détection automatique n'est pas encore active.",
+    "radar.manage.edit.title": "Modifier ma veille",
+    "radar.manage.edit": "Modifier",
+    "radar.manage.edit.action": "Enregistrer les changements",
     "radar.manage.create.title": "Préparer une veille",
     "radar.manage.query.label": "Que souhaitez-vous trouver ?",
     "radar.manage.query.placeholder": "Ex. : Une garde d'enfants pour les prochains week-ends",
@@ -979,6 +982,9 @@ export const messages = {
     "reel.section.unavailable":
       "This section will be available when the Réel journey and its secure data are ready. No presence or connection is simulated.",
     "radar.manage.intro": "Save a search and keep its criteria close at hand. Automatic matching is not active yet.",
+    "radar.manage.edit.title": "Edit my watch",
+    "radar.manage.edit": "Edit",
+    "radar.manage.edit.action": "Save changes",
     "radar.manage.create.title": "Prepare a watch",
     "radar.manage.query.label": "What are you looking for?",
     "radar.manage.query.placeholder": "E.g. childcare for the coming weekends",
