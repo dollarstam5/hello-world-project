@@ -33,20 +33,18 @@ export function AppShell({ children }: { children: ReactNode }) {
   useExperienceBoot();
   useSyncEngine();
 
-  // Apply low-end gating on <html> so the CSS effects fall back.
   useEffect(() => {
     if (typeof document === "undefined") return;
     const root = document.documentElement;
     root.classList.toggle("low-end", responsive.shouldReduceEffects);
   }, [responsive.shouldReduceEffects]);
 
-  // Close menu on route change for clean continuity.
   useEffect(() => {
     setMenuOpen(false);
   }, [pathname]);
 
-  // Screens that own their own chrome (management dashboard, sign-in).
   const bareChrome = pathname.startsWith("/admin") || pathname.startsWith("/auth");
+  const routeOwnsHeader = pathname === "/reel";
 
   const reduce = responsive.shouldReduceMotion;
   const pageTransition = reduce
@@ -62,7 +60,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   return (
     <div className="relative min-h-dvh bg-background text-foreground antialiased">
       <OfflineBanner />
-      <AppHeader onOpenCommunication={() => setCommunicationOpen(true)} />
+      {!routeOwnsHeader && <AppHeader onOpenCommunication={() => setCommunicationOpen(true)} />}
       <main
         id="main"
         className="mx-auto w-full max-w-screen-md pb-28"
