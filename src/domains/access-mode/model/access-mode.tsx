@@ -40,7 +40,7 @@ export interface AccessModeState {
   memberProfileState: MemberProfileState;
   guest: TemporaryGuestIdentity | null;
   isAuthenticated: boolean;
-  startGuestSession: () => TemporaryGuestIdentity;
+  startGuestSession: () => Promise<TemporaryGuestIdentity>;
   endGuestSession: () => void;
 }
 
@@ -147,19 +147,16 @@ export function AccessModeProvider({ children }: { children: ReactNode }) {
     return () => window.removeEventListener("pagehide", clearTemporaryIdentity);
   }, []);
 
-  const startGuestSession = useCallback(() => {
+  const startGuestSession = useCallback(async () => {
     if (user) throw new Error("Vous êtes déjà connecté à votre compte Vitalis.");
     const identity = createTemporaryIdentity();
     // The interface only enters guest mode after the server confirms its
     // opaque HttpOnly session. A local random ID is never server authority.
-    void startReelGuestSession()
-      .then((session) => {
-        if (session.active) {
-          setGuest({ ...identity, expiresAt: session.expiresAt });
-        }
-      })
-      .catch(() => setGuest(null));
-    return identity;
+    const session = await startReelGuestSession();
+    if (!session.active) throw new Error("La session invitée n’a pas pu être ouverte.");
+    const guestIdentity = { ...identity, expiresAt: session.expiresAt };
+    setGuest(guestIdentity);
+    return guestIdentity;
   }, [user]);
 
   const endGuestSession = useCallback(() => {
