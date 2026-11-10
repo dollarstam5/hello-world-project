@@ -20,6 +20,8 @@ Ce répertoire suit une structure canonique pour la documentation active.
 - [Vitalis Experience System](./01-product/experience-system.md)
 - [Navigation produit Vitalis](./01-product/navigation.md)
 - [Parcours utilisateurs](./01-product/user-journeys.md)
+- [Présentation des pages moteurs — V1](./01-product/engine-page-preview-standard-v1.md)
+- [Parcours du profil — V1](./01-product/profile-experience-v1.md)
 - [Architecture front-end et expérience](./02-architecture/frontend-experience.md)
 - [Standards de navigation mobile Android, iOS et Web](./02-architecture/mobile-navigation-standards.md)
 - [Architecture backend et API](./02-architecture/backend-api.md)
