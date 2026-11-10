@@ -266,3 +266,6 @@ Les tests pgTAP 130, 132 et 133 sont des scénarios ajoutés/modifiés dans la b
 **Tous les éléments ci-dessus sont ajoutés mais restent À TESTER.** Aucun résultat de migration, de test ou de fonctionnement multi-appareils n’est revendiqué.
 
 | Historique et fermeture | Test pgTAP 135 ajouté : accès du participant, nom public limité, fermeture commune, idempotence et refus d’un tiers | À exécuter dans Supabase local et à confirmer sur deux comptes |
+
+| Rétention des relations | Les relations actives restent visibles ; les relations fermées sont affichées pendant six mois | Test pgTAP 135 : une relation fermée depuis sept mois est exclue |
+| Événements de résolution des bips | RLS permet aux deux participants de recevoir les événements acceptation/refus pendant la rétention courte ; la liste RPC reste limitée aux bips en attente | Test multi-appareils à exécuter ; confirmer que l’événement Postgres Changes actualise l’expéditeur et le destinataire |
