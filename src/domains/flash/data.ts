@@ -52,6 +52,15 @@ export function createFlash(input: NewFlashInput) {
   } as never);
 }
 
+export function updateFlash(id: string, body: string) {
+  const value = body.trim();
+  if (!value) throw new Error("Flash content cannot be empty.");
+  return flashesRepository.update(id, {
+    title: value.length > 80 ? `${value.slice(0, 77)}…` : value,
+    body: value,
+  } as never);
+}
+
 export function archiveFlash(id: string) {
   return flashesRepository.update(id, { status: "archived" } as never);
 }
