@@ -15,7 +15,5 @@ export const Route = createFileRoute("/reel")({
 });
 
 function ReelRoute() {
-  // No fabricated people: the live list will be connected to the verified
-  // presence service when its client transport is available.
-  return <ReelProximityScreen people={[]} />;
+  return <ReelProximityScreen />;
 }
