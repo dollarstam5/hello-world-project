@@ -72,7 +72,12 @@ type ReelRpcName =
   | "command_reel_bip"
   | "list_reel_bips"
   | "list_reel_connections"
-  | "close_reel_connection";
+  | "close_reel_connection"
+  | "send_reel_bip_to_guest"
+  | "command_reel_guest_bip_member"
+  | "list_reel_guest_bips_for_member"
+  | "list_reel_guest_connections_for_member"
+  | "close_reel_guest_connection_member";
 
 type ReelRpcArgs = Record<string, string | number | boolean | null>;
 
@@ -233,4 +238,77 @@ export async function listReelConnections(): Promise<ReelConnection[]> {
 export async function closeReelConnection(connectionId: string): Promise<void> {
   requireUuid(connectionId, "Cette mise en relation n’est plus disponible.");
   await callReelRpc<unknown>("close_reel_connection", { p_connection_id: connectionId });
+}
+
+
+export interface ReelGuestBip {
+  id: string;
+  client_request_id: string;
+  sender_member_id: string | null;
+  sender_guest_session_id: string | null;
+  recipient_member_id: string | null;
+  recipient_guest_session_id: string | null;
+  sender_presence_id: string;
+  recipient_presence_id: string;
+  status: "pending" | "accepted" | "declined" | "withdrawn" | "expired";
+  created_at: string;
+  updated_at: string;
+  expires_at: string;
+  resolved_at: string | null;
+}
+
+export interface ReelGuestConnection {
+  id: string;
+  participant_one_member_id: string | null;
+  participant_one_guest_session_id: string | null;
+  participant_two_member_id: string | null;
+  participant_two_guest_session_id: string | null;
+  status: "active" | "closed";
+  created_at: string;
+  expires_at: string;
+  closed_at: string | null;
+  closed_by_member_id: string | null;
+  closed_by_guest_session_id: string | null;
+}
+
+export async function sendReelBipToGuest(
+  recipientGuestPresenceId: string,
+  clientRequestId = createRequestId(),
+): Promise<ReelGuestBip> {
+  requireUuid(recipientGuestPresenceId, "Cette personne n’est plus disponible.");
+  requireUuid(clientRequestId, "La demande de bip n’est pas valide.");
+  return callReelRpc<ReelGuestBip>("send_reel_bip_to_guest", {
+    p_recipient_guest_presence_id: recipientGuestPresenceId,
+    p_client_request_id: clientRequestId,
+  });
+}
+
+export async function commandReelGuestBipMember(
+  bipId: string,
+  action: "accept" | "decline" | "withdraw",
+): Promise<ReelGuestBip> {
+  requireUuid(bipId, "Ce bip n’est plus disponible.");
+  return callReelRpc<ReelGuestBip>("command_reel_guest_bip_member", {
+    p_bip_id: bipId,
+    p_action: action,
+  });
+}
+
+export async function listReelGuestBipsForMember(): Promise<ReelGuestBip[]> {
+  const rows = await callReelRpc<ReelGuestBip[]>("list_reel_guest_bips_for_member");
+  if (!Array.isArray(rows)) throw new Error("La liste des bips reçue n’est pas valide.");
+  return rows;
+}
+
+export async function listReelGuestConnectionsForMember(): Promise<ReelGuestConnection[]> {
+  const rows = await callReelRpc<ReelGuestConnection[]>("list_reel_guest_connections_for_member");
+  if (!Array.isArray(rows)) throw new Error("Vos mises en relation n’ont pas pu être chargées.");
+  return rows;
+}
+
+export async function closeReelGuestConnectionForMember(connectionId: string): Promise<void> {
+  requireUuid(connectionId, "Cette mise en relation n’est plus disponible.");
+  await callReelRpc<unknown>("close_reel_guest_connection_member", {
+    p_connection_id: connectionId,
+  });
 }
