@@ -47,8 +47,9 @@ export function FlashFeed() {
               key={flash.id}
               title={flash.title}
               description={`${flash.category} · ${flash.timeSlot}`}
-              ttl={flash.areaLabel}
+              ttl={flash.origin === "real" ? flash.areaLabel : undefined}
               origin={flash.origin}
+              authorPreview={flash.authorPreview}
             />
           ))}
         </>
