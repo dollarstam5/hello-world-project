@@ -269,3 +269,20 @@ Les tests pgTAP 130, 132 et 133 sont des scénarios ajoutés/modifiés dans la b
 
 
 | Réel — découverte invitée réciproque | Session invitée vérifiée par cookie ; point de découverte privé ; requêtes PostGIS dans les deux sens ; fiches sans coordonnées ni identifiant de session ; rayon de l'auteur respecté | Migration 20261110110000 ; test pgTAP 136 ; parcours invité/membre de découverte | Ajouté dans la branche, non exécuté ; publication invitée UI et bips invités encore absents |
+
+## Traçabilité BIP-INV — interactions croisées membre/invité
+
+| ID | Exigence | Implémentation | Test / preuve | État |
+| --- | --- | --- | --- | --- |
+| BIP-INV-01 | Un membre actif peut faire signe à une présence invitée active. | `send_reel_bip_to_guest`, RPC authenticated. | pgTAP 137 : envoi membre → invité. | Ajouté, à exécuter |
+| BIP-INV-02 | Un invité actif peut faire signe à un membre actif. | `send_reel_guest_bip`, Server Function avec cookie HttpOnly. | pgTAP 137 : envoi invité → membre. | Ajouté, à exécuter |
+| BIP-INV-03 | Un invité actif peut faire signe à un autre invité actif. | `send_reel_guest_bip`, acteur invité distinct et présence destinataire. | pgTAP 137 à étendre avec le cas invité → invité. | Implémentation ajoutée, test dédié à compléter |
+| BIP-INV-04 | Chaque bip respecte le rayon PostGIS choisi par le destinataire. | Revalidation `ST_DWithin` côté SQL à chaque envoi. | pgTAP 137 à compléter avec un cas hors rayon. | Implémentation ajoutée, test dédié à compléter |
+| BIP-INV-05 | Seul le destinataire accepte/refuse ; seul l'émetteur retire. | RPC membre ou Server Function invitée avec contrôle de rôle. | pgTAP 137 : acceptations croisées ; tests de refus d'un tiers à compléter. | Implémentation ajoutée, couverture partielle |
+| BIP-INV-06 | L'acceptation crée une relation unique et temporaire. | `reel_guest_connections`, clé de paire unique. | pgTAP 137 : relation unique après acceptation. | Ajouté, à exécuter |
+| BIP-INV-07 | Chaque participant peut fermer la relation. | RPC membre et Server Function invitée. | Test de fermeture croisée à compléter. | Implémentation ajoutée, test dédié à compléter |
+| BIP-INV-08 | La session invitée ne doit jamais être exposée au navigateur. | Tables privées ; projections sans identifiants de session ; cookie vérifié côté serveur. | pgTAP 137 : droits directs refusés ; inspection des retours RPC. | Ajouté, à exécuter |
+| BIP-INV-09 | La révocation/expiration invité supprime les bips et relations temporaires. | `purge_reel_guest_interactions`, appelée à la révocation et planifiée chaque minute si pg_cron existe. | pgTAP 137 : purge après révocation. | Ajouté, à exécuter |
+| BIP-INV-10 | Aucun faux compte membre n'est créé. | Identité invité portée uniquement par `reel_guest_sessions`. | pgTAP 137 : absence de profil invité. | Ajouté, à exécuter |
+
+Les bips croisés ne disposent pas encore d'un canal de diffusion temps réel dédié. La validation multi-appareils et les cas de tests complémentaires restent ouverts ; ne pas considérer cette tranche comme activée en production avant le succès des migrations, pgTAP et tests d'intégration.
