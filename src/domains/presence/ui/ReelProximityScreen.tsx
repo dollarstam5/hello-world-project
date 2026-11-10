@@ -134,6 +134,9 @@ export function ReelProximityScreen() {
     resolveReceivedBip,
     resolveGuestBip,
     endGuestConnection,
+    pendingConnectionEnd,
+    confirmEndConnection,
+    cancelEndConnection,
     activatePresence,
     activateGuestPresence,
     stopGuestPresence,
@@ -913,6 +916,44 @@ export function ReelProximityScreen() {
                 )}
               </>
             )}
+          </section>
+        </div>
+      )}
+
+      {pendingConnectionEnd && (
+        <div
+          className="reel-panel-backdrop"
+          role="presentation"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) cancelEndConnection();
+          }}
+        >
+          <section
+            className="reel-panel"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="reel-close-connection-title"
+          >
+            <h2 id="reel-close-connection-title">Terminer cette mise en relation ?</h2>
+            <p className="reel-panel__intro">
+              Elle sera fermée pour vous deux et ne sera plus active dans Réel.
+            </p>
+            <div className="reel-panel__actions">
+              <button
+                type="button"
+                className="reel-panel__secondary"
+                onClick={cancelEndConnection}
+              >
+                Garder la relation
+              </button>
+              <button
+                type="button"
+                className="reel-panel__primary"
+                onClick={() => void confirmEndConnection()}
+              >
+                Terminer
+              </button>
+            </div>
           </section>
         </div>
       )}
