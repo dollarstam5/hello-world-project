@@ -2,6 +2,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { useRouterState } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import { BottomNav } from "./BottomNav";
+import { ReelBottomNav } from "@/domains/presence/ui/ReelBottomNav";
 import { MenuSheet } from "./MenuSheet";
 import { useExperienceBoot } from "@/lib/experience/orchestrator";
 import { useSyncEngine } from "@/platform/offline";
@@ -44,7 +45,12 @@ export function AppShell({ children }: { children: ReactNode }) {
   }, [pathname]);
 
   const bareChrome = pathname.startsWith("/admin") || pathname.startsWith("/auth");
-  const routeOwnsHeader = pathname === "/reel";
+  const engineRoots = ["/flash", "/scan", "/reel", "/radar"];
+  const isEngineRoute = engineRoots.some(
+    (root) => pathname === root || pathname.startsWith(`${root}/`),
+  );
+  const isReelRoute = pathname === "/reel" || pathname.startsWith("/reel/");
+  const routeOwnsHeader = isReelRoute;
 
   const reduce = responsive.shouldReduceMotion;
   const pageTransition = reduce
@@ -63,8 +69,10 @@ export function AppShell({ children }: { children: ReactNode }) {
       {!routeOwnsHeader && <AppHeader onOpenCommunication={() => setCommunicationOpen(true)} />}
       <main
         id="main"
-        className="mx-auto w-full max-w-screen-md pb-28"
-        style={{ paddingBottom: "calc(7rem + var(--safe-bottom))" }}
+        className={`mx-auto w-full max-w-screen-md ${isEngineRoute ? "pb-0" : "pb-28"}`}
+        style={{
+          paddingBottom: isEngineRoute ? 0 : "calc(7rem + var(--safe-bottom))",
+        }}
       >
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
@@ -79,7 +87,12 @@ export function AppShell({ children }: { children: ReactNode }) {
         </AnimatePresence>
       </main>
 
-      <BottomNav onOpenMenu={() => setMenuOpen(true)} menuOpen={menuOpen} />
+      {!isEngineRoute && (
+        <BottomNav onOpenMenu={() => setMenuOpen(true)} menuOpen={menuOpen} />
+      )}
+      {isReelRoute && (
+        <ReelBottomNav onOpenMenu={() => setMenuOpen(true)} menuOpen={menuOpen} />
+      )}
       <MenuSheet open={menuOpen} onOpenChange={setMenuOpen} />
       <CommunicationSheet open={communicationOpen} onOpenChange={setCommunicationOpen} />
       <InstallBanner />
