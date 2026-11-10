@@ -279,7 +279,7 @@ export function ReelProximityScreen() {
         setReceivedGuestBips(
           rows.filter(
             (bip: ReelGuestBip) =>
-              bip.recipient_guest_session_id === access.guest?.sessionId && bip.status === "pending",
+              bip.is_recipient && bip.status === "pending",
           ),
         );
         setReceivedBips([]);
@@ -303,7 +303,7 @@ export function ReelProximityScreen() {
       );
       setReceivedGuestBips(
         crossModeRows.filter(
-          (bip) => bip.recipient_member_id === access.memberId && bip.status === "pending",
+          (bip) => bip.is_recipient && bip.status === "pending",
         ),
       );
       setBipsMessage(null);
@@ -333,9 +333,17 @@ export function ReelProximityScreen() {
   }, [panel, activityTab, refreshBips, access.memberId, canUseMemberReel, access.mode]);
 
   const refreshConnections = useCallback(async () => {
-    if (!canUseMemberReel || !access.memberId) return;
+    if (access.loading) return;
     setConnectionsLoading(true);
     try {
+      if (access.mode === "guest") {
+        const rows = await listMyReelGuestConnections();
+        setConnections([]);
+        setGuestConnections(rows);
+        setConnectionsMessage(null);
+        return;
+      }
+      if (!canUseMemberReel || !access.memberId) return;
       const [rows, crossModeRows] = await Promise.all([
         listReelConnections(),
         listReelGuestConnectionsForMember(),
@@ -350,10 +358,10 @@ export function ReelProximityScreen() {
     } finally {
       setConnectionsLoading(false);
     }
-  }, [canUseMemberReel, access.memberId]);
+  }, [access.loading, access.mode, canUseMemberReel, access.memberId]);
 
   useEffect(() => {
-    if (panel !== "activity" || activityTab !== "connections" || !canUseMemberReel) return;
+    if (panel !== "activity" || activityTab !== "connections" || (!canUseMemberReel && access.mode !== "guest")) return;
     void refreshConnections();
     const channel = supabase
       .channel(`reel-connections-${access.memberId}`)
@@ -364,7 +372,7 @@ export function ReelProximityScreen() {
     return () => {
       void supabase.removeChannel(channel);
     };
-  }, [panel, activityTab, refreshConnections, access.memberId, canUseMemberReel]);
+  }, [panel, activityTab, refreshConnections, access.memberId, canUseMemberReel, access.mode]);
 
   const endConnection = async (connection: ReelConnection) => {
     if (connection.status !== "active") return;
@@ -442,9 +450,9 @@ export function ReelProximityScreen() {
     if (!window.confirm("Mettre fin à cette mise en relation ? Elle sera fermée pour vous deux.")) return;
     try {
       if (access.mode === "guest") {
-        await closeMyReelGuestConnection({ data: { connectionId: connection.id } });
+        await closeMyReelGuestConnection({ data: { connectionId: connection.connection_id } });
       } else {
-        await closeReelGuestConnectionForMember(connection.id);
+        await closeReelGuestConnectionForMember(connection.connection_id);
       }
       await refreshConnections();
       setConnectionsMessage("Cette mise en relation est maintenant terminée.");
@@ -1458,12 +1466,12 @@ export function ReelProximityScreen() {
                       </div>
                     ))}
                     {guestConnections.map((connection) => (
-                      <div className="reel-people-list__item" key={connection.id}>
+                      <div className="reel-people-list__item" key={connection.connection_id}>
                         <span className="reel-avatar reel-avatar--small">
                           <CircleUserRound aria-hidden="true" />
                         </span>
                         <span>
-                          <strong>Mise en relation temporaire</strong>
+                          <strong>{connection.partner_display_name || "Mise en relation temporaire"}</strong>
                           <small>
                             {connection.status === "active"
                               ? "Votre rencontre est active pendant la session invitée."
