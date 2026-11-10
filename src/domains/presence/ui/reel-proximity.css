@@ -583,17 +583,6 @@
   transform: scale(0.97);
 }
 
-.reel-proximity__notification-dot {
-  position: absolute;
-  top: 0.65rem;
-  right: 0.7rem;
-  width: 0.48rem;
-  aspect-ratio: 1;
-  border: 2px solid #ffffff;
-  border-radius: 50%;
-  background: #8bbcff;
-}
-
 .reel-radar__core {
   pointer-events: auto;
 }
