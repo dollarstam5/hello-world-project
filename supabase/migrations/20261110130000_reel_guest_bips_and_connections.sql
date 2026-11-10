@@ -513,8 +513,10 @@ SET search_path = pg_catalog, public
 AS $$
 BEGIN
   IF auth.role() <> 'service_role' OR NOT EXISTS (
-    SELECT 1 FROM public.reel_guest_sessions
-    WHERE id = p_guest_session_id AND revoked_at IS NULL AND expires_at > now()
+    SELECT 1 FROM public.reel_guest_sessions AS guest_session
+    WHERE guest_session.id = p_guest_session_id
+      AND guest_session.revoked_at IS NULL
+      AND guest_session.expires_at > now()
   ) THEN RAISE EXCEPTION 'active_guest_session_required' USING ERRCODE = '42501'; END IF;
   RETURN QUERY SELECT bip.id, bip.status, bip.created_at, bip.expires_at,
     bip.recipient_guest_session_id = p_guest_session_id
