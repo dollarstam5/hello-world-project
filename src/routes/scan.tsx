@@ -9,7 +9,11 @@ import { useI18n } from "@/lib/i18n/useI18n";
 
 function ScanHistoryNotice() {
   const { t } = useI18n();
-  return <Surface variant="sunken" padding="md" bordered><p className="text-sm leading-relaxed text-muted-foreground">{t("scan.history.desc")}</p></Surface>;
+  return (
+    <Surface variant="sunken" padding="md" bordered>
+      <p className="text-sm leading-relaxed text-muted-foreground">{t("scan.history.desc")}</p>
+    </Surface>
+  );
 }
 
 export const Route = createFileRoute("/scan")({
