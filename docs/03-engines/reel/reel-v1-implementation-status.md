@@ -112,3 +112,17 @@ Le document [Architecture de session invitée éphémère](./reel-guest-session-
 - Test pgTAP 131 : privilèges, RLS, absence de données membre/GPS et droit de purge.
 
 **Limites actuelles :** les opérations métier Réel n'acceptent pas encore cette session ; aucune interface ne la démarre automatiquement. La durée d'une heure est un paramètre technique provisoire, sans renouvellement. Les limites anti-abus de la couche d'hébergement et la présence effective de pg_cron doivent être vérifiées. Migration, tests et build n'ont pas été exécutés ici.
+
+
+## Politique d’accès Réel — première tranche
+
+- Ajout de `src/domains/presence/policy/reel-access-policy.ts` : règles explicites par opération (entrée, présence, découverte, bips et fermeture de relation).
+- Les visiteurs sont refusés pour les opérations métier.
+- Les invités peuvent entrer dans le parcours, mais restent bloqués pour toute opération métier tant que les RPC ne savent pas vérifier leur session invitée.
+- Le démarrage d’une présence exige le consentement précis `reel_presence`.
+- Les rôles émetteur/destinataire sont distingués pour retrait, acceptation et refus d’un bip.
+- Les opérations Réel ne sont pas mises en file hors connexion dans cette tranche.
+- Conversation, messages, partage de zone et signalement restent explicitement indisponibles.
+- Tests Vitest ajoutés dans `tests/access-mode/reel-access-policy.test.ts`.
+
+**État de preuve :** code et tests ajoutés à la branche ; exécution Vitest, lint, build, migration Supabase et tests pgTAP non effectués. Cette politique ne rend pas le moteur activable en production à elle seule.
