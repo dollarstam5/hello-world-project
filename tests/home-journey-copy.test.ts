@@ -59,5 +59,4 @@ describe("Home journey guidance", () => {
     expect(messages.fr["radar.section.unavailable"]).toContain("Aucun résultat");
     expect(messages.en["radar.section.unavailable"]).toContain("No results");
   });
-
 });
