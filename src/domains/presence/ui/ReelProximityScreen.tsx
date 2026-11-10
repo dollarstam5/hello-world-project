@@ -395,17 +395,23 @@ export function ReelProximityScreen() {
         const rows = await discoverReelGuestNearby({
           data: { latitude: fix.latitude, longitude: fix.longitude },
         });
-        setDiscoveredPeople(rows.map((person, index) => ({
-          id: person.presence_id,
-          name: person.display_name || "Profil Vitalis",
-          avatarUrl: null,
-          initials: (person.display_name || "V").trim().split(/\\s+/).slice(0, 2)
-            .map((part) => part[0]?.toUpperCase() ?? "").join(""),
-          angle: (index * 137.5) % 360,
-          description: person.description,
-          locationLabel: person.area_label,
-          actorKind: person.actor_kind,
-        })));
+        setDiscoveredPeople(
+          rows.map((person, index) => ({
+            id: person.presence_id,
+            name: person.display_name || "Profil Vitalis",
+            avatarUrl: null,
+            initials: (person.display_name || "V")
+              .trim()
+              .split(/\\s+/)
+              .slice(0, 2)
+              .map((part) => part[0]?.toUpperCase() ?? "")
+              .join(""),
+            angle: (index * 137.5) % 360,
+            description: person.description,
+            locationLabel: person.area_label,
+            actorKind: person.actor_kind,
+          })),
+        );
       } else {
         const decision = evaluateReelAccess(
           {
@@ -432,8 +438,12 @@ export function ReelProximityScreen() {
           id: person.presence_id,
           name: person.display_name || "Profil Vitalis",
           avatarUrl: null,
-          initials: (person.display_name || "V").trim().split(/\\s+/).slice(0, 2)
-            .map((part) => part[0]?.toUpperCase() ?? "").join(""),
+          initials: (person.display_name || "V")
+            .trim()
+            .split(/\\s+/)
+            .slice(0, 2)
+            .map((part) => part[0]?.toUpperCase() ?? "")
+            .join(""),
           angle: (index * 137.5) % 360,
           description: person.description,
           locationLabel: person.area_label || zone.areaLabel,
@@ -443,8 +453,12 @@ export function ReelProximityScreen() {
           id: person.presence_id,
           name: person.display_name || "Invité",
           avatarUrl: null,
-          initials: (person.display_name || "I").trim().split(/\\s+/).slice(0, 2)
-            .map((part) => part[0]?.toUpperCase() ?? "").join(""),
+          initials: (person.display_name || "I")
+            .trim()
+            .split(/\\s+/)
+            .slice(0, 2)
+            .map((part) => part[0]?.toUpperCase() ?? "")
+            .join(""),
           angle: ((members.length + index) * 137.5) % 360,
           description: person.description,
           locationLabel: person.area_label || zone.areaLabel,
@@ -567,7 +581,9 @@ export function ReelProximityScreen() {
                     className="reel-location-card__primary"
                     onClick={() => void requestDiscovery()}
                   >
-                    {discoveryAccess === "prompt" ? "Voir les personnes autour de moi" : "Réessayer"}
+                    {discoveryAccess === "prompt"
+                      ? "Voir les personnes autour de moi"
+                      : "Réessayer"}
                   </button>
                 )}
               {access.mode === "visitor" && (
@@ -580,11 +596,7 @@ export function ReelProximityScreen() {
                   {guestSessionLoading ? "Ouverture de votre accès…" : "Continuer en invité"}
                 </button>
               )}
-              {guestSessionMessage && (
-                <p role="status">
-                  {guestSessionMessage}
-                </p>
-              )}
+              {guestSessionMessage && <p role="status">{guestSessionMessage}</p>}
               {discoveryAccess === "prompt" && (
                 <button
                   type="button"
