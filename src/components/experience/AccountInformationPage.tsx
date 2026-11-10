@@ -69,12 +69,7 @@ export function AccountInformationPage() {
 
       {!loading && !failed ? (
         <div className="stack-3">
-          <Surface
-            variant="elevated"
-            padding="lg"
-            bordered
-            className="flex items-start gap-3"
-          >
+          <Surface variant="elevated" padding="lg" bordered className="flex items-start gap-3">
             <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-soft text-primary">
               <Mail className="h-5 w-5" aria-hidden />
             </span>
@@ -86,16 +81,8 @@ export function AccountInformationPage() {
             </div>
           </Surface>
 
-          <Surface
-            variant="sunken"
-            padding="md"
-            bordered
-            className="flex items-start gap-3"
-          >
-            <ShieldCheck
-              className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground"
-              aria-hidden
-            />
+          <Surface variant="sunken" padding="md" bordered className="flex items-start gap-3">
+            <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" aria-hidden />
             <div>
               <p className="font-medium">{t("space.info.protected.title")}</p>
               <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
@@ -107,9 +94,7 @@ export function AccountInformationPage() {
           {createdAt ? (
             <p className="text-xs text-muted-foreground">
               {t("space.info.created")}:{" "}
-              {new Intl.DateTimeFormat(locale, { dateStyle: "long" }).format(
-                new Date(createdAt),
-              )}
+              {new Intl.DateTimeFormat(locale, { dateStyle: "long" }).format(new Date(createdAt))}
             </p>
           ) : null}
         </div>
