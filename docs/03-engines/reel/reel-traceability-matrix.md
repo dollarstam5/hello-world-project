@@ -231,3 +231,21 @@ Ces exigences sont approuvées ; les tests ne sont pas réputés exécutés tant
 - `tests/access-mode/reel-access-policy.test.ts` : vérifie l'indépendance des deux consentements.
 
 La présence de ces tests dans la branche ne constitue pas une preuve de leur réussite. Migration Supabase, pgTAP, Vitest, lint, build et tests sur appareils restent à exécuter.
+
+
+## Mise à jour ZONE-04 — filtrage géographique métrique
+
+| ID | Règle | Statut | Preuve attendue |
+| --- | --- | --- | --- |
+| ZONE-04 | Le rayon de visibilité choisi (10 m, 25 m, 50 m, 100 m ou 1 km) est appliqué par PostGIS avec `ST_DWithin` sur des points `geography`, côté serveur. | IMPLÉMENTATION AJOUTÉE, À TESTER | pgTAP 133 : présence à environ 5 m incluse à 10 m ; présence à environ 22 m exclue à 10 m et incluse à 25 m. |
+| ZONE-05 | Les coordonnées précises sont stockées temporairement dans des tables privées `service_role`, jamais dans les projections client ; elles sont supprimées à l'arrêt/expiration. | IMPLÉMENTATION AJOUTÉE, À TESTER | pgTAP 133 : privilèges directs refusés ; tests de suppression à l'arrêt et à l'expiration à compléter. |
+| ZONE-06 | La grille HMAC ne détermine plus la proximité métrique ; elle reste un identifiant opaque complémentaire. | IMPLÉMENTATION AJOUTÉE, À TESTER | Audit RPC et test de non-dépendance du filtrage spatial aux cellules HMAC. |
+
+### Architecture PostGIS retenue
+
+- `reel_discovery_locations` : un point privé par session de découverte, expiration de 15 minutes.
+- `reel_zone_grants.location` : point privé lié à l'autorisation de publication à usage unique, expiration de 5 minutes.
+- `reel_presence_locations` : point privé associé à une présence publiée ; suppression déclenchée quand la présence cesse d'être active ou lors de la purge.
+- `list_reel_discovery_presence` compare la position de découverte à celle des présences publiées avec le rayon `radius_m` de chaque présence. Aucun point ni distance n'est renvoyé au navigateur.
+
+Les tests pgTAP 130, 132 et 133 sont des scénarios ajoutés/modifiés dans la branche. Ils ne sont pas déclarés exécutés ni réussis.
