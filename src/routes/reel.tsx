@@ -19,7 +19,7 @@ export const Route = createFileRoute("/reel")({
       icon={RadioTower}
       sections={[{
         key: "example",
-        titleKey: "home.engine.exampleLabel",
+        titleKey: "home.demo.title",
         perf: "short",
         render: () => (
           <EnginePreviewCard
