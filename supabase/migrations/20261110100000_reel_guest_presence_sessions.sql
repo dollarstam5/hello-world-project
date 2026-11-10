@@ -60,6 +60,7 @@ SET search_path = pg_catalog, public, extensions
 AS $$
 DECLARE
   v_presence_id UUID;
+  v_session_expires TIMESTAMPTZ;
   v_now TIMESTAMPTZ := clock_timestamp();
 BEGIN
   IF auth.role() <> 'service_role' THEN
@@ -80,19 +81,20 @@ BEGIN
     RAISE EXCEPTION 'invalid_guest_presence_details' USING ERRCODE = '22023';
   END IF;
 
-  IF NOT EXISTS (
-    SELECT 1 FROM public.reel_guest_sessions
-    WHERE id = p_guest_session_id
-      AND purpose = 'reel_guest'
-      AND revoked_at IS NULL
-      AND expires_at > v_now
-  ) THEN
+  SELECT expires_at INTO v_session_expires
+  FROM public.reel_guest_sessions
+  WHERE id = p_guest_session_id
+    AND purpose = 'reel_guest'
+    AND revoked_at IS NULL
+    AND expires_at > v_now
+  FOR UPDATE;
+  IF NOT FOUND THEN
     RAISE EXCEPTION 'active_guest_session_required' USING ERRCODE = '42501';
   END IF;
 
-  UPDATE public.reel_guest_presences
-  SET status = 'ended', ended_at = v_now
-  WHERE guest_session_id = p_guest_session_id AND status = 'active';
+  -- Guest presence has no history: remove the previous point and record entirely.
+  DELETE FROM public.reel_guest_presences
+  WHERE guest_session_id = p_guest_session_id;
 
   INSERT INTO public.reel_guest_presences (
     guest_session_id, display_name, avatar_key, area_label, description,
@@ -101,7 +103,7 @@ BEGIN
     p_guest_session_id, btrim(p_display_name), p_avatar_key, btrim(p_area_label), btrim(p_description),
     p_radius_m,
     extensions.ST_SetSRID(extensions.ST_MakePoint(p_longitude, p_latitude), 4326)::extensions.geography,
-    v_now, v_now + make_interval(mins => p_duration_minutes), v_now, 'active'
+    v_now, LEAST(v_now + make_interval(mins => p_duration_minutes), v_session_expires), v_now, 'active'
   ) RETURNING id INTO v_presence_id;
 
   RETURN v_presence_id;
@@ -121,9 +123,7 @@ BEGIN
   IF auth.role() <> 'service_role' THEN
     RAISE EXCEPTION 'service_role_required' USING ERRCODE = '42501';
   END IF;
-  UPDATE public.reel_guest_presences
-  SET status = CASE WHEN expires_at <= now() THEN 'expired' ELSE 'ended' END,
-      ended_at = LEAST(now(), expires_at)
+  DELETE FROM public.reel_guest_presences
   WHERE id = p_presence_id
     AND guest_session_id = p_guest_session_id
     AND status = 'active';
