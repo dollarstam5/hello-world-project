@@ -264,3 +264,5 @@ Les tests pgTAP 130, 132 et 133 sont des scénarios ajoutés/modifiés dans la b
 | Propositions globales | Pas de source métier raccordée ; état vide maintenu | Définir et valider une source réelle avant tout affichage |
 
 **Tous les éléments ci-dessus sont ajoutés mais restent À TESTER.** Aucun résultat de migration, de test ou de fonctionnement multi-appareils n’est revendiqué.
+
+| Historique et fermeture | Test pgTAP 135 ajouté : accès du participant, nom public limité, fermeture commune, idempotence et refus d’un tiers | À exécuter dans Supabase local et à confirmer sur deux comptes |
