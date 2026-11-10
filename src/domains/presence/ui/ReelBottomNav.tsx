@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { Ellipsis, Globe2, MapPinned, RadioTower, UsersRound } from "lucide-react";
+import { LayoutGrid, RadioTower, Radar, ScanLine, Zap } from "lucide-react";
+import { useI18n } from "@/lib/i18n/useI18n";
 import "./reel-bottom-nav.css";
 
 interface ReelBottomNavProps {
@@ -9,19 +10,21 @@ interface ReelBottomNavProps {
 
 /** Navigation propre à l'écran Réel, calquée sur la barre de la référence visuelle. */
 export function ReelBottomNav({ onOpenMenu, menuOpen }: ReelBottomNavProps) {
+  const { t } = useI18n();
+
   return (
-    <nav className="reel-page-nav" aria-label="Temps Réel navigation">
+    <nav className="reel-page-nav" aria-label={t("nav.primary")}>
       <ul className="reel-page-nav__bar">
         <li>
-          <Link to="/flash" className="reel-page-nav__item" aria-label="Interactions">
-            <UsersRound aria-hidden="true" />
-            <span>Interactions</span>
+          <Link to="/flash" className="reel-page-nav__item" aria-label={t("nav.flash")}>
+            <Zap aria-hidden="true" />
+            <span>{t("nav.flash")}</span>
           </Link>
         </li>
         <li>
-          <Link to="/scan" className="reel-page-nav__item" aria-label="Events">
-            <Globe2 aria-hidden="true" />
-            <span>Events</span>
+          <Link to="/scan" className="reel-page-nav__item" aria-label={t("nav.scan")}>
+            <ScanLine aria-hidden="true" />
+            <span>{t("nav.scan")}</span>
           </Link>
         </li>
         <li className="reel-page-nav__center-slot">
@@ -29,15 +32,15 @@ export function ReelBottomNav({ onOpenMenu, menuOpen }: ReelBottomNavProps) {
             to="/reel"
             className="reel-page-nav__center"
             aria-current="page"
-            aria-label="Temps Réel"
+            aria-label={t("nav.reel")}
           >
             <RadioTower aria-hidden="true" />
           </Link>
         </li>
         <li>
-          <Link to="/radar" className="reel-page-nav__item" aria-label="Geo-Drops">
-            <MapPinned aria-hidden="true" />
-            <span>Geo-Drops</span>
+          <Link to="/radar" className="reel-page-nav__item" aria-label={t("nav.radar")}>
+            <Radar aria-hidden="true" />
+            <span>{t("nav.radar")}</span>
           </Link>
         </li>
         <li>
@@ -45,12 +48,13 @@ export function ReelBottomNav({ onOpenMenu, menuOpen }: ReelBottomNavProps) {
             type="button"
             className="reel-page-nav__item"
             onClick={onOpenMenu}
-            aria-label="More"
+            aria-label={t("nav.open_menu")}
+            title={t("nav.menu")}
             aria-haspopup="dialog"
             aria-expanded={menuOpen}
           >
-            <Ellipsis aria-hidden="true" />
-            <span>More</span>
+            <LayoutGrid aria-hidden="true" />
+            <span>{t("nav.menu")}</span>
           </button>
         </li>
       </ul>
