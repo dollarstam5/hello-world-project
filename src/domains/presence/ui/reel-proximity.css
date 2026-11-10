@@ -1175,3 +1175,8 @@
   font-size: var(--text-xs);
   line-height: var(--leading-tight);
 }
+
+.reel-nearby__bluetooth:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
