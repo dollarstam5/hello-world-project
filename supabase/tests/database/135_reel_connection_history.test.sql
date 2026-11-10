@@ -24,11 +24,12 @@ INSERT INTO public.reel_connections (
   'd5000000-0000-4000-8000-000000000102',
   'd5000000-0000-4000-8000-000000000001',
   'd5000000-0000-4000-8000-000000000003',
-  'closed',
+  'active',
   now() - interval '8 months'
 );
 UPDATE public.reel_connections
-SET closed_at = now() - interval '7 months',
+SET status = 'closed',
+    closed_at = now() - interval '7 months',
     closed_by = 'd5000000-0000-4000-8000-000000000001'
 WHERE id = 'd5000000-0000-4000-8000-000000000102';
 SET LOCAL ROLE authenticated;
