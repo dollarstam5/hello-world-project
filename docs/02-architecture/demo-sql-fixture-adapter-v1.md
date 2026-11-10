@@ -100,7 +100,7 @@ Le premier raccordement porte uniquement sur Flash :
 - Fixture locale typée `PublicFlash` dans `src/domains/flash/model/demo-flashes.ts`.
 - Trois scénarios non sensibles issus du fichier SQL : besoin d'un plombier (besoin_002), recherche de cours de mathématiques (besoin_009), coup de main domestique (besoin_017).
 - Les auteurs, contacts, e-mails, téléphones, descriptions privées, compteurs SQL et dates anciennes sont écartés.
-- Les identifiants sont isolés sous le préfixe `demo:flash:`.
+- Les identifiants sont isolés sous le préfixe `demo:flash:` ; les lieux génériques ou explicitement indiqués comme exemples ne représentent pas une position réelle.
 - Les dates d'affichage sont recalculées à partir d'une horloge fournie au générateur : aucune annonce de juillet 2026 n'est présentée comme actuelle.
 - Le sélecteur reçoit les mêmes champs publics `PublicFlash` que le flux distant, trie par `createdAt`, donne priorité aux publications réelles et complète jusqu'à trois cartes seulement après résolution des sources réelles.
 - La provenance `origin: "real" | "demo"` accompagne chaque élément jusqu'à `FlashCard`. La carte remplace « En direct » par « Exemple » pour les éléments fictifs, avec traductions FR/EN.
