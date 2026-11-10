@@ -174,3 +174,11 @@ L'audit des fonctions existantes a révélé deux points à corriger avant de po
 Le test pgTAP 130 ajoute des vérifications pour le refus de consultation et de commande après suspension, tout en conservant le droit d'arrêter sa propre présence. Le plan de test est ajusté en conséquence.
 
 **À confirmer sur une base de test :** migration, pgTAP, lint et build n'ont pas été exécutés dans cet environnement.
+
+## Correction SQL — volatilité de la liste des bips
+
+La migration `20261110060000_reel_bip_listing_volatile.sql` fixe explicitement `list_reel_bips()` en `VOLATILE`. PostgreSQL conserve la propriété de volatilité d'une fonction lors d'un `CREATE OR REPLACE FUNCTION` si elle n'est pas redéclarée ; le commentaire de la migration précédente ne suffisait donc pas à modifier la propriété héritée `STABLE`. Cette correction explicite est nécessaire puisque la fonction déclenche le nettoyage des éléments expirés, qui effectue des écritures.
+
+## Audit des tests SQL — points à corriger avant exécution
+
+La lecture du test pgTAP 130 a également révélé des blocs dollar-quoted mal formés (délimiteurs `$SELECT ... $`) et un ordre de scénarios incohérent : certains profils sont suspendus avant les opérations ultérieures que le test attend pourtant comme réussies. Le test ne doit donc pas être considéré comme exécutable ou probant dans son état actuel. Il faut réorganiser les scénarios pour créer et accepter le bip avec deux profils actifs, puis tester séparément les refus après suspension, sans empêcher les scénarios nominaux. Aucun résultat de test n'est revendiqué.
