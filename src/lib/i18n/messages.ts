@@ -87,6 +87,10 @@ export const messages = {
     "profile.preview.publicDescription":
       "Les informations que cette personne a choisi de partager.",
     "profile.preview.about": "En quelques mots",
+    "profile.quickPreview.open": "Ouvrir mon aperçu de profil",
+    "profile.quickPreview.hint": "Retrouvez ici votre identité en un coup d’œil. Vous gardez la main sur les informations que vous partagez.",
+    "profile.quickPreview.full": "Voir le profil complet",
+    "profile.avatarFallback": "Moi",
     "home.subtitle":
       "Découvrez ce qui vous entoure, partagez ce qui compte et créez des liens utiles, à votre rythme.",
     "home.engines.title": "Par où souhaitez-vous commencer ?",
@@ -521,6 +525,10 @@ export const messages = {
       "A fictional profile showing the information people may choose to share.",
     "profile.preview.publicDescription": "Information this person has chosen to make public.",
     "profile.preview.about": "A little about them",
+    "profile.quickPreview.open": "Open my profile preview",
+    "profile.quickPreview.hint": "A quick look at your identity. You stay in control of the information you share.",
+    "profile.quickPreview.full": "View full profile",
+    "profile.avatarFallback": "Me",
     "home.subtitle":
       "Discover what is around you, share what matters and build useful connections at your own pace.",
     "home.engines.title": "Where would you like to start?",
