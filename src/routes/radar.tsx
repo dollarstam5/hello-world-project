@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { MapPin } from "lucide-react";
 import { SectionFoundation } from "@/components/experience/SectionFoundation";
+import { EnginePreviewCard } from "@/components/experience/EnginePreviewCard";
 
 export const Route = createFileRoute("/radar")({
   head: () => ({
@@ -16,6 +17,17 @@ export const Route = createFileRoute("/radar")({
       descKey="page.radar.desc"
       tone="info"
       icon={MapPin}
+      sections={[{
+        key: "example",
+        titleKey: "home.engine.exampleLabel",
+        perf: "short",
+        render: () => (
+          <EnginePreviewCard
+            titleKey="home.engine.radar.title"
+            descriptionKey="home.engine.radar.example"
+          />
+        ),
+      }]}
     />
   ),
 });
