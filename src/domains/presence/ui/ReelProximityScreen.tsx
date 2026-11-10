@@ -204,12 +204,19 @@ export function ReelProximityScreen() {
             Math.round((Date.parse(presence.expires_at) - Date.now()) / 60_000),
           );
           const durationLabel =
-            remainingMinutes <= 30 ? "30 min" :
-            remainingMinutes <= 60 ? "1 h" :
-            remainingMinutes <= 120 ? "2 h" :
-            remainingMinutes <= 180 ? "3 h" :
-            remainingMinutes <= 360 ? "6 h" :
-            remainingMinutes <= 720 ? "12 h" : "24 h";
+            remainingMinutes <= 30
+              ? "30 min"
+              : remainingMinutes <= 60
+                ? "1 h"
+                : remainingMinutes <= 120
+                  ? "2 h"
+                  : remainingMinutes <= 180
+                    ? "3 h"
+                    : remainingMinutes <= 360
+                      ? "6 h"
+                      : remainingMinutes <= 720
+                        ? "12 h"
+                        : "24 h";
           setDuration(durationLabel);
         }
       })
