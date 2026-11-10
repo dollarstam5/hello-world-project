@@ -214,6 +214,8 @@ SELECT ok(
 SELECT ok(
   NOT has_table_privilege('anon', 'public.reel_presences', 'SELECT')
   AND NOT has_table_privilege('anon', 'public.reel_bips', 'SELECT')
+  AND NOT has_function_privilege('anon', 'public.start_reel_presence(text,text,text,integer,integer,boolean)', 'EXECUTE')
+  AND NOT has_function_privilege('authenticated', 'public.start_reel_presence(text,text,text,integer,integer,boolean)', 'EXECUTE')
   AND NOT has_function_privilege('anon', 'public.start_reel_presence_from_grant(uuid,text,text,integer,integer,boolean)', 'EXECUTE'),
   'anonymous visitors cannot read or start a presence'
 );
