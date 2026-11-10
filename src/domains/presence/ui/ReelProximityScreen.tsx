@@ -6,8 +6,15 @@ import {
   listReelBips,
   listReelConnections,
   sendReelBip,
+  sendReelBipToGuest,
+  commandReelGuestBipMember,
+  listReelGuestBipsForMember,
+  listReelGuestConnectionsForMember,
+  closeReelGuestConnectionForMember,
   type ReelBip,
   type ReelConnection,
+  type ReelGuestBip,
+  type ReelGuestConnection,
 } from "@/domains/presence/api/reel-presence.client";
 import { supabase } from "@/integrations/supabase/client";
 import { resolveReelZone } from "@/domains/presence/api/reel-zone.functions";
@@ -16,6 +23,11 @@ import {
   endReelGuestPresence,
   getMyReelGuestPresence,
   startReelGuestPresence,
+  sendReelGuestBip,
+  listMyReelGuestBips,
+  commandMyReelGuestBip,
+  listMyReelGuestConnections,
+  closeMyReelGuestConnection,
 } from "@/domains/presence/api/reel-guest-session.functions";
 import {
   endReelPresence,
@@ -161,9 +173,11 @@ export function ReelProximityScreen() {
   const [presenceLoading, setPresenceLoading] = useState(false);
   const [presenceMessage, setPresenceMessage] = useState<string | null>(null);
   const [receivedBips, setReceivedBips] = useState<ReelBip[]>([]);
+  const [receivedGuestBips, setReceivedGuestBips] = useState<ReelGuestBip[]>([]);
   const [bipsLoading, setBipsLoading] = useState(false);
   const [bipsMessage, setBipsMessage] = useState<string | null>(null);
   const [connections, setConnections] = useState<ReelConnection[]>([]);
+  const [guestConnections, setGuestConnections] = useState<ReelGuestConnection[]>([]);
   const [connectionsLoading, setConnectionsLoading] = useState(false);
   const [connectionsMessage, setConnectionsMessage] = useState<string | null>(null);
   const [preferences, setPreferences] = useState({
@@ -257,26 +271,53 @@ export function ReelProximityScreen() {
   }, [access.mode, access.memberProfileState, access.loading, access.memberId]);
 
   const refreshBips = useCallback(async () => {
+    if (access.loading) return;
+    if (access.mode === "guest") {
+      setBipsLoading(true);
+      try {
+        const rows = await listMyReelGuestBips();
+        setReceivedGuestBips(
+          rows.filter(
+            (bip: ReelGuestBip) =>
+              bip.recipient_guest_session_id === access.guest?.sessionId && bip.status === "pending",
+          ),
+        );
+        setReceivedBips([]);
+        setBipsMessage(null);
+      } catch (error) {
+        setBipsMessage(error instanceof Error ? error.message : "Vos bips n’ont pas pu être chargés.");
+      } finally {
+        setBipsLoading(false);
+      }
+      return;
+    }
     if (!canUseMemberReel || !access.memberId) return;
     setBipsLoading(true);
     try {
-      const rows = await listReelBips();
+      const [rows, crossModeRows] = await Promise.all([
+        listReelBips(),
+        listReelGuestBipsForMember(),
+      ]);
       setReceivedBips(
         rows.filter((bip) => bip.recipient_id === access.memberId && bip.status === "pending"),
       );
+      setReceivedGuestBips(
+        crossModeRows.filter(
+          (bip) => bip.recipient_member_id === access.memberId && bip.status === "pending",
+        ),
+      );
       setBipsMessage(null);
     } catch (error) {
-      setBipsMessage(
-        error instanceof Error ? error.message : "Vos bips n’ont pas pu être chargés.",
-      );
+      setBipsMessage(error instanceof Error ? error.message : "Vos bips n’ont pas pu être chargés.");
     } finally {
       setBipsLoading(false);
     }
-  }, [canUseMemberReel, access.memberId]);
+  }, [access.loading, access.mode, access.memberId, access.guest?.sessionId, canUseMemberReel]);
 
   useEffect(() => {
-    if (panel !== "activity" || activityTab !== "bips" || !canUseMemberReel) return;
+    if (panel !== "activity" || activityTab !== "bips" || (!canUseMemberReel && access.mode !== "guest")) return;
     void refreshBips();
+    if (access.mode === "guest") return;
     const channel = supabase
       .channel(`reel-bips-${access.memberId}`)
       .on("postgres_changes", { event: "*", schema: "public", table: "reel_bips" }, () => {
@@ -289,14 +330,18 @@ export function ReelProximityScreen() {
     return () => {
       void supabase.removeChannel(channel);
     };
-  }, [panel, activityTab, refreshBips, access.memberId, canUseMemberReel]);
+  }, [panel, activityTab, refreshBips, access.memberId, canUseMemberReel, access.mode]);
 
   const refreshConnections = useCallback(async () => {
     if (!canUseMemberReel || !access.memberId) return;
     setConnectionsLoading(true);
     try {
-      const rows = await listReelConnections();
+      const [rows, crossModeRows] = await Promise.all([
+        listReelConnections(),
+        listReelGuestConnectionsForMember(),
+      ]);
       setConnections(rows);
+      setGuestConnections(crossModeRows);
       setConnectionsMessage(null);
     } catch (error) {
       setConnectionsMessage(
@@ -337,15 +382,32 @@ export function ReelProximityScreen() {
   };
 
   const sendBipToSelectedPerson = async () => {
-    if (!selectedPerson || selectedPerson.actorKind === "guest" || !currentPresence) return;
+    if (!selectedPerson) return;
     try {
-      await sendReelBip(selectedPerson.id);
+      const requestId = globalThis.crypto?.randomUUID?.();
+      if (!requestId) throw new Error("Votre appareil ne permet pas de sécuriser cette demande.");
+      if (access.mode === "guest") {
+        if (!guestPresence) throw new Error("Publiez d’abord votre présence pour faire signe.");
+        await sendReelGuestBip({
+          data: {
+            recipientActorKind: selectedPerson.actorKind === "guest" ? "guest" : "member",
+            recipientPresenceId: selectedPerson.id,
+            clientRequestId: requestId,
+          },
+        });
+      } else if (canUseMemberReel && currentPresence) {
+        if (selectedPerson.actorKind === "guest") {
+          await sendReelBipToGuest(selectedPerson.id, requestId);
+        } else {
+          await sendReelBip(selectedPerson.id, requestId);
+        }
+      } else {
+        throw new Error("Publiez votre présence avant de faire signe.");
+      }
       setBipsMessage("Votre signe a bien été envoyé.");
       setSelectedPerson(null);
     } catch (error) {
-      setBipsMessage(
-        error instanceof Error ? error.message : "Votre signe n’a pas pu être envoyé.",
-      );
+      setBipsMessage(error instanceof Error ? error.message : "Votre signe n’a pas pu être envoyé.");
     }
   };
 
@@ -358,6 +420,36 @@ export function ReelProximityScreen() {
       );
     } catch (error) {
       setBipsMessage(error instanceof Error ? error.message : "Cette action n’a pas pu aboutir.");
+    }
+  };
+
+  const resolveGuestBip = async (bip: ReelGuestBip, action: "accept" | "decline") => {
+    try {
+      if (access.mode === "guest") {
+        await commandMyReelGuestBip({ data: { bipId: bip.id, action } });
+      } else {
+        await commandReelGuestBipMember(bip.id, action);
+      }
+      await refreshBips();
+      setBipsMessage(action === "accept" ? "La mise en relation est établie." : "Le bip a été refusé.");
+    } catch (error) {
+      setBipsMessage(error instanceof Error ? error.message : "Cette action n’a pas pu aboutir.");
+    }
+  };
+
+  const endGuestConnection = async (connection: ReelGuestConnection) => {
+    if (connection.status !== "active") return;
+    if (!window.confirm("Mettre fin à cette mise en relation ? Elle sera fermée pour vous deux.")) return;
+    try {
+      if (access.mode === "guest") {
+        await closeMyReelGuestConnection({ data: { connectionId: connection.id } });
+      } else {
+        await closeReelGuestConnectionForMember(connection.id);
+      }
+      await refreshConnections();
+      setConnectionsMessage("Cette mise en relation est maintenant terminée.");
+    } catch (error) {
+      setConnectionsMessage(error instanceof Error ? error.message : "La mise en relation n’a pas pu être fermée.");
     }
   };
 
@@ -1249,8 +1341,8 @@ export function ReelProximityScreen() {
                     type="button"
                     role="tab"
                     aria-selected={activityTab === "bips"}
-                    aria-disabled={!currentPresence}
-                    disabled={!currentPresence}
+                    aria-disabled={!currentPresence && !guestPresence}
+                    disabled={!currentPresence && !guestPresence}
                     className={activityTab === "bips" ? "is-active" : ""}
                     onClick={() => setActivityTab("bips")}
                   >
@@ -1269,13 +1361,13 @@ export function ReelProximityScreen() {
                 {activityTab === "bips" ? (
                   <div className="reel-people-list" aria-live="polite">
                     {bipsLoading && <p className="reel-panel__note">Chargement de vos bips…</p>}
-                    {!canUseMemberReel && (
+                    {!canUseMemberReel && access.mode !== "guest" && (
                       <p className="reel-panel__note">
-                        Les bips reçus sont accessibles avec un compte Vitalis actif et pendant
-                        votre présence.
+                        Publiez votre présence pour recevoir les signes des personnes proches.
                       </p>
                     )}
-                    {canUseMemberReel && !bipsLoading && receivedBips.length === 0 && (
+                    {(canUseMemberReel || access.mode === "guest") &&
+                      !bipsLoading && receivedBips.length === 0 && receivedGuestBips.length === 0 && (
                       <div className="reel-panel__empty">
                         <RadioTower aria-hidden="true" />
                         <strong>Aucun bip reçu pour le moment</strong>
@@ -1301,6 +1393,23 @@ export function ReelProximityScreen() {
                           type="button"
                           onClick={() => void resolveReceivedBip(bip, "decline")}
                         >
+                          Refuser
+                        </button>
+                      </div>
+                    ))}
+                    {receivedGuestBips.map((bip) => (
+                      <div className="reel-people-list__item" key={bip.id}>
+                        <span className="reel-avatar reel-avatar--small">
+                          <CircleUserRound aria-hidden="true" />
+                        </span>
+                        <span>
+                          <strong>Une personne vous a fait signe</strong>
+                          <small>Vous pouvez accepter ou refuser cette mise en relation.</small>
+                        </span>
+                        <button type="button" onClick={() => void resolveGuestBip(bip, "accept")}>
+                          Accepter
+                        </button>
+                        <button type="button" onClick={() => void resolveGuestBip(bip, "decline")}>
                           Refuser
                         </button>
                       </div>
@@ -1343,6 +1452,26 @@ export function ReelProximityScreen() {
                         </span>
                         {connection.status === "active" && (
                           <button type="button" onClick={() => void endConnection(connection)}>
+                            Terminer
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                    {guestConnections.map((connection) => (
+                      <div className="reel-people-list__item" key={connection.id}>
+                        <span className="reel-avatar reel-avatar--small">
+                          <CircleUserRound aria-hidden="true" />
+                        </span>
+                        <span>
+                          <strong>Mise en relation temporaire</strong>
+                          <small>
+                            {connection.status === "active"
+                              ? "Votre rencontre est active pendant la session invitée."
+                              : "Cette mise en relation est terminée."}
+                          </small>
+                        </span>
+                        {connection.status === "active" && (
+                          <button type="button" onClick={() => void endGuestConnection(connection)}>
                             Terminer
                           </button>
                         )}
