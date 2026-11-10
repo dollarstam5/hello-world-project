@@ -1,0 +1,143 @@
+/* Proximity-only bottom navigation. Uses the screen's scoped theme tokens. */
+.reel-bottom-nav.is-proximity {
+  padding: 0;
+  padding-bottom: var(--safe-bottom);
+}
+
+.reel-bottom-nav.is-proximity .reel-bottom-nav__bar {
+  position: relative;
+  min-height: calc(5.4rem + var(--safe-bottom));
+  align-items: flex-end;
+  margin: 0;
+  padding: 0.55rem 0.65rem calc(0.45rem + var(--safe-bottom));
+  border: 0;
+  border-radius: 1.8rem 1.8rem 0 0;
+  background: rgb(255 255 255 / 88%);
+  box-shadow: 0 -0.5rem 1.8rem rgb(39 70 119 / 10%);
+  -webkit-backdrop-filter: blur(1.25rem);
+  backdrop-filter: blur(1.25rem);
+  list-style: none;
+}
+
+.reel-bottom-nav.is-proximity .reel-bottom-nav__bar::before {
+  position: absolute;
+  top: 0.35rem;
+  left: 50%;
+  width: 8.75rem;
+  height: 0.3125rem;
+  border-radius: 9999px;
+  background: #111827;
+  content: "";
+  transform: translateX(-50%);
+}
+
+.reel-bottom-nav.is-proximity .reel-bottom-nav__slot {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 0;
+  justify-content: center;
+}
+
+.reel-bottom-nav.is-proximity .reel-bottom-nav__control {
+  display: flex;
+  min-width: 0;
+  min-height: 3.7rem;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  color: #101828;
+  text-decoration: none;
+  outline-offset: 0.2rem;
+}
+
+.reel-bottom-nav.is-proximity .reel-bottom-nav__item {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 3.5rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  padding-inline: 0.2rem;
+  color: #111827;
+}
+
+.reel-bottom-nav.is-proximity .reel-bottom-nav__item > svg {
+  position: relative;
+  width: 1.75rem;
+  height: 1.75rem;
+  stroke-width: 1.9;
+}
+
+.reel-bottom-nav.is-proximity .reel-bottom-nav__item > span:last-child {
+  position: relative;
+  overflow: hidden;
+  max-width: 4.7rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reel-bottom-nav.is-proximity .reel-bottom-nav__item.is-active {
+  color: #111827;
+}
+
+.reel-bottom-nav.is-proximity .reel-bottom-nav__active {
+  display: none;
+}
+
+.reel-bottom-nav.is-proximity .reel-bottom-nav__center-wrap {
+  position: relative;
+  display: flex;
+  width: 4.75rem;
+  height: 5.1rem;
+  align-items: flex-start;
+  justify-content: center;
+  margin-top: -2.1rem;
+  pointer-events: none;
+}
+
+.reel-bottom-nav.is-proximity .reel-bottom-nav__center-wrap::before {
+  position: absolute;
+  top: 0.05rem;
+  width: 5.4rem;
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgb(75 137 255 / 32%), transparent 70%);
+  content: "";
+  filter: blur(0.35rem);
+}
+
+.reel-bottom-nav.is-proximity .reel-bottom-nav__center {
+  position: relative;
+  display: grid;
+  width: 4.75rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 0.2rem solid rgb(255 255 255 / 95%);
+  border-radius: 9999px;
+  background: linear-gradient(145deg, #2f6bff, #5b9bff);
+  box-shadow: 0 0.45rem 1.3rem rgb(47 107 255 / 35%);
+  color: #ffffff;
+}
+
+.reel-bottom-nav.is-proximity .reel-bottom-nav__center svg {
+  width: 1.9rem;
+  height: 1.9rem;
+  stroke-width: 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reel-bottom-nav.is-proximity *,
+  .reel-bottom-nav.is-proximity *::before,
+  .reel-bottom-nav.is-proximity *::after {
+    scroll-behavior: auto;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
