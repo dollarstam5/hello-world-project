@@ -266,11 +266,11 @@ Objectif : faire passer les fixtures dans les mêmes chemins de lecture, validat
 
 ## 10. Première intégration effective — Flash
 
-Une première tranche de fixtures est désormais ajoutée dans `src/domains/flash/model/demo-flashes.ts`, sur la branche de travail. Elle reprend trois scénarios neutres du SQL (plomberie, cours de mathématiques, aide domestique), en écartant les coordonnées, identités, descriptions privées, compteurs et dates historiques.
+La fixture locale de `src/domains/flash/model/demo-flashes.ts` présente désormais trois besoins concrets : garde d’enfants pour le week-end, aide au déménagement dans deux heures et deux personnes pour aider à faire la vaisselle après une réunion du dimanche vers 15 h à Dakar. Les lieux génériques et la mention « Dakar (exemple) » évitent de faire croire à une annonce locale réelle.
 
 Le flux Flash conserve ses sources réelles (publications distantes et publications locales hors connexion), puis utilise un sélecteur de présentation commun sur la forme `PublicFlash`. Les contenus réels sont toujours prioritaires ; les exemples ne complètent l'affichage jusqu'à trois cartes qu'après la résolution du chargement réel. Chaque carte garde sa provenance et affiche « Exemple » / « Example » à la place de « En direct ».
 
-Tests ajoutés : `tests/flash-demo-feed.test.ts`. L'exécution CI est en attente ; cette intégration n'est donc pas encore déclarée validée. Aucun autre moteur n'a reçu de données fictives dans ses résultats réels.
+Les tests de `tests/flash-demo-feed.test.ts` vérifient aussi les intitulés de ces scénarios et le libellé de zone pédagogique. Scan, Réel, Radar et les autres espaces ne reçoivent pas de fausses données métier : leurs exemples restent des scènes explicatives séparées jusqu'à validation de leurs contrats.
 
 
 ## 7. Scénarios sensibles et limites de publication
