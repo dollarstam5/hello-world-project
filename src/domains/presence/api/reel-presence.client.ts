@@ -243,32 +243,19 @@ export async function closeReelConnection(connectionId: string): Promise<void> {
 
 export interface ReelGuestBip {
   id: string;
-  client_request_id: string;
-  sender_member_id: string | null;
-  sender_guest_session_id: string | null;
-  recipient_member_id: string | null;
-  recipient_guest_session_id: string | null;
-  sender_presence_id: string;
-  recipient_presence_id: string;
   status: "pending" | "accepted" | "declined" | "withdrawn" | "expired";
   created_at: string;
-  updated_at: string;
   expires_at: string;
-  resolved_at: string | null;
+  is_recipient: boolean;
 }
 
 export interface ReelGuestConnection {
-  id: string;
-  participant_one_member_id: string | null;
-  participant_one_guest_session_id: string | null;
-  participant_two_member_id: string | null;
-  participant_two_guest_session_id: string | null;
+  connection_id: string;
   status: "active" | "closed";
   created_at: string;
   expires_at: string;
   closed_at: string | null;
-  closed_by_member_id: string | null;
-  closed_by_guest_session_id: string | null;
+  partner_display_name: string;
 }
 
 export async function sendReelBipToGuest(
