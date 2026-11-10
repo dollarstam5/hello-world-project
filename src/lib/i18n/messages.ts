@@ -377,8 +377,12 @@ export const messages = {
     "flash.mine.status.expired": "Expiré",
     "flash.mine.status.archived": "Archivé",
     "scan.history.title": "Recherches récentes",
-    "scan.history.desc":
-      "Les recherches Scan ne sont pas encore enregistrées. Vous pouvez relancer une recherche à tout moment.",
+    "scan.history.privacy":
+      "Cet historique reste sur cet appareil. Il conserve seulement la date et le nombre de résultats, jamais votre position ni le détail des résultats.",
+    "scan.history.empty": "Vos recherches réussies apparaîtront ici.",
+    "scan.history.clear": "Effacer",
+    "scan.history.results": "{count} résultat(s)",
+
     "reel.section.management": "Gérer Réel",
     "reel.section.presence": "Ma présence",
     "reel.section.bips": "Bips reçus",
@@ -920,8 +924,12 @@ export const messages = {
     "flash.mine.status.expired": "Expired",
     "flash.mine.status.archived": "Archived",
     "scan.history.title": "Recent searches",
-    "scan.history.desc":
-      "Scan searches are not saved yet. You can run a new search whenever you need one.",
+    "scan.history.privacy":
+      "This history stays on this device. It keeps only the date and number of results, never your location or result details.",
+    "scan.history.empty": "Your successful searches will appear here.",
+    "scan.history.clear": "Clear",
+    "scan.history.results": "{count} result(s)",
+
     "reel.section.management": "Manage Réel",
     "reel.section.presence": "My presence",
     "reel.section.bips": "Signals received",
