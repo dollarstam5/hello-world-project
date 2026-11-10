@@ -44,8 +44,25 @@ jobs:
 
       - name: Database RLS tests
         run: |
-          # Use isolated database ports to avoid collisions with runner services.
-          printf '\n[db]\nport = 55432\nshadow_port = 55430\n' >> supabase/config.toml
+          # Pick free host ports at runtime: fixed ports can already be occupied
+          # by services on a GitHub-hosted runner.
+          read -r DB_PORT SHADOW_PORT < <(python - <<'PY'
+          import socket
+
+          def free_port():
+              with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+                  sock.bind(("0.0.0.0", 0))
+                  return sock.getsockname()[1]
+
+          db_port = free_port()
+          shadow_port = free_port()
+          while shadow_port == db_port:
+              shadow_port = free_port()
+          print(db_port, shadow_port)
+          PY
+          )
+          printf '\n[db]\nport = %s\nshadow_port = %s\n' "$DB_PORT" "$SHADOW_PORT" >> supabase/config.toml
+          echo "Using isolated Supabase DB ports: $DB_PORT (database), $SHADOW_PORT (shadow)"
           supabase start
           bun run check:db-tests
           bun run test:db
