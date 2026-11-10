@@ -7,6 +7,7 @@ const resolveInput = z.object({
   latitude: z.number().min(-90).max(90),
   longitude: z.number().min(-180).max(180),
   purpose: z.enum(["discover", "presence"]),
+  consent: z.literal(true),
 });
 
 export const resolveReelZone = createServerFn({ method: "POST" })
