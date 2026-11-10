@@ -14,9 +14,11 @@ Cette section documente la vision produit, les intentions d'usage, les parcours,
 - [Onboarding Vitalis — parcours V1](./onboarding-v1.md)
 - [Langage humain et communication Vitalis](./communication-language.md)
 - [Audit du langage humain — V1](./language-audit-v1.md)
+- [Catalogue des contenus d'exemple par interface — V1](./demo-content-catalog-v1.md)
 
 ## Références d'architecture liées
 
+- [Gouvernance des données de démonstration — V1](../02-architecture/demo-data-governance.md)
 - [Domaine Trust et Trust Engine](../02-architecture/trust-domain.md)
 - [Modèle d'identité numérique unifiée](../02-architecture/identity-model.md)
 - [Standards de navigation mobile Android, iOS et Web](../02-architecture/mobile-navigation-standards.md)
