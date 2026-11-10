@@ -1,6 +1,6 @@
 BEGIN;
 CREATE EXTENSION IF NOT EXISTS pgtap WITH SCHEMA extensions;
-SELECT plan(17);
+SELECT plan(19);
 
 INSERT INTO auth.users (
   id, aud, role, email, encrypted_password, email_confirmed_at,
@@ -120,6 +120,24 @@ SELECT is(
   'a second pending bip for the same pair reuses the existing request'
 );
 
+SELECT lives_ok(
+  $SELECT public.end_reel_presence(
+    (SELECT id FROM public.reel_presences WHERE owner_id = auth.uid() AND status = 'active')
+  )$,
+  'member A can end their own presence'
+);
+
+SELECT ok(
+  (
+    SELECT expires_at BETWEEN
+      (extract(epoch FROM now()) * 1000)::bigint + 86390000
+      AND (extract(epoch FROM now()) * 1000)::bigint + 86400000
+    FROM public.reel_bips
+    WHERE client_request_id = 'd1000000-0000-4000-8000-000000000101'
+  ),
+  'ending a presence starts the 24-hour pending-bip retention window'
+);
+
 SELECT set_config(
   'request.jwt.claims',
   '{"sub":"d1000000-0000-4000-8000-000000000002","role":"authenticated"}',
@@ -127,7 +145,7 @@ SELECT set_config(
 );
 
 SELECT lives_ok(
-  $$SELECT public.command_reel_bip(
+  $SELECT public.command_reel_bip(
     (SELECT id FROM public.reel_bips WHERE client_request_id = 'd1000000-0000-4000-8000-000000000101'),
     'accept'
   )$$,
