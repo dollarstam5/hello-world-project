@@ -29,23 +29,28 @@ export function useScan() {
     runRef.current = run;
   }, [run]);
 
-  const execute = useCallback(async (query: ScanQuery, options: { recordHistory?: boolean } = {}) => {
-    if (inFlightRef.current) return;
-    inFlightRef.current = true;
-    queryRef.current = query;
-    setBusy(true);
-    setFailed(false);
-    try {
-      const nextRows = rankScanResults(await runRef.current({ data: query }));
-      setRows(nextRows);
-      if (options.recordHistory !== false) setHistory(recordScanHistory(nextRows.length));
-    } catch {
-      setFailed(true);
-    } finally {
-      inFlightRef.current = false;
-      setBusy(false);
-    }
-  }, []);
+  const execute = useCallback(
+    async (query: ScanQuery, options: { recordHistory?: boolean } = {}) => {
+      if (inFlightRef.current) return;
+      inFlightRef.current = true;
+      queryRef.current = query;
+      setBusy(true);
+      setFailed(false);
+      try {
+        const nextRows = rankScanResults(await runRef.current({ data: query }));
+        setRows(nextRows);
+        if (options.recordHistory !== false) {
+          setHistory(recordScanHistory(nextRows.length));
+        }
+      } catch {
+        setFailed(true);
+      } finally {
+        inFlightRef.current = false;
+        setBusy(false);
+      }
+    },
+    [],
+  );
 
   useEffect(
     () =>
