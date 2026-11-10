@@ -1,6 +1,6 @@
 BEGIN;
 CREATE EXTENSION IF NOT EXISTS pgtap WITH SCHEMA extensions;
-SELECT plan(6);
+SELECT plan(8);
 
 INSERT INTO auth.users (
   id, aud, role, email, encrypted_password, email_confirmed_at,
@@ -65,6 +65,34 @@ SELECT ok(
   AND NOT has_table_privilege('anon', 'public.reel_discovery_locations', 'SELECT')
   AND NOT has_table_privilege('anon', 'public.reel_presence_locations', 'SELECT'),
   'exact PostGIS points remain inaccessible to browser roles'
+);
+
+
+SELECT set_config('request.jwt.claims', '{"sub":"d3000000-0000-4000-8000-000000000002","role":"authenticated"}', true);
+SELECT lives_ok(
+  $SELECT public.end_reel_presence(
+    (SELECT id FROM public.reel_presences WHERE owner_id = auth.uid() AND status = 'active')
+  )$,
+  'ending a presence succeeds'
+);
+SELECT is(
+  (SELECT count(*)::integer FROM public.reel_presence_locations
+   WHERE presence_id IN (SELECT id FROM public.reel_presences WHERE owner_id = 'd3000000-0000-4000-8000-000000000002')),
+  0,
+  'the exact presence point is deleted immediately when presence ends'
+);
+
+RESET ROLE;
+UPDATE public.reel_discovery_locations
+SET expires_at = now() - interval '1 second'
+WHERE user_id = 'd3000000-0000-4000-8000-000000000001';
+SET LOCAL ROLE service_role;
+SELECT public.purge_reel_location_sessions();
+SELECT is(
+  (SELECT count(*)::integer FROM public.reel_discovery_locations
+   WHERE user_id = 'd3000000-0000-4000-8000-000000000001'),
+  0,
+  'the exact discovery point is deleted after its session expires'
 );
 
 SELECT * FROM finish();
