@@ -383,6 +383,8 @@ export function ReelProximityScreen() {
                   </div>
                 </div>
 
+                <p className="reel-panel__note">La position est regroupée dans un secteur approximatif d’environ 200 mètres. Le rayon choisi est enregistré, mais le calcul précis des distances et son application au filtrage restent à finaliser. Aucune distance exacte n’est affichée.</p>
+
                 <div className="reel-panel__section">
                   <h3>Durée souhaitée</h3>
                   <div className="reel-choice-grid reel-choice-grid--duration">
