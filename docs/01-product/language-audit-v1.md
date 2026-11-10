@@ -64,3 +64,15 @@ Chaque correction sera reliée à une clé i18n et à son écran. Les textes don
 ## 6. Limites de cette livraison
 
 Cette passe est un audit éditorial et de cohérence, pas une preuve de conformité fonctionnelle. Aucun composant, comportement applicatif, contrat de données ou texte de production n'est modifié par ce document. Les propositions sont des pistes de rédaction à valider avant leur application au code.
+
+
+## 7. Correction importante — formulation de confidentialité de Scan
+
+L'inspection du contrat Scan confirme que l'écran obtient la latitude et la longitude de l'appareil, puis les transmet au serveur dans ScanQuery pour rechercher des Flash publics dans un rayon donné. Les résultats publics ne renvoient pas les coordonnées précises de leurs auteurs, mais le service reçoit bien la position temporaire de la personne qui lance la recherche.
+
+Les formulations actuelles « sans partager votre position » dans les descriptions Scan sont donc trop absolues et peuvent induire en erreur. Préférer, après validation du traitement serveur :
+
+- FR : « Utilisez votre position pour trouver les Flash actifs autour de vous. Votre position précise n'est pas affichée aux autres personnes. »
+- EN : « Use your location to find active Flash nearby. Your precise location is not shown to other people. »
+
+Ne pas remplacer ces textes dans le code tant que le traitement serveur complet et la durée de conservation éventuelle n'ont pas été vérifiés. En particulier, ne pas promettre que la position n'est jamais transmise ou conservée sans preuve technique.
