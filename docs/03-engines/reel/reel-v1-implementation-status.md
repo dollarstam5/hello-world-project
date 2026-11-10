@@ -383,3 +383,28 @@ Le test pgTAP 137 couvre les deux directions et la suppression à la révocation
 
 
 Le Quality suivant, sur le SHA `2538cfca62af617e5e29d7d597bedf1fa6ba09f0`, a dépassé les erreurs précédentes et n'a signalé que deux règles de guillemets Prettier dans `tests/mobile-e2e-contract.test.ts`. Elles ont été corrigées dans `6d7074e511790f41dbebd0b4686669d198ae927f`. Le résultat Quality du dernier SHA reste à obtenir ; les étapes Vitest, build et captures n'ont pas été exécutées lors du run précédent.
+
+
+## Audit approfondi UI et architecture — 10 novembre 2026
+
+### Changements réalisés dans la branche
+
+- Extraction du contrôleur de l'écran dans `src/domains/presence/model/useReelProximityController.ts` ; le composant `ReelProximityScreen.tsx` est maintenant centré sur le rendu.
+- Extraction de la gestion du canal privé Supabase dans `src/domains/presence/services/reel-activity-realtime.service.ts`. Le contrôleur ne manipule plus directement le client Supabase.
+- Ajout de `tests/presence/reel-architecture.test.ts` pour empêcher les imports API/Supabase/policy dans la couche de présentation et les imports visuels dans le contrôleur.
+- Remplacement des confirmations natives du navigateur lors de la fermeture d'une mise en relation par un dialogue intégré à Réel.
+- Styles et structure de confirmation mobile ajoutés.
+- Le bouton Bluetooth reste dans le rendu et n'est pas activé pour la V1 ; son développement reste réservé à la V3.
+
+### Contrôle CI — preuves disponibles
+
+- Le lint et les tests Vitest ont franchi leur étape sur le SHA `be60ffd7e8e9cd22e774a3d78a321457031b1d13` après correction du test d'architecture ; le contrôle SQL suivant a échoué uniquement dans le test 137.
+- Les tests SQL 130 à 136 et 138 ont réussi sur ce run. Le test 137 a révélé deux défauts de test : la lecture directe d'une table invitée privée depuis le rôle authenticated et une référence `id` ambiguë dans `list_reel_guest_bips_for_session`.
+- Correction de la fonction SQL en qualifiant `guest_session.id`, et correction du test en capturant l'identifiant de présence invitée sous le rôle de confiance avant de revenir au rôle membre.
+- Ces dernières corrections et les changements de confirmation/UI sont présents dans les commits postérieurs ; ils ne disposent pas encore d'un run Quality complet réussi. Le build, les captures automatiques et les tests multi-appareils ne sont donc pas encore validés sur le dernier SHA.
+
+### Limite du contrôle visuel
+
+Le répertoire `screenshots/04-reel/` ne contient pas l'image de référence produit. Les tests actuels peuvent capturer Réel sur huit tailles d'écran et vérifier le montage de la page, mais ne prouvent pas une ressemblance pixel à pixel avec l'image reçue précédemment. La fidélité exacte ne doit pas être déclarée avant comparaison visuelle avec cette référence.
+
+Architecture détaillée : `docs/03-engines/reel/reel-ui-architecture.md`.
