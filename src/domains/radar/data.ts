@@ -2,8 +2,12 @@ import type { RadarDraftInput, RadarRecord } from "@eco/core-contracts";
 import { radarDraftSchema } from "./model/radar.schema";
 import { radarsRepository, useLocalQuery } from "@/platform/offline";
 
-export function useMyRadars() {
-  return useLocalQuery<RadarRecord[]>(() => radarsRepository.list(), []);
+export function useMyRadars(ownerId: string | null | undefined) {
+  return useLocalQuery<RadarRecord[] | null>(async () => {
+    if (!ownerId) return null;
+    const records = await radarsRepository.list();
+    return records.filter((record) => record.ownerId === ownerId && record.deletedAt === null);
+  }, [ownerId]);
 }
 
 export function createRadarDraft(input: RadarDraftInput) {
