@@ -326,3 +326,10 @@ La branche ajoute une nouvelle migration `20261110080000_reel_postgis_metric_rad
 Le gestionnaire central `AccessModeProvider` est maintenant relié aux fonctions `startReelGuestSession`, `getReelGuestSession` et `endReelGuestSession`. La création attend la confirmation serveur avant de faire basculer l'interface en mode invité ; une session valide est restaurée au retour dans l'application ; la connexion membre et la fermeture explicite déclenchent la révocation. La durée absolue actuelle est de 60 minutes, sans renouvellement.
 
 Ce raccordement ne rend pas encore l'invité capable d'utiliser les opérations métier. La politique `evaluateReelAccess` continue de refuser découverte, publication, bip et mise en relation en mode invité. Il faut créer une voie métier éphémère séparée, rattachée à `reel_guest_sessions.id`, sans faux `auth.users` ni faux profil `profiles`. La limitation anti-abus de création et les tests de cookies/origine/révocation restent à ajouter. Ne pas déclarer le mode invité complet avant ces preuves.
+
+
+## Mise à jour — présence temporaire invitée (10 novembre 2026)
+
+La première tranche serveur de présence invitée est ajoutée : table isolée `reel_guest_presences`, fonctions SQL service_role, Server Functions avec validation Zod et tests pgTAP 135. La session est vérifiée par cookie HttpOnly côté serveur ; la durée de présence est plafonnée à l'expiration de la session ; arrêt et révocation effacent immédiatement la ligne et le point exact. Les coordonnées ne sont jamais lisibles depuis les rôles navigateur.
+
+Cette livraison est une fondation serveur, pas encore un parcours invité complet : pas encore de découverte des présences invitées, de bip, de mise en relation ou de notifications pour les invités. La migration et le test 135 sont ajoutés mais n'ont pas été exécutés sur Supabase. La disponibilité PostGIS et pg_cron reste à vérifier dans le projet cible.
