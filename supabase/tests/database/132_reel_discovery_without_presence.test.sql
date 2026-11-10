@@ -19,13 +19,20 @@ VALUES (
   'z1_cccccccccccccccccccccccccccccccccccccccccccccccccccccccc',
   now() + interval '15 minutes'
 );
-INSERT INTO public.reel_zone_grants (id, owner_id, zone_key, purpose, expires_at)
+INSERT INTO public.reel_discovery_locations (user_id, location, expires_at)
+VALUES (
+  'd2000000-0000-4000-8000-000000000001',
+  extensions.ST_SetSRID(extensions.ST_MakePoint(2.3522, 48.8566), 4326)::extensions.geography,
+  now() + interval '15 minutes'
+);
+INSERT INTO public.reel_zone_grants (id, owner_id, zone_key, purpose, expires_at, location)
 VALUES (
   'd2000000-0000-4000-8000-000000000221',
   'd2000000-0000-4000-8000-000000000002',
   'z1_cccccccccccccccccccccccccccccccccccccccccccccccccccccccc',
   'presence',
-  now() + interval '5 minutes'
+  now() + interval '5 minutes',
+  extensions.ST_SetSRID(extensions.ST_MakePoint(2.35225, 48.8566), 4326)::extensions.geography
 );
 SET LOCAL ROLE authenticated;
 SELECT set_config(
