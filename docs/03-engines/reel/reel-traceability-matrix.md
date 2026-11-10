@@ -33,7 +33,7 @@
 
 | Point | Décision fonctionnelle | Statut |
 | --- | --- | --- |
-| C-02 | Un bip est une demande courte, sans texte libre. Le destinataire peut accepter ou refuser. Un bip non accepté reste visible pendant 24 h après la fermeture de la présence, uniquement dans Réel et jamais dans Notifications. Il expire ensuite, sans historique permanent des bips non acceptés. Le point de départ exact des 24 h reste à spécifier. | VALIDÉE |
+| C-02 | Un bip est une demande courte, sans texte libre. Le destinataire peut accepter ou refuser. Les bips en attente, envoyés ou reçus, sont conservés pendant 24 h après la fermeture de la présence. Les bips reçus restent accessibles uniquement dans Réel, jamais dans Notifications. Ils expirent ensuite, sans historique permanent des bips non acceptés. Le point de départ exact des 24 h reste à spécifier. | VALIDÉE |
 | C-02 — acceptation | L'acceptation crée une mise en relation unique et durable. Le bip accepté quitte les bips reçus ; l'acceptation est signalée à son auteur. Les compteurs ne doivent pas compter deux fois le même événement. | VALIDÉE |
 | C-02 — fin de relation | La fermeture par l'une des deux personnes ferme la relation pour les deux, désactive la communication associée, demande confirmation et informe l'autre personne. | VALIDÉE |
 | C-02 — trace | Seule une trace technique minimale de l'événement (date, état, événement) est conservée pour cette fermeture ; aucun historique de conversation n'est créé par cette action. | VALIDÉE |
