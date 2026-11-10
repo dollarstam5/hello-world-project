@@ -2,7 +2,16 @@ import { useEffect, useState, type FormEvent } from "react";
 import { Pencil, Radar as RadarIcon, X } from "lucide-react";
 import type { RadarRadiusKm, RadarRecord, RadarStatus } from "@eco/core-contracts";
 import type { MessageKey } from "@/lib/i18n/messages";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -120,7 +129,11 @@ export function RadarManagement() {
   }
 
   if (userId === undefined || records === undefined) {
-    return <p className="text-sm text-muted-foreground" role="status">{t("app.loading")}</p>;
+    return (
+      <p className="text-sm text-muted-foreground" role="status">
+        {t("app.loading")}
+      </p>
+    );
   }
 
   if (!userId || records === null) {
@@ -136,7 +149,9 @@ export function RadarManagement() {
       <Surface variant="elevated" padding="md" bordered>
         <div className="mb-3 flex items-center gap-2">
           <RadarIcon className="h-5 w-5 text-primary" aria-hidden />
-          <h3 className="font-semibold">{t(editingId ? "radar.manage.edit.title" : "radar.manage.create.title")}</h3>
+          <h3 className="font-semibold">
+            {t(editingId ? "radar.manage.edit.title" : "radar.manage.create.title")}
+          </h3>
         </div>
         <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
           {t("radar.manage.intro")}
@@ -222,7 +237,10 @@ export function RadarManagement() {
                 {t("common.cancel")}
               </Button>
             ) : null}
-            <Button type="submit" disabled={busy || query.trim().length < 3 || areaLabel.trim().length < 2}>
+            <Button
+              type="submit"
+              disabled={busy || query.trim().length < 3 || areaLabel.trim().length < 2}
+            >
               {busy
                 ? t("app.loading")
                 : t(editingId ? "radar.manage.edit.action" : "radar.manage.create.action")}
@@ -232,12 +250,16 @@ export function RadarManagement() {
       </Surface>
 
       {actionError ? (
-        <p role="alert" className="text-sm text-destructive">{t("radar.manage.actionError")}</p>
+        <p role="alert" className="text-sm text-destructive">
+          {t("radar.manage.actionError")}
+        </p>
       ) : null}
 
       <section className="stack-3" aria-labelledby="radar-mine-heading">
         <div className="flex items-center justify-between gap-3">
-          <h3 id="radar-mine-heading" className="font-semibold">{t("radar.manage.mine.title")}</h3>
+          <h3 id="radar-mine-heading" className="font-semibold">
+            {t("radar.manage.mine.title")}
+          </h3>
           <Indicator tone="neutral" label={String(records.length)} />
         </div>
         {records.length === 0 ? (
@@ -255,13 +277,22 @@ export function RadarManagement() {
                     <div className="min-w-0 flex-1">
                       <p className="font-medium leading-snug">{record.title}</p>
                       <p className="mt-1 text-xs text-muted-foreground">
-                        {record.areaLabel} · {record.radiusKm} km · {t("radar.manage.until").replace(
+                        {record.areaLabel}
+                        {" · "}
+                        {record.radiusKm} km
+                        {" · "}
+                        {t("radar.manage.until").replace(
                           "{date}",
-                          new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(record.expiresAt),
+                          new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(
+                            record.expiresAt,
+                          ),
                         )}
                       </p>
                     </div>
-                    <Indicator tone={statusTones[record.status]} label={t(statusKeys[record.status])} />
+                    <Indicator
+                      tone={statusTones[record.status]}
+                      label={t(statusKeys[record.status])}
+                    />
                   </div>
                   {record.status === "draft" ? (
                     <div className="mt-3 flex flex-wrap justify-end gap-2">
@@ -275,7 +306,9 @@ export function RadarManagement() {
                           setQuery(record.query);
                           setAreaLabel(record.areaLabel);
                           setRadiusKm(record.radiusKm);
-                          const savedDays = Math.round((record.expiresAt - record.startsAt) / DAY_MS) as (typeof DURATIONS)[number];
+                          const savedDays = Math.round(
+                            (record.expiresAt - record.startsAt) / DAY_MS,
+                          ) as (typeof DURATIONS)[number];
                           setDurationDays(DURATIONS.includes(savedDays) ? savedDays : 7);
                         }}
                       >
@@ -302,8 +335,12 @@ export function RadarManagement() {
 
       <Surface variant="sunken" padding="md" bordered className="stack-2">
         <h3 className="font-semibold">{t("radar.manage.results.title")}</h3>
-        <p className="text-sm leading-relaxed text-muted-foreground">{t("radar.manage.results.desc")}</p>
-        <p className="text-sm leading-relaxed text-muted-foreground">{t("radar.manage.alerts.desc")}</p>
+        <p className="text-sm leading-relaxed text-muted-foreground">
+          {t("radar.manage.results.desc")}
+        </p>
+        <p className="text-sm leading-relaxed text-muted-foreground">
+          {t("radar.manage.alerts.desc")}
+        </p>
       </Surface>
 
       <AlertDialog
@@ -319,7 +356,10 @@ export function RadarManagement() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel disabled={busyId !== null}>{t("common.cancel")}</AlertDialogCancel>
-            <AlertDialogAction disabled={!pendingCancel || busyId !== null} onClick={() => void confirmCancel()}>
+            <AlertDialogAction
+              disabled={!pendingCancel || busyId !== null}
+              onClick={() => void confirmCancel()}
+            >
               {t("radar.manage.cancel")}
             </AlertDialogAction>
           </AlertDialogFooter>
