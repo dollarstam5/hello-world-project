@@ -48,6 +48,7 @@ export function FlashFeed() {
               title={flash.title}
               description={`${flash.category} · ${flash.timeSlot}`}
               ttl={flash.areaLabel}
+              origin={flash.origin}
             />
           ))}
         </>
