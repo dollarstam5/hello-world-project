@@ -19,6 +19,7 @@ Cette section documente la vision produit, les intentions d'usage, les parcours,
 ## Références d'architecture liées
 
 - [Gouvernance des données de démonstration — V1](../02-architecture/demo-data-governance.md)
+- [Charte des micro-interactions et du mouvement — V1](../02-architecture/micro-interactions-motion-charter-v1.md)
 - [Domaine Trust et Trust Engine](../02-architecture/trust-domain.md)
 - [Modèle d'identité numérique unifiée](../02-architecture/identity-model.md)
 - [Standards de navigation mobile Android, iOS et Web](../02-architecture/mobile-navigation-standards.md)
