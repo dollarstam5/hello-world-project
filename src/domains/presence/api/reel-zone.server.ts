@@ -45,8 +45,9 @@ async function tokenForCell(latitudeCell: number, longitudeCell: number, secret:
 }
 
 /**
- * Converts a one-shot, user-authorized device fix into a coarse opaque zone.
- * Raw coordinates are never written to a database or returned to the client.
+ * Accepts a one-shot, user-authorized device fix and stores it only in a
+ * service-role-only PostGIS table with a short expiry. Coordinates are never
+ * returned to the browser or exposed in discovery results.
  */
 export async function resolveReelZoneForUser(
   userId: string,
