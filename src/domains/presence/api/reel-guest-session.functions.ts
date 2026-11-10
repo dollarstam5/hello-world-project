@@ -25,8 +25,13 @@ const guestPresenceInput = z.object({
   latitude: z.number().min(-90).max(90),
   longitude: z.number().min(-180).max(180),
   durationMinutes: z.union([
-    z.literal(30), z.literal(60), z.literal(120), z.literal(180),
-    z.literal(360), z.literal(720), z.literal(1440),
+    z.literal(30),
+    z.literal(60),
+    z.literal(120),
+    z.literal(180),
+    z.literal(360),
+    z.literal(720),
+    z.literal(1440),
   ]),
   consent: z.literal(true),
 });
