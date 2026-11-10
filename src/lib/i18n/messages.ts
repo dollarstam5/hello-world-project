@@ -104,7 +104,8 @@ export const messages = {
     "home.engine.reel.title": "Réel",
     "home.engine.reel.desc":
       "Cet espace se prépare. Il permettra de signaler volontairement votre présence et de découvrir les personnes réellement à proximité.",
-    "home.engine.reel.example": "Signaler votre présence lors d’un événement pour voir qui est aussi présent.",
+    "home.engine.reel.example":
+      "Signaler votre présence lors d’un événement pour voir qui est aussi présent.",
     "home.engine.radar.title": "Radar",
     "home.engine.radar.desc":
       "Cet espace se prépare. Il permettra de suivre une recherche et de repérer les possibilités qui y correspondent.",
