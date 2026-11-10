@@ -1,6 +1,6 @@
 BEGIN;
 CREATE EXTENSION IF NOT EXISTS pgtap WITH SCHEMA extensions;
-SELECT plan(16);
+SELECT plan(17);
 
 INSERT INTO auth.users (
   id, aud, role, email, encrypted_password, email_confirmed_at,
@@ -216,6 +216,14 @@ SELECT is(
       OR recipient_guest_session_id = 'e5000000-0000-4000-8000-000000000011'),
   0,
   'revoking the guest session removes its temporary bips'
+);
+
+SELECT is(
+  (SELECT count(*)::integer FROM public.reel_guest_connection_history
+   WHERE member_id = 'e5000000-0000-4000-8000-000000000001'
+     AND status = 'closed'),
+  1,
+  'the member keeps a minimal six-month relation record after the guest session ends'
 );
 
 SELECT * FROM finish();
