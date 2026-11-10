@@ -377,3 +377,99 @@ export async function getMyReelGuestPresence() {
   if (error) throw new Error("Votre présence invitée n’a pas pu être retrouvée.");
   return data;
 }
+
+
+export async function sendReelGuestBip(
+  recipientActorKind: "member" | "guest",
+  recipientPresenceId: string,
+  clientRequestId: string,
+) {
+  assertSameOrigin(true);
+  noStore();
+  const request = getRequest();
+  if (!request || request.headers.has("authorization")) {
+    throw new Error("Une session membre doit utiliser son propre accès Réel.");
+  }
+  const session = await currentSession();
+  if (!session) throw new Error("Votre accès invité a expiré. Ouvrez une nouvelle session.");
+  const admin = createAdminClient();
+  const { data, error } = await admin.rpc("send_reel_guest_bip", {
+    p_guest_session_id: session.id,
+    p_recipient_actor_kind: recipientActorKind,
+    p_recipient_presence_id: recipientPresenceId,
+    p_client_request_id: clientRequestId,
+  });
+  if (error || !data) throw new Error("Votre signe n’a pas pu être envoyé pour le moment.");
+  return data;
+}
+
+export async function listMyReelGuestBips() {
+  assertSameOrigin(false);
+  noStore();
+  const request = getRequest();
+  if (!request || request.headers.has("authorization")) {
+    throw new Error("Une session membre doit utiliser son propre accès Réel.");
+  }
+  const session = await currentSession();
+  if (!session) return [];
+  const admin = createAdminClient();
+  const { data, error } = await admin.rpc("list_reel_guest_bips_for_session", {
+    p_guest_session_id: session.id,
+  });
+  if (error || !Array.isArray(data)) throw new Error("Vos bips n’ont pas pu être chargés.");
+  return data;
+}
+
+export async function commandMyReelGuestBip(bipId: string, action: "accept" | "decline" | "withdraw") {
+  assertSameOrigin(true);
+  noStore();
+  const request = getRequest();
+  if (!request || request.headers.has("authorization")) {
+    throw new Error("Une session membre doit utiliser son propre accès Réel.");
+  }
+  const session = await currentSession();
+  if (!session) throw new Error("Votre accès invité a expiré. Ouvrez une nouvelle session.");
+  const admin = createAdminClient();
+  const { data, error } = await admin.rpc("command_reel_guest_bip_guest", {
+    p_guest_session_id: session.id,
+    p_bip_id: bipId,
+    p_action: action,
+  });
+  if (error || !data) throw new Error("Cette action sur le bip n’a pas pu aboutir.");
+  return data;
+}
+
+export async function listMyReelGuestConnections() {
+  assertSameOrigin(false);
+  noStore();
+  const request = getRequest();
+  if (!request || request.headers.has("authorization")) {
+    throw new Error("Une session membre doit utiliser son propre accès Réel.");
+  }
+  const session = await currentSession();
+  if (!session) return [];
+  const admin = createAdminClient();
+  const { data, error } = await admin.rpc("list_reel_guest_connections_for_session", {
+    p_guest_session_id: session.id,
+  });
+  if (error || !Array.isArray(data)) throw new Error("Vos mises en relation n’ont pas pu être chargées.");
+  return data;
+}
+
+export async function closeMyReelGuestConnection(connectionId: string) {
+  assertSameOrigin(true);
+  noStore();
+  const request = getRequest();
+  if (!request || request.headers.has("authorization")) {
+    throw new Error("Une session membre doit utiliser son propre accès Réel.");
+  }
+  const session = await currentSession();
+  if (!session) throw new Error("Votre accès invité a expiré. Ouvrez une nouvelle session.");
+  const admin = createAdminClient();
+  const { data, error } = await admin.rpc("close_reel_guest_connection_guest", {
+    p_guest_session_id: session.id,
+    p_connection_id: connectionId,
+  });
+  if (error || !data) throw new Error("Cette mise en relation n’a pas pu être fermée.");
+  return data;
+}
