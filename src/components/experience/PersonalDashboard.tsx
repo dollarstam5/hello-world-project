@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowUpRight, Eye, Settings2, ShieldCheck, UserRound } from "lucide-react";
+import { ArrowUpRight, Eye, Settings2, ShieldCheck, UserRound, SlidersHorizontal } from "lucide-react";
 import { Surface } from "@/components/app/Surface";
 import { Indicator } from "@/components/app/Indicator";
 import { useI18n } from "@/lib/i18n/useI18n";
@@ -8,6 +8,8 @@ import { useIdentity } from "@/lib/experience/identity";
 const cards = [
   { to: "/espace/profil", icon: UserRound, titleKey: "space.card.profile.title", descKey: "space.card.profile.desc" },
   { to: "/espace/informations", icon: ShieldCheck, titleKey: "space.card.info.title", descKey: "space.card.info.desc" },
+  { to: "/espace/parametres/profil", icon: SlidersHorizontal, titleKey: "space.card.profileSettings.title", descKey: "space.card.profileSettings.desc" },
+  { to: "/espace/apercu", icon: Eye, titleKey: "space.card.preview.title", descKey: "space.card.preview.desc" },
   { to: "/espace/parametres/application", icon: Settings2, titleKey: "space.card.settings.title", descKey: "space.card.settings.desc" },
 ] as const;
 
