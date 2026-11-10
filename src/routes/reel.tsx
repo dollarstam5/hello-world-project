@@ -11,6 +11,9 @@ export const Route = createFileRoute("/reel")({
       },
     ],
   }),
+  // Réel depends on browser-only location and Supabase client modules.
+  // Keep its interactive route component out of the server render graph.
+  ssr: false,
   component: ReelRoute,
 });
 
