@@ -316,7 +316,7 @@ DECLARE
   v_deleted INTEGER;
 BEGIN
   DELETE FROM public.reel_bips
-  WHERE status IN ('pending', 'declined', 'withdrawn', 'expired')
+  WHERE status IN ('pending', 'accepted', 'declined', 'withdrawn', 'expired')
     AND expires_at <= (extract(epoch FROM now()) * 1000)::bigint;
   GET DIAGNOSTICS v_deleted = ROW_COUNT;
 
@@ -496,6 +496,7 @@ BEGIN
         ELSE 'withdrawn'
       END,
       resolved_at = v_now,
+      expires_at = CASE WHEN p_action = 'accept' THEN least(expires_at, v_now + 86400000) ELSE expires_at END,
       updated_at = v_now
   WHERE id = v_bip.id
   RETURNING * INTO v_bip;
