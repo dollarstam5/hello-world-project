@@ -19,7 +19,7 @@ CREATE TABLE public.reel_presences (
   CONSTRAINT reel_presence_zone_key CHECK (zone_key ~ '^[a-z0-9_-]{8,64}$'),
   CONSTRAINT reel_presence_area_label CHECK (char_length(btrim(area_label)) BETWEEN 2 AND 80),
   CONSTRAINT reel_presence_description CHECK (char_length(btrim(description)) BETWEEN 1 AND 180),
-  CONSTRAINT reel_presence_radius CHECK (radius_m IN (10, 25, 50, 100, 250, 500, 1000)),
+  CONSTRAINT reel_presence_radius CHECK (radius_m IN (10, 25, 50, 100, 1000)),
   CONSTRAINT reel_presence_duration CHECK (expires_at > started_at AND expires_at - started_at IN (
     1800000, 3600000, 7200000, 10800000, 21600000, 43200000, 86400000
   )),
@@ -172,7 +172,7 @@ BEGIN
   IF p_zone_key IS NULL OR p_zone_key !~ '^[a-z0-9_-]{8,64}$'
     OR p_area_label IS NULL OR char_length(btrim(p_area_label)) NOT BETWEEN 2 AND 80
     OR p_description IS NULL OR char_length(btrim(p_description)) NOT BETWEEN 1 AND 180
-    OR p_radius_m IS NULL OR p_radius_m NOT IN (10, 25, 50, 100, 250, 500, 1000)
+    OR p_radius_m IS NULL OR p_radius_m NOT IN (10, 25, 50, 100, 1000)
     OR p_duration_minutes IS NULL OR p_duration_minutes NOT IN (30, 60, 120, 180, 360, 720, 1440)
   THEN
     RAISE EXCEPTION 'invalid_presence_details' USING ERRCODE = '22023';
