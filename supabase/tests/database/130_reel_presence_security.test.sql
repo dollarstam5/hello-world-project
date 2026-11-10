@@ -121,9 +121,9 @@ SELECT is(
 );
 
 SELECT lives_ok(
-  $SELECT public.end_reel_presence(
+  $reel$SELECT public.end_reel_presence(
     (SELECT id FROM public.reel_presences WHERE owner_id = auth.uid() AND status = 'active')
-  )$,
+  )$reel$,
   'member A can end their own presence'
 );
 
@@ -145,10 +145,10 @@ SELECT set_config(
 );
 
 SELECT lives_ok(
-  $SELECT public.command_reel_bip(
+  $reel$SELECT public.command_reel_bip(
     (SELECT id FROM public.reel_bips WHERE client_request_id = 'd1000000-0000-4000-8000-000000000101'),
     'accept'
-  )$$,
+  )$reel$,
   'only the recipient accepts the bip'
 );
 
