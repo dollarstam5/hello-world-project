@@ -30,7 +30,7 @@ export interface TemporaryGuestIdentity {
   /** Random, memory-only identifier. Never a Vitalis account or profile ID. */
   sessionId: string;
   startedAt: number;
-  expiresAt: string;
+  expiresAt?: string;
 }
 
 export interface AccessModeState {
