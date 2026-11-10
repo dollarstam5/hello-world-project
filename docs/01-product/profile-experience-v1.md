@@ -5,18 +5,26 @@
 Le profil s'ouvre en deux temps afin de donner accès aux informations utiles sans interrompre la navigation.
 
 1. **Aperçu rapide** : un appui sur l'avatar du header ouvre une feuille légère avec les initiales, le nom affiché et, lorsqu'il existe, l'identifiant public. Un accès explicite mène au profil complet.
-2. **Profil complet** : « Voir le profil complet » ouvre la page personnelle, organisée en sections courtes et indépendantes.
+2. **Profil complet** : « Voir le profil complet » ouvre la page Mon profil depuis l'espace personnel.
 
 Le profil est une partie de l'espace personnel, mais il ne doit pas absorber « Mes informations » ni les paramètres généraux de l'application. Voir [Espaces personnels et gestion indépendante des moteurs — V1](./personal-and-engine-management-v1.md).
 
-## Sections du profil
+## Accès et sections
 
-- **Identité publique** : nom affiché obligatoire et identifiant public facultatif.
-- **Présentation** : avatar, description et autres éléments facultatifs uniquement lorsque leur stockage, leur consentement et leur visibilité sont sécurisés.
-- **Aperçu du profil** : rendu fidèle des seules informations qu'une autre personne est autorisée à voir.
-- **Paramètres du profil** : champs de présentation et préférences de visibilité réellement disponibles.
+Le tableau de bord personnel `/espace` donne accès à des pages distinctes :
 
-Les informations de compte et de connexion sont gérées dans « Mes informations ». La langue, le thème, l'accessibilité et les préférences globales relèvent des « Paramètres de l'application », pas des paramètres du profil.
+- **Mon profil** (`/espace/profil`) : nom affiché et identifiant public facultatif.
+- **Mes informations** (`/espace/informations`) : informations de compte actuellement disponibles, dont l'adresse de connexion ; elles ne sont pas publiques.
+- **Paramètres du profil** (`/espace/parametres/profil`) : page de statut qui explique que les réglages de visibilité ne sont pas encore disponibles et que le profil reste privé par défaut.
+- **Aperçu du profil** (`/espace/apercu`) : page de statut honnête ; aucun aperçu public fictif n'est généré.
+- **Paramètres de l'application** (`/espace/parametres/application`) : langue et apparence (sombre, clair ou automatique), persistées sur l'appareil.
+
+## Identité du profil
+
+- Nom affiché obligatoire.
+- Identifiant public facultatif, ajoutable, modifiable et supprimable après confirmation.
+- Les niveaux d'identité, de confiance et les champs système restent pilotés par Vitalis.
+- La photo, la biographie et les informations de présentation ne sont pas proposées tant que leur stockage, leur consentement et leur visibilité ne sont pas sécurisés.
 
 ## Règles d'interface
 
@@ -30,10 +38,10 @@ Les informations de compte et de connexion sont gérées dans « Mes information
 
 ## État technique V1
 
-Le header ouvre l'aperçu rapide et le lien « Voir le profil complet » mène à la page personnelle. La page lit et met à jour les champs autorisés de `profiles` : `display_name`, `handle` et `locale`. L'identifiant public peut être ajouté, modifié ou supprimé avec confirmation ; le nom affiché est modifiable mais reste obligatoire.
+Le header ouvre l'aperçu rapide et le lien « Voir le profil complet » mène à `/espace/profil`. La page lit et met à jour les champs autorisés de `profiles` : `display_name` et `handle`. L'identifiant public peut être ajouté, modifié ou supprimé avec confirmation ; le nom affiché est modifiable mais reste obligatoire.
 
-**Écart de présentation à résorber :** la langue est actuellement affichée dans la section Préférences du profil, alors qu'elle appartient conceptuellement aux Paramètres de l'application. Le stockage existant de `locale` dans `profiles` peut être conservé ; l'interface doit simplement présenter ce réglage dans le bon espace lors de la prochaine étape de mise en place.
+La langue a été déplacée dans les Paramètres de l'application. Le choix de langue est persisté dans les préférences locales de Vitalis ; le thème utilise le magasin de préférences existant et persiste également sur l'appareil.
 
-Le profil rapide affiche le nom et l'identifiant public lorsqu'il est renseigné. En l'absence de photo exploitable, les initiales sont utilisées ; aucune image publique ou URL de stockage privée n'est inventée.
+Les informations du compte sont lues depuis la session authentifiée. La page de visibilité du profil n'offre pas de bascule fictive : tant que les contrats serveur, le consentement et les règles de projection publique ne sont pas prêts, elle explique clairement que le profil reste privé par défaut.
 
-La photo, la biographie, les domaines d'intérêt, les réglages avancés de visibilité et la suppression du compte ne sont pas proposés comme des actions disponibles : leur stockage, leur consentement ou leur parcours sécurisé doivent d'abord être validés. Les niveaux d'identité, la confiance, le statut et les autres champs système restent pilotés par Vitalis.
+Les photos d'avatar ne sont pas encore servies publiquement : le stockage actuel exige une authentification. L'aperçu personnel utilise donc les initiales jusqu'à validation d'un accès consenti et sécurisé.
