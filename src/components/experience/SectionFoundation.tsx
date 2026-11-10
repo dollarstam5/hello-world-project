@@ -59,6 +59,7 @@ export function SectionFoundation({
   return (
     <div className="page-shell stack-10">
       <header className="stack-2 motion-rise-in">
+        <div className="self-start">
         <Indicator
           tone={tone}
           dot
@@ -69,12 +70,13 @@ export function SectionFoundation({
             </span>
           }
         />
+        </div>
         <h1 className="text-fluid-display-sm">{t(titleKey)}</h1>
         <p className="text-subtitle max-w-prose">{t(descKey)}</p>
       </header>
 
       {sections.map((s) => (
-        <section key={s.key} className={`stack-3 ${cvClass(s.perf)}`.trim()}>
+        <section key={s.key} className={`stack-3 min-w-0 ${cvClass(s.perf)}`.trim()}>
           <h2 className="text-caption font-medium tracking-tight text-foreground/80">
             {t(s.titleKey)}
           </h2>

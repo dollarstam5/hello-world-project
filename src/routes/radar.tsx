@@ -20,6 +20,12 @@ export const Route = createFileRoute("/radar")({
       icon={MapPin}
       sections={[
         {
+          key: "management",
+          titleKey: "radar.section.management",
+          perf: "short",
+          render: () => <RadarManagement />,
+        },
+        {
           key: "example",
           titleKey: "home.demo.title",
           perf: "short",
@@ -29,12 +35,6 @@ export const Route = createFileRoute("/radar")({
               descriptionKey="home.engine.radar.example"
             />
           ),
-        },
-        {
-          key: "management",
-          titleKey: "radar.section.management",
-          perf: "short",
-          render: () => <RadarManagement />,
         },
       ]}
     />

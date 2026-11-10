@@ -16,7 +16,7 @@ export function FlashFeed() {
   }
 
   return (
-    <div className="grid gap-3">
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-3">
       {error ? (
         <div className="flex flex-wrap items-center justify-between gap-3">
           <p className="text-xs text-warning" role="alert">

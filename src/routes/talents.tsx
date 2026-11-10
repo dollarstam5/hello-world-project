@@ -18,6 +18,8 @@ export const Route = createFileRoute("/talents")({
       tone="intelligence"
       icon={Sparkles}
       sections={[
+        { key: "offer", titleKey: "page.talents.section.offer", perf: "short" },
+        { key: "seek", titleKey: "page.talents.section.seek", perf: "tall" },
         {
           key: "example",
           titleKey: "home.demo.title",
@@ -29,8 +31,6 @@ export const Route = createFileRoute("/talents")({
             />
           ),
         },
-        { key: "offer", titleKey: "page.talents.section.offer", perf: "short" },
-        { key: "seek", titleKey: "page.talents.section.seek", perf: "tall" },
       ]}
     />
   ),
