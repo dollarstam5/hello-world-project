@@ -139,3 +139,39 @@ La migration `20261110110000_reel_guest_reciprocal_discovery.sql` ajoute une voi
 - Les fiches invitées ne proposent pas encore de bip : les bips et relations restent réservés au parcours membre tant que leurs RPC dédiées aux identités temporaires ne sont pas conçues et testées.
 
 Le parcours d'écran appelle maintenant la découverte invitée et fusionne les cartes membres/invités pour un membre. Le parcours invité peut consulter les présences publiées par les membres. La publication de présence invitée n'est pas encore raccordée à un formulaire dans l'interface ; tant que ce raccordement n'est pas fait, aucune nouvelle fiche invitée ne peut être publiée depuis l'écran.
+
+
+## 12. Bips et mises en relation entre membres et invités
+
+La migration `20261110130000_reel_guest_bips_and_connections.sql` introduit un stockage séparé pour les interactions qui impliquent au moins un invité. Les tables membre historiques `reel_bips` et `reel_connections` restent réservées aux paires de membres.
+
+### Identité des deux participants
+
+- Un membre est identifié par son identifiant Auth vérifié et doit conserver un profil actif.
+- Un invité est identifié uniquement par la session serveur retrouvée depuis le cookie HttpOnly ; le navigateur ne fournit jamais l'identifiant de session comme preuve.
+- Les contraintes SQL imposent exactement un type d'identité par participant. Aucun faux `auth.users` ou `profiles` n'est créé.
+- Les fonctions serveur vérifient le cookie invité ; les fonctions membre s'appuient sur `auth.uid()`.
+- Les coordonnées exactes restent privées. Chaque envoi revalide côté serveur le rayon PostGIS du destinataire.
+
+### Parcours pris en charge par le socle serveur
+
+| Émetteur | Destinataire | Contrôle |
+| --- | --- | --- |
+| Membre | Invité | RPC authentifiée ; présence membre active ; session et présence invitées actives ; rayon du destinataire |
+| Invité | Membre | Server Function ; cookie invité ; profil et présence membre actifs ; rayon du destinataire |
+| Invité | Invité | Server Function ; deux sessions distinctes actives ; deux présences actives ; rayon du destinataire |
+
+Les bips membre-membre continuent d'utiliser le parcours déjà en place. Un bip croisé possède une clé de requête idempotente et un seul bip en attente par paire.
+
+### Acceptation, refus et fermeture
+
+- Seul le destinataire peut accepter ou refuser ; seul l'émetteur peut retirer son bip.
+- L'acceptation revalide les deux présences et les sessions avant de créer une relation temporaire.
+- Une paire ne reçoit pas plusieurs relations croisées en double.
+- L'un ou l'autre participant peut fermer la relation.
+- Toute relation impliquant un invité expire au plus tard avec sa session. La révocation de session supprime immédiatement les bips et relations temporaires associés.
+- Les projections envoyées au navigateur n'exposent aucun identifiant de session invité ni identifiant membre interne du partenaire. Elles renvoient uniquement l'identifiant d'interaction, son état, ses dates et un nom d'affichage limité pour une relation acceptée.
+
+### Limites et validation
+
+Les Server Functions et l'interface sont raccordées aux RPC croisées. Le test pgTAP 137 couvre les deux directions membre/invité, l'acceptation, la relation unique, l'isolation des tables et la purge à la révocation. Les migrations et pgTAP doivent encore réussir en CI ; les essais sur deux appareils réels restent nécessaires. Les événements croisés ne sont pas encore diffusés par un canal temps réel dédié : l'écran recharge les bips à l'ouverture de l'onglet et après une action.
