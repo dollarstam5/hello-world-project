@@ -128,7 +128,7 @@ export function RadarManagement() {
     }
   }
 
-  if (userId === undefined || records === undefined) {
+  if (userId === undefined) {
     return (
       <p className="text-sm text-muted-foreground" role="status">
         {t("app.loading")}
@@ -141,6 +141,14 @@ export function RadarManagement() {
       <Surface variant="sunken" padding="md" bordered>
         <p className="text-sm text-muted-foreground">{t("radar.manage.signIn")}</p>
       </Surface>
+    );
+  }
+
+  if (records === undefined) {
+    return (
+      <p className="text-sm text-muted-foreground" role="status">
+        {t("app.loading")}
+      </p>
     );
   }
 
