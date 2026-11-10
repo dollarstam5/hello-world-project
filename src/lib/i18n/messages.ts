@@ -72,6 +72,14 @@ export const messages = {
     "communication.reel.empty":
       "Les demandes et interactions Réel nécessitant votre attention apparaîtront ici.",
     "home.welcome": "Bienvenue dans Vitalis",
+    "home.welcome.guest": "Bonjour et bienvenue chez Vitalis !",
+    "home.welcome.named": "Bonjour, {name} !",
+    "home.demo.title": "Un petit aperçu de Vitalis",
+    "home.demo.desc": "Voici quelques exemples de ce que vous pouvez découvrir avec Flash.",
+    "home.demo.plumbing": "Un plombier recherché pour une fuite d’eau",
+    "home.demo.math": "Des cours de mathématiques recherchés",
+    "home.demo.help": "Un coup de main pour changer une ampoule",
+    "home.demo.fallback": "Découvrez un exemple de publication Flash.",
     "home.subtitle":
       "Découvrez ce qui vous entoure, partagez ce qui compte et créez des liens utiles, à votre rythme.",
     "home.engines.title": "Par où souhaitez-vous commencer ?",
@@ -486,6 +494,14 @@ export const messages = {
     "communication.reel.empty":
       "Real-time requests and interactions that need your attention will appear here.",
     "home.welcome": "Welcome to Vitalis",
+    "home.welcome.guest": "Hello, and welcome to Vitalis!",
+    "home.welcome.named": "Hello, {name}!",
+    "home.demo.title": "A little look at Vitalis",
+    "home.demo.desc": "Here are a few examples of what you can discover with Flash.",
+    "home.demo.plumbing": "Looking for a plumber to fix a leak",
+    "home.demo.math": "Looking for maths lessons",
+    "home.demo.help": "A helping hand to change a light bulb",
+    "home.demo.fallback": "Discover an example of a Flash post.",
     "home.subtitle":
       "Discover what is around you, share what matters and build useful connections at your own pace.",
     "home.engines.title": "Where would you like to start?",
