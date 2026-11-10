@@ -37,10 +37,26 @@ export const Route = createFileRoute("/reel")({
           render: () => (
             <EngineManagementGrid
               items={[
-                { key: "presence", titleKey: "reel.section.presence", descriptionKey: "reel.section.presence.desc" },
-                { key: "bips", titleKey: "reel.section.bips", descriptionKey: "reel.section.bips.desc" },
-                { key: "connections", titleKey: "reel.section.connections", descriptionKey: "reel.section.connections.desc" },
-                { key: "history", titleKey: "reel.section.history", descriptionKey: "reel.section.history.desc" },
+                {
+                  key: "presence",
+                  titleKey: "reel.section.presence",
+                  descriptionKey: "reel.section.presence.desc",
+                },
+                {
+                  key: "bips",
+                  titleKey: "reel.section.bips",
+                  descriptionKey: "reel.section.bips.desc",
+                },
+                {
+                  key: "connections",
+                  titleKey: "reel.section.connections",
+                  descriptionKey: "reel.section.connections.desc",
+                },
+                {
+                  key: "history",
+                  titleKey: "reel.section.history",
+                  descriptionKey: "reel.section.history.desc",
+                },
               ]}
               descriptionKey="reel.section.unavailable"
             />
