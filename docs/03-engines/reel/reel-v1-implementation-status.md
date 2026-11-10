@@ -326,3 +326,5 @@ La branche ajoute une nouvelle migration `20261110080000_reel_postgis_metric_rad
 
 - L’historique des relations conserve les relations actives et limite l’affichage des relations fermées aux six derniers mois, conformément à la règle d’archive V1. Le test 135 inclut une relation fermée depuis sept mois pour vérifier cette limite.
 - La politique RLS des bips autorise les deux participants à recevoir les événements d’acceptation/refus pendant leur courte durée de conservation ; la RPC de liste continue de ne retourner que les bips en attente. L’onglet Bips se rafraîchit aussi lors de la création d’une relation, afin que l’expéditeur voie le bip disparaître après acceptation.
+
+- La migration Réel ajoute aussi purge_reel_connection_history(), exécutée chaque jour à 03 h via pg_cron si disponible. Les relations fermées de plus de six mois sont supprimées ; les relations encore actives ne sont pas touchées. Le test 135 vérifie la purge. Le nettoyage nécessite de confirmer pg_cron sur la pile cible.
