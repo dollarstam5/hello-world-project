@@ -249,3 +249,5 @@ La présence de ces tests dans la branche ne constitue pas une preuve de leur r�
 - `list_reel_discovery_presence` compare la position de découverte à celle des présences publiées avec le rayon `radius_m` de chaque présence. Aucun point ni distance n'est renvoyé au navigateur.
 
 Les tests pgTAP 130, 132 et 133 sont des scénarios ajoutés/modifiés dans la branche. Ils ne sont pas déclarés exécutés ni réussis.
+
+| ZONE-07 | L'envoi d'un bip vérifie à nouveau côté serveur la distance entre les deux points privés avec le rayon de visibilité du destinataire ; il ne dépend plus de l'égalité des cellules HMAC. | IMPLÉMENTATION AJOUTÉE, À TESTER | pgTAP 134 : bip autorisé entre deux cellules HMAC différentes lorsque la distance PostGIS est dans le rayon. |
