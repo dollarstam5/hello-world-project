@@ -1,9 +1,8 @@
 import { readFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
-const root = fileURLToPath(new URL("../../", import.meta.url));
-const readSource = (path: string) => readFileSync(new URL(path, `file://${root}/`), "utf8");
+const readSource = (path: string) => readFileSync(join(process.cwd(), path), "utf8");
 
 describe("Réel architecture boundaries", () => {
   it("keeps business services and access policy out of the screen component", () => {
