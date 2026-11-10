@@ -41,7 +41,7 @@ function classifyDatabaseError(error: { code?: string }): {
   if (error.code === "23505" || error.code === "23P01") {
     return { code: "conflict", retryable: false };
   }
-  if (error.code?.startsWith("23") || error.code === "P0001") {
+  if (error.code?.startsWith("23") || error.code === "P0001" || error.code === "22023") {
     return { code: "invalid_mutation", retryable: false };
   }
   return { code: "server_error", retryable: true };
