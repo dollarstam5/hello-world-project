@@ -225,7 +225,9 @@ export interface ReelGuestPresenceInput {
 export async function startReelGuestPresence(input: ReelGuestPresenceInput) {
   assertSameOrigin(true);
   noStore();
-  if (getRequest().headers.has("authorization")) {
+  const request = getRequest();
+  if (!request) throw new Error("Requête indisponible.");
+  if (request.headers.has("authorization")) {
     throw new Error("Une session membre doit utiliser son propre accès Réel.");
   }
   const session = await currentSession();
