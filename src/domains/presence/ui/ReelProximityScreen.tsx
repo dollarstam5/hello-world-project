@@ -203,6 +203,7 @@ export function ReelProximityScreen() {
   };
   const canUseMemberReel = access.mode === "member" && access.memberProfileState === "active" && !access.loading;
   const discoveryEnabled = discoveryAccess === "granted";
+  const activityEnabled = discoveryEnabled || Boolean(currentPresence);
   const availablePeople = discoveryEnabled ? discoveredPeople : [];
 
   const openProfile = (person: Person) => {
@@ -245,9 +246,9 @@ export function ReelProximityScreen() {
           type="button"
           className="reel-proximity__header-action reel-proximity__notification"
           onClick={() => openActivity("notifications")}
-          disabled={!discoveryEnabled}
-          aria-label={discoveryEnabled ? "Notifications, bips et mises en relation" : "Les notifications Réel sont en pause sans position"}
-          title={discoveryEnabled ? "Activité" : "Notifications en pause"}
+          disabled={!activityEnabled}
+          aria-label={activityEnabled ? "Notifications, bips et mises en relation" : "Les notifications Réel sont en pause sans autorisation de proximité"}
+          title={activityEnabled ? "Activité" : "Notifications en pause"}
         >
           <Bell aria-hidden="true" />
         </button>
@@ -459,7 +460,7 @@ export function ReelProximityScreen() {
                 <div className="reel-panel__eyebrow"><Bell aria-hidden="true" /> Votre activité</div>
                 <h2 id="reel-panel-title">Notifications et rencontres</h2>
                 <div className="reel-panel__tabs" role="tablist" aria-label="Activité">
-                  <button type="button" role="tab" aria-selected={activityTab === "notifications"} aria-disabled={!discoveryEnabled} disabled={!discoveryEnabled} className={activityTab === "notifications" ? "is-active" : ""} onClick={() => setActivityTab("notifications")}>Alertes</button>
+                  <button type="button" role="tab" aria-selected={activityTab === "notifications"} aria-disabled={!activityEnabled} disabled={!activityEnabled} className={activityTab === "notifications" ? "is-active" : ""} onClick={() => setActivityTab("notifications")}>Alertes</button>
                   <button type="button" role="tab" aria-selected={activityTab === "bips"} aria-disabled={!discoveryEnabled} disabled={!discoveryEnabled} className={activityTab === "bips" ? "is-active" : ""} onClick={() => setActivityTab("bips")}>Bips reçus</button>
                   <button type="button" role="tab" aria-selected={activityTab === "connections"} className={activityTab === "connections" ? "is-active" : ""} onClick={() => setActivityTab("connections")}>Rencontres</button>
                 </div>
@@ -468,8 +469,8 @@ export function ReelProximityScreen() {
                   <strong>{activityTab === "notifications" ? "Tout est calme pour le moment" : activityTab === "bips" ? "Aucun bip reçu pour le moment" : "Vos relations déjà établies seront accessibles ici dès que leur historique sera connecté"}</strong>
                   <span>{activityTab === "notifications" ? "Les nouvelles activités liées à Réel seront réunies ici." : activityTab === "bips" ? "Quand une personne vous fera signe, vous pourrez la retrouver ici." : "Vous pourrez retrouver ici les rencontres acceptées et toujours disponibles."}</span>
                 </div>
-                {!discoveryEnabled && <p className="reel-panel__note">En mode calme, les alertes et les bips sont suspendus. Vos mises en relation déjà établies restent consultables.</p>}
-                {discoveryEnabled && <p className="reel-panel__note">Les événements réels apparaîtront ici dès que le service de rencontres sera connecté.</p>}
+                {!activityEnabled && <p className="reel-panel__note">En mode calme, les alertes et les bips sont suspendus. Vos mises en relation déjà établies restent consultables.</p>}
+                {activityEnabled && <p className="reel-panel__note">Les événements réels apparaîtront ici dès que le service de rencontres sera connecté.</p>}
               </>
             )}
 
