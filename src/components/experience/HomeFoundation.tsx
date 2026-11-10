@@ -13,6 +13,8 @@ type EngineCardProps = {
   icon: LucideIcon;
   title: string;
   description: string;
+  example: string;
+  exampleLabel: string;
   action: string;
   tone: "warm" | "info" | "primary" | "violet";
 };
@@ -24,7 +26,7 @@ const toneClasses = {
   violet: "bg-intelligence-soft text-intelligence",
 } as const;
 
-function EngineCard({ to, icon: Icon, title, description, action, tone }: EngineCardProps) {
+function EngineCard({ to, icon: Icon, title, description, example, exampleLabel, action, tone }: EngineCardProps) {
   return (
     <Link
       to={to}
@@ -51,6 +53,10 @@ function EngineCard({ to, icon: Icon, title, description, action, tone }: Engine
         <div className="stack-2">
           <h3 className="text-title-sm">{title}</h3>
           <p className="text-sm leading-relaxed text-muted-foreground">{description}</p>
+          <div className="stack-1 rounded-xl bg-surface/70 px-3 py-2.5">
+            <span className="text-xs font-semibold text-muted-foreground">{exampleLabel}</span>
+            <p className="text-sm leading-relaxed">{example}</p>
+          </div>
           <span className="pt-1 text-xs font-semibold text-primary">{action}</span>
         </div>
       </Surface>
@@ -139,6 +145,8 @@ export function HomeFoundation() {
             icon={Zap}
             title={t("home.engine.flash.title")}
             description={t("home.engine.flash.desc")}
+            example={t("home.engine.flash.example")}
+            exampleLabel={t("home.engine.exampleLabel")}
             action={t("home.engine.action")}
             tone="warm"
           />
@@ -147,6 +155,8 @@ export function HomeFoundation() {
             icon={ScanLine}
             title={t("home.engine.scan.title")}
             description={t("home.engine.scan.desc")}
+            example={t("home.engine.scan.example")}
+            exampleLabel={t("home.engine.exampleLabel")}
             action={t("home.engine.action")}
             tone="info"
           />
@@ -155,6 +165,8 @@ export function HomeFoundation() {
             icon={RadioTower}
             title={t("home.engine.reel.title")}
             description={t("home.engine.reel.desc")}
+            example={t("home.engine.reel.example")}
+            exampleLabel={t("home.engine.exampleLabel")}
             action={t("home.engine.action")}
             tone="primary"
           />
@@ -163,6 +175,8 @@ export function HomeFoundation() {
             icon={Radar}
             title={t("home.engine.radar.title")}
             description={t("home.engine.radar.desc")}
+            example={t("home.engine.radar.example")}
+            exampleLabel={t("home.engine.exampleLabel")}
             action={t("home.engine.action")}
             tone="violet"
           />
