@@ -32,9 +32,12 @@ export function ProfileQuickPreview({ open, onOpenChange }: ProfileQuickPreviewP
   const [loadedHandle, setLoadedHandle] = useState<string | null>(null);
 
   useEffect(() => {
+    setLoadedName(displayName ?? "");
+  }, [displayName]);
+
+  useEffect(() => {
     if (!open) return;
     let active = true;
-    setLoadedName(displayName ?? "");
     setLoadedHandle(null);
 
     async function loadProfilePreview() {
