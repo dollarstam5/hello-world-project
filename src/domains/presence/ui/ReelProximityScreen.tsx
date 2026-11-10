@@ -1,6 +1,6 @@
 import { useState, type CSSProperties } from "react";
 import {
-  ArrowLeft, Bell, Check, ChevronDown, CircleUserRound,
+  ArrowLeft, Bell, Bluetooth, Check, ChevronDown, CircleUserRound,
   MapPin, RadioTower, Settings2, SlidersHorizontal, UsersRound, X,
 } from "lucide-react";
 import "./reel-proximity.css";
@@ -183,6 +183,15 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
               </button>
             )}
           </div>
+          <button
+            className="reel-nearby__bluetooth"
+            type="button"
+            onClick={() => setPanel("settings")}
+            aria-label="Options de proximité"
+            title="Options de proximité"
+          >
+            <Bluetooth aria-hidden="true" />
+          </button>
         </div>
         {people.length > 3 && (
           <button type="button" className="reel-nearby__all" onClick={() => setPanel("people")}>
