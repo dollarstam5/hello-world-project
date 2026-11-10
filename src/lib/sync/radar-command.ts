@@ -25,14 +25,5 @@ export function radarCommandForTransition(
     return null;
   }
 
-  // The SQL command function resolves an expired record before applying the
-  // requested action. Any valid non-terminal command can therefore refresh
-  // the local expired state without allowing the client to set it directly.
-  if (targetStatus === "expired") {
-    if (currentStatus === "draft") return "activate";
-    if (["active", "watching", "matched"].includes(currentStatus)) return "pause";
-    if (currentStatus === "paused") return "resume";
-  }
-
   return null;
 }
