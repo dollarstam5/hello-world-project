@@ -311,7 +311,7 @@ RETURNS INTEGER
 LANGUAGE plpgsql
 SECURITY DEFINER
 SET search_path = pg_catalog, public
-AS $
+AS $purge$
 DECLARE
   v_deleted INTEGER;
 BEGIN
@@ -331,7 +331,7 @@ BEGIN
 
   RETURN v_deleted;
 END;
-$;
+$purge$;
 
 REVOKE ALL ON FUNCTION public.purge_expired_reel_bips() FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.purge_expired_reel_bips() TO service_role;
