@@ -76,7 +76,18 @@ export async function resolveReelZoneForUser(
   const centerKey = await tokenForCell(cell.latitude, cell.longitude, secret);
   const expiresAt = new Date(Date.now() + (purpose === "discover" ? 15 : 5) * 60_000).toISOString();
 
+  const throttleSince = new Date(Date.now() - 5_000).toISOString();
   if (purpose === "discover") {
+    const { data: recentDiscovery, error: throttleError } = await admin
+      .from("reel_discovery_sessions")
+      .select("user_id")
+      .eq("user_id", userId)
+      .gt("created_at", throttleSince)
+      .limit(1)
+      .maybeSingle();
+    if (throttleError) throw new Error("Impossible de vérifier votre demande de découverte.");
+    if (recentDiscovery) throw new Error("Patientez quelques secondes avant de relancer la découverte.");
+
     const zoneKeys: string[] = [];
     for (let latOffset = -1; latOffset <= 1; latOffset += 1) {
       for (let lonOffset = -1; lonOffset <= 1; lonOffset += 1) {
@@ -86,6 +97,7 @@ export async function resolveReelZoneForUser(
     const rows = zoneKeys.map((zone_key) => ({
       user_id: userId,
       zone_key,
+      created_at: new Date().toISOString(),
       expires_at: expiresAt,
     }));
     const { error } = await admin
@@ -94,6 +106,16 @@ export async function resolveReelZoneForUser(
     if (error) throw new Error("Impossible d’ouvrir la découverte à proximité pour le moment.");
     return { zoneKeys, areaLabel: "Votre secteur approximatif", expiresAt };
   }
+
+  const { data: recentGrant, error: grantThrottleError } = await admin
+    .from("reel_zone_grants")
+    .select("id")
+    .eq("owner_id", userId)
+    .gt("created_at", throttleSince)
+    .limit(1)
+    .maybeSingle();
+  if (grantThrottleError) throw new Error("Impossible de vérifier votre demande de présence.");
+  if (recentGrant) throw new Error("Patientez quelques secondes avant de réessayer.");
 
   const { data: grant, error } = await admin
     .from("reel_zone_grants")
