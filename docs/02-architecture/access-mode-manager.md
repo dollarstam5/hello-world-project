@@ -1,6 +1,6 @@
 # Gestionnaire central des modes d'accès
 
-**Statut :** fondation front-end intégrée ; moteur de décision indicatif ajouté. Les autorisations serveur et le service invité sécurisé restent à construire.
+**Statut :** fondation front-end et moteur de décision indicatif ajoutés ; architecture du service de session invitée spécifiée. Le service serveur et les autorisations métier restent à construire.
 
 ## 1. Modes reconnus
 
@@ -69,10 +69,17 @@ Le statut `server_check` signifie précisément que le client ne doit pas exécu
 - Pas de transfert automatique vers un compte membre.
 - La présence multi-appareils nécessite un service serveur éphémère avec jeton limité, expiration, révocation, quotas et purge.
 
-## 7. Limites et prochaines étapes
+## 7. Architecture serveur invitée — spécification préparée
 
-1. Construire le service serveur de session invitée sans créer de compte Auth ni de profil durable.
+Le document [Architecture de session invitée éphémère](../03-engines/reel/reel-guest-session-architecture.md) définit le cycle de vie attendu : secret aléatoire généré côté serveur, empreinte stockée seule, cookie HttpOnly, vérification serveur à chaque opération, rotation, révocation et purge. Il interdit toute création de compte Auth ou de profil permanent.
+
+Cette spécification ne constitue pas une fonctionnalité livrée. L'API cookie de TanStack Start doit être confirmée avant codage. Les droits invités par action, les durées, les quotas et les règles de purge restent à valider.
+
+## 8. Limites et prochaines étapes
+
+1. Confirmer l'API cookie/headers de TanStack Start et réaliser le service serveur invité sur cette base.
 2. Établir les droits précis par moteur et par opération avec les responsables de chaque domaine.
-3. Ajouter les contrôles serveur correspondants et des tests négatifs (invité non autorisé, profil suspendu, session expirée, jeton révoqué).
-4. Ajouter les tests de transitions et de nettoyage, y compris entre deux appareils.
-5. N'activer aucune opération invitée réelle avant validation des contrôles et des migrations sur une base de test.
+3. Confirmer la chaîne de migration standard et exécuter les migrations/tests Réel sur une base de test.
+4. Ajouter les contrôles serveur et tests négatifs (invité non autorisé, profil suspendu, session expirée, jeton révoqué).
+5. Ajouter les tests de transitions et de nettoyage, y compris entre deux appareils.
+6. N'activer aucune opération invitée réelle avant validation des contrôles et des migrations sur une base de test.
