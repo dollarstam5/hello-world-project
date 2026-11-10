@@ -8,9 +8,9 @@
 | Opération | Membre avec profil actif | Invité | Visiteur | Contrôle requis |
 | --- | --- | --- | --- | --- |
 | Entrer dans Réel | Autorisé | Autorisé pour découvrir le parcours | Refusé | Le parcours invité ne donne aucun droit métier |
-| Démarrer une présence | Vérification serveur | Refusé | Refusé | Consentement explicite `reel_presence`, profil actif, validation des paramètres et absence d’autre présence active |
+| Démarrer une présence | Vérification serveur après accord distinct de publication | Refusé pour le moment | Refusé | Consentement explicite `reel_presence`, profil actif, jeton de zone serveur à usage unique, validation des paramètres et absence d’autre présence active |
 | Terminer sa présence | Vérification serveur | Refusé | Refusé | Propriété de la présence |
-| Découvrir les présences | Vérification serveur | Refusé | Refusé | Présence active dans la même zone opaque ; profil visible actif |
+| Découvrir les présences | Vérification serveur après accord indépendant de découverte | Refusé pour le moment | Refusé | Session de découverte serveur courte dans les cellules voisines ; profil visible actif ; aucune présence personnelle exigée |
 | Voir ses bips en attente | Vérification serveur | Refusé | Refusé | Participant du bip et état encore en attente |
 | Envoyer un bip | Vérification serveur | Refusé | Refusé | Présence active de l’émetteur et du destinataire, zone commune, unicité de la demande |
 | Accepter / refuser un bip | Vérification serveur | Refusé | Refusé | Destinataire uniquement, bip en attente et non expiré |
@@ -31,7 +31,7 @@
 ## Limites connues
 
 - La politique ne remplace pas les RPC SQL existantes.
-- Le rayon métrique n’est pas encore calculé ; la découverte actuelle utilise une clé de zone opaque commune.
+- Le résolveur produit des clés HMAC à partir d'une grille approximative de 200 m ; la découverte couvre la cellule et ses huit voisines. Le rayon métrique choisi n'est pas encore appliqué.
 - Les invités n’ont pas encore de présence métier éphémère.
 - Les conversations et la fermeture de relation côté interface ne sont pas raccordées.
 - Les tests Vitest ajoutés à cette tranche n’ont pas encore été exécutés ; les tests pgTAP et la migration ne sont pas déclarés validés.
