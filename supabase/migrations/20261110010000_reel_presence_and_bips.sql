@@ -69,8 +69,8 @@ CREATE TABLE public.reel_bips (
   client_request_id UUID NOT NULL UNIQUE,
   sender_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   recipient_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  sender_presence_id UUID NOT NULL REFERENCES public.reel_presences(id) ON DELETE CASCADE,
-  recipient_presence_id UUID NOT NULL REFERENCES public.reel_presences(id) ON DELETE CASCADE,
+  sender_presence_id UUID NOT NULL,
+  recipient_presence_id UUID NOT NULL,
   status TEXT NOT NULL DEFAULT 'pending',
   created_at BIGINT NOT NULL,
   updated_at BIGINT NOT NULL,
@@ -165,6 +165,7 @@ BEGIN
   IF v_user_id IS NULL THEN
     RAISE EXCEPTION 'authentication_required' USING ERRCODE = '42501';
   END IF;
+  PERFORM public.purge_expired_reel_bips();
   IF p_consent IS DISTINCT FROM TRUE THEN
     RAISE EXCEPTION 'presence_consent_required' USING ERRCODE = '42501';
   END IF;
@@ -318,6 +319,16 @@ BEGIN
   WHERE status IN ('pending', 'declined', 'withdrawn', 'expired')
     AND expires_at <= (extract(epoch FROM now()) * 1000)::bigint;
   GET DIAGNOSTICS v_deleted = ROW_COUNT;
+
+  UPDATE public.reel_presences
+  SET status = 'expired', ended_at = expires_at, updated_at = now()
+  WHERE status = 'active'
+    AND expires_at <= (extract(epoch FROM now()) * 1000)::bigint;
+
+  DELETE FROM public.reel_presences
+  WHERE status IN ('ended', 'expired')
+    AND ended_at <= (extract(epoch FROM now()) * 1000)::bigint - 86400000;
+
   RETURN v_deleted;
 END;
 $;
