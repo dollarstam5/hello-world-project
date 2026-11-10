@@ -1,3 +1,4 @@
+import type { ErrorComponentProps } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
@@ -37,7 +38,7 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ reset }: ErrorComponentProps) {
   const router = useRouter();
   const { t } = useI18n();
 
