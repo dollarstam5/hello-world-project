@@ -676,7 +676,7 @@ export function ReelProximityScreen() {
             avatarKey: person.avatar_key,
             initials: (person.display_name || "V")
               .trim()
-              .split(/\\s+/)
+              .split(/\s+/)
               .slice(0, 2)
               .map((part) => part[0]?.toUpperCase() ?? "")
               .join(""),
@@ -714,7 +714,7 @@ export function ReelProximityScreen() {
           avatarUrl: null,
           initials: (person.display_name || "V")
             .trim()
-            .split(/\\s+/)
+            .split(/\s+/)
             .slice(0, 2)
             .map((part) => part[0]?.toUpperCase() ?? "")
             .join(""),
@@ -730,7 +730,7 @@ export function ReelProximityScreen() {
           avatarKey: person.avatar_key,
           initials: (person.display_name || "I")
             .trim()
-            .split(/\\s+/)
+            .split(/\s+/)
             .slice(0, 2)
             .map((part) => part[0]?.toUpperCase() ?? "")
             .join(""),
