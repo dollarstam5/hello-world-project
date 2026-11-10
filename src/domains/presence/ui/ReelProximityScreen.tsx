@@ -22,10 +22,6 @@ export interface Person {
   distanceLabel?: string | null;
 }
 
-interface ReelProximityScreenProps {
-  people: Person[];
-}
-
 type Panel = "settings" | "activity" | "people" | "global" | null;
 type ActivityTab = "notifications" | "bips" | "connections";
 
@@ -77,7 +73,7 @@ function RingPerson({ person, onSelect }: { person: Person; onSelect: (person: P
   );
 }
 
-export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
+export function ReelProximityScreen() {
   const access = useAccessMode();
   const [discoveryAccess, setDiscoveryAccess] = useState<"prompt" | "requesting" | "granted" | "ignored" | "denied">("prompt");
   const [locationMessage, setLocationMessage] = useState<string | null>(null);
@@ -189,9 +185,9 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
           <div className="reel-location-card__icon"><MapPin aria-hidden="true" /></div>
           <div className="reel-location-card__copy">
             <strong>{discoveryAccess === "prompt" ? "Envie de découvrir ce qui se passe près de vous ?" : discoveryAccess === "requesting" ? "Nous vérifions votre position…" : discoveryAccess === "denied" ? "Votre position reste privée" : "Vous découvrez Réel à votre rythme"}</strong>
-            <p>{discoveryAccess === "prompt" ? "Autorisez Réel à utiliser votre position pour découvrir les personnes et les activités autour de vous. Votre choix reste libre." : discoveryAccess === "requesting" ? "Cela ne prend que quelques instants." : locationMessage || "Vous pouvez parcourir Réel sans localisation. Les découvertes proches, les bips et les réactions resteront en pause."}</p>
+            <p>{discoveryAccess === "prompt" ? "Autorisez Réel à utiliser votre position pour observer les personnes et les activités autour de vous. Votre choix reste libre." : discoveryAccess === "requesting" ? "Cela ne prend que quelques instants." : locationMessage || "Vous pouvez parcourir Réel sans localisation. Les découvertes proches, les bips et les réactions resteront en pause."}</p>
             <div className="reel-location-card__actions">
-              {(discoveryAccess === "prompt" || discoveryAccess === "ignored" || discoveryAccess === "denied") && <button type="button" className="reel-location-card__primary" onClick={() => void requestDiscovery()}>{discoveryAccess === "prompt" ? "Activer ma position" : "Réessayer"}</button>}
+              {(discoveryAccess === "prompt" || discoveryAccess === "ignored" || discoveryAccess === "denied") && <button type="button" className="reel-location-card__primary" onClick={() => void requestDiscovery()}>{discoveryAccess === "prompt" ? "Activer la découverte" : "Réessayer"}</button>}
               {discoveryAccess === "prompt" && <button type="button" className="reel-location-card__secondary" onClick={ignoreLocation}>Pas maintenant</button>}
             </div>
           </div>
@@ -300,7 +296,7 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
                 <div className="reel-panel__section">
                   <h3>Accès à la position</h3>
                   <p className="reel-panel__note">{discoveryEnabled ? "Réel peut utiliser votre position après votre accord. Aucun suivi en arrière-plan n’est lancé." : "La position est désactivée pour Réel. Les autres moteurs ne peuvent pas donner leur accord à votre place."}</p>
-                  {!discoveryEnabled && <button type="button" className="reel-panel__primary" onClick={() => void requestDiscovery()}>Activer ma position</button>}
+                  {!discoveryEnabled && <button type="button" className="reel-panel__primary" onClick={() => void requestDiscovery()}>Activer la découverte</button>}
                 </div>
 
                 <div className="reel-panel__section">
