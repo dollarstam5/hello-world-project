@@ -7,7 +7,7 @@ export function EngineManagementGrid({
   items,
   descriptionKey,
 }: {
-  items: { key: string; titleKey: MessageKey }[];
+  items: { key: string; titleKey: MessageKey; descriptionKey: MessageKey }[];
   descriptionKey: MessageKey;
 }) {
   const { t } = useI18n();
@@ -18,7 +18,12 @@ export function EngineManagementGrid({
         {items.map((item) => (
           <Surface key={item.key} variant="elevated" padding="md" bordered className="stack-2">
             <div className="flex items-center justify-between gap-2">
-              <p className="font-medium">{t(item.titleKey)}</p>
+              <div className="min-w-0">
+                <p className="font-medium">{t(item.titleKey)}</p>
+                <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                  {t(item.descriptionKey)}
+                </p>
+              </div>
               <Indicator tone="neutral" label={t("common.soon")} />
             </div>
           </Surface>
