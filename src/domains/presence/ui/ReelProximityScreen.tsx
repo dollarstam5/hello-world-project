@@ -2,7 +2,7 @@ import { useState, type CSSProperties } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   ArrowLeft, Bell, Bluetooth, Check, ChevronDown, CircleUserRound,
-  MapPin, RadioTower, ScanLine, Settings2, SlidersHorizontal, UsersRound, X,
+  MapPin, RadioTower, Settings2, SlidersHorizontal, UsersRound, X,
 } from "lucide-react";
 import "./reel-proximity.css";
 
