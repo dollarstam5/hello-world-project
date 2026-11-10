@@ -100,20 +100,18 @@
   stroke-width: 2.1;
 }
 
-@media (prefers-color-scheme: dark) {
-  .reel-page-nav__bar {
+.dark .reel-page-nav__bar {
     border-color: rgb(255 255 255 / 10%);
     background: rgb(24 30 42 / 90%);
     box-shadow: 0 0.65rem 2rem rgb(0 0 0 / 32%);
-  }
+}
 
-  .reel-page-nav__item {
-    color: #aab5c7;
-  }
+.dark .reel-page-nav__item {
+  color: #aab5c7;
+}
 
-  .reel-page-nav__center {
-    border-color: #181e2a;
-  }
+.dark .reel-page-nav__center {
+  border-color: #181e2a;
 }
 
 @media (max-width: 360px) {
