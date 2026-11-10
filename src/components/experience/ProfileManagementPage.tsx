@@ -94,7 +94,11 @@ export function ProfileManagementPage() {
     if (updateError) {
       setError("profile.error");
     } else {
-      if (field === "handle") {\n        setProfile({ ...profile, handle: value || null });\n      } else {\n        setProfile({ ...profile, display_name: value });\n      }
+      if (field === "handle") {
+        setProfile({ ...profile, handle: value || null });
+      } else {
+        setProfile({ ...profile, display_name: value });
+      }
       if (field === "display_name") setIdentityName(value);
       setEditing(null);
       setNotice("profile.saved");
