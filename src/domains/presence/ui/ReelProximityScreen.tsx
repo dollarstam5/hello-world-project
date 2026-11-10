@@ -1,4 +1,5 @@
 import { useMemo, type CSSProperties } from "react";
+import { Link } from "@tanstack/react-router";
 import { Bell, Bluetooth, ChevronDown, CircleUserRound, ScanLine } from "lucide-react";
 import "./reel-proximity.css";
 
@@ -64,6 +65,27 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
 
   return (
     <section className="reel-proximity" aria-label="Temps Réel de proximité">
+      <header className="reel-proximity__header">
+        <Link
+          to="/scan"
+          className="reel-proximity__header-action"
+          aria-label="Ouvrir Scan"
+        >
+          <ScanLine aria-hidden="true" />
+        </Link>
+        <div className="reel-proximity__heading">
+          <h1>TEMPS RÉEL</h1>
+          <ChevronDown aria-hidden="true" />
+        </div>
+        <span
+          className="reel-proximity__header-action"
+          role="img"
+          aria-label="Notifications"
+          title="Notifications"
+        >
+          <Bell aria-hidden="true" />
+        </span>
+      </header>
       <div className="reel-proximity__map" aria-hidden="true" />
       <div className="reel-proximity__radar">
         <div className="reel-radar__outer-halo" aria-hidden="true" />
