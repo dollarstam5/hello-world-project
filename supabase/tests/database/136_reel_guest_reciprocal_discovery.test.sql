@@ -90,6 +90,8 @@ SELECT ok(
   'guest discovery remains server-only while member discovery uses its authenticated guard'
 );
 
+RESET ROLE;
+SET LOCAL ROLE service_role;
 SELECT is(
   (SELECT count(*)::integer FROM public.reel_guest_discovery_locations
    WHERE guest_session_id = 'e4000000-0000-4000-8000-000000000012'),
