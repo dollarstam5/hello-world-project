@@ -69,7 +69,11 @@ export function createDemoFlashes(now = Date.now()): DemoFlash[] {
       expiresAt: now + DAY_MS,
     },
   ];
-  return flashes.map((flash) => ({ ...flash, authorPreview: demoAuthors[flash.id]! }));
+  return flashes.map((flash) => {
+    const authorPreview = demoAuthors[flash.id];
+    if (!authorPreview) throw new Error(`Missing demo profile for ${flash.id}`);
+    return { ...flash, authorPreview };
+  });
 }
 
 /** Real items always come first; local examples only fill the missing slots. */
