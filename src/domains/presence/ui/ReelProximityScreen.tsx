@@ -195,7 +195,7 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
 
       <div className="reel-nearby">
         <p className="reel-nearby__title">
-          {!locationEnabled ? "La découverte à proximité est en pause" : availablePeople.length === 0 ? "Aucune personne à afficher pour le moment" : `${availablePeople.length} personne${availablePeople.length > 1 ? "s" : ""} à proximité`}
+          {!locationEnabled ? "La découverte à proximité est en pause" : availablePeople.length === 0 ? "La découverte locale sera disponible après le raccordement du service Réel" : `${availablePeople.length} personne${availablePeople.length > 1 ? "s" : ""} à proximité`}
         </p>
         <div className="reel-nearby__row">
           <div className="reel-nearby__avatars">
