@@ -21,7 +21,7 @@ SELECT set_config('request.jwt.claims', '{"sub":"d4000000-0000-4000-8000-0000000
 SELECT lives_ok(
   $reel_test$SELECT public.start_reel_presence_from_grant(
     'd4000000-0000-4000-8000-000000000401', 'Secteur A', 'Disponible', 100, 30, true
-  )$reel_test$$,
+  )$reel_test$,
   'sender publishes a presence'
 );
 
