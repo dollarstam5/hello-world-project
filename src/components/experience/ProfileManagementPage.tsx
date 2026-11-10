@@ -132,7 +132,6 @@ export function ProfileManagementPage() {
     setSaving(false);
   }
 
-
   if (loading) {
     return (
       <div className="page-shell py-10 text-center text-sm text-muted-foreground">
