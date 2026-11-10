@@ -169,7 +169,7 @@ export async function revokeReelGuestSession() {
       const now = new Date().toISOString();
       const { error: presenceError } = await admin
         .from("reel_guest_presences")
-        .update({ status: "ended", ended_at: now })
+        .delete()
         .eq("guest_session_id", session.id)
         .eq("status", "active");
       if (presenceError) throw new Error("Impossible de terminer la présence invitée.");
