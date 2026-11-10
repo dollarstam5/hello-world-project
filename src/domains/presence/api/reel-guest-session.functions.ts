@@ -65,3 +65,46 @@ export const getMyReelGuestPresence = createServerFn({ method: "GET" }).handler(
   const { getMyReelGuestPresence: getPresence } = await import("./reel-guest-session.server");
   return getPresence();
 });
+
+
+const guestBipSendInput = z.object({
+  recipientActorKind: z.enum(["member", "guest"]),
+  recipientPresenceId: z.string().uuid(),
+  clientRequestId: z.string().uuid(),
+});
+
+export const sendReelGuestBip = createServerFn({ method: "POST" })
+  .inputValidator(guestBipSendInput)
+  .handler(async ({ data }) => {
+    const { sendReelGuestBip: send } = await import("./reel-guest-session.server");
+    return send(data.recipientActorKind, data.recipientPresenceId, data.clientRequestId);
+  });
+
+const guestBipCommandInput = z.object({
+  bipId: z.string().uuid(),
+  action: z.enum(["accept", "decline", "withdraw"]),
+});
+
+export const listMyReelGuestBips = createServerFn({ method: "GET" }).handler(async () => {
+  const { listMyReelGuestBips: list } = await import("./reel-guest-session.server");
+  return list();
+});
+
+export const commandMyReelGuestBip = createServerFn({ method: "POST" })
+  .inputValidator(guestBipCommandInput)
+  .handler(async ({ data }) => {
+    const { commandMyReelGuestBip: command } = await import("./reel-guest-session.server");
+    return command(data.bipId, data.action);
+  });
+
+export const listMyReelGuestConnections = createServerFn({ method: "GET" }).handler(async () => {
+  const { listMyReelGuestConnections: list } = await import("./reel-guest-session.server");
+  return list();
+});
+
+export const closeMyReelGuestConnection = createServerFn({ method: "POST" })
+  .inputValidator(z.object({ connectionId: z.string().uuid() }))
+  .handler(async ({ data }) => {
+    const { closeMyReelGuestConnection: close } = await import("./reel-guest-session.server");
+    return close(data.connectionId);
+  });
