@@ -4,6 +4,13 @@
 **Migration :** `supabase/migrations/20261110010000_reel_presence_and_bips.sql`  
 **Tests :** `supabase/tests/database/130_reel_presence_security.test.sql`
 
+## État de l'interface
+
+- La route `/reel` monte `ReelProximityScreen`, mais lui transmet actuellement une liste vide. Aucun profil réel n'est chargé dans cet écran.
+- Les panneaux de préférences, d'activité, de liste des personnes et d'aperçu de profil sont des interfaces interactives locales. Les choix de rayon, durée et autorisations ne sont ni enregistrés ni appliqués au service SQL.
+- Les onglets Alertes, Bips reçus et Rencontres affichent des états vides honnêtes ; aucun compteur ou événement n'est simulé.
+- La page ne démarre ni n'arrête encore une présence réelle. Les actions Réel ne doivent pas être présentées comme actives avant le raccordement des RPC et la validation de la clé de zone.
+
 ## Ce qui est ajouté
 
 - Présences éphémères liées à un compte authentifié actif.
