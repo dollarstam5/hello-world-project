@@ -187,6 +187,7 @@ export function ReelProximityScreen() {
       return;
     }
     let cancelled = false;
+    setDuration("1 h");
     void getMyReelGuestPresence()
       .then((presence) => {
         if (cancelled) return;
@@ -450,7 +451,7 @@ export function ReelProximityScreen() {
           radiusM: radiusMeters as 10 | 25 | 50 | 100 | 1000,
           latitude: fix.latitude,
           longitude: fix.longitude,
-          durationMinutes: durationMinutes[duration] as 30 | 60 | 120 | 180 | 360 | 720 | 1440,
+          durationMinutes: Math.min(durationMinutes[duration], 60) as 30 | 60,
           consent: true,
         },
       });
@@ -937,8 +938,16 @@ export function ReelProximityScreen() {
 
                 <div className="reel-panel__section">
                   <h3>Durée souhaitée</h3>
+                  {access.mode === "guest" && (
+                    <p className="reel-panel__note">
+                      Votre accès invité dure au maximum une heure. Votre présence s’arrêtera
+                      automatiquement avec votre session.
+                    </p>
+                  )}
                   <div className="reel-choice-grid reel-choice-grid--duration">
-                    {DURATIONS.map((value) => (
+                    {DURATIONS.filter(
+                      (value) => access.mode !== "guest" || value === "30 min" || value === "1 h",
+                    ).map((value) => (
                       <button
                         key={value}
                         type="button"
