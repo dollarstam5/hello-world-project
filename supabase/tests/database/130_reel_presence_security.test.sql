@@ -1,6 +1,6 @@
 BEGIN;
 CREATE EXTENSION IF NOT EXISTS pgtap WITH SCHEMA extensions;
-SELECT plan(23);
+SELECT plan(24);
 
 INSERT INTO auth.users (
   id, aud, role, email, encrypted_password, email_confirmed_at,
@@ -248,6 +248,13 @@ SELECT throws_ok(
   '42501',
   'active_profile_required',
   'a suspended sender cannot replay an old idempotent request'
+);
+
+SELECT is(
+  (SELECT provolatile::text FROM pg_proc
+   WHERE oid = 'public.list_reel_bips()'::regprocedure),
+  'v',
+  'bip listing is VOLATILE because it performs expiry cleanup'
 );
 
 SELECT * FROM finish();
