@@ -17,6 +17,14 @@ CREATE TABLE public.reel_discovery_locations (
 CREATE INDEX reel_discovery_locations_expiry
   ON public.reel_discovery_locations (expires_at);
 
+-- Existing presences predate private PostGIS points and cannot be measured
+-- safely. End them so members can republish with a fresh, consented location.
+UPDATE public.reel_presences
+SET status = 'ended',
+    ended_at = LEAST((extract(epoch FROM now()) * 1000)::bigint, expires_at),
+    updated_at = now()
+WHERE status = 'active';
+
 CREATE TABLE public.reel_presence_locations (
   presence_id UUID PRIMARY KEY REFERENCES public.reel_presences(id) ON DELETE CASCADE,
   location extensions.geography(Point, 4326) NOT NULL,
