@@ -27,6 +27,12 @@ describe("mobile visual smoke contract", () => {
     }
   });
 
+  it("captures the Réel engine at every reference viewport", () => {
+    expect(script).toContain('vitalis-reel-${viewport//,/-}.png');
+    expect(script).toContain('--wait-for-selector=".reel-proximity"');
+    expect(script).toContain('$BASE_URL/reel?__vitalis_smoke=1');
+  });
+
   it("waits for the Réel engine itself before capturing its route", () => {
     expect(script).toContain('selector=".reel-proximity"');
     expect(script).toContain('--wait-for-selector="$selector"');
