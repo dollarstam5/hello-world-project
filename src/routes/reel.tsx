@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { RadioTower } from "lucide-react";
 import { SectionFoundation } from "@/components/experience/SectionFoundation";
+import { EnginePreviewCard } from "@/components/experience/EnginePreviewCard";
 
 export const Route = createFileRoute("/reel")({
   head: () => ({
@@ -16,6 +17,17 @@ export const Route = createFileRoute("/reel")({
       descKey="page.reel.desc"
       tone="primary"
       icon={RadioTower}
+      sections={[{
+        key: "example",
+        titleKey: "home.engine.exampleLabel",
+        perf: "short",
+        render: () => (
+          <EnginePreviewCard
+            titleKey="home.engine.reel.title"
+            descriptionKey="home.engine.reel.example"
+          />
+        ),
+      }]}
     />
   ),
 });
