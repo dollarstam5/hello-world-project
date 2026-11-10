@@ -2,7 +2,7 @@ BEGIN;
 
 -- Private member topics carry only a coarse event kind. Guest session IDs,
 -- bip IDs, presence IDs, names and coordinates never enter the broadcast.
-ALTER TABLE realtime.messages ENABLE ROW LEVEL SECURITY;
+-- Supabase already enables RLS on realtime.messages; do not alter that managed table.
 
 DO $$
 BEGIN
