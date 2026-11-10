@@ -146,11 +146,15 @@ Le socle SQL est ajouté, mais aucune de ces conditions d'activation utilisateur
 
 | Exigence | Contrat technique | Tests attendus | État |
 | --- | --- | --- | --- |
-| ACC-09 | Le secret invité est généré côté serveur ; seule son empreinte est stockée ; le secret transite dans un cookie HttpOnly sécurisé. | ACC-09-T01 création sans ligne Auth/profil ; T02 absence du secret brut en base/logs ; T03 cookie absent/invalide refusé. | SPÉCIFIÉE, NON IMPLÉMENTÉE |
-| ACC-10 | Chaque opération invitée vérifie la session serveur, son expiration/révocation et le droit précis demandé. | ACC-10-T01 expiration ; T02 révocation ; T03 accès inter-session refusé ; T04 opérations membres refusées à l'invité. | SPÉCIFIÉE, NON IMPLÉMENTÉE |
-| ACC-11 | Rotation du secret, protection CSRF, limites anti-abus et nettoyage des données temporaires. | ACC-11-T01 ancien jeton refusé après rotation ; T02 origine/CSRF ; T03 limites de création ; T04 purge ; T05 fin de session. | SPÉCIFIÉE, NON IMPLÉMENTÉE |
-| ACC-12 | La connexion membre termine la session invitée sans rattachement automatique des données. | ACC-12-T01 révocation à la connexion ; T02 absence de transfert sans consentement explicite. | SPÉCIFIÉE, NON IMPLÉMENTÉE |
+| ACC-09 | Le secret invité est généré côté serveur ; seule son empreinte est stockée ; le secret transite dans un cookie HttpOnly sécurisé. | ACC-09-T01 création sans ligne Auth/profil ; T02 absence du secret brut en base/logs ; T03 cookie absent/invalide refusé. | IMPLÉMENTATION AJOUTÉE, TESTS NON EXÉCUTÉS |
+| ACC-10 | Chaque opération invitée vérifie la session serveur, son expiration/révocation et le droit précis demandé. | ACC-10-T01 expiration ; T02 révocation ; T03 accès inter-session refusé ; T04 opérations membres refusées à l'invité. | SESSION VÉRIFIÉE PAR LE SERVICE ; CONTRÔLE PAR ACTION À LIVRER |
+| ACC-11 | Rotation du secret, protection CSRF, limites anti-abus et nettoyage des données temporaires. | ACC-11-T01 ancien jeton refusé après rotation ; T02 origine/CSRF ; T03 limites de création ; T04 purge ; T05 fin de session. | ORIGINE, FIN ET PURGE AJOUTÉES ; ROTATION/ANTI-ABUS/TESTS À LIVRER |
+| ACC-12 | La connexion membre termine la session invitée sans rattachement automatique des données. | ACC-12-T01 révocation à la connexion ; T02 absence de transfert sans consentement explicite. | RÉVOCATION LORS DE LA DÉTECTION DU MODE MEMBRE AJOUTÉE ; TEST À EXÉCUTER |
 
 Les exigences ACC-09 à ACC-12 sont des exigences techniques de sécurité dérivées des décisions ACC-01 à ACC-08. Elles ne donnent pas de nouveaux droits métier aux invités. Les durées, quotas et opérations Réel accessibles restent à valider avant la migration.
 
 Voir [Architecture de session invitée éphémère](./reel-guest-session-architecture.md).
+
+### État de preuve du premier lot serveur
+
+La migration `20261110020000_reel_guest_sessions.sql`, le service serveur et le test pgTAP 131 sont présents dans la branche. Ils ne sont pas encore exécutés sur une base de test. La purge planifiée dépend de la disponibilité de `pg_cron`. La limitation anti-abus à la couche d'hébergement reste un prérequis avant activation publique. Le cookie de session ne donne pas encore accès aux actions métier Réel.
