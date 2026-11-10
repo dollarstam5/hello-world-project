@@ -1,4 +1,5 @@
 import type { FlashCategory, FlashKind, FlashTimeSlot } from "./flash";
+import type { PublicProfilePreview } from "./profile-preview";
 
 /** What someone is looking for around them, right now. */
 export interface ScanQuery {
@@ -21,4 +22,6 @@ export interface ScanResult {
   distanceKm: number;
   createdAt: number;
   expiresAt: number;
+  /** Optional, consent-gated public author summary. */
+  authorPreview?: PublicProfilePreview | null;
 }
