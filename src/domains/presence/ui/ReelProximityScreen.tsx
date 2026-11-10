@@ -277,15 +277,16 @@ export function ReelProximityScreen() {
       try {
         const rows = await listMyReelGuestBips();
         setReceivedGuestBips(
-          rows.filter(
-            (bip: ReelGuestBip) =>
-              bip.is_recipient && bip.status === "pending",
-          ),
+          rows.filter((bip: ReelGuestBip) => bip.is_recipient && bip.status === "pending"),
         );
         setReceivedBips([]);
         setBipsMessage(null);
       } catch (error) {
-        setBipsMessage(error instanceof Error ? error.message : "Vos bips n’ont pas pu être chargés.");
+        setBipsMessage(
+          error instanceof Error
+            ? error.message
+            : "Vos bips n’ont pas pu être chargés.",
+        );
       } finally {
         setBipsLoading(false);
       }
@@ -302,20 +303,28 @@ export function ReelProximityScreen() {
         rows.filter((bip) => bip.recipient_id === access.memberId && bip.status === "pending"),
       );
       setReceivedGuestBips(
-        crossModeRows.filter(
-          (bip) => bip.is_recipient && bip.status === "pending",
-        ),
+        crossModeRows.filter((bip) => bip.is_recipient && bip.status === "pending"),
       );
       setBipsMessage(null);
     } catch (error) {
-      setBipsMessage(error instanceof Error ? error.message : "Vos bips n’ont pas pu être chargés.");
+      setBipsMessage(
+        error instanceof Error
+          ? error.message
+          : "Vos bips n’ont pas pu être chargés.",
+      );
     } finally {
       setBipsLoading(false);
     }
   }, [access.loading, access.mode, access.memberId, access.guest?.sessionId, canUseMemberReel]);
 
   useEffect(() => {
-    if (panel !== "activity" || activityTab !== "bips" || (!canUseMemberReel && access.mode !== "guest")) return;
+    if (
+      panel !== "activity" ||
+      activityTab !== "bips" ||
+      (!canUseMemberReel && access.mode !== "guest")
+    ) {
+      return;
+    }
     void refreshBips();
     if (access.mode === "guest") return;
     const channel = supabase
@@ -361,7 +370,13 @@ export function ReelProximityScreen() {
   }, [access.loading, access.mode, canUseMemberReel, access.memberId]);
 
   useEffect(() => {
-    if (panel !== "activity" || activityTab !== "connections" || (!canUseMemberReel && access.mode !== "guest")) return;
+    if (
+      panel !== "activity" ||
+      activityTab !== "connections" ||
+      (!canUseMemberReel && access.mode !== "guest")
+    ) {
+      return;
+    }
     void refreshConnections();
     if (access.mode === "guest") return;
     const channel = supabase
@@ -416,7 +431,9 @@ export function ReelProximityScreen() {
       setBipsMessage("Votre signe a bien été envoyé.");
       setSelectedPerson(null);
     } catch (error) {
-      setBipsMessage(error instanceof Error ? error.message : "Votre signe n’a pas pu être envoyé.");
+      setBipsMessage(
+        error instanceof Error ? error.message : "Votre signe n’a pas pu être envoyé.",
+      );
     }
   };
 
@@ -440,7 +457,9 @@ export function ReelProximityScreen() {
         await commandReelGuestBipMember(bip.id, action);
       }
       await refreshBips();
-      setBipsMessage(action === "accept" ? "La mise en relation est établie." : "Le bip a été refusé.");
+      setBipsMessage(
+        action === "accept" ? "La mise en relation est établie." : "Le bip a été refusé.",
+      );
     } catch (error) {
       setBipsMessage(error instanceof Error ? error.message : "Cette action n’a pas pu aboutir.");
     }
@@ -448,7 +467,11 @@ export function ReelProximityScreen() {
 
   const endGuestConnection = async (connection: ReelGuestConnection) => {
     if (connection.status !== "active") return;
-    if (!window.confirm("Mettre fin à cette mise en relation ? Elle sera fermée pour vous deux.")) return;
+    if (
+      !window.confirm("Mettre fin à cette mise en relation ? Elle sera fermée pour vous deux.")
+    ) {
+      return;
+    }
     try {
       if (access.mode === "guest") {
         await closeMyReelGuestConnection({ data: { connectionId: connection.connection_id } });
@@ -458,7 +481,11 @@ export function ReelProximityScreen() {
       await refreshConnections();
       setConnectionsMessage("Cette mise en relation est maintenant terminée.");
     } catch (error) {
-      setConnectionsMessage(error instanceof Error ? error.message : "La mise en relation n’a pas pu être fermée.");
+      setConnectionsMessage(
+        error instanceof Error
+          ? error.message
+          : "La mise en relation n’a pas pu être fermée.",
+      );
     }
   };
 
@@ -741,7 +768,11 @@ export function ReelProximityScreen() {
   };
   const discoveryEnabled = discoveryAccess === "granted";
   const activityEnabled =
-    discoveryEnabled || Boolean(currentPresence) || Boolean(guestPresence) || canUseMemberReel || access.mode === "guest";
+    discoveryEnabled ||
+    Boolean(currentPresence) ||
+    Boolean(guestPresence) ||
+    canUseMemberReel ||
+    access.mode === "guest";
   const availablePeople = discoveryEnabled ? discoveredPeople : [];
 
   const openProfile = (person: Person) => {
@@ -1377,13 +1408,15 @@ export function ReelProximityScreen() {
                       </p>
                     )}
                     {(canUseMemberReel || access.mode === "guest") &&
-                      !bipsLoading && receivedBips.length === 0 && receivedGuestBips.length === 0 && (
-                      <div className="reel-panel__empty">
-                        <RadioTower aria-hidden="true" />
-                        <strong>Aucun bip reçu pour le moment</strong>
-                        <span>Les signes reçus pendant votre présence apparaîtront ici.</span>
-                      </div>
-                    )}
+                      !bipsLoading &&
+                      receivedBips.length === 0 &&
+                      receivedGuestBips.length === 0 && (
+                        <div className="reel-panel__empty">
+                          <RadioTower aria-hidden="true" />
+                          <strong>Aucun bip reçu pour le moment</strong>
+                          <span>Les signes reçus pendant votre présence apparaîtront ici.</span>
+                        </div>
+                      )}
                     {receivedBips.map((bip) => (
                       <div className="reel-people-list__item" key={bip.id}>
                         <span className="reel-avatar reel-avatar--small">
@@ -1473,7 +1506,9 @@ export function ReelProximityScreen() {
                           <CircleUserRound aria-hidden="true" />
                         </span>
                         <span>
-                          <strong>{connection.partner_display_name || "Mise en relation temporaire"}</strong>
+                          <strong>
+                            {connection.partner_display_name || "Mise en relation temporaire"}
+                          </strong>
                           <small>
                             {connection.status === "active"
                               ? "Votre rencontre est active pendant la session invitée."
