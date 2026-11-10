@@ -208,4 +208,22 @@ $$;
 REVOKE ALL ON FUNCTION public.purge_reel_location_sessions() FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.purge_reel_location_sessions() TO service_role;
 
+
+CREATE OR REPLACE FUNCTION public.get_my_active_reel_presence()
+RETURNS SETOF public.reel_presences
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = pg_catalog, public
+AS $
+  SELECT presence.*
+  FROM public.reel_presences presence
+  WHERE presence.owner_id = public.reel_require_active_profile()
+    AND presence.status = 'active'
+    AND presence.expires_at > (extract(epoch FROM now()) * 1000)::bigint
+  LIMIT 1;
+$;
+REVOKE ALL ON FUNCTION public.get_my_active_reel_presence() FROM PUBLIC, anon;
+GRANT EXECUTE ON FUNCTION public.get_my_active_reel_presence() TO authenticated;
+
 COMMIT;
