@@ -32,10 +32,10 @@ export function readScanHistory(): ScanHistoryEntry[] {
 
 export function recordScanHistory(resultCount: number): ScanHistoryEntry[] {
   if (!Number.isInteger(resultCount) || resultCount < 0) return readScanHistory();
-  const next = [
-    { searchedAt: Date.now(), resultCount },
-    ...readScanHistory(),
-  ].slice(0, HISTORY_LIMIT);
+  const next = [{ searchedAt: Date.now(), resultCount }, ...readScanHistory()].slice(
+    0,
+    HISTORY_LIMIT,
+  );
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
   } catch {
