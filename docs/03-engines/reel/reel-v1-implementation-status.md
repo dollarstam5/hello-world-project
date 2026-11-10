@@ -1,6 +1,6 @@
 # Réel — état d'implémentation V1
 
-**État :** découverte et publication de présence approximative raccordées pour les membres actifs ; temps réel multi-appareils, bips UI et mode invité métier encore ouverts.  
+**État :** présence et découverte membre raccordées au code ; cycle de session invitée serveur désormais relié au gestionnaire central ; opérations métier invitées, exécution SQL et validation multi-appareils encore ouvertes.  
 **Migration :** `supabase/migrations/20261110010000_reel_presence_and_bips.sql`  
 **Tests :** `supabase/tests/database/130_reel_presence_security.test.sql`
 
@@ -39,9 +39,9 @@ Le modèle actuel, qui exige un utilisateur Supabase authentifié et un profil a
 Le domaine partagé `src/domains/access-mode/` est maintenant monté à la racine de l'application via `AccessModeProvider`. Les moteurs peuvent lire `useAccessMode()` pour distinguer visiteur, invité et membre, sans dupliquer la détection de session.
 
 - Le mode membre repose sur la session Supabase Auth et lit uniquement `status` et `deleted_at` du profil pour distinguer actif, invité/incomplet, suspendu, fermé ou invérifiable.
-- Le mode invité crée uniquement un identifiant aléatoire conservé en mémoire côté application. Il n'est pas écrit dans Supabase Auth, `profiles`, `localStorage` ou `sessionStorage`.
+- Le mode invité utilise désormais une session serveur éphémère avec secret opaque dans un cookie HttpOnly ; seule une empreinte SHA-256 est conservée en base. L'identifiant local reste un repère d'interface, jamais une preuve d'identité.
 - L'identité temporaire est effacée à la fin de la session de page, à la connexion d'un membre ou par fermeture explicite.
-- Cette fondation ne fournit pas encore de session invitée multi-appareils, de jeton serveur, de transport temps réel ou de droits Réel. Les opérations invitées restent désactivées jusqu'à livraison et test de ces protections.
+- La session serveur peut être vérifiée après rechargement, mais elle ne donne encore aucun droit métier Réel. Les opérations invitées restent bloquées jusqu'à la livraison des RPC dédiées et de leurs tests.
 
 Document d'architecture : [Gestionnaire central des modes d'accès](../../02-architecture/access-mode-manager.md).
 
@@ -319,3 +319,10 @@ La branche ajoute une nouvelle migration `20261110080000_reel_postgis_metric_rad
 - La politique RLS des bips autorise les deux participants à recevoir les événements d’acceptation/refus pendant leur courte durée de conservation ; la RPC de liste continue de ne retourner que les bips en attente. L’onglet Bips se rafraîchit aussi lors de la création d’une relation, afin que l’expéditeur voie le bip disparaître après acceptation.
 
 - La migration Réel ajoute aussi purge_reel_connection_history(), exécutée chaque jour à 03 h via pg_cron si disponible. Les relations fermées de plus de six mois sont supprimées ; les relations encore actives ne sont pas touchées. Le test 135 vérifie la purge. Le nettoyage nécessite de confirmer pg_cron sur la pile cible.
+
+
+## Mise à jour — session invitée raccordée (10 novembre 2026)
+
+Le gestionnaire central `AccessModeProvider` est maintenant relié aux fonctions `startReelGuestSession`, `getReelGuestSession` et `endReelGuestSession`. La création attend la confirmation serveur avant de faire basculer l'interface en mode invité ; une session valide est restaurée au retour dans l'application ; la connexion membre et la fermeture explicite déclenchent la révocation. La durée absolue actuelle est de 60 minutes, sans renouvellement.
+
+Ce raccordement ne rend pas encore l'invité capable d'utiliser les opérations métier. La politique `evaluateReelAccess` continue de refuser découverte, publication, bip et mise en relation en mode invité. Il faut créer une voie métier éphémère séparée, rattachée à `reel_guest_sessions.id`, sans faux `auth.users` ni faux profil `profiles`. La limitation anti-abus de création et les tests de cookies/origine/révocation restent à ajouter. Ne pas déclarer le mode invité complet avant ces preuves.
