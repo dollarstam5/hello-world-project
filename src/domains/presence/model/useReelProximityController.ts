@@ -507,10 +507,6 @@ export function useReelProximityController() {
       setGuestPresence(nextPresence);
       setGuestPresenceConsent(false);
       setPresenceMessage("Votre présence est maintenant visible autour de vous.");
-      if (discoveryAccess !== "granted") {
-        setPanel(null);
-        await requestDiscovery();
-      }
     } catch (error) {
       setPresenceMessage(
         error instanceof Error ? error.message : "Votre présence n’a pas pu être activée.",
