@@ -163,7 +163,66 @@ export async function revokeReelGuestSession() {
       .eq("token_hash", tokenHash)
       .is("revoked_at", null);
     if (error) throw new Error("Impossible de terminer la session invitée.");
+    const { error: presenceError } = await admin
+      .from("reel_guest_presences")
+      .update({ status: "ended", ended_at: new Date().toISOString() })
+      .eq("guest_session_id", (await currentSession())?.id ?? "")
+      .eq("status", "active");
+    if (presenceError) throw new Error("Impossible de terminer la présence invitée.");
   }
   deleteCookie(COOKIE_NAME, cookieOptions(0));
   return { active: false as const };
+}
+
+
+export interface ReelGuestPresenceInput {
+  displayName: string;
+  avatarKey: string;
+  areaLabel: string;
+  description: string;
+  radiusM: 10 | 25 | 50 | 100 | 1000;
+  latitude: number;
+  longitude: number;
+  durationMinutes: 30 | 60 | 120 | 180 | 360 | 720 | 1440;
+  consent: true;
+}
+
+export async function startReelGuestPresence(input: ReelGuestPresenceInput) {
+  assertSameOrigin(true);
+  noStore();
+  const session = await currentSession();
+  if (!session) throw new Error("Votre accès invité a expiré. Ouvrez une nouvelle session.");
+  if (
+    !Number.isFinite(input.latitude) || input.latitude < -90 || input.latitude > 90 ||
+    !Number.isFinite(input.longitude) || input.longitude < -180 || input.longitude > 180
+  ) throw new Error("La position reçue n’est pas valide.");
+  const admin = createAdminClient();
+  const { data, error } = await admin.rpc("create_reel_guest_presence", {
+    p_guest_session_id: session.id,
+    p_display_name: input.displayName,
+    p_avatar_key: input.avatarKey,
+    p_area_label: input.areaLabel,
+    p_description: input.description,
+    p_radius_m: input.radiusM,
+    p_latitude: input.latitude,
+    p_longitude: input.longitude,
+    p_duration_minutes: input.durationMinutes,
+    p_consent: input.consent,
+  });
+  if (error || !data) throw new Error("Impossible de publier votre présence invitée pour le moment.");
+  return { presenceId: data as string, expiresAt: new Date(Date.now() + input.durationMinutes * 60_000).toISOString() };
+}
+
+export async function endReelGuestPresence(presenceId: string) {
+  assertSameOrigin(true);
+  noStore();
+  const session = await currentSession();
+  if (!session) return { ended: false as const };
+  const admin = createAdminClient();
+  const { data, error } = await admin.rpc("end_reel_guest_presence", {
+    p_guest_session_id: session.id,
+    p_presence_id: presenceId,
+  });
+  if (error) throw new Error("Impossible de terminer votre présence invitée.");
+  return { ended: data === true };
 }
