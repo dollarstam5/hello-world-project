@@ -44,10 +44,15 @@ jobs:
 
       - name: Database RLS tests
         run: |
+          # Use isolated database ports to avoid collisions with runner services.
+          printf '\n[db]\nport = 55432\nshadow_port = 55430\n' >> supabase/config.toml
           supabase start
           bun run check:db-tests
           bun run test:db
-          supabase stop
+
+      - name: Stop Supabase services
+        if: always()
+        run: supabase stop || true
 
       - name: Release check
         env:
