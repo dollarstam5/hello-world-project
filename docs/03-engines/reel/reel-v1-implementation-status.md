@@ -345,3 +345,16 @@ Cette livraison est une fondation serveur, pas encore un parcours invité comple
 - Le formulaire de publication de présence invitée n'est pas encore intégré à l'écran. Les présences invitées ne sont donc pas encore publiables depuis le parcours utilisateur.
 
 Migration `20261110110000_reel_guest_reciprocal_discovery.sql` et test pgTAP 136 ajoutés. Ils ne sont pas exécutés ; aucune validation SQL, build ou test navigateur n'est revendiquée.
+
+## Bips croisés membre ↔ invité — première intégration
+
+La migration `20261110130000_reel_guest_bips_and_connections.sql` ajoute des tables isolées et des RPC distinctes des bips membre-membre.
+
+- Membre vers invité : envoi via RPC authentifiée, présence membre active et validation PostGIS du rayon de l'invité.
+- Invité vers membre ou invité : envoi via Server Function après vérification du cookie HttpOnly et de la session côté serveur.
+- Acceptation/refus : seuls les destinataires peuvent répondre ; le serveur revalide les deux présences avant l'acceptation.
+- Relation : créée une seule fois par paire, fermable par l'un ou l'autre participant, et supprimée à la révocation/expiration de la session invitée.
+- Confidentialité : aucun identifiant de session invité n'est renvoyé dans les projections destinées au navigateur ; les tables ne sont pas directement lisibles par anon/authenticated.
+- Interface : l'action « Faire signe » est maintenant proposée aux membres et invités disposant d'une présence active ; les bips croisés et les relations temporaires sont chargés dans les onglets Réel correspondants.
+
+Le test pgTAP 137 couvre les deux directions et la suppression à la révocation. **La migration et le test ne sont pas encore déclarés réussis** ; la validation CI et les essais sur deux appareils restent ouverts. Les événements croisés n'ont pas encore de diffusion temps réel dédiée.
