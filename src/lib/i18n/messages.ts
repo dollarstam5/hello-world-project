@@ -89,6 +89,7 @@ export const messages = {
     "profile.preview.about": "En quelques mots",
     "profile.quickPreview.open": "Ouvrir mon aperçu de profil",
     "profile.quickPreview.hint": "Retrouvez ici votre identité en un coup d’œil. Vous gardez la main sur les informations que vous partagez.",
+    "profile.quickPreview.cardHint": "Votre profil personnel",
     "profile.quickPreview.full": "Voir le profil complet",
     "profile.avatarFallback": "Moi",
     "home.subtitle":
@@ -537,6 +538,7 @@ export const messages = {
     "profile.preview.about": "A little about them",
     "profile.quickPreview.open": "Open my profile preview",
     "profile.quickPreview.hint": "A quick look at your identity. You stay in control of the information you share.",
+    "profile.quickPreview.cardHint": "Your personal profile",
     "profile.quickPreview.full": "View full profile",
     "profile.avatarFallback": "Me",
     "home.subtitle":
