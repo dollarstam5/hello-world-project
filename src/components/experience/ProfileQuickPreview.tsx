@@ -14,7 +14,13 @@ interface ProfileQuickPreviewProps {
 }
 
 function getInitials(name: string): string {
-  return name\n    .trim()\n    .split(/\\s+/)\n    .slice(0, 2)\n    .map((part) => part[0] ?? "")\n    .join("")\n    .toLocaleUpperCase();
+  return name
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) => part[0] ?? "")
+    .join("")
+    .toLocaleUpperCase();
 }
 
 /** First level of the profile: a quick identity preview with a clear route to the full page. */
