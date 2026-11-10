@@ -21,7 +21,7 @@ export const Route = createFileRoute("/scan")({
       sections={[
         {
           key: "example",
-          titleKey: "home.engine.exampleLabel",
+          titleKey: "home.demo.title",
           perf: "short",
           render: () => (
             <EnginePreviewCard
