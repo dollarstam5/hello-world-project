@@ -108,3 +108,20 @@ Le fournisseur `AccessModeProvider` appelle maintenant les Server Functions de s
 L'identifiant React reste un repère d'interface uniquement. Le cookie opaque HttpOnly est la seule preuve de session invitée côté serveur. Une erreur de création laisse l'application en mode visiteur.
 
 **Limites encore ouvertes :** la session n'autorise aucune opération métier Réel. La découverte, la publication de présence, les bips et les relations restent refusés aux invités. La limitation anti-abus de création, les tests serveur du cookie/origine/révocation, l'exécution des migrations/pgTAP et la vérification du runtime restent nécessaires. La session a une durée absolue de 60 minutes, sans renouvellement.
+
+
+
+## 11. Présence temporaire invitée — première tranche serveur
+
+La migration `20261110100000_reel_guest_presence_sessions.sql` ajoute `reel_guest_presences`, table séparée de `reel_presences` et sans référence à `auth.users` ou `profiles`. Elle conserve une position PostGIS exacte uniquement côté service_role. Les rôles navigateur n'ont aucun droit de lecture.
+
+Le serveur retrouve d'abord la session depuis le cookie HttpOnly, puis appelle `create_reel_guest_presence` avec l'identifiant interne de cette session. La fonction SQL vérifie que la session existe, n'est pas révoquée et n'a pas expiré. La présence :
+- accepte un consentement explicite, un rayon autorisé et une durée prédéfinie ;
+- expire au plus tard à la fin de la session invitée (60 minutes actuellement) ;
+- remplace la précédente présence temporaire de cette session ;
+- est effacée avec sa position exacte à l'arrêt ou à la révocation ;
+- est purgée après expiration par pg_cron si disponible.
+
+Les Server Functions validées par Zod sont `startReelGuestPresence` et `endReelGuestPresence`. Elles n'exposent jamais l'identifiant de session ni les coordonnées stockées en base. Le point est envoyé au serveur uniquement après consentement utilisateur.
+
+**Limite volontaire de cette tranche :** les présences invitées ne sont pas encore incluses dans la découverte des membres ou des invités. Aucun bip, relation, notification ou historique n'est ouvert aux invités. La prochaine tranche doit construire la découverte filtrée PostGIS en tenant compte des deux types de présence, puis les actions de bip invitées sans créer de compte membre. Le test pgTAP 135 est ajouté mais non exécuté.
