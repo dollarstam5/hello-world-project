@@ -315,7 +315,7 @@ export function ReelProximityScreen() {
     } finally {
       setBipsLoading(false);
     }
-  }, [access.loading, access.mode, access.memberId, access.guest?.sessionId, canUseMemberReel]);
+  }, [access.loading, access.mode, access.memberId, canUseMemberReel]);
 
   useEffect(() => {
     if (
