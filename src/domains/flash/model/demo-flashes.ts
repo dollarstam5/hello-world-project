@@ -62,7 +62,8 @@ export function createDemoFlashes(now = Date.now()): DemoFlash[] {
       id: "demo:flash:meeting-dishes",
       kind: "need",
       category: "home",
-      title: "Après notre réunion de dimanche, vers 15 h, nous cherchons deux personnes pour aider à faire la vaisselle.",
+      title:
+        "Après notre réunion de dimanche, vers 15 h, nous cherchons deux personnes pour aider à faire la vaisselle.",
       timeSlot: "this_week",
       areaLabel: "Dakar (exemple)",
       createdAt: now - 1 * 60 * 60 * 1000,
