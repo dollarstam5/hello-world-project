@@ -249,6 +249,12 @@ export interface ReelGuestBip {
   is_recipient: boolean;
 }
 
+export interface ReelGuestBipMutation {
+  bip_id: string;
+  bip_status: "pending" | "accepted" | "declined" | "withdrawn" | "expired";
+  bip_expires_at: string;
+}
+
 export interface ReelGuestConnection {
   connection_id: string;
   status: "active" | "closed";
@@ -261,10 +267,10 @@ export interface ReelGuestConnection {
 export async function sendReelBipToGuest(
   recipientGuestPresenceId: string,
   clientRequestId = createRequestId(),
-): Promise<ReelGuestBip> {
+): Promise<ReelGuestBipMutation[]> {
   requireUuid(recipientGuestPresenceId, "Cette personne n’est plus disponible.");
   requireUuid(clientRequestId, "La demande de bip n’est pas valide.");
-  return callReelRpc<ReelGuestBip>("send_reel_bip_to_guest", {
+  return callReelRpc<ReelGuestBipMutation[]>("send_reel_bip_to_guest", {
     p_recipient_guest_presence_id: recipientGuestPresenceId,
     p_client_request_id: clientRequestId,
   });
@@ -273,9 +279,9 @@ export async function sendReelBipToGuest(
 export async function commandReelGuestBipMember(
   bipId: string,
   action: "accept" | "decline" | "withdraw",
-): Promise<ReelGuestBip> {
+): Promise<ReelGuestBipMutation[]> {
   requireUuid(bipId, "Ce bip n’est plus disponible.");
-  return callReelRpc<ReelGuestBip>("command_reel_guest_bip_member", {
+  return callReelRpc<ReelGuestBipMutation[]>("command_reel_guest_bip_member", {
     p_bip_id: bipId,
     p_action: action,
   });
