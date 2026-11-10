@@ -247,3 +247,12 @@ Pour Réel, notifications, messages, profil, compte, menu 2×2 et administration
 ## 8. Règle d'implémentation après cette vérification
 
 Avant d'ajouter un fichier de fixtures dans un domaine, vérifier son contrat public, ses imports autorisés et son chemin de rendu. Les exemples doivent être des données de présentation explicitement typées et marquées comme démonstration ; ils ne doivent jamais être convertis en enregistrements métier ni passer par les repositories, l'outbox ou les fonctions serveur. Le marquage « Exemple » doit être visible sur chaque carte ou scène pédagogique, en FR et EN.
+
+
+## 9. Source SQL fictive fournie — règle d'utilisation
+
+Le fichier `donnees_sql.sql` est confirmé comme source de données fictives destinée à remplir les interfaces. Il ne doit pas être importé tel quel dans la base Vitalis.
+
+Son contenu doit passer par la spécification [Adaptation du jeu SQL de démonstration aux domaines Vitalis — V1](../02-architecture/demo-sql-fixture-adapter-v1.md). Les annonces ne sont réutilisées que si elles peuvent être converties vers un contrat existant du domaine. Les utilisateurs SQL ne deviennent jamais des comptes ou identités Vitalis. Les contacts, mots de passe, compteurs et dates périmées sont exclus ou neutralisés.
+
+Objectif : faire passer les fixtures dans les mêmes chemins de lecture, validations et règles de présentation que les données réelles, tout en conservant `origin: "demo"` et en interdisant toute écriture ou synchronisation.
