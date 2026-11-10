@@ -511,7 +511,7 @@ LANGUAGE sql STABLE SECURITY DEFINER
 SET search_path = pg_catalog, public
 AS $$
   SELECT bip.id, bip.status, bip.created_at, bip.expires_at,
-    bip.recipient_member_id = auth.uid()
+    COALESCE(bip.recipient_member_id = auth.uid(), FALSE)
   FROM public.reel_guest_bips bip
   WHERE auth.uid() IN (bip.sender_member_id, bip.recipient_member_id)
     AND bip.status = 'pending' AND bip.expires_at > now()
@@ -531,7 +531,7 @@ BEGIN
       AND guest_session.expires_at > now()
   ) THEN RAISE EXCEPTION 'active_guest_session_required' USING ERRCODE = '42501'; END IF;
   RETURN QUERY SELECT bip.id, bip.status, bip.created_at, bip.expires_at,
-    bip.recipient_guest_session_id = p_guest_session_id
+    COALESCE(bip.recipient_guest_session_id = p_guest_session_id, FALSE)
     FROM public.reel_guest_bips bip
     WHERE p_guest_session_id IN (bip.sender_guest_session_id, bip.recipient_guest_session_id)
       AND bip.status = 'pending' AND bip.expires_at > now()
