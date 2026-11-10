@@ -1,5 +1,9 @@
 import { useState, type CSSProperties } from "react";
 import { requestReelLocation } from "@/domains/presence/api/reel-location.client";
+import { resolveReelZone } from "@/domains/presence/api/reel-zone.functions";
+import { listReelNearbyPresence } from "@/domains/presence/api/reel-presence.client";
+import { useAccessMode } from "@/domains/access-mode";
+import { evaluateReelAccess } from "@/domains/presence/policy/reel-access-policy";
 import {
   ArrowLeft, Bell, Bluetooth, Check, ChevronDown, CircleUserRound, Globe, History,
   MapPin, RadioTower, Settings2, SlidersHorizontal, UsersRound, X,
@@ -74,8 +78,10 @@ function RingPerson({ person, onSelect }: { person: Person; onSelect: (person: P
 }
 
 export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
-  const [locationAccess, setLocationAccess] = useState<"prompt" | "requesting" | "granted" | "ignored" | "denied">("prompt");
+  const access = useAccessMode();
+  const [discoveryAccess, setDiscoveryAccess] = useState<"prompt" | "requesting" | "granted" | "ignored" | "denied">("prompt");
   const [locationMessage, setLocationMessage] = useState<string | null>(null);
+  const [discoveredPeople, setDiscoveredPeople] = useState<Person[]>([]);
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
   const [showFullProfile, setShowFullProfile] = useState(false);
   const [panel, setPanel] = useState<Panel>(null);
@@ -88,25 +94,47 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
     showOnlyAvailable: true,
   });
 
-  const requestLocation = async () => {
-    setLocationAccess("requesting");
+  const requestDiscovery = async () => {
+    const decision = evaluateReelAccess(
+      { access, discoveryConsent: true, online: typeof navigator === "undefined" ? false : navigator.onLine },
+      "discover_presence",
+    );
+    if (decision.status !== "server_check") {
+      setDiscoveryAccess("denied");
+      setLocationMessage(decision.message);
+      return;
+    }
+
+    setDiscoveryAccess("requesting");
     setLocationMessage(null);
     try {
-      // A one-shot location read starts only after this explicit Réel action.
-      // Coordinates are not persisted or sent to the server in this tranche.
-      await requestReelLocation();
-      setLocationAccess("granted");
+      const fix = await requestReelLocation();
+      const zone = await resolveReelZone({
+        data: { latitude: fix.latitude, longitude: fix.longitude, purpose: "discover" },
+      });
+      const rows = await listReelNearbyPresence();
+      setDiscoveredPeople(rows.map((person, index) => ({
+        id: person.presence_id,
+        name: person.display_name || "Profil Vitalis",
+        avatarUrl: null,
+        initials: (person.display_name || "V").trim().split(/\\s+/).slice(0, 2).map((part) => part[0]?.toUpperCase() ?? "").join(""),
+        angle: (index * 137.5) % 360,
+        description: person.description,
+        locationLabel: person.area_label || zone.areaLabel,
+      })));
+      setDiscoveryAccess("granted");
     } catch (error) {
-      setLocationAccess("denied");
-      setLocationMessage(error instanceof Error ? error.message : "La position n’est pas disponible pour le moment.");
+      setDiscoveryAccess("denied");
+      setLocationMessage(error instanceof Error ? error.message : "La découverte à proximité n’est pas disponible pour le moment.");
     }
   };
   const ignoreLocation = () => {
-    setLocationAccess("ignored");
+    setDiscoveryAccess("ignored");
+    setDiscoveredPeople([]);
     setLocationMessage(null);
   };
-  const locationEnabled = locationAccess === "granted";
-  const availablePeople = locationEnabled ? people : [];
+  const discoveryEnabled = discoveryAccess === "granted";
+  const availablePeople = discoveryEnabled ? discoveredPeople : [];
 
   const openProfile = (person: Person) => {
     setPanel(null);
@@ -148,29 +176,29 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
           type="button"
           className="reel-proximity__header-action reel-proximity__notification"
           onClick={() => openActivity("notifications")}
-          disabled={!locationEnabled}
-          aria-label={locationEnabled ? "Notifications, bips et mises en relation" : "Les notifications Réel sont en pause sans position"}
-          title={locationEnabled ? "Activité" : "Notifications en pause"}
+          disabled={!discoveryEnabled}
+          aria-label={discoveryEnabled ? "Notifications, bips et mises en relation" : "Les notifications Réel sont en pause sans position"}
+          title={discoveryEnabled ? "Activité" : "Notifications en pause"}
         >
           <Bell aria-hidden="true" />
         </button>
       </header>
 
-      {!locationEnabled && (
-        <section className={`reel-location-card reel-location-card--${locationAccess}`} aria-label="Accès à la position">
+      {!discoveryEnabled && (
+        <section className={`reel-location-card reel-location-card--${discoveryAccess}`} aria-label="Accès à la position">
           <div className="reel-location-card__icon"><MapPin aria-hidden="true" /></div>
           <div className="reel-location-card__copy">
-            <strong>{locationAccess === "prompt" ? "Envie de découvrir ce qui se passe près de vous ?" : locationAccess === "requesting" ? "Nous vérifions votre position…" : locationAccess === "denied" ? "Votre position reste privée" : "Vous découvrez Réel à votre rythme"}</strong>
-            <p>{locationAccess === "prompt" ? "Autorisez Réel à utiliser votre position pour découvrir les personnes et les activités autour de vous. Votre choix reste libre." : locationAccess === "requesting" ? "Cela ne prend que quelques instants." : locationMessage || "Vous pouvez parcourir Réel sans localisation. Les découvertes proches, les bips et les réactions resteront en pause."}</p>
+            <strong>{discoveryAccess === "prompt" ? "Envie de découvrir ce qui se passe près de vous ?" : discoveryAccess === "requesting" ? "Nous vérifions votre position…" : discoveryAccess === "denied" ? "Votre position reste privée" : "Vous découvrez Réel à votre rythme"}</strong>
+            <p>{discoveryAccess === "prompt" ? "Autorisez Réel à utiliser votre position pour découvrir les personnes et les activités autour de vous. Votre choix reste libre." : discoveryAccess === "requesting" ? "Cela ne prend que quelques instants." : locationMessage || "Vous pouvez parcourir Réel sans localisation. Les découvertes proches, les bips et les réactions resteront en pause."}</p>
             <div className="reel-location-card__actions">
-              {(locationAccess === "prompt" || locationAccess === "ignored" || locationAccess === "denied") && <button type="button" className="reel-location-card__primary" onClick={() => void requestLocation()}>{locationAccess === "prompt" ? "Activer ma position" : "Réessayer"}</button>}
-              {locationAccess === "prompt" && <button type="button" className="reel-location-card__secondary" onClick={ignoreLocation}>Pas maintenant</button>}
+              {(discoveryAccess === "prompt" || discoveryAccess === "ignored" || discoveryAccess === "denied") && <button type="button" className="reel-location-card__primary" onClick={() => void requestDiscovery()}>{discoveryAccess === "prompt" ? "Activer ma position" : "Réessayer"}</button>}
+              {discoveryAccess === "prompt" && <button type="button" className="reel-location-card__secondary" onClick={ignoreLocation}>Pas maintenant</button>}
             </div>
           </div>
         </section>
       )}
 
-      <div className={`reel-proximity__radar${locationEnabled ? "" : " reel-proximity__radar--calm"}`}>
+      <div className={`reel-proximity__radar${discoveryEnabled ? "" : " reel-proximity__radar--calm"}`}>
         <div className="reel-radar__outer-halo" aria-hidden="true" />
         <div className="reel-radar__outer-ring" aria-hidden="true" />
         <div className="reel-radar__inner-ring" aria-hidden="true" />
@@ -195,7 +223,7 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
 
       <div className="reel-nearby">
         <p className="reel-nearby__title">
-          {!locationEnabled ? "La découverte à proximité est en pause" : availablePeople.length === 0 ? "La découverte locale sera disponible après le raccordement du service Réel" : `${availablePeople.length} personne${availablePeople.length > 1 ? "s" : ""} à proximité`}
+          {!discoveryEnabled ? "La découverte à proximité est en pause" : availablePeople.length === 0 ? "La découverte locale sera disponible après le raccordement du service Réel" : `${availablePeople.length} personne${availablePeople.length > 1 ? "s" : ""} à proximité`}
         </p>
         <div className="reel-nearby__row">
           <div className="reel-nearby__avatars">
@@ -231,7 +259,7 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
             <Bluetooth aria-hidden="true" />
           </button>
         </div>
-        {locationEnabled && availablePeople.length > 3 && (
+        {discoveryEnabled && availablePeople.length > 3 && (
           <button type="button" className="reel-nearby__all" onClick={() => setPanel("people")}>
             Voir toutes les personnes
             <ChevronDown aria-hidden="true" />
@@ -239,7 +267,7 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
         )}
       </div>
 
-      {!locationEnabled && locationAccess !== "prompt" && locationAccess !== "requesting" && (
+      {!discoveryEnabled && discoveryAccess !== "prompt" && discoveryAccess !== "requesting" && (
         <div className="reel-calm-shortcuts" aria-label="Autres façons de découvrir Réel">
           <button type="button" onClick={() => setPanel("global")}>
             <Globe aria-hidden="true" />
@@ -271,8 +299,8 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
 
                 <div className="reel-panel__section">
                   <h3>Accès à la position</h3>
-                  <p className="reel-panel__note">{locationEnabled ? "Réel peut utiliser votre position après votre accord. Aucun suivi en arrière-plan n’est lancé." : "La position est désactivée pour Réel. Les autres moteurs ne peuvent pas donner leur accord à votre place."}</p>
-                  {!locationEnabled && <button type="button" className="reel-panel__primary" onClick={() => void requestLocation()}>Activer ma position</button>}
+                  <p className="reel-panel__note">{discoveryEnabled ? "Réel peut utiliser votre position après votre accord. Aucun suivi en arrière-plan n’est lancé." : "La position est désactivée pour Réel. Les autres moteurs ne peuvent pas donner leur accord à votre place."}</p>
+                  {!discoveryEnabled && <button type="button" className="reel-panel__primary" onClick={() => void requestDiscovery()}>Activer ma position</button>}
                 </div>
 
                 <div className="reel-panel__section">
@@ -334,8 +362,8 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
                 <div className="reel-panel__eyebrow"><Bell aria-hidden="true" /> Votre activité</div>
                 <h2 id="reel-panel-title">Notifications et rencontres</h2>
                 <div className="reel-panel__tabs" role="tablist" aria-label="Activité">
-                  <button type="button" role="tab" aria-selected={activityTab === "notifications"} aria-disabled={!locationEnabled} disabled={!locationEnabled} className={activityTab === "notifications" ? "is-active" : ""} onClick={() => setActivityTab("notifications")}>Alertes</button>
-                  <button type="button" role="tab" aria-selected={activityTab === "bips"} aria-disabled={!locationEnabled} disabled={!locationEnabled} className={activityTab === "bips" ? "is-active" : ""} onClick={() => setActivityTab("bips")}>Bips reçus</button>
+                  <button type="button" role="tab" aria-selected={activityTab === "notifications"} aria-disabled={!discoveryEnabled} disabled={!discoveryEnabled} className={activityTab === "notifications" ? "is-active" : ""} onClick={() => setActivityTab("notifications")}>Alertes</button>
+                  <button type="button" role="tab" aria-selected={activityTab === "bips"} aria-disabled={!discoveryEnabled} disabled={!discoveryEnabled} className={activityTab === "bips" ? "is-active" : ""} onClick={() => setActivityTab("bips")}>Bips reçus</button>
                   <button type="button" role="tab" aria-selected={activityTab === "connections"} className={activityTab === "connections" ? "is-active" : ""} onClick={() => setActivityTab("connections")}>Rencontres</button>
                 </div>
                 <div className="reel-panel__empty">
@@ -343,8 +371,8 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
                   <strong>{activityTab === "notifications" ? "Tout est calme pour le moment" : activityTab === "bips" ? "Aucun bip reçu pour le moment" : "Vos relations déjà établies seront accessibles ici dès que leur historique sera connecté"}</strong>
                   <span>{activityTab === "notifications" ? "Les nouvelles activités liées à Réel seront réunies ici." : activityTab === "bips" ? "Quand une personne vous fera signe, vous pourrez la retrouver ici." : "Vous pourrez retrouver ici les rencontres acceptées et toujours disponibles."}</span>
                 </div>
-                {!locationEnabled && <p className="reel-panel__note">En mode calme, les alertes et les bips sont suspendus. Vos mises en relation déjà établies restent consultables.</p>}
-                {locationEnabled && <p className="reel-panel__note">Les événements réels apparaîtront ici dès que le service de rencontres sera connecté.</p>}
+                {!discoveryEnabled && <p className="reel-panel__note">En mode calme, les alertes et les bips sont suspendus. Vos mises en relation déjà établies restent consultables.</p>}
+                {discoveryEnabled && <p className="reel-panel__note">Les événements réels apparaîtront ici dès que le service de rencontres sera connecté.</p>}
               </>
             )}
 
@@ -352,7 +380,7 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
               <>
                 <div className="reel-panel__eyebrow"><UsersRound aria-hidden="true" /> À proximité</div>
                 <h2 id="reel-panel-title">Toutes les personnes proches</h2>
-                {locationEnabled && availablePeople.length ? (
+                {discoveryEnabled && availablePeople.length ? (
                   <div className="reel-people-list">
                     {availablePeople.map((person) => (
                       <button type="button" className="reel-people-list__item" key={person.id} onClick={() => openProfile(person)}>
