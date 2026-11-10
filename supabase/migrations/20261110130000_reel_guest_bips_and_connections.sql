@@ -401,7 +401,7 @@ BEGIN
   END IF;
   RETURN TRUE;
 END;
-$;
+$$;
 REVOKE ALL ON FUNCTION public.reel_guest_bip_participants_active(UUID) FROM PUBLIC, anon, authenticated;
 
 CREATE OR REPLACE FUNCTION public.command_reel_guest_bip_member(p_bip_id UUID, p_action TEXT)
@@ -544,7 +544,7 @@ AS $
       OR COALESCE(history.closed_at, history.expires_at) >= now() - interval '6 months'
     )
   ORDER BY history.created_at DESC LIMIT 100;
-$;
+$$;
 
 CREATE OR REPLACE FUNCTION public.list_reel_guest_connections_for_session(p_guest_session_id UUID)
 RETURNS TABLE (connection_id UUID, status TEXT, created_at TIMESTAMPTZ, expires_at TIMESTAMPTZ, closed_at TIMESTAMPTZ, partner_display_name TEXT)
@@ -690,7 +690,7 @@ BEGIN
   v_deleted := v_deleted + v_count;
   RETURN v_deleted;
 END;
-$;
+$$;
 REVOKE ALL ON FUNCTION public.purge_reel_guest_interactions() FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.purge_reel_guest_interactions() TO service_role;
 
@@ -714,6 +714,8 @@ $cron$;
 COMMENT ON TABLE public.reel_guest_bips IS
   'Temporary cross-mode bip requests. Guest identity is a verified short-lived session, never a synthetic member account.';
 COMMENT ON TABLE public.reel_guest_connections IS
-  'Temporary cross-mode relations. Any relation involving a guest expires with that guest session and is deleted by session cascade.';
+  'Live cross-mode relations. Guest-side records are removed at session end; member-side minimal history is retained separately for six months.';
+COMMENT ON TABLE public.reel_guest_connection_history IS
+  'Member-only minimal history for accepted guest relations. Contains no guest session identifier and is retained for six months.';
 
 COMMIT;
