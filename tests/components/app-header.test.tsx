@@ -24,7 +24,7 @@ vi.mock("@/lib/i18n/useI18n", () => ({
       ({
         "nav.home": "Accueil",
         "communication.open": "Ouvrir les communications",
-        "menu.espace.open": "Ouvrir mon espace",
+        "profile.quickPreview.open": "Ouvrir mon aperçu de profil",
       })[key] ?? key,
   }),
 }));
@@ -37,7 +37,7 @@ describe("AppHeader", () => {
     expect(markup).toContain('href="/"');
     expect(markup).toContain('src="/icon-192.svg"');
     expect(markup).toContain('aria-label="Ouvrir les communications"');
-    expect(markup).toContain('aria-label="Ouvrir mon espace"');
+    expect(markup).toContain('aria-label="Ouvrir mon aperçu de profil"');
     expect(markup).not.toContain("Changer de langue");
     expect(markup).not.toContain("Changer de thème");
     expect(markup).not.toContain("Déconnexion");
