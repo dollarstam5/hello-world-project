@@ -251,3 +251,16 @@ La présence de ces tests dans la branche ne constitue pas une preuve de leur r�
 Les tests pgTAP 130, 132 et 133 sont des scénarios ajoutés/modifiés dans la branche. Ils ne sont pas déclarés exécutés ni réussis.
 
 | ZONE-07 | L'envoi d'un bip vérifie à nouveau côté serveur la distance entre les deux points privés avec le rayon de visibilité du destinataire ; il ne dépend plus de l'égalité des cellules HMAC. | IMPLÉMENTATION AJOUTÉE, À TESTER | pgTAP 134 : bip autorisé entre deux cellules HMAC différentes lorsque la distance PostGIS est dans le rayon. |
+
+## Mise à jour — raccordement de l’interface et des relations
+
+| Domaine | Implémentation ajoutée | Preuve attendue |
+| --- | --- | --- |
+| Bips reçus | list_reel_bips() appelé depuis l’onglet Réel ; acceptation/refus via command_reel_bip() ; rafraîchissement Postgres Changes | Tests Vitest du rendu/actions, pgTAP de confidentialité et essai multi-appareils |
+| Envoi d’un bip | Bouton depuis une fiche réellement découverte, uniquement si le membre a une présence active ; validation finale par le serveur | pgTAP 134 et scénario complet sur deux comptes |
+| Historique des relations | Migration 20261110090000_reel_connection_history_and_close.sql, RPC list_reel_connections() limitée aux deux participants | pgTAP de lecture croisée interdite et vérification de la projection du partenaire |
+| Fermeture d’une relation | RPC close_reel_connection() ; l’un ou l’autre participant ferme la relation commune | pgTAP : participant autorisé, tiers refusé, répétition idempotente |
+| Invités | Les sessions temporaires existent mais ne sont pas acceptées par les RPC métier Réel | Tests d’isolation et de refus jusqu’à la livraison du parcours invité métier |
+| Propositions globales | Pas de source métier raccordée ; état vide maintenu | Définir et valider une source réelle avant tout affichage |
+
+**Tous les éléments ci-dessus sont ajoutés mais restent À TESTER.** Aucun résultat de migration, de test ou de fonctionnement multi-appareils n’est revendiqué.
