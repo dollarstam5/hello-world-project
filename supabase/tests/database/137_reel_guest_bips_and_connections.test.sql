@@ -1,6 +1,6 @@
 BEGIN;
 CREATE EXTENSION IF NOT EXISTS pgtap WITH SCHEMA extensions;
-SELECT plan(12);
+SELECT plan(13);
 
 INSERT INTO auth.users (
   id, aud, role, email, encrypted_password, email_confirmed_at,
@@ -38,7 +38,7 @@ INSERT INTO public.reel_presences (
   'z1_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
   'Bonamoussadi', 'Disponible', 100,
   (extract(epoch FROM now()) * 1000)::bigint,
-  (extract(epoch FROM now() * 1000)::bigint + 1800000),
+  ((extract(epoch FROM now()) * 1000)::bigint + 1800000),
   (extract(epoch FROM now()) * 1000)::bigint, 'active'
 );
 INSERT INTO public.reel_presence_locations (presence_id, location, expires_at)
@@ -132,6 +132,32 @@ SELECT is(
   1,
   'the guest can see the bip it sent to the member'
 );
+
+SET LOCAL ROLE authenticated;
+SELECT set_config(
+  'request.jwt.claims',
+  '{"sub":"e5000000-0000-4000-8000-000000000001","role":"authenticated"}',
+  true
+);
+SELECT lives_ok(
+  $SELECT public.command_reel_guest_bip_member(
+    (SELECT id FROM public.reel_guest_bips WHERE client_request_id = 'e5000000-0000-4000-8000-000000000032'),
+    'accept'
+  )$,
+  'the member can accept a bip sent by a guest'
+);
+SELECT is(
+  (SELECT count(*)::integer FROM public.reel_guest_connections
+   WHERE (participant_one_member_id = 'e5000000-0000-4000-8000-000000000001'
+      AND participant_two_guest_session_id = 'e5000000-0000-4000-8000-000000000011')
+      OR (participant_two_member_id = 'e5000000-0000-4000-8000-000000000001'
+      AND participant_one_guest_session_id = 'e5000000-0000-4000-8000-000000000011')),
+  1,
+  'accepting the reverse bip reuses the existing pair relation instead of duplicating it'
+);
+
+SET LOCAL ROLE service_role;
+SELECT set_config('request.jwt.claims', '{"role":"service_role"}', true);
 
 SELECT ok(
   NOT has_table_privilege('authenticated', 'public.reel_guest_bips', 'SELECT')
