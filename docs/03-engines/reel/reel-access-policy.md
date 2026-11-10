@@ -49,3 +49,26 @@ Le fichier `tests/access-mode/reel-access-policy.test.ts` couvre les modes visit
 - Les réglages et la consultation des relations déjà établies restent accessibles sans localisation. Fermer une relation existante ne doit pas être bloqué par l'absence de position.
 - Le consentement de localisation ne vaut jamais consentement à publier sa propre présence : reel_presence reste exigé séparément.
 - Le choix « pas maintenant » est appliqué pour l'entrée courante ; le dialogue pourra être proposé à la prochaine entrée dans Réel. Il ne faut pas redemander à chaque rendu React.
+
+
+## Mise à jour — séparation découverte / présence
+
+Les permissions ne sont pas interchangeables :
+
+- `discoveryConsent` permet uniquement l'observation des présences proches.
+- `presenceConsent` et le consentement précis `reel_presence` permettent de demander la publication de sa propre présence.
+- Découvrir ne publie jamais la personne.
+- Publier sa présence ne crée pas automatiquement une session de découverte.
+- Les bips et commandes associées nécessitent une présence active et restent soumis aux contrôles SQL d'identité, de rôle, d'état et d'expiration.
+- La fermeture d'une relation existante reste possible sans activer la découverte ou une nouvelle présence.
+
+### Modes actuellement raccordés
+
+| Mode | Entrée | Découverte | Présence propre | Bips |
+| --- | --- | --- | --- | --- |
+| Visiteur | Présentation publique uniquement | Refusée | Refusée | Refusés |
+| Invité | Entrée dans le parcours | Refusée en attendant le raccordement de la session invitée | Refusée | Refusés |
+| Membre actif | Autorisée | Vérification serveur après consentement de découverte | Vérification serveur après consentement `reel_presence` et jeton de zone à usage unique | RPC SQL, UI non raccordée |
+| Profil non actif ou invérifiable | Refus des opérations métier | Refusée | Refusée | Refusés |
+
+Le résolveur utilise une grille approximative de 200 m et des jetons HMAC serveur. Les coordonnées GPS exactes ne sont pas conservées. Le filtrage métrique par rayon n'est pas encore livré : le rayon enregistré ne doit pas être présenté comme une distance effectivement calculée.
