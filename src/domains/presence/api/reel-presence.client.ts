@@ -41,7 +41,7 @@ export interface ReelBip {
 }
 
 type ReelRpcName =
-  | "start_reel_presence"
+  | "get_my_active_reel_presence"
   | "end_reel_presence"
   | "list_reel_discovery_presence"
   | "start_reel_presence_from_grant"
@@ -118,6 +118,12 @@ export async function startReelPresence(input: StartReelPresenceInput): Promise<
     p_duration_minutes: input.durationMinutes,
     p_consent: true,
   });
+}
+
+export async function getMyActiveReelPresence(): Promise<ReelPresence | null> {
+  const rows = await callReelRpc<ReelPresence[]>("get_my_active_reel_presence");
+  if (!Array.isArray(rows)) throw new Error("Votre présence actuelle n’a pas pu être vérifiée.");
+  return rows[0] ?? null;
 }
 
 export async function endReelPresence(presenceId: string): Promise<ReelPresence> {
