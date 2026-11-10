@@ -188,7 +188,11 @@ export async function runPush(
         error: { code?: string; message?: string } | null;
       };
 
-      if (entry.table === "radars" && entry.kind === "update" && typeof row["status"] === "string") {
+      if (
+        entry.table === "radars" &&
+        entry.kind === "update" &&
+        typeof row["status"] === "string"
+      ) {
         if (Object.keys(row).some((field) => field !== "status")) {
           rejected.push({ id: entry.id, code: "invalid_mutation", retryable: false });
           continue;
