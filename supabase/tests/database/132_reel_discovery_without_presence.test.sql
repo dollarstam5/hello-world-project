@@ -45,6 +45,13 @@ SELECT lives_ok(
   'another member publishes an approximate presence in the same zone'
 );
 
+SELECT throws_ok(
+  $$SELECT public.list_reel_discovery_presence()$$,
+  '42501',
+  'reel_discovery_consent_required',
+  'a presence owner cannot discover without separate discovery consent'
+);
+
 SELECT set_config(
   'request.jwt.claims',
   '{"sub":"d2000000-0000-4000-8000-000000000001","role":"authenticated"}',
