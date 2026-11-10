@@ -200,7 +200,7 @@ GRANT EXECUTE ON FUNCTION public.list_reel_discovery_presence(INTEGER) TO authen
 
 CREATE OR REPLACE FUNCTION public.send_reel_bip(p_recipient_presence_id UUID,p_client_request_id UUID)
 RETURNS public.reel_bips LANGUAGE plpgsql SECURITY DEFINER
-SET search_path = pg_catalog, public, extensions AS $
+SET search_path = pg_catalog, public, extensions AS $$
 DECLARE
   v_user_id UUID := public.reel_require_active_profile();
   v_now BIGINT := (extract(epoch FROM clock_timestamp()) * 1000)::bigint;
@@ -249,7 +249,7 @@ BEGIN
   IF v_bip.id IS NULL THEN RAISE EXCEPTION 'bip_creation_failed' USING ERRCODE = '40001'; END IF;
   RETURN v_bip;
 END;
-$;
+$$;
 REVOKE ALL ON FUNCTION public.send_reel_bip(UUID,UUID) FROM PUBLIC,anon;
 GRANT EXECUTE ON FUNCTION public.send_reel_bip(UUID,UUID) TO authenticated;
 
