@@ -89,3 +89,23 @@ Le convertisseur et les sélecteurs doivent tester :
 7. Activer progressivement les surfaces qui passent les tests.
 
 **Limite actuelle :** cette spécification ne prouve pas que les fixtures ou le convertisseur sont déjà implémentés. Elle prépare leur réalisation sans importer le SQL brut dans Vitalis.
+
+
+## 8. Première tranche réalisée — Flash
+
+**État :** code ajouté à la branche `docs/language-audit-v1`, en attente des contrôles CI.
+
+Le premier raccordement porte uniquement sur Flash :
+
+- Fixture locale typée `PublicFlash` dans `src/domains/flash/model/demo-flashes.ts`.
+- Trois scénarios non sensibles issus du fichier SQL : besoin d'un plombier (besoin_002), recherche de cours de mathématiques (besoin_009), coup de main domestique (besoin_017).
+- Les auteurs, contacts, e-mails, téléphones, descriptions privées, compteurs SQL et dates anciennes sont écartés.
+- Les identifiants sont isolés sous le préfixe `demo:flash:`.
+- Les dates d'affichage sont recalculées à partir d'une horloge fournie au générateur : aucune annonce de juillet 2026 n'est présentée comme actuelle.
+- Le sélecteur reçoit les mêmes champs publics `PublicFlash` que le flux distant, trie par `createdAt`, donne priorité aux publications réelles et complète jusqu'à trois cartes seulement après résolution des sources réelles.
+- La provenance `origin: "real" | "demo"` accompagne chaque élément jusqu'à `FlashCard`. La carte remplace « En direct » par « Exemple » pour les éléments fictifs, avec traductions FR/EN.
+- Aucun appel à `createFlash`, aucun ajout Dexie/outbox et aucune écriture Supabase ne sont effectués.
+
+Tests ajoutés dans `tests/flash-demo-feed.test.ts` : priorité au réel, remplissage limité, absence d'exemples avant résolution et exclusion des champs privés.
+
+Cette première tranche ne valide pas encore le fonctionnement des autres moteurs. Scan, Réel, Radar, profils et communications restent inchangés et ne reçoivent aucune fixture dans leurs flux réels.
