@@ -115,6 +115,8 @@ export function ReelProximityScreen() {
     "prompt" | "requesting" | "granted" | "ignored" | "denied"
   >("prompt");
   const [locationMessage, setLocationMessage] = useState<string | null>(null);
+  const [guestSessionLoading, setGuestSessionLoading] = useState(false);
+  const [guestSessionMessage, setGuestSessionMessage] = useState<string | null>(null);
   const [discoveredPeople, setDiscoveredPeople] = useState<Person[]>([]);
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
   const [showFullProfile, setShowFullProfile] = useState(false);
@@ -363,6 +365,23 @@ export function ReelProximityScreen() {
     }
   };
 
+  const beginGuestSession = async () => {
+    setGuestSessionLoading(true);
+    setGuestSessionMessage(null);
+    try {
+      await access.startGuestSession();
+      setGuestSessionMessage(
+        "Votre accès invité est prêt pour cette visite. Les fonctions de proximité invitées restent en préparation.",
+      );
+    } catch (error) {
+      setGuestSessionMessage(
+        error instanceof Error ? error.message : "Votre accès invité n’a pas pu être ouvert.",
+      );
+    } finally {
+      setGuestSessionLoading(false);
+    }
+  };
+
   const requestDiscovery = async () => {
     const decision = evaluateReelAccess(
       {
@@ -523,6 +542,21 @@ export function ReelProximityScreen() {
                     {discoveryAccess === "prompt" ? "Activer la découverte" : "Réessayer"}
                   </button>
                 )}
+              {access.mode === "visitor" && (
+                <button
+                  type="button"
+                  className="reel-location-card__primary"
+                  disabled={guestSessionLoading}
+                  onClick={() => void beginGuestSession()}
+                >
+                  {guestSessionLoading ? "Ouverture de votre accès…" : "Continuer en invité"}
+                </button>
+              )}
+              {guestSessionMessage && (
+                <p className="reel-location-card__message" role="status">
+                  {guestSessionMessage}
+                </p>
+              )}
               {discoveryAccess === "prompt" && (
                 <button
                   type="button"
