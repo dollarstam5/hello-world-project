@@ -70,9 +70,9 @@ SELECT ok(
 
 SELECT set_config('request.jwt.claims', '{"sub":"d3000000-0000-4000-8000-000000000002","role":"authenticated"}', true);
 SELECT lives_ok(
-  $SELECT public.end_reel_presence(
+  $$SELECT public.end_reel_presence(
     (SELECT id FROM public.reel_presences WHERE owner_id = auth.uid() AND status = 'active')
-  )$,
+  )$$,
   'ending a presence succeeds'
 );
 SELECT is(
