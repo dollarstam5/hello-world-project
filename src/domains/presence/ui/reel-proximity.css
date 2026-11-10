@@ -1,11 +1,11 @@
 /* Réel proximity screen — scoped visual tokens and responsive composition. */
 .reel-proximity {
-  --reel-canvas: #f5f8fd;
-  --reel-ink: #3a4152;
-  --reel-blue-start: #2f6bff;
-  --reel-blue-end: #5b9bff;
-  --reel-night: #0e1630;
-  --reel-map-ink: #8fa2bc;
+  --reel-canvas: #f7faff;
+  --reel-ink: #26364d;
+  --reel-blue-start: #2878f0;
+  --reel-blue-end: #69b8ff;
+  --reel-night: #eaf3ff;
+  --reel-map-ink: #91afd2;
   --reel-white: #ffffff;
   --reel-avatar-size: clamp(3rem, 14.36vw, 3.5rem);
   --reel-small-avatar-size: clamp(2.8rem, 14.36vw, 3.5rem);
@@ -30,7 +30,9 @@
   overflow: hidden;
   padding: var(--space-2) var(--space-3) var(--space-3);
   color: var(--reel-ink);
-  background: var(--reel-canvas);
+  background:
+    radial-gradient(ellipse at 50% 34%, rgb(211 233 255 / 72%) 0%, transparent 48%),
+    linear-gradient(180deg, #fbfdff 0%, #f1f7ff 100%);
 }
 
 .reel-proximity *,
@@ -109,7 +111,7 @@
   width: 32%;
   aspect-ratio: 1;
   place-items: center;
-  background: radial-gradient(circle at 36% 28%, #dceaff 0%, #91baff 52%, #4f8fff 100%);
+  background: radial-gradient(circle at 36% 28%, #ffffff 0%, #d6eaff 52%, #91c4ff 100%);
   box-shadow: var(--reel-shadow-glow), inset 0 0.25rem 1rem rgb(255 255 255 / 55%);
   animation: reel-halo-breathe 4s ease-in-out infinite;
 }
@@ -302,8 +304,8 @@
   place-items: center;
   border: 0;
   border-radius: var(--reel-round-xl);
-  background: var(--reel-night);
-  color: var(--reel-white);
+  background: linear-gradient(145deg, #ffffff, #e2efff);
+  color: #2878f0;
   box-shadow: var(--reel-shadow-soft);
 }
 
