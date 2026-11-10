@@ -1,6 +1,6 @@
 import { useState, type CSSProperties } from "react";
 import {
-  ArrowLeft, Bell, Bluetooth, Check, ChevronDown, CircleUserRound,
+  ArrowLeft, Bell, Check, ChevronDown, CircleUserRound,
   MapPin, RadioTower, Settings2, SlidersHorizontal, UsersRound, X,
 } from "lucide-react";
 import "./reel-proximity.css";
@@ -116,8 +116,10 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
           <SlidersHorizontal aria-hidden="true" />
         </button>
         <div className="reel-proximity__heading">
-          <h1>TEMPS RÉEL</h1>
-          <ChevronDown aria-hidden="true" />
+          <div className="reel-proximity__heading-copy">
+            <h1>RÉEL</h1>
+            <p>Les personnes présentes autour de vous</p>
+          </div>
         </div>
         <button
           type="button"
@@ -130,7 +132,6 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
         </button>
       </header>
 
-      <div className="reel-proximity__map" aria-hidden="true" />
       <div className="reel-proximity__radar">
         <div className="reel-radar__outer-halo" aria-hidden="true" />
         <div className="reel-radar__outer-ring" aria-hidden="true" />
@@ -182,15 +183,6 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
               </button>
             )}
           </div>
-          <button
-            className="reel-nearby__bluetooth"
-            type="button"
-            onClick={() => setPanel("settings")}
-            aria-label="Options de proximité"
-            title="Options de proximité"
-          >
-            <Bluetooth aria-hidden="true" />
-          </button>
         </div>
         {people.length > 3 && (
           <button type="button" className="reel-nearby__all" onClick={() => setPanel("people")}>
