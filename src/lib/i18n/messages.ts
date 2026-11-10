@@ -80,6 +80,10 @@ export const messages = {
     "home.demo.moving": "Un coup de main pour un déménagement dans deux heures",
     "home.demo.meeting": "Deux personnes pour aider à faire la vaisselle après la réunion de dimanche, vers 15 h à Dakar",
     "home.demo.fallback": "Découvrez un exemple de publication Flash.",
+    "profile.preview.open": "Consulter ce profil",
+    "profile.preview.demoDescription": "Un profil fictif pour vous montrer les informations visibles.",
+    "profile.preview.publicDescription": "Les informations que cette personne a choisi de partager.",
+    "profile.preview.about": "En quelques mots",
     "home.subtitle":
       "Découvrez ce qui vous entoure, partagez ce qui compte et créez des liens utiles, à votre rythme.",
     "home.engines.title": "Par où souhaitez-vous commencer ?",
@@ -502,6 +506,10 @@ export const messages = {
     "home.demo.moving": "A helping hand needed for a move in two hours",
     "home.demo.meeting": "Two people to help with the washing-up after Sunday's meeting, around 3 pm in Dakar",
     "home.demo.fallback": "Discover an example of a Flash post.",
+    "profile.preview.open": "View this profile",
+    "profile.preview.demoDescription": "A fictional profile showing the information people may choose to share.",
+    "profile.preview.publicDescription": "Information this person has chosen to make public.",
+    "profile.preview.about": "A little about them",
     "home.subtitle":
       "Discover what is around you, share what matters and build useful connections at your own pace.",
     "home.engines.title": "Where would you like to start?",
