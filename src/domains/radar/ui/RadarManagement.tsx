@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { Radar as RadarIcon, X } from "lucide-react";
 import type { RadarRadiusKm, RadarRecord, RadarStatus } from "@eco/core-contracts";
+import type { MessageKey } from "@/lib/i18n/messages";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,7 +16,7 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 const RADII: RadarRadiusKm[] = [1, 3, 5, 10, 25, 50];
 const DURATIONS = [3, 7, 14, 30, 60, 90] as const;
 
-const statusKeys: Record<RadarStatus, string> = {
+const statusKeys: Record<RadarStatus, MessageKey> = {
   draft: "radar.manage.status.draft",
   active: "radar.manage.status.active",
   watching: "radar.manage.status.watching",
