@@ -162,3 +162,15 @@ Le document [Architecture de session invitée éphémère](./reel-guest-session-
 **Limite à vérifier :** une répétition idempotente d'un ancien identifiant de requête peut encore retrouver le bip déjà créé avant la suspension ; elle ne crée pas de nouvelle action métier. Ce comportement devra être confirmé par un test SQL dédié et éventuellement resserré selon la politique produit.
 
 **Vérifications :** les deux migrations et les tests SQL correspondants sont ajoutés à la branche, mais n'ont pas été appliqués sur une base de test. pgTAP, lint, build et tests sur appareils restent à exécuter.
+
+
+## Audit SQL complémentaire — suspension et idempotence
+
+L'audit des fonctions existantes a révélé deux points à corriger avant de poursuivre le raccordement :
+
+- send_reel_bip recherchait un identifiant de requête déjà traité avant de revérifier l'état actif du compte. Une répétition idempotente pouvait donc retourner un ancien bip après suspension. La migration 20261110050000_reel_bip_replay_and_listing_guards.sql place le contrôle du profil avant cette recherche.
+- list_reel_bips() déclenchait le nettoyage des éléments expirés tout en étant déclarée STABLE. Or ce nettoyage modifie des données. La fonction est maintenant volatile (comportement par défaut de PostgreSQL), ce qui permet le nettoyage pendant la consultation.
+
+Le test pgTAP 130 ajoute des vérifications pour le refus de consultation et de commande après suspension, tout en conservant le droit d'arrêter sa propre présence. Le plan de test est ajusté en conséquence.
+
+**À confirmer sur une base de test :** migration, pgTAP, lint et build n'ont pas été exécutés dans cet environnement.
