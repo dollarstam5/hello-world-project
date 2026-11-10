@@ -56,6 +56,7 @@ export interface Person {
   locationLabel?: string | null;
   distanceLabel?: string | null;
   actorKind?: "member" | "guest";
+  avatarKey?: string | null;
 }
 
 type Panel = "settings" | "activity" | "people" | "global" | null;
@@ -73,7 +74,10 @@ function PersonAvatar({
   size?: "person" | "small" | "me";
 }) {
   return (
-    <span className={`reel-avatar reel-avatar--${size}`} aria-label={person.name}>
+    <span
+      className={`reel-avatar reel-avatar--${size} ${person.avatarKey ? `reel-avatar--${person.avatarKey}` : ""}`}
+      aria-label={person.name}
+    >
       {person.avatarUrl ? (
         <img
           src={person.avatarUrl}
@@ -596,6 +600,7 @@ export function ReelProximityScreen() {
           id: person.presence_id,
           name: person.display_name || "Invité",
           avatarUrl: null,
+          avatarKey: person.avatar_key,
           initials: (person.display_name || "I")
             .trim()
             .split(/\\s+/)
