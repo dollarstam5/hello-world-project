@@ -9,6 +9,11 @@ import {
 } from "react";
 import { useAuth } from "@/domains/auth";
 import { supabase } from "@/integrations/supabase/client";
+import {
+  endReelGuestSession,
+  getReelGuestSession,
+  startReelGuestSession,
+} from "@/domains/presence/api/reel-guest-session.functions";
 
 export type AccessMode = "visitor" | "guest" | "member";
 export type MemberProfileState =
@@ -25,6 +30,7 @@ export interface TemporaryGuestIdentity {
   /** Random, memory-only identifier. Never a Vitalis account or profile ID. */
   sessionId: string;
   startedAt: number;
+  expiresAt: string;
 }
 
 export interface AccessModeState {
@@ -103,9 +109,37 @@ export function AccessModeProvider({ children }: { children: ReactNode }) {
   }, [user?.id]);
 
   useEffect(() => {
-    // A real account always takes precedence over a temporary guest session.
-    if (user) setGuest(null);
-  }, [user?.id]);
+    if (authLoading) return;
+    let cancelled = false;
+
+    if (user) {
+      setGuest(null);
+      void endReelGuestSession().catch(() => {
+        // The member path remains authoritative; the guest cookie expires server-side.
+      });
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    void getReelGuestSession()
+      .then((session) => {
+        if (cancelled || !session.active) return;
+        if (Date.parse(session.expiresAt) <= Date.now()) return;
+        setGuest({
+          sessionId: createTemporaryIdentity().sessionId,
+          startedAt: Date.now(),
+          expiresAt: session.expiresAt,
+        });
+      })
+      .catch(() => {
+        if (!cancelled) setGuest(null);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id, authLoading]);
 
   useEffect(() => {
     const clearTemporaryIdentity = () => setGuest(null);
@@ -116,11 +150,24 @@ export function AccessModeProvider({ children }: { children: ReactNode }) {
   const startGuestSession = useCallback(() => {
     if (user) throw new Error("Vous êtes déjà connecté à votre compte Vitalis.");
     const identity = createTemporaryIdentity();
-    setGuest(identity);
+    // The interface only enters guest mode after the server confirms its
+    // opaque HttpOnly session. A local random ID is never server authority.
+    void startReelGuestSession()
+      .then((session) => {
+        if (session.active) {
+          setGuest({ ...identity, expiresAt: session.expiresAt });
+        }
+      })
+      .catch(() => setGuest(null));
     return identity;
   }, [user]);
 
-  const endGuestSession = useCallback(() => setGuest(null), []);
+  const endGuestSession = useCallback(() => {
+    setGuest(null);
+    void endReelGuestSession().catch(() => {
+      // The local identity is cleared immediately; server expiry remains the fallback.
+    });
+  }, []);
 
   const value = useMemo<AccessModeState>(
     () => ({
