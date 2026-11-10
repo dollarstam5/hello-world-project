@@ -358,7 +358,9 @@ export async function discoverReelGuestNearby(latitude: number, longitude: numbe
 export async function getMyReelGuestPresence() {
   assertSameOrigin(false);
   noStore();
-  if (getRequest().headers.has("authorization")) {
+  const request = getRequest();
+  if (!request) throw new Error("Requête indisponible.");
+  if (request.headers.has("authorization")) {
     throw new Error("Une session membre doit utiliser son propre accès Réel.");
   }
   const session = await currentSession();
@@ -366,7 +368,9 @@ export async function getMyReelGuestPresence() {
   const admin = createAdminClient();
   const { data, error } = await admin
     .from("reel_guest_presences")
-    .select("id, display_name, avatar_key, area_label, description, radius_m, started_at, expires_at")
+    .select(
+      "id, display_name, avatar_key, area_label, description, radius_m, started_at, expires_at",
+    )
     .eq("guest_session_id", session.id)
     .eq("status", "active")
     .gt("expires_at", new Date().toISOString())
