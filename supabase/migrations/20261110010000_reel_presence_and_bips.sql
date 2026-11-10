@@ -172,8 +172,8 @@ BEGIN
   IF p_zone_key IS NULL OR p_zone_key !~ '^[a-z0-9_-]{8,64}$'
     OR p_area_label IS NULL OR char_length(btrim(p_area_label)) NOT BETWEEN 2 AND 80
     OR p_description IS NULL OR char_length(btrim(p_description)) NOT BETWEEN 1 AND 180
-    OR p_radius_m NOT IN (10, 25, 50, 100, 250, 500, 1000)
-    OR p_duration_minutes NOT IN (30, 60, 120, 180, 360, 720, 1440)
+    OR p_radius_m IS NULL OR p_radius_m NOT IN (10, 25, 50, 100, 250, 500, 1000)
+    OR p_duration_minutes IS NULL OR p_duration_minutes NOT IN (30, 60, 120, 180, 360, 720, 1440)
   THEN
     RAISE EXCEPTION 'invalid_presence_details' USING ERRCODE = '22023';
   END IF;
@@ -448,7 +448,7 @@ BEGIN
   IF v_user_id IS NULL THEN
     RAISE EXCEPTION 'authentication_required' USING ERRCODE = '42501';
   END IF;
-  IF p_action NOT IN ('accept', 'decline', 'withdraw') THEN
+  IF p_action IS NULL OR p_action NOT IN ('accept', 'decline', 'withdraw') THEN
     RAISE EXCEPTION 'invalid_bip_action' USING ERRCODE = '22023';
   END IF;
 
@@ -566,7 +566,7 @@ BEGIN
         'SELECT public.purge_expired_reel_bips();'
       );
     EXCEPTION
-      WHEN duplicate_object THEN NULL;
+      WHEN duplicate_object OR unique_violation THEN NULL;
       WHEN undefined_function OR invalid_schema_name THEN NULL;
     END;
   END IF;
