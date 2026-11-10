@@ -29,15 +29,18 @@ Les contenus ci-dessous sont des scénarios éditoriaux. Avant leur implémentat
 
 **Rôle de l'écran :** aider à comprendre où commencer et montrer les possibilités de Vitalis.
 
-Contenus préparés :
-- une phrase d'accueil courte et humaine ;
-- quatre aperçus d'usage, un par moteur principal : Flash, Scan, Réel et Radar ;
-- une indication discrète que les autres espaces se trouvent dans le menu 2×2 ;
-- une petite scène d'exemple, uniquement si l'accueil comporte un aperçu de contenu réel.
+Contenus préparés et première présentation intégrée :
+- une grande salutation en haut de page, lisible sur mobile et adaptée à la langue ; en mode invité : « Bonjour et bienvenue chez Vitalis ! » ;
+- une courte phrase d'accueil qui explique simplement l'utilité de Vitalis ;
+- quatre accès aux espaces principaux : Flash, Scan, Réel et Radar ;
+- trois aperçus Flash issus des fixtures SQL neutralisées (plomberie, cours de mathématiques, aide domestique), affichés dans une section pédagogique distincte et chacun marqué « Exemple » ;
+- une indication discrète pour retrouver les espaces complémentaires dans le menu 2×2.
 
-Exemple de texte :
-- FR : « Bonjour ! Que souhaitez-vous faire aujourd'hui ? »
-- EN : « Hello! What would you like to do today? »
+Les aperçus d'accueil sont des exemples de présentation, pas une activité en direct : ils ne sont ni des publications d'utilisateurs, ni des notifications, ni des compteurs. Leurs textes sont localisés en français et en anglais. Ils ne sont jamais interactifs et ne sont pas injectés dans un flux métier.
+
+Exemple de salutation :
+- FR : « Bonjour et bienvenue chez Vitalis ! »
+- EN : « Hello, and welcome to Vitalis! »
 
 Ne pas afficher de faux compteurs d'activité, de personnes connectées ou de notifications.
 
