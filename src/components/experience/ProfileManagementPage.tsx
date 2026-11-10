@@ -7,7 +7,7 @@ import { Surface } from "@/components/app/Surface";
 import { supabase } from "@/integrations/supabase/client";
 import { useIdentity } from "@/lib/experience/identity";
 import { useI18n } from "@/lib/i18n/useI18n";
-import type { Locale } from "@/lib/i18n/messages";
+import type { Locale, MessageKey } from "@/lib/i18n/messages";
 
 type EditableField = "display_name" | "handle";
 type ProfileRecord = { display_name: string; handle: string | null; locale: string };
@@ -21,8 +21,8 @@ export function ProfileManagementPage() {
   const [saving, setSaving] = useState(false);
   const [editing, setEditing] = useState<EditableField | null>(null);
   const [draft, setDraft] = useState("");
-  const [notice, setNotice] = useState("");
-  const [error, setError] = useState("");
+  const [notice, setNotice] = useState<MessageKey | "">("");
+  const [error, setError] = useState<MessageKey | "">("");
 
   useEffect(() => {
     let active = true;
@@ -43,7 +43,7 @@ export function ProfileManagementPage() {
         .maybeSingle();
       if (!active) return;
       if (profileError || !data) {
-        setError(t("profile.error"));
+        setError("profile.error");
       } else {
         setProfile(data);
         setIdentityName(data.display_name || undefined);
@@ -54,7 +54,7 @@ export function ProfileManagementPage() {
     return () => {
       active = false;
     };
-  }, [setIdentityName, t]);
+  }, [setIdentityName]);
 
   function beginEdit(field: EditableField) {
     if (!profile) return;
@@ -68,7 +68,7 @@ export function ProfileManagementPage() {
     if (!profile || !userId) return;
     const value = draft.trim();
     if (field === "display_name" && !value) {
-      setError(t("profile.nameRequired"));
+      setError("profile.nameRequired");
       return;
     }
     setSaving(true);
@@ -82,7 +82,7 @@ export function ProfileManagementPage() {
       setProfile(next);
       if (field === "display_name") setIdentityName(value);
       setEditing(null);
-      setNotice(t("profile.saved"));
+      setNotice("profile.saved");
     }
     setSaving(false);
   }
@@ -168,7 +168,7 @@ export function ProfileManagementPage() {
         )}
       </div>
       {editing !== field ? (
-        <Button type="button" variant="ghost" size="icon" className="h-11 w-11 shrink-0" onClick={() => beginEdit(field)} aria-label={t("profile.editField", { field: label })}>
+        <Button type="button" variant="ghost" size="icon" className="h-11 w-11 shrink-0" onClick={() => beginEdit(field)} aria-label={`${t("profile.edit")} ${label}`}>
           {value ? <Pencil className="h-4 w-4" aria-hidden /> : <Plus className="h-5 w-5" aria-hidden />}
         </Button>
       ) : null}
@@ -183,12 +183,12 @@ export function ProfileManagementPage() {
         <p className="text-subtitle max-w-prose">{t("profile.subtitle")}</p>
       </header>
 
-      {notice ? <p role="status" className="rounded-xl bg-primary-soft px-3 py-2 text-sm text-primary">{notice}</p> : null}
-      {error ? <p role="alert" className="rounded-xl bg-destructive/10 px-3 py-2 text-sm text-destructive">{error}</p> : null}
+      {notice ? <p role="status" className="rounded-xl bg-primary-soft px-3 py-2 text-sm text-primary">{t(notice)}</p> : null}
+      {error ? <p role="alert" className="rounded-xl bg-destructive/10 px-3 py-2 text-sm text-destructive">{t(error)}</p> : null}
 
       <section className="stack-3">
         <h2 className="text-base font-semibold">{t("profile.section.identity")}</h2>
-        <Surface variant="raised" padding="lg" bordered>
+        <Surface variant="elevated" padding="lg" bordered>
           <div className="divide-y divide-border-soft">
             <div className="pb-4">{fieldRow("display_name", profile.display_name, t("profile.name"))}</div>
             <div className="pt-4">
