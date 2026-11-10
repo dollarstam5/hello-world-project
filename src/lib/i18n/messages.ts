@@ -66,11 +66,12 @@ export const messages = {
     "communication.assistant": "Assistant",
     "communication.messages": "Messages",
     "communication.reel": "Réel",
-    "communication.notifications.empty": "Aucune nouvelle notification.",
+    "communication.notifications.empty":
+      "Les nouvelles liées à vos actions apparaîtront ici, sans faux compteur.",
     "communication.messages.empty":
-      "Les conversations liées à vos actions et mises en relation apparaîtront ici.",
+      "Vos échanges apparaîtront ici après une mise en relation ou une action acceptée.",
     "communication.reel.empty":
-      "Les demandes et interactions Réel nécessitant votre attention apparaîtront ici.",
+      "Les bips reçus apparaîtront ici pendant votre présence active. Aucun bip fictif n’est ajouté.",
     "home.welcome": "Bienvenue dans Vitalis",
     "home.welcome.guest": "Bonjour et bienvenue chez Vitalis !",
     "home.welcome.named": "Bonjour, {name} !",
@@ -306,6 +307,9 @@ export const messages = {
     "page.talents.eyebrow": "Savoirs vivants",
     "page.talents.section.offer": "Ce que l'on offre",
     "page.talents.section.seek": "Ce que l'on cherche",
+    "page.talents.example.title": "Partager un savoir-faire",
+    "page.talents.example.desc":
+      "Exemple : proposer d’apprendre quelques gestes de cuisine à des voisins avant une rencontre.",
     "sync.saved": "Tout est enregistré",
     "sync.updating": "Mise à jour en cours…",
     "sync.sending": "Envoi de vos changements…",
@@ -520,11 +524,12 @@ export const messages = {
     "communication.assistant": "Assistant",
     "communication.messages": "Messages",
     "communication.reel": "Live",
-    "communication.notifications.empty": "No new notifications.",
+    "communication.notifications.empty":
+      "Updates related to your actions will appear here. No artificial counters.",
     "communication.messages.empty":
-      "Conversations linked to your actions and connections will appear here.",
+      "Your conversations will appear here after a connection or an accepted action.",
     "communication.reel.empty":
-      "Real-time requests and interactions that need your attention will appear here.",
+      "Received signals will appear here while your presence is active. No sample signals are added.",
     "home.welcome": "Welcome to Vitalis",
     "home.welcome.guest": "Hello, and welcome to Vitalis!",
     "home.welcome.named": "Hello, {name}!",
@@ -746,6 +751,9 @@ export const messages = {
     "page.talents.eyebrow": "Living knowledge",
     "page.talents.section.offer": "What people offer",
     "page.talents.section.seek": "What people seek",
+    "page.talents.example.title": "Share a skill",
+    "page.talents.example.desc":
+      "Example: offer to show neighbours a few cooking basics before a get-together.",
     "sync.saved": "Everything is saved",
     "sync.updating": "Getting the latest…",
     "sync.sending": "Sending your changes…",
