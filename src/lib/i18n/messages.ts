@@ -384,10 +384,12 @@ export const messages = {
     "reel.section.bips": "Bips reçus",
     "reel.section.connections": "Mes mises en relation",
     "reel.section.history": "Historique",
-    "reel.section.presence.desc": "Retrouver et régler votre présence lorsque cette fonction sera disponible.",
+    "reel.section.presence.desc":
+      "Retrouver et régler votre présence lorsque cette fonction sera disponible.",
     "reel.section.bips.desc": "Consulter les signaux reçus pendant vos présences actives.",
     "reel.section.connections.desc": "Retrouver les mises en relation que vous avez acceptées.",
-    "reel.section.history.desc": "Consulter les traces utiles de vos anciennes présences et interactions.",
+    "reel.section.history.desc":
+      "Consulter les traces utiles de vos anciennes présences et interactions.",
     "reel.section.unavailable":
       "Cette partie sera accessible lorsque le parcours Réel et ses données sécurisées seront prêts. Aucune présence ni relation n'est simulée.",
     "radar.section.management": "Gérer Radar",
@@ -925,7 +927,8 @@ export const messages = {
     "reel.section.bips": "Signals received",
     "reel.section.connections": "My connections",
     "reel.section.history": "History",
-    "reel.section.presence.desc": "Find and manage your presence when this feature becomes available.",
+    "reel.section.presence.desc":
+      "Find and manage your presence when this feature becomes available.",
     "reel.section.bips.desc": "Review signals received during your active presences.",
     "reel.section.connections.desc": "Find the connections you have accepted.",
     "reel.section.history.desc": "Review useful records of past presences and interactions.",
