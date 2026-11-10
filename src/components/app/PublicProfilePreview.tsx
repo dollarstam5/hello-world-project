@@ -41,6 +41,9 @@ export function PublicProfilePreview({ profile, origin }: PublicProfilePreviewPr
         </Avatar>
         <span className="min-w-0 flex-1">
           <span className="block truncate text-sm font-medium">{profile.displayName}</span>
+          <span className="block truncate text-xs text-muted-foreground" title={profile.summary}>
+            {profile.summary}
+          </span>
           <span className="flex min-w-0 items-center gap-1 text-xs text-muted-foreground">
             <MapPin className="h-3 w-3 shrink-0" aria-hidden />
             <span className="truncate">{profile.areaLabel}</span>
