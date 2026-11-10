@@ -53,22 +53,6 @@ export function PersonalDashboard() {
         </div>
       </section>
 
-      <section className="stack-3" aria-labelledby="space-preview-title">
-        <h2 id="space-preview-title" className="text-title-md">{t("space.preview.title")}</h2>
-        <Surface variant="sunken" padding="md" bordered className="flex items-start gap-3">
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-surface text-muted-foreground">
-            <Eye className="h-5 w-5" aria-hidden />
-          </span>
-          <div className="min-w-0">
-            <div className="flex flex-wrap items-center gap-2">
-              <p className="font-medium">{t("space.preview.public.title")}</p>
-              <Indicator tone="neutral" label={t("common.soon")} />
-            </div>
-            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{t("space.preview.public.desc")}</p>
-          </div>
-        </Surface>
-      </section>
-
       <section className="stack-2">
         <h2 className="text-title-md">{t("space.engines.title")}</h2>
         <p className="text-sm text-muted-foreground">{t("space.engines.desc")}</p>
