@@ -362,7 +362,8 @@ export const messages = {
     "flash.mine.desc": "Retrouvez les Flash que vous avez créés sur cet appareil.",
     "flash.mine.signIn": "Connectez-vous pour retrouver les Flash associés à votre compte.",
     "flash.mine.empty.title": "Aucun Flash disponible ici",
-    "flash.mine.empty.desc": "Les Flash associés à votre compte apparaîtront ici lorsqu’ils seront disponibles sur cet appareil.",
+    "flash.mine.empty.desc":
+      "Les Flash associés à votre compte apparaîtront ici lorsqu’ils seront disponibles sur cet appareil.",
     "flash.mine.localHint":
       "Cette liste reprend les Flash de votre compte disponibles sur cet appareil. Les changements en attente seront synchronisés au retour du réseau.",
     "flash.mine.actionError": "Cette action n'a pas pu être effectuée. Réessayez.",
@@ -895,7 +896,8 @@ export const messages = {
     "flash.mine.desc": "Find the Flash posts you created on this device.",
     "flash.mine.signIn": "Sign in to find the Flash posts linked to your account.",
     "flash.mine.empty.title": "No Flash available here",
-    "flash.mine.empty.desc": "Flash posts linked to your account will appear here when they are available on this device.",
+    "flash.mine.empty.desc":
+      "Flash posts linked to your account will appear here when they are available on this device.",
     "flash.mine.localHint":
       "This list shows your account Flash posts available on this device. Pending changes will sync when the connection returns.",
     "flash.mine.actionError": "That action could not be completed. Please try again.",
