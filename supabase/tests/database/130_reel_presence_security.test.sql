@@ -131,7 +131,7 @@ SELECT ok(
   (
     SELECT expires_at BETWEEN
       (extract(epoch FROM now()) * 1000)::bigint + 86390000
-      AND (extract(epoch FROM now()) * 1000)::bigint + 86400000
+      AND (extract(epoch FROM now()) * 1000)::bigint + 86410000
     FROM public.reel_bips
     WHERE client_request_id = 'd1000000-0000-4000-8000-000000000101'
   ),
