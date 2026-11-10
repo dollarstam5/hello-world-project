@@ -202,7 +202,8 @@ SECURITY DEFINER
 SET search_path = pg_catalog, public
 AS $$
 DECLARE
-  v_count INTEGER;
+  v_discovery_count INTEGER;
+  v_presence_count INTEGER;
 BEGIN
   DELETE FROM public.reel_guest_discovery_locations
   WHERE expires_at <= now()
@@ -210,14 +211,15 @@ BEGIN
        SELECT id FROM public.reel_guest_sessions
        WHERE revoked_at IS NOT NULL OR expires_at <= now()
      );
-  GET DIAGNOSTICS v_count = ROW_COUNT;
+  GET DIAGNOSTICS v_discovery_count = ROW_COUNT;
   DELETE FROM public.reel_guest_presences
   WHERE expires_at <= now()
      OR guest_session_id IN (
        SELECT id FROM public.reel_guest_sessions
        WHERE revoked_at IS NOT NULL OR expires_at <= now()
      );
-  RETURN v_count + (SELECT count(*)::integer FROM public.reel_guest_presences WHERE false);
+  GET DIAGNOSTICS v_presence_count = ROW_COUNT;
+  RETURN v_discovery_count + v_presence_count;
 END;
 $$;
 
