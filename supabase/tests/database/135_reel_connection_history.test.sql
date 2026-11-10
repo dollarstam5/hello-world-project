@@ -97,7 +97,7 @@ SELECT throws_ok(
 RESET ROLE;
 SET LOCAL ROLE service_role;
 SELECT lives_ok(
-  $SELECT public.purge_reel_connection_history()$,
+  $$SELECT public.purge_reel_connection_history()$$,
   'server cleanup can purge relationship history older than six months'
 );
 SELECT is(
