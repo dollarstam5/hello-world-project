@@ -101,3 +101,14 @@ Document d'architecture : [Gestionnaire central des modes d'accès](../../02-arc
 Le document [Architecture de session invitée éphémère](./reel-guest-session-architecture.md) fixe les garde-fous du prochain lot : secret généré côté serveur, empreinte seule en base, cookie HttpOnly, contrôle serveur par opération, rotation, révocation et purge. Il sépare strictement la session invitée de la table des présences membre qui référence auth.users.
 
 **Aucune session invitée serveur n'est encore implémentée.** La fondation front-end reste une identité en mémoire et n'autorise aucune opération métier. Le parcours invité réel reste désactivé jusqu'à validation des durées et droits, confirmation de l'API cookie TanStack Start, livraison des migrations et réussite des tests.
+
+
+## Session invitée serveur — première tranche technique ajoutée
+
+- Migration `20261110020000_reel_guest_sessions.sql` : table isolée, RLS activée, aucun accès direct `anon`/`authenticated`, accès réservé au rôle serveur.
+- Service `src/domains/presence/api/reel-guest-session.server.ts` : secret aléatoire 256 bits, empreinte SHA-256 seule en base, cookie `__Host-vitalis_reel_guest` HttpOnly/Secure/SameSite=Lax, vérification de session, expiration, révocation et fermeture explicite.
+- Fonctions `startReelGuestSession`, `getReelGuestSession`, `endReelGuestSession` dans `reel-guest-session.functions.ts`.
+- Migration : purge des sessions expirées et révoquées planifiée via pg_cron si disponible.
+- Test pgTAP 131 : privilèges, RLS, absence de données membre/GPS et droit de purge.
+
+**Limites actuelles :** les opérations métier Réel n'acceptent pas encore cette session ; aucune interface ne la démarre automatiquement. La durée d'une heure est un paramètre technique provisoire, sans renouvellement. Les limites anti-abus de la couche d'hébergement et la présence effective de pg_cron doivent être vérifiées. Migration, tests et build n'ont pas été exécutés ici.
