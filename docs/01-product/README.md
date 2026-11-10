@@ -8,6 +8,7 @@ Cette section documente la vision produit, les intentions d'usage, les parcours,
 - [Personas](./personas.md)
 - [Parcours utilisateurs](./user-journeys.md)
 - [Navigation produit Vitalis](./navigation.md)
+- [Espaces personnels et gestion indépendante des moteurs — V1](./personal-and-engine-management-v1.md)
 - [Niveaux de confiance](./trust-levels.md)
 - [Vitalis Experience System](./experience-system.md)
 - [Centre de communication — règles produit V1](./communication-center-v1.md)
