@@ -185,7 +185,7 @@ export function ReelProximityScreen() {
   };
 
   const sendBipToSelectedPerson = async () => {
-    if (!selectedPerson || !currentPresence || !preferences.allowBips) return;
+    if (!selectedPerson || !currentPresence) return;
     try {
       await sendReelBip(selectedPerson.id);
       setBipsMessage("Votre signe a bien été envoyé.");
@@ -390,7 +390,7 @@ export function ReelProximityScreen() {
 
       <div className="reel-nearby">
         <p className="reel-nearby__title">
-          {!discoveryEnabled ? "La découverte à proximité est en pause" : availablePeople.length === 0 ? "La découverte locale sera disponible après le raccordement du service Réel" : `${availablePeople.length} personne${availablePeople.length > 1 ? "s" : ""} à proximité`}
+          {!discoveryEnabled ? "La découverte à proximité est en pause" : availablePeople.length === 0 ? "Aucune présence réelle ne se trouve dans votre rayon pour le moment" : `${availablePeople.length} personne${availablePeople.length > 1 ? "s" : ""} à proximité`}
         </p>
         <div className="reel-nearby__row">
           <div className="reel-nearby__avatars">
@@ -481,7 +481,7 @@ export function ReelProximityScreen() {
                   </div>
                 </div>
 
-                <p className="reel-panel__note">La position est regroupée dans un secteur approximatif d’environ 200 mètres. Le rayon choisi est enregistré, mais le calcul précis des distances et son application au filtrage restent à finaliser. Aucune distance exacte n’est affichée.</p>
+                <p className="reel-panel__note">Le rayon choisi est appliqué côté serveur en mètres. Les positions précises restent privées et temporaires ; aucune distance exacte n’est affichée. La précision dépend aussi du GPS de votre appareil.</p>
                 {currentPresence && <p className="reel-panel__note">Votre présence est déjà active : les changements de rayon ou de durée s’appliqueront à la prochaine activation, pas à celle-ci.</p> }
 
                 <div className="reel-panel__section">
@@ -536,7 +536,7 @@ export function ReelProximityScreen() {
                     <input type="checkbox" checked={preferences.showOnlyAvailable} onChange={(event) => setPreferences((current) => ({ ...current, showOnlyAvailable: event.target.checked }))} />
                   </label>
                 </div>
-                <p className="reel-panel__note"><MapPin aria-hidden="true" /> Ces choix sont préparés dans l’écran. Leur enregistrement et leur application en temps réel nécessitent encore le raccordement du service de présence.</p>
+                <p className="reel-panel__note"><MapPin aria-hidden="true" /> Ces préférences d’affichage restent locales pour le moment. Elles ne modifient pas encore les règles de visibilité enregistrées sur le serveur.</p>
                 <button type="button" className="reel-panel__primary" onClick={() => setPanel(null)}>Terminé</button>
               </>
             )}
@@ -565,7 +565,8 @@ export function ReelProximityScreen() {
                 {activityTab === "bips" ? (
                   <div className="reel-people-list" aria-live="polite">
                     {bipsLoading && <p className="reel-panel__note">Chargement de vos bips…</p>}
-                    {!bipsLoading && receivedBips.length === 0 && (
+                    {!canUseMemberReel && <p className="reel-panel__note">Les bips reçus sont accessibles avec un compte Vitalis actif et pendant votre présence.</p>}
+                    {canUseMemberReel && !bipsLoading && receivedBips.length === 0 && (
                       <div className="reel-panel__empty">
                         <RadioTower aria-hidden="true" />
                         <strong>Aucun bip reçu pour le moment</strong>
@@ -585,7 +586,8 @@ export function ReelProximityScreen() {
                 ) : activityTab === "connections" ? (
                   <div className="reel-people-list" aria-live="polite">
                     {connectionsLoading && <p className="reel-panel__note">Chargement de vos rencontres…</p>}
-                    {!connectionsLoading && connections.length === 0 && (
+                    {!canUseMemberReel && <p className="reel-panel__note">Connectez-vous à votre compte Vitalis pour retrouver vos mises en relation.</p>}
+                    {canUseMemberReel && !connectionsLoading && connections.length === 0 && (
                       <div className="reel-panel__empty">
                         <UsersRound aria-hidden="true" />
                         <strong>Vous n’avez pas encore de mise en relation</strong>
@@ -675,7 +677,7 @@ export function ReelProximityScreen() {
             ) : (
               <p className="reel-profile-sheet__description">{selectedPerson.description || "Consultez les informations disponibles sur ce profil."}</p>
             )}
-            {currentPresence && preferences.allowBips && !showFullProfile && (
+            {currentPresence && !showFullProfile && (
               <button type="button" className="reel-profile-sheet__primary" onClick={() => void sendBipToSelectedPerson()}>
                 <RadioTower aria-hidden="true" /> Faire signe
               </button>
