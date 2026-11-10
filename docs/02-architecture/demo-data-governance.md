@@ -159,3 +159,12 @@ En cas de conflit apparent, préserver les frontières de données et de synchro
 ## 12. État de mise en œuvre
 
 Décisions produit validées. Règles d'architecture documentées dans cette proposition. Les seuils propres aux domaines, les modèles de provenance définitifs, les fixtures et les tests restent à auditer et à implémenter séparément. La présence de ce document ne constitue pas une preuve d'implémentation.
+
+
+## 13. Précision — fixtures issues d'une source SQL
+
+Le fichier `donnees_sql.sql` fourni par le produit est une source de données fictives, et non une base métier à importer. Les fixtures qui en sont dérivées doivent utiliser les mêmes contrats, validateurs, normaliseurs, sélecteurs et règles de lecture que les données réelles.
+
+Cette réutilisation concerne exclusivement le chemin de lecture et de présentation. Les opérations d'écriture métier, Dexie, outbox, synchronisation et Supabase restent interdites aux fixtures. La provenance `demo` doit survivre à chaque transformation.
+
+Le mapping, les exclusions de sécurité, le traitement des dates anciennes et les tests du convertisseur sont définis dans [Adaptation du jeu SQL de démonstration aux domaines Vitalis — V1](./demo-sql-fixture-adapter-v1.md). En cas de différence entre le schéma SQL et un contrat Vitalis, le contrat Vitalis prévaut ; aucune nouvelle valeur d'enum ou aucun champ métier ne doit être inventé pour faire entrer une ligne SQL.
