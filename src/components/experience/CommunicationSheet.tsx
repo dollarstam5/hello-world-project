@@ -55,7 +55,9 @@ export function CommunicationSheet({
           value="notifications"
           className="py-8 text-center text-sm text-muted-foreground"
         >
-          {t("communication.notifications.empty")}
+          <p role="status" aria-live="polite">
+            {t("communication.notifications.empty")}
+          </p>
         </TabsContent>
         <TabsContent value="assistant">
           <Suspense
@@ -69,10 +71,10 @@ export function CommunicationSheet({
           </Suspense>
         </TabsContent>
         <TabsContent value="messages" className="py-8 text-center text-sm text-muted-foreground">
-          {t("communication.messages.empty")}
+          <p role="status" aria-live="polite">{t("communication.messages.empty")}</p>
         </TabsContent>
         <TabsContent value="reel" className="py-8 text-center text-sm text-muted-foreground">
-          {t("communication.reel.empty")}
+          <p role="status" aria-live="polite">{t("communication.reel.empty")}</p>
         </TabsContent>
       </Tabs>
     </Sheet>
