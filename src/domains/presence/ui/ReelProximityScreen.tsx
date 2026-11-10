@@ -445,7 +445,9 @@ export function ReelProximityScreen() {
         action === "accept" ? "La mise en relation est établie." : "Le bip a été refusé.",
       );
     } catch (error) {
-      setBipsMessage(error instanceof Error ? error.message : "Cette action n’a pas pu aboutir.");
+      setBipsMessage(
+        error instanceof Error ? error.message : "Cette action n’a pas pu aboutir.",
+      );
     }
   };
 
