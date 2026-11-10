@@ -1,4 +1,4 @@
-import type { PublicFlash } from "@eco/core-contracts";
+import type { PublicFlash, PublicProfilePreview } from "@eco/core-contracts";
 
 export type FlashFeedOrigin = "real" | "demo";
 export type PresentedFlash = PublicFlash & { origin: FlashFeedOrigin };
@@ -6,13 +6,38 @@ export type PresentedFlash = PublicFlash & { origin: FlashFeedOrigin };
 const DAY_MS = 24 * 60 * 60 * 1000;
 const MIN_FLASH_FEED_ITEMS = 3;
 
-/**
- * Human, practical and privacy-safe scenarios for interface previews.
- * They use the public Flash contract but never represent live requests.
- * A supplied clock keeps the fixtures deterministic in tests.
- */
-export function createDemoFlashes(now = Date.now()): PublicFlash[] {
-  return [
+type DemoFlash = PublicFlash & { authorPreview: PublicProfilePreview };
+
+const demoAuthors: Record<string, PublicProfilePreview> = {
+  "demo:flash:childcare-weekend": {
+    publicProfileId: "demo:profile:aissatou",
+    displayName: "Aïssatou Ndiaye",
+    avatarUrl: null,
+    areaLabel: "Lieu non précisé",
+    summary: "Parent, cherche une solution de garde attentive pour le week-end.",
+    category: "home",
+  },
+  "demo:flash:moving-urgent": {
+    publicProfileId: "demo:profile:ibrahima",
+    displayName: "Ibrahima Sarr",
+    avatarUrl: null,
+    areaLabel: "Lieu non précisé",
+    summary: "Prépare un déménagement et cherche un coup de main ponctuel.",
+    category: "home",
+  },
+  "demo:flash:meeting-dishes": {
+    publicProfileId: "demo:profile:mariama",
+    displayName: "Mariama Fall",
+    avatarUrl: null,
+    areaLabel: "Dakar (exemple)",
+    summary: "Participe à l’organisation d’une réunion et de son accueil.",
+    category: "events",
+  },
+};
+
+/** Fictional people use initials, not photos or real account information. */
+export function createDemoFlashes(now = Date.now()): DemoFlash[] {
+  const flashes: PublicFlash[] = [
     {
       id: "demo:flash:childcare-weekend",
       kind: "need",
@@ -44,13 +69,10 @@ export function createDemoFlashes(now = Date.now()): PublicFlash[] {
       expiresAt: now + DAY_MS,
     },
   ];
+  return flashes.map((flash) => ({ ...flash, authorPreview: demoAuthors[flash.id]! }));
 }
 
-/**
- * The real feed always comes first. Examples only fill the Flash-specific
- * presentation target after real sources have finished loading.
- * This is a read-only presentation selector; it never writes to repositories.
- */
+/** Real items always come first; local examples only fill the missing slots. */
 export function selectFlashFeedItems(
   realRows: PublicFlash[],
   includeDemo: boolean,
@@ -60,9 +82,7 @@ export function selectFlashFeedItems(
     .sort((a, b) => b.createdAt - a.createdAt)
     .map((flash) => ({ ...flash, origin: "real" as const }));
 
-  if (!includeDemo || realItems.length >= MIN_FLASH_FEED_ITEMS) {
-    return realItems;
-  }
+  if (!includeDemo || realItems.length >= MIN_FLASH_FEED_ITEMS) return realItems;
 
   const existingIds = new Set(realItems.map((item) => item.id));
   const missing = MIN_FLASH_FEED_ITEMS - realItems.length;
