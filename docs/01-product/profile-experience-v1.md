@@ -4,30 +4,30 @@
 
 Le profil s'ouvre en deux temps afin de donner accès aux informations utiles sans interrompre la navigation.
 
-1. **Aperçu rapide** : un appui sur l'avatar du header ouvre une feuille légère avec l'avatar ou les initiales, le nom affiché, le niveau d'identité connu et un accès explicite à la page complète.
-2. **Profil complet** : « Voir le profil complet » ouvre l'espace personnel, organisé en sections courtes et indépendantes.
+1. **Aperçu rapide** : un appui sur l'avatar du header ouvre une feuille légère avec les initiales, le nom affiché et, lorsqu'il existe, l'identifiant public. Un accès explicite mène au profil complet.
+2. **Profil complet** : « Voir le profil complet » ouvre la page personnelle, organisée en sections courtes et indépendantes.
 
 ## Sections de la page complète
 
-- **Identité** : nom affiché, identifiant public et présentation.
-- **Votre activité** : informations et préférences utiles au fonctionnement des espaces, sans inventer de statistiques.
-- **Préférences** : langue et mode d'accompagnement.
-- **Confidentialité** : visibilité du profil et choix des informations partagées.
-- **Compte et sécurité** : informations de compte et actions sensibles.
+- **Identité** : nom affiché obligatoire et identifiant public facultatif.
+- **Préférences** : langue de l'application.
+- **Informations protégées** : rappel des champs système gérés par Vitalis et non modifiables depuis cette page.
 
-Chaque section doit proposer ses propres actions contextuelles : ajouter une information absente, modifier une information existante ou supprimer une information facultative. Les actions destructives demandent confirmation. Les champs système (niveau d'identité, confiance, vérification) sont en lecture seule et ne peuvent pas être supprimés ou modifiés par l'utilisateur.
+Les actions sont contextuelles : ajouter ou modifier un identifiant public, modifier le nom affiché et choisir la langue. L'identifiant public facultatif peut être supprimé après confirmation. Le nom affiché reste obligatoire et ne peut pas être supprimé. Les champs système (identité, confiance, statut et vérification) restent en lecture seule.
 
 ## Règles d'interface
 
 - Sections aérées, titres simples, cartes sobres et actions visibles sans surcharge.
-- Pas de long formulaire initial : ouvrir un petit dialogue ciblé au moment où la personne choisit une action.
-- Enregistrer les changements avec retour clair ; distinguer brouillon local, enregistrement confirmé et erreur.
+- Pas de long formulaire : chaque modification se fait directement dans la section concernée.
+- Enregistrer les changements avec un retour clair ; distinguer l'enregistrement confirmé de l'erreur.
 - Les valeurs absentes restent réellement absentes : ne jamais afficher de faux nom, avatar, statut, score ou activité.
 - L'aperçu rapide ne montre que des informations utiles et non sensibles.
 - Les données publiques ne sont montrées que selon les consentements et règles de visibilité du profil.
 
-## État technique
+## État technique V1
 
-Le header ouvre un aperçu rapide et le lien « Voir le profil complet » mène à la page personnelle. Cette page lit et met à jour les champs autorisés de `profiles` : nom affiché, identifiant public et langue. L’identifiant public peut être ajouté, modifié ou supprimé avec confirmation ; le nom affiché reste obligatoire. Les changements passent par la session Supabase et les droits de colonnes/RLS existants. Les niveaux d’identité, la confiance, le statut et les autres champs système restent pilotés par Vitalis.
+Le header ouvre l'aperçu rapide et le lien « Voir le profil complet » mène à la page personnelle. La page lit et met à jour les champs autorisés de `profiles` : `display_name`, `handle` et `locale`. L'identifiant public peut être ajouté, modifié ou supprimé avec confirmation ; le nom affiché est modifiable mais reste obligatoire. La langue est enregistrée dans le profil et appliquée immédiatement.
 
-La photo de profil, la biographie et les réglages de visibilité avancés ne sont pas encore raccordés à un stockage et à un modèle de consentement validés ; l’interface ne les simule donc pas.
+Le profil rapide affiche le nom et l'identifiant public lorsqu'il est renseigné. En l'absence de photo exploitable, les initiales sont utilisées ; aucune image publique ou URL de stockage privée n'est inventée.
+
+La photo, la biographie, les domaines d'intérêt, les réglages avancés de visibilité et la suppression du compte ne sont pas proposés comme des actions disponibles : leur stockage, leur consentement ou leur parcours sécurisé doivent d'abord être validés. Les niveaux d'identité, la confiance, le statut et les autres champs système restent pilotés par Vitalis.
