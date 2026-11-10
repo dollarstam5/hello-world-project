@@ -44,6 +44,24 @@ describe("Flash demo feed", () => {
     expect(selectFlashFeedItems([], false, NOW)).toEqual([]);
   });
 
+  it("keeps an explicitly public author preview attached to a real result", () => {
+    const authorPreview = {
+      publicProfileId: "public-profile-1",
+      displayName: "Nadia M.",
+      avatarUrl: null,
+      areaLabel: "Douala",
+      summary: "Propose une aide ponctuelle pour les tâches du quotidien.",
+      category: "home" as const,
+    };
+    const rows = selectFlashFeedItems(
+      [{ ...realFlash("real-public-profile", NOW), authorPreview }],
+      false,
+      NOW,
+    );
+
+    expect(rows[0]?.authorPreview).toEqual(authorPreview);
+  });
+
   it("uses only public fields and synthetic demo identifiers", () => {
     const fixtures = createDemoFlashes(NOW);
 
