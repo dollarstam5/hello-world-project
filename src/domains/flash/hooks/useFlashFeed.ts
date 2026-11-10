@@ -73,10 +73,7 @@ export function useFlashFeed() {
   const isOffline = typeof navigator !== "undefined" && !navigator.onLine;
   const canShowDemo =
     !loading && localRows !== undefined && (remoteRows !== null || Boolean(error) || isOffline);
-  const presentedRows = useMemo(
-    () => selectFlashFeedItems(rows, canShowDemo),
-    [rows, canShowDemo],
-  );
+  const presentedRows = useMemo(() => selectFlashFeedItems(rows, canShowDemo), [rows, canShowDemo]);
 
   return {
     rows: presentedRows,
