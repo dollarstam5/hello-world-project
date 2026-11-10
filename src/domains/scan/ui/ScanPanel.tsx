@@ -2,6 +2,7 @@ import { useState } from "react";
 import { LocateFixed, ScanLine } from "lucide-react";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useScan } from "../hooks/useScan";
+import { PublicProfilePreview } from "@/components/app/PublicProfilePreview";
 
 const SCAN_RADIUS_KM = 5;
 const SCAN_LIMIT = 20;
@@ -126,6 +127,11 @@ export function ScanPanel() {
                 {" · "}
                 {r.areaLabel}
               </p>
+              {r.authorPreview ? (
+                <div className="mt-3 border-t border-border-soft pt-2">
+                  <PublicProfilePreview profile={r.authorPreview} origin="real" />
+                </div>
+              ) : null}
             </li>
           ))}
         </ul>
