@@ -100,6 +100,27 @@ CREATE UNIQUE INDEX reel_guest_connection_pair
 CREATE INDEX reel_guest_connection_member_lookup
   ON public.reel_guest_connections (participant_one_member_id, participant_two_member_id, expires_at);
 
+
+-- Member-side minimal history survives guest-session deletion for six months.
+-- It stores no guest session ID, cookie, coordinates, or private guest metadata.
+CREATE TABLE public.reel_guest_connection_history (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  source_connection_id UUID NOT NULL UNIQUE,
+  member_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  partner_display_name TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'active',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  expires_at TIMESTAMPTZ NOT NULL,
+  closed_at TIMESTAMPTZ,
+  CONSTRAINT reel_guest_connection_history_status CHECK (status IN ('active','closed'))
+);
+CREATE INDEX reel_guest_connection_history_member_date
+  ON public.reel_guest_connection_history (member_id, created_at DESC);
+
+ALTER TABLE public.reel_guest_connection_history ENABLE ROW LEVEL SECURITY;
+REVOKE ALL ON public.reel_guest_connection_history FROM PUBLIC, anon, authenticated;
+GRANT ALL ON public.reel_guest_connection_history TO service_role;
+
 ALTER TABLE public.reel_guest_bips ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.reel_guest_connections ENABLE ROW LEVEL SECURITY;
 REVOKE ALL ON public.reel_guest_bips, public.reel_guest_connections FROM PUBLIC, anon, authenticated;
@@ -301,6 +322,24 @@ BEGIN
   SELECT id INTO v_connection_id FROM public.reel_guest_connections
     WHERE LEAST(participant_one_actor_key, participant_two_actor_key) = LEAST(v_bip.sender_actor_key, v_bip.recipient_actor_key)
       AND GREATEST(participant_one_actor_key, participant_two_actor_key) = GREATEST(v_bip.sender_actor_key, v_bip.recipient_actor_key);
+
+  IF v_bip.sender_member_id IS NOT NULL THEN
+    INSERT INTO public.reel_guest_connection_history (
+      source_connection_id, member_id, partner_display_name, status, created_at, expires_at
+    )
+    SELECT connection.id, v_bip.sender_member_id, connection.participant_two_display_name,
+      'active', connection.created_at, connection.expires_at
+    FROM public.reel_guest_connections connection WHERE connection.id = v_connection_id
+    ON CONFLICT (source_connection_id) DO NOTHING;
+  ELSIF v_bip.recipient_member_id IS NOT NULL THEN
+    INSERT INTO public.reel_guest_connection_history (
+      source_connection_id, member_id, partner_display_name, status, created_at, expires_at
+    )
+    SELECT connection.id, v_bip.recipient_member_id, connection.participant_one_display_name,
+      'active', connection.created_at, connection.expires_at
+    FROM public.reel_guest_connections connection WHERE connection.id = v_connection_id
+    ON CONFLICT (source_connection_id) DO NOTHING;
+  END IF;
   RETURN v_connection_id;
 END;
 $$;
@@ -490,17 +529,22 @@ CREATE OR REPLACE FUNCTION public.list_reel_guest_connections_for_member()
 RETURNS TABLE (connection_id UUID, status TEXT, created_at TIMESTAMPTZ, expires_at TIMESTAMPTZ, closed_at TIMESTAMPTZ, partner_display_name TEXT)
 LANGUAGE sql STABLE SECURITY DEFINER
 SET search_path = pg_catalog, public
-AS $$
-  SELECT connection.id, connection.status, connection.created_at, connection.expires_at,
-    connection.closed_at,
-    CASE WHEN connection.participant_one_member_id = auth.uid()
-      THEN connection.participant_two_display_name ELSE connection.participant_one_display_name END
-  FROM public.reel_guest_connections connection
-  WHERE auth.uid() IN (connection.participant_one_member_id, connection.participant_two_member_id)
-    AND connection.expires_at > now()
-    AND (connection.status = 'active' OR connection.closed_at >= now() - interval '6 months')
-  ORDER BY connection.created_at DESC LIMIT 100;
-$$;
+AS $
+  SELECT history.source_connection_id,
+    CASE WHEN history.status = 'active' AND history.expires_at > now() THEN 'active' ELSE 'closed' END,
+    history.created_at,
+    history.expires_at,
+    CASE WHEN history.status = 'closed' OR history.expires_at <= now()
+      THEN COALESCE(history.closed_at, history.expires_at) ELSE NULL END,
+    history.partner_display_name
+  FROM public.reel_guest_connection_history history
+  WHERE history.member_id = auth.uid()
+    AND (
+      (history.status = 'active' AND history.expires_at > now())
+      OR COALESCE(history.closed_at, history.expires_at) >= now() - interval '6 months'
+    )
+  ORDER BY history.created_at DESC LIMIT 100;
+$;
 
 CREATE OR REPLACE FUNCTION public.list_reel_guest_connections_for_session(p_guest_session_id UUID)
 RETURNS TABLE (connection_id UUID, status TEXT, created_at TIMESTAMPTZ, expires_at TIMESTAMPTZ, closed_at TIMESTAMPTZ, partner_display_name TEXT)
@@ -539,6 +583,8 @@ BEGIN
   IF v_connection.status = 'closed' THEN RETURN TRUE; END IF;
   UPDATE public.reel_guest_connections SET status = 'closed', closed_at = now(),
     closed_by_member_id = v_member WHERE id = p_connection_id;
+  UPDATE public.reel_guest_connection_history SET status = 'closed', closed_at = now()
+    WHERE source_connection_id = p_connection_id AND member_id = v_member;
   RETURN TRUE;
 END;
 $$;
@@ -562,6 +608,8 @@ BEGIN
   IF v_connection.status = 'closed' THEN RETURN TRUE; END IF;
   UPDATE public.reel_guest_connections SET status = 'closed', closed_at = now(),
     closed_by_guest_session_id = p_guest_session_id WHERE id = p_connection_id;
+  UPDATE public.reel_guest_connection_history SET status = 'closed', closed_at = now()
+    WHERE source_connection_id = p_connection_id;
   RETURN TRUE;
 END;
 $$;
@@ -599,6 +647,21 @@ DECLARE
   v_deleted INTEGER := 0;
   v_count INTEGER;
 BEGIN
+  UPDATE public.reel_guest_connection_history history
+  SET status = 'closed', closed_at = COALESCE(history.closed_at, now())
+  FROM public.reel_guest_connections connection
+  WHERE history.source_connection_id = connection.id
+    AND history.status = 'active'
+    AND (
+      connection.expires_at <= now()
+      OR connection.participant_one_guest_session_id IN (
+        SELECT id FROM public.reel_guest_sessions WHERE revoked_at IS NOT NULL OR expires_at <= now()
+      )
+      OR connection.participant_two_guest_session_id IN (
+        SELECT id FROM public.reel_guest_sessions WHERE revoked_at IS NOT NULL OR expires_at <= now()
+      )
+    );
+
   DELETE FROM public.reel_guest_bips
   WHERE expires_at <= now()
      OR sender_guest_session_id IN (
@@ -620,9 +683,14 @@ BEGIN
      );
   GET DIAGNOSTICS v_count = ROW_COUNT;
   v_deleted := v_deleted + v_count;
+
+  DELETE FROM public.reel_guest_connection_history
+  WHERE status = 'closed' AND closed_at < now() - interval '6 months';
+  GET DIAGNOSTICS v_count = ROW_COUNT;
+  v_deleted := v_deleted + v_count;
   RETURN v_deleted;
 END;
-$$;
+$;
 REVOKE ALL ON FUNCTION public.purge_reel_guest_interactions() FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.purge_reel_guest_interactions() TO service_role;
 
