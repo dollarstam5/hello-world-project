@@ -99,7 +99,7 @@ export function ProfileQuickPreview({ open, onOpenChange }: ProfileQuickPreviewP
         {t("profile.quickPreview.hint")}
       </p>
       <Button asChild className="h-12 w-full justify-between rounded-xl">
-        <Link to="/espace" onClick={() => onOpenChange(false)}>
+        <Link to="/espace/profil" onClick={() => onOpenChange(false)}>
           {t("profile.quickPreview.full")}
           <ChevronRight className="h-4 w-4" aria-hidden />
         </Link>
