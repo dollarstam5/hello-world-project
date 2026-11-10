@@ -266,3 +266,6 @@ Les tests pgTAP 130, 132 et 133 sont des scénarios ajoutés/modifiés dans la b
 | Événements de résolution des bips | RLS permet aux deux participants de recevoir les événements acceptation/refus pendant la rétention courte ; la liste RPC reste limitée aux bips en attente | Test multi-appareils à exécuter ; confirmer que l’événement Postgres Changes actualise l’expéditeur et le destinataire |
 
 | Nettoyage de l’historique | purge_reel_connection_history() supprime les relations fermées de plus de six mois ; planification quotidienne à 03 h via pg_cron | Test pgTAP 135 ajouté ; vérifier l’exécution planifiée sur Supabase |
+
+
+| Réel — découverte invitée réciproque | Session invitée vérifiée par cookie ; point de découverte privé ; requêtes PostGIS dans les deux sens ; fiches sans coordonnées ni identifiant de session ; rayon de l'auteur respecté | Migration 20261110110000 ; test pgTAP 136 ; parcours invité/membre de découverte | Ajouté dans la branche, non exécuté ; publication invitée UI et bips invités encore absents |
