@@ -282,11 +282,7 @@ export function ReelProximityScreen() {
         setReceivedBips([]);
         setBipsMessage(null);
       } catch (error) {
-        setBipsMessage(
-          error instanceof Error
-            ? error.message
-            : "Vos bips n’ont pas pu être chargés.",
-        );
+        setBipsMessage(error instanceof Error ? error.message : "Vos bips n’ont pas pu être chargés.");
       } finally {
         setBipsLoading(false);
       }
@@ -307,11 +303,7 @@ export function ReelProximityScreen() {
       );
       setBipsMessage(null);
     } catch (error) {
-      setBipsMessage(
-        error instanceof Error
-          ? error.message
-          : "Vos bips n’ont pas pu être chargés.",
-      );
+      setBipsMessage(error instanceof Error ? error.message : "Vos bips n’ont pas pu être chargés.");
     } finally {
       setBipsLoading(false);
     }
@@ -326,9 +318,13 @@ export function ReelProximityScreen() {
       return;
     }
     void refreshBips();
-    if (access.mode === "guest") return;
+    if (access.mode === "guest") {
+      const poll = window.setInterval(() => void refreshBips(), 3000);
+      return () => window.clearInterval(poll);
+    }
     const channel = supabase
-      .channel(`reel-bips-${access.memberId}`)
+      .channel(`reel-member:${access.memberId}`, { config: { private: true } })
+      .on("broadcast", { event: "reel_activity" }, () => void refreshBips())
       .on("postgres_changes", { event: "*", schema: "public", table: "reel_bips" }, () => {
         void refreshBips();
       })
@@ -378,9 +374,13 @@ export function ReelProximityScreen() {
       return;
     }
     void refreshConnections();
-    if (access.mode === "guest") return;
+    if (access.mode === "guest") {
+      const poll = window.setInterval(() => void refreshConnections(), 3000);
+      return () => window.clearInterval(poll);
+    }
     const channel = supabase
-      .channel(`reel-connections-${access.memberId}`)
+      .channel(`reel-member:${access.memberId}`, { config: { private: true } })
+      .on("broadcast", { event: "reel_activity" }, () => void refreshConnections())
       .on("postgres_changes", { event: "*", schema: "public", table: "reel_connections" }, () => {
         void refreshConnections();
       })
@@ -445,9 +445,7 @@ export function ReelProximityScreen() {
         action === "accept" ? "La mise en relation est établie." : "Le bip a été refusé.",
       );
     } catch (error) {
-      setBipsMessage(
-        error instanceof Error ? error.message : "Cette action n’a pas pu aboutir.",
-      );
+      setBipsMessage(error instanceof Error ? error.message : "Cette action n’a pas pu aboutir.");
     }
   };
 
@@ -469,9 +467,7 @@ export function ReelProximityScreen() {
 
   const endGuestConnection = async (connection: ReelGuestConnection) => {
     if (connection.status !== "active") return;
-    if (
-      !window.confirm("Mettre fin à cette mise en relation ? Elle sera fermée pour vous deux.")
-    ) {
+    if (!window.confirm("Mettre fin à cette mise en relation ? Elle sera fermée pour vous deux.")) {
       return;
     }
     try {
@@ -484,9 +480,7 @@ export function ReelProximityScreen() {
       setConnectionsMessage("Cette mise en relation est maintenant terminée.");
     } catch (error) {
       setConnectionsMessage(
-        error instanceof Error
-          ? error.message
-          : "La mise en relation n’a pas pu être fermée.",
+        error instanceof Error ? error.message : "La mise en relation n’a pas pu être fermée.",
       );
     }
   };
