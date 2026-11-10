@@ -40,6 +40,17 @@ export interface ReelBip {
   resolved_at: number | null;
 }
 
+export interface ReelConnection {
+  connection_id: string;
+  partner_id: string;
+  partner_display_name: string;
+  partner_avatar_media_id: string | null;
+  status: "active" | "closed";
+  created_at: string;
+  closed_at: string | null;
+  closed_by: string | null;
+}
+
 type ReelRpcName =
   | "get_my_active_reel_presence"
   | "end_reel_presence"
@@ -47,7 +58,9 @@ type ReelRpcName =
   | "start_reel_presence_from_grant"
   | "send_reel_bip"
   | "command_reel_bip"
-  | "list_reel_bips";
+  | "list_reel_bips"
+  | "list_reel_connections"
+  | "close_reel_connection";
 
 type ReelRpcArgs = Record<string, string | number | boolean | null>;
 
@@ -171,4 +184,15 @@ export async function listReelBips(): Promise<ReelBip[]> {
   const rows = await callReelRpc<ReelBip[]>("list_reel_bips");
   if (!Array.isArray(rows)) throw new Error("La liste des bips reçue n’est pas valide.");
   return rows;
+}
+
+export async function listReelConnections(): Promise<ReelConnection[]> {
+  const rows = await callReelRpc<ReelConnection[]>("list_reel_connections");
+  if (!Array.isArray(rows)) throw new Error("Votre historique de rencontres n’a pas pu être chargé.");
+  return rows;
+}
+
+export async function closeReelConnection(connectionId: string): Promise<void> {
+  requireUuid(connectionId, "Cette mise en relation n’est plus disponible.");
+  await callReelRpc<unknown>("close_reel_connection", { p_connection_id: connectionId });
 }
