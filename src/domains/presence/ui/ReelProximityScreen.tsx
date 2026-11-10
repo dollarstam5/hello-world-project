@@ -1,6 +1,6 @@
-import { useMemo, type CSSProperties } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 import { Link } from "@tanstack/react-router";
-import { Bell, Bluetooth, ChevronDown, CircleUserRound, ScanLine } from "lucide-react";
+import { Bell, Bluetooth, ChevronDown, CircleUserRound, ScanLine, X } from "lucide-react";
 import "./reel-proximity.css";
 
 export interface Person {
@@ -9,6 +9,10 @@ export interface Person {
   avatarUrl: string | null;
   initials: string;
   angle: number;
+  description?: string | null;
+  category?: string | null;
+  locationLabel?: string | null;
+  distanceLabel?: string | null;
 }
 
 interface ReelProximityScreenProps {
@@ -41,7 +45,7 @@ function PersonAvatar({ person, size = "person" }: { person: Person; size?: "per
   );
 }
 
-function RingPerson({ person }: { person: Person }) {
+function RingPerson({ person, onSelect }: { person: Person; onSelect: (person: Person) => void }) {
   const position = useMemo(() => {
     const radians = (person.angle * Math.PI) / 180;
     return {
@@ -51,14 +55,21 @@ function RingPerson({ person }: { person: Person }) {
   }, [person.angle]);
 
   return (
-    <div className="reel-ring-person" style={position}>
+    <button
+      type="button"
+      className="reel-ring-person"
+      style={position}
+      onClick={() => onSelect(person)}
+      aria-label={`Voir le profil de ${person.name}`}
+    >
       <PersonAvatar person={person} />
       <span className="reel-ring-person__name">{person.name}</span>
-    </div>
+    </button>
   );
 }
 
 export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
+  const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
   const visiblePeople = people.slice(0, MAX_RING_PEOPLE);
   const nearbyPeople = people.slice(0, 3);
   const additionalCount = Math.max(0, people.length - 3);
@@ -99,14 +110,26 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
             <span className="reel-radar__me-label">Moi</span>
           </div>
         </div>
-        {visiblePeople.map((person) => <RingPerson key={person.id} person={person} />)}
+        {visiblePeople.map((person) => (
+          <RingPerson key={person.id} person={person} onSelect={setSelectedPerson} />
+        ))}
       </div>
 
       <div className="reel-nearby">
         <p className="reel-nearby__title">All people nearby</p>
         <div className="reel-nearby__row">
           <div className="reel-nearby__avatars">
-            {nearbyPeople.map((person) => <PersonAvatar key={person.id} person={person} size="small" />)}
+            {nearbyPeople.map((person) => (
+              <button
+                key={person.id}
+                type="button"
+                className="reel-nearby__profile"
+                onClick={() => setSelectedPerson(person)}
+                aria-label={`Voir le profil de ${person.name}`}
+              >
+                <PersonAvatar person={person} size="small" />
+              </button>
+            ))}
             <span className="reel-nearby__count">+{additionalCount}</span>
           </div>
           <button className="reel-nearby__bluetooth" type="button" aria-label="Bluetooth">
@@ -114,6 +137,59 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
           </button>
         </div>
       </div>
+
+      {selectedPerson && (
+        <div
+          className="reel-profile-backdrop"
+          role="presentation"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setSelectedPerson(null);
+          }}
+        >
+          <section
+            className="reel-profile-sheet"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="reel-profile-title"
+          >
+            <button
+              type="button"
+              className="reel-profile-sheet__close"
+              onClick={() => setSelectedPerson(null)}
+              aria-label="Fermer le profil"
+            >
+              <X aria-hidden="true" />
+            </button>
+            <PersonAvatar person={selectedPerson} size="me" />
+            <h2 id="reel-profile-title">{selectedPerson.name}</h2>
+            {selectedPerson.category && (
+              <p className="reel-profile-sheet__category">{selectedPerson.category}</p>
+            )}
+            {selectedPerson.description && (
+              <p className="reel-profile-sheet__description">{selectedPerson.description}</p>
+            )}
+            {(selectedPerson.locationLabel || selectedPerson.distanceLabel) && (
+              <div className="reel-profile-sheet__details">
+                {selectedPerson.locationLabel && <span>{selectedPerson.locationLabel}</span>}
+                {selectedPerson.distanceLabel && <span>{selectedPerson.distanceLabel}</span>}
+              </div>
+            )}
+            {!selectedPerson.description && !selectedPerson.category &&
+              !selectedPerson.locationLabel && !selectedPerson.distanceLabel && (
+                <p className="reel-profile-sheet__empty">
+                  Ce profil ne contient pas encore d’autres informations.
+                </p>
+              )}
+            <button
+              type="button"
+              className="reel-profile-sheet__primary"
+              onClick={() => setSelectedPerson(null)}
+            >
+              Fermer
+            </button>
+          </section>
+        </div>
+      )}
     </section>
   );
 }
