@@ -108,7 +108,7 @@ describe("evaluateReelAccess", () => {
     }
     // Location is not required to manage an already established relationship.
     expect(
-      evaluateReelAccess({ access: member, resourceOwned: true }, "close_connection").status,
+      evaluateReelAccess({ access: member, actorRole: "participant", resourceOwned: true }, "close_connection").status,
     ).toBe("server_check");
   });
 
