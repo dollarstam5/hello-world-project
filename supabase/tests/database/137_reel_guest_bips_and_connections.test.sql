@@ -24,7 +24,7 @@ SET LOCAL ROLE service_role;
 SELECT set_config('request.jwt.claims', '{"role":"service_role"}', true);
 
 SELECT lives_ok(
-  $$reel_test$SELECT public.create_reel_guest_presence(
+  $reel_test$SELECT public.create_reel_guest_presence(
     'e5000000-0000-4000-8000-000000000011',
     'Awa', 'avatar-blue', 'Bonamoussadi', 'Disponible pour échanger',
     100, 9.7000, 4.0500, 30, true
@@ -33,11 +33,11 @@ SELECT lives_ok(
 );
 
 SELECT lives_ok(
-  $$reel_test$SELECT public.create_reel_guest_presence(
+  $reel_test$SELECT public.create_reel_guest_presence(
     'e5000000-0000-4000-8000-000000000012',
     'Mina', 'avatar-green', 'Bonamoussadi', 'Disponible pour discuter',
     100, 9.7001, 4.0501, 30, true
-  )$$,
+  )$reel_test$,
   'a second independent guest session can publish its own temporary presence'
 );
 
@@ -75,11 +75,11 @@ SELECT set_config(
 );
 
 SELECT lives_ok(
-  $$$reel_test$SELECT public.send_reel_bip_to_guest(
+  $reel_test$SELECT public.send_reel_bip_to_guest(
     (SELECT id FROM public.reel_guest_presences
      WHERE guest_session_id = 'e5000000-0000-4000-8000-000000000011' AND status = 'active'),
     'e5000000-0000-4000-8000-000000000031'
-  )$$,
+  )$reel_test$,
   'a member can send a bip to a nearby guest'
 );
 
@@ -95,11 +95,11 @@ SELECT is(
 );
 
 SELECT lives_ok(
-  $$$reel_test$SELECT public.command_reel_guest_bip_guest(
+  $reel_test$SELECT public.command_reel_guest_bip_guest(
     'e5000000-0000-4000-8000-000000000011',
     (SELECT id FROM public.reel_guest_bips WHERE client_request_id = 'e5000000-0000-4000-8000-000000000031'),
     'accept'
-  )$$,
+  )$reel_test$,
   'the guest can accept a bip addressed to its session'
 );
 
@@ -125,12 +125,12 @@ SELECT is(
 );
 
 SELECT lives_ok(
-  $$$reel_test$SELECT public.send_reel_guest_bip(
+  $reel_test$SELECT public.send_reel_guest_bip(
     'e5000000-0000-4000-8000-000000000011',
     'member',
     'e5000000-0000-4000-8000-000000000021',
     'e5000000-0000-4000-8000-000000000032'
-  )$$,
+  )$reel_test$,
   'a guest can send a bip to a nearby member'
 );
 
@@ -146,13 +146,13 @@ SELECT is(
 );
 
 SELECT lives_ok(
-  $$reel_test$SELECT public.send_reel_guest_bip(
+  $reel_test$SELECT public.send_reel_guest_bip(
     'e5000000-0000-4000-8000-000000000012',
     'guest',
     (SELECT id FROM public.reel_guest_presences
      WHERE guest_session_id = 'e5000000-0000-4000-8000-000000000011' AND status = 'active'),
     'e5000000-0000-4000-8000-000000000033'
-  )$$,
+  )$reel_test$,
   'one guest can send a bip to a different nearby guest session'
 );
 
@@ -160,12 +160,12 @@ UPDATE public.reel_presence_locations
 SET location = extensions.ST_SetSRID(extensions.ST_MakePoint(4.0600, 9.7100), 4326)::extensions.geography
 WHERE presence_id = 'e5000000-0000-4000-8000-000000000021';
 SELECT throws_ok(
-  $$reel_test$SELECT public.send_reel_guest_bip(
+  $reel_test$SELECT public.send_reel_guest_bip(
     'e5000000-0000-4000-8000-000000000012',
     'member',
     'e5000000-0000-4000-8000-000000000021',
     'e5000000-0000-4000-8000-000000000034'
-  )$$,
+  )$reel_test$,
   '42501',
   'recipient_outside_visibility_radius',
   'a guest bip is rejected when the recipient radius does not include the sender'
@@ -178,10 +178,10 @@ SELECT set_config(
   true
 );
 SELECT lives_ok(
-  $$reel_test$SELECT public.command_reel_guest_bip_member(
+  $reel_test$SELECT public.command_reel_guest_bip_member(
     (SELECT id FROM public.reel_guest_bips WHERE client_request_id = 'e5000000-0000-4000-8000-000000000032'),
     'accept'
-  )$$,
+  )$reel_test$,
   'the member can accept a bip sent by a guest'
 );
 SELECT is(
