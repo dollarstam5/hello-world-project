@@ -971,3 +971,37 @@
     padding-inline: 1rem;
   }
 }
+
+
+/* Réel first-screen hierarchy: clear engine name and human explanation. */
+.reel-proximity__heading {
+  min-width: 0;
+}
+
+.reel-proximity__heading-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.reel-proximity__heading-copy p {
+  max-width: 18rem;
+  margin: 0;
+  color: #607895;
+  font-size: clamp(0.68rem, 2.8vw, 0.82rem);
+  font-weight: 500;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.reel-proximity__heading-copy h1 {
+  margin: 0;
+}
+
+@media (max-width: 360px) {
+  .reel-proximity__heading-copy p {
+    font-size: 0.66rem;
+  }
+}
