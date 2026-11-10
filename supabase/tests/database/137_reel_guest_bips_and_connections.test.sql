@@ -138,6 +138,8 @@ SELECT is(
   'the member can see the accepted temporary relation'
 );
 
+SET LOCAL ROLE service_role;
+SELECT set_config('request.jwt.claims', '{"role":"service_role"}', true);
 SELECT lives_ok(
   $reel_test$SELECT public.send_reel_guest_bip(
     'e5000000-0000-4000-8000-000000000011',
@@ -145,7 +147,7 @@ SELECT lives_ok(
     'e5000000-0000-4000-8000-000000000021',
     'e5000000-0000-4000-8000-000000000032'
   )$reel_test$,
-  'a guest can send a bip to a nearby member'
+  'the server can send a guest bip to a nearby member without exposing the guest session id to the browser'
 );
 
 SET LOCAL ROLE service_role;
@@ -185,6 +187,12 @@ SELECT throws_ok(
   'a guest bip is rejected when the recipient radius does not include the sender'
 );
 
+SELECT set_config(
+  'reel.test_member_bip_id',
+  (SELECT bip.id::text FROM public.reel_guest_bips AS bip
+   WHERE bip.client_request_id = 'e5000000-0000-4000-8000-000000000032'),
+  true
+);
 SET LOCAL ROLE authenticated;
 SELECT set_config(
   'request.jwt.claims',
@@ -193,17 +201,13 @@ SELECT set_config(
 );
 SELECT lives_ok(
   $reel_test$SELECT public.command_reel_guest_bip_member(
-    (SELECT id FROM public.reel_guest_bips WHERE client_request_id = 'e5000000-0000-4000-8000-000000000032'),
+    current_setting('reel.test_member_bip_id')::uuid,
     'accept'
   )$reel_test$,
-  'the member can accept a bip sent by a guest'
+  'the member can accept a bip sent by a guest through the member command'
 );
 SELECT is(
-  (SELECT count(*)::integer FROM public.reel_guest_connections
-   WHERE (participant_one_member_id = 'e5000000-0000-4000-8000-000000000001'
-      AND participant_two_guest_session_id = 'e5000000-0000-4000-8000-000000000011')
-      OR (participant_two_member_id = 'e5000000-0000-4000-8000-000000000001'
-      AND participant_one_guest_session_id = 'e5000000-0000-4000-8000-000000000011')),
+  (SELECT count(*)::integer FROM public.list_reel_guest_connections_for_member()),
   1,
   'accepting the reverse bip reuses the existing pair relation instead of duplicating it'
 );
