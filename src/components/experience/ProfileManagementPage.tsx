@@ -43,30 +43,34 @@ export function ProfileManagementPage() {
 
     async function loadProfile() {
       setLoading(true);
-      const { data: authData, error: authError } = await supabase.auth.getUser();
-      if (!active) return;
+      try {
+        const { data: authData, error: authError } = await supabase.auth.getUser();
+        if (!active) return;
 
-      if (authError || !authData.user) {
-        setUserId(null);
-        setLoading(false);
-        return;
+        if (authError || !authData.user) {
+          setUserId(null);
+          return;
+        }
+
+        setUserId(authData.user.id);
+        const { data, error: profileError } = await supabase
+          .from("profiles")
+          .select("display_name,handle")
+          .eq("id", authData.user.id)
+          .maybeSingle();
+
+        if (!active) return;
+        if (profileError || !data) {
+          setError("profile.error");
+        } else {
+          setProfile(data);
+          setIdentityName(data.display_name || undefined);
+        }
+      } catch {
+        if (active) setError("profile.error");
+      } finally {
+        if (active) setLoading(false);
       }
-
-      setUserId(authData.user.id);
-      const { data, error: profileError } = await supabase
-        .from("profiles")
-        .select("display_name,handle")
-        .eq("id", authData.user.id)
-        .maybeSingle();
-
-      if (!active) return;
-      if (profileError || !data) {
-        setError("profile.error");
-      } else {
-        setProfile(data);
-        setIdentityName(data.display_name || undefined);
-      }
-      setLoading(false);
     }
 
     void loadProfile();
@@ -95,21 +99,30 @@ export function ProfileManagementPage() {
     setSaving(true);
     setError("");
     const update = field === "handle" ? { handle: value || null } : { display_name: value };
-    const { error: updateError } = await supabase.from("profiles").update(update).eq("id", userId);
 
-    if (updateError) {
-      setError("profile.error");
-    } else {
-      if (field === "handle") {
-        setProfile({ ...profile, handle: value || null });
+    try {
+      const { error: updateError } = await supabase
+        .from("profiles")
+        .update(update)
+        .eq("id", userId);
+
+      if (updateError) {
+        setError("profile.error");
       } else {
-        setProfile({ ...profile, display_name: value });
+        if (field === "handle") {
+          setProfile({ ...profile, handle: value || null });
+        } else {
+          setProfile({ ...profile, display_name: value });
+        }
+        if (field === "display_name") setIdentityName(value);
+        setEditing(null);
+        setNotice("profile.saved");
       }
-      if (field === "display_name") setIdentityName(value);
-      setEditing(null);
-      setNotice("profile.saved");
+    } catch {
+      setError("profile.error");
+    } finally {
+      setSaving(false);
     }
-    setSaving(false);
   }
 
   async function removeHandle() {
@@ -117,19 +130,24 @@ export function ProfileManagementPage() {
 
     setSaving(true);
     setError("");
-    const { error: updateError } = await supabase
-      .from("profiles")
-      .update({ handle: null })
-      .eq("id", userId);
+    try {
+      const { error: updateError } = await supabase
+        .from("profiles")
+        .update({ handle: null })
+        .eq("id", userId);
 
-    if (updateError) {
+      if (updateError) {
+        setError("profile.error");
+      } else {
+        setProfile({ ...profile, handle: null });
+        setEditing(null);
+        setNotice("profile.saved");
+      }
+    } catch {
       setError("profile.error");
-    } else {
-      setProfile({ ...profile, handle: null });
-      setEditing(null);
-      setNotice("profile.saved");
+    } finally {
+      setSaving(false);
     }
-    setSaving(false);
   }
 
   if (loading) {
