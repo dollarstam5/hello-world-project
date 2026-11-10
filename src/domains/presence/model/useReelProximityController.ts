@@ -106,6 +106,11 @@ export function useReelProximityController() {
   const [guestConnections, setGuestConnections] = useState<ReelGuestConnection[]>([]);
   const [connectionsLoading, setConnectionsLoading] = useState(false);
   const [connectionsMessage, setConnectionsMessage] = useState<string | null>(null);
+  const [pendingConnectionEnd, setPendingConnectionEnd] = useState<
+    | { kind: "member"; connection: ReelConnection }
+    | { kind: "guest"; connection: ReelGuestConnection }
+    | null
+  >(null);
   const currentPresence =
     access.mode === "member" &&
     access.memberProfileState === "active" &&
@@ -298,18 +303,9 @@ export function useReelProximityController() {
     ]);
   }, [panel, activityTab, refreshConnections, access.memberId, canUseMemberReel, access.mode]);
 
-  const endConnection = async (connection: ReelConnection) => {
-    if (connection.status !== "active") return;
-    if (!window.confirm("Mettre fin à cette mise en relation ? Elle sera fermée pour vous deux."))
-      return;
-    try {
-      await closeReelConnection(connection.connection_id);
-      await refreshConnections();
-      setConnectionsMessage("Cette mise en relation est maintenant terminée.");
-    } catch (error) {
-      setConnectionsMessage(
-        error instanceof Error ? error.message : "La mise en relation n’a pas pu être fermée.",
-      );
+  const endConnection = (connection: ReelConnection) => {
+    if (connection.status === "active") {
+      setPendingConnectionEnd({ kind: "member", connection });
     }
   };
 
@@ -373,25 +369,37 @@ export function useReelProximityController() {
     }
   };
 
-  const endGuestConnection = async (connection: ReelGuestConnection) => {
-    if (connection.status !== "active") return;
-    if (!window.confirm("Mettre fin à cette mise en relation ? Elle sera fermée pour vous deux.")) {
-      return;
+  const endGuestConnection = (connection: ReelGuestConnection) => {
+    if (connection.status === "active") {
+      setPendingConnectionEnd({ kind: "guest", connection });
     }
+  };
+
+  const confirmEndConnection = async () => {
+    if (!pendingConnectionEnd) return;
     try {
-      if (access.mode === "guest") {
-        await closeMyReelGuestConnection({ data: { connectionId: connection.connection_id } });
+      if (pendingConnectionEnd.kind === "member") {
+        await closeReelConnection(pendingConnectionEnd.connection.connection_id);
+      } else if (access.mode === "guest") {
+        await closeMyReelGuestConnection({
+          data: { connectionId: pendingConnectionEnd.connection.connection_id },
+        });
       } else {
-        await closeReelGuestConnectionForMember(connection.connection_id);
+        await closeReelGuestConnectionForMember(
+          pendingConnectionEnd.connection.connection_id,
+        );
       }
       await refreshConnections();
       setConnectionsMessage("Cette mise en relation est maintenant terminée.");
+      setPendingConnectionEnd(null);
     } catch (error) {
       setConnectionsMessage(
         error instanceof Error ? error.message : "La mise en relation n’a pas pu être fermée.",
       );
     }
   };
+
+  const cancelEndConnection = () => setPendingConnectionEnd(null);
 
   const activatePresence = async () => {
     const decision = evaluateReelAccess(
@@ -751,6 +759,9 @@ export function useReelProximityController() {
     resolveReceivedBip,
     resolveGuestBip,
     endGuestConnection,
+    pendingConnectionEnd,
+    confirmEndConnection,
+    cancelEndConnection,
     activatePresence,
     activateGuestPresence,
     stopGuestPresence,
