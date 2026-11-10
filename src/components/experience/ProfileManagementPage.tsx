@@ -95,12 +95,8 @@ export function ProfileManagementPage() {
 
     setSaving(true);
     setError("");
-    const update =
-      field === "handle" ? { handle: value || null } : { display_name: value };
-    const { error: updateError } = await supabase
-      .from("profiles")
-      .update(update)
-      .eq("id", userId);
+    const update = field === "handle" ? { handle: value || null } : { display_name: value };
+    const { error: updateError } = await supabase.from("profiles").update(update).eq("id", userId);
 
     if (updateError) {
       setError("profile.error");
@@ -227,9 +223,7 @@ export function ProfileManagementPage() {
             </Button>
           </div>
         ) : (
-          <p className="mt-1 truncate text-sm font-medium">
-            {value || t("profile.notProvided")}
-          </p>
+          <p className="mt-1 truncate text-sm font-medium">{value || t("profile.notProvided")}</p>
         )}
       </div>
       {editing !== field ? (
