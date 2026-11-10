@@ -36,6 +36,17 @@ for viewport in "320,720" "360,800" "390,844" "412,915" "768,1024" "1024,768" "1
   test -s "$output"
 done
 
+for viewport in "320,720" "360,800" "390,844" "412,915" "768,1024" "1024,768" "1280,800" "844,390"; do
+  output="$OUTPUT_DIR/vitalis-reel-${viewport//,/-}.png"
+  bunx playwright screenshot \
+    --browser=chromium \
+    --viewport-size="$viewport" \
+    --wait-for-selector=".reel-proximity" \
+    "$BASE_URL/reel?__vitalis_smoke=1" \
+    "$output" >/dev/null
+  test -s "$output"
+done
+
 for route in "/flash" "/scan" "/reel" "/radar" "/talents" "/espace"; do
   output="$OUTPUT_DIR/vitalis-route-${route#/}.png"
   selector="#main"
