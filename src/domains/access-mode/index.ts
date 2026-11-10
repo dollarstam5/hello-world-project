@@ -5,10 +5,18 @@ export type {
   MemberProfileState,
   TemporaryGuestIdentity,
 } from "./model/access-mode";
-export { evaluateEngineAccess } from "./model/engine-access";
+export {
+  evaluateEngineAccess,
+  evaluateVitalisDecision,
+} from "./model/engine-access";
 export type {
   AccessDecision,
   AccessDecisionStatus,
+  DecisionReason,
+  DecisionStatus,
   EngineAction,
+  VitalisAction,
+  VitalisDecision,
+  VitalisDecisionContext,
   VitalisEngine,
 } from "./model/engine-access";
