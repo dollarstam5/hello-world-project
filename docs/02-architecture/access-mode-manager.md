@@ -108,7 +108,11 @@ Une commande hors ligne doit rester minimale, être rattachée à son propriéta
 
 Voir [Architecture de session invitée éphémère](../03-engines/reel/reel-guest-session-architecture.md).
 
-## 9. Tests et limites actuelles
+## 9. Matrice des droits par moteur
+
+La matrice de référence pour Réel, Flash, Scan, Radar et 2×2 est maintenue dans [Matrice centrale des droits et décisions Vitalis](./vitalis-engine-decision-matrix.md). Elle distingue les règles déjà connues des décisions encore à spécifier ; une capacité non confirmée reste désactivée.
+
+## 10. Tests et limites actuelles
 
 Les tests unitaires couvrent les cinq moteurs, les modes visiteur/invité/membre, les profils bloqués, les consentements, les quotas, la propriété des ressources, la disponibilité et la mise en attente hors ligne. Ils sont écrits mais leur exécution n'est pas encore confirmée.
 
