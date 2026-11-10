@@ -707,6 +707,7 @@ export function useReelProximityController() {
     guestSessionMessage,
     selectedPerson,
     showFullProfile,
+    setShowFullProfile,
     panel,
     setPanel,
     activityTab,

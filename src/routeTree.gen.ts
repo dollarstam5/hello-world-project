@@ -9,37 +9,51 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TalentsRouteImport } from './routes/talents'
-import { Route as ScanRouteImport } from './routes/scan'
-import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as EspaceRouteImport } from './routes/espace'
+import { Route as FlashRouteImport } from './routes/flash'
 import { Route as RadarRouteImport } from './routes/radar'
 import { Route as ReelRouteImport } from './routes/reel'
-import { Route as FlashRouteImport } from './routes/flash'
-import { Route as EspaceRouteImport } from './routes/espace'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as ApiHealthRouteImport } from './routes/api/health'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as ScanRouteImport } from './routes/scan'
+import { Route as TalentsRouteImport } from './routes/talents'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as ApiHealthRouteImport } from './routes/api/health'
+import { Route as EspaceApercuRouteImport } from './routes/espace.apercu'
+import { Route as EspaceInformationsRouteImport } from './routes/espace.informations'
+import { Route as EspaceProfilRouteImport } from './routes/espace.profil'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
-import { Route as ApiSyncPushRouteImport } from './routes/api/sync/push'
-import { Route as ApiSyncPullRouteImport } from './routes/api/sync/pull'
-import { Route as ApiPublicAssistantRouteImport } from './routes/api/public/assistant'
 import { Route as AuthenticatedAdminModuleRouteImport } from './routes/_authenticated/admin.$module'
+import { Route as ApiPublicAssistantRouteImport } from './routes/api/public/assistant'
+import { Route as ApiSyncPullRouteImport } from './routes/api/sync/pull'
+import { Route as ApiSyncPushRouteImport } from './routes/api/sync/push'
+import { Route as EspaceParametresApplicationRouteImport } from './routes/espace.parametres.application'
+import { Route as EspaceParametresProfilRouteImport } from './routes/espace.parametres.profil'
 
-const TalentsRoute = TalentsRouteImport.update({
-  id: '/talents',
-  path: '/talents',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ScanRoute = ScanRouteImport.update({
-  id: '/scan',
-  path: '/scan',
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ResetPasswordRoute = ResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EspaceRoute = EspaceRouteImport.update({
+  id: '/espace',
+  path: '/espace',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FlashRoute = FlashRouteImport.update({
+  id: '/flash',
+  path: '/flash',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RadarRoute = RadarRouteImport.update({
@@ -52,33 +66,19 @@ const ReelRoute = ReelRouteImport.update({
   path: '/reel',
   getParentRoute: () => rootRouteImport,
 } as any)
-const FlashRoute = FlashRouteImport.update({
-  id: '/flash',
-  path: '/flash',
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const EspaceRoute = EspaceRouteImport.update({
-  id: '/espace',
-  path: '/espace',
+const ScanRoute = ScanRouteImport.update({
+  id: '/scan',
+  path: '/scan',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
-  id: '/_authenticated',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiHealthRoute = ApiHealthRouteImport.update({
-  id: '/api/health',
-  path: '/api/health',
+const TalentsRoute = TalentsRouteImport.update({
+  id: '/talents',
+  path: '/talents',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
@@ -86,25 +86,30 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const ApiHealthRoute = ApiHealthRouteImport.update({
+  id: '/api/health',
+  path: '/api/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EspaceApercuRoute = EspaceApercuRouteImport.update({
+  id: '/apercu',
+  path: '/apercu',
+  getParentRoute: () => EspaceRoute,
+} as any)
+const EspaceInformationsRoute = EspaceInformationsRouteImport.update({
+  id: '/informations',
+  path: '/informations',
+  getParentRoute: () => EspaceRoute,
+} as any)
+const EspaceProfilRoute = EspaceProfilRouteImport.update({
+  id: '/profil',
+  path: '/profil',
+  getParentRoute: () => EspaceRoute,
+} as any)
 const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthenticatedAdminRoute,
-} as any)
-const ApiSyncPushRoute = ApiSyncPushRouteImport.update({
-  id: '/api/sync/push',
-  path: '/api/sync/push',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiSyncPullRoute = ApiSyncPullRouteImport.update({
-  id: '/api/sync/pull',
-  path: '/api/sync/pull',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicAssistantRoute = ApiPublicAssistantRouteImport.update({
-  id: '/api/public/assistant',
-  path: '/api/public/assistant',
-  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAdminModuleRoute =
   AuthenticatedAdminModuleRouteImport.update({
@@ -112,11 +117,37 @@ const AuthenticatedAdminModuleRoute =
     path: '/$module',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const ApiPublicAssistantRoute = ApiPublicAssistantRouteImport.update({
+  id: '/api/public/assistant',
+  path: '/api/public/assistant',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSyncPullRoute = ApiSyncPullRouteImport.update({
+  id: '/api/sync/pull',
+  path: '/api/sync/pull',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSyncPushRoute = ApiSyncPushRouteImport.update({
+  id: '/api/sync/push',
+  path: '/api/sync/push',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EspaceParametresApplicationRoute =
+  EspaceParametresApplicationRouteImport.update({
+    id: '/parametres/application',
+    path: '/parametres/application',
+    getParentRoute: () => EspaceRoute,
+  } as any)
+const EspaceParametresProfilRoute = EspaceParametresProfilRouteImport.update({
+  id: '/parametres/profil',
+  path: '/parametres/profil',
+  getParentRoute: () => EspaceRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/espace': typeof EspaceRoute
+  '/espace': typeof EspaceRouteWithChildren
   '/flash': typeof FlashRoute
   '/radar': typeof RadarRoute
   '/reel': typeof ReelRoute
@@ -125,16 +156,21 @@ export interface FileRoutesByFullPath {
   '/talents': typeof TalentsRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/api/health': typeof ApiHealthRoute
+  '/espace/apercu': typeof EspaceApercuRoute
+  '/espace/informations': typeof EspaceInformationsRoute
+  '/espace/profil': typeof EspaceProfilRoute
   '/admin/$module': typeof AuthenticatedAdminModuleRoute
   '/api/public/assistant': typeof ApiPublicAssistantRoute
   '/api/sync/pull': typeof ApiSyncPullRoute
   '/api/sync/push': typeof ApiSyncPushRoute
+  '/espace/parametres/application': typeof EspaceParametresApplicationRoute
+  '/espace/parametres/profil': typeof EspaceParametresProfilRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/espace': typeof EspaceRoute
+  '/espace': typeof EspaceRouteWithChildren
   '/flash': typeof FlashRoute
   '/radar': typeof RadarRoute
   '/reel': typeof ReelRoute
@@ -142,10 +178,15 @@ export interface FileRoutesByTo {
   '/scan': typeof ScanRoute
   '/talents': typeof TalentsRoute
   '/api/health': typeof ApiHealthRoute
+  '/espace/apercu': typeof EspaceApercuRoute
+  '/espace/informations': typeof EspaceInformationsRoute
+  '/espace/profil': typeof EspaceProfilRoute
   '/admin/$module': typeof AuthenticatedAdminModuleRoute
   '/api/public/assistant': typeof ApiPublicAssistantRoute
   '/api/sync/pull': typeof ApiSyncPullRoute
   '/api/sync/push': typeof ApiSyncPushRoute
+  '/espace/parametres/application': typeof EspaceParametresApplicationRoute
+  '/espace/parametres/profil': typeof EspaceParametresProfilRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesById {
@@ -153,7 +194,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
-  '/espace': typeof EspaceRoute
+  '/espace': typeof EspaceRouteWithChildren
   '/flash': typeof FlashRoute
   '/radar': typeof RadarRoute
   '/reel': typeof ReelRoute
@@ -162,10 +203,15 @@ export interface FileRoutesById {
   '/talents': typeof TalentsRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/api/health': typeof ApiHealthRoute
+  '/espace/apercu': typeof EspaceApercuRoute
+  '/espace/informations': typeof EspaceInformationsRoute
+  '/espace/profil': typeof EspaceProfilRoute
   '/_authenticated/admin/$module': typeof AuthenticatedAdminModuleRoute
   '/api/public/assistant': typeof ApiPublicAssistantRoute
   '/api/sync/pull': typeof ApiSyncPullRoute
   '/api/sync/push': typeof ApiSyncPushRoute
+  '/espace/parametres/application': typeof EspaceParametresApplicationRoute
+  '/espace/parametres/profil': typeof EspaceParametresProfilRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -182,10 +228,15 @@ export interface FileRouteTypes {
     | '/talents'
     | '/admin'
     | '/api/health'
+    | '/espace/apercu'
+    | '/espace/informations'
+    | '/espace/profil'
     | '/admin/$module'
     | '/api/public/assistant'
     | '/api/sync/pull'
     | '/api/sync/push'
+    | '/espace/parametres/application'
+    | '/espace/parametres/profil'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -199,10 +250,15 @@ export interface FileRouteTypes {
     | '/scan'
     | '/talents'
     | '/api/health'
+    | '/espace/apercu'
+    | '/espace/informations'
+    | '/espace/profil'
     | '/admin/$module'
     | '/api/public/assistant'
     | '/api/sync/pull'
     | '/api/sync/push'
+    | '/espace/parametres/application'
+    | '/espace/parametres/profil'
     | '/admin'
   id:
     | '__root__'
@@ -218,10 +274,15 @@ export interface FileRouteTypes {
     | '/talents'
     | '/_authenticated/admin'
     | '/api/health'
+    | '/espace/apercu'
+    | '/espace/informations'
+    | '/espace/profil'
     | '/_authenticated/admin/$module'
     | '/api/public/assistant'
     | '/api/sync/pull'
     | '/api/sync/push'
+    | '/espace/parametres/application'
+    | '/espace/parametres/profil'
     | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -229,7 +290,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
-  EspaceRoute: typeof EspaceRoute
+  EspaceRoute: typeof EspaceRouteWithChildren
   FlashRoute: typeof FlashRoute
   RadarRoute: typeof RadarRoute
   ReelRoute: typeof ReelRoute
@@ -244,25 +305,39 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/talents': {
-      id: '/talents'
-      path: '/talents'
-      fullPath: '/talents'
-      preLoaderRoute: typeof TalentsRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/scan': {
-      id: '/scan'
-      path: '/scan'
-      fullPath: '/scan'
-      preLoaderRoute: typeof ScanRouteImport
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/reset-password': {
-      id: '/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof ResetPasswordRouteImport
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/espace': {
+      id: '/espace'
+      path: '/espace'
+      fullPath: '/espace'
+      preLoaderRoute: typeof EspaceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/flash': {
+      id: '/flash'
+      path: '/flash'
+      fullPath: '/flash'
+      preLoaderRoute: typeof FlashRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/radar': {
@@ -279,46 +354,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReelRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/flash': {
-      id: '/flash'
-      path: '/flash'
-      fullPath: '/flash'
-      preLoaderRoute: typeof FlashRouteImport
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/espace': {
-      id: '/espace'
-      path: '/espace'
-      fullPath: '/espace'
-      preLoaderRoute: typeof EspaceRouteImport
+    '/scan': {
+      id: '/scan'
+      path: '/scan'
+      fullPath: '/scan'
+      preLoaderRoute: typeof ScanRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/health': {
-      id: '/api/health'
-      path: '/api/health'
-      fullPath: '/api/health'
-      preLoaderRoute: typeof ApiHealthRouteImport
+    '/talents': {
+      id: '/talents'
+      path: '/talents'
+      fullPath: '/talents'
+      preLoaderRoute: typeof TalentsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin': {
@@ -328,6 +382,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/health': {
+      id: '/api/health'
+      path: '/api/health'
+      fullPath: '/api/health'
+      preLoaderRoute: typeof ApiHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/espace/apercu': {
+      id: '/espace/apercu'
+      path: '/apercu'
+      fullPath: '/espace/apercu'
+      preLoaderRoute: typeof EspaceApercuRouteImport
+      parentRoute: typeof EspaceRoute
+    }
+    '/espace/informations': {
+      id: '/espace/informations'
+      path: '/informations'
+      fullPath: '/espace/informations'
+      preLoaderRoute: typeof EspaceInformationsRouteImport
+      parentRoute: typeof EspaceRoute
+    }
+    '/espace/profil': {
+      id: '/espace/profil'
+      path: '/profil'
+      fullPath: '/espace/profil'
+      preLoaderRoute: typeof EspaceProfilRouteImport
+      parentRoute: typeof EspaceRoute
+    }
     '/_authenticated/admin/': {
       id: '/_authenticated/admin/'
       path: '/'
@@ -335,11 +417,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
-    '/api/sync/push': {
-      id: '/api/sync/push'
-      path: '/api/sync/push'
-      fullPath: '/api/sync/push'
-      preLoaderRoute: typeof ApiSyncPushRouteImport
+    '/_authenticated/admin/$module': {
+      id: '/_authenticated/admin/$module'
+      path: '/$module'
+      fullPath: '/admin/$module'
+      preLoaderRoute: typeof AuthenticatedAdminModuleRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/api/public/assistant': {
+      id: '/api/public/assistant'
+      path: '/api/public/assistant'
+      fullPath: '/api/public/assistant'
+      preLoaderRoute: typeof ApiPublicAssistantRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/sync/pull': {
@@ -349,19 +438,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiSyncPullRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/assistant': {
-      id: '/api/public/assistant'
-      path: '/api/public/assistant'
-      fullPath: '/api/public/assistant'
-      preLoaderRoute: typeof ApiPublicAssistantRouteImport
+    '/api/sync/push': {
+      id: '/api/sync/push'
+      path: '/api/sync/push'
+      fullPath: '/api/sync/push'
+      preLoaderRoute: typeof ApiSyncPushRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/admin/$module': {
-      id: '/_authenticated/admin/$module'
-      path: '/$module'
-      fullPath: '/admin/$module'
-      preLoaderRoute: typeof AuthenticatedAdminModuleRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+    '/espace/parametres/application': {
+      id: '/espace/parametres/application'
+      path: '/parametres/application'
+      fullPath: '/espace/parametres/application'
+      preLoaderRoute: typeof EspaceParametresApplicationRouteImport
+      parentRoute: typeof EspaceRoute
+    }
+    '/espace/parametres/profil': {
+      id: '/espace/parametres/profil'
+      path: '/parametres/profil'
+      fullPath: '/espace/parametres/profil'
+      preLoaderRoute: typeof EspaceParametresProfilRouteImport
+      parentRoute: typeof EspaceRoute
     }
   }
 }
@@ -390,11 +486,30 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface EspaceRouteChildren {
+  EspaceApercuRoute: typeof EspaceApercuRoute
+  EspaceInformationsRoute: typeof EspaceInformationsRoute
+  EspaceProfilRoute: typeof EspaceProfilRoute
+  EspaceParametresApplicationRoute: typeof EspaceParametresApplicationRoute
+  EspaceParametresProfilRoute: typeof EspaceParametresProfilRoute
+}
+
+const EspaceRouteChildren: EspaceRouteChildren = {
+  EspaceApercuRoute: EspaceApercuRoute,
+  EspaceInformationsRoute: EspaceInformationsRoute,
+  EspaceProfilRoute: EspaceProfilRoute,
+  EspaceParametresApplicationRoute: EspaceParametresApplicationRoute,
+  EspaceParametresProfilRoute: EspaceParametresProfilRoute,
+}
+
+const EspaceRouteWithChildren =
+  EspaceRoute._addFileChildren(EspaceRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
-  EspaceRoute: EspaceRoute,
+  EspaceRoute: EspaceRouteWithChildren,
   FlashRoute: FlashRoute,
   RadarRoute: RadarRoute,
   ReelRoute: ReelRoute,

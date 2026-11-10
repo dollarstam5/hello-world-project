@@ -88,6 +88,7 @@ export function ReelProximityScreen() {
     guestSessionMessage,
     selectedPerson,
     showFullProfile,
+    setShowFullProfile,
     panel,
     setPanel,
     activityTab,

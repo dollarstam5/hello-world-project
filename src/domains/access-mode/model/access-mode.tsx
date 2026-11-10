@@ -95,7 +95,7 @@ export function AccessModeProvider({ children }: { children: ReactNode }) {
         }
         setMemberProfileState(isMemberProfileState(data.status) ? data.status : "error");
       })
-      .catch(() => {
+      .then(undefined, () => {
         if (!cancelled) setMemberProfileState("error");
       });
 
