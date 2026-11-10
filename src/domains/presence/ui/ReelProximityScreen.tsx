@@ -142,6 +142,9 @@ export function ReelProximityScreen() {
       .on("postgres_changes", { event: "*", schema: "public", table: "reel_bips" }, () => {
         void refreshBips();
       })
+      .on("postgres_changes", { event: "*", schema: "public", table: "reel_connections" }, () => {
+        void refreshBips();
+      })
       .subscribe();
     return () => { void supabase.removeChannel(channel); };
   }, [panel, activityTab, refreshBips, access.memberId, canUseMemberReel]);
