@@ -385,9 +385,7 @@ export function useReelProximityController() {
           data: { connectionId: pendingConnectionEnd.connection.connection_id },
         });
       } else {
-        await closeReelGuestConnectionForMember(
-          pendingConnectionEnd.connection.connection_id,
-        );
+        await closeReelGuestConnectionForMember(pendingConnectionEnd.connection.connection_id);
       }
       await refreshConnections();
       setConnectionsMessage("Cette mise en relation est maintenant terminée.");
