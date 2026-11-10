@@ -1,6 +1,6 @@
 BEGIN;
 CREATE EXTENSION IF NOT EXISTS pgtap WITH SCHEMA extensions;
-SELECT plan(13);
+SELECT plan(16);
 
 INSERT INTO auth.users (
   id, aud, role, email, encrypted_password, email_confirmed_at,
@@ -15,18 +15,30 @@ INSERT INTO public.reel_guest_sessions (id, token_hash, purpose, expires_at)
 VALUES (
   'e5000000-0000-4000-8000-000000000011',
   repeat('d', 64), 'reel_guest', now() + interval '30 minutes'
+), (
+  'e5000000-0000-4000-8000-000000000012',
+  repeat('e', 64), 'reel_guest', now() + interval '30 minutes'
 );
 
 SET LOCAL ROLE service_role;
 SELECT set_config('request.jwt.claims', '{"role":"service_role"}', true);
 
 SELECT lives_ok(
-  $$SELECT public.create_reel_guest_presence(
+  $SELECT public.create_reel_guest_presence(
     'e5000000-0000-4000-8000-000000000011',
     'Awa', 'avatar-blue', 'Bonamoussadi', 'Disponible pour échanger',
     100, 9.7000, 4.0500, 30, true
-  )$$,
+  )$,
   'the guest publishes a temporary presence without a member profile'
+);
+
+SELECT lives_ok(
+  $SELECT public.create_reel_guest_presence(
+    'e5000000-0000-4000-8000-000000000012',
+    'Mina', 'avatar-green', 'Bonamoussadi', 'Disponible pour discuter',
+    100, 9.7001, 4.0501, 30, true
+  )$,
+  'a second independent guest session can publish its own temporary presence'
 );
 
 INSERT INTO public.reel_presences (
@@ -131,6 +143,32 @@ SELECT is(
   ) WHERE NOT is_recipient),
   1,
   'the guest can see the bip it sent to the member'
+);
+
+SELECT lives_ok(
+  $SELECT public.send_reel_guest_bip(
+    'e5000000-0000-4000-8000-000000000012',
+    'guest',
+    (SELECT id FROM public.reel_guest_presences
+     WHERE guest_session_id = 'e5000000-0000-4000-8000-000000000011' AND status = 'active'),
+    'e5000000-0000-4000-8000-000000000033'
+  )$,
+  'one guest can send a bip to a different nearby guest session'
+);
+
+UPDATE public.reel_presence_locations
+SET location = extensions.ST_SetSRID(extensions.ST_MakePoint(4.0600, 9.7100), 4326)::extensions.geography
+WHERE presence_id = 'e5000000-0000-4000-8000-000000000021';
+SELECT throws_ok(
+  $SELECT public.send_reel_guest_bip(
+    'e5000000-0000-4000-8000-000000000012',
+    'member',
+    'e5000000-0000-4000-8000-000000000021',
+    'e5000000-0000-4000-8000-000000000034'
+  )$,
+  '42501',
+  'recipient_outside_visibility_radius',
+  'a guest bip is rejected when the recipient radius does not include the sender'
 );
 
 SET LOCAL ROLE authenticated;
