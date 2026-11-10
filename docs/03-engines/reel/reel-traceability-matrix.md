@@ -201,3 +201,33 @@ Cette politique côté client est un garde-fou d’interface et ne remplace jama
 - LOC-T07 : vérifier qu'aucune coordonnée n'est écrite dans localStorage, sessionStorage, les tables de présence ou les journaux applicatifs.
 
 Ces exigences sont approuvées ; les tests ne sont pas réputés exécutés tant qu'un résultat CI sur le SHA courant n'est pas disponible.
+
+
+## 9. Décisions LOC/DISC/PRES — permissions séparées et zone approximative
+
+| ID | Règle | Statut | Preuve attendue |
+| --- | --- | --- | --- |
+| DISC-01 | La découverte locale possède un consentement Réel indépendant des autres moteurs. | VALIDÉE | Demande affichée à chaque entrée ; test sans héritage de permission. |
+| DISC-02 | La découverte permet d'observer sans publier sa propre présence. | VALIDÉE | Test SQL 132 : utilisateur découvre sans ligne de présence personnelle. |
+| DISC-03 | Le refus de découverte maintient le mode calme et n'ouvre aucune session de découverte. | VALIDÉE | Test interface et vérification de l'absence de session. |
+| PRES-01 | La publication de sa présence demande un accord distinct et le consentement `reel_presence`. | VALIDÉE | Test de refus sans consentement. |
+| PRES-02 | La présence publiée est approximative ; aucune coordonnée GPS brute n'est stockée. | VALIDÉE | Contrôle des colonnes et audit des données. |
+| PRES-03 | Le navigateur ne choisit pas librement sa zone de publication ; il consomme un jeton serveur à usage unique. | VALIDÉE | Test d'un jeton absent, expiré, réutilisé ou appartenant à un autre membre. |
+| ZONE-01 | Les clés de zone sont des HMAC calculés côté serveur à partir d'une cellule d'environ 200 m. | IMPLÉMENTÉE, À TESTER | Tests unitaires de stabilité, de voisinage, de secret absent et de non-exposition des coordonnées. |
+| ZONE-02 | Une session de découverte dure 15 minutes et couvre la cellule et les huit cellules voisines. | IMPLÉMENTÉE, À TESTER | Test d'expiration, de purge et de périmètre. |
+| ZONE-03 | Le rayon choisi n'est pas encore appliqué par un calcul métrique réel. | OUVERT | Ne pas afficher de distance exacte avant livraison du calcul spatial. |
+
+### Modes d'accès constatés dans le code
+
+- Visiteur : présentation publique ; pas d'action métier Réel.
+- Invité : entrée dans le parcours et identité temporaire locale/serveur préparée, mais les opérations métier Réel ne sont pas encore ouvertes à cette session.
+- Membre avec profil actif : découverte et publication de présence via les contrôles serveur séparés.
+- Profil invité/incomplet, suspendu, fermé, manquant ou en erreur : opérations métier refusées.
+
+### Tests ajoutés mais non exécutés
+
+- `supabase/tests/database/132_reel_discovery_without_presence.test.sql` : vérifie qu'un membre peut découvrir sans publier sa présence et que la présence seule ne donne pas le droit de découverte.
+- `supabase/tests/database/130_reel_presence_security.test.sql` : utilise désormais les jetons de zone à usage unique pour publier une présence.
+- `tests/access-mode/reel-access-policy.test.ts` : vérifie l'indépendance des deux consentements.
+
+La présence de ces tests dans la branche ne constitue pas une preuve de leur réussite. Migration Supabase, pgTAP, Vitest, lint, build et tests sur appareils restent à exécuter.
