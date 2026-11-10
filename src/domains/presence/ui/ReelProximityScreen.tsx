@@ -1,5 +1,7 @@
 import { useEffect, useState, type CSSProperties } from "react";
 import { requestReelLocation } from "@/domains/presence/api/reel-location.client";
+import { commandReelBip, listReelBips, sendReelBip, type ReelBip } from "@/domains/presence/api/reel-presence.client";
+import { supabase } from "@/integrations/supabase/client";
 import { resolveReelZone } from "@/domains/presence/api/reel-zone.functions";
 import { endReelPresence, getMyActiveReelPresence, listReelNearbyPresence, startReelPresence, type ReelPresence } from "@/domains/presence/api/reel-presence.client";
 import { useAccessMode } from "@/domains/access-mode";
@@ -89,6 +91,9 @@ export function ReelProximityScreen() {
   const [presenceDescription, setPresenceDescription] = useState("Disponible pour échanger autour de moi");
   const [presenceLoading, setPresenceLoading] = useState(false);
   const [presenceMessage, setPresenceMessage] = useState<string | null>(null);
+  const [receivedBips, setReceivedBips] = useState<ReelBip[]>([]);
+  const [bipsLoading, setBipsLoading] = useState(false);
+  const [bipsMessage, setBipsMessage] = useState<string | null>(null);
   const [preferences, setPreferences] = useState({
     showDistance: true,
     allowBips: true,
@@ -110,6 +115,53 @@ export function ReelProximityScreen() {
       .catch(() => { if (!cancelled) setPresenceMessage("Votre présence actuelle n’a pas pu être vérifiée."); });
     return () => { cancelled = true; };
   }, [access.mode, access.memberProfileState, access.loading, access.memberId]);
+
+  const refreshBips = async () => {
+    if (!canUseMemberReel) return;
+    setBipsLoading(true);
+    try {
+      const rows = await listReelBips();
+      setReceivedBips(rows.filter((bip) => bip.recipient_id === access.memberId && bip.status === "pending"));
+      setBipsMessage(null);
+    } catch (error) {
+      setBipsMessage(error instanceof Error ? error.message : "Vos bips n’ont pas pu être chargés.");
+    } finally {
+      setBipsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (panel !== "activity" || activityTab !== "bips" || !canUseMemberReel) return;
+    void refreshBips();
+    const channel = supabase
+      .channel(`reel-bips-${access.memberId}`)
+      .on("postgres_changes", { event: "*", schema: "public", table: "reel_bips" }, () => {
+        void refreshBips();
+      })
+      .subscribe();
+    return () => { void supabase.removeChannel(channel); };
+  }, [panel, activityTab, canUseMemberReel, access.memberId]);
+
+  const sendBipToSelectedPerson = async () => {
+    if (!selectedPerson || !currentPresence || !preferences.allowBips) return;
+    try {
+      await sendReelBip(selectedPerson.id);
+      setBipsMessage("Votre signe a bien été envoyé.");
+      setSelectedPerson(null);
+    } catch (error) {
+      setBipsMessage(error instanceof Error ? error.message : "Votre signe n’a pas pu être envoyé.");
+    }
+  };
+
+  const resolveReceivedBip = async (bip: ReelBip, action: "accept" | "decline") => {
+    try {
+      await commandReelBip(bip.id, action);
+      await refreshBips();
+      setBipsMessage(action === "accept" ? "La mise en relation est établie." : "Le bip a été refusé.");
+    } catch (error) {
+      setBipsMessage(error instanceof Error ? error.message : "Cette action n’a pas pu aboutir.");
+    }
+  };
 
   const activatePresence = async () => {
     const decision = evaluateReelAccess(
@@ -466,16 +518,38 @@ export function ReelProximityScreen() {
                 <h2 id="reel-panel-title">Notifications et rencontres</h2>
                 <div className="reel-panel__tabs" role="tablist" aria-label="Activité">
                   <button type="button" role="tab" aria-selected={activityTab === "notifications"} aria-disabled={!activityEnabled} disabled={!activityEnabled} className={activityTab === "notifications" ? "is-active" : ""} onClick={() => setActivityTab("notifications")}>Alertes</button>
-                  <button type="button" role="tab" aria-selected={activityTab === "bips"} aria-disabled={!discoveryEnabled} disabled={!discoveryEnabled} className={activityTab === "bips" ? "is-active" : ""} onClick={() => setActivityTab("bips")}>Bips reçus</button>
+                  <button type="button" role="tab" aria-selected={activityTab === "bips"} aria-disabled={!currentPresence} disabled={!currentPresence} className={activityTab === "bips" ? "is-active" : ""} onClick={() => setActivityTab("bips")}>Bips reçus</button>
                   <button type="button" role="tab" aria-selected={activityTab === "connections"} className={activityTab === "connections" ? "is-active" : ""} onClick={() => setActivityTab("connections")}>Rencontres</button>
                 </div>
-                <div className="reel-panel__empty">
-                  {activityTab === "notifications" ? <Bell aria-hidden="true" /> : activityTab === "bips" ? <RadioTower aria-hidden="true" /> : <UsersRound aria-hidden="true" />}
-                  <strong>{activityTab === "notifications" ? "Tout est calme pour le moment" : activityTab === "bips" ? "Aucun bip reçu pour le moment" : "Vos relations déjà établies seront accessibles ici dès que leur historique sera connecté"}</strong>
-                  <span>{activityTab === "notifications" ? "Les nouvelles activités liées à Réel seront réunies ici." : activityTab === "bips" ? "Quand une personne vous fera signe, vous pourrez la retrouver ici." : "Vous pourrez retrouver ici les rencontres acceptées et toujours disponibles."}</span>
-                </div>
+                {activityTab === "bips" ? (
+                  <div className="reel-people-list" aria-live="polite">
+                    {bipsLoading && <p className="reel-panel__note">Chargement de vos bips…</p>}
+                    {!bipsLoading && receivedBips.length === 0 && (
+                      <div className="reel-panel__empty">
+                        <RadioTower aria-hidden="true" />
+                        <strong>Aucun bip reçu pour le moment</strong>
+                        <span>Les signes reçus pendant votre présence apparaîtront ici.</span>
+                      </div>
+                    )}
+                    {receivedBips.map((bip) => (
+                      <div className="reel-people-list__item" key={bip.id}>
+                        <span className="reel-avatar reel-avatar--small"><CircleUserRound aria-hidden="true" /></span>
+                        <span><strong>Une personne vous a fait signe</strong><small>Vous pouvez accepter ou refuser cette mise en relation.</small></span>
+                        <button type="button" onClick={() => void resolveReceivedBip(bip, "accept")}>Accepter</button>
+                        <button type="button" onClick={() => void resolveReceivedBip(bip, "decline")}>Refuser</button>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="reel-panel__empty">
+                    {activityTab === "notifications" ? <Bell aria-hidden="true" /> : <UsersRound aria-hidden="true" />}
+                    <strong>{activityTab === "notifications" ? "Tout est calme pour le moment" : "Vos relations déjà établies seront accessibles ici dès que leur historique sera connecté"}</strong>
+                    <span>{activityTab === "notifications" ? "Les nouvelles activités liées à Réel seront réunies ici." : "Vous pourrez retrouver ici les rencontres acceptées et toujours disponibles."}</span>
+                  </div>
+                )}
+                {bipsMessage && <p className="reel-panel__note" role="status">{bipsMessage}</p>}
                 {!activityEnabled && <p className="reel-panel__note">En mode calme, les alertes et les bips sont suspendus. Vos mises en relation déjà établies restent consultables.</p>}
-                {activityEnabled && <p className="reel-panel__note">Les événements réels apparaîtront ici dès que le service de rencontres sera connecté.</p>}
+                {activityEnabled && activityTab !== "bips" && <p className="reel-panel__note">Les événements réels apparaîtront ici dès que leur source sera connectée.</p>}
               </>
             )}
 
@@ -536,6 +610,11 @@ export function ReelProximityScreen() {
               </>
             ) : (
               <p className="reel-profile-sheet__description">{selectedPerson.description || "Consultez les informations disponibles sur ce profil."}</p>
+            )}
+            {currentPresence && preferences.allowBips && !showFullProfile && (
+              <button type="button" className="reel-profile-sheet__primary" onClick={() => void sendBipToSelectedPerson()}>
+                <RadioTower aria-hidden="true" /> Faire signe
+              </button>
             )}
             <button type="button" className="reel-profile-sheet__primary" onClick={() => {
               if (showFullProfile) closeProfile();
