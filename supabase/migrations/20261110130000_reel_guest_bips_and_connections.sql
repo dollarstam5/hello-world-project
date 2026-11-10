@@ -112,7 +112,7 @@ CREATE OR REPLACE FUNCTION public.send_reel_bip_to_guest(
 RETURNS TABLE (bip_id UUID, bip_status TEXT, bip_expires_at TIMESTAMPTZ)
 LANGUAGE plpgsql SECURITY DEFINER
 SET search_path = pg_catalog, public, extensions
-AS $
+AS $$
 DECLARE
   v_member UUID := public.reel_require_active_profile();
   v_sender public.reel_presences;
@@ -163,7 +163,7 @@ BEGIN
   IF v_bip.id IS NULL THEN RAISE EXCEPTION 'bip_creation_failed' USING ERRCODE = '40001'; END IF;
   RETURN QUERY SELECT v_bip.id, v_bip.status, v_bip.expires_at;
 END;
-$;
+$$;
 
 CREATE OR REPLACE FUNCTION public.send_reel_guest_bip(
   p_guest_session_id UUID,
@@ -174,7 +174,7 @@ CREATE OR REPLACE FUNCTION public.send_reel_guest_bip(
 RETURNS TABLE (bip_id UUID, bip_status TEXT, bip_expires_at TIMESTAMPTZ)
 LANGUAGE plpgsql SECURITY DEFINER
 SET search_path = pg_catalog, public, extensions
-AS $
+AS $$
 DECLARE
   v_sender public.reel_guest_presences;
   v_member_presence public.reel_presences;
@@ -259,7 +259,7 @@ BEGIN
   IF v_bip.id IS NULL THEN RAISE EXCEPTION 'bip_creation_failed' USING ERRCODE = '40001'; END IF;
   RETURN QUERY SELECT v_bip.id, v_bip.status, v_bip.expires_at;
 END;
-$;
+$$;
 
 CREATE OR REPLACE FUNCTION public.create_reel_guest_connection_from_bip(p_bip_id UUID)
 RETURNS UUID
@@ -330,7 +330,7 @@ BEGIN
   IF p_action = 'accept' THEN PERFORM public.create_reel_guest_connection_from_bip(p_bip_id); END IF;
   RETURN QUERY SELECT v_bip.id, v_bip.status, v_bip.expires_at;
 END;
-$;
+$$;
 
 CREATE OR REPLACE FUNCTION public.command_reel_guest_bip_guest(
   p_guest_session_id UUID, p_bip_id UUID, p_action TEXT
@@ -338,7 +338,7 @@ CREATE OR REPLACE FUNCTION public.command_reel_guest_bip_guest(
 RETURNS TABLE (bip_id UUID, bip_status TEXT, bip_expires_at TIMESTAMPTZ)
 LANGUAGE plpgsql SECURITY DEFINER
 SET search_path = pg_catalog, public
-AS $
+AS $$
 DECLARE
   v_bip public.reel_guest_bips;
 BEGIN
@@ -370,7 +370,7 @@ BEGIN
   IF p_action = 'accept' THEN PERFORM public.create_reel_guest_connection_from_bip(p_bip_id); END IF;
   RETURN QUERY SELECT v_bip.id, v_bip.status, v_bip.expires_at;
 END;
-$;
+$$;
 
 CREATE OR REPLACE FUNCTION public.list_reel_guest_bips_for_member()
 RETURNS TABLE (id UUID, status TEXT, created_at TIMESTAMPTZ, expires_at TIMESTAMPTZ, is_recipient BOOLEAN)
@@ -512,7 +512,7 @@ CREATE OR REPLACE FUNCTION public.purge_reel_guest_interactions()
 RETURNS INTEGER
 LANGUAGE plpgsql SECURITY DEFINER
 SET search_path = pg_catalog, public
-AS $
+AS $$
 DECLARE
   v_deleted INTEGER := 0;
   v_count INTEGER;
@@ -540,7 +540,7 @@ BEGIN
   v_deleted := v_deleted + v_count;
   RETURN v_deleted;
 END;
-$;
+$$;
 REVOKE ALL ON FUNCTION public.purge_reel_guest_interactions() FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.purge_reel_guest_interactions() TO service_role;
 
