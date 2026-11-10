@@ -939,11 +939,7 @@ export function ReelProximityScreen() {
               Elle sera fermée pour vous deux et ne sera plus active dans Réel.
             </p>
             <div className="reel-panel__actions">
-              <button
-                type="button"
-                className="reel-panel__secondary"
-                onClick={cancelEndConnection}
-              >
+              <button type="button" className="reel-panel__secondary" onClick={cancelEndConnection}>
                 Garder la relation
               </button>
               <button
