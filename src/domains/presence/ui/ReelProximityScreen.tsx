@@ -276,7 +276,11 @@ export function ReelProximityScreen() {
         setReceivedBips([]);
         setBipsMessage(null);
       } catch (error) {
-        setBipsMessage(error instanceof Error ? error.message : "Vos bips n’ont pas pu être chargés.");
+        setBipsMessage(
+          error instanceof Error
+            ? error.message
+            : "Vos bips n’ont pas pu être chargés.",
+        );
       } finally {
         setBipsLoading(false);
       }
@@ -297,7 +301,11 @@ export function ReelProximityScreen() {
       );
       setBipsMessage(null);
     } catch (error) {
-      setBipsMessage(error instanceof Error ? error.message : "Vos bips n’ont pas pu être chargés.");
+      setBipsMessage(
+        error instanceof Error
+          ? error.message
+          : "Vos bips n’ont pas pu être chargés.",
+      );
     } finally {
       setBipsLoading(false);
     }
@@ -1268,8 +1276,8 @@ export function ReelProximityScreen() {
                 </div>
 
                 <p className="reel-panel__note">
-                  Les réglages de visibilité sont appliqués uniquement lorsqu’ils sont confirmés
-                  par Vitalis. Vous gardez le contrôle sur l’activation et l’arrêt de votre présence.
+                  Les réglages de visibilité sont appliqués uniquement lorsqu’ils sont confirmés par
+                  Vitalis. Vous gardez le contrôle sur l’activation et l’arrêt de votre présence.
                 </p>
                 <button
                   type="button"
@@ -1417,10 +1425,16 @@ export function ReelProximityScreen() {
                         <div className="reel-panel__empty">
                           <UsersRound aria-hidden="true" />
                           <strong>Aucune rencontre pour le moment</strong>
-                          <span>Les personnes qui acceptent votre signe apparaîtront ici pendant votre session invitée.</span>
+                          <span>
+                            Les personnes qui acceptent votre signe apparaîtront ici pendant votre
+                            session invitée.
+                          </span>
                         </div>
                       )}
-                    {canUseMemberReel && !connectionsLoading && connections.length === 0 && guestConnections.length === 0 && (
+                    {canUseMemberReel &&
+                      !connectionsLoading &&
+                      connections.length === 0 &&
+                      guestConnections.length === 0 && (
                       <div className="reel-panel__empty">
                         <UsersRound aria-hidden="true" />
                         <strong>Vous n’avez pas encore de mise en relation</strong>
