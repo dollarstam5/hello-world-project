@@ -77,7 +77,7 @@ CREATE TABLE public.reel_bips (
   expires_at BIGINT NOT NULL,
   resolved_at BIGINT,
   CONSTRAINT reel_bip_distinct_people CHECK (sender_id <> recipient_id),
-  CONSTRAINT reel_bip_status CHECK (status IN ('pending', 'accepted', 'declined', 'withdrawn')),
+  CONSTRAINT reel_bip_status CHECK (status IN ('pending', 'accepted', 'declined', 'withdrawn', 'expired')),
   CONSTRAINT reel_bip_expiry CHECK (expires_at > created_at),
   CONSTRAINT reel_bip_resolution CHECK (
     (status = 'pending' AND resolved_at IS NULL)
@@ -110,7 +110,7 @@ AS $$
     WHERE own_presence.owner_id = auth.uid()
       AND own_presence.zone_key = p_zone_key
       AND own_presence.status = 'active'
-      AND own_presence.expires_at > (extract(epoch FROM clock_timestamp()) * 1000)::bigint
+      AND own_presence.expires_at > (extract(epoch FROM now()) * 1000)::bigint
   );
 $$;
 
@@ -121,7 +121,7 @@ CREATE POLICY reel_presence_owner_or_same_active_zone
   ON public.reel_presences
   FOR SELECT TO authenticated
   USING (
-    owner_id = auth.uid()
+    (owner_id = auth.uid() AND status = 'active' AND expires_at > (extract(epoch FROM now()) * 1000)::bigint)
     OR (
       status = 'active'
       AND expires_at > (extract(epoch FROM clock_timestamp()) * 1000)::bigint
@@ -137,7 +137,11 @@ CREATE POLICY reel_connection_participants_read
 CREATE POLICY reel_bip_participants_read
   ON public.reel_bips
   FOR SELECT TO authenticated
-  USING (auth.uid() IN (sender_id, recipient_id));
+  USING (
+    auth.uid() IN (sender_id, recipient_id)
+    AND status = 'pending'
+    AND expires_at > (extract(epoch FROM now()) * 1000)::bigint
+  );
 
 CREATE OR REPLACE FUNCTION public.start_reel_presence(
   p_zone_key TEXT,
@@ -301,6 +305,26 @@ BEGIN
 END;
 $$;
 
+CREATE OR REPLACE FUNCTION public.purge_expired_reel_bips()
+RETURNS INTEGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = pg_catalog, public
+AS $
+DECLARE
+  v_deleted INTEGER;
+BEGIN
+  DELETE FROM public.reel_bips
+  WHERE status IN ('pending', 'declined', 'withdrawn', 'expired')
+    AND expires_at <= (extract(epoch FROM now()) * 1000)::bigint;
+  GET DIAGNOSTICS v_deleted = ROW_COUNT;
+  RETURN v_deleted;
+END;
+$;
+
+REVOKE ALL ON FUNCTION public.purge_expired_reel_bips() FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.purge_expired_reel_bips() TO service_role;
+
 CREATE OR REPLACE FUNCTION public.send_reel_bip(
   p_recipient_presence_id UUID,
   p_client_request_id UUID
@@ -323,6 +347,8 @@ BEGIN
   IF p_client_request_id IS NULL THEN
     RAISE EXCEPTION 'client_request_id_required' USING ERRCODE = '22023';
   END IF;
+
+  PERFORM public.purge_expired_reel_bips();
 
   SELECT * INTO v_bip
   FROM public.reel_bips
@@ -438,8 +464,11 @@ BEGIN
   END IF;
 
   IF v_bip.expires_at <= v_now THEN
-    DELETE FROM public.reel_bips WHERE id = v_bip.id;
-    RAISE EXCEPTION 'bip_expired' USING ERRCODE = '22023';
+    UPDATE public.reel_bips
+    SET status = 'expired', resolved_at = v_now, updated_at = v_now
+    WHERE id = v_bip.id
+    RETURNING * INTO v_bip;
+    RETURN v_bip;
   END IF;
 
   IF p_action IN ('accept', 'decline') AND v_bip.recipient_id <> v_user_id THEN
@@ -519,22 +548,42 @@ COMMENT ON TABLE public.reel_bips IS
 COMMENT ON TABLE public.reel_connections IS
   'Durable pairwise relationship created when a recipient accepts a Reel bip.';
 
+DO $
+BEGIN
+  IF EXISTS (SELECT 1 FROM pg_extension WHERE extname = 'pg_cron') THEN
+    BEGIN
+      PERFORM cron.schedule(
+        'reel-expired-bip-cleanup',
+        '*/15 * * * *',
+        'SELECT public.purge_expired_reel_bips();'
+      );
+    EXCEPTION
+      WHEN duplicate_object THEN NULL;
+      WHEN undefined_function OR invalid_schema_name THEN NULL;
+    END;
+  END IF;
+END;
+$;
+
 -- Supabase Postgres Changes can fan out only rows permitted by each subscriber's RLS.
 ALTER TABLE public.reel_presences REPLICA IDENTITY FULL;
 ALTER TABLE public.reel_bips REPLICA IDENTITY FULL;
 ALTER TABLE public.reel_connections REPLICA IDENTITY FULL;
 
-DO $$
+DO $
+DECLARE
+  v_table TEXT;
 BEGIN
   IF EXISTS (SELECT 1 FROM pg_publication WHERE pubname = 'supabase_realtime') THEN
-    BEGIN
-      ALTER PUBLICATION supabase_realtime
-        ADD TABLE public.reel_presences, public.reel_bips, public.reel_connections;
-    EXCEPTION WHEN duplicate_object THEN
-      NULL;
-    END;
+    FOREACH v_table IN ARRAY ARRAY['reel_presences', 'reel_bips', 'reel_connections'] LOOP
+      BEGIN
+        EXECUTE format('ALTER PUBLICATION supabase_realtime ADD TABLE public.%I', v_table);
+      EXCEPTION WHEN duplicate_object THEN
+        NULL;
+      END;
+    END LOOP;
   END IF;
 END;
-$$;
+$;
 
 COMMIT;
