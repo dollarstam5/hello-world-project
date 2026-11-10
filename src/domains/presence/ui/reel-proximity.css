@@ -1118,3 +1118,60 @@
     align-items: stretch;
   }
 }
+
+
+.reel-calm-shortcuts {
+  display: grid;
+  width: 100%;
+  max-width: 38rem;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.reel-calm-shortcuts button {
+  display: flex;
+  min-height: 4.25rem;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid rgb(69 124 220 / 14%);
+  border-radius: var(--reel-round-lg);
+  background: rgb(255 255 255 / 82%);
+  color: var(--reel-ink);
+  text-align: left;
+  box-shadow: 0 0.35rem 1rem rgb(50 91 160 / 7%);
+}
+
+.reel-calm-shortcuts button > svg:first-child {
+  width: 1.35rem;
+  height: 1.35rem;
+  flex: 0 0 auto;
+  color: var(--reel-blue-start);
+}
+
+.reel-calm-shortcuts button > svg:last-child {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+  transform: rotate(-90deg);
+  color: #71839d;
+}
+
+.reel-calm-shortcuts button span {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.reel-calm-shortcuts button strong {
+  font-size: var(--text-sm);
+  line-height: var(--leading-tight);
+}
+
+.reel-calm-shortcuts button small {
+  color: #60718a;
+  font-size: var(--text-xs);
+  line-height: var(--leading-tight);
+}
