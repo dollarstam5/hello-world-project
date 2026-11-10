@@ -84,7 +84,7 @@ export function ReelProximityScreen() {
   const [activityTab, setActivityTab] = useState<ActivityTab>("notifications");
   const [radius, setRadius] = useState("100 m");
   const [duration, setDuration] = useState("2 h");
-  const [currentPresence, setCurrentPresence] = useState<ReelPresence | null>(null);
+  const [loadedPresence, setLoadedPresence] = useState<{ memberId: string; presence: ReelPresence | null } | null>(null);
   const [presenceConsent, setPresenceConsent] = useState(false);
   const [presenceDescription, setPresenceDescription] = useState("Disponible pour échanger autour de moi");
   const [presenceLoading, setPresenceLoading] = useState(false);
@@ -95,17 +95,21 @@ export function ReelProximityScreen() {
     showOnlyAvailable: true,
   });
 
+  const currentPresence =
+    access.mode === "member" && access.memberProfileState === "active" &&
+    loadedPresence?.memberId === access.memberId
+      ? loadedPresence.presence
+      : null;
+
   useEffect(() => {
     let cancelled = false;
-    if (access.mode !== "member" || access.memberProfileState !== "active" || access.loading) {
-      setCurrentPresence(null);
-      return;
-    }
+    const memberId = access.memberId;
+    if (access.mode !== "member" || access.memberProfileState !== "active" || access.loading || !memberId) return;
     void getMyActiveReelPresence()
-      .then((presence) => { if (!cancelled) setCurrentPresence(presence); })
+      .then((presence) => { if (!cancelled) setLoadedPresence({ memberId, presence }); })
       .catch(() => { if (!cancelled) setPresenceMessage("Votre présence actuelle n’a pas pu être vérifiée."); });
     return () => { cancelled = true; };
-  }, [access.mode, access.memberProfileState, access.loading]);
+  }, [access.mode, access.memberProfileState, access.loading, access.memberId]);
 
   const activatePresence = async () => {
     const decision = evaluateReelAccess(
@@ -138,7 +142,7 @@ export function ReelProximityScreen() {
         durationMinutes: durationMinutes[duration] as 30 | 60 | 120 | 180 | 360 | 720 | 1440,
         consent: true,
       });
-      setCurrentPresence(presence);
+      if (access.memberId) setLoadedPresence({ memberId: access.memberId, presence });
       setPresenceMessage("Votre présence est maintenant visible dans votre secteur approximatif.");
     } catch (error) {
       setPresenceMessage(error instanceof Error ? error.message : "Votre présence n’a pas pu être activée.");
@@ -153,7 +157,7 @@ export function ReelProximityScreen() {
     setPresenceMessage(null);
     try {
       const ended = await endReelPresence(currentPresence.id);
-      setCurrentPresence(ended.status === "active" ? ended : null);
+      if (access.memberId) setLoadedPresence({ memberId: access.memberId, presence: ended.status === "active" ? ended : null });
       setPresenceMessage("Votre présence n’est plus visible.");
     } catch (error) {
       setPresenceMessage(error instanceof Error ? error.message : "Votre présence n’a pas pu être arrêtée.");
