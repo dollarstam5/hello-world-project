@@ -109,9 +109,6 @@ AS $
 DECLARE
   v_deleted INTEGER;
 BEGIN
-  IF auth.role() <> 'service_role' THEN
-    RAISE EXCEPTION 'service_role_required' USING ERRCODE = '42501';
-  END IF;
   DELETE FROM public.reel_connections
   WHERE status = 'closed'
     AND closed_at < now() - interval '6 months';
