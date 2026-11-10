@@ -1,4 +1,4 @@
-import { useMemo, useState, type CSSProperties } from "react";
+import { useState, type CSSProperties } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft, Bell, Bluetooth, ChevronDown, CircleUserRound, ScanLine, X } from "lucide-react";
 import "./reel-proximity.css";
@@ -46,13 +46,14 @@ function PersonAvatar({ person, size = "person" }: { person: Person; size?: "per
 }
 
 function RingPerson({ person, onSelect }: { person: Person; onSelect: (person: Person) => void }) {
-  const position = useMemo(() => {
-    const radians = (person.angle * Math.PI) / 180;
-    return {
-      left: `calc(50% + var(--reel-ring-radius) * ${Math.cos(radians)})`,
-      top: `calc(50% + var(--reel-ring-radius) * ${Math.sin(radians)})`,
-    } satisfies CSSProperties;
-  }, [person.angle]);
+  // Place each profile on a percentage-based orbit so the radar stays
+  // correctly proportioned on narrow phones and larger screens.
+  const radians = ((Number.isFinite(person.angle) ? person.angle : 0) * Math.PI) / 180;
+  const orbit = 39;
+  const position = {
+    left: `${50 + orbit * Math.cos(radians)}%`,
+    top: `${50 + orbit * Math.sin(radians)}%`,
+  } satisfies CSSProperties;
 
   return (
     <button
