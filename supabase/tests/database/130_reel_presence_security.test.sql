@@ -200,13 +200,16 @@ SELECT ok(
 
 -- Suspension checks are intentionally last so they cannot invalidate the
 -- normal discovery and connection scenarios above.
+RESET ROLE;
+-- Test fixture state changes run as the migration test owner, not as a client.
+UPDATE public.profiles SET status = 'suspended'
+WHERE id = 'd1000000-0000-4000-8000-000000000002';
+SET LOCAL ROLE authenticated;
 SELECT set_config(
   'request.jwt.claims',
   '{"sub":"d1000000-0000-4000-8000-000000000002","role":"authenticated"}',
   true
 );
-UPDATE public.profiles SET status = 'suspended'
-WHERE id = 'd1000000-0000-4000-8000-000000000002';
 
 SELECT throws_ok(
   $$SELECT public.list_reel_bips()$$,
@@ -232,13 +235,15 @@ SELECT lives_ok(
   'a suspended member can still stop their own presence'
 );
 
+RESET ROLE;
+UPDATE public.profiles SET status = 'suspended'
+WHERE id = 'd1000000-0000-4000-8000-000000000001';
+SET LOCAL ROLE authenticated;
 SELECT set_config(
   'request.jwt.claims',
   '{"sub":"d1000000-0000-4000-8000-000000000001","role":"authenticated"}',
   true
 );
-UPDATE public.profiles SET status = 'suspended'
-WHERE id = 'd1000000-0000-4000-8000-000000000001';
 
 SELECT throws_ok(
   $$SELECT public.send_reel_bip(
