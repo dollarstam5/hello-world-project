@@ -5,6 +5,7 @@ import { defaultLocale, messages } from "@/lib/i18n/messages";
 import { useI18nStore } from "@/lib/i18n/useI18n";
 import { useLiveFlashes } from "../data";
 import { getPublicFlashFeed } from "../api/flash.functions";
+import { selectFlashFeedItems } from "../model/demo-flashes";
 
 export type FlashFeedSource = "remote" | "offline";
 
@@ -69,8 +70,16 @@ export function useFlashFeed() {
     return [...pendingLocal, ...remoteRows];
   }, [remoteRows, offlineRows]);
 
+  const isOffline = typeof navigator !== "undefined" && !navigator.onLine;
+  const canShowDemo =
+    !loading && localRows !== undefined && (remoteRows !== null || Boolean(error) || isOffline);
+  const presentedRows = useMemo(
+    () => selectFlashFeedItems(rows, canShowDemo),
+    [rows, canShowDemo],
+  );
+
   return {
-    rows,
+    rows: presentedRows,
     source: remoteRows ? ("remote" as const) : ("offline" as const),
     loading,
     error,
