@@ -105,7 +105,7 @@ RETURNS INTEGER
 LANGUAGE plpgsql
 SECURITY DEFINER
 SET search_path = pg_catalog, public
-AS $
+AS $$
 DECLARE
   v_deleted INTEGER;
 BEGIN
@@ -115,7 +115,7 @@ BEGIN
   GET DIAGNOSTICS v_deleted = ROW_COUNT;
   RETURN v_deleted;
 END;
-$;
+$$;
 
 REVOKE ALL ON FUNCTION public.purge_reel_connection_history() FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.purge_reel_connection_history() TO service_role;
