@@ -93,17 +93,22 @@ export const messages = {
     "home.engines.desc":
       "Choisissez un espace. Vous pourrez passer de l’un à l’autre à tout moment.",
     "home.engine.flash.title": "Flash",
+    "home.engine.exampleLabel": "Exemple",
     "home.engine.flash.desc":
-      "Partagez un besoin ou une proposition, et découvrez les publications utiles.",
+      "Partagez un besoin ou une proposition, puis découvrez les publications utiles.",
+    "home.engine.flash.example": "Proposer de préparer un repas pour une réunion.",
     "home.engine.scan.title": "Scan",
     "home.engine.scan.desc":
-      "Repérez les publications Flash actives près de vous, sans partager votre position.",
+      "Repérez les publications Flash actives dans la zone que vous choisissez.",
+    "home.engine.scan.example": "Rechercher une aide pour un déménagement près de vous.",
     "home.engine.reel.title": "Réel",
     "home.engine.reel.desc":
-      "Cet espace se prépare. Vous pourrez bientôt signaler votre présence et découvrir les personnes à proximité.",
+      "Cet espace se prépare. Il permettra de signaler volontairement votre présence et de découvrir les personnes réellement à proximité.",
+    "home.engine.reel.example": "Signaler votre présence lors d’un événement pour voir qui est aussi présent.",
     "home.engine.radar.title": "Radar",
     "home.engine.radar.desc":
-      "Cet espace se prépare. Vous pourrez bientôt repérer les possibilités autour de vous.",
+      "Cet espace se prépare. Il permettra de suivre une recherche et de repérer les possibilités qui y correspondent.",
+    "home.engine.radar.example": "Suivre une recherche de garde pour les prochains week-ends.",
     "home.engine.action": "Voir cet espace",
     "home.menuHint":
       "Les espaces complémentaires et les autres fonctionnalités de Vitalis sont accessibles depuis le menu 2×2 en bas de l’écran.",
@@ -520,15 +525,20 @@ export const messages = {
     "home.engines.title": "Where would you like to start?",
     "home.engines.desc": "Choose a space. You can move between them whenever you like.",
     "home.engine.flash.title": "Flash",
-    "home.engine.flash.desc": "Share a need or an offer, and discover useful posts.",
+    "home.engine.exampleLabel": "Example",
+    "home.engine.flash.desc": "Share a need or an offer, then discover useful posts.",
+    "home.engine.flash.example": "Offer to prepare a meal for a gathering.",
     "home.engine.scan.title": "Scan",
-    "home.engine.scan.desc": "Find active Flash posts nearby without sharing your location.",
+    "home.engine.scan.desc": "Find active Flash posts in the area you choose.",
+    "home.engine.scan.example": "Look for help with a move near you.",
     "home.engine.reel.title": "Live",
     "home.engine.reel.desc":
-      "This space is taking shape. Soon, you will be able to share your presence and discover people nearby.",
+      "This space is taking shape. It will let you choose to share your presence and discover people who are genuinely nearby.",
+    "home.engine.reel.example": "Share your presence at an event to see who else is there.",
     "home.engine.radar.title": "Radar",
     "home.engine.radar.desc":
-      "This space is taking shape. Soon, you will be able to spot opportunities around you.",
+      "This space is taking shape. It will let you follow a search and spot matching opportunities.",
+    "home.engine.radar.example": "Keep track of a search for weekend childcare.",
     "home.engine.action": "View this space",
     "home.menuHint":
       "Explore additional spaces and other Vitalis features from the 2x2 menu at the bottom of the screen.",
