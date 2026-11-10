@@ -16,7 +16,6 @@ import {
   type ReelGuestBip,
   type ReelGuestConnection,
 } from "@/domains/presence/api/reel-presence.client";
-import { supabase } from "@/integrations/supabase/client";
 import { resolveReelZone } from "@/domains/presence/api/reel-zone.functions";
 import {
   discoverReelGuestNearby,
@@ -39,6 +38,7 @@ import {
 } from "@/domains/presence/api/reel-presence.client";
 import { useAccessMode } from "@/domains/access-mode";
 import { evaluateReelAccess } from "@/domains/presence/policy/reel-access-policy";
+import { subscribeToReelMemberActivity } from "@/domains/presence/services/reel-activity-realtime.service";
 
 export interface Person {
   id: string;
@@ -246,19 +246,10 @@ export function useReelProximityController() {
       const poll = window.setInterval(() => void refreshBips(), 3000);
       return () => window.clearInterval(poll);
     }
-    const channel = supabase
-      .channel(`reel-member:${access.memberId}`, { config: { private: true } })
-      .on("broadcast", { event: "reel_activity" }, () => void refreshBips())
-      .on("postgres_changes", { event: "*", schema: "public", table: "reel_bips" }, () => {
-        void refreshBips();
-      })
-      .on("postgres_changes", { event: "*", schema: "public", table: "reel_connections" }, () => {
-        void refreshBips();
-      })
-      .subscribe();
-    return () => {
-      void supabase.removeChannel(channel);
-    };
+    return subscribeToReelMemberActivity(access.memberId, () => void refreshBips(), [
+      "reel_bips",
+      "reel_connections",
+    ]);
   }, [panel, activityTab, refreshBips, access.memberId, canUseMemberReel, access.mode]);
 
   const refreshConnections = useCallback(async () => {
@@ -302,16 +293,9 @@ export function useReelProximityController() {
       const poll = window.setInterval(() => void refreshConnections(), 3000);
       return () => window.clearInterval(poll);
     }
-    const channel = supabase
-      .channel(`reel-member:${access.memberId}`, { config: { private: true } })
-      .on("broadcast", { event: "reel_activity" }, () => void refreshConnections())
-      .on("postgres_changes", { event: "*", schema: "public", table: "reel_connections" }, () => {
-        void refreshConnections();
-      })
-      .subscribe();
-    return () => {
-      void supabase.removeChannel(channel);
-    };
+    return subscribeToReelMemberActivity(access.memberId, () => void refreshConnections(), [
+      "reel_connections",
+    ]);
   }, [panel, activityTab, refreshConnections, access.memberId, canUseMemberReel, access.mode]);
 
   const endConnection = async (connection: ReelConnection) => {
