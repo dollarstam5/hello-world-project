@@ -34,7 +34,10 @@ Contenus préparés et première présentation intégrée :
 - une courte phrase d'accueil qui explique simplement l'utilité de Vitalis ;
 - quatre accès aux espaces principaux : Flash, Scan, Réel et Radar ;
 - trois aperçus Flash concrets, affichés dans une section pédagogique distincte et chacun marqué « Exemple » : garde d’enfants le week-end, aide au déménagement dans deux heures et deux personnes pour la vaisselle après une réunion du dimanche vers 15 h à Dakar ;
+- une courte situation illustrative dans chacune des quatre cartes moteur : proposer de préparer un repas pour une réunion (Flash), rechercher une aide au déménagement dans sa zone (Scan), signaler volontairement sa présence lors d’un événement (Réel), suivre une recherche de garde pour les prochains week-ends (Radar) ;
 - une indication discrète pour retrouver les espaces complémentaires dans le menu 2×2.
+
+Les cartes moteur gardent une hiérarchie simple : icône lisible, nom, explication courte, exemple identifié et accès à l’espace. Sur mobile, elles s'empilent en une colonne ; sur écran plus large, elles se disposent en deux colonnes. L’exemple est un scénario pédagogique, jamais une activité en direct.
 
 Les aperçus d'accueil sont des exemples de présentation, pas une activité en direct : ils ne sont ni des publications d'utilisateurs, ni des notifications, ni des compteurs. Leurs textes sont localisés en français et en anglais. Ils ne sont jamais interactifs et ne sont pas injectés dans un flux métier.
 
