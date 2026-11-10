@@ -70,6 +70,8 @@ export async function resolveReelZoneForUser(
   if (profileError || !profile) throw new Error("Un profil Vitalis actif est nécessaire pour cette action.");
 
   const secret = getReelZoneHmacSecret();
+  const { error: cleanupError } = await admin.rpc("purge_reel_location_sessions");
+  if (cleanupError) throw new Error("Impossible de préparer la découverte à proximité.");
   const cell = cellFor(latitude, longitude);
   const centerKey = await tokenForCell(cell.latitude, cell.longitude, secret);
   const expiresAt = new Date(Date.now() + (purpose === "discover" ? 15 : 5) * 60_000).toISOString();
