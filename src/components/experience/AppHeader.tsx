@@ -20,7 +20,10 @@ export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => 
 
   return (
     <>
-      <header className="sticky top-0 z-30 bg-transparent" style={{ paddingTop: "var(--safe-top)" }}>
+      <header
+        className="sticky top-0 z-30 bg-transparent"
+        style={{ paddingTop: "var(--safe-top)" }}
+      >
         <div className="mx-auto flex h-14 w-full max-w-screen-md items-center justify-between px-3 sm:px-4">
           <Link
             to="/"
