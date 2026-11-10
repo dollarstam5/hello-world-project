@@ -33,18 +33,22 @@ export function ProfileQuickPreview({ open, onOpenChange }: ProfileQuickPreviewP
   useEffect(() => {
     if (!open) return;
     let active = true;
+
     async function loadName() {
       const { data: authData } = await supabase.auth.getUser();
       if (!active || !authData.user) return;
+
       const { data } = await supabase
         .from("profiles")
         .select("display_name")
         .eq("id", authData.user.id)
         .maybeSingle();
+
       if (!active || !data?.display_name) return;
       setLoadedName(data.display_name);
       setDisplayName(data.display_name);
     }
+
     void loadName();
     return () => {
       active = false;
@@ -64,15 +68,23 @@ export function ProfileQuickPreview({ open, onOpenChange }: ProfileQuickPreviewP
       <div className="flex items-center gap-3 rounded-2xl border border-border-soft bg-surface p-4">
         <Avatar className="h-14 w-14 border border-border-soft">
           <AvatarFallback className="bg-primary-soft text-primary">
-            {name !== t("identity.guest") ? (\n              getInitials(name)\n            ) : (\n              <UserRound className="h-6 w-6" aria-hidden />\n            )}
+            {name !== t("identity.guest") ? (
+              getInitials(name)
+            ) : (
+              <UserRound className="h-6 w-6" aria-hidden />
+            )}
           </AvatarFallback>
         </Avatar>
         <div className="min-w-0 flex-1">
           <p className="truncate font-semibold">{name}</p>
-          <p className="mt-1 text-sm text-muted-foreground">\n            {t("profile.quickPreview.cardHint")}\n          </p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {t("profile.quickPreview.cardHint")}
+          </p>
         </div>
       </div>
-      <p className="py-4 text-sm leading-relaxed text-muted-foreground">\n        {t("profile.quickPreview.hint")}\n      </p>
+      <p className="py-4 text-sm leading-relaxed text-muted-foreground">
+        {t("profile.quickPreview.hint")}
+      </p>
       <Button asChild className="h-12 w-full justify-between rounded-xl">
         <Link to="/espace" onClick={() => onOpenChange(false)}>
           {t("profile.quickPreview.full")}
