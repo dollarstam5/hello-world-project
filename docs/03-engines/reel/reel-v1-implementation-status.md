@@ -94,3 +94,10 @@ Document d'architecture : [Gestionnaire central des modes d'accès](../../02-arc
 - Raccorder les conversations uniquement après validation de leur autorisation et de leur cycle de vie.
 
 **Le socle SQL n'est pas une preuve que le parcours Réel est déjà disponible dans l'application.**
+
+
+## Session invitée serveur — conception préparée
+
+Le document [Architecture de session invitée éphémère](./reel-guest-session-architecture.md) fixe les garde-fous du prochain lot : secret généré côté serveur, empreinte seule en base, cookie HttpOnly, contrôle serveur par opération, rotation, révocation et purge. Il sépare strictement la session invitée de la table des présences membre qui référence auth.users.
+
+**Aucune session invitée serveur n'est encore implémentée.** La fondation front-end reste une identité en mémoire et n'autorise aucune opération métier. Le parcours invité réel reste désactivé jusqu'à validation des durées et droits, confirmation de l'API cookie TanStack Start, livraison des migrations et réussite des tests.
