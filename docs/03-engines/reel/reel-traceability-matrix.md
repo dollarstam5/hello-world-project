@@ -176,3 +176,28 @@ La première politique applicative est décrite dans [Politique d’accès Réel
 | Conversation, messages, partage de zone, signalement | Refus tant que le service n’est pas livré | Test Vitest ajouté, non exécuté |
 
 Cette politique côté client est un garde-fou d’interface et ne remplace jamais les contrôles SQL. Le parcours invité ne reçoit aucun droit métier par la seule existence de son cookie de session.
+
+
+## Décisions LOC — utilisation de la position dans Réel
+
+| Décision | Règle | Statut | Traçabilité |
+| --- | --- | --- | --- |
+| LOC-01 | Réel demande son propre accord de localisation à chaque nouvelle entrée, sans hériter des autorisations accordées aux autres moteurs. | VALIDÉE | Dialogue à l'entrée ; test d'isolation entre moteurs. |
+| LOC-02 | La demande système n'est déclenchée qu'après une action explicite ; aucune géolocalisation automatique au chargement. | VALIDÉE | Appel ponctuel à getCurrentPosition, jamais watchPosition. |
+| LOC-03 | Ignorer ou refuser laisse la page utilisable en mode calme, sans découverte locale, réactions, bips ni alertes locales. | VALIDÉE | Contrôle UI et politique d'accès locationConsent. |
+| LOC-04 | Les réglages et la consultation des relations existantes restent accessibles sans localisation. | VALIDÉE | La fermeture d'une relation existante n'est pas conditionnée par la position. |
+| LOC-05 | L'accord de localisation n'active pas la présence publique ; le consentement reel_presence reste distinct. | VALIDÉE | Double contrôle avant start_presence. |
+| LOC-06 | Pas de suivi en arrière-plan ni de persistance des coordonnées dans la première tranche. | VALIDÉE | Lecture ponctuelle ; coordonnées non persistées. |
+| LOC-07 | Après accord, aucune découverte n'est simulée tant que le résolveur de zone et le transport temps réel ne sont pas validés. | VALIDÉE | Aucun profil, distance, bip ou compteur fictif. |
+
+### Tests LOC attendus
+
+- LOC-T01 : entrée dans Réel avec une autorisation déjà accordée à un autre moteur ; Réel demande tout de même son propre accord.
+- LOC-T02 : chargement de Réel sans clic ; aucune API de géolocalisation n'est appelée.
+- LOC-T03 : « Pas maintenant » ; mode calme, aucune découverte/réaction/bip/alerte locale.
+- LOC-T04 : refus système ou géolocalisation indisponible ; la page reste utilisable et propose une nouvelle tentative.
+- LOC-T05 : accord de localisation sans consentement reel_presence ; aucune présence personnelle n'est publiée.
+- LOC-T06 : fermeture d'une relation existante possible en mode calme.
+- LOC-T07 : vérifier qu'aucune coordonnée n'est écrite dans localStorage, sessionStorage, les tables de présence ou les journaux applicatifs.
+
+Ces exigences sont approuvées ; les tests ne sont pas réputés exécutés tant qu'un résultat CI sur le SHA courant n'est pas disponible.
