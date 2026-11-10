@@ -84,7 +84,7 @@ Il s'agit d'une fusion sélective fondée sur les champs en attente et les horod
 
 ## Temps réel : capacité actuelle
 
-`src/lib/platform/realtime.ts` fournit un bus en mémoire avec abonnement par canal, diffusion et fonction de désabonnement. Le commentaire du code indique explicitement que la phase actuelle est un mock local ; aucun transport WebSocket/SSE ni abonnement Supabase Realtime n'est câblé dans cette abstraction.
+`src/lib/platform/realtime.ts` fournit toujours un bus en mémoire avec abonnement par canal, diffusion et fonction de désabonnement. Le commentaire du code indique explicitement que cette abstraction reste un mock local ; aucun abonnement Supabase Realtime n'est encore câblé dans cette abstraction. La migration standard `20261110010000_reel_presence_and_bips.sql` ajoute toutefois les tables Réel à la publication `supabase_realtime` lorsque celle-ci existe et que la migration est appliquée. Cette publication côté base ne connecte pas automatiquement le client : les abonnements, filtres, reprise après reconnexion et nettoyage restent à implémenter.
 
 Il faut distinguer :
 - **mise à jour réactive locale** : Dexie live queries reflètent les changements écrits dans la base locale, y compris ceux appliqués par le worker ;
