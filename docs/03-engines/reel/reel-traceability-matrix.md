@@ -78,6 +78,7 @@ Les identifiants ci-dessous proviennent des repères de traçabilité déjà ét
 
 | Décision / exigence | Tests associés | État de preuve |
 | --- | --- | --- |
+| C-02 — bip non accepté visible 24 h dans Réel seulement, expiration ensuite et réconciliation sans doublon au retour du réseau | Identifiant de test à attribuer après spécification du point de départ des 24 h | À SPÉCIFIER / À TESTER |
 | C-03.4 — partage de zone volontaire et ponctuel | C03-T04 à C03-T07 | À TESTER |
 | C-03.7 — retrait local d'un message | C03-T13 à C03-T15 | À TESTER |
 | C-04.1 — conversation en lecture seule après fermeture | C04-T01 à C04-T03 | À TESTER |
@@ -86,6 +87,8 @@ Les identifiants ci-dessous proviennent des repères de traçabilité déjà ét
 | P-02 — zone approximative, consentie et ponctuelle | P02-T01 à P02-T03 | À TESTER |
 | P-03 — masquage local uniquement | P03-T01 à P03-T04 | À TESTER |
 | P-04 — expiration et séparation des historiques | P04-T01 à P04-T04 | À TESTER |
+
+Le point de départ exact du délai de 24 h reste ouvert. Les événements en attente doivent être conservés puis réconciliés sans doublon au retour du réseau.
 
 Les exigences techniques T-01 à T-09 restent des éléments de spécification ouverts. Aucun identifiant de test supplémentaire n'est créé ici pour A, B, C-01 ou C-02 : il doit être relié à une source existante avant d'être ajouté.
 
