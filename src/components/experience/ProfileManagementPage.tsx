@@ -165,7 +165,7 @@ export function ProfileManagementPage() {
     );
   }
 
-  if (!userId || !profile) {
+  if (!userId) {
     return (
       <div className="page-shell stack-4">
         <header className="stack-2">
@@ -176,6 +176,17 @@ export function ProfileManagementPage() {
         <Button asChild className="h-12 rounded-xl">
           <Link to="/auth">{t("auth.signIn")}</Link>
         </Button>
+      </div>
+    );
+  }
+
+  if (!profile) {
+    return (
+      <div className="page-shell stack-3">
+        <h1 className="text-fluid-display-sm">{t("profile.title")}</h1>
+        <p role="alert" className="rounded-xl bg-destructive/10 px-3 py-2 text-sm text-destructive">
+          {t(error || "profile.error")}
+        </p>
       </div>
     );
   }
