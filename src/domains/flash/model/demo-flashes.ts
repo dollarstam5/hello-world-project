@@ -7,39 +7,39 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 const MIN_FLASH_FEED_ITEMS = 3;
 
 /**
- * Curated, privacy-safe examples derived from the supplied SQL scenarios.
- * Source contacts, authors, raw descriptions, counters and old dates are omitted.
+ * Human, practical and privacy-safe scenarios for interface previews.
+ * They use the public Flash contract but never represent live requests.
  * A supplied clock keeps the fixtures deterministic in tests.
  */
 export function createDemoFlashes(now = Date.now()): PublicFlash[] {
   return [
     {
-      id: "demo:flash:sql-besoin-002",
+      id: "demo:flash:childcare-weekend",
       kind: "need",
       category: "home",
-      title: "Un plombier recherché pour une fuite d’eau",
-      timeSlot: "today",
-      areaLabel: "Akwa, Douala",
+      title: "Je cherche une personne de confiance pour garder mes enfants ce week-end.",
+      timeSlot: "this_week",
+      areaLabel: "Zone d’exemple",
       createdAt: now - 3 * 60 * 60 * 1000,
       expiresAt: now + DAY_MS,
     },
     {
-      id: "demo:flash:sql-besoin-009",
+      id: "demo:flash:moving-urgent",
       kind: "need",
-      category: "education",
-      title: "Des cours de mathématiques recherchés",
-      timeSlot: "this_week",
-      areaLabel: "Messa, Yaoundé",
+      category: "home",
+      title: "J’aurais besoin d’un coup de main pour mon déménagement dans deux heures.",
+      timeSlot: "today",
+      areaLabel: "Zone d’exemple",
       createdAt: now - 2 * 60 * 60 * 1000,
       expiresAt: now + 2 * DAY_MS,
     },
     {
-      id: "demo:flash:sql-besoin-017",
+      id: "demo:flash:meeting-dishes",
       kind: "need",
       category: "home",
-      title: "Un coup de main pour changer une ampoule",
-      timeSlot: "today",
-      areaLabel: "Bonapriso, Douala",
+      title: "Après notre réunion de dimanche, vers 15 h, nous cherchons deux personnes pour aider à faire la vaisselle.",
+      timeSlot: "this_week",
+      areaLabel: "Dakar (exemple)",
       createdAt: now - 1 * 60 * 60 * 1000,
       expiresAt: now + DAY_MS,
     },
