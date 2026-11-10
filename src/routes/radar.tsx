@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { MapPin } from "lucide-react";
 import { EnginePreviewCard } from "@/components/experience/EnginePreviewCard";
-import { EngineSectionUnavailable } from "@/components/experience/EngineSectionUnavailable";
+import { EngineManagementGrid } from "@/components/experience/EngineManagementGrid";
 import { SectionFoundation } from "@/components/experience/SectionFoundation";
 
 export const Route = createFileRoute("/radar")({
@@ -30,9 +30,21 @@ export const Route = createFileRoute("/radar")({
             />
           ),
         },
-        { key: "followed", titleKey: "radar.section.followed", perf: "short", render: () => <EngineSectionUnavailable descriptionKey="radar.section.unavailable" /> },
-        { key: "alerts", titleKey: "radar.section.alerts", perf: "short", render: () => <EngineSectionUnavailable descriptionKey="radar.section.unavailable" /> },
-        { key: "results", titleKey: "radar.section.results", perf: "short", render: () => <EngineSectionUnavailable descriptionKey="radar.section.unavailable" /> },
+        {
+          key: "management",
+          titleKey: "radar.section.management",
+          perf: "short",
+          render: () => (
+            <EngineManagementGrid
+              items={[
+                { key: "followed", titleKey: "radar.section.followed" },
+                { key: "alerts", titleKey: "radar.section.alerts" },
+                { key: "results", titleKey: "radar.section.results" },
+              ]}
+              descriptionKey="radar.section.unavailable"
+            />
+          ),
+        },
       ]}
     />
   ),
