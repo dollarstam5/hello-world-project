@@ -39,3 +39,13 @@
 ## Tests automatisés attendus
 
 Le fichier `tests/access-mode/reel-access-policy.test.ts` couvre les modes visiteur/invité/membre, le consentement, la propriété, le rôle émetteur/destinataire, l’absence de mise en file hors ligne, les fonctions non livrées et l’obligation d’une autorisation serveur.
+
+
+## Consentement de localisation propre à Réel
+
+- L'entrée dans Réel demande un accord propre au moteur, indépendant des autorisations données à Flash, Scan, Radar ou à tout autre espace Vitalis.
+- La demande du navigateur/de l'appareil est déclenchée uniquement après un clic volontaire dans Réel ; aucun accès automatique, suivi continu ou collecte en arrière-plan.
+- Ignorer ou refuser la demande conserve l'accès à la page en mode calme. Les opérations de proximité (découverte, bips, réactions et alertes locales) sont refusées côté interface et doivent l'être côté serveur.
+- Les réglages et la consultation des relations déjà établies restent accessibles sans localisation. Fermer une relation existante ne doit pas être bloqué par l'absence de position.
+- Le consentement de localisation ne vaut jamais consentement à publier sa propre présence : reel_presence reste exigé séparément.
+- Le choix « pas maintenant » est appliqué pour l'entrée courante ; le dialogue pourra être proposé à la prochaine entrée dans Réel. Il ne faut pas redemander à chaque rendu React.
