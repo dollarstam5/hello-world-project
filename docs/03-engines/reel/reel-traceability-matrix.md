@@ -158,3 +158,21 @@ Voir [Architecture de session invitée éphémère](./reel-guest-session-archite
 ### État de preuve du premier lot serveur
 
 La migration `20261110020000_reel_guest_sessions.sql`, le service serveur et le test pgTAP 131 sont présents dans la branche. Ils ne sont pas encore exécutés sur une base de test. La purge planifiée dépend de la disponibilité de `pg_cron`. La limitation anti-abus à la couche d'hébergement reste un prérequis avant activation publique. Le cookie de session ne donne pas encore accès aux actions métier Réel.
+
+
+## 10. Politique d’accès applicative Réel
+
+La première politique applicative est décrite dans [Politique d’accès Réel](./reel-access-policy.md) et implémentée dans `src/domains/presence/policy/reel-access-policy.ts`.
+
+| Opération | Contrôle client attendu | Preuve |
+| --- | --- | --- |
+| Entrée Réel | Visiteur refusé ; invité limité à l’entrée ; membre actif autorisé à entrer | Test Vitest ajouté, non exécuté |
+| Démarrer une présence | Membre actif, consentement `reel_presence`, décision serveur | Test Vitest ajouté, non exécuté |
+| Terminer sa présence | Propriété de la présence puis décision serveur | Test Vitest ajouté, non exécuté |
+| Découvrir / consulter ses bips | Membre actif et vérification serveur | Test Vitest ajouté, non exécuté |
+| Envoyer un bip | Membre actif et vérification serveur ; aucune mise en file hors ligne | Test Vitest ajouté, non exécuté |
+| Accepter / refuser / retirer | Rôle destinataire ou émetteur selon l’action, propriété et vérification serveur | Test Vitest ajouté, non exécuté |
+| Fermer une relation | Participant autorisé et vérification serveur | Test Vitest ajouté, non exécuté |
+| Conversation, messages, partage de zone, signalement | Refus tant que le service n’est pas livré | Test Vitest ajouté, non exécuté |
+
+Cette politique côté client est un garde-fou d’interface et ne remplace jamais les contrôles SQL. Le parcours invité ne reçoit aucun droit métier par la seule existence de son cookie de session.
