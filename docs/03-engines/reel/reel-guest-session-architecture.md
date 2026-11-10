@@ -136,7 +136,7 @@ La migration `20261110110000_reel_guest_reciprocal_discovery.sql` ajoute une voi
 - Un membre actif peut découvrir les présences invitées à partir de son point PostGIS de découverte existant.
 - Dans les deux sens, le rayon de visibilité appliqué est celui choisi par la personne qui publie sa présence.
 - La découverte invitée est liée au cookie HttpOnly et à la session vérifiée côté serveur. La révocation supprime aussi le point temporaire de découverte.
-- Les fiches invitées ne proposent pas encore de bip : les bips et relations restent réservés au parcours membre tant que leurs RPC dédiées aux identités temporaires ne sont pas conçues et testées.
+- Les fiches invitées peuvent désormais recevoir et envoyer des bips via les RPC dédiées décrites à la section 12.
 
 Le parcours d'écran appelle maintenant la découverte invitée et fusionne les cartes membres/invités pour un membre. Le parcours invité peut consulter les présences publiées par les membres. La publication de présence invitée n'est pas encore raccordée à un formulaire dans l'interface ; tant que ce raccordement n'est pas fait, aucune nouvelle fiche invitée ne peut être publiée depuis l'écran.
 
@@ -174,4 +174,10 @@ Les bips membre-membre continuent d'utiliser le parcours déjà en place. Un bip
 
 ### Limites et validation
 
-Les Server Functions et l'interface sont raccordées aux RPC croisées. Le test pgTAP 137 couvre les deux directions membre/invité, l'acceptation, la relation unique, l'isolation des tables et la purge à la révocation. Les migrations et pgTAP doivent encore réussir en CI ; les essais sur deux appareils réels restent nécessaires. Les événements croisés ne sont pas encore diffusés par un canal temps réel dédié : l'écran recharge les bips à l'ouverture de l'onglet et après une action.
+Les Server Functions et l'interface sont raccordées aux RPC croisées. Le test pgTAP 137 couvre les deux directions membre/invité, l'acceptation, la relation unique, l'isolation des tables et la purge à la révocation. Les migrations et pgTAP doivent encore réussir en CI ; les essais sur deux appareils réels restent nécessaires. ### Événements temps réel et confidentialité
+
+- Les membres reçoivent les changements croisés via un canal Broadcast privé `reel-member:<auth.uid()>`. La politique de lecture lie strictement le sujet du canal à `auth.uid()`.
+- Le message Broadcast ne contient qu'un type d'événement générique (`bip_received`, `bip_updated` ou `connection_updated`). Il ne contient aucun identifiant de session invité, identifiant de bip, identifiant de présence, nom, coordonnée ou distance.
+- Les invités ne s'abonnent pas directement à Supabase Realtime : l'écran actualise leurs bips et relations toutes les trois secondes uniquement lorsque le panneau correspondant est ouvert. Chaque appel passe par une Server Function qui retrouve la session depuis le cookie HttpOnly.
+- Aucun identifiant de session invité n'est conservé dans l'état React. Le navigateur ne reçoit que les projections d'affichage minimales.
+- Le test pgTAP 138 vérifie la politique du canal et l'absence de données temporaires dans le contenu Broadcast. La validation réelle de Supabase Realtime et des parcours sur deux appareils reste obligatoire.
