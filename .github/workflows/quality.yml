@@ -63,7 +63,9 @@ jobs:
           )
           printf '\n[db]\nport = %s\nshadow_port = %s\n' "$DB_PORT" "$SHADOW_PORT" >> supabase/config.toml
           echo "Using isolated Supabase DB ports: $DB_PORT (database), $SHADOW_PORT (shadow)"
-          supabase start
+          # RLS and migration tests do not send email; omit the optional local mail
+          # service so its fixed SMTP host port cannot collide with runner services.
+          supabase start --exclude mailpit
           bun run check:db-tests
           bun run test:db
 
