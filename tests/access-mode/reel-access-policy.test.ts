@@ -30,9 +30,9 @@ describe("evaluateReelAccess", () => {
   });
 
   it("requires explicit Réel presence consent before starting", () => {
-    expect(evaluateReelAccess({ access: member, consents: [] }, "start_presence").reason)
+    expect(evaluateReelAccess({ access: member, locationConsent: true, consents: [] }, "start_presence").reason)
       .toBe("consent_required");
-    expect(evaluateReelAccess({ access: member, consents: ["reel_presence"] }, "start_presence").status)
+    expect(evaluateReelAccess({ access: member, locationConsent: true, consents: ["reel_presence"] }, "start_presence").status)
       .toBe("server_check");
   });
 
@@ -44,11 +44,11 @@ describe("evaluateReelAccess", () => {
   });
 
   it("limits bip decisions to the correct participant", () => {
-    expect(evaluateReelAccess({ access: member, actorRole: "sender" }, "accept_bip").status)
+    expect(evaluateReelAccess({ access: member, locationConsent: true, actorRole: "sender" }, "accept_bip").status)
       .toBe("deny");
-    expect(evaluateReelAccess({ access: member, actorRole: "recipient", resourceOwned: true }, "accept_bip").status)
+    expect(evaluateReelAccess({ access: member, locationConsent: true, actorRole: "recipient", resourceOwned: true }, "accept_bip").status)
       .toBe("server_check");
-    expect(evaluateReelAccess({ access: member, actorRole: "recipient", resourceOwned: true }, "withdraw_bip").status)
+    expect(evaluateReelAccess({ access: member, locationConsent: true, actorRole: "recipient", resourceOwned: true }, "withdraw_bip").status)
       .toBe("deny");
   });
 
@@ -56,6 +56,7 @@ describe("evaluateReelAccess", () => {
     const decision = evaluateReelAccess({
       access: member,
       consents: ["reel_presence"],
+      locationConsent: true,
       online: false,
     }, "start_presence");
     expect(decision.status).toBe("deny");
@@ -68,8 +69,19 @@ describe("evaluateReelAccess", () => {
     }
   });
 
+  it("keeps proximity, reactions and bips disabled when Réel location is ignored", () => {
+    for (const operation of ["discover_presence", "list_bips", "send_bip", "accept_bip"] as const) {
+      const decision = evaluateReelAccess({ access: member, locationConsent: false }, operation);
+      expect(decision.status).toBe("deny");
+      expect(decision.reason).toBe("consent_required");
+    }
+    // Location is not required to manage an already established relationship.
+    expect(evaluateReelAccess({ access: member, resourceOwned: true }, "close_connection").status)
+      .toBe("server_check");
+  });
+
   it("always leaves final authorization to the server", () => {
-    const decision = evaluateReelAccess({ access: member }, "discover_presence");
+    const decision = evaluateReelAccess({ access: member, locationConsent: true }, "discover_presence");
     expect(decision.status).toBe("server_check");
     expect(decision.requiresServerAuthorization).toBe(true);
   });
