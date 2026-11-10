@@ -46,7 +46,7 @@ export function FlashFeed() {
             <FlashCard
               key={flash.id}
               title={flash.title}
-              description={`${flash.category} · ${flash.timeSlot}`}
+              description={`${t(`flash.kind.${flash.kind}`)} · ${t(`flash.category.${flash.category}`)} · ${t(`flash.slot.${flash.timeSlot}`)}`}
               ttl={flash.origin === "real" ? flash.areaLabel : undefined}
               origin={flash.origin}
               authorPreview={flash.authorPreview}
