@@ -12,7 +12,7 @@ Les exemples expliquent un parcours possible ; ils ne sont jamais injectés dans
 - **Scan** : présenter un exemple de recherche ciblée, puis laisser l'outil de recherche réel afficher uniquement ses résultats réels.
 - **Réel** : expliquer le partage volontaire d'une présence et le choix d'un rayon ; ne jamais simuler une présence active ou des personnes proches.
 - **Radar** : expliquer comment une recherche peut être suivie ; ne jamais inventer de correspondance, d'alerte ou de résultat.
-- **Menu 2×2** : conserver les accès secondaires Espace et Talents avec une description claire. Ne pas présenter de fonctions non construites comme disponibles.
+- **Menu 2×2** : conserver les accès secondaires Espace et Talents avec une description claire. Espace mène au profil personnel ; Talents présente un exemple pédagogique marqué « Exemple » avant ses espaces encore en préparation. Ne pas présenter de fonctions non construites comme disponibles.
 
 ## Langage et accessibilité
 
