@@ -393,13 +393,13 @@ export const messages = {
     "reel.section.connections": "Mes mises en relation",
     "reel.section.history": "Historique",
     "reel.section.presence.desc":
-      "Retrouver et régler votre présence lorsque cette fonction sera disponible.",
-    "reel.section.bips.desc": "Consulter les signaux reçus pendant vos présences actives.",
-    "reel.section.connections.desc": "Retrouver les mises en relation que vous avez acceptées.",
+      "Préparer et gérer votre présence autour de vous lorsque cette fonction sera prête.",
+    "reel.section.bips.desc": "Retrouver les bips reçus pendant vos présences actives.",
+    "reel.section.connections.desc": "Retrouver les personnes avec qui vous avez accepté une mise en relation.",
     "reel.section.history.desc":
-      "Consulter les traces utiles de vos anciennes présences et interactions.",
+      "Retrouver vos anciennes mises en relation et conversations, selon les règles de conservation.",
     "reel.section.unavailable":
-      "Cette partie sera accessible lorsque le parcours Réel et ses données sécurisées seront prêts. Aucune présence ni relation n'est simulée.",
+      "Cette partie sera disponible quand Réel pourra partager les présences et gérer les interactions en toute sécurité. Aucune présence ni relation n'est simulée.",
     "radar.manage.intro":
       "Enregistrez une recherche et gardez ses critères à portée de main. La détection automatique n'est pas encore active.",
     "radar.manage.edit.title": "Modifier ma veille",
@@ -978,12 +978,12 @@ export const messages = {
     "reel.section.connections": "My connections",
     "reel.section.history": "History",
     "reel.section.presence.desc":
-      "Find and manage your presence when this feature becomes available.",
-    "reel.section.bips.desc": "Review signals received during your active presences.",
-    "reel.section.connections.desc": "Find the connections you have accepted.",
-    "reel.section.history.desc": "Review useful records of past presences and interactions.",
+      "Prepare and manage your nearby presence when this feature is ready.",
+    "reel.section.bips.desc": "Find the bips you receive while your presence is active.",
+    "reel.section.connections.desc": "Find the people you have connected with.",
+    "reel.section.history.desc": "Find past connections and conversations, according to the retention rules.",
     "reel.section.unavailable":
-      "This section will be available when the Réel journey and its secure data are ready. No presence or connection is simulated.",
+      "This section will be ready when Réel can share presence and manage interactions securely. No presence or connection is simulated.",
     "radar.manage.intro":
       "Save a search and keep its criteria close at hand. Automatic matching is not active yet.",
     "radar.manage.edit.title": "Edit my watch",
