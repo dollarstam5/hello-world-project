@@ -26,7 +26,16 @@ const toneClasses = {
   violet: "bg-intelligence-soft text-intelligence",
 } as const;
 
-function EngineCard({ to, icon: Icon, title, description, example, exampleLabel, action, tone }: EngineCardProps) {
+function EngineCard({
+  to,
+  icon: Icon,
+  title,
+  description,
+  example,
+  exampleLabel,
+  action,
+  tone,
+}: EngineCardProps) {
   return (
     <Link
       to={to}
