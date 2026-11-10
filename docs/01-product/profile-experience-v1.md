@@ -28,4 +28,6 @@ Chaque section doit proposer ses propres actions contextuelles : ajouter une inf
 
 ## État technique
 
-Le header dispose désormais d'un aperçu rapide et d'un accès vers l'espace personnel. La page complète et les opérations d'ajout, modification et suppression doivent être raccordées au modèle de profil persistant et à ses règles RLS avant d'être présentées comme fonctionnelles. Le niveau d'identité et les attributs de confiance restent pilotés par Vitalis.
+Le header ouvre un aperçu rapide et le lien « Voir le profil complet » mène à la page personnelle. Cette page lit et met à jour les champs autorisés de `profiles` : nom affiché, identifiant public et langue. L’identifiant public peut être ajouté, modifié ou supprimé avec confirmation ; le nom affiché reste obligatoire. Les changements passent par la session Supabase et les droits de colonnes/RLS existants. Les niveaux d’identité, la confiance, le statut et les autres champs système restent pilotés par Vitalis.
+
+La photo de profil, la biographie et les réglages de visibilité avancés ne sont pas encore raccordés à un stockage et à un modèle de consentement validés ; l’interface ne les simule donc pas.
