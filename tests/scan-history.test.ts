@@ -14,9 +14,7 @@ describe("device-only Scan history", () => {
   it("stores only the search date and result count", () => {
     vi.spyOn(Date, "now").mockReturnValue(1_800_000_000_000);
 
-    expect(recordScanHistory(3)).toEqual([
-      { searchedAt: 1_800_000_000_000, resultCount: 3 },
-    ]);
+    expect(recordScanHistory(3)).toEqual([{ searchedAt: 1_800_000_000_000, resultCount: 3 }]);
     const stored = localStorage.getItem("vitalis.scan.history.v1") ?? "";
 
     expect(stored).toContain("searchedAt");
