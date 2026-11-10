@@ -10,6 +10,8 @@ INSERT INTO auth.users (
   ('d1000000-0000-4000-8000-000000000002', 'authenticated', 'authenticated', 'reel-b@example.invalid', '', now(), '{}', '{"display_name":"Moussa"}'),
   ('d1000000-0000-4000-8000-000000000003', 'authenticated', 'authenticated', 'reel-c@example.invalid', '', now(), '{}', '{"display_name":"Nadia"}');
 
+-- Nominal path first: all three profiles remain active while discovery,
+-- bip delivery, idempotent retry and acceptance are exercised.
 SET LOCAL ROLE authenticated;
 SELECT set_config(
   'request.jwt.claims',
@@ -52,54 +54,6 @@ SELECT lives_ok(
   'member B starts in the same approximate zone'
 );
 
-UPDATE public.profiles
-SET status = 'suspended'
-WHERE id = 'd1000000-0000-4000-8000-000000000002';
-
-SELECT throws_ok(
-  $SELECT public.list_reel_bips()$,
-  '42501',
-  'active_profile_required',
-  'a suspended member cannot list bips'
-);
-
-SELECT throws_ok(
-  $SELECT public.command_reel_bip(
-    (SELECT id FROM public.reel_bips WHERE client_request_id = 'd1000000-0000-4000-8000-000000000101'),
-    'accept'
-  )$,
-  '42501',
-  'active_profile_required',
-  'a suspended member cannot replay an accepted bip command'
-);
-
-SELECT lives_ok(
-  $SELECT public.end_reel_presence(
-    (SELECT id FROM public.reel_presences WHERE owner_id = 'd1000000-0000-4000-8000-000000000002' AND status = 'active')
-  )$,
-  'a suspended member can still stop their own presence'
-);
-
-UPDATE public.profiles
-SET status = 'suspended'
-WHERE id = 'd1000000-0000-4000-8000-000000000001';
-
-SELECT set_config(
-  'request.jwt.claims',
-  '{"sub":"d1000000-0000-4000-8000-000000000001","role":"authenticated"}',
-  true
-);
-
-SELECT throws_ok(
-  $SELECT public.send_reel_bip(
-    (SELECT id FROM public.reel_presences WHERE owner_id = 'd1000000-0000-4000-8000-000000000002'),
-    'd1000000-0000-4000-8000-000000000101'
-  )$,
-  '42501',
-  'active_profile_required',
-  'a suspended sender cannot replay an old idempotent request'
-);
-
 SELECT set_config(
   'request.jwt.claims',
   '{"sub":"d1000000-0000-4000-8000-000000000003","role":"authenticated"}',
@@ -122,7 +76,7 @@ SELECT set_config(
 SELECT is(
   (SELECT count(*)::integer FROM public.list_reel_presence('douala-zone-0001', 50)),
   1,
-  'presence discovery returns only the other member in the same zone'
+  'presence discovery returns only the other active member in the same zone'
 );
 
 SELECT is(
@@ -242,6 +196,58 @@ SELECT ok(
   AND NOT has_table_privilege('anon', 'public.reel_bips', 'SELECT')
   AND NOT has_function_privilege('anon', 'public.start_reel_presence(text,text,text,integer,integer,boolean)', 'EXECUTE'),
   'anonymous visitors cannot read or start a presence'
+);
+
+-- Suspension checks are intentionally last so they cannot invalidate the
+-- normal discovery and connection scenarios above.
+SELECT set_config(
+  'request.jwt.claims',
+  '{"sub":"d1000000-0000-4000-8000-000000000002","role":"authenticated"}',
+  true
+);
+UPDATE public.profiles SET status = 'suspended'
+WHERE id = 'd1000000-0000-4000-8000-000000000002';
+
+SELECT throws_ok(
+  $$SELECT public.list_reel_bips()$$,
+  '42501',
+  'active_profile_required',
+  'a suspended member cannot list bips'
+);
+
+SELECT throws_ok(
+  $$SELECT public.command_reel_bip(
+    (SELECT id FROM public.reel_bips WHERE client_request_id = 'd1000000-0000-4000-8000-000000000101'),
+    'accept'
+  )$$,
+  '42501',
+  'active_profile_required',
+  'a suspended member cannot replay a previously accepted bip command'
+);
+
+SELECT lives_ok(
+  $$SELECT public.end_reel_presence(
+    (SELECT id FROM public.reel_presences WHERE owner_id = 'd1000000-0000-4000-8000-000000000002' AND status = 'active')
+  )$$,
+  'a suspended member can still stop their own presence'
+);
+
+SELECT set_config(
+  'request.jwt.claims',
+  '{"sub":"d1000000-0000-4000-8000-000000000001","role":"authenticated"}',
+  true
+);
+UPDATE public.profiles SET status = 'suspended'
+WHERE id = 'd1000000-0000-4000-8000-000000000001';
+
+SELECT throws_ok(
+  $$SELECT public.send_reel_bip(
+    (SELECT id FROM public.reel_presences WHERE owner_id = 'd1000000-0000-4000-8000-000000000002'),
+    'd1000000-0000-4000-8000-000000000101'
+  )$$,
+  '42501',
+  'active_profile_required',
+  'a suspended sender cannot replay an old idempotent request'
 );
 
 SELECT * FROM finish();
