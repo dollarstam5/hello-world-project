@@ -74,10 +74,24 @@ SELECT set_config(
   true
 );
 
+RESET ROLE;
+SET LOCAL ROLE service_role;
+SELECT set_config(
+  'reel.test_recipient_guest_presence_id',
+  (SELECT guest_presence.id::text FROM public.reel_guest_presences AS guest_presence
+   WHERE guest_presence.guest_session_id = 'e5000000-0000-4000-8000-000000000011'
+     AND guest_presence.status = 'active'),
+  true
+);
+SET LOCAL ROLE authenticated;
+SELECT set_config(
+  'request.jwt.claims',
+  '{"sub":"e5000000-0000-4000-8000-000000000001","role":"authenticated"}',
+  true
+);
 SELECT lives_ok(
   $reel_test$SELECT public.send_reel_bip_to_guest(
-    (SELECT id FROM public.reel_guest_presences
-     WHERE guest_session_id = 'e5000000-0000-4000-8000-000000000011' AND status = 'active'),
+    current_setting('reel.test_recipient_guest_presence_id')::uuid,
     'e5000000-0000-4000-8000-000000000031'
   )$reel_test$,
   'a member can send a bip to a nearby guest'
