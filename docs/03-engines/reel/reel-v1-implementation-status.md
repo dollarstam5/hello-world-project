@@ -151,3 +151,14 @@ Le document [Architecture de session invitée éphémère](./reel-guest-session-
 **Point de sécurité à traiter avant activation :** la migration vérifie le profil actif au démarrage d'une présence et lors de la découverte des autres présences, mais les RPC de bip et de consultation/commande des bips doivent aussi être auditées pour garantir qu'un compte suspendu ou fermé ne puisse pas continuer à agir via une présence déjà ouverte. La fermeture de sa propre présence doit, elle, rester possible pour permettre de quitter le service.
 
 **Vérifications :** ces validations sont ajoutées au client, mais aucun test automatisé, lint, build, appel RPC réel ou test sur appareil n'a encore été exécuté.
+
+## Contrôles de profil actif — durcissement SQL
+
+- Migration `20261110030000_reel_active_profile_guards.sql` : ajout d'un contrôle central qui exige un profil membre actif et non supprimé pour consulter une zone, lister les bips et exécuter une commande sur un bip.
+- Les commandes d'acceptation, de refus et de retrait revérifient le profil au moment de l'action. Une présence ouverte avant une suspension ne suffit donc plus à autoriser ces actions.
+- Migration `20261110040000_reel_bip_active_participants.sql` : contrôle des deux profils au moment de l'insertion d'un nouveau bip.
+- La fin de sa propre présence reste volontairement autorisée même si le profil n'est plus actif, afin que la personne puisse arrêter immédiatement le partage de sa présence.
+
+**Limite à vérifier :** une répétition idempotente d'un ancien identifiant de requête peut encore retrouver le bip déjà créé avant la suspension ; elle ne crée pas de nouvelle action métier. Ce comportement devra être confirmé par un test SQL dédié et éventuellement resserré selon la politique produit.
+
+**Vérifications :** les deux migrations et les tests SQL correspondants sont ajoutés à la branche, mais n'ont pas été appliqués sur une base de test. pgTAP, lint, build et tests sur appareils restent à exécuter.
