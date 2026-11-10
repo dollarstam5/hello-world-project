@@ -349,7 +349,7 @@ CREATE OR REPLACE FUNCTION public.reel_guest_bip_participants_active(p_bip_id UU
 RETURNS BOOLEAN
 LANGUAGE plpgsql SECURITY DEFINER
 SET search_path = pg_catalog, public
-AS $
+AS $$
 DECLARE
   v_bip public.reel_guest_bips;
 BEGIN
@@ -529,7 +529,7 @@ CREATE OR REPLACE FUNCTION public.list_reel_guest_connections_for_member()
 RETURNS TABLE (connection_id UUID, status TEXT, created_at TIMESTAMPTZ, expires_at TIMESTAMPTZ, closed_at TIMESTAMPTZ, partner_display_name TEXT)
 LANGUAGE sql STABLE SECURITY DEFINER
 SET search_path = pg_catalog, public
-AS $
+AS $$
   SELECT history.source_connection_id,
     CASE WHEN history.status = 'active' AND history.expires_at > now() THEN 'active' ELSE 'closed' END,
     history.created_at,
