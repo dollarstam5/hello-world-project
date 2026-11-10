@@ -100,6 +100,46 @@ BEGIN
 END;
 $$;
 
+CREATE OR REPLACE FUNCTION public.purge_reel_connection_history()
+RETURNS INTEGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = pg_catalog, public
+AS $
+DECLARE
+  v_deleted INTEGER;
+BEGIN
+  IF auth.role() <> 'service_role' THEN
+    RAISE EXCEPTION 'service_role_required' USING ERRCODE = '42501';
+  END IF;
+  DELETE FROM public.reel_connections
+  WHERE status = 'closed'
+    AND closed_at < now() - interval '6 months';
+  GET DIAGNOSTICS v_deleted = ROW_COUNT;
+  RETURN v_deleted;
+END;
+$;
+
+REVOKE ALL ON FUNCTION public.purge_reel_connection_history() FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.purge_reel_connection_history() TO service_role;
+
+DO $cron$
+BEGIN
+  IF EXISTS (SELECT 1 FROM pg_extension WHERE extname = 'pg_cron') THEN
+    BEGIN
+      PERFORM cron.schedule(
+        'reel-connection-history-cleanup',
+        '0 3 * * *',
+        'SELECT public.purge_reel_connection_history();'
+      );
+    EXCEPTION
+      WHEN duplicate_object OR unique_violation THEN NULL;
+      WHEN undefined_function OR invalid_schema_name THEN NULL;
+    END;
+  END IF;
+END;
+$cron$;
+
 REVOKE ALL ON FUNCTION public.list_reel_connections() FROM PUBLIC, anon;
 REVOKE ALL ON FUNCTION public.close_reel_connection(UUID) FROM PUBLIC, anon;
 GRANT EXECUTE ON FUNCTION public.list_reel_connections() TO authenticated;
