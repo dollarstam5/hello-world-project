@@ -15,7 +15,7 @@
 
 Chaque moteur expose ses sections propres et un accès de gestion dédié :
 - Flash : découverte, Mes Flash, brouillons, terminés/archivés et préférences Flash.
-- Scan : recherche, filtres, recherche en cours, recherches récentes si disponibles et préférences Scan.
+- Scan : recherche, filtres, recherche en cours, dix recherches récentes conservées localement (date et nombre de résultats uniquement), et préférences Scan.
 - Réel : présence, bips, mises en relation, historique et préférences Réel.
 - Radar : suivis, alertes, résultats confirmés, éléments en pause/archivés et préférences Radar.
 
@@ -31,7 +31,7 @@ Le menu 2×2 ouvre `/espace`, qui sert de tableau de bord personnel. Ses cartes 
 - `/espace/apercu` — aperçu public ; la page explique son indisponibilité tant qu'une projection sûre n'existe pas.
 - `/espace/parametres/application` — langue et apparence de l'application.
 
-L'avatar du header ouvre l'aperçu rapide et mène au profil complet `/espace/profil`. Les préférences globales ne sont pas mélangées avec les réglages propres à un moteur.
+L'avatar du header ouvre l'aperçu rapide et mène au profil complet `/espace/profil`. Les préférences globales ne sont pas mélangées avec les réglages propres à un moteur. L'historique Scan V1 reste sur l'appareil, n'enregistre aucune coordonnée ni détail de résultat et peut être effacé depuis la page Scan. Voir [Historique Scan V1](../02-architecture/scan-history-v1.md).
 
 ## Navigation principale mobile
 
