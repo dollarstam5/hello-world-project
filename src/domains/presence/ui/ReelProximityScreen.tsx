@@ -11,7 +11,12 @@ import {
 } from "@/domains/presence/api/reel-presence.client";
 import { supabase } from "@/integrations/supabase/client";
 import { resolveReelZone } from "@/domains/presence/api/reel-zone.functions";
-import { discoverReelGuestNearby } from "@/domains/presence/api/reel-guest-session.functions";
+import {
+  discoverReelGuestNearby,
+  endReelGuestPresence,
+  getMyReelGuestPresence,
+  startReelGuestPresence,
+} from "@/domains/presence/api/reel-guest-session.functions";
 import {
   endReelPresence,
   getMyActiveReelPresence,
@@ -132,6 +137,20 @@ export function ReelProximityScreen() {
     presence: ReelPresence | null;
   } | null>(null);
   const [presenceConsent, setPresenceConsent] = useState(false);
+  const [guestPresenceConsent, setGuestPresenceConsent] = useState(false);
+  const [guestDisplayName, setGuestDisplayName] = useState("");
+  const [guestAreaLabel, setGuestAreaLabel] = useState("À proximité");
+  const [guestAvatarKey, setGuestAvatarKey] = useState("avatar-blue");
+  const [guestPresence, setGuestPresence] = useState<{
+    id: string;
+    display_name: string;
+    avatar_key: string;
+    area_label: string;
+    description: string;
+    radius_m: number;
+    started_at: string;
+    expires_at: string;
+  } | null>(null);
   const [presenceDescription, setPresenceDescription] = useState(
     "Disponible pour échanger autour de moi",
   );
@@ -157,6 +176,51 @@ export function ReelProximityScreen() {
       : null;
   const canUseMemberReel =
     access.mode === "member" && access.memberProfileState === "active" && !access.loading;
+
+  useEffect(() => {
+    if (access.loading || access.mode !== "guest") {
+      if (access.mode !== "guest") setGuestPresence(null);
+      return;
+    }
+    let cancelled = false;
+    void getMyReelGuestPresence()
+      .then((presence) => {
+        if (cancelled) return;
+        setGuestPresence(presence);
+        if (presence) {
+          setGuestDisplayName(presence.display_name);
+          setGuestAreaLabel(presence.area_label);
+          setGuestAvatarKey(presence.avatar_key);
+          setPresenceDescription(presence.description);
+          const radiusLabel = presence.radius_m === 1000 ? "1 km" : `${presence.radius_m} m`;
+          setRadius(radiusLabel);
+          const remainingMinutes = Math.max(
+            0,
+            Math.round((Date.parse(presence.expires_at) - Date.now()) / 60_000),
+          );
+          const durationLabel =
+            remainingMinutes <= 30 ? "30 min" :
+            remainingMinutes <= 60 ? "1 h" :
+            remainingMinutes <= 120 ? "2 h" :
+            remainingMinutes <= 180 ? "3 h" :
+            remainingMinutes <= 360 ? "6 h" :
+            remainingMinutes <= 720 ? "12 h" : "24 h";
+          setDuration(durationLabel);
+        }
+      })
+      .catch((error) => {
+        if (!cancelled) {
+          setPresenceMessage(
+            error instanceof Error
+              ? error.message
+              : "Votre présence invitée n’a pas pu être retrouvée.",
+          );
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [access.loading, access.mode, access.guest?.sessionId]);
 
   useEffect(() => {
     let cancelled = false;
@@ -341,6 +405,85 @@ export function ReelProximityScreen() {
     } catch (error) {
       setPresenceMessage(
         error instanceof Error ? error.message : "Votre présence n’a pas pu être activée.",
+      );
+    } finally {
+      setPresenceLoading(false);
+    }
+  };
+
+  const activateGuestPresence = async () => {
+    if (access.mode !== "guest" || !guestPresenceConsent) {
+      setPresenceMessage("Confirmez d’abord que vous acceptez de rendre votre présence visible.");
+      return;
+    }
+    const displayName = guestDisplayName.trim();
+    const areaLabel = guestAreaLabel.trim();
+    const description = presenceDescription.trim();
+    if (!displayName || !areaLabel || !description) {
+      setPresenceMessage("Ajoutez un prénom, un secteur et une courte description.");
+      return;
+    }
+    setPresenceLoading(true);
+    setPresenceMessage(null);
+    try {
+      const fix = await requestReelLocation();
+      const radiusMeters = radius === "1 km" ? 1000 : Number.parseInt(radius, 10);
+      const durationMinutes: Record<string, number> = {
+        "30 min": 30,
+        "1 h": 60,
+        "2 h": 120,
+        "3 h": 180,
+        "6 h": 360,
+        "12 h": 720,
+        "24 h": 1440,
+      };
+      const result = await startReelGuestPresence({
+        data: {
+          displayName,
+          avatarKey: guestAvatarKey,
+          areaLabel,
+          description,
+          radiusM: radiusMeters as 10 | 25 | 50 | 100 | 1000,
+          latitude: fix.latitude,
+          longitude: fix.longitude,
+          durationMinutes: durationMinutes[duration] as 30 | 60 | 120 | 180 | 360 | 720 | 1440,
+          consent: true,
+        },
+      });
+      const nextPresence = await getMyReelGuestPresence();
+      if (!nextPresence || nextPresence.id !== result.presenceId) {
+        throw new Error("Votre présence n’a pas pu être confirmée. Réessayez.");
+      }
+      setGuestPresence(nextPresence);
+      setGuestPresenceConsent(false);
+      setPresenceMessage("Votre présence est maintenant visible autour de vous.");
+      if (discoveryAccess !== "granted") {
+        setPanel(null);
+        await requestDiscovery();
+      }
+    } catch (error) {
+      setPresenceMessage(
+        error instanceof Error ? error.message : "Votre présence n’a pas pu être activée.",
+      );
+    } finally {
+      setPresenceLoading(false);
+    }
+  };
+
+  const stopGuestPresence = async () => {
+    if (!guestPresence) return;
+    setPresenceLoading(true);
+    setPresenceMessage(null);
+    try {
+      const result = await endReelGuestPresence({
+        data: { presenceId: guestPresence.id },
+      });
+      if (!result.ended) throw new Error("Cette présence n’est déjà plus active.");
+      setGuestPresence(null);
+      setPresenceMessage("Votre présence n’est plus visible.");
+    } catch (error) {
+      setPresenceMessage(
+        error instanceof Error ? error.message : "Votre présence n’a pas pu être arrêtée.",
       );
     } finally {
       setPresenceLoading(false);
