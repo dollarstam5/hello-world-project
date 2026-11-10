@@ -23,6 +23,10 @@ export function AccountInformationPage() {
         setCreatedAt(data.user.created_at ?? null);
       }
       setLoading(false);
+    }).catch(() => {
+      if (!active) return;
+      setFailed(true);
+      setLoading(false);
     });
     return () => { active = false; };
   }, []);
