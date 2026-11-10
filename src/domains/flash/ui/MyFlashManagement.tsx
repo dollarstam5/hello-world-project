@@ -213,11 +213,7 @@ export function MyFlashManagement() {
                 type="button"
                 size="sm"
                 variant="ghost"
-                disabled={
-                  busyId !== null ||
-                  record.status === "archived" ||
-                  record.status === "expired"
-                }
+                disabled={busyId !== null || record.status === "archived" || record.status === "expired"}
                 onClick={() => {
                   setEditingId(record.id);
                   setEditDraft(record.body);
