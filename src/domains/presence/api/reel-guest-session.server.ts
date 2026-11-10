@@ -154,6 +154,10 @@ export async function readReelGuestSession() {
           .eq("id", session.id)
           .is("revoked_at", null);
         if (error) throw new Error("Impossible de terminer la session invitée.");
+        const { error: interactionCleanupError } = await admin.rpc("purge_reel_guest_interactions");
+        if (interactionCleanupError) {
+          throw new Error("Impossible de supprimer les interactions temporaires.");
+        }
       }
     }
     deleteCookie(COOKIE_NAME, cookieOptions(0));
@@ -206,9 +210,9 @@ export async function revokeReelGuestSession() {
         .is("revoked_at", null);
       if (error) throw new Error("Impossible de terminer la session invitée.");
       const { error: interactionCleanupError } = await admin.rpc("purge_reel_guest_interactions");
-      if (interactionCleanupError) throw new Error("Impossible de supprimer les interactions temporaires.");
-      const { error: interactionCleanupError } = await admin.rpc("purge_reel_guest_interactions");
-      if (interactionCleanupError) throw new Error("Impossible de supprimer les interactions temporaires.");
+      if (interactionCleanupError) {
+        throw new Error("Impossible de supprimer les interactions temporaires.");
+      }
     }
   }
   deleteCookie(COOKIE_NAME, cookieOptions(0));
@@ -382,7 +386,6 @@ export async function getMyReelGuestPresence() {
   return data;
 }
 
-
 export async function sendReelGuestBip(
   recipientActorKind: "member" | "guest",
   recipientPresenceId: string,
@@ -424,7 +427,10 @@ export async function listMyReelGuestBips() {
   return data;
 }
 
-export async function commandMyReelGuestBip(bipId: string, action: "accept" | "decline" | "withdraw") {
+export async function commandMyReelGuestBip(
+  bipId: string,
+  action: "accept" | "decline" | "withdraw",
+) {
   assertSameOrigin(true);
   noStore();
   const request = getRequest();
@@ -456,7 +462,9 @@ export async function listMyReelGuestConnections() {
   const { data, error } = await admin.rpc("list_reel_guest_connections_for_session", {
     p_guest_session_id: session.id,
   });
-  if (error || !Array.isArray(data)) throw new Error("Vos mises en relation n’ont pas pu être chargées.");
+  if (error || !Array.isArray(data)) {
+    throw new Error("Vos mises en relation n’ont pas pu être chargées.");
+  }
   return data;
 }
 
