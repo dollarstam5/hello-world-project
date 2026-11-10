@@ -214,8 +214,7 @@ export function MyFlashManagement() {
                 size="sm"
                 variant="ghost"
                 disabled={
-                  busyId !== null ||
-                  record.status === "archived" ||
+                  busyId !== null || record.status === "archived" ||
                   record.status === "expired"
                 }
                 onClick={() => {
