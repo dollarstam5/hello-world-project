@@ -185,7 +185,7 @@ export const messages = {
     "menu.profile.desc": "Votre identité, vos préférences et votre accompagnement.",
     "menu.espace": "Espace",
     "menu.espace.open": "Ouvrir mon espace",
-    "menu.espace.desc": "Retrouvez votre espace personnel et vos cercles.",
+    "menu.espace.desc": "Gérez votre profil, vos informations et vos préférences.",
     "menu.talents": "Talents — Savoirs Vivants",
     "menu.talents.desc": "Ce que les gens savent faire, et veulent partager.",
     "profile.open": "Ouvrir mon profil",
