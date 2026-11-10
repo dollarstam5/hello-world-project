@@ -1,15 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ProfileManagementPage } from "@/components/experience/ProfileManagementPage";
+import { PersonalDashboard } from "@/components/experience/PersonalDashboard";
 
 export const Route = createFileRoute("/espace")({
   head: () => ({
     meta: [
-      { title: "Mon profil — Vitalis" },
-      {
-        name: "description",
-        content: "Consultez et gérez les informations de votre profil Vitalis.",
-      },
+      { title: "Mon espace — Vitalis" },
+      { name: "description", content: "Retrouvez vos informations et les réglages de Vitalis." },
     ],
   }),
-  component: ProfileManagementPage,
+  component: PersonalDashboard,
 });
