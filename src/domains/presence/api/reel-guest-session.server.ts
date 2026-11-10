@@ -210,7 +210,6 @@ export async function revokeReelGuestSession() {
   deleteCookie(COOKIE_NAME, cookieOptions(0));
   return { active: false as const };
 }
-
 export interface ReelGuestPresenceInput {
   displayName: string;
   avatarKey: string;
@@ -279,7 +278,6 @@ export async function endReelGuestPresence(presenceId: string) {
   if (error) throw new Error("Impossible de terminer votre présence invitée.");
   return { ended: data === true };
 }
-
 export interface ReelGuestDiscoveryCard {
   presence_id: string;
   actor_kind: "member" | "guest";
