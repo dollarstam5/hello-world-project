@@ -124,7 +124,7 @@ CREATE POLICY reel_presence_owner_or_same_active_zone
     (owner_id = auth.uid() AND status = 'active' AND expires_at > (extract(epoch FROM now()) * 1000)::bigint)
     OR (
       status = 'active'
-      AND expires_at > (extract(epoch FROM clock_timestamp()) * 1000)::bigint
+      AND expires_at > (extract(epoch FROM now()) * 1000)::bigint
       AND public.reel_can_read_zone(zone_key)
     )
   );
@@ -297,7 +297,7 @@ BEGIN
   WHERE presence.zone_key = p_zone_key
     AND presence.owner_id <> auth.uid()
     AND presence.status = 'active'
-    AND presence.expires_at > (extract(epoch FROM clock_timestamp()) * 1000)::bigint
+    AND presence.expires_at > (extract(epoch FROM now()) * 1000)::bigint
     AND profile.status = 'active'
     AND profile.deleted_at IS NULL
   ORDER BY presence.started_at DESC
@@ -512,17 +512,14 @@ BEGIN
     RAISE EXCEPTION 'authentication_required' USING ERRCODE = '42501';
   END IF;
 
-  DELETE FROM public.reel_bips
-  WHERE status IN ('pending', 'declined', 'withdrawn')
-    AND expires_at <= (extract(epoch FROM clock_timestamp()) * 1000)::bigint
-    AND auth.uid() IN (sender_id, recipient_id);
+  PERFORM public.purge_expired_reel_bips();
 
   RETURN QUERY
   SELECT bip.*
   FROM public.reel_bips bip
   WHERE auth.uid() IN (bip.sender_id, bip.recipient_id)
     AND bip.status = 'pending'
-    AND bip.expires_at > (extract(epoch FROM clock_timestamp()) * 1000)::bigint
+    AND bip.expires_at > (extract(epoch FROM now()) * 1000)::bigint
   ORDER BY bip.created_at DESC
   LIMIT 100;
 END;
