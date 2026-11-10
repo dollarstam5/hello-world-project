@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Compass, Radar, RadioTower, ScanLine, Zap, ArrowUpRight } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Surface } from "@/components/app/Surface";
+import { PublicProfilePreview } from "@/components/app/PublicProfilePreview";
 import { Indicator } from "@/components/app/Indicator";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useIdentity } from "@/lib/experience/identity";
@@ -116,6 +117,9 @@ export function HomeFoundation() {
               <p className="text-base font-semibold leading-snug">
                 {demoTitles[flash.id] ?? t("home.demo.fallback")}
               </p>
+              {flash.authorPreview ? (
+                <PublicProfilePreview profile={flash.authorPreview} origin="demo" />
+              ) : null}
             </Surface>
           ))}
         </div>
