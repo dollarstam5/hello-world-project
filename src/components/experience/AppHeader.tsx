@@ -3,11 +3,14 @@ import { Link } from "@tanstack/react-router";
 import { Bell, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProfileQuickPreview } from "./ProfileQuickPreview";
+import { useIdentity } from "@/lib/experience/identity";
 import { useI18n } from "@/lib/i18n/useI18n";
 
 export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => void }) {
   const { t } = useI18n();
   const [profileOpen, setProfileOpen] = useState(false);
+  const displayName = useIdentity((state) => state.displayName);
+  const avatarInitials = displayName?.trim().split(/\\s+/).slice(0, 2).map((part) => part[0] ?? "").join("").toLocaleUpperCase();
 
   return (
     <>
@@ -42,7 +45,7 @@ export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => 
               className="h-12 w-12 rounded-full"
             >
               <span className="flex h-9 w-9 items-center justify-center rounded-full border border-border-soft bg-surface text-foreground">
-                <UserRound className="h-5 w-5" aria-hidden />
+                {avatarInitials || <UserRound className="h-5 w-5" aria-hidden />}
               </span>
             </Button>
           </div>
