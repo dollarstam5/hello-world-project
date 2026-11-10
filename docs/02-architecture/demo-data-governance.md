@@ -175,3 +175,13 @@ Le mapping, les exclusions de sécurité, le traitement des dates anciennes et l
 Une première intégration de démonstration est ajoutée sur la branche de travail pour le domaine Flash uniquement. Elle utilise le contrat public `PublicFlash`, conserve la provenance jusqu'à la carte, complète progressivement le flux après résolution des sources réelles et n'écrit jamais dans les dépôts métier.
 
 La sélection et les tests sont décrits dans [Adaptation du jeu SQL de démonstration aux domaines Vitalis — V1](./demo-sql-fixture-adapter-v1.md). L'intégration reste en attente des contrôles CI et ne doit pas être considérée comme fusionnée dans `main`. Aucun autre domaine n'est activé par cette tranche.
+
+
+## 15. Identités et profils dans les exemples
+
+- Un profil fictif est lui aussi une donnée de démonstration : il conserve la provenance `demo` et porte la mention « Exemple » dans sa carte et sa fiche.
+- Les avatars fictifs utilisent des initiales ou des illustrations abstraites ; ne pas reprendre la photo d'une personne réelle.
+- Un résultat réel ne reçoit un aperçu de profil que si son auteur a explicitement rendu ces champs publics.
+- L'absence de profil public n'empêche jamais l'affichage d'un besoin public : l'auteur reste simplement non identifié dans la carte.
+- Une fiche de profil consultable ne doit pas exposer de téléphone, e-mail, adresse précise, coordonnées, activité privée, historique ou réputation non vérifiée.
+- Les aperçus de profils ne sont jamais utilisés pour simuler des présences, des correspondances, des disponibilités ou des relations.
