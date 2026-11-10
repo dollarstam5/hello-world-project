@@ -96,19 +96,21 @@ Les exigences techniques T-01 à T-09 restent des éléments de spécification o
 
 | Élément observé | Constat | Conclusion |
 | --- | --- | --- |
-| `src/lib/experience/presence.ts` | Le module publie et écoute un événement dans un bus en mémoire sur le processus courant. | Ce n'est pas une présence temps réel partagée entre appareils. |
+| `src/lib/experience/presence.ts` | Le module publie et écoute toujours un événement dans un bus en mémoire sur le processus courant. | Ce n'est pas encore le transport temps réel multi-appareils. |
 | `src/routes/reel.tsx` | La page présente les sections Présence, Bips reçus, Mises en relation et Historique comme indisponibles. | L'interface n'affiche pas de présence ni de relation fictive. |
-| Données persistantes Réel | Aucun dépôt métier Réel, table de bips ou table de mises en relation n'a été confirmé dans le périmètre inspecté. | Le parcours métier n'est pas raccordé. |
+| Migration `supabase/migrations/20261110010000_reel_presence_and_bips.sql` | Ajoute les tables de présence, bips et relations, des RPC contrôlées, des règles RLS et une publication Postgres Changes conditionnelle. | Socle SQL ajouté ; application sur une base de test et exécution des tests pgTAP encore à prouver. |
 | Conversations | Le centre de communication possède des états vides ; aucune conversation Réel réelle n'est produite par le module de présence actuel. | C-03 et C-04 ne sont pas attestées par le runtime actuel. |
+| Découverte géographique | La première version filtre sur une clé de zone opaque commune ; le rayon métrique est enregistré mais aucun calcul de distance n'est effectué. | Ne pas afficher de distance ni annoncer un filtrage exact par rayon avant l'algorithme spatial et ses tests. |
+| Commandes de bip | Les RPC de création, acceptation, refus et retrait sont ajoutées ; l'acceptation crée une relation unique et le même identifiant client permet de rejouer une demande. | Le raccordement de l'outbox locale et les tests de reprise réseau restent à réaliser. |
 
 ## 7. Conditions avant activation du parcours Réel
 
-1. Définir le transport temps réel partagé et ses règles d'accès avant de publier une présence.
-2. Séparer les données de présence éphémère des historiques de bips, relations et interactions.
-3. Appliquer le consentement, la zone approximative et l'absence de GPS exact ou de suivi continu.
-4. Implémenter les états et transitions de bip, acceptation, refus, retrait et fermeture de relation côté serveur.
-5. Relier les conversations à leur origine métier et aux seuls participants autorisés.
-6. Appliquer expiration, conservation, suppression et traces techniques sans mélanger les catégories.
+1. Vérifier la migration dans la chaîne standard, l'appliquer sur une base de test et exécuter le test pgTAP 130 ainsi que les tests RLS existants.
+2. Raccorder Supabase Realtime côté client, avec autorisations, reprise après reconnexion et nettoyage des abonnements.
+3. Définir et tester la précision de la clé de zone et le calcul réel du rayon ; aucun GPS exact ne doit être stocké ou diffusé.
+4. Raccorder les commandes de présence et de bip à l'interface, à l'outbox locale et à la réconciliation idempotente après coupure réseau.
+5. Vérifier le parcours invité sur une session anonyme réelle.
+6. Créer la conversation liée à l'acceptation, puis implémenter la fermeture de relation et la lecture seule après fermeture.
 7. Relier chaque test attendu ci-dessus à un test automatisé ou à une preuve reproductible sur appareil.
 
-**Aucune de ces conditions n'est déclarée satisfaite par la seule présence de ce document.**
+Le socle SQL est ajouté, mais aucune de ces conditions d'activation utilisateur n'est déclarée satisfaite sans exécution et preuve.
