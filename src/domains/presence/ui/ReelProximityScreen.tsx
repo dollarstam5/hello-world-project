@@ -1,6 +1,6 @@
 import { useMemo, useState, type CSSProperties } from "react";
 import { Link } from "@tanstack/react-router";
-import { Bell, Bluetooth, ChevronDown, CircleUserRound, ScanLine, X } from "lucide-react";
+import { ArrowLeft, Bell, Bluetooth, ChevronDown, CircleUserRound, ScanLine, X } from "lucide-react";
 import "./reel-proximity.css";
 
 export interface Person {
@@ -70,6 +70,17 @@ function RingPerson({ person, onSelect }: { person: Person; onSelect: (person: P
 
 export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
+  const [showFullProfile, setShowFullProfile] = useState(false);
+
+  const openProfile = (person: Person) => {
+    setSelectedPerson(person);
+    setShowFullProfile(false);
+  };
+
+  const closeProfile = () => {
+    setSelectedPerson(null);
+    setShowFullProfile(false);
+  };
   const visiblePeople = people.slice(0, MAX_RING_PEOPLE);
   const nearbyPeople = people.slice(0, 3);
   const additionalCount = Math.max(0, people.length - 3);
@@ -111,7 +122,7 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
           </div>
         </div>
         {visiblePeople.map((person) => (
-          <RingPerson key={person.id} person={person} onSelect={setSelectedPerson} />
+          <RingPerson key={person.id} person={person} onSelect={openProfile} />
         ))}
       </div>
 
@@ -124,7 +135,7 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
                 key={person.id}
                 type="button"
                 className="reel-nearby__profile"
-                onClick={() => setSelectedPerson(person)}
+                onClick={() => openProfile(person)}
                 aria-label={`Voir le profil de ${person.name}`}
               >
                 <PersonAvatar person={person} size="small" />
@@ -143,7 +154,7 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
           className="reel-profile-backdrop"
           role="presentation"
           onMouseDown={(event) => {
-            if (event.target === event.currentTarget) setSelectedPerson(null);
+            if (event.target === event.currentTarget) closeProfile();
           }}
         >
           <section
@@ -155,38 +166,70 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
             <button
               type="button"
               className="reel-profile-sheet__close"
-              onClick={() => setSelectedPerson(null)}
+              onClick={closeProfile}
               aria-label="Fermer le profil"
             >
               <X aria-hidden="true" />
             </button>
+            {showFullProfile && (
+              <button
+                type="button"
+                className="reel-profile-sheet__back"
+                onClick={() => setShowFullProfile(false)}
+              >
+                <ArrowLeft aria-hidden="true" />
+                Retour à l’aperçu
+              </button>
+            )}
             <PersonAvatar person={selectedPerson} size="me" />
             <h2 id="reel-profile-title">{selectedPerson.name}</h2>
             {selectedPerson.category && (
               <p className="reel-profile-sheet__category">{selectedPerson.category}</p>
             )}
-            {selectedPerson.description && (
-              <p className="reel-profile-sheet__description">{selectedPerson.description}</p>
+            {selectedPerson.distanceLabel && (
+              <p className="reel-profile-sheet__distance">{selectedPerson.distanceLabel}</p>
             )}
-            {(selectedPerson.locationLabel || selectedPerson.distanceLabel) && (
-              <div className="reel-profile-sheet__details">
-                {selectedPerson.locationLabel && <span>{selectedPerson.locationLabel}</span>}
-                {selectedPerson.distanceLabel && <span>{selectedPerson.distanceLabel}</span>}
-              </div>
+            {showFullProfile ? (
+              <>
+                {selectedPerson.description && (
+                  <p className="reel-profile-sheet__description">{selectedPerson.description}</p>
+                )}
+                {(selectedPerson.locationLabel || selectedPerson.distanceLabel) && (
+                  <div className="reel-profile-sheet__details">
+                    {selectedPerson.locationLabel && <span>{selectedPerson.locationLabel}</span>}
+                    {selectedPerson.distanceLabel && <span>{selectedPerson.distanceLabel}</span>}
+                  </div>
+                )}
+                {!selectedPerson.description && !selectedPerson.locationLabel && (
+                  <p className="reel-profile-sheet__empty">
+                    Cette personne n’a pas encore ajouté d’autres informations à son profil.
+                  </p>
+                )}
+              </>
+            ) : (
+              <p className="reel-profile-sheet__description">
+                {selectedPerson.description
+                  ? selectedPerson.description
+                  : "Consultez les informations disponibles sur ce profil."}
+              </p>
             )}
-            {!selectedPerson.description && !selectedPerson.category &&
-              !selectedPerson.locationLabel && !selectedPerson.distanceLabel && (
-                <p className="reel-profile-sheet__empty">
-                  Ce profil ne contient pas encore d’autres informations.
-                </p>
-              )}
-            <button
-              type="button"
-              className="reel-profile-sheet__primary"
-              onClick={() => setSelectedPerson(null)}
-            >
-              Fermer
-            </button>
+            {!showFullProfile ? (
+              <button
+                type="button"
+                className="reel-profile-sheet__primary"
+                onClick={() => setShowFullProfile(true)}
+              >
+                Voir la fiche complète
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="reel-profile-sheet__primary"
+                onClick={closeProfile}
+              >
+                Fermer
+              </button>
+            )}
           </section>
         </div>
       )}
