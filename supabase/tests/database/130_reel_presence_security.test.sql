@@ -60,7 +60,7 @@ SELECT set_config(
 
 SELECT lives_ok(
   $$SELECT public.start_reel_presence(
-    'bonanjo-zone-0001', 'Bonanjo', 'Disponible pour une course', 250, 30, true
+    'bonanjo-zone-0001', 'Bonanjo', 'Disponible pour une course', 1000, 30, true
   )$$,
   'member C starts in a different approximate zone'
 );
