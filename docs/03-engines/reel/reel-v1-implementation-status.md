@@ -380,3 +380,6 @@ Le test pgTAP 137 couvre les deux directions et la suppression à la révocation
 - Initiales des noms corrigées pour séparer les mots correctement ; styles manquants des actions de fiche ajoutés.
 - Test visuel mobile renforcé : la capture de la route `/reel` attend maintenant le montage réel de `.reel-proximity`, et non seulement le conteneur global `#main`.
 - Le dernier contrôle Quality sur le SHA `da51cf585a04ceee3f19522d11bc4d90d36d72a0` a encore signalé une erreur Prettier dans le second message d'erreur de chargement des bips. Correction appliquée ensuite dans `431094b376346149ed4fabe00c8acb2680b7ee98`. Le dernier SHA n'a pas encore de résultat Quality associé ; aucune réussite de build ou de capture d'écran n'est revendiquée.
+
+
+Le Quality suivant, sur le SHA `2538cfca62af617e5e29d7d597bedf1fa6ba09f0`, a dépassé les erreurs précédentes et n'a signalé que deux règles de guillemets Prettier dans `tests/mobile-e2e-contract.test.ts`. Elles ont été corrigées dans `6d7074e511790f41dbebd0b4686669d198ae927f`. Le résultat Quality du dernier SHA reste à obtenir ; les étapes Vitest, build et captures n'ont pas été exécutées lors du run précédent.
