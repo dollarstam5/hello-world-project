@@ -55,9 +55,7 @@ export function PersonalDashboard() {
         <Indicator tone="primary" dot label={t("page.espace.eyebrow")} />
         <h1 className="text-fluid-display-sm">{t("space.title")}</h1>
         <p className="text-subtitle max-w-prose">
-          {displayName
-            ? t("space.welcome").replace("{name}", displayName)
-            : t("space.subtitle")}
+          {displayName ? t("space.welcome").replace("{name}", displayName) : t("space.subtitle")}
         </p>
       </header>
 
