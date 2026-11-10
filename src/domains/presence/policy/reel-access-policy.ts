@@ -26,6 +26,8 @@ export type ReelActorRole = "sender" | "recipient" | "participant";
 export interface ReelAccessContext {
   access: Pick<AccessModeState, "mode" | "loading" | "memberProfileState">;
   consents?: readonly string[];
+  /** Independent, current-visit approval to use device location inside Réel. */
+  locationConsent?: boolean;
   online?: boolean;
   resourceOwned?: boolean;
   actorRole?: ReelActorRole;
@@ -67,6 +69,19 @@ export function evaluateReelAccess(
   // business RPC currently accepts them. Do not imply that they can act.
   if (context.access.mode === "guest") {
     return denied("Le parcours Réel invité n’est pas encore ouvert pour cette action.", "account_required");
+  }
+
+  const locationGatedOperations: readonly ReelOperation[] = [
+    "start_presence",
+    "discover_presence",
+    "list_bips",
+    "send_bip",
+    "accept_bip",
+    "decline_bip",
+    "withdraw_bip",
+  ];
+  if (locationGatedOperations.includes(operation) && context.locationConsent !== true) {
+    return denied("Autorisez séparément la position pour utiliser les possibilités de proximité de Réel.", "consent_required");
   }
 
   const requiredRoles: Partial<Record<ReelOperation, ReelActorRole>> = {
