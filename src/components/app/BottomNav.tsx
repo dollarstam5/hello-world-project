@@ -82,7 +82,7 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
                   aria-label={t("nav.open_menu")}
                   aria-haspopup="dialog"
                   aria-expanded={menuOpen}
-                  className="reel-bottom-nav__control"
+                  className="reel-bottom-nav__control min-h-12 min-w-12"
                 >
                   {inner}
                 </button>
@@ -91,7 +91,7 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
                   to={tab.to!}
                   aria-label={label}
                   aria-current={active ? "page" : undefined}
-                  className="reel-bottom-nav__control"
+                  className="reel-bottom-nav__control min-h-12 min-w-12"
                 >
                   {inner}
                 </Link>
