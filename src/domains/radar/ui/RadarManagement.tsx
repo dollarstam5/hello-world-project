@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
-import { Radar as RadarIcon, X } from "lucide-react";
+import { Pencil, Radar as RadarIcon, X } from "lucide-react";
 import type { RadarRadiusKm, RadarRecord, RadarStatus } from "@eco/core-contracts";
 import type { MessageKey } from "@/lib/i18n/messages";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
@@ -10,7 +10,7 @@ import { Indicator } from "@/components/app/Indicator";
 import { Surface } from "@/components/app/Surface";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n/useI18n";
-import { cancelRadar, createRadarDraft, useMyRadars } from "../data";
+import { cancelRadar, createRadarDraft, editRadarDraft, useMyRadars } from "../data";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const RADII: RadarRadiusKm[] = [1, 3, 5, 10, 25, 50];
@@ -52,6 +52,7 @@ export function RadarManagement() {
   const [busyId, setBusyId] = useState<string | null>(null);
   const [actionError, setActionError] = useState(false);
   const [pendingCancel, setPendingCancel] = useState<RadarRecord | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const records = useMyRadars(userId);
 
   useEffect(() => {
@@ -80,7 +81,7 @@ export function RadarManagement() {
     const startsAt = Date.now();
 
     try {
-      await createRadarDraft({
+      const input = {
         title: text.length > 160 ? text.slice(0, 157) + "…" : text,
         query: text,
         category: null,
@@ -88,7 +89,13 @@ export function RadarManagement() {
         radiusKm,
         startsAt,
         expiresAt: startsAt + durationDays * DAY_MS,
-      });
+      };
+      if (editingId) {
+        await editRadarDraft(editingId, input);
+      } else {
+        await createRadarDraft(input);
+      }
+      setEditingId(null);
       setQuery("");
       setAreaLabel("");
     } catch {
@@ -129,7 +136,7 @@ export function RadarManagement() {
       <Surface variant="elevated" padding="md" bordered>
         <div className="mb-3 flex items-center gap-2">
           <RadarIcon className="h-5 w-5 text-primary" aria-hidden />
-          <h3 className="font-semibold">{t("radar.manage.create.title")}</h3>
+          <h3 className="font-semibold">{t(editingId ? "radar.manage.edit.title" : "radar.manage.create.title")}</h3>
         </div>
         <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
           {t("radar.manage.intro")}
@@ -198,9 +205,29 @@ export function RadarManagement() {
               </select>
             </label>
           </div>
-          <Button type="submit" disabled={busy || query.trim().length < 3 || areaLabel.trim().length < 2}>
-            {busy ? t("app.loading") : t("radar.manage.create.action")}
-          </Button>
+          <div className="flex flex-wrap justify-end gap-2">
+            {editingId ? (
+              <Button
+                type="button"
+                variant="ghost"
+                disabled={busy}
+                onClick={() => {
+                  setEditingId(null);
+                  setQuery("");
+                  setAreaLabel("");
+                  setRadiusKm(5);
+                  setDurationDays(7);
+                }}
+              >
+                {t("common.cancel")}
+              </Button>
+            ) : null}
+            <Button type="submit" disabled={busy || query.trim().length < 3 || areaLabel.trim().length < 2}>
+              {busy
+                ? t("app.loading")
+                : t(editingId ? "radar.manage.edit.action" : "radar.manage.create.action")}
+            </Button>
+          </div>
         </form>
       </Surface>
 
@@ -237,12 +264,29 @@ export function RadarManagement() {
                     <Indicator tone={statusTones[record.status]} label={t(statusKeys[record.status])} />
                   </div>
                   {record.status === "draft" ? (
-                    <div className="mt-3 flex justify-end">
+                    <div className="mt-3 flex flex-wrap justify-end gap-2">
                       <Button
                         type="button"
                         size="sm"
                         variant="ghost"
-                        disabled={busyId !== null}
+                        disabled={busyId !== null || busy || editingId !== null}
+                        onClick={() => {
+                          setEditingId(record.id);
+                          setQuery(record.query);
+                          setAreaLabel(record.areaLabel);
+                          setRadiusKm(record.radiusKm);
+                          const savedDays = Math.round((record.expiresAt - record.startsAt) / DAY_MS) as (typeof DURATIONS)[number];
+                          setDurationDays(DURATIONS.includes(savedDays) ? savedDays : 7);
+                        }}
+                      >
+                        <Pencil className="mr-2 h-4 w-4" aria-hidden />
+                        {t("radar.manage.edit")}
+                      </Button>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="ghost"
+                        disabled={busyId !== null || busy}
                         onClick={() => setPendingCancel(record)}
                       >
                         <X className="mr-2 h-4 w-4" aria-hidden />
