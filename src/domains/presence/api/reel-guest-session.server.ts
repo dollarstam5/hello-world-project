@@ -1,6 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { getCookie, getRequest, setCookie, deleteCookie, setResponseHeader } from "@tanstack/react-start/server";
-import { getPublicServerEnvironment, getRuntimeEnvironment, getSupabaseServiceRoleKey } from "@/config/env.server";
+import { getPublicServerEnvironment, getSupabaseServiceRoleKey } from "@/config/env.server";
 
 const COOKIE_NAME = "__Host-vitalis_reel_guest";
 const SESSION_TTL_SECONDS = 60 * 60;
@@ -113,6 +113,23 @@ export async function createReelGuestSession() {
 export async function readReelGuestSession() {
   assertSameOrigin(false);
   noStore();
+  const request = getRequest();
+  if (request.headers.has("authorization")) {
+    const token = getCookie(COOKIE_NAME);
+    if (token && /^[a-f0-9]{64}$/.test(token)) {
+      const admin = createAdminClient();
+      const tokenHash = await digestToken(token);
+      const { error } = await admin
+        .from("reel_guest_sessions")
+        .update({ revoked_at: new Date().toISOString() })
+        .eq("token_hash", tokenHash)
+        .is("revoked_at", null);
+      if (error) throw new Error("Impossible de terminer la session invitée.");
+    }
+    deleteCookie(COOKIE_NAME, cookieOptions(0));
+    return { active: false as const };
+  }
+
   const session = await currentSession();
   if (!session) {
     deleteCookie(COOKIE_NAME, cookieOptions(0));
@@ -142,14 +159,3 @@ export async function revokeReelGuestSession() {
   return { active: false as const };
 }
 
-export function guestSessionCookieName() {
-  return COOKIE_NAME;
-}
-
-export function guestSessionTtlSeconds() {
-  return SESSION_TTL_SECONDS;
-}
-
-export function guestSessionSecureCookieEnabled() {
-  return getRuntimeEnvironment() === "production";
-}
