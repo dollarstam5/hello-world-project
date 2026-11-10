@@ -33,12 +33,21 @@ SELECT lives_ok(
   'recipient publishes a presence in a different opaque HMAC cell'
 );
 
+RESET ROLE;
+SET LOCAL ROLE service_role;
+SELECT set_config(
+  'reel.test_recipient_presence_id',
+  (SELECT id::text FROM public.reel_presences
+   WHERE owner_id = 'd4000000-0000-4000-8000-000000000002' AND status = 'active'),
+  true
+);
+SET LOCAL ROLE authenticated;
 SELECT set_config('request.jwt.claims', '{"sub":"d4000000-0000-4000-8000-000000000001","role":"authenticated"}', true);
 SELECT lives_ok(
-  $$SELECT public.send_reel_bip(
-    (SELECT id FROM public.reel_presences WHERE owner_id = 'd4000000-0000-4000-8000-000000000002' AND status = 'active'),
+  $SELECT public.send_reel_bip(
+    current_setting('reel.test_recipient_presence_id')::uuid,
     'd4000000-0000-4000-8000-000000000411'
-  )$$,
+  )$,
   'a bip is allowed across different HMAC cells when PostGIS confirms the recipient visibility radius'
 );
 
