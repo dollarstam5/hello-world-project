@@ -17,17 +17,16 @@ import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { useIdentity } from "@/lib/experience/identity";
 import { useI18n } from "@/lib/i18n/useI18n";
-import type { Locale, MessageKey } from "@/lib/i18n/messages";
+import type { MessageKey } from "@/lib/i18n/messages";
 
 type EditableField = "display_name" | "handle";
 type ProfileRecord = {
   display_name: string;
   handle: string | null;
-  locale: string;
 };
 
 export function ProfileManagementPage() {
-  const { locale, setLocale, t } = useI18n();
+  const { t } = useI18n();
   const setIdentityName = useIdentity((state) => state.setDisplayName);
   const [profile, setProfile] = useState<ProfileRecord | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
@@ -56,7 +55,7 @@ export function ProfileManagementPage() {
       setUserId(authData.user.id);
       const { data, error: profileError } = await supabase
         .from("profiles")
-        .select("display_name,handle,locale")
+        .select("display_name,handle")
         .eq("id", authData.user.id)
         .maybeSingle();
 
@@ -133,25 +132,6 @@ export function ProfileManagementPage() {
     setSaving(false);
   }
 
-  async function changeLocale(nextLocale: Locale) {
-    if (!userId || !profile || saving) return;
-
-    setSaving(true);
-    setError("");
-    const { error: updateError } = await supabase
-      .from("profiles")
-      .update({ locale: nextLocale })
-      .eq("id", userId);
-
-    if (updateError) {
-      setError("profile.error");
-    } else {
-      setProfile({ ...profile, locale: nextLocale });
-      setLocale(nextLocale);
-      setNotice("profile.saved");
-    }
-    setSaving(false);
-  }
 
   if (loading) {
     return (
@@ -286,32 +266,6 @@ export function ProfileManagementPage() {
                   {t("profile.handle.remove")}
                 </Button>
               ) : null}
-            </div>
-          </div>
-        </Surface>
-      </section>
-
-      <section className="stack-3">
-        <h2 className="text-base font-semibold">{t("profile.section.preferences")}</h2>
-        <Surface variant="elevated" padding="lg" bordered>
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p className="text-sm font-medium">{t("profile.locale")}</p>
-              <p className="mt-1 text-xs text-muted-foreground">{t("profile.localeHint")}</p>
-            </div>
-            <div className="flex gap-2">
-              {(["fr", "en"] as const).map((option) => (
-                <Button
-                  key={option}
-                  type="button"
-                  variant={(profile.locale || locale) === option ? "default" : "outline"}
-                  className="h-11 min-w-14"
-                  disabled={saving || (profile.locale || locale) === option}
-                  onClick={() => void changeLocale(option)}
-                >
-                  {option.toUpperCase()}
-                </Button>
-              ))}
             </div>
           </div>
         </Surface>
