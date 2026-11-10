@@ -17,6 +17,7 @@ export {
   udiRepository,
   flashesRepository,
   missionsRepository,
+  radarsRepository,
   postsRepository,
   mediaRepository,
   notificationsRepository,
