@@ -5,10 +5,21 @@
 ## Hiérarchie des espaces
 
 - **Home** est le point d'entrée produit, distinct du moteur Réel. L'identité Vitalis dans l'en-tête et l'icône de lancement ouvrent la route d'accueil `/`.
-- Les quatre moteurs métier sont **Flash, Scan, Réel et Radar**. Chacun conserve sa route, son périmètre et ses responsabilités.
+- Les quatre moteurs métier sont **Flash, Scan, Réel et Radar**. Chacun conserve sa route, son périmètre, ses sections et ses responsabilités de gestion.
 - **2×2** donne accès au menu des espaces et fonctionnalités complémentaires. Ce n'est pas un cinquième moteur.
-- **Espace** et **Talents** sont des destinations secondaires accessibles depuis le menu 2×2.
-- Notifications, Assistant, Messages, Réel (contrôle du temps réel), profil et réglages sont des accès transversaux ; ils ne créent pas de nouveaux moteurs.
+- **Espace** est le tableau de bord personnel : Mes informations, Mon profil, Aperçu du profil, Paramètres du profil et Paramètres de l'application.
+- **Talents** reste une destination secondaire distincte, accessible depuis le menu 2×2.
+- Notifications, Assistant, Messages et le contrôle Réel depuis la cloche sont des accès transversaux ; ils ne créent pas de nouveaux moteurs.
+
+## Espaces indépendants et gestion
+
+Chaque moteur expose ses sections propres et un accès de gestion dédié :
+- Flash : découverte, Mes Flash, brouillons, terminés/archivés et préférences Flash.
+- Scan : recherche, filtres, recherche en cours, recherches récentes si disponibles et préférences Scan.
+- Réel : présence, bips, mises en relation, historique et préférences Réel.
+- Radar : suivis, alertes, résultats confirmés, éléments en pause/archivés et préférences Radar.
+
+Ces sections constituent la cible produit. Leur présence dans cette documentation ne prouve pas que les données ou actions correspondantes sont déjà raccordées. Les règles métier et les sources de données restent propres à chaque moteur.
 
 ## Navigation principale mobile
 
