@@ -740,7 +740,8 @@ export function ReelProximityScreen() {
     setLocationMessage(null);
   };
   const discoveryEnabled = discoveryAccess === "granted";
-  const activityEnabled = discoveryEnabled || Boolean(currentPresence);
+  const activityEnabled =
+    discoveryEnabled || Boolean(currentPresence) || Boolean(guestPresence) || canUseMemberReel || access.mode === "guest";
   const availablePeople = discoveryEnabled ? discoveredPeople : [];
 
   const openProfile = (person: Person) => {
