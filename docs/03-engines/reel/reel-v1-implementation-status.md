@@ -206,3 +206,9 @@ Une relecture croisée des migrations Réel 100 à 600, des deux tests pgTAP et 
 - La migration 600 corrige explicitement la volatilité de list_reel_bips() après le remplacement de fonction de la migration 500.
 
 **Résultat de cet audit :** aucune divergence de nom de colonne ou de signature n'a été relevée dans les éléments relus. Cela ne valide ni la syntaxe par exécution, ni les politiques sur une base réelle, ni les migrations appliquées. Les tests 130 et 131 restent à lancer avec bun run test:db sur une pile Supabase locale/jetable (CLI et Docker requis), jamais sur la production. Aucun résultat CI vert n'est actuellement confirmé pour le SHA de la PR.
+
+## Chaîne CI — contrôle de déclenchement
+
+Le workflow `.github/workflows/quality.yml` contient bien une étape `Database RLS tests` qui démarre Supabase, vérifie la présence des fichiers pgTAP puis exécute `bun run test:db`, avant d'arrêter la pile locale. Le workflow est configuré pour les pull requests ciblant `main`.
+
+Lors du contrôle du commit courant de la PR, GitHub ne retourne toutefois aucun workflow associé et aucun statut de vérification. La présence de cette étape dans le fichier YAML ne prouve donc pas qu'elle a été exécutée. Il faut vérifier que GitHub Actions est activé pour le dépôt et que le workflow `Quality` est autorisé, puis obtenir un run associé au SHA exact de la PR. Si aucun run ne démarre après un nouveau commit, le déclenchement ou les permissions Actions doivent être corrigés avant de considérer les tests comme validés.
