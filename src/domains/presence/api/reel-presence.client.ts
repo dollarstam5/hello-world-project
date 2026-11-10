@@ -52,7 +52,6 @@ type ReelRpcName =
 type ReelRpcArgs = Record<string, string | number | boolean | null>;
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-const ZONE_KEY_PATTERN = /^[a-z0-9_-]{8,64}$/;
 const ALLOWED_RADII = [10, 25, 50, 100, 1000] as const;
 const ALLOWED_DURATIONS = [30, 60, 120, 180, 360, 720, 1440] as const;
 
