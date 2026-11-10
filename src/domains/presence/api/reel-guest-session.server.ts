@@ -205,6 +205,8 @@ export async function revokeReelGuestSession() {
         .eq("id", session.id)
         .is("revoked_at", null);
       if (error) throw new Error("Impossible de terminer la session invitée.");
+      const { error: interactionCleanupError } = await admin.rpc("purge_reel_guest_interactions");
+      if (interactionCleanupError) throw new Error("Impossible de supprimer les interactions temporaires.");
     }
   }
   deleteCookie(COOKIE_NAME, cookieOptions(0));
