@@ -126,3 +126,16 @@ Le document [Architecture de session invitée éphémère](./reel-guest-session-
 - Tests Vitest ajoutés dans `tests/access-mode/reel-access-policy.test.ts`.
 
 **État de preuve :** code et tests ajoutés à la branche ; exécution Vitest, lint, build, migration Supabase et tests pgTAP non effectués. Cette politique ne rend pas le moteur activable en production à elle seule.
+
+
+## Service client Réel — première connexion aux RPC
+
+- Ajout de `src/domains/presence/api/reel-presence.client.ts`.
+- Le service appelle les RPC SQL existantes pour démarrer/terminer une présence, découvrir les présences d'une zone, envoyer un bip, accepter/refuser/retirer un bip et consulter les bips en attente.
+- Les paramètres de présence sont validés côté client avant appel ; le serveur reste responsable de la validation finale.
+- Les identifiants de requête de bip sont uniques par défaut pour permettre les tentatives idempotentes.
+- Les types des réponses sont déclarés localement car le snapshot généré `src/integrations/supabase/types.ts` ne contient pas encore les fonctions Réel. Le cast RPC est isolé dans un seul adaptateur et devra être supprimé après régénération des types depuis le schéma appliqué.
+
+**Non raccordé à l'écran :** aucun résolveur de zone opaque fiable n'a encore été identifié dans l'application. Le service exige donc une `zoneKey` fournie par ce résolveur et ne fabrique pas de clé à partir du GPS ou du nom de quartier. L'écran Réel continue de ne présenter aucune présence simulée.
+
+**Vérifications :** les appels RPC, la migration, les tests pgTAP, le lint et le build n'ont pas été exécutés dans cette tranche.
