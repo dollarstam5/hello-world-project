@@ -363,6 +363,7 @@ export function ReelProximityScreen() {
   useEffect(() => {
     if (panel !== "activity" || activityTab !== "connections" || (!canUseMemberReel && access.mode !== "guest")) return;
     void refreshConnections();
+    if (access.mode === "guest") return;
     const channel = supabase
       .channel(`reel-connections-${access.memberId}`)
       .on("postgres_changes", { event: "*", schema: "public", table: "reel_connections" }, () => {
@@ -1615,7 +1616,7 @@ export function ReelProximityScreen() {
                   "Consultez les informations disponibles sur ce profil."}
               </p>
             )}
-            {currentPresence && selectedPerson.actorKind !== "guest" && !showFullProfile && (
+            {(currentPresence || guestPresence) && !showFullProfile && (
               <button
                 type="button"
                 className="reel-profile-sheet__primary"
