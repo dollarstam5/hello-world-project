@@ -354,7 +354,6 @@ export async function discoverReelGuestNearby(latitude: number, longitude: numbe
   return data as ReelGuestDiscoveryCard[];
 }
 
-
 export async function getMyReelGuestPresence() {
   assertSameOrigin(false);
   noStore();
