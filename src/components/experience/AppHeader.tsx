@@ -10,7 +10,7 @@ export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => 
   const { t } = useI18n();
   const [profileOpen, setProfileOpen] = useState(false);
   const displayName = useIdentity((state) => state.displayName);
-  const avatarInitials = displayName?.trim().split(/\\s+/).slice(0, 2).map((part) => part[0] ?? "").join("").toLocaleUpperCase();
+  const avatarInitials = displayName\n    ?.trim()\n    .split(/\\s+/)\n    .slice(0, 2)\n    .map((part) => part[0] ?? "")\n    .join("")\n    .toLocaleUpperCase();
 
   return (
     <>
