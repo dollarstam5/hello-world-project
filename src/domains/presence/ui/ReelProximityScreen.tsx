@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, type CSSProperties } from "react";
 import { requestReelLocation } from "@/domains/presence/api/reel-location.client";
-import { commandReelBip, listReelBips, sendReelBip, type ReelBip } from "@/domains/presence/api/reel-presence.client";
+import { closeReelConnection, commandReelBip, listReelBips, listReelConnections, sendReelBip, type ReelBip, type ReelConnection } from "@/domains/presence/api/reel-presence.client";
 import { supabase } from "@/integrations/supabase/client";
 import { resolveReelZone } from "@/domains/presence/api/reel-zone.functions";
 import { endReelPresence, getMyActiveReelPresence, listReelNearbyPresence, startReelPresence, type ReelPresence } from "@/domains/presence/api/reel-presence.client";
@@ -94,6 +94,9 @@ export function ReelProximityScreen() {
   const [receivedBips, setReceivedBips] = useState<ReelBip[]>([]);
   const [bipsLoading, setBipsLoading] = useState(false);
   const [bipsMessage, setBipsMessage] = useState<string | null>(null);
+  const [connections, setConnections] = useState<ReelConnection[]>([]);
+  const [connectionsLoading, setConnectionsLoading] = useState(false);
+  const [connectionsMessage, setConnectionsMessage] = useState<string | null>(null);
   const [preferences, setPreferences] = useState({
     showDistance: true,
     allowBips: true,
@@ -142,6 +145,44 @@ export function ReelProximityScreen() {
       .subscribe();
     return () => { void supabase.removeChannel(channel); };
   }, [panel, activityTab, refreshBips, access.memberId]);
+
+  const refreshConnections = useCallback(async () => {
+    if (!canUseMemberReel || !access.memberId) return;
+    setConnectionsLoading(true);
+    try {
+      const rows = await listReelConnections();
+      setConnections(rows);
+      setConnectionsMessage(null);
+    } catch (error) {
+      setConnectionsMessage(error instanceof Error ? error.message : "Votre historique n’a pas pu être chargé.");
+    } finally {
+      setConnectionsLoading(false);
+    }
+  }, [canUseMemberReel, access.memberId]);
+
+  useEffect(() => {
+    if (panel !== "activity" || activityTab !== "connections" || !canUseMemberReel) return;
+    void refreshConnections();
+    const channel = supabase
+      .channel(`reel-connections-${access.memberId}`)
+      .on("postgres_changes", { event: "*", schema: "public", table: "reel_connections" }, () => {
+        void refreshConnections();
+      })
+      .subscribe();
+    return () => { void supabase.removeChannel(channel); };
+  }, [panel, activityTab, refreshConnections, access.memberId, canUseMemberReel]);
+
+  const endConnection = async (connection: ReelConnection) => {
+    if (connection.status !== "active") return;
+    if (!window.confirm("Mettre fin à cette mise en relation ? Elle sera fermée pour vous deux.")) return;
+    try {
+      await closeReelConnection(connection.connection_id);
+      await refreshConnections();
+      setConnectionsMessage("Cette mise en relation est maintenant terminée.");
+    } catch (error) {
+      setConnectionsMessage(error instanceof Error ? error.message : "La mise en relation n’a pas pu être fermée.");
+    }
+  };
 
   const sendBipToSelectedPerson = async () => {
     if (!selectedPerson || !currentPresence || !preferences.allowBips) return;
@@ -539,17 +580,40 @@ export function ReelProximityScreen() {
                         <button type="button" onClick={() => void resolveReceivedBip(bip, "decline")}>Refuser</button>
                       </div>
                     ))}
+                    {bipsMessage && <p className="reel-panel__note" role="status">{bipsMessage}</p>}
+                  </div>
+                ) : activityTab === "connections" ? (
+                  <div className="reel-people-list" aria-live="polite">
+                    {connectionsLoading && <p className="reel-panel__note">Chargement de vos rencontres…</p>}
+                    {!connectionsLoading && connections.length === 0 && (
+                      <div className="reel-panel__empty">
+                        <UsersRound aria-hidden="true" />
+                        <strong>Vous n’avez pas encore de mise en relation</strong>
+                        <span>Les personnes qui acceptent votre signe apparaîtront ici.</span>
+                      </div>
+                    )}
+                    {connections.map((connection) => (
+                      <div className="reel-people-list__item" key={connection.connection_id}>
+                        <span className="reel-avatar reel-avatar--small"><CircleUserRound aria-hidden="true" /></span>
+                        <span>
+                          <strong>{connection.partner_display_name}</strong>
+                          <small>{connection.status === "active" ? "Mise en relation active" : "Mise en relation terminée"}</small>
+                        </span>
+                        {connection.status === "active" && (
+                          <button type="button" onClick={() => void endConnection(connection)}>Terminer</button>
+                        )}
+                      </div>
+                    ))}
+                    {connectionsMessage && <p className="reel-panel__note" role="status">{connectionsMessage}</p>}
                   </div>
                 ) : (
                   <div className="reel-panel__empty">
-                    {activityTab === "notifications" ? <Bell aria-hidden="true" /> : <UsersRound aria-hidden="true" />}
-                    <strong>{activityTab === "notifications" ? "Tout est calme pour le moment" : "Vos relations déjà établies seront accessibles ici dès que leur historique sera connecté"}</strong>
-                    <span>{activityTab === "notifications" ? "Les nouvelles activités liées à Réel seront réunies ici." : "Vous pourrez retrouver ici les rencontres acceptées et toujours disponibles."}</span>
+                    <Bell aria-hidden="true" />
+                    <strong>Tout est calme pour le moment</strong>
+                    <span>Les notifications liées à Réel apparaîtront ici lorsqu’un événement réel sera disponible.</span>
                   </div>
                 )}
-                {bipsMessage && <p className="reel-panel__note" role="status">{bipsMessage}</p>}
-                {!activityEnabled && <p className="reel-panel__note">En mode calme, les alertes et les bips sont suspendus. Vos mises en relation déjà établies restent consultables.</p>}
-                {activityEnabled && activityTab !== "bips" && <p className="reel-panel__note">Les événements réels apparaîtront ici dès que leur source sera connectée.</p>}
+                {!activityEnabled && activityTab === "notifications" && <p className="reel-panel__note">En mode calme, les alertes sont suspendues. Vos mises en relation restent consultables.</p>}
               </>
             )}
 
