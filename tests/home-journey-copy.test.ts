@@ -52,8 +52,12 @@ describe("Home journey guidance", () => {
   it("keeps engine management states honest and localized", () => {
     expect(messages.fr["flash.mine.empty.title"]).toBeTruthy();
     expect(messages.en["flash.mine.empty.title"]).toBeTruthy();
-    expect(messages.fr["scan.history.desc"]).toContain("pas encore enregistrées");
-    expect(messages.en["scan.history.desc"]).toContain("not saved yet");
+    expect(messages.fr["scan.history.privacy"]).toContain("reste sur cet appareil");
+    expect(messages.fr["scan.history.privacy"]).toContain("jamais votre position");
+    expect(messages.en["scan.history.privacy"]).toContain("stays on this device");
+    expect(messages.en["scan.history.privacy"]).toContain("never your location");
+    expect(messages.fr["scan.history.clear"]).toBeTruthy();
+    expect(messages.en["scan.history.clear"]).toBeTruthy();
     expect(messages.fr["reel.section.unavailable"]).toContain("Aucune présence");
     expect(messages.en["reel.section.unavailable"]).toContain("No presence");
     expect(messages.fr["radar.section.unavailable"]).toContain("Aucun résultat");
