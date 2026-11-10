@@ -58,5 +58,20 @@ describe("Home journey guidance", () => {
     expect(messages.en["reel.section.unavailable"]).toContain("No presence");
     expect(messages.fr["radar.section.unavailable"]).toContain("Aucun résultat");
     expect(messages.en["radar.section.unavailable"]).toContain("No results");
+
+    const managementSections = [
+      "reel.section.presence.desc",
+      "reel.section.bips.desc",
+      "reel.section.connections.desc",
+      "reel.section.history.desc",
+      "radar.section.followed.desc",
+      "radar.section.alerts.desc",
+      "radar.section.results.desc",
+    ] as const;
+
+    for (const key of managementSections) {
+      expect(messages.fr[key]).toBeTruthy();
+      expect(messages.en[key]).toBeTruthy();
+    }
   });
 });
