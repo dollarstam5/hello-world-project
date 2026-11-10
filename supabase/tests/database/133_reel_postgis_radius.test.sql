@@ -75,6 +75,8 @@ SELECT lives_ok(
   )$$,
   'ending a presence succeeds'
 );
+RESET ROLE;
+SET LOCAL ROLE service_role;
 SELECT is(
   (SELECT count(*)::integer FROM public.reel_presence_locations
    WHERE presence_id IN (SELECT id FROM public.reel_presences WHERE owner_id = 'd3000000-0000-4000-8000-000000000002')),
