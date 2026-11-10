@@ -125,3 +125,17 @@ Le serveur retrouve d'abord la session depuis le cookie HttpOnly, puis appelle `
 Les Server Functions validées par Zod sont `startReelGuestPresence` et `endReelGuestPresence`. Elles n'exposent jamais l'identifiant de session ni les coordonnées stockées en base. Le point est envoyé au serveur uniquement après consentement utilisateur.
 
 **Limite volontaire de cette tranche :** les présences invitées ne sont pas encore incluses dans la découverte des membres ou des invités. Aucun bip, relation, notification ou historique n'est ouvert aux invités. La prochaine tranche doit construire la découverte filtrée PostGIS en tenant compte des deux types de présence, puis les actions de bip invitées sans créer de compte membre. Le test pgTAP 135 est ajouté mais non exécuté.
+
+
+## Découverte réciproque des présences invitées
+
+La migration `20261110110000_reel_guest_reciprocal_discovery.sql` ajoute une voie de découverte temporaire pour les invités, sans créer de profil Auth.
+
+- La position de découverte d'un invité est stockée dans `reel_guest_discovery_locations`, table privée service_role, avec une expiration maximale de 15 minutes.
+- Un invité peut découvrir des présences membres et invitées ; les résultats ne contiennent ni identifiant de session, ni coordonnées, ni distance exacte.
+- Un membre actif peut découvrir les présences invitées à partir de son point PostGIS de découverte existant.
+- Dans les deux sens, le rayon de visibilité appliqué est celui choisi par la personne qui publie sa présence.
+- La découverte invitée est liée au cookie HttpOnly et à la session vérifiée côté serveur. La révocation supprime aussi le point temporaire de découverte.
+- Les fiches invitées ne proposent pas encore de bip : les bips et relations restent réservés au parcours membre tant que leurs RPC dédiées aux identités temporaires ne sont pas conçues et testées.
+
+Le parcours d'écran appelle maintenant la découverte invitée et fusionne les cartes membres/invités pour un membre. Le parcours invité peut consulter les présences publiées par les membres. La publication de présence invitée n'est pas encore raccordée à un formulaire dans l'interface ; tant que ce raccordement n'est pas fait, aucune nouvelle fiche invitée ne peut être publiée depuis l'écran.
