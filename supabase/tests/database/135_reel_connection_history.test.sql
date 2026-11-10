@@ -88,7 +88,7 @@ SELECT is(
   'a third member cannot list another pair relationship'
 );
 SELECT throws_ok(
-  $SELECT public.close_reel_connection('d5000000-0000-4000-8000-000000000101')$,
+  $$SELECT public.close_reel_connection('d5000000-0000-4000-8000-000000000101')$$,
   '42501',
   'connection_not_found',
   'a third member cannot close another pair relationship'
