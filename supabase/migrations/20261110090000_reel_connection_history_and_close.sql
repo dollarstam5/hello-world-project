@@ -1,5 +1,18 @@
 BEGIN;
 
+-- Keep resolved bip rows readable by their two participants for the short
+-- retention window so Postgres Changes can deliver accept/decline events.
+-- The list RPC still returns pending bips only.
+DROP POLICY IF EXISTS reel_bip_participants_read ON public.reel_bips;
+CREATE POLICY reel_bip_participants_read
+  ON public.reel_bips
+  FOR SELECT TO authenticated
+  USING (
+    auth.uid() IN (sender_id, recipient_id)
+    AND status IN ('pending', 'accepted', 'declined', 'withdrawn')
+    AND expires_at > (extract(epoch FROM now()) * 1000)::bigint
+  );
+
 CREATE OR REPLACE FUNCTION public.list_reel_connections()
 RETURNS TABLE (
   connection_id UUID,
