@@ -69,7 +69,11 @@ export const radarsRepository = {
     });
   },
 
-  editDraft(id: string, patch: Partial<RadarDraftInput>): Promise<RadarRecord> {
+  async editDraft(id: string, patch: Partial<RadarDraftInput>): Promise<RadarRecord> {
+    const current = await base.get(id);
+    if (!current || current.ownerId !== actorId() || current.status !== "draft") {
+      throw new Error("Only your saved Radar drafts can be edited.");
+    }
     return base.update(id, patch);
   },
 
