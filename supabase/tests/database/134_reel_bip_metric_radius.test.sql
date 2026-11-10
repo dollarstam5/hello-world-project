@@ -19,15 +19,15 @@ VALUES
 SET LOCAL ROLE authenticated;
 SELECT set_config('request.jwt.claims', '{"sub":"d4000000-0000-4000-8000-000000000001","role":"authenticated"}', true);
 SELECT lives_ok(
-  $$SELECT public.start_reel_presence_from_grant(
+  $$reel_test$SELECT public.start_reel_presence_from_grant(
     'd4000000-0000-4000-8000-000000000401', 'Secteur A', 'Disponible', 100, 30, true
-  )$$,
+  )$reel_test$$,
   'sender publishes a presence'
 );
 
 SELECT set_config('request.jwt.claims', '{"sub":"d4000000-0000-4000-8000-000000000002","role":"authenticated"}', true);
 SELECT lives_ok(
-  $$SELECT public.start_reel_presence_from_grant(
+  $$reel_test$SELECT public.start_reel_presence_from_grant(
     'd4000000-0000-4000-8000-000000000402', 'Secteur B', 'Disponible', 25, 30, true
   )$$,
   'recipient publishes a presence in a different opaque HMAC cell'
@@ -44,7 +44,7 @@ SELECT set_config(
 SET LOCAL ROLE authenticated;
 SELECT set_config('request.jwt.claims', '{"sub":"d4000000-0000-4000-8000-000000000001","role":"authenticated"}', true);
 SELECT lives_ok(
-  $SELECT public.send_reel_bip(
+  $reel_test$SELECT public.send_reel_bip(
     current_setting('reel.test_recipient_presence_id')::uuid,
     'd4000000-0000-4000-8000-000000000411'
   )$,
