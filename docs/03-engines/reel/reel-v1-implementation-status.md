@@ -297,3 +297,6 @@ La branche ajoute une nouvelle migration `20261110080000_reel_postgis_metric_rad
 - Les tests pgTAP 130 et 132 ont été adaptés aux points PostGIS. Le nouveau test 133 vérifie un cas à environ 5 m, un cas à environ 22 m avec rayon de 10 m, puis le même écart avec rayon de 25 m, ainsi que l'absence d'accès direct des rôles navigateur aux tables de coordonnées.
 
 **Limites et précautions :** le GPS d'un appareil comporte une marge d'erreur ; un rayon de 10 m ne signifie donc pas une précision physique garantie à 10 m. Le calcul PostGIS est métrique, mais la qualité du résultat dépend de la précision de la position fournie. Les migrations et tests ne sont pas encore exécutés dans une base locale ou distante. La disponibilité et le schéma d'installation de PostGIS dans le projet Supabase doivent être confirmés à l'application de la migration. Le secret serveur `REEL_ZONE_HMAC_SECRET` reste requis pour le jeton opaque de présence.
+
+- Le contrôle des bips utilise également PostGIS : l'envoi est refusé si le point de l'expéditeur ne se trouve pas dans le rayon de visibilité de la présence destinataire. Deux personnes dans des cellules HMAC différentes peuvent donc interagir si le calcul métrique l'autorise.
+- Le test pgTAP 134 couvre l'envoi d'un bip entre deux cellules HMAC distinctes lorsque la distance réelle est dans le rayon du destinataire.
