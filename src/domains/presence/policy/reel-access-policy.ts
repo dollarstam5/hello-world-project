@@ -26,8 +26,10 @@ export type ReelActorRole = "sender" | "recipient" | "participant";
 export interface ReelAccessContext {
   access: Pick<AccessModeState, "mode" | "loading" | "memberProfileState">;
   consents?: readonly string[];
-  /** Independent, current-visit approval to use device location inside Réel. */
-  locationConsent?: boolean;
+  /** Permission to observe nearby activity, independent from publishing a presence. */
+  discoveryConsent?: boolean;
+  /** Explicit consent to publish an approximate presence. */
+  presenceConsent?: boolean;
   online?: boolean;
   resourceOwned?: boolean;
   actorRole?: ReelActorRole;
@@ -71,17 +73,20 @@ export function evaluateReelAccess(
     return denied("Le parcours Réel invité n’est pas encore ouvert pour cette action.", "account_required");
   }
 
-  const locationGatedOperations: readonly ReelOperation[] = [
+  if (operation === "discover_presence" && context.discoveryConsent !== true) {
+    return denied("Autorisez la découverte pour observer les activités autour de vous.", "consent_required");
+  }
+
+  const presenceGatedOperations: readonly ReelOperation[] = [
     "start_presence",
-    "discover_presence",
     "list_bips",
     "send_bip",
     "accept_bip",
     "decline_bip",
     "withdraw_bip",
   ];
-  if (locationGatedOperations.includes(operation) && context.locationConsent !== true) {
-    return denied("Autorisez séparément la position pour utiliser les possibilités de proximité de Réel.", "consent_required");
+  if (presenceGatedOperations.includes(operation) && context.presenceConsent !== true) {
+    return denied("Activez séparément votre présence pour utiliser ces possibilités.", "consent_required");
   }
 
   const requiredRoles: Partial<Record<ReelOperation, ReelActorRole>> = {
