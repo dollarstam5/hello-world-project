@@ -26,4 +26,41 @@ COMMENT ON TABLE public.reel_guest_sessions IS
 COMMENT ON COLUMN public.reel_guest_sessions.token_hash IS
   'SHA-256 hex digest of a random bearer secret; never store the raw cookie value.';
 
+CREATE OR REPLACE FUNCTION public.purge_expired_reel_guest_sessions()
+RETURNS INTEGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = pg_catalog, public
+AS $purge$
+DECLARE
+  v_deleted INTEGER;
+BEGIN
+  DELETE FROM public.reel_guest_sessions
+  WHERE expires_at <= now()
+     OR revoked_at <= now() - interval '10 minutes';
+  GET DIAGNOSTICS v_deleted = ROW_COUNT;
+  RETURN v_deleted;
+END;
+$purge$;
+
+REVOKE ALL ON FUNCTION public.purge_expired_reel_guest_sessions() FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.purge_expired_reel_guest_sessions() TO service_role;
+
+DO $cron$
+BEGIN
+  IF EXISTS (SELECT 1 FROM pg_extension WHERE extname = 'pg_cron') THEN
+    BEGIN
+      PERFORM cron.schedule(
+        'reel-expired-guest-session-cleanup',
+        '*/15 * * * *',
+        'SELECT public.purge_expired_reel_guest_sessions();'
+      );
+    EXCEPTION
+      WHEN duplicate_object OR unique_violation THEN NULL;
+      WHEN undefined_function OR invalid_schema_name THEN NULL;
+    END;
+  END IF;
+END;
+$cron$;
+
 COMMIT;
