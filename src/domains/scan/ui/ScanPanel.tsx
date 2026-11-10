@@ -170,9 +170,7 @@ export function ScanPanel() {
             </button>
           ) : null}
         </div>
-        <p className="text-xs leading-relaxed text-muted-foreground">
-          {t("scan.history.privacy")}
-        </p>
+        <p className="text-xs leading-relaxed text-muted-foreground">{t("scan.history.privacy")}</p>
         {history.length === 0 ? (
           <p className="text-sm text-muted-foreground" role="status">
             {t("scan.history.empty")}
