@@ -1,9 +1,9 @@
-import { ArrowLeft, Languages, Moon, Sun, Monitor } from "lucide-react";
+import { ArrowLeft, Languages, Monitor, Moon, Sun } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Surface } from "@/components/app/Surface";
 import { Button } from "@/components/ui/button";
-import { useI18n } from "@/lib/i18n/useI18n";
 import type { MessageKey } from "@/lib/i18n/messages";
+import { useI18n } from "@/lib/i18n/useI18n";
 import { useThemeStore, type ThemeMode } from "@/lib/app/theme";
 
 const themeOptions: { value: ThemeMode; icon: typeof Moon; key: MessageKey }[] = [
@@ -21,7 +21,10 @@ export function ApplicationSettingsPage() {
     <div className="page-shell stack-6">
       <header className="stack-2">
         <Button asChild variant="ghost" className="-ml-3 w-fit">
-          <Link to="/espace"><ArrowLeft className="mr-2 h-4 w-4" aria-hidden />{t("space.back")}</Link>
+          <Link to="/espace">
+            <ArrowLeft className="mr-2 h-4 w-4" aria-hidden />
+            {t("space.back")}
+          </Link>
         </Button>
         <p className="text-sm font-medium text-primary">{t("space.title")}</p>
         <h1 className="text-fluid-display-sm">{t("settings.title")}</h1>
@@ -29,12 +32,22 @@ export function ApplicationSettingsPage() {
       </header>
 
       <section className="stack-3">
-        <div className="flex items-center gap-2"><Languages className="h-5 w-5 text-primary" aria-hidden /><h2 className="text-base font-semibold">{t("settings.language.title")}</h2></div>
+        <div className="flex items-center gap-2">
+          <Languages className="h-5 w-5 text-primary" aria-hidden />
+          <h2 className="text-base font-semibold">{t("settings.language.title")}</h2>
+        </div>
         <Surface variant="elevated" padding="md" bordered>
           <p className="text-sm text-muted-foreground">{t("settings.language.desc")}</p>
           <div className="mt-3 grid grid-cols-2 gap-2">
             {(["fr", "en"] as const).map((value) => (
-              <Button key={value} type="button" variant={locale === value ? "default" : "outline"} className="h-11" aria-pressed={locale === value} onClick={() => setLocale(value)}>
+              <Button
+                key={value}
+                type="button"
+                variant={locale === value ? "default" : "outline"}
+                className="h-11"
+                aria-pressed={locale === value}
+                onClick={() => setLocale(value)}
+              >
                 {value === "fr" ? "Français" : "English"}
               </Button>
             ))}
@@ -43,13 +56,29 @@ export function ApplicationSettingsPage() {
       </section>
 
       <section className="stack-3">
-        <div className="flex items-center gap-2"><Moon className="h-5 w-5 text-primary" aria-hidden /><h2 className="text-base font-semibold">{t("settings.theme.title")}</h2></div>
+        <div className="flex items-center gap-2">
+          <Moon className="h-5 w-5 text-primary" aria-hidden />
+          <h2 className="text-base font-semibold">{t("settings.theme.title")}</h2>
+        </div>
         <Surface variant="elevated" padding="md" bordered>
           <p className="text-sm text-muted-foreground">{t("settings.theme.desc")}</p>
           <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-3">
             {themeOptions.map((option) => {
               const Icon = option.icon;
-              return <Button key={option.value} type="button" variant={mode === option.value ? "default" : "outline"} className="h-11 justify-start" aria-pressed={mode === option.value} onClick={() => setMode(option.value)}><Icon className="mr-2 h-4 w-4" aria-hidden />{t(option.key)}</Button>;
+
+              return (
+                <Button
+                  key={option.value}
+                  type="button"
+                  variant={mode === option.value ? "default" : "outline"}
+                  className="h-11 justify-start"
+                  aria-pressed={mode === option.value}
+                  onClick={() => setMode(option.value)}
+                >
+                  <Icon className="mr-2 h-4 w-4" aria-hidden />
+                  {t(option.key)}
+                </Button>
+              );
             })}
           </div>
         </Surface>
@@ -57,7 +86,9 @@ export function ApplicationSettingsPage() {
 
       <Surface variant="sunken" padding="md" bordered>
         <p className="font-medium">{t("settings.more.title")}</p>
-        <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{t("settings.more.desc")}</p>
+        <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+          {t("settings.more.desc")}
+        </p>
       </Surface>
     </div>
   );
