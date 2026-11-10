@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { RadioTower } from "lucide-react";
 import { EnginePreviewCard } from "@/components/experience/EnginePreviewCard";
-import { EngineSectionUnavailable } from "@/components/experience/EngineSectionUnavailable";
+import { EngineManagementGrid } from "@/components/experience/EngineManagementGrid";
 import { SectionFoundation } from "@/components/experience/SectionFoundation";
 
 export const Route = createFileRoute("/reel")({
@@ -30,10 +30,22 @@ export const Route = createFileRoute("/reel")({
             />
           ),
         },
-        { key: "presence", titleKey: "reel.section.presence", perf: "short", render: () => <EngineSectionUnavailable descriptionKey="reel.section.unavailable" /> },
-        { key: "bips", titleKey: "reel.section.bips", perf: "short", render: () => <EngineSectionUnavailable descriptionKey="reel.section.unavailable" /> },
-        { key: "connections", titleKey: "reel.section.connections", perf: "short", render: () => <EngineSectionUnavailable descriptionKey="reel.section.unavailable" /> },
-        { key: "history", titleKey: "reel.section.history", perf: "short", render: () => <EngineSectionUnavailable descriptionKey="reel.section.unavailable" /> },
+        {
+          key: "management",
+          titleKey: "reel.section.management",
+          perf: "short",
+          render: () => (
+            <EngineManagementGrid
+              items={[
+                { key: "presence", titleKey: "reel.section.presence" },
+                { key: "bips", titleKey: "reel.section.bips" },
+                { key: "connections", titleKey: "reel.section.connections" },
+                { key: "history", titleKey: "reel.section.history" },
+              ]}
+              descriptionKey="reel.section.unavailable"
+            />
+          ),
+        },
       ]}
     />
   ),
