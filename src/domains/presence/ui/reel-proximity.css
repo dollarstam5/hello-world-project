@@ -1250,3 +1250,39 @@
   cursor: not-allowed;
   opacity: 0.5;
 }
+
+
+/* Temporary guest avatar choices. */
+.reel-avatar--avatar-blue .reel-avatar__initials {
+  background: linear-gradient(140deg, #2878f0, #69b8ff);
+}
+
+.reel-avatar--avatar-violet .reel-avatar__initials {
+  background: linear-gradient(140deg, #7654d8, #b49aff);
+}
+
+.reel-avatar--avatar-green .reel-avatar__initials {
+  background: linear-gradient(140deg, #16876a, #63c8a4);
+}
+
+.reel-avatar--avatar-orange .reel-avatar__initials {
+  background: linear-gradient(140deg, #d97732, #ffb46b);
+}
+
+.reel-setting-row--stacked input[type="text"],
+.reel-setting-row--stacked select {
+  width: 100%;
+  min-height: 2.9rem;
+  border: 1px solid #dce8f6;
+  border-radius: 0.85rem;
+  padding: 0.7rem 0.85rem;
+  background: rgb(255 255 255 / 82%);
+  color: #26364d;
+  font: inherit;
+}
+
+.reel-setting-row--stacked input[type="text"]:focus-visible,
+.reel-setting-row--stacked select:focus-visible {
+  outline: 3px solid rgb(80 153 255 / 35%);
+  outline-offset: 2px;
+}
