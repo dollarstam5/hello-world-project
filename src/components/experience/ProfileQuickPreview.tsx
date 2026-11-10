@@ -14,7 +14,7 @@ interface ProfileQuickPreviewProps {
 }
 
 function getInitials(name: string): string {
-  return name.trim().split(/\\s+/).slice(0, 2).map((part) => part[0] ?? "").join("").toLocaleUpperCase();
+  return name\n    .trim()\n    .split(/\\s+/)\n    .slice(0, 2)\n    .map((part) => part[0] ?? "")\n    .join("")\n    .toLocaleUpperCase();
 }
 
 /** First level of the profile: a quick identity preview with a clear route to the full page. */
@@ -58,15 +58,15 @@ export function ProfileQuickPreview({ open, onOpenChange }: ProfileQuickPreviewP
       <div className="flex items-center gap-3 rounded-2xl border border-border-soft bg-surface p-4">
         <Avatar className="h-14 w-14 border border-border-soft">
           <AvatarFallback className="bg-primary-soft text-primary">
-            {name !== t("identity.guest") ? getInitials(name) : <UserRound className="h-6 w-6" aria-hidden />}
+            {name !== t("identity.guest") ? (\n              getInitials(name)\n            ) : (\n              <UserRound className="h-6 w-6" aria-hidden />\n            )}
           </AvatarFallback>
         </Avatar>
         <div className="min-w-0 flex-1">
           <p className="truncate font-semibold">{name}</p>
-          <p className="mt-1 text-sm text-muted-foreground">{t("profile.quickPreview.cardHint")}</p>
+          <p className="mt-1 text-sm text-muted-foreground">\n            {t("profile.quickPreview.cardHint")}\n          </p>
         </div>
       </div>
-      <p className="py-4 text-sm leading-relaxed text-muted-foreground">{t("profile.quickPreview.hint")}</p>
+      <p className="py-4 text-sm leading-relaxed text-muted-foreground">\n        {t("profile.quickPreview.hint")}\n      </p>
       <Button asChild className="h-12 w-full justify-between rounded-xl">
         <Link to="/espace" onClick={() => onOpenChange(false)}>
           {t("profile.quickPreview.full")}
