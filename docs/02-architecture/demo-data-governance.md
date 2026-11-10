@@ -168,3 +168,10 @@ Le fichier `donnees_sql.sql` fourni par le produit est une source de données fi
 Cette réutilisation concerne exclusivement le chemin de lecture et de présentation. Les opérations d'écriture métier, Dexie, outbox, synchronisation et Supabase restent interdites aux fixtures. La provenance `demo` doit survivre à chaque transformation.
 
 Le mapping, les exclusions de sécurité, le traitement des dates anciennes et les tests du convertisseur sont définis dans [Adaptation du jeu SQL de démonstration aux domaines Vitalis — V1](./demo-sql-fixture-adapter-v1.md). En cas de différence entre le schéma SQL et un contrat Vitalis, le contrat Vitalis prévaut ; aucune nouvelle valeur d'enum ou aucun champ métier ne doit être inventé pour faire entrer une ligne SQL.
+
+
+## 14. Première intégration contrôlée — Flash
+
+Une première intégration de démonstration est ajoutée sur la branche de travail pour le domaine Flash uniquement. Elle utilise le contrat public `PublicFlash`, conserve la provenance jusqu'à la carte, complète progressivement le flux après résolution des sources réelles et n'écrit jamais dans les dépôts métier.
+
+La sélection et les tests sont décrits dans [Adaptation du jeu SQL de démonstration aux domaines Vitalis — V1](./demo-sql-fixture-adapter-v1.md). L'intégration reste en attente des contrôles CI et ne doit pas être considérée comme fusionnée dans `main`. Aucun autre domaine n'est activé par cette tranche.
