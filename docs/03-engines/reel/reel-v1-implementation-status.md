@@ -1,15 +1,15 @@
 # Réel — état d'implémentation V1
 
-**État :** socle de persistance et de sécurité ajouté ; intégration de l'interface et du transport client encore ouverte.  
+**État :** découverte et publication de présence approximative raccordées pour les membres actifs ; temps réel multi-appareils, bips UI et mode invité métier encore ouverts.  
 **Migration :** `supabase/migrations/20261110010000_reel_presence_and_bips.sql`  
 **Tests :** `supabase/tests/database/130_reel_presence_security.test.sql`
 
 ## État de l'interface
 
-- La route `/reel` monte `ReelProximityScreen`, mais lui transmet actuellement une liste vide. Aucun profil réel n'est chargé dans cet écran.
-- Les panneaux de préférences, d'activité, de liste des personnes et d'aperçu de profil sont des interfaces interactives locales. Les choix de rayon, durée et autorisations ne sont ni enregistrés ni appliqués au service SQL.
+- La route `/reel` monte `ReelProximityScreen`. Les profils réels ne sont chargés qu'après accord de découverte et réponse du service SQL ; aucun profil de démonstration n'est injecté.
+- Les panneaux de préférences et d'activité sont interactifs. Le rayon et la durée sont transmis lors de la publication de présence ; les autres préférences d'affichage restent locales et ne sont pas encore appliquées au service SQL.
 - Les onglets Alertes, Bips reçus et Rencontres affichent des états vides honnêtes ; aucun compteur ou événement n'est simulé.
-- La page ne démarre ni n'arrête encore une présence réelle. Les actions Réel ne doivent pas être présentées comme actives avant le raccordement des RPC et la validation de la clé de zone.
+- La page permet à un membre actif de démarrer et d'arrêter sa présence après un consentement distinct, un accès ponctuel à la position et un jeton de zone à usage unique. L'exécution sur une base déployée reste à valider.
 
 ## Règle produit confirmée — accès membre et invité
 
@@ -56,7 +56,7 @@ Document d'architecture : [Gestionnaire central des modes d'accès](../../02-arc
 - Rayons enregistrables : 10 m, 25 m, 50 m, 100 m ou 1 km.
 - Un seul état de présence active par compte.
 - Aucune colonne de latitude, longitude ou coordonnées GPS dans le modèle Réel.
-- Lecture des présences limitée au propriétaire actif et aux personnes ayant une présence active dans la même zone opaque.
+- Lecture des présences limitée au propriétaire actif et aux membres actifs disposant d'une session de découverte serveur valide ou d'une présence active dans la zone concernée.
 - Projection de découverte limitée au nom affiché, à l'identifiant d'avatar, à la description, à l'intitulé de zone et aux horaires utiles. Aucun téléphone, GPS exact ou distance précise n'est retourné.
 - Bips privés aux deux participants, sans message libre, avec identifiant de requête client pour rendre les renvois réseau idempotents.
 - Un seul bip en attente par paire de personnes, quel que soit le sens.
@@ -67,8 +67,8 @@ Document d'architecture : [Gestionnaire central des modes d'accès](../../02-arc
 
 ## Limites à ne pas masquer
 
-1. **La zone est une clé opaque fournie au serveur, pas un GPS.** La précision géographique et l'algorithme de création de cette clé restent à définir et à valider sur appareil.
-2. **Le rayon est enregistré mais le calcul spatial n'est pas encore appliqué.** La découverte actuelle est limitée à la même clé de zone ; elle ne doit afficher ni distance ni prétendre respecter exactement un rayon métrique.
+1. **La zone est une clé HMAC opaque calculée côté serveur à partir d'une grille d'environ 200 m, pas un GPS.** Le secret serveur doit être configuré et la précision doit être validée sur appareil.
+2. **Le rayon est enregistré mais le calcul spatial n'est pas encore appliqué.** La découverte couvre la cellule et ses huit voisines ; elle ne doit afficher ni distance ni prétendre respecter exactement le rayon métrique choisi.
 3. **La publication serveur ne suffit pas à rendre l'interface temps réel.** `src/lib/platform/realtime.ts` reste un bus local en mémoire. Le client Supabase Realtime, les abonnements privés, la reprise après reconnexion et le nettoyage des abonnements restent à raccorder.
 4. **L'outbox locale n'est pas encore branchée aux commandes Réel.** Les RPC de bip sont idempotentes si le client réessaie avec le même `client_request_id`, mais l'enregistrement local et la reprise automatique après coupure restent à intégrer.
 5. **La mise en relation est créée à l'acceptation, mais la conversation Réel n'est pas encore créée.** Les messages, les états envoyé/reçu/lu, le partage de zone ponctuel, la fermeture de relation et la conversation en lecture seule après fermeture restent à livrer.
@@ -279,3 +279,6 @@ L'autorisation du système d'exploitation est demandée uniquement après l'acti
 | Profil membre invité/incomplet, suspendu, fermé, manquant ou en erreur | Accès métier refusé | Non | Non | Non |
 
 Les statuts ci-dessus décrivent le code présent dans la branche, pas une validation sur une base déployée. Les migrations et tests doivent encore être exécutés.
+
+
+**Mise à jour de référence :** la section « Mise à jour — découverte indépendante et présence approximative » ci-dessous décrit l'état le plus récent et prévaut sur les descriptions historiques antérieures.
