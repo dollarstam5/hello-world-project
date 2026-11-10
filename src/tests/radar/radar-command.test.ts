@@ -20,9 +20,9 @@ describe("Radar sync command mapping", () => {
     expect(radarCommandForTransition("active", "watching")).toBeNull();
   });
 
-  it("lets the database resolve an elapsed Radar to expired", () => {
-    expect(radarCommandForTransition("draft", "expired")).toBe("activate");
-    expect(radarCommandForTransition("active", "expired")).toBe("pause");
-    expect(radarCommandForTransition("paused", "expired")).toBe("resume");
+  it("does not let a client command set the expired status", () => {
+    expect(radarCommandForTransition("draft", "expired")).toBeNull();
+    expect(radarCommandForTransition("active", "expired")).toBeNull();
+    expect(radarCommandForTransition("paused", "expired")).toBeNull();
   });
 });
