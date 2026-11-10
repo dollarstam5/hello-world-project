@@ -225,6 +225,9 @@ export interface ReelGuestPresenceInput {
 export async function startReelGuestPresence(input: ReelGuestPresenceInput) {
   assertSameOrigin(true);
   noStore();
+  if (getRequest().headers.has("authorization")) {
+    throw new Error("Une session membre doit utiliser son propre accès Réel.");
+  }
   const session = await currentSession();
   if (!session) throw new Error("Votre accès invité a expiré. Ouvrez une nouvelle session.");
   if (
@@ -268,6 +271,9 @@ export async function startReelGuestPresence(input: ReelGuestPresenceInput) {
 export async function endReelGuestPresence(presenceId: string) {
   assertSameOrigin(true);
   noStore();
+  if (getRequest().headers.has("authorization")) {
+    throw new Error("Une session membre doit utiliser son propre accès Réel.");
+  }
   const session = await currentSession();
   if (!session) return { ended: false as const };
   const admin = createAdminClient();
@@ -350,6 +356,9 @@ export async function discoverReelGuestNearby(latitude: number, longitude: numbe
 export async function getMyReelGuestPresence() {
   assertSameOrigin(false);
   noStore();
+  if (getRequest().headers.has("authorization")) {
+    throw new Error("Une session membre doit utiliser son propre accès Réel.");
+  }
   const session = await currentSession();
   if (!session) return null;
   const admin = createAdminClient();
