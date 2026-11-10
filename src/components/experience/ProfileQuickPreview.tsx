@@ -59,7 +59,7 @@ export function ProfileQuickPreview({ open, onOpenChange }: ProfileQuickPreviewP
     return () => {
       active = false;
     };
-  }, [displayName, open, setDisplayName]);
+  }, [open, setDisplayName]);
 
   const name = loadedName.trim() || displayName?.trim() || t("identity.guest");
 
