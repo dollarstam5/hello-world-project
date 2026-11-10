@@ -1,7 +1,17 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { useAuth } from "@/domains/auth";
+import { supabase } from "@/integrations/supabase/client";
 
 export type AccessMode = "visitor" | "guest" | "member";
+export type MemberProfileState =
+  | "not_applicable"
+  | "loading"
+  | "active"
+  | "invited"
+  | "suspended"
+  | "closed"
+  | "missing"
+  | "error";
 
 export interface TemporaryGuestIdentity {
   /** Random, memory-only identifier. Never a Vitalis account or profile ID. */
@@ -13,6 +23,7 @@ export interface AccessModeState {
   mode: AccessMode;
   loading: boolean;
   memberId: string | null;
+  memberProfileState: MemberProfileState;
   guest: TemporaryGuestIdentity | null;
   isAuthenticated: boolean;
   startGuestSession: () => TemporaryGuestIdentity;
@@ -25,19 +36,62 @@ function createTemporaryIdentity(): TemporaryGuestIdentity {
   if (typeof crypto === "undefined" || typeof crypto.randomUUID !== "function") {
     throw new Error("Cette session ne peut pas démarrer sur cet appareil.");
   }
-
   return { sessionId: crypto.randomUUID(), startedAt: Date.now() };
 }
 
+function isMemberProfileState(value: string): value is Exclude<MemberProfileState, "not_applicable" | "loading" | "missing" | "error"> {
+  return value === "active" || value === "invited" || value === "suspended" || value === "closed";
+}
+
 /**
- * Central access-mode manager.
- *
- * Guest identity exists only in React memory: it is not written to localStorage,
- * sessionStorage, Supabase Auth, or the durable profiles table.
+ * Central access context. The profile state is read-only context; server-side
+ * authorization remains mandatory for every protected operation.
  */
 export function AccessModeProvider({ children }: { children: ReactNode }) {
-  const { user, loading } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [guest, setGuest] = useState<TemporaryGuestIdentity | null>(null);
+  const [memberProfileState, setMemberProfileState] = useState<MemberProfileState>("not_applicable");
+
+  useEffect(() => {
+    if (!user) {
+      setMemberProfileState("not_applicable");
+      return;
+    }
+
+    let cancelled = false;
+    setMemberProfileState("loading");
+
+    void supabase
+      .from("profiles")
+      .select("status, deleted_at")
+      .eq("id", user.id)
+      .maybeSingle()
+      .then(({ data, error }) => {
+        if (cancelled) return;
+        if (error) {
+          setMemberProfileState("error");
+          return;
+        }
+        if (!data) {
+          setMemberProfileState("missing");
+          return;
+        }
+        if (data.deleted_at !== null) {
+          setMemberProfileState("closed");
+          return;
+        }
+        setMemberProfileState(
+          isMemberProfileState(data.status) ? data.status : "error",
+        );
+      })
+      .catch(() => {
+        if (!cancelled) setMemberProfileState("error");
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id]);
 
   useEffect(() => {
     // A real account always takes precedence over a temporary guest session.
@@ -51,9 +105,7 @@ export function AccessModeProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const startGuestSession = useCallback(() => {
-    if (user) {
-      throw new Error("Vous êtes déjà connecté à votre compte Vitalis.");
-    }
+    if (user) throw new Error("Vous êtes déjà connecté à votre compte Vitalis.");
     const identity = createTemporaryIdentity();
     setGuest(identity);
     return identity;
@@ -63,21 +115,20 @@ export function AccessModeProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo<AccessModeState>(() => ({
     mode: user ? "member" : guest ? "guest" : "visitor",
-    loading,
+    loading: authLoading || (Boolean(user) && memberProfileState === "loading"),
     memberId: user?.id ?? null,
+    memberProfileState: user ? memberProfileState : "not_applicable",
     guest,
     isAuthenticated: Boolean(user),
     startGuestSession,
     endGuestSession,
-  }), [user, loading, guest, startGuestSession, endGuestSession]);
+  }), [user, authLoading, memberProfileState, guest, startGuestSession, endGuestSession]);
 
   return <AccessModeContext.Provider value={value}>{children}</AccessModeContext.Provider>;
 }
 
 export function useAccessMode(): AccessModeState {
   const value = useContext(AccessModeContext);
-  if (!value) {
-    throw new Error("useAccessMode doit être utilisé dans AccessModeProvider.");
-  }
+  if (!value) throw new Error("useAccessMode doit être utilisé dans AccessModeProvider.");
   return value;
 }
