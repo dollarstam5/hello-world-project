@@ -368,3 +368,15 @@ Le test pgTAP 137 couvre les deux directions et la suppression à la révocation
 - L'identifiant temporaire local a été supprimé du contexte React. Aucun identifiant de session invité n'est transmis dans le navigateur.
 - Migration `20261110140000_reel_private_activity_broadcasts.sql` et pgTAP 138 ajoutés. La table `realtime.messages` est gérée par Supabase : sa RLS existante est utilisée sans tentative de la modifier. Le réglage Supabase « Allow public access » doit être désactivé.
 - **État : à valider.** Aucun run CI n'est associé au dernier SHA de la branche ; la migration, pgTAP 137/138, le build, les tests multi-appareils et la réception effective des Broadcasts restent à vérifier.
+
+
+## Contrôle d'affichage Réel — 10 novembre 2026
+
+- Barre inférieure harmonisée avec les cinq entrées Vitalis : Flash, Scan, Réel, Radar et 2×2 ; libellés issus du catalogue FR/EN.
+- Feuille des rencontres corrigée pour afficher l'historique temporaire invité sans demander une connexion membre.
+- Préférences locales sans effet métier retirées de l'écran ; les réglages présentés sont ceux réellement appliqués.
+- Écran rendu défilable sur les petites hauteurs et appareils en paysage ; le contenu ne doit plus être coupé par une hauteur fixe.
+- Styles du moteur adaptés au thème sombre par défaut et au thème clair choisi dans l'application.
+- Initiales des noms corrigées pour séparer les mots correctement ; styles manquants des actions de fiche ajoutés.
+- Test visuel mobile renforcé : la capture de la route `/reel` attend maintenant le montage réel de `.reel-proximity`, et non seulement le conteneur global `#main`.
+- Le dernier contrôle Quality sur le SHA `da51cf585a04ceee3f19522d11bc4d90d36d72a0` a encore signalé une erreur Prettier dans le second message d'erreur de chargement des bips. Correction appliquée ensuite dans `431094b376346149ed4fabe00c8acb2680b7ee98`. Le dernier SHA n'a pas encore de résultat Quality associé ; aucune réussite de build ou de capture d'écran n'est revendiquée.
