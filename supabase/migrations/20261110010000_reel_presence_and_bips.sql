@@ -97,6 +97,8 @@ ALTER TABLE public.reel_bips ENABLE ROW LEVEL SECURITY;
 REVOKE ALL ON public.reel_bips FROM PUBLIC, anon, authenticated;
 GRANT SELECT ON public.reel_bips TO authenticated;
 
+GRANT ALL ON public.reel_presences, public.reel_bips, public.reel_connections TO service_role;
+
 CREATE OR REPLACE FUNCTION public.reel_can_read_zone(p_zone_key TEXT)
 RETURNS BOOLEAN
 LANGUAGE sql
