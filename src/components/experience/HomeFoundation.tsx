@@ -77,9 +77,9 @@ export function HomeFoundation() {
 
   const demoFlashes = createDemoFlashes();
   const demoTitles: Record<string, string> = {
-    "demo:flash:sql-besoin-002": t("home.demo.plumbing"),
-    "demo:flash:sql-besoin-009": t("home.demo.math"),
-    "demo:flash:sql-besoin-017": t("home.demo.help"),
+    "demo:flash:childcare-weekend": t("home.demo.plumbing"),
+    "demo:flash:moving-urgent": t("home.demo.math"),
+    "demo:flash:meeting-dishes": t("home.demo.help"),
   };
 
   return (
