@@ -1,6 +1,6 @@
 # Catalogue des contenus d'exemple par interface — V1
 
-**Statut :** préparation produit à valider avec les contrats de chaque domaine avant création des fixtures.  
+**Statut :** scénarios éditoriaux révisés pour représenter des besoins quotidiens concrets ; chaque fixture reste soumise à la validation du contrat de son domaine.  
 **Branche de travail :** `docs/language-audit-v1`.  
 **Décisions déjà validées :** affichage progressif selon la quantité de données réelles ; marqueur visible « Exemple » sur chaque contenu fictif.
 
@@ -33,7 +33,7 @@ Contenus préparés et première présentation intégrée :
 - une grande salutation en haut de page, lisible sur mobile et adaptée à la langue ; en mode invité : « Bonjour et bienvenue chez Vitalis ! » ;
 - une courte phrase d'accueil qui explique simplement l'utilité de Vitalis ;
 - quatre accès aux espaces principaux : Flash, Scan, Réel et Radar ;
-- trois aperçus Flash issus des fixtures SQL neutralisées (plomberie, cours de mathématiques, aide domestique), affichés dans une section pédagogique distincte et chacun marqué « Exemple » ;
+- trois aperçus Flash concrets, affichés dans une section pédagogique distincte et chacun marqué « Exemple » : garde d’enfants le week-end, aide au déménagement dans deux heures et deux personnes pour la vaisselle après une réunion du dimanche vers 15 h à Dakar ;
 - une indication discrète pour retrouver les espaces complémentaires dans le menu 2×2.
 
 Les aperçus d'accueil sont des exemples de présentation, pas une activité en direct : ils ne sont ni des publications d'utilisateurs, ni des notifications, ni des compteurs. Leurs textes sont localisés en français et en anglais. Ils ne sont jamais interactifs et ne sont pas injectés dans un flux métier.
@@ -48,13 +48,15 @@ Ne pas afficher de faux compteurs d'activité, de personnes connectées ou de no
 
 **Rôle :** publier et consulter des besoins, offres, opportunités ou disponibilités.
 
-Jeu éditorial initial : 4 à 6 exemples, variés mais courts :
-1. Offre de coup de main : « Je peux aider à porter quelques cartons cet après-midi. »
-2. Besoin de service : « Je cherche quelqu'un pour réparer un ventilateur. »
-3. Offre professionnelle : « Je propose des cours de soutien en mathématiques. »
-4. Besoin de transport : « Je cherche un trajet partagé pour demain matin. »
-5. Offre de proximité : « Quelques fruits frais disponibles aujourd'hui. »
-6. Besoin ponctuel : « Je cherche une perceuse à emprunter pour une heure. »
+Jeu éditorial révisé — des demandes formulées comme une personne les exprimerait :
+1. « Je cherche une personne de confiance pour garder mes enfants ce week-end. »
+2. « J’aurais besoin d’un coup de main pour mon déménagement dans deux heures. »
+3. « Je cherche une personne pour veiller auprès d’un parent âgé pendant quelques heures chaque jour cette semaine. »
+4. « Je cherche un emploi et je peux commencer dans une heure si une occasion se présente. »
+5. « Après notre réunion de dimanche, vers 15 h, nous cherchons deux personnes pour aider à faire la vaisselle. »
+6. « Nous préparons la cuisine pour les membres de notre réunion à Dakar. Un coup de main serait le bienvenu. »
+
+Les demandes de garde d’enfants et d’accompagnement d’une personne âgée doivent rester sobres, sans détails personnels, et rappeler que la confiance et les vérifications adaptées comptent. Ne pas inventer de salaire, d'employeur, de qualification ou de disponibilité confirmée.
 
 Chaque élément doit utiliser uniquement les catégories, créneaux et champs déjà prévus par `FlashRecord` et les contrats partagés. Les noms d'auteurs, zones et dates sont clairement fictifs ou génériques. Ne pas inventer de réputation, de validation ou de nombre de réponses.
 
@@ -63,9 +65,9 @@ Chaque élément doit utiliser uniquement les catégories, créneaux et champs d
 **Rôle :** montrer comment rechercher ou identifier des informations utiles autour d'un besoin.
 
 Préparer 3 résultats pédagogiques, pas des identifications prétendument vérifiées :
-- « Atelier de réparation » — résultat illustratif expliquant le type d'information que Scan peut aider à trouver ;
-- « Cours de soutien » — exemple de service correspondant à une recherche ;
-- « Point de collecte » — exemple de lieu ou de ressource, si ce type est effectivement pris en charge.
+- « Aide pour un déménagement » — exemple de mots-clés pour retrouver un service adapté ;
+- « Garde d’enfants le week-end » — exemple de besoin à rechercher, sans afficher de profil ni de disponibilité fictive ;
+- « Préparation de repas pour une réunion à Dakar » — exemple de recherche formulée en langage courant.
 
 L'écran doit distinguer clairement un exemple d'un résultat réellement obtenu par une recherche. Ne jamais afficher une distance précise, une disponibilité en direct, un score de confiance ou un statut vérifié fictifs.
 
@@ -92,14 +94,15 @@ Aucun bip, lien, message ou compteur fictif ne doit être généré.
 **Rôle :** découvrir et suivre des recherches ou opportunités dans une zone et pendant une période définies.
 
 Préparer 3 à 4 exemples de recherches, adaptés au schéma réel :
-- « Trouver un réparateur de téléphone »
-- « Chercher un logement à louer »
-- « Trouver des cours de langues »
-- « Repérer des fournisseurs de produits frais »
+- « Trouver une personne de confiance pour garder les enfants ce week-end »
+- « Trouver une aide pour un déménagement dans deux heures »
+- « Chercher un emploi avec une prise de poste rapide »
+- « Trouver une personne pour accompagner un parent âgé pendant une période définie »
+- « Organiser une aide pour la cuisine lors d’une réunion à Dakar »
 
 Les exemples doivent respecter les catégories, rayons, durées et statuts réellement autorisés par le schéma Radar. Ne pas fabriquer de nombre de correspondances, de dernière activité ou de disponibilité en temps réel.
 
-Les exemples sont consultables en aperçu mais ne peuvent pas être activés, renouvelés ou annulés comme une vraie recherche.
+Les exemples sont consultables en aperçu mais ne peuvent pas être activés, renouvelés ou annulés comme une vraie recherche. Les durées, rayons et états affichés doivent provenir des choix réellement autorisés, jamais d'une disponibilité inventée.
 
 ### 3.6 Menu 2×2 et espaces complémentaires
 
@@ -268,3 +271,32 @@ Une première tranche de fixtures est désormais ajoutée dans `src/domains/flas
 Le flux Flash conserve ses sources réelles (publications distantes et publications locales hors connexion), puis utilise un sélecteur de présentation commun sur la forme `PublicFlash`. Les contenus réels sont toujours prioritaires ; les exemples ne complètent l'affichage jusqu'à trois cartes qu'après la résolution du chargement réel. Chaque carte garde sa provenance et affiche « Exemple » / « Example » à la place de « En direct ».
 
 Tests ajoutés : `tests/flash-demo-feed.test.ts`. L'exécution CI est en attente ; cette intégration n'est donc pas encore déclarée validée. Aucun autre moteur n'a reçu de données fictives dans ses résultats réels.
+
+
+## 7. Scénarios sensibles et limites de publication
+
+- **Maternité de substitution (mère porteuse)** : ne pas utiliser comme carte Flash ordinaire ni comme annonce de recrutement dans les exemples publics V1. Le sujet implique des enjeux médicaux, juridiques, éthiques et de protection des personnes. Il ne pourra être présenté qu'après une validation juridique et produit dédiée, avec un parcours adapté et sans sollicitation publique simplifiée.
+- **Garde d’enfants** : formulation centrée sur le besoin, sans identité d’enfant, adresse, horaire détaillé ou coordonnées. Ne pas suggérer qu'une personne est déjà vérifiée ou disponible.
+- **Veille auprès d’une personne âgée** : parler d'accompagnement ou de présence, sans exposer d'informations de santé. Ne pas présenter ce besoin comme un service médical.
+- **Recherche d'emploi urgente** : ne pas promettre un emploi ni une embauche directe. La formulation décrit une recherche et une disponibilité déclarée dans le scénario fictif, pas une offre vérifiée.
+- **Aide après une réunion** : dire « deux personnes » plutôt que cibler un genre. Garder le dimanche et l'heure comme éléments de contexte de l'exemple, sans les convertir en date réelle.
+- **Cuisine à Dakar** : garder Dakar comme lieu explicitement indiqué par le scénario. Ne pas laisser entendre que la demande est proche de la personne qui consulte.
+
+## 8. Adaptation par moteur — limites d'intégration
+
+Les scénarios suivants constituent un référentiel éditorial partagé, pas des données injectées dans les résultats métier :
+
+| Moteur / espace | Exemple de langage naturel | Présentation autorisée |
+| --- | --- | --- |
+| Accueil | Garde d’enfants ce week-end ; déménagement dans deux heures ; aide à la vaisselle après une réunion à Dakar | Trois cartes pédagogiques Flash, marquées « Exemple » |
+| Flash | Besoin de garde ; déménagement urgent ; veille d’un parent âgé ; recherche d’emploi rapide ; vaisselle après réunion ; préparation de cuisine à Dakar | Fixtures Flash seulement après validation des contrats et protections du domaine |
+| Scan | « Je cherche de l’aide pour déménager » ; « Je cherche une personne pour garder les enfants » | Scène explicative séparée, jamais de faux résultat, distance ou disponibilité |
+| Réel | « Je suis à une réunion et je souhaite signaler ma présence » | Tutoriel statique ; aucune fausse personne, présence, distance ou bip |
+| Radar | « Je cherche une garde pour le week-end » ; « Je cherche un emploi avec une prise de poste rapide » ; « Je souhaite être accompagné auprès d’un parent âgé pendant une période définie » | Aperçu de recherche non activable, sans correspondance ni activité inventée |
+| 2×2 | « Aide à domicile », « Emploi », « Services pour les réunions » | Catégories explicatives seulement si elles existent réellement dans le menu |
+| Profil | Présentation d’une personne qui propose de l’aide pour préparer des repas | Profil de démonstration isolé, jamais un compte ou une réputation réelle |
+| Notifications / Messages | « Votre demande a reçu une réponse » | Exemple pédagogique isolé, jamais injecté dans les boîtes réelles |
+| Assistant Vita | « Aide-moi à expliquer mon besoin pour dimanche à 15 h » | Suggestion de question, pas de conversation préchargée |
+
+Aucun moteur autre que Flash et l'aperçu Accueil n'est activé par cette mise à jour. Les exemples des autres espaces restent des repères éditoriaux jusqu'à l'audit de leurs contrats et de leurs parcours.
+
