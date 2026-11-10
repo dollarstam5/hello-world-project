@@ -173,7 +173,7 @@ export function ScanPanel() {
                   }).format(entry.searchedAt)}
                 </span>
                 <span className="shrink-0 text-xs text-muted-foreground">
-                  {t("scan.history.results", { count: entry.resultCount })}
+                  {t("scan.history.results").replace("{count}", String(entry.resultCount))}
                 </span>
               </li>
             ))}
