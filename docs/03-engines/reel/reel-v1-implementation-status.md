@@ -333,3 +333,15 @@ Ce raccordement ne rend pas encore l'invité capable d'utiliser les opérations 
 La première tranche serveur de présence invitée est ajoutée : table isolée `reel_guest_presences`, fonctions SQL service_role, Server Functions avec validation Zod et tests pgTAP 135. La session est vérifiée par cookie HttpOnly côté serveur ; la durée de présence est plafonnée à l'expiration de la session ; arrêt et révocation effacent immédiatement la ligne et le point exact. Les coordonnées ne sont jamais lisibles depuis les rôles navigateur.
 
 Cette livraison est une fondation serveur, pas encore un parcours invité complet : pas encore de découverte des présences invitées, de bip, de mise en relation ou de notifications pour les invités. La migration et le test 135 sont ajoutés mais n'ont pas été exécutés sur Supabase. La disponibilité PostGIS et pg_cron reste à vérifier dans le projet cible.
+
+
+## Mise à jour — découverte géographique réciproque invitée
+
+- Ajout d'un point de découverte PostGIS privé et temporaire par session invitée.
+- Ajout d'une RPC service_role qui retourne à l'invité des cartes sûres de membres et d'autres invités, sans identifiant de session ni coordonnées.
+- Ajout d'une RPC membre active qui retourne uniquement les fiches publiques des présences invitées visibles selon le rayon de leur auteur.
+- La page Réel fusionne les cartes membres et invitées pour les membres ; le mode invité peut lancer une découverte et consulter les présences membres.
+- Les cartes invitées ne déclenchent pas de bip : la voie de bip/rélation pour identités invitées reste à concevoir.
+- Le formulaire de publication de présence invitée n'est pas encore intégré à l'écran. Les présences invitées ne sont donc pas encore publiables depuis le parcours utilisateur.
+
+Migration `20261110110000_reel_guest_reciprocal_discovery.sql` et test pgTAP 136 ajoutés. Ils ne sont pas exécutés ; aucune validation SQL, build ou test navigateur n'est revendiquée.
