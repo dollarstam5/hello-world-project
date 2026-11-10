@@ -38,10 +38,14 @@ done
 
 for route in "/flash" "/scan" "/reel" "/radar" "/talents" "/espace"; do
   output="$OUTPUT_DIR/vitalis-route-${route#/}.png"
+  selector="#main"
+  if [[ "$route" == "/reel" ]]; then
+    selector=".reel-proximity"
+  fi
   bunx playwright screenshot \
     --browser=chromium \
     --viewport-size="390,844" \
-    --wait-for-selector="#main" \
+    --wait-for-selector="$selector" \
     "$BASE_URL$route?__vitalis_smoke=1" \
     "$output" >/dev/null
   test -s "$output"
