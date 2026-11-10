@@ -246,7 +246,7 @@ export function ReelProximityScreen() {
     return () => {
       cancelled = true;
     };
-  }, [access.loading, access.mode, access.guest?.sessionId]);
+  }, [access.loading, access.mode, access.guest?.startedAt]);
 
   useEffect(() => {
     let cancelled = false;
