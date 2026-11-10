@@ -64,6 +64,8 @@ CREATE TABLE public.reel_guest_connections (
     CASE WHEN participant_two_member_id IS NOT NULL THEN 'm:' || participant_two_member_id::text
          ELSE 'g:' || participant_two_guest_session_id::text END
   ) STORED,
+  participant_one_display_name TEXT NOT NULL,
+  participant_two_display_name TEXT NOT NULL,
   status TEXT NOT NULL DEFAULT 'active',
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   expires_at TIMESTAMPTZ NOT NULL,
@@ -107,10 +109,10 @@ CREATE OR REPLACE FUNCTION public.send_reel_bip_to_guest(
   p_recipient_guest_presence_id UUID,
   p_client_request_id UUID
 )
-RETURNS public.reel_guest_bips
+RETURNS TABLE (bip_id UUID, bip_status TEXT, bip_expires_at TIMESTAMPTZ)
 LANGUAGE plpgsql SECURITY DEFINER
 SET search_path = pg_catalog, public, extensions
-AS $$
+AS $
 DECLARE
   v_member UUID := public.reel_require_active_profile();
   v_sender public.reel_presences;
@@ -159,9 +161,9 @@ BEGIN
     ORDER BY (client_request_id = p_client_request_id) DESC LIMIT 1;
   END IF;
   IF v_bip.id IS NULL THEN RAISE EXCEPTION 'bip_creation_failed' USING ERRCODE = '40001'; END IF;
-  RETURN v_bip;
+  RETURN QUERY SELECT v_bip.id, v_bip.status, v_bip.expires_at;
 END;
-$$;
+$;
 
 CREATE OR REPLACE FUNCTION public.send_reel_guest_bip(
   p_guest_session_id UUID,
@@ -169,10 +171,10 @@ CREATE OR REPLACE FUNCTION public.send_reel_guest_bip(
   p_recipient_presence_id UUID,
   p_client_request_id UUID
 )
-RETURNS public.reel_guest_bips
+RETURNS TABLE (bip_id UUID, bip_status TEXT, bip_expires_at TIMESTAMPTZ)
 LANGUAGE plpgsql SECURITY DEFINER
 SET search_path = pg_catalog, public, extensions
-AS $$
+AS $
 DECLARE
   v_sender public.reel_guest_presences;
   v_member_presence public.reel_presences;
@@ -255,9 +257,9 @@ BEGIN
       ORDER BY (client_request_id = p_client_request_id) DESC LIMIT 1;
   END IF;
   IF v_bip.id IS NULL THEN RAISE EXCEPTION 'bip_creation_failed' USING ERRCODE = '40001'; END IF;
-  RETURN v_bip;
+  RETURN QUERY SELECT v_bip.id, v_bip.status, v_bip.expires_at;
 END;
-$$;
+$;
 
 CREATE OR REPLACE FUNCTION public.create_reel_guest_connection_from_bip(p_bip_id UUID)
 RETURNS UUID
@@ -272,10 +274,22 @@ BEGIN
   IF NOT FOUND OR v_bip.status <> 'accepted' THEN RAISE EXCEPTION 'accepted_guest_bip_required' USING ERRCODE = '42501'; END IF;
   INSERT INTO public.reel_guest_connections (
     participant_one_member_id, participant_one_guest_session_id,
-    participant_two_member_id, participant_two_guest_session_id, expires_at
+    participant_two_member_id, participant_two_guest_session_id,
+    participant_one_display_name, participant_two_display_name, expires_at
   ) VALUES (
     v_bip.sender_member_id, v_bip.sender_guest_session_id,
-    v_bip.recipient_member_id, v_bip.recipient_guest_session_id, v_bip.expires_at
+    v_bip.recipient_member_id, v_bip.recipient_guest_session_id,
+    COALESCE(
+      (SELECT profile.display_name FROM public.profiles profile WHERE profile.id = v_bip.sender_member_id),
+      (SELECT guest.display_name FROM public.reel_guest_presences guest WHERE guest.guest_session_id = v_bip.sender_guest_session_id AND guest.status = 'active'),
+      'Visiteur'
+    ),
+    COALESCE(
+      (SELECT profile.display_name FROM public.profiles profile WHERE profile.id = v_bip.recipient_member_id),
+      (SELECT guest.display_name FROM public.reel_guest_presences guest WHERE guest.guest_session_id = v_bip.recipient_guest_session_id AND guest.status = 'active'),
+      'Visiteur'
+    ),
+    v_bip.expires_at
   )
   ON CONFLICT DO NOTHING;
   SELECT id INTO v_connection_id FROM public.reel_guest_connections
@@ -286,7 +300,7 @@ END;
 $$;
 
 CREATE OR REPLACE FUNCTION public.command_reel_guest_bip_member(p_bip_id UUID, p_action TEXT)
-RETURNS public.reel_guest_bips
+RETURNS TABLE (bip_id UUID, bip_status TEXT, bip_expires_at TIMESTAMPTZ)
 LANGUAGE plpgsql SECURITY DEFINER
 SET search_path = pg_catalog, public
 AS $$
@@ -314,17 +328,17 @@ BEGIN
     resolved_at = now(), updated_at = now()
     WHERE id = p_bip_id RETURNING * INTO v_bip;
   IF p_action = 'accept' THEN PERFORM public.create_reel_guest_connection_from_bip(p_bip_id); END IF;
-  RETURN v_bip;
+  RETURN QUERY SELECT v_bip.id, v_bip.status, v_bip.expires_at;
 END;
-$$;
+$;
 
 CREATE OR REPLACE FUNCTION public.command_reel_guest_bip_guest(
   p_guest_session_id UUID, p_bip_id UUID, p_action TEXT
 )
-RETURNS public.reel_guest_bips
+RETURNS TABLE (bip_id UUID, bip_status TEXT, bip_expires_at TIMESTAMPTZ)
 LANGUAGE plpgsql SECURITY DEFINER
 SET search_path = pg_catalog, public
-AS $$
+AS $
 DECLARE
   v_bip public.reel_guest_bips;
 BEGIN
@@ -354,23 +368,25 @@ BEGIN
     resolved_at = now(), updated_at = now()
     WHERE id = p_bip_id RETURNING * INTO v_bip;
   IF p_action = 'accept' THEN PERFORM public.create_reel_guest_connection_from_bip(p_bip_id); END IF;
-  RETURN v_bip;
+  RETURN QUERY SELECT v_bip.id, v_bip.status, v_bip.expires_at;
 END;
-$$;
+$;
 
 CREATE OR REPLACE FUNCTION public.list_reel_guest_bips_for_member()
-RETURNS SETOF public.reel_guest_bips
+RETURNS TABLE (id UUID, status TEXT, created_at TIMESTAMPTZ, expires_at TIMESTAMPTZ, is_recipient BOOLEAN)
 LANGUAGE sql STABLE SECURITY DEFINER
 SET search_path = pg_catalog, public
 AS $$
-  SELECT bip.* FROM public.reel_guest_bips bip
+  SELECT bip.id, bip.status, bip.created_at, bip.expires_at,
+    bip.recipient_member_id = auth.uid()
+  FROM public.reel_guest_bips bip
   WHERE auth.uid() IN (bip.sender_member_id, bip.recipient_member_id)
     AND bip.status = 'pending' AND bip.expires_at > now()
   ORDER BY bip.created_at DESC LIMIT 100;
 $$;
 
 CREATE OR REPLACE FUNCTION public.list_reel_guest_bips_for_session(p_guest_session_id UUID)
-RETURNS SETOF public.reel_guest_bips
+RETURNS TABLE (id UUID, status TEXT, created_at TIMESTAMPTZ, expires_at TIMESTAMPTZ, is_recipient BOOLEAN)
 LANGUAGE plpgsql STABLE SECURITY DEFINER
 SET search_path = pg_catalog, public
 AS $$
@@ -379,7 +395,9 @@ BEGIN
     SELECT 1 FROM public.reel_guest_sessions
     WHERE id = p_guest_session_id AND revoked_at IS NULL AND expires_at > now()
   ) THEN RAISE EXCEPTION 'active_guest_session_required' USING ERRCODE = '42501'; END IF;
-  RETURN QUERY SELECT bip.* FROM public.reel_guest_bips bip
+  RETURN QUERY SELECT bip.id, bip.status, bip.created_at, bip.expires_at,
+    bip.recipient_guest_session_id = p_guest_session_id
+    FROM public.reel_guest_bips bip
     WHERE p_guest_session_id IN (bip.sender_guest_session_id, bip.recipient_guest_session_id)
       AND bip.status = 'pending' AND bip.expires_at > now()
     ORDER BY bip.created_at DESC LIMIT 100;
@@ -387,11 +405,15 @@ END;
 $$;
 
 CREATE OR REPLACE FUNCTION public.list_reel_guest_connections_for_member()
-RETURNS SETOF public.reel_guest_connections
+RETURNS TABLE (connection_id UUID, status TEXT, created_at TIMESTAMPTZ, expires_at TIMESTAMPTZ, closed_at TIMESTAMPTZ, partner_display_name TEXT)
 LANGUAGE sql STABLE SECURITY DEFINER
 SET search_path = pg_catalog, public
 AS $$
-  SELECT connection.* FROM public.reel_guest_connections connection
+  SELECT connection.id, connection.status, connection.created_at, connection.expires_at,
+    connection.closed_at,
+    CASE WHEN connection.participant_one_member_id = auth.uid()
+      THEN connection.participant_two_display_name ELSE connection.participant_one_display_name END
+  FROM public.reel_guest_connections connection
   WHERE auth.uid() IN (connection.participant_one_member_id, connection.participant_two_member_id)
     AND connection.expires_at > now()
     AND (connection.status = 'active' OR connection.closed_at >= now() - interval '6 months')
@@ -399,7 +421,7 @@ AS $$
 $$;
 
 CREATE OR REPLACE FUNCTION public.list_reel_guest_connections_for_session(p_guest_session_id UUID)
-RETURNS SETOF public.reel_guest_connections
+RETURNS TABLE (connection_id UUID, status TEXT, created_at TIMESTAMPTZ, expires_at TIMESTAMPTZ, closed_at TIMESTAMPTZ, partner_display_name TEXT)
 LANGUAGE plpgsql STABLE SECURITY DEFINER
 SET search_path = pg_catalog, public
 AS $$
@@ -408,7 +430,11 @@ BEGIN
     SELECT 1 FROM public.reel_guest_sessions
     WHERE id = p_guest_session_id AND revoked_at IS NULL AND expires_at > now()
   ) THEN RAISE EXCEPTION 'active_guest_session_required' USING ERRCODE = '42501'; END IF;
-  RETURN QUERY SELECT connection.* FROM public.reel_guest_connections connection
+  RETURN QUERY SELECT connection.id, connection.status, connection.created_at, connection.expires_at,
+    connection.closed_at,
+    CASE WHEN connection.participant_one_guest_session_id = p_guest_session_id
+      THEN connection.participant_two_display_name ELSE connection.participant_one_display_name END
+    FROM public.reel_guest_connections connection
     WHERE p_guest_session_id IN (connection.participant_one_guest_session_id, connection.participant_two_guest_session_id)
       AND connection.expires_at > now()
     ORDER BY connection.created_at DESC LIMIT 100;
@@ -416,7 +442,7 @@ END;
 $$;
 
 CREATE OR REPLACE FUNCTION public.close_reel_guest_connection_member(p_connection_id UUID)
-RETURNS public.reel_guest_connections
+RETURNS BOOLEAN
 LANGUAGE plpgsql SECURITY DEFINER
 SET search_path = pg_catalog, public
 AS $$
@@ -428,15 +454,15 @@ BEGIN
     WHERE id = p_connection_id AND v_member IN (participant_one_member_id, participant_two_member_id)
     FOR UPDATE;
   IF NOT FOUND THEN RAISE EXCEPTION 'guest_connection_not_found' USING ERRCODE = '42501'; END IF;
-  IF v_connection.status = 'closed' THEN RETURN v_connection; END IF;
+  IF v_connection.status = 'closed' THEN RETURN TRUE; END IF;
   UPDATE public.reel_guest_connections SET status = 'closed', closed_at = now(),
-    closed_by_member_id = v_member WHERE id = p_connection_id RETURNING * INTO v_connection;
-  RETURN v_connection;
+    closed_by_member_id = v_member WHERE id = p_connection_id;
+  RETURN TRUE;
 END;
 $$;
 
 CREATE OR REPLACE FUNCTION public.close_reel_guest_connection_guest(p_guest_session_id UUID, p_connection_id UUID)
-RETURNS public.reel_guest_connections
+RETURNS BOOLEAN
 LANGUAGE plpgsql SECURITY DEFINER
 SET search_path = pg_catalog, public
 AS $$
@@ -451,10 +477,10 @@ BEGIN
     WHERE id = p_connection_id AND p_guest_session_id IN (participant_one_guest_session_id, participant_two_guest_session_id)
     FOR UPDATE;
   IF NOT FOUND THEN RAISE EXCEPTION 'guest_connection_not_found' USING ERRCODE = '42501'; END IF;
-  IF v_connection.status = 'closed' THEN RETURN v_connection; END IF;
+  IF v_connection.status = 'closed' THEN RETURN TRUE; END IF;
   UPDATE public.reel_guest_connections SET status = 'closed', closed_at = now(),
-    closed_by_guest_session_id = p_guest_session_id WHERE id = p_connection_id RETURNING * INTO v_connection;
-  RETURN v_connection;
+    closed_by_guest_session_id = p_guest_session_id WHERE id = p_connection_id;
+  RETURN TRUE;
 END;
 $$;
 
