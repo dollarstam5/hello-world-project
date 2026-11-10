@@ -174,7 +174,9 @@ Les bips membre-membre continuent d'utiliser le parcours déjà en place. Un bip
 
 ### Limites et validation
 
-Les Server Functions et l'interface sont raccordées aux RPC croisées. Le test pgTAP 137 couvre les deux directions membre/invité, l'acceptation, la relation unique, l'isolation des tables et la purge à la révocation. Les migrations et pgTAP doivent encore réussir en CI ; les essais sur deux appareils réels restent nécessaires. ### Événements temps réel et confidentialité
+Les Server Functions et l'interface sont raccordées aux RPC croisées. Le test pgTAP 137 couvre les deux directions membre/invité, l'acceptation, la relation unique, l'isolation des tables et la purge à la révocation. Les migrations et pgTAP doivent encore réussir en CI ; les essais sur deux appareils réels restent nécessaires.
+
+### Événements temps réel et confidentialité
 
 - Les membres reçoivent les changements croisés via un canal Broadcast privé `reel-member:<auth.uid()>`. La politique de lecture lie strictement le sujet du canal à `auth.uid()`.
 - Le message Broadcast ne contient qu'un type d'événement générique (`bip_received`, `bip_updated` ou `connection_updated`). Il ne contient aucun identifiant de session invité, identifiant de bip, identifiant de présence, nom, coordonnée ou distance.
