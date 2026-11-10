@@ -88,7 +88,8 @@ export const messages = {
       "Les informations que cette personne a choisi de partager.",
     "profile.preview.about": "En quelques mots",
     "profile.quickPreview.open": "Ouvrir mon aperçu de profil",
-    "profile.quickPreview.hint":\n      "Retrouvez ici votre identité en un coup d’œil. Vous gardez la main sur les informations que vous partagez.",
+    "profile.quickPreview.hint":
+      "Retrouvez ici votre identité en un coup d’œil. Vous gardez la main sur les informations que vous partagez.",
     "profile.quickPreview.cardHint": "Votre profil personnel",
     "profile.quickPreview.full": "Voir le profil complet",
     "profile.avatarFallback": "Moi",
@@ -218,13 +219,15 @@ export const messages = {
     "profile.section.identity": "Votre identité",
     "profile.section.preferences": "Vos préférences",
     "profile.section.protection": "Informations protégées",
-    "profile.signInHint":\n      "Connectez-vous pour consulter et mettre à jour les informations de votre profil.",
+    "profile.signInHint":
+      "Connectez-vous pour consulter et mettre à jour les informations de votre profil.",
     "profile.notProvided": "Pas encore renseigné",
     "profile.edit": "Modifier",
     "profile.nameRequired": "Votre nom affiché ne peut pas être vide.",
     "profile.handle.remove": "Supprimer l’identifiant public",
     "profile.handle.removeTitle": "Supprimer cet identifiant ?",
-    "profile.handle.removeConfirm":\n      "Supprimer votre identifiant public ? Cette action ne supprime pas votre compte.",
+    "profile.handle.removeConfirm":
+      "Supprimer votre identifiant public ? Cette action ne supprime pas votre compte.",
     "profile.localeHint": "Choisissez la langue utilisée dans Vitalis.",
     "page.flash.title": "Flash",
     "page.flash.desc":
@@ -538,7 +541,8 @@ export const messages = {
     "profile.preview.publicDescription": "Information this person has chosen to make public.",
     "profile.preview.about": "A little about them",
     "profile.quickPreview.open": "Open my profile preview",
-    "profile.quickPreview.hint":\n      "A quick look at your identity. You stay in control of the information you share.",
+    "profile.quickPreview.hint":
+      "A quick look at your identity. You stay in control of the information you share.",
     "profile.quickPreview.cardHint": "Your personal profile",
     "profile.quickPreview.full": "View full profile",
     "profile.avatarFallback": "Me",
