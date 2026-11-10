@@ -139,3 +139,15 @@ Le document [Architecture de session invitée éphémère](./reel-guest-session-
 **Non raccordé à l'écran :** aucun résolveur de zone opaque fiable n'a encore été identifié dans l'application. Le service exige donc une `zoneKey` fournie par ce résolveur et ne fabrique pas de clé à partir du GPS ou du nom de quartier. L'écran Réel continue de ne présenter aucune présence simulée.
 
 **Vérifications :** les appels RPC, la migration, les tests pgTAP, le lint et le build n'ont pas été exécutés dans cette tranche.
+
+## Service client Réel — durcissement des entrées
+
+- Vérification à l'exécution des rayons et durées autorisés, même si un appel contourne les types TypeScript.
+- Validation du format UUID pour les identifiants de présence, de bip et de requête idempotente.
+- Création de l'identifiant de requête protégée lorsque l'API cryptographique du navigateur n'est pas disponible ; l'action échoue clairement au lieu de générer un identifiant fragile.
+- Refus des limites non numériques et contrôle que les RPC de listes renvoient bien un tableau.
+- Les erreurs de réponse vide sont remontées explicitement.
+
+**Point de sécurité à traiter avant activation :** la migration vérifie le profil actif au démarrage d'une présence et lors de la découverte des autres présences, mais les RPC de bip et de consultation/commande des bips doivent aussi être auditées pour garantir qu'un compte suspendu ou fermé ne puisse pas continuer à agir via une présence déjà ouverte. La fermeture de sa propre présence doit, elle, rester possible pour permettre de quitter le service.
+
+**Vérifications :** ces validations sont ajoutées au client, mais aucun test automatisé, lint, build, appel RPC réel ou test sur appareil n'a encore été exécuté.
