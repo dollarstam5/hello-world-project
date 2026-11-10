@@ -1520,3 +1520,35 @@
     gap: var(--space-1);
   }
 }
+
+
+.reel-panel__secondary {
+  display: inline-flex;
+  width: 100%;
+  min-height: 3rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #dce8f6;
+  border-radius: 1rem;
+  padding: 0.65rem 0.9rem;
+  background: #f5f9ff;
+  color: #536984;
+  font-size: 0.92rem;
+  font-weight: 650;
+}
+
+.reel-panel__actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.reel-panel__actions .reel-panel__primary {
+  width: 100%;
+}
+
+.dark .reel-panel__secondary {
+  border-color: #40516a;
+  background: #314159;
+  color: #e0eafa;
+}
