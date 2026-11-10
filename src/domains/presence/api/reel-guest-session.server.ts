@@ -157,18 +157,29 @@ export async function revokeReelGuestSession() {
   if (token && /^[a-f0-9]{64}$/.test(token)) {
     const admin = createAdminClient();
     const tokenHash = await digestToken(token);
-    const { error } = await admin
+    const { data: session, error: lookupError } = await admin
       .from("reel_guest_sessions")
-      .update({ revoked_at: new Date().toISOString() })
+      .select("id")
       .eq("token_hash", tokenHash)
-      .is("revoked_at", null);
-    if (error) throw new Error("Impossible de terminer la session invitée.");
-    const { error: presenceError } = await admin
-      .from("reel_guest_presences")
-      .update({ status: "ended", ended_at: new Date().toISOString() })
-      .eq("guest_session_id", (await currentSession())?.id ?? "")
-      .eq("status", "active");
-    if (presenceError) throw new Error("Impossible de terminer la présence invitée.");
+      .eq("purpose", SESSION_PURPOSE)
+      .is("revoked_at", null)
+      .maybeSingle();
+    if (lookupError) throw new Error("Impossible de vérifier la session invitée.");
+    if (session) {
+      const now = new Date().toISOString();
+      const { error: presenceError } = await admin
+        .from("reel_guest_presences")
+        .update({ status: "ended", ended_at: now })
+        .eq("guest_session_id", session.id)
+        .eq("status", "active");
+      if (presenceError) throw new Error("Impossible de terminer la présence invitée.");
+      const { error } = await admin
+        .from("reel_guest_sessions")
+        .update({ revoked_at: now })
+        .eq("id", session.id)
+        .is("revoked_at", null);
+      if (error) throw new Error("Impossible de terminer la session invitée.");
+    }
   }
   deleteCookie(COOKIE_NAME, cookieOptions(0));
   return { active: false as const };
