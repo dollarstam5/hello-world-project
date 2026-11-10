@@ -3,9 +3,10 @@ import { Link } from "@tanstack/react-router";
 import { Surface } from "@/components/app/Surface";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n/useI18n";
+import type { MessageKey } from "@/lib/i18n/messages";
 import { useThemeStore, type ThemeMode } from "@/lib/app/theme";
 
-const themeOptions: { value: ThemeMode; icon: typeof Moon; key: string }[] = [
+const themeOptions: { value: ThemeMode; icon: typeof Moon; key: MessageKey }[] = [
   { value: "dark", icon: Moon, key: "settings.theme.dark" },
   { value: "light", icon: Sun, key: "settings.theme.light" },
   { value: "system", icon: Monitor, key: "settings.theme.system" },
@@ -48,7 +49,7 @@ export function ApplicationSettingsPage() {
           <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-3">
             {themeOptions.map((option) => {
               const Icon = option.icon;
-              return <Button key={option.value} type="button" variant={mode === option.value ? "default" : "outline"} className="h-11 justify-start" aria-pressed={mode === option.value} onClick={() => setMode(option.value)}><Icon className="mr-2 h-4 w-4" aria-hidden />{t(option.key as never)}</Button>;
+              return <Button key={option.value} type="button" variant={mode === option.value ? "default" : "outline"} className="h-11 justify-start" aria-pressed={mode === option.value} onClick={() => setMode(option.value)}><Icon className="mr-2 h-4 w-4" aria-hidden />{t(option.key)}</Button>;
             })}
           </div>
         </Surface>
