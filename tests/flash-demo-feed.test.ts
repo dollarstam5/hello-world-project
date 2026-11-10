@@ -51,5 +51,11 @@ describe("Flash demo feed", () => {
     expect(fixtures.every((row) => row.id.startsWith("demo:flash:"))).toBe(true);
     expect(fixtures.every((row) => !("authorId" in row) && !("contact" in row))).toBe(true);
     expect(fixtures.every((row) => row.expiresAt > NOW)).toBe(true);
+    expect(fixtures.map((row) => row.title)).toEqual([
+      "Je cherche une personne de confiance pour garder mes enfants ce week-end.",
+      "J’aurais besoin d’un coup de main pour mon déménagement dans deux heures.",
+      "Après notre réunion de dimanche, vers 15 h, nous cherchons deux personnes pour aider à faire la vaisselle.",
+    ]);
+    expect(fixtures[2]?.areaLabel).toBe("Dakar (exemple)");
   });
 });
