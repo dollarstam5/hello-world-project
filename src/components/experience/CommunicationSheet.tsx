@@ -71,10 +71,14 @@ export function CommunicationSheet({
           </Suspense>
         </TabsContent>
         <TabsContent value="messages" className="py-8 text-center text-sm text-muted-foreground">
-          <p role="status" aria-live="polite">{t("communication.messages.empty")}</p>
+          <p role="status" aria-live="polite">
+            {t("communication.messages.empty")}
+          </p>
         </TabsContent>
         <TabsContent value="reel" className="py-8 text-center text-sm text-muted-foreground">
-          <p role="status" aria-live="polite">{t("communication.reel.empty")}</p>
+          <p role="status" aria-live="polite">
+            {t("communication.reel.empty")}
+          </p>
         </TabsContent>
       </Tabs>
     </Sheet>
