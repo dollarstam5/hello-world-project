@@ -577,7 +577,7 @@ AS $$
       OR COALESCE(history.closed_at, history.expires_at) >= now() - interval '6 months'
     )
   ORDER BY history.created_at DESC LIMIT 100;
-$;
+$$;
 
 CREATE OR REPLACE FUNCTION public.list_reel_guest_connections_for_session(p_guest_session_id UUID)
 RETURNS TABLE (connection_id UUID, status TEXT, created_at TIMESTAMPTZ, expires_at TIMESTAMPTZ, closed_at TIMESTAMPTZ, partner_display_name TEXT)
