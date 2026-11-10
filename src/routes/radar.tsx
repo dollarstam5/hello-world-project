@@ -37,9 +37,21 @@ export const Route = createFileRoute("/radar")({
           render: () => (
             <EngineManagementGrid
               items={[
-                { key: "followed", titleKey: "radar.section.followed", descriptionKey: "radar.section.followed.desc" },
-                { key: "alerts", titleKey: "radar.section.alerts", descriptionKey: "radar.section.alerts.desc" },
-                { key: "results", titleKey: "radar.section.results", descriptionKey: "radar.section.results.desc" },
+                {
+                  key: "followed",
+                  titleKey: "radar.section.followed",
+                  descriptionKey: "radar.section.followed.desc",
+                },
+                {
+                  key: "alerts",
+                  titleKey: "radar.section.alerts",
+                  descriptionKey: "radar.section.alerts.desc",
+                },
+                {
+                  key: "results",
+                  titleKey: "radar.section.results",
+                  descriptionKey: "radar.section.results.desc",
+                },
               ]}
               descriptionKey="radar.section.unavailable"
             />
