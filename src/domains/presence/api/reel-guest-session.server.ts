@@ -230,9 +230,15 @@ export async function startReelGuestPresence(input: ReelGuestPresenceInput) {
   const session = await currentSession();
   if (!session) throw new Error("Votre accès invité a expiré. Ouvrez une nouvelle session.");
   if (
-    !Number.isFinite(input.latitude) || input.latitude < -90 || input.latitude > 90 ||
-    !Number.isFinite(input.longitude) || input.longitude < -180 || input.longitude > 180
-  ) throw new Error("La position reçue n’est pas valide.");
+    !Number.isFinite(input.latitude) ||
+    input.latitude < -90 ||
+    input.latitude > 90 ||
+    !Number.isFinite(input.longitude) ||
+    input.longitude < -180 ||
+    input.longitude > 180
+  ) {
+    throw new Error("La position reçue n’est pas valide.");
+  }
   const admin = createAdminClient();
   const { data, error } = await admin.rpc("create_reel_guest_presence", {
     p_guest_session_id: session.id,
@@ -246,14 +252,18 @@ export async function startReelGuestPresence(input: ReelGuestPresenceInput) {
     p_duration_minutes: input.durationMinutes,
     p_consent: input.consent,
   });
-  if (error || !data) throw new Error("Impossible de publier votre présence invitée pour le moment.");
+  if (error || !data) {
+    throw new Error("Impossible de publier votre présence invitée pour le moment.");
+  }
   const { data: presence, error: readError } = await admin
     .from("reel_guest_presences")
     .select("expires_at")
     .eq("id", data as string)
     .eq("guest_session_id", session.id)
     .maybeSingle();
-  if (readError || !presence) throw new Error("Impossible de confirmer votre présence invitée.");
+  if (readError || !presence) {
+    throw new Error("Impossible de confirmer votre présence invitée.");
+  }
   return { presenceId: data as string, expiresAt: presence.expires_at as string };
 }
 
@@ -295,9 +305,15 @@ export async function discoverReelGuestNearby(latitude: number, longitude: numbe
   const session = await currentSession();
   if (!session) throw new Error("Votre accès invité a expiré. Ouvrez une nouvelle session.");
   if (
-    !Number.isFinite(latitude) || latitude < -90 || latitude > 90 ||
-    !Number.isFinite(longitude) || longitude < -180 || longitude > 180
-  ) throw new Error("La position reçue n’est pas valide.");
+    !Number.isFinite(latitude) ||
+    latitude < -90 ||
+    latitude > 90 ||
+    !Number.isFinite(longitude) ||
+    longitude < -180 ||
+    longitude > 180
+  ) {
+    throw new Error("La position reçue n’est pas valide.");
+  }
 
   const admin = createAdminClient();
   const throttleSince = new Date(Date.now() - 5_000).toISOString();
@@ -309,7 +325,9 @@ export async function discoverReelGuestNearby(latitude: number, longitude: numbe
     .limit(1)
     .maybeSingle();
   if (throttleError) throw new Error("Impossible de vérifier votre demande de découverte.");
-  if (recent) throw new Error("Patientez quelques secondes avant de relancer la découverte.");
+  if (recent) {
+    throw new Error("Patientez quelques secondes avant de relancer la découverte.");
+  }
 
   const expiresAt = new Date(Date.now() + 15 * 60_000).toISOString();
   const { error: locationError } = await admin.rpc("create_reel_guest_discovery_location", {
@@ -318,7 +336,9 @@ export async function discoverReelGuestNearby(latitude: number, longitude: numbe
     p_longitude: longitude,
     p_expires_at: expiresAt,
   });
-  if (locationError) throw new Error("Impossible d’ouvrir la découverte à proximité pour le moment.");
+  if (locationError) {
+    throw new Error("Impossible d’ouvrir la découverte à proximité pour le moment.");
+  }
 
   const { data, error } = await admin.rpc("list_reel_guest_discovery_presence", {
     p_guest_session_id: session.id,
