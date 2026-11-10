@@ -15,6 +15,8 @@ Cette section documente la vision produit, les intentions d'usage, les parcours,
 - [Langage humain et communication Vitalis](./communication-language.md)
 - [Audit du langage humain — V1](./language-audit-v1.md)
 - [Catalogue des contenus d'exemple par interface — V1](./demo-content-catalog-v1.md)
+- [Présentation des pages moteurs — V1](./engine-page-preview-standard-v1.md)
+- [Parcours du profil — V1](./profile-experience-v1.md)
 
 ## Références d'architecture liées
 
