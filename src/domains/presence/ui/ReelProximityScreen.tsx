@@ -11,10 +11,12 @@ import {
 } from "@/domains/presence/api/reel-presence.client";
 import { supabase } from "@/integrations/supabase/client";
 import { resolveReelZone } from "@/domains/presence/api/reel-zone.functions";
+import { discoverReelGuestNearby } from "@/domains/presence/api/reel-guest-session.functions";
 import {
   endReelPresence,
   getMyActiveReelPresence,
   listReelNearbyPresence,
+  listReelNearbyGuestPresence,
   startReelPresence,
   type ReelPresence,
 } from "@/domains/presence/api/reel-presence.client";
@@ -48,6 +50,7 @@ export interface Person {
   category?: string | null;
   locationLabel?: string | null;
   distanceLabel?: string | null;
+  actorKind?: "member" | "guest";
 }
 
 type Panel = "settings" | "activity" | "people" | "global" | null;
@@ -258,7 +261,7 @@ export function ReelProximityScreen() {
   };
 
   const sendBipToSelectedPerson = async () => {
-    if (!selectedPerson || !currentPresence) return;
+    if (!selectedPerson || selectedPerson.actorKind === "guest" || !currentPresence) return;
     try {
       await sendReelBip(selectedPerson.id);
       setBipsMessage("Votre signe a bien été envoyé.");
@@ -371,7 +374,7 @@ export function ReelProximityScreen() {
     try {
       await access.startGuestSession();
       setGuestSessionMessage(
-        "Votre accès invité est prêt pour cette visite. Les fonctions de proximité invitées restent en préparation.",
+        "Votre accès invité est prêt. Vous pourrez maintenant découvrir les présences autour de vous.",
       );
     } catch (error) {
       setGuestSessionMessage(
@@ -383,49 +386,72 @@ export function ReelProximityScreen() {
   };
 
   const requestDiscovery = async () => {
-    const decision = evaluateReelAccess(
-      {
-        access,
-        discoveryConsent: true,
-        online: typeof navigator === "undefined" ? false : navigator.onLine,
-      },
-      "discover_presence",
-    );
-    if (decision.status !== "server_check") {
-      setDiscoveryAccess("denied");
-      setLocationMessage(decision.message);
-      return;
-    }
-
+    if (access.loading) return;
     setDiscoveryAccess("requesting");
     setLocationMessage(null);
     try {
       const fix = await requestReelLocation();
-      const zone = await resolveReelZone({
-        data: {
-          latitude: fix.latitude,
-          longitude: fix.longitude,
-          purpose: "discover",
-          consent: true,
-        },
-      });
-      const rows = await listReelNearbyPresence();
-      setDiscoveredPeople(
-        rows.map((person, index) => ({
+      if (access.mode === "guest") {
+        const rows = await discoverReelGuestNearby({
+          data: { latitude: fix.latitude, longitude: fix.longitude },
+        });
+        setDiscoveredPeople(rows.map((person, index) => ({
           id: person.presence_id,
           name: person.display_name || "Profil Vitalis",
           avatarUrl: null,
-          initials: (person.display_name || "V")
-            .trim()
-            .split(/\\s+/)
-            .slice(0, 2)
-            .map((part) => part[0]?.toUpperCase() ?? "")
-            .join(""),
+          initials: (person.display_name || "V").trim().split(/\\s+/).slice(0, 2)
+            .map((part) => part[0]?.toUpperCase() ?? "").join(""),
+          angle: (index * 137.5) % 360,
+          description: person.description,
+          locationLabel: person.area_label,
+          actorKind: person.actor_kind,
+        })));
+      } else {
+        const decision = evaluateReelAccess(
+          {
+            access,
+            discoveryConsent: true,
+            online: typeof navigator === "undefined" ? false : navigator.onLine,
+          },
+          "discover_presence",
+        );
+        if (decision.status !== "server_check") throw new Error(decision.message);
+        const zone = await resolveReelZone({
+          data: {
+            latitude: fix.latitude,
+            longitude: fix.longitude,
+            purpose: "discover",
+            consent: true,
+          },
+        });
+        const [members, guests] = await Promise.all([
+          listReelNearbyPresence(),
+          listReelNearbyGuestPresence(),
+        ]);
+        const memberCards = members.map((person, index) => ({
+          id: person.presence_id,
+          name: person.display_name || "Profil Vitalis",
+          avatarUrl: null,
+          initials: (person.display_name || "V").trim().split(/\\s+/).slice(0, 2)
+            .map((part) => part[0]?.toUpperCase() ?? "").join(""),
           angle: (index * 137.5) % 360,
           description: person.description,
           locationLabel: person.area_label || zone.areaLabel,
-        })),
-      );
+          actorKind: "member" as const,
+        }));
+        const guestCards = guests.map((person, index) => ({
+          id: person.presence_id,
+          name: person.display_name || "Invité",
+          avatarUrl: null,
+          initials: (person.display_name || "I").trim().split(/\\s+/).slice(0, 2)
+            .map((part) => part[0]?.toUpperCase() ?? "").join(""),
+          angle: ((members.length + index) * 137.5) % 360,
+          description: person.description,
+          locationLabel: person.area_label || zone.areaLabel,
+          actorKind: "guest" as const,
+        }));
+        setDiscoveredPeople([...memberCards, ...guestCards]);
+      }
       setDiscoveryAccess("granted");
     } catch (error) {
       setDiscoveryAccess("denied");
@@ -522,7 +548,7 @@ export function ReelProximityScreen() {
             <p>
               {discoveryAccess === "prompt" && !canUseMemberReel
                 ? access.mode === "guest"
-                  ? "Votre session invitée est active. Les fonctions de proximité invitées sont encore en préparation."
+                  ? "Votre session est temporaire. Vous pouvez découvrir les présences autour de vous sans créer de compte."
                   : "Commencez avec une session temporaire. Elle ne crée pas de compte ni de profil permanent."
                 : discoveryAccess === "prompt"
                   ? "Autorisez Réel à utiliser votre position pour observer les personnes et les activités autour de vous. Votre choix reste libre."
@@ -532,7 +558,7 @@ export function ReelProximityScreen() {
                       "Vous pouvez parcourir Réel sans localisation. Les découvertes proches, les bips et les réactions resteront en pause."}
             </p>
             <div className="reel-location-card__actions">
-              {canUseMemberReel &&
+              {(canUseMemberReel || access.mode === "guest") &&
                 (discoveryAccess === "prompt" ||
                   discoveryAccess === "ignored" ||
                   discoveryAccess === "denied") && (
@@ -541,7 +567,7 @@ export function ReelProximityScreen() {
                     className="reel-location-card__primary"
                     onClick={() => void requestDiscovery()}
                   >
-                    {discoveryAccess === "prompt" ? "Activer la découverte" : "Réessayer"}
+                    {discoveryAccess === "prompt" ? "Voir les personnes autour de moi" : "Réessayer"}
                   </button>
                 )}
               {access.mode === "visitor" && (
@@ -1172,7 +1198,7 @@ export function ReelProximityScreen() {
                   "Consultez les informations disponibles sur ce profil."}
               </p>
             )}
-            {currentPresence && !showFullProfile && (
+            {currentPresence && selectedPerson.actorKind !== "guest" && !showFullProfile && (
               <button
                 type="button"
                 className="reel-profile-sheet__primary"
