@@ -16,10 +16,10 @@
 Chaque moteur expose ses sections propres et un accès de gestion dédié :
 - Flash : découverte, création, modification des Flash actifs, archivage et suppression des enregistrements disponibles localement. Les brouillons et préférences dédiées restent à raccorder lorsqu’ils auront un stockage et des règles métier réels.
 - Scan : recherche de proximité, choix du rayon (1, 5, 10 ou 20 km), états de recherche, dix recherches récentes conservées localement (date et nombre de résultats uniquement). Les filtres avancés et préférences dédiées restent à construire.
-- Réel : présence, bips, mises en relation, historique et préférences Réel.
-- Radar : suivis, alertes, résultats confirmés, éléments en pause/archivés et préférences Radar.
+- Réel : accès Présence, Bips reçus, Mises en relation et Historique. Ces espaces restent informatifs tant que le transport temps réel partagé, les données sécurisées et les parcours métier ne sont pas raccordés.
+- Radar : création, modification et annulation de veilles privées en brouillon, enregistrées localement et synchronisées. La détection automatique, les correspondances et les alertes restent indisponibles.
 
-Ces sections constituent la cible produit. Leur présence dans cette documentation ne prouve pas que les données ou actions correspondantes sont déjà raccordées. Les règles métier et les sources de données restent propres à chaque moteur.
+Les règles métier et les sources de données restent propres à chaque moteur. Pour Radar, la gestion des brouillons est raccordée ; le moteur de correspondances et les alertes ne le sont pas. Pour Réel, les sections sont visibles mais aucune présence, aucun bip ni aucune relation n’est simulé. Voir les matrices d’implémentation [Radar V1](../03-engines/radar/radar-v1-implementation-status.md) et [traçabilité Réel](../03-engines/reel/reel-traceability-matrix.md).
 
 ## Tableau de bord personnel et accès dédiés
 
