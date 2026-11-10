@@ -47,14 +47,14 @@ SELECT is(
   'member A has one active presence'
 );
 SELECT throws_ok(
-  $SELECT public.start_reel_presence_from_grant(
+  $$SELECT public.start_reel_presence_from_grant(
     'd1000000-0000-4000-8000-000000000201',
     'Votre secteur approximatif',
     'Tentative de réutilisation',
     100,
     60,
     true
-  )$,
+  )$$,
   '42501',
   'reel_zone_grant_invalid_or_expired',
   'a one-use zone grant cannot be replayed'
