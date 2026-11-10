@@ -1286,3 +1286,179 @@
   outline: 3px solid rgb(80 153 255 / 35%);
   outline-offset: 2px;
 }
+
+
+/* Dark-first presentation follows Vitalis theme selection, not the OS theme. */
+.dark .reel-proximity {
+  --reel-canvas: #171d29;
+  --reel-ink: #e7eef9;
+  --reel-white: #273347;
+  --reel-map-ink: #7893b8;
+  --reel-shadow-soft: 0 0.75rem 2rem rgb(0 0 0 / 24%);
+  --reel-shadow-glow: 0 0 2.5rem rgb(66 132 255 / 22%);
+  background:
+    radial-gradient(ellipse at 50% 34%, rgb(52 105 174 / 22%) 0%, transparent 50%),
+    linear-gradient(180deg, #171d29 0%, #1c2635 100%);
+}
+
+.dark .reel-proximity__header-action {
+  background: rgb(39 51 71 / 82%);
+  color: #e7eef9;
+  box-shadow: 0 0.25rem 0.9rem rgb(0 0 0 / 18%);
+}
+
+.dark .reel-proximity__heading-copy p,
+.dark .reel-nearby__title,
+.dark .reel-ring-person__name {
+  color: #c3d1e4;
+}
+
+.dark .reel-radar__core {
+  background: radial-gradient(circle at 36% 28%, #344967 0%, #263c5a 55%, #1d2e49 100%);
+}
+
+.dark .reel-radar__me,
+.dark .reel-radar__me-avatar {
+  color: #e7eef9;
+}
+
+.dark .reel-radar__me-avatar {
+  border-color: #405575;
+  background: linear-gradient(145deg, #3b4d68, #26364d);
+}
+
+.dark .reel-nearby__count {
+  border-color: #34445d;
+  background: #29384e;
+  color: #c9ddf7;
+}
+
+.dark .reel-nearby__bluetooth {
+  background: linear-gradient(145deg, #2b3a50, #202d40);
+  color: #83bdff;
+}
+
+.dark .reel-location-card,
+.dark .reel-calm-shortcuts button {
+  border-color: rgb(143 177 220 / 18%);
+  background: rgb(35 48 67 / 94%);
+  color: #e7eef9;
+  box-shadow: 0 0.75rem 2rem rgb(0 0 0 / 18%);
+}
+
+.dark .reel-location-card__icon {
+  background: #263e5d;
+  color: #8fc4ff;
+}
+
+.dark .reel-location-card__copy p,
+.dark .reel-calm-shortcuts button small {
+  color: #a9bad1;
+}
+
+.dark .reel-location-card__secondary {
+  border-color: rgb(211 226 246 / 22%);
+  color: #d9e6f7;
+}
+
+.dark .reel-panel,
+.dark .reel-profile-sheet {
+  border-color: rgb(211 226 246 / 13%);
+  background: linear-gradient(180deg, #273448 0%, #202b3d 100%);
+  color: #e7eef9;
+  box-shadow: 0 1rem 3rem rgb(0 0 0 / 42%);
+}
+
+.dark .reel-panel h2,
+.dark .reel-panel__section h3,
+.dark .reel-profile-sheet h2,
+.dark .reel-people-list__item strong,
+.dark .reel-setting-row strong,
+.dark .reel-panel__empty strong {
+  color: #e7eef9;
+}
+
+.dark .reel-panel__intro,
+.dark .reel-panel__empty span,
+.dark .reel-profile-sheet__description,
+.dark .reel-profile-sheet__empty,
+.dark .reel-setting-row small,
+.dark .reel-people-list__item small {
+  color: #b2c1d6;
+}
+
+.dark .reel-panel__close,
+.dark .reel-profile-sheet__close {
+  border-color: #40516a;
+  background: #314159;
+  color: #e0eafa;
+}
+
+.dark .reel-panel__note {
+  background: #2d4059;
+  color: #c2d4ec;
+}
+
+.dark .reel-panel__tabs {
+  background: #1d293b;
+}
+
+.dark .reel-panel__tabs button {
+  color: #aebed4;
+}
+
+.dark .reel-panel__tabs button.is-active {
+  background: #354966;
+  color: #a8d1ff;
+}
+
+.dark .reel-panel__empty {
+  border-color: #405575;
+  background: rgb(32 45 64 / 76%);
+}
+
+.dark .reel-people-list__item {
+  border-color: #40516a;
+  background: rgb(42 57 78 / 84%);
+}
+
+.dark .reel-choice-grid button {
+  border-color: #40516a;
+  background: #202d40;
+  color: #c3d1e4;
+}
+
+.dark .reel-choice-grid button.is-selected {
+  border-color: #5b9ee7;
+  background: #29486d;
+  color: #c4e0ff;
+}
+
+.dark .reel-setting-row {
+  border-color: #40516a;
+}
+
+.dark .reel-setting-row--stacked input[type="text"],
+.dark .reel-setting-row--stacked select,
+.dark .reel-setting-row--stacked textarea {
+  border-color: #40516a;
+  background: #1c293b;
+  color: #e7eef9;
+}
+
+.dark .reel-profile-sheet__category,
+.dark .reel-profile-sheet__details span {
+  border-color: #405575;
+  background: #2b405a;
+  color: #b9d8fb;
+}
+
+.dark .reel-panel__status {
+  background: rgb(45 160 105 / 16%);
+  color: #9ce0c1;
+}
+
+.dark .reel-profile-backdrop,
+.dark .reel-panel-backdrop {
+  background: rgb(4 9 17 / 62%);
+}
