@@ -26,6 +26,17 @@ export interface ReelNearbyPresence {
   expires_at: number;
 }
 
+export interface ReelNearbyGuestPresence {
+  presence_id: string;
+  display_name: string;
+  avatar_key: string;
+  area_label: string;
+  description: string;
+  radius_m: number;
+  started_at: number;
+  expires_at: number;
+}
+
 export interface ReelBip {
   id: string;
   client_request_id: string;
@@ -55,6 +66,7 @@ type ReelRpcName =
   | "get_my_active_reel_presence"
   | "end_reel_presence"
   | "list_reel_discovery_presence"
+  | "list_reel_guest_presence_for_member"
   | "start_reel_presence_from_grant"
   | "send_reel_bip"
   | "command_reel_bip"
@@ -166,6 +178,16 @@ export async function listReelNearbyPresence(limit = 30): Promise<ReelNearbyPres
     p_limit: safeLimit,
   });
   if (!Array.isArray(rows)) throw new Error("La liste des présences reçue n’est pas valide.");
+  return rows;
+}
+
+export async function listReelNearbyGuestPresence(limit = 30): Promise<ReelNearbyGuestPresence[]> {
+  if (!Number.isFinite(limit)) throw new Error("Le nombre de résultats demandé n’est pas valide.");
+  const safeLimit = Math.min(Math.max(Math.floor(limit), 1), 50);
+  const rows = await callReelRpc<ReelNearbyGuestPresence[]>("list_reel_guest_presence_for_member", {
+    p_limit: safeLimit,
+  });
+  if (!Array.isArray(rows)) throw new Error("La liste des invités à proximité n’est pas valide.");
   return rows;
 }
 
