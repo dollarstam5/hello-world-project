@@ -15,6 +15,10 @@ export function createRadarDraft(input: RadarDraftInput) {
   return radarsRepository.create(valid);
 }
 
+export function editRadarDraft(id: string, patch: Partial<RadarDraftInput>) {
+  return radarsRepository.editDraft(id, patch);
+}
+
 export function activateRadar(id: string) {
   return radarsRepository.activate(id);
 }
