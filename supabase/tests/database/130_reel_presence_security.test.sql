@@ -1,6 +1,6 @@
 BEGIN;
 CREATE EXTENSION IF NOT EXISTS pgtap WITH SCHEMA extensions;
-SELECT plan(19);
+SELECT plan(22);
 
 INSERT INTO auth.users (
   id, aud, role, email, encrypted_password, email_confirmed_at,
@@ -50,6 +50,34 @@ SELECT lives_ok(
     'douala-zone-0001', 'Akwa', 'Je peux aider pour un déménagement', 100, 120, true
   )$$,
   'member B starts in the same approximate zone'
+);
+
+UPDATE public.profiles
+SET status = 'suspended'
+WHERE id = 'd1000000-0000-4000-8000-000000000002';
+
+SELECT throws_ok(
+  $SELECT public.list_reel_bips()$,
+  '42501',
+  'active_profile_required',
+  'a suspended member cannot list bips'
+);
+
+SELECT throws_ok(
+  $SELECT public.command_reel_bip(
+    (SELECT id FROM public.reel_bips WHERE client_request_id = 'd1000000-0000-4000-8000-000000000101'),
+    'accept'
+  )$,
+  '42501',
+  'active_profile_required',
+  'a suspended member cannot replay an accepted bip command'
+);
+
+SELECT lives_ok(
+  $SELECT public.end_reel_presence(
+    (SELECT id FROM public.reel_presences WHERE owner_id = 'd1000000-0000-4000-8000-000000000002' AND status = 'active')
+  )$,
+  'a suspended member can still stop their own presence'
 );
 
 SELECT set_config(
