@@ -8,7 +8,10 @@ export const Route = createFileRoute("/scan")({
   head: () => ({
     meta: [
       { title: "Scan — Vitalis" },
-      { name: "description", content: "Repérez les Flash actifs dans la zone que vous choisissez." },
+      {
+        name: "description",
+        content: "Repérez les Flash actifs dans la zone que vous choisissez.",
+      },
     ],
   }),
   component: () => (
