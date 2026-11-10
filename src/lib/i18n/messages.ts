@@ -629,7 +629,7 @@ export const messages = {
     "menu.profile.desc": "Your identity, preferences and guidance mode.",
     "menu.espace": "Space",
     "menu.espace.open": "Open my space",
-    "menu.espace.desc": "Your personal space and your circles.",
+    "menu.espace.desc": "Manage your profile, information and preferences.",
     "menu.talents": "Talents — Living Knowledge",
     "menu.talents.desc": "What people know how to do, and want to share.",
     "profile.open": "Open my profile",
