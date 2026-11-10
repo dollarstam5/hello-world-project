@@ -148,8 +148,9 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
           type="button"
           className="reel-proximity__header-action reel-proximity__notification"
           onClick={() => openActivity("notifications")}
-          aria-label="Notifications, bips et mises en relation"
-          title="Activité"
+          disabled={!locationEnabled}
+          aria-label={locationEnabled ? "Notifications, bips et mises en relation" : "Les notifications Réel sont en pause sans position"}
+          title={locationEnabled ? "Activité" : "Notifications en pause"}
         >
           <Bell aria-hidden="true" />
         </button>
