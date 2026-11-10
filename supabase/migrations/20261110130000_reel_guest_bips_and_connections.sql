@@ -193,7 +193,8 @@ DECLARE
   v_bip public.reel_guest_bips;
 BEGIN
   IF auth.role() <> 'service_role' THEN RAISE EXCEPTION 'service_role_required' USING ERRCODE = '42501'; END IF;
-  IF p_client_request_id IS NULL OR p_recipient_actor_kind NOT IN ('member','guest') THEN
+  IF p_client_request_id IS NULL OR p_recipient_actor_kind IS NULL
+    OR p_recipient_actor_kind NOT IN ('member','guest') THEN
     RAISE EXCEPTION 'invalid_guest_bip_request' USING ERRCODE = '22023';
   END IF;
   SELECT * INTO v_sender_session FROM public.reel_guest_sessions
@@ -373,7 +374,8 @@ DECLARE
   v_member UUID := public.reel_require_active_profile();
   v_bip public.reel_guest_bips;
 BEGIN
-  IF auth.role() <> 'authenticated' OR p_action NOT IN ('accept','decline','withdraw') THEN
+  IF auth.role() <> 'authenticated' OR p_action IS NULL
+    OR p_action NOT IN ('accept','decline','withdraw') THEN
     RAISE EXCEPTION 'invalid_member_bip_action' USING ERRCODE = '42501';
   END IF;
   SELECT * INTO v_bip FROM public.reel_guest_bips
@@ -414,7 +416,8 @@ AS $$
 DECLARE
   v_bip public.reel_guest_bips;
 BEGIN
-  IF auth.role() <> 'service_role' OR p_action NOT IN ('accept','decline','withdraw') THEN
+  IF auth.role() <> 'service_role' OR p_action IS NULL
+    OR p_action NOT IN ('accept','decline','withdraw') THEN
     RAISE EXCEPTION 'service_role_required' USING ERRCODE = '42501';
   END IF;
   IF NOT EXISTS (SELECT 1 FROM public.reel_guest_sessions
