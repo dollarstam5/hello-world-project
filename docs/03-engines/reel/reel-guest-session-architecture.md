@@ -1,6 +1,6 @@
 # Réel — architecture de session invitée éphémère
 
-**Statut :** spécification technique préparatoire. Aucune session invitée serveur n'est encore active.
+**Statut :** session invitée serveur implémentée et raccordée au gestionnaire central ; opérations métier invitées encore bloquées.
 **Portée :** établir une identité temporaire côté serveur sans compte Auth, sans profil Vitalis et sans historique durable.
 
 ## 1. Décision d'architecture
@@ -9,7 +9,7 @@ Le mode invité ne doit pas utiliser l'identifiant aléatoire React comme preuve
 
 Le dépôt utilise TanStack Start et ses Server Functions pour la logique serveur. Cette voie est préférée aux Edge Functions Supabase dans l'architecture backend actuelle. Le client avec clé de service reste strictement côté serveur et ne doit jamais être importé dans le bundle navigateur.
 
-## 2. Cycle de vie proposé
+## 2. Cycle de vie prévu et état d'implémentation
 
 1. **Démarrage** — une Server Function dédiée crée une session invitée après vérification des limites de création et des protections anti-abus.
 2. **Identité** — le serveur génère un secret aléatoire cryptographiquement sûr d'au moins 256 bits. Seul son condensat SHA-256 est stocké côté serveur ; le secret brut n'est jamais écrit en base.
@@ -19,7 +19,7 @@ Le dépôt utilise TanStack Start et ses Server Functions pour la logique serveu
 6. **Fin** — fermeture explicite, expiration, déconnexion membre ou signal de fin de visite révoque la session et efface le cookie.
 7. **Nettoyage** — purge périodique des sessions expirées/révoquées et suppression des données temporaires qui leur sont rattachées.
 
-Le cookie doit être posé/effacé par une API serveur officiellement prise en charge par la version TanStack Start du dépôt. Ce mécanisme doit être confirmé dans le code avant implémentation ; ne pas bricoler les en-têtes de réponse.
+Le cookie est posé et effacé par les API serveur TanStack Start (`setCookie`, `getCookie`, `deleteCookie`) utilisées dans `reel-guest-session.server.ts`. Les Server Functions ne sont pas protégées par un middleware Auth membre ; elles appliquent elles-mêmes le contrôle d'origine, la validation du cookie et l'usage de la clé de service côté serveur.
 
 ## 3. Données serveur minimales
 
@@ -61,9 +61,7 @@ Si les invités doivent publier une présence, créer un stockage invité sépar
 
 ## 6. Durées et conservation — décisions encore nécessaires
 
-La durée de session, la durée d'inactivité, le rythme de renouvellement et les limites anti-abus doivent être fixés avant migration. Ils ne sont pas déduits des durées de présence membre (30 min à 24 h). La session ne doit jamais survivre à la fin de sa présence associée si elle n'a plus aucun usage autorisé.
-
-Valeurs à valider : durée absolue maximale, délai d'inactivité, fréquence de mise à jour de last_seen_at, quotas de création et politique de purge. Aucune valeur provisoire ne doit être présentée comme une règle produit validée.
+La durée absolue implémentée est de 60 minutes. Il n'y a pas encore de renouvellement ni de prolongation par activité ; `last_seen_at` n'est volontairement pas actualisé à chaque requête. La limitation anti-abus de création reste à ajouter et à tester. Cette durée technique est provisoire et ne remplace pas une décision produit définitive.
 
 ## 7. Tests d'acceptation obligatoires
 
@@ -96,3 +94,17 @@ Cela ne signifie pas que le parcours invité Réel complet est activé : aucune 
 ## 9. Règle de livraison
 
 Cette spécification ne rend pas le mode invité opérationnel. L'interface doit continuer à présenter les limites honnêtement et les opérations invitées restent désactivées jusqu'à la livraison du serveur, des migrations et des tests.
+
+
+## 10. Raccordement au gestionnaire central — 10 novembre 2026
+
+Le fournisseur `AccessModeProvider` appelle maintenant les Server Functions de session invitée :
+
+- au démarrage, il demande la création serveur et ne passe en mode invité qu'après confirmation ;
+- au retour dans l'application, il vérifie le cookie et restaure le mode invité uniquement si la session est active et non expirée ;
+- à la connexion membre, il efface l'identité locale et demande la révocation de la session invitée ;
+- à la fin explicite du mode invité, il efface immédiatement l'identité locale et demande la révocation serveur.
+
+L'identifiant React reste un repère d'interface uniquement. Le cookie opaque HttpOnly est la seule preuve de session invitée côté serveur. Une erreur de création laisse l'application en mode visiteur.
+
+**Limites encore ouvertes :** la session n'autorise aucune opération métier Réel. La découverte, la publication de présence, les bips et les relations restent refusés aux invités. La limitation anti-abus de création, les tests serveur du cookie/origine/révocation, l'exécution des migrations/pgTAP et la vérification du runtime restent nécessaires. La session a une durée absolue de 60 minutes, sans renouvellement.
