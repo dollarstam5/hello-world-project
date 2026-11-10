@@ -43,7 +43,8 @@ export interface ReelBip {
 type ReelRpcName =
   | "start_reel_presence"
   | "end_reel_presence"
-  | "list_reel_presence"
+  | "list_reel_discovery_presence"
+  | "start_reel_presence_from_grant"
   | "send_reel_bip"
   | "command_reel_bip"
   | "list_reel_bips";
@@ -89,8 +90,8 @@ function createRequestId(): string {
 }
 
 export interface StartReelPresenceInput {
-  /** Opaque zone token returned by the trusted location/zone resolver. */
-  zoneKey: string;
+  /** One-use server-issued grant; the browser never chooses the published zone. */
+  zoneGrantId: string;
   areaLabel: string;
   description: string;
   radiusMeters: 10 | 25 | 50 | 100 | 1000;
@@ -100,7 +101,7 @@ export interface StartReelPresenceInput {
 
 export async function startReelPresence(input: StartReelPresenceInput): Promise<ReelPresence> {
   if (!input.consent) throw new Error("Votre accord est nécessaire pour partager votre présence.");
-  if (!ZONE_KEY_PATTERN.test(input.zoneKey)) throw new Error("La zone de proximité n’est pas valide.");
+  requireUuid(input.zoneGrantId, "Votre autorisation de présence n’est plus valide. Réessayez.");
   if (!(ALLOWED_RADII as readonly number[]).includes(input.radiusMeters)) {
     throw new Error("Choisissez une distance proposée.");
   }
@@ -110,8 +111,8 @@ export async function startReelPresence(input: StartReelPresenceInput): Promise<
 
   const areaLabel = requireText(input.areaLabel, "Précisez un lieu entre 2 et 80 caractères.", 2, 80);
   const description = requireText(input.description, "La description doit contenir entre 1 et 180 caractères.", 1, 180);
-  return callReelRpc<ReelPresence>("start_reel_presence", {
-    p_zone_key: input.zoneKey,
+  return callReelRpc<ReelPresence>("start_reel_presence_from_grant", {
+    p_zone_grant_id: input.zoneGrantId,
     p_area_label: areaLabel,
     p_description: description,
     p_radius_m: input.radiusMeters,
@@ -125,12 +126,10 @@ export async function endReelPresence(presenceId: string): Promise<ReelPresence>
   return callReelRpc<ReelPresence>("end_reel_presence", { p_presence_id: presenceId });
 }
 
-export async function listReelNearbyPresence(zoneKey: string, limit = 30): Promise<ReelNearbyPresence[]> {
-  if (!ZONE_KEY_PATTERN.test(zoneKey)) throw new Error("La zone de proximité n’est pas valide.");
+export async function listReelNearbyPresence(limit = 30): Promise<ReelNearbyPresence[]> {
   if (!Number.isFinite(limit)) throw new Error("Le nombre de résultats demandé n’est pas valide.");
   const safeLimit = Math.min(Math.max(Math.floor(limit), 1), 50);
-  const rows = await callReelRpc<ReelNearbyPresence[]>("list_reel_presence", {
-    p_zone_key: zoneKey,
+  const rows = await callReelRpc<ReelNearbyPresence[]>("list_reel_discovery_presence", {
     p_limit: safeLimit,
   });
   if (!Array.isArray(rows)) throw new Error("La liste des présences reçue n’est pas valide.");
