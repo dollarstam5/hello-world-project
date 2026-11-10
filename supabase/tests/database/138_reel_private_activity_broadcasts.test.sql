@@ -1,5 +1,5 @@
 BEGIN;
-SELECT plan(5);
+SELECT plan(6);
 
 SELECT has_function(
   'public',
@@ -18,6 +18,20 @@ SELECT has_policy(
 SELECT ok(
   (SELECT relrowsecurity FROM pg_class WHERE oid = 'realtime.messages'::regclass),
   'Supabase Realtime messages already has row-level security enabled'
+);
+
+SELECT ok(
+  (
+    SELECT qual LIKE '%auth.uid%'
+      AND qual LIKE '%realtime.topic%'
+      AND qual LIKE '%reel-member:%'
+      AND qual LIKE '%broadcast%'
+    FROM pg_policies
+    WHERE schemaname = 'realtime'
+      AND tablename = 'messages'
+      AND policyname = 'reel_member_activity_read'
+  ),
+  'The read policy binds Broadcast access to the authenticated member topic'
 );
 
 SELECT ok(
