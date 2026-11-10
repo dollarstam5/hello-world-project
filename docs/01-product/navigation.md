@@ -21,6 +21,18 @@ Chaque moteur expose ses sections propres et un accès de gestion dédié :
 
 Ces sections constituent la cible produit. Leur présence dans cette documentation ne prouve pas que les données ou actions correspondantes sont déjà raccordées. Les règles métier et les sources de données restent propres à chaque moteur.
 
+## Tableau de bord personnel et accès dédiés
+
+Le menu 2×2 ouvre `/espace`, qui sert de tableau de bord personnel. Ses cartes mènent vers des pages indépendantes :
+
+- `/espace/profil` — nom affiché et identifiant public.
+- `/espace/informations` — informations du compte disponibles depuis la session authentifiée.
+- `/espace/parametres/profil` — état des réglages de visibilité ; aucun contrôle fictif n'est proposé tant que les règles serveur ne sont pas prêtes.
+- `/espace/apercu` — aperçu public ; la page explique son indisponibilité tant qu'une projection sûre n'existe pas.
+- `/espace/parametres/application` — langue et apparence de l'application.
+
+L'avatar du header ouvre l'aperçu rapide et mène au profil complet `/espace/profil`. Les préférences globales ne sont pas mélangées avec les réglages propres à un moteur.
+
 ## Navigation principale mobile
 
 La barre inférieure présente exactement cinq icônes, dans cet ordre :
