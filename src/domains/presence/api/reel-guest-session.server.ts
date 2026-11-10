@@ -345,3 +345,21 @@ export async function discoverReelGuestNearby(latitude: number, longitude: numbe
   }
   return data as ReelGuestDiscoveryCard[];
 }
+
+
+export async function getMyReelGuestPresence() {
+  assertSameOrigin(false);
+  noStore();
+  const session = await currentSession();
+  if (!session) return null;
+  const admin = createAdminClient();
+  const { data, error } = await admin
+    .from("reel_guest_presences")
+    .select("id, display_name, avatar_key, area_label, description, radius_m, started_at, expires_at")
+    .eq("guest_session_id", session.id)
+    .eq("status", "active")
+    .gt("expires_at", new Date().toISOString())
+    .maybeSingle();
+  if (error) throw new Error("Votre présence invitée n’a pas pu être retrouvée.");
+  return data;
+}
