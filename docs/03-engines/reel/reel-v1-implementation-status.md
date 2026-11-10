@@ -282,3 +282,18 @@ Les statuts ci-dessus décrivent le code présent dans la branche, pas une valid
 
 
 **Mise à jour de référence :** la section « Mise à jour — découverte indépendante et présence approximative » ci-dessous décrit l'état le plus récent et prévaut sur les descriptions historiques antérieures.
+
+
+## Mise à jour — rayon métrique réel avec PostGIS
+
+La branche ajoute une nouvelle migration `20261110080000_reel_postgis_metric_radius.sql`.
+
+- Les points de découverte et de présence sont calculés côté serveur et stockés temporairement dans des tables PostGIS privées, accessibles uniquement au rôle `service_role`.
+- Le navigateur ne reçoit jamais les coordonnées précises ni la distance calculée.
+- La découverte utilise `ST_DWithin(geography, geography, radius_m)` : le rayon de visibilité choisi lors de la publication est appliqué en mètres, avec le calcul géographique PostGIS.
+- Les points de présence sont supprimés lorsque la présence est arrêtée ou passe à un état non actif. Les points de découverte expirent après 15 minutes ; les autorisations de publication expirent après 5 minutes et sont à usage unique.
+- La clé HMAC reste un identifiant opaque complémentaire ; elle ne sert plus à approximer le rayon métrique.
+- Le résolveur serveur utilise maintenant les RPC de création de points privés, sans insertion directe de coordonnées via le client navigateur.
+- Les tests pgTAP 130 et 132 ont été adaptés aux points PostGIS. Le nouveau test 133 vérifie un cas à environ 5 m, un cas à environ 22 m avec rayon de 10 m, puis le même écart avec rayon de 25 m, ainsi que l'absence d'accès direct des rôles navigateur aux tables de coordonnées.
+
+**Limites et précautions :** le GPS d'un appareil comporte une marge d'erreur ; un rayon de 10 m ne signifie donc pas une précision physique garantie à 10 m. Le calcul PostGIS est métrique, mais la qualité du résultat dépend de la précision de la position fournie. Les migrations et tests ne sont pas encore exécutés dans une base locale ou distante. La disponibilité et le schéma d'installation de PostGIS dans le projet Supabase doivent être confirmés à l'application de la migration. Le secret serveur `REEL_ZONE_HMAC_SECRET` reste requis pour le jeton opaque de présence.
