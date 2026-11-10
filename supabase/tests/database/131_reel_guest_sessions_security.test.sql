@@ -1,6 +1,6 @@
 BEGIN;
 CREATE EXTENSION IF NOT EXISTS pgtap WITH SCHEMA extensions;
-SELECT plan(7);
+SELECT plan(8);
 
 SELECT has_table('public', 'reel_guest_sessions', 'guest session table exists');
 
@@ -45,6 +45,13 @@ SELECT ok(
   (SELECT column_default LIKE '%reel_guest%' FROM information_schema.columns
    WHERE table_schema = 'public' AND table_name = 'reel_guest_sessions' AND column_name = 'purpose'),
   'session purpose defaults to the Réel guest scope'
+);
+
+SELECT ok(
+  has_function_privilege('service_role', 'public.purge_expired_reel_guest_sessions()', 'EXECUTE')
+  AND NOT has_function_privilege('anon', 'public.purge_expired_reel_guest_sessions()', 'EXECUTE')
+  AND NOT has_function_privilege('authenticated', 'public.purge_expired_reel_guest_sessions()', 'EXECUTE'),
+  'only the server role can purge expired guest sessions'
 );
 
 SELECT * FROM finish();
