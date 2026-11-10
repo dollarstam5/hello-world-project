@@ -372,8 +372,8 @@ export function ReelProximityScreen() {
                 <p className="reel-panel__intro">Choisissez comment vous souhaitez rencontrer les personnes autour de vous.</p>
 
                 <div className="reel-panel__section">
-                  <h3>Accès à la position</h3>
-                  <p className="reel-panel__note">{discoveryEnabled ? "Réel peut utiliser votre position après votre accord. Aucun suivi en arrière-plan n’est lancé." : "La position est désactivée pour Réel. Les autres moteurs ne peuvent pas donner leur accord à votre place."}</p>
+                  <h3>Découverte à proximité</h3>
+                  <p className="reel-panel__note">{discoveryEnabled ? "La découverte est active pour cette visite. Elle vous permet d’observer les activités autour de vous, sans publier votre propre présence." : "Vous pouvez activer la découverte pour observer les activités autour de vous. Cela ne rend pas votre propre présence visible."}</p>
                   {!discoveryEnabled && <button type="button" className="reel-panel__primary" onClick={() => void requestDiscovery()}>Activer la découverte</button>}
                 </div>
 
@@ -389,6 +389,7 @@ export function ReelProximityScreen() {
                 </div>
 
                 <p className="reel-panel__note">La position est regroupée dans un secteur approximatif d’environ 200 mètres. Le rayon choisi est enregistré, mais le calcul précis des distances et son application au filtrage restent à finaliser. Aucune distance exacte n’est affichée.</p>
+                {currentPresence && <p className="reel-panel__note">Votre présence est déjà active : les changements de rayon ou de durée s’appliqueront à la prochaine activation, pas à celle-ci.</p> }
 
                 <div className="reel-panel__section">
                   <h3>Durée souhaitée</h3>
