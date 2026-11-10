@@ -13,8 +13,8 @@ const SCAN_LIMIT = 20;
  * Presentation only; scanning logic lives in useScan.
  */
 export function ScanPanel() {
-  const { t } = useI18n();
-  const { rows, busy, failed, execute } = useScan();
+  const { t, locale } = useI18n();
+  const { rows, busy, failed, execute, history, clearHistory } = useScan();
   const [locationError, setLocationError] = useState<
     "permission" | "unavailable" | "timeout" | "unknown" | null
   >(null);
@@ -136,6 +136,50 @@ export function ScanPanel() {
           ))}
         </ul>
       )}
+
+      <section className="stack-3" aria-labelledby="scan-history-heading">
+        <div className="flex items-center justify-between gap-3">
+          <h3 id="scan-history-heading" className="text-sm font-semibold">
+            {t("scan.history.title")}
+          </h3>
+          {history.length > 0 ? (
+            <button
+              type="button"
+              onClick={clearHistory}
+              className="min-h-11 rounded-full px-3 text-xs font-medium text-muted-foreground underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              {t("scan.history.clear")}
+            </button>
+          ) : null}
+        </div>
+        <p className="text-xs leading-relaxed text-muted-foreground">
+          {t("scan.history.privacy")}
+        </p>
+        {history.length === 0 ? (
+          <p className="text-sm text-muted-foreground" role="status">
+            {t("scan.history.empty")}
+          </p>
+        ) : (
+          <ul className="stack-2">
+            {history.map((entry, index) => (
+              <li
+                key={`${entry.searchedAt}-${index}`}
+                className="flex items-center justify-between gap-3 rounded-2xl border border-border-soft bg-surface px-4 py-3"
+              >
+                <span className="text-sm">
+                  {new Intl.DateTimeFormat(locale, {
+                    dateStyle: "medium",
+                    timeStyle: "short",
+                  }).format(entry.searchedAt)}
+                </span>
+                <span className="shrink-0 text-xs text-muted-foreground">
+                  {t("scan.history.results", { count: entry.resultCount })}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </div>
   );
 }
