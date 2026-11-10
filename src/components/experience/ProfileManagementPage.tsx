@@ -76,7 +76,7 @@ export function ProfileManagementPage() {
     const update = field === "handle" ? { handle: value || null } : { display_name: value };
     const { error: updateError } = await supabase.from("profiles").update(update).eq("id", userId);
     if (updateError) {
-      setError(t("profile.error"));
+      setError("profile.error");
     } else {
       const next = { ...profile, ...update };
       setProfile(next);
@@ -97,11 +97,11 @@ export function ProfileManagementPage() {
       .update({ handle: null })
       .eq("id", userId);
     if (updateError) {
-      setError(t("profile.error"));
+      setError("profile.error");
     } else {
       setProfile({ ...profile, handle: null });
       setEditing(null);
-      setNotice(t("profile.saved"));
+      setNotice("profile.saved");
     }
     setSaving(false);
   }
@@ -115,11 +115,11 @@ export function ProfileManagementPage() {
       .update({ locale: nextLocale })
       .eq("id", userId);
     if (updateError) {
-      setError(t("profile.error"));
+      setError("profile.error");
     } else {
       setProfile({ ...profile, locale: nextLocale });
       setLocale(nextLocale);
-      setNotice(t("profile.saved"));
+      setNotice("profile.saved");
     }
     setSaving(false);
   }
@@ -206,7 +206,7 @@ export function ProfileManagementPage() {
 
       <section className="stack-3">
         <h2 className="text-base font-semibold">{t("profile.section.preferences")}</h2>
-        <Surface variant="raised" padding="lg" bordered>
+        <Surface variant="elevated" padding="lg" bordered>
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <p className="text-sm font-medium">{t("profile.locale")}</p>
