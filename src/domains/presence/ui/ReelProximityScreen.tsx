@@ -1,7 +1,7 @@
 import { useState, type CSSProperties } from "react";
 import { requestReelLocation } from "@/domains/presence/api/reel-location.client";
 import {
-  ArrowLeft, Bell, Bluetooth, Check, ChevronDown, CircleUserRound,
+  ArrowLeft, Bell, Bluetooth, Check, ChevronDown, CircleUserRound, Globe, History,
   MapPin, RadioTower, Settings2, SlidersHorizontal, UsersRound, X,
 } from "lucide-react";
 import "./reel-proximity.css";
@@ -22,7 +22,7 @@ interface ReelProximityScreenProps {
   people: Person[];
 }
 
-type Panel = "settings" | "activity" | "people" | null;
+type Panel = "settings" | "activity" | "people" | "global" | null;
 type ActivityTab = "notifications" | "bips" | "connections";
 
 const MAX_RING_PEOPLE = 9;
@@ -238,6 +238,21 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
         )}
       </div>
 
+      {!locationEnabled && locationAccess !== "prompt" && locationAccess !== "requesting" && (
+        <div className="reel-calm-shortcuts" aria-label="Autres façons de découvrir Réel">
+          <button type="button" onClick={() => setPanel("global")}>
+            <Globe aria-hidden="true" />
+            <span><strong>Propositions globales</strong><small>Découvrir sans partager votre position</small></span>
+            <ChevronDown aria-hidden="true" />
+          </button>
+          <button type="button" onClick={() => openActivity("connections")}>
+            <History aria-hidden="true" />
+            <span><strong>Mon activité passée</strong><small>Retrouver les informations déjà disponibles</small></span>
+            <ChevronDown aria-hidden="true" />
+          </button>
+        </div>
+      )}
+
       {panel && (
         <div className="reel-panel-backdrop" onMouseDown={(event) => {
           if (event.target === event.currentTarget) setPanel(null);
@@ -301,6 +316,18 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
               </>
             )}
 
+            {panel === "global" && (
+              <>
+                <div className="reel-panel__eyebrow"><Globe aria-hidden="true" /> Découvrir autrement</div>
+                <h2 id="reel-panel-title">Propositions globales</h2>
+                <div className="reel-panel__empty">
+                  <Globe aria-hidden="true" />
+                  <strong>Les découvertes générales arrivent ici</strong>
+                  <span>Aucune activité proche n’est chargée lorsque vous gardez votre position privée. Les propositions globales seront affichées dès que leur source sera disponible.</span>
+                </div>
+              </>
+            )}
+
             {panel === "activity" && (
               <>
                 <div className="reel-panel__eyebrow"><Bell aria-hidden="true" /> Votre activité</div>
@@ -312,8 +339,8 @@ export function ReelProximityScreen({ people }: ReelProximityScreenProps) {
                 </div>
                 <div className="reel-panel__empty">
                   {activityTab === "notifications" ? <Bell aria-hidden="true" /> : activityTab === "bips" ? <RadioTower aria-hidden="true" /> : <UsersRound aria-hidden="true" />}
-                  <strong>{activityTab === "notifications" ? "Tout est calme pour le moment" : activityTab === "bips" ? "Aucun bip reçu pour le moment" : "Vos mises en relation apparaîtront ici"}</strong>
-                  <span>{activityTab === "notifications" ? "Les nouvelles activités liées à Réel seront réunies ici." : activityTab === "bips" ? "Quand une personne vous fera signe, vous pourrez la retrouver ici." : "Les rencontres acceptées seront rassemblées dans cet espace."}</span>
+                  <strong>{activityTab === "notifications" ? "Tout est calme pour le moment" : activityTab === "bips" ? "Aucun bip reçu pour le moment" : "Vos relations déjà établies seront accessibles ici dès que leur historique sera connecté"}</strong>
+                  <span>{activityTab === "notifications" ? "Les nouvelles activités liées à Réel seront réunies ici." : activityTab === "bips" ? "Quand une personne vous fera signe, vous pourrez la retrouver ici." : "Vous pourrez retrouver ici les rencontres acceptées et toujours disponibles."}</span>
                 </div>
                 {!locationEnabled && <p className="reel-panel__note">En mode calme, les alertes et les bips sont suspendus. Vos mises en relation déjà établies restent consultables.</p>}
                 {locationEnabled && <p className="reel-panel__note">Les événements réels apparaîtront ici dès que le service de rencontres sera connecté.</p>}
