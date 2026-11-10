@@ -1,5 +1,5 @@
 import { useMemo, type CSSProperties } from "react";
-import { Bluetooth, CircleUserRound } from "lucide-react";
+import { Bell, Bluetooth, ChevronDown, CircleUserRound, ScanLine } from "lucide-react";
 import "./reel-proximity.css";
 
 export interface Person {
