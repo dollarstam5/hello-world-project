@@ -33,8 +33,8 @@
 
 | Point | Décision fonctionnelle | Statut |
 | --- | --- | --- |
-| C-02 | Un bip est une demande courte, sans texte libre. Le destinataire peut accepter ou refuser. Une seule demande en attente est conservée par paire ; son retrait est possible et elle n'expire pas automatiquement. | VALIDÉE |
-| C-02 — acceptation | L'acceptation crée une mise en relation unique. Le bip accepté quitte les bips reçus et la relation apparaît dans les mises en relation. Les compteurs ne doivent pas compter deux fois le même événement. | VALIDÉE |
+| C-02 | Un bip est une demande courte, sans texte libre. Le destinataire peut accepter ou refuser. Un bip non accepté reste visible pendant 24 h après la fermeture de la présence, uniquement dans Réel et jamais dans Notifications. Il expire ensuite, sans historique permanent des bips non acceptés. Le point de départ exact des 24 h reste à spécifier. | VALIDÉE |
+| C-02 — acceptation | L'acceptation crée une mise en relation unique et durable. Le bip accepté quitte les bips reçus ; l'acceptation est signalée à son auteur. Les compteurs ne doivent pas compter deux fois le même événement. | VALIDÉE |
 | C-02 — fin de relation | La fermeture par l'une des deux personnes ferme la relation pour les deux, désactive la communication associée, demande confirmation et informe l'autre personne. | VALIDÉE |
 | C-02 — trace | Seule une trace technique minimale de l'événement (date, état, événement) est conservée pour cette fermeture ; aucun historique de conversation n'est créé par cette action. | VALIDÉE |
 
@@ -70,7 +70,7 @@
 | P-03 | Masquer un message le retire uniquement de l'affichage de son auteur ; la copie du destinataire est conservée. | VALIDÉE |
 | P-04 | À expiration, la présence disparaît de Réel et du profil, sans historique utilisateur des anciennes présences. Une conservation technique séparée peut subsister selon une durée documentée. | VALIDÉE |
 
-**Distinction importante :** l'absence d'historique utilisateur des présences expirées ne supprime pas la décision ultérieure de conserver, pour les comptes, l'historique des bips, mises en relation et interactions. La cible V1 retenue pour cet historique d'interactions est de six mois, avec suppression possible par la personne et sans export. Ces deux catégories de données ne doivent pas être confondues.
+**Distinctions importantes :** les bips non acceptés expirent après 24 h et ne disposent pas d'historique permanent. Les mises en relation acceptées sont durables. Le mode invité ne conserve pas les données personnelles de session après la fin de celle-ci ; l'historique d'un compte Vitalis suit des règles de conservation distinctes. La décision d'archivage DEC-046 prévoit six mois de conservation après archivage, puis une suppression définitive, avec suppression de l'historique possible à la demande et sans export. La portée exacte de cet archivage (conversations, relations ou autres éléments) doit être reliée au document source avant implémentation ; elle ne doit pas être appliquée aux bips non acceptés.
 
 ## 5. Exigences et tests associés
 
