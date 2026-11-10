@@ -7,13 +7,16 @@ Le profil s'ouvre en deux temps afin de donner accès aux informations utiles sa
 1. **Aperçu rapide** : un appui sur l'avatar du header ouvre une feuille légère avec les initiales, le nom affiché et, lorsqu'il existe, l'identifiant public. Un accès explicite mène au profil complet.
 2. **Profil complet** : « Voir le profil complet » ouvre la page personnelle, organisée en sections courtes et indépendantes.
 
-## Sections de la page complète
+Le profil est une partie de l'espace personnel, mais il ne doit pas absorber « Mes informations » ni les paramètres généraux de l'application. Voir [Espaces personnels et gestion indépendante des moteurs — V1](./personal-and-engine-management-v1.md).
 
-- **Identité** : nom affiché obligatoire et identifiant public facultatif.
-- **Préférences** : langue de l'application.
-- **Informations protégées** : rappel des champs système gérés par Vitalis et non modifiables depuis cette page.
+## Sections du profil
 
-Les actions sont contextuelles : ajouter ou modifier un identifiant public, modifier le nom affiché et choisir la langue. L'identifiant public facultatif peut être supprimé après confirmation. Le nom affiché reste obligatoire et ne peut pas être supprimé. Les champs système (identité, confiance, statut et vérification) restent en lecture seule.
+- **Identité publique** : nom affiché obligatoire et identifiant public facultatif.
+- **Présentation** : avatar, description et autres éléments facultatifs uniquement lorsque leur stockage, leur consentement et leur visibilité sont sécurisés.
+- **Aperçu du profil** : rendu fidèle des seules informations qu'une autre personne est autorisée à voir.
+- **Paramètres du profil** : champs de présentation et préférences de visibilité réellement disponibles.
+
+Les informations de compte et de connexion sont gérées dans « Mes informations ». La langue, le thème, l'accessibilité et les préférences globales relèvent des « Paramètres de l'application », pas des paramètres du profil.
 
 ## Règles d'interface
 
@@ -23,10 +26,13 @@ Les actions sont contextuelles : ajouter ou modifier un identifiant public, modi
 - Les valeurs absentes restent réellement absentes : ne jamais afficher de faux nom, avatar, statut, score ou activité.
 - L'aperçu rapide ne montre que des informations utiles et non sensibles.
 - Les données publiques ne sont montrées que selon les consentements et règles de visibilité du profil.
+- L'aperçu public ne doit jamais reprendre automatiquement les informations privées du compte.
 
 ## État technique V1
 
-Le header ouvre l'aperçu rapide et le lien « Voir le profil complet » mène à la page personnelle. La page lit et met à jour les champs autorisés de `profiles` : `display_name`, `handle` et `locale`. L'identifiant public peut être ajouté, modifié ou supprimé avec confirmation ; le nom affiché est modifiable mais reste obligatoire. La langue est enregistrée dans le profil et appliquée immédiatement.
+Le header ouvre l'aperçu rapide et le lien « Voir le profil complet » mène à la page personnelle. La page lit et met à jour les champs autorisés de `profiles` : `display_name`, `handle` et `locale`. L'identifiant public peut être ajouté, modifié ou supprimé avec confirmation ; le nom affiché est modifiable mais reste obligatoire.
+
+**Écart de présentation à résorber :** la langue est actuellement affichée dans la section Préférences du profil, alors qu'elle appartient conceptuellement aux Paramètres de l'application. Le stockage existant de `locale` dans `profiles` peut être conservé ; l'interface doit simplement présenter ce réglage dans le bon espace lors de la prochaine étape de mise en place.
 
 Le profil rapide affiche le nom et l'identifiant public lorsqu'il est renseigné. En l'absence de photo exploitable, les initiales sont utilisées ; aucune image publique ou URL de stockage privée n'est inventée.
 
