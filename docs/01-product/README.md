@@ -13,6 +13,7 @@ Cette section documente la vision produit, les intentions d'usage, les parcours,
 - [Centre de communication — règles produit V1](./communication-center-v1.md)
 - [Onboarding Vitalis — parcours V1](./onboarding-v1.md)
 - [Langage humain et communication Vitalis](./communication-language.md)
+- [Audit du langage humain — V1](./language-audit-v1.md)
 
 ## Références d'architecture liées
 
