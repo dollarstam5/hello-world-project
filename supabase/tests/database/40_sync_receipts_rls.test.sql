@@ -1,5 +1,5 @@
 BEGIN;
-SELECT plan(14);
+SELECT plan(15);
 
 INSERT INTO auth.users (
   id, aud, role, email, encrypted_password, email_confirmed_at,
@@ -60,6 +60,18 @@ SELECT lives_ok($$
     '{"accepted":true}'::jsonb
   )
 $$, 'owner can store a mutation receipt');
+
+SELECT lives_ok($$
+  INSERT INTO public.sync_mutation_receipts (
+    mutation_id, owner_id, logical_table, record_id, response
+  ) VALUES (
+    'd1000000-0000-4000-8000-000000000003',
+    auth.uid(),
+    'radars',
+    'd2000000-0000-4000-8000-000000000003',
+    '{"accepted":true}'::jsonb
+  )
+$$, 'owner can store a Radar mutation receipt');
 
 SELECT is(
   (SELECT count(*)::integer
