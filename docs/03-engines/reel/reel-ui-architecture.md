@@ -1,4 +1,4 @@
-# Architecture de l'interface Réel
+# Architecture de l'interface Instant (anciennement Réel)
 
 ## Objectif
 
@@ -40,6 +40,41 @@ Réel reste un moteur autonome de Vitalis. Son écran ne porte pas les règles m
 - Les actions destructives utilisent une confirmation intégrée à l'interface, pas une boîte de dialogue native du navigateur.
 - Les animations respectent la préférence de réduction du mouvement.
 - Le bouton Bluetooth reste visible dans l'interface existante et son fonctionnement demeure réservé à la V3 ; il ne doit pas être supprimé ni présenté comme actif en V1.
+
+## Périmètre UI/UX V1 — Instant
+
+Instant est le nom affiché du moteur historiquement nommé Réel. Les routes, dossiers, clés de traduction et contrats techniques `reel` restent inchangés pour éviter une migration purement cosmétique.
+
+### Composition commune des moteurs
+
+- À gauche de l'en-tête : l'icône et le nom du moteur, réunis dans un seul bloc.
+- À droite : les commandes secondaires propres au moteur.
+- Le centre de l'en-tête n'accueille aucun titre centré ni élément décoratif. La zone centrale de la page, sous l'en-tête, est réservée à l'action principale du moteur.
+- Sous cette composition viennent les informations et panneaux propres au moteur.
+
+### Action principale d'Instant : le profil
+
+- Le centre du radar accueille le profil de la personne qui utilise Instant. Il constitue le point d'ancrage visuel autour duquel apparaissent les profils proches.
+- En mode invité, l'avatar visuel et le nom temporaire configurés pour la présence sont affichés. Aucun identifiant technique de session invitée ne doit apparaître.
+- En mode membre, l'emplacement affiche l'identité « Moi » tant que la source canonique de l'avatar du profil membre n'est pas raccordée à cet écran. Ne pas fabriquer une photo ou une identité de démonstration.
+- L'activation du profil central ouvre les réglages de présence existants ; elle ne déclenche pas automatiquement la découverte ni la publication de présence.
+- Les profils proches restent des éléments distincts autour du profil central. Leur sélection ouvre leur fiche. Les disques superposés donnent accès à la liste complète lorsque le nombre de profils dépasse le seuil prévu.
+
+### Commandes secondaires d'Instant
+
+- Accueil : retour à l'accueil Vitalis.
+- Activité : notifications, bips reçus et mises en relation.
+- Préférences : réglages du rayon, de la durée et des informations de présence.
+- Ma présence : activation ou arrêt explicite de sa propre présence, indépendant de l'autorisation de découverte.
+- Bluetooth : emplacement visible réservé à la V3, désactivé en V1.
+
+### États et limites à respecter
+
+- Sans autorisation de découverte, le radar ne présente aucune personne à proximité ; l'écran conserve un état calme et explicatif.
+- L'autorisation de découverte ne vaut jamais consentement à publier sa propre présence.
+- Les modes membre et invité gardent leurs parcours et identités serveur séparés. L'interface ne doit jamais exposer un identifiant invité.
+- Les commandes bips et mises en relation restent conditionnées aux droits réellement disponibles côté serveur. Un élément visuel ne doit pas laisser croire qu'une action non raccordée fonctionne.
+- L'écran reste mobile-first, clair, aéré, accessible au clavier et compatible avec les zones sûres Android/iOS.
 
 ## Contrôles automatisés
 
