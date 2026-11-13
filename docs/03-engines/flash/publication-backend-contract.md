@@ -214,3 +214,19 @@ Aucune transition directe `draft → expired` n'est nécessaire : un brouillon n
 - Les statuts terminaux et brouillons sont exclus de toutes les RPC publiques.
 
 **Portée de cette décision :** contrat et préparation de tests uniquement. Elle n'autorise ni l'exécution de migrations sur une base distante, ni le déploiement, ni l'activation de la publication.
+
+
+## 11. Implémentation du cycle de vie — branche de réconciliation
+
+La branche `feat/flash-engine-experience-reconciled` applique maintenant la première barrière du cycle de vie :
+
+- La politique Sync n'autorise plus `status` dans les champs Flash modifiables. Le mapping retire aussi le statut local du payload envoyé au serveur ; une création ordinaire s'appuie sur le défaut SQL `draft`.
+- La validation Sync exige les champs métier nécessaires à la création et rejette tout statut fourni par un client, en création comme en mise à jour.
+- La création locale Flash utilise `draft`, jamais `live`.
+- L'archivage passe par `transition_flash(..., 'archived')`, puis demande une synchronisation. La RPC refuse désormais toute autre transition, notamment `draft → live`.
+- La migration `20261113008000_flash_lifecycle_hardening.sql` ajoute les colonnes `scope` et `urgency`, une garde SQL sur les changements de statut et une RPC atomique `publish_flash`. La garde s'appuie sur une table d'autorisations privée liée à la transaction, au membre et au Flash ; aucun paramètre de session contrôlé par le client ne sert de passe-droit.
+- L'exécution de `publish_flash` reste volontairement révoquée pour `authenticated` tant que le Scan ne respecte pas la portée auteur et le filtrage métrique sur distance brute avant arrondi. Le bouton de publication reste donc désactivé.
+
+Le test `supabase/tests/database/141_flash_lifecycle.test.sql` couvre la présence des fonctions et du trigger, l'absence de privilège d'exécution de publication, le refus d'une promotion directe et le refus de promouvoir via la RPC d'archivage.
+
+**Limite de validation :** ces changements sont enregistrés dans la branche Git uniquement. Les tests TypeScript et pgtap n'ont pas été exécutés ici ; aucune réussite CI n'est revendiquée. La migration n'a pas été appliquée à une base distante.

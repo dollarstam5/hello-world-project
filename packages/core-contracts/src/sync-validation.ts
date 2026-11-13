@@ -298,9 +298,6 @@ export function validateMutationPatch(
     if ("deletedAt" in raw) nullableInteger(raw.deletedAt, `${table}.deletedAt`);
     return {};
   }
-  if (table === "flashes" && kind === "update" && "status" in raw) {
-    fail("Flash status changes require the dedicated lifecycle command.");
-  }
   const allowed = new Set(clientWritableFields(table));
   const result: Record<string, unknown> = {};
   for (const [field, value] of Object.entries(raw)) {
@@ -311,7 +308,7 @@ export function validateMutationPatch(
   if (kind === "create") {
     if (!CLIENT_WRITE_POLICY[table].create) fail(`Creation is not allowed for ${table}.`);
     const required: Partial<Record<SyncedTable, readonly string[]>> = {
-      flashes: ["title", "body", "status", "expiresAt", "mediaIds"],
+      flashes: ["title", "body", "kind", "category", "timeSlot", "scope", "urgency", "areaLabel", "expiresAt", "mediaIds"],
       missions: [
         "title",
         "brief",
@@ -334,9 +331,6 @@ export function validateMutationPatch(
       posts: ["body", "visibility", "mediaIds"],
       media: ["kind", "state", "remotePath", "mimeType", "byteSize", "width", "height"],
     };
-    if (table === "flashes" && result.status !== "draft") {
-      fail("A Flash must be created as draft and published through the dedicated command.");
-    }
     const missing = (required[table] ?? []).filter((field) => !(field in result));
     if (missing.length > 0) fail(`${table} creation is missing: ${missing.join(", ")}.`);
   }

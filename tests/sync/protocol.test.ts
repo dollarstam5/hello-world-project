@@ -83,8 +83,8 @@ describe("sync protocol validation", () => {
     });
   });
 
-  it("accepts Flash creation only as a draft", () => {
-    const draft = validatePushRequest({
+  it("creates Flash records without accepting a client-supplied status", () => {
+    const created = validatePushRequest({
       protocolVersion: SYNC_PROTOCOL_VERSION,
       entries: [{
         ...mutation,
@@ -92,7 +92,6 @@ describe("sync protocol validation", () => {
         patch: {
           title: "Besoin de transport",
           body: "Un trajet local",
-          status: "draft",
           expiresAt: 1_900_000_000_000,
           mediaIds: [],
           kind: "need",
@@ -100,32 +99,36 @@ describe("sync protocol validation", () => {
           timeSlot: "today",
           scope: "current_area",
           urgency: "today",
+          areaLabel: "Akwa",
         },
       }],
     });
-    expect(draft.entries[0].patch.status).toBe("draft");
+    expect(created.entries[0].patch).not.toHaveProperty("status");
 
-    expect(() => validatePushRequest({
-      protocolVersion: SYNC_PROTOCOL_VERSION,
-      entries: [{
-        ...mutation,
-        kind: "create",
-        patch: {
-          title: "Publication directe",
-          body: "Ne doit pas être visible",
-          status: "live",
-          expiresAt: 1_900_000_000_000,
-          mediaIds: [],
-        },
-      }],
-    })).toThrow(/must be created as draft/i);
-  });
-
-  it("rejects Flash status changes in ordinary Sync updates", () => {
-    expect(() => validatePushRequest({
-      protocolVersion: SYNC_PROTOCOL_VERSION,
-      entries: [{ ...mutation, patch: { status: "archived" } }],
-    })).toThrow(/dedicated lifecycle command/i);
+    for (const kind of ["create", "update"] as const) {
+      expect(() => validatePushRequest({
+        protocolVersion: SYNC_PROTOCOL_VERSION,
+        entries: [{
+          ...mutation,
+          kind,
+          patch: kind === "create"
+            ? {
+                title: "Publication directe",
+                body: "Ne doit pas être visible",
+                expiresAt: 1_900_000_000_000,
+                mediaIds: [],
+                kind: "need",
+                category: "transport",
+                timeSlot: "today",
+                scope: "current_area",
+                urgency: "today",
+                areaLabel: "Akwa",
+                status: "live",
+              }
+            : { status: "archived" },
+        }],
+      })).toThrow(SyncValidationError);
+    }
   });
 
   it("rejects obsolete time-slot values and unknown Flash scope or urgency values", () => {
