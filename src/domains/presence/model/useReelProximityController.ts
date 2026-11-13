@@ -37,10 +37,10 @@ import {
   type ReelPresence,
 } from "@/domains/presence/api/reel-presence.client";
 import { useAccessMode } from "@/domains/access-mode";
-import { useI18n } from "@/lib/i18n/useI18n";
-import { getMyProfileAvatarUrl } from "@/domains/profile/api/profile-avatar.client";
 import { evaluateReelAccess } from "@/domains/presence/policy/reel-access-policy";
 import { subscribeToReelMemberActivity } from "@/domains/presence/services/reel-activity-realtime.service";
+import { getMyProfileAvatarUrl } from "@/domains/profile/api/profile-avatar.client";
+import { useI18n } from "@/lib/i18n/useI18n";
 
 export interface Person {
   id: string;
