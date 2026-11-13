@@ -57,7 +57,7 @@ SECURITY INVOKER
 SET search_path = pg_catalog, public
 AS $$
 BEGIN
-  IF auth.role() = 'authenticated' AND (
+  IF current_user = 'authenticated' AND (
     NEW.id IS DISTINCT FROM OLD.id
     OR NEW.status IS DISTINCT FROM OLD.status
     OR NEW.trust_score IS DISTINCT FROM OLD.trust_score
