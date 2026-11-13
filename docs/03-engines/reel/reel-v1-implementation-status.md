@@ -408,3 +408,12 @@ Le Quality suivant, sur le SHA `2538cfca62af617e5e29d7d597bedf1fa6ba09f0`, a dé
 Le répertoire `screenshots/04-reel/` ne contient pas l'image de référence produit. Les tests actuels peuvent capturer Réel sur huit tailles d'écran et vérifier le montage de la page, mais ne prouvent pas une ressemblance pixel à pixel avec l'image reçue précédemment. La fidélité exacte ne doit pas être déclarée avant comparaison visuelle avec cette référence.
 
 Architecture détaillée : `docs/03-engines/reel/reel-ui-architecture.md`.
+
+## Mise à jour — commande de présence et regroupement visuel (13 novembre 2026)
+
+- L'ancien contrôle œil qui masquait des textes est remplacé par « Ma présence ». L'état du contrôle reflète la présence membre ou invitée réellement active ; l'arrêt appelle le service existant. Quand aucune présence n'est active, le contrôle ouvre les réglages de visibilité afin que l'utilisateur fournisse les informations et le consentement nécessaires avant publication.
+- La commande « Ma présence » ne modifie pas l'autorisation ni l'état de découverte. La découverte reste utilisable indépendamment de la visibilité personnelle.
+- Les textes persistants de sous-titre et de résumé des profils proches ont été retirés de l'écran radar. La cloche et les panneaux contextuels restent les accès aux activités et aux échanges Réel.
+- Lorsque plus de 15 profils sont disponibles, les profils supplémentaires au-delà des neuf déjà disposés sur le radar sont représentés par une pile de sept disques superposés au maximum. Chaque disque correspond à un profil individuel ; aucun regroupement métier ni compteur « +N » n'est utilisé. L'appui ouvre la liste complète.
+- Entre 10 et 15 profils, un raccourci icône ouvre la même liste afin que les profils au-delà des neuf affichés sur le radar restent accessibles.
+- Tests de contrat ajoutés pour le remplacement du contrôle et le seuil du regroupement. **Les tests CI, le build et la comparaison visuelle sur appareil restent à confirmer ; aucune réussite n'est revendiquée ici.**
