@@ -153,7 +153,9 @@ class IsolationDatabase {
   radars: Row[] = [];
   receipts: Row[] = [];
   businessWrites = 0;
-  private receiptReadBarrier: { target: number; arrivals: number; promise: Promise<void>; release: () => void } | undefined;
+  private receiptReadBarrier:
+    | { target: number; arrivals: number; promise: Promise<void>; release: () => void }
+    | undefined;
 
   armReceiptReadBarrier(target: number): void {
     let release = () => {};
@@ -213,7 +215,9 @@ describe("runPush transport — owner isolation and concurrency", () => {
     expect(database.radars).toHaveLength(2);
     expect(database.receipts).toHaveLength(2);
     expect(
-      database.receipts.every((receipt) => receipt.owner_id === ownerA || receipt.owner_id === ownerB),
+      database.receipts.every(
+        (receipt) => receipt.owner_id === ownerA || receipt.owner_id === ownerB,
+      ),
     ).toBe(true);
   });
 
