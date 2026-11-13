@@ -153,9 +153,14 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-1);
+  padding: 0;
+  border: 0;
+  background: transparent;
   color: var(--reel-ink);
+  cursor: pointer;
   font-size: var(--text-base);
   font-weight: 600;
+  pointer-events: auto;
 }
 
 .reel-radar__me-avatar {
@@ -386,17 +391,26 @@
 }
 
 .reel-proximity__header {
-  display: grid;
+  display: flex;
   width: 100%;
-  grid-template-columns: 2.5rem 2.5rem minmax(0, 1fr) 2.5rem 2.5rem;
   align-items: center;
-  gap: 0.375rem;
+  justify-content: space-between;
+  gap: 0.5rem;
   flex: 0 0 auto;
+}
+
+.reel-proximity__header-actions {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.375rem;
 }
 
 .reel-proximity__header-action {
   display: grid;
   width: 2.5rem;
+  flex: 0 0 auto;
   aspect-ratio: 1;
   place-items: center;
   border: 0;
@@ -433,9 +447,10 @@
 .reel-proximity__heading {
   display: flex;
   min-width: 0;
+  flex: 0 1 auto;
   align-items: center;
   justify-content: flex-start;
-  gap: var(--space-1);
+  gap: var(--space-2);
 }
 
 .reel-proximity__heading h1 {
@@ -444,7 +459,7 @@
   background: linear-gradient(100deg, var(--reel-blue-start), var(--reel-blue-end));
   background-clip: text;
   color: transparent;
-  font-size: clamp(1.25rem, 6.5vw, 2.5rem);
+  font-size: clamp(1.15rem, 5.5vw, 2rem);
   font-weight: 600;
   letter-spacing: 0.045em;
   line-height: 1.1;
@@ -453,17 +468,38 @@
   -webkit-background-clip: text;
 }
 
-.reel-proximity__heading-copy > svg {
-  width: 1.1rem;
-  height: 1.1rem;
+.reel-proximity__heading > svg {
+  width: 1.25rem;
+  height: 1.25rem;
   flex: 0 0 auto;
   color: var(--reel-blue-start);
   stroke-width: 2.4;
 }
 
 @media (max-width: 360px) {
+  .reel-proximity__header {
+    gap: 0.25rem;
+  }
+
+  .reel-proximity__header-actions {
+    gap: 0.2rem;
+  }
+
+  .reel-proximity__header-action {
+    width: 2.2rem;
+  }
+
+  .reel-proximity__header-action svg {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+
+  .reel-proximity__heading {
+    gap: 0.25rem;
+  }
+
   .reel-proximity__heading h1 {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
   }
 }
 
