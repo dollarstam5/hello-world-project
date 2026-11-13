@@ -56,5 +56,4 @@ describe("Réel architecture boundaries", () => {
     expect(screenSource).not.toContain("reel-nearby__count");
     expect(screenSource).not.toContain("+{additionalCount}");
   });
-
 });
