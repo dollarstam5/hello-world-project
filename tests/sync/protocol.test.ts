@@ -44,6 +44,43 @@ describe("sync protocol validation", () => {
     expect(result.entries[0].table).toBe("flashes");
   });
 
+  it("accepts the Flash time, scope and urgency values selected by the composer", () => {
+    const result = validatePushRequest({
+      protocolVersion: SYNC_PROTOCOL_VERSION,
+      entries: [
+        {
+          ...mutation,
+          patch: {
+            timeSlot: "tomorrow",
+            scope: "half_city",
+            urgency: "very_urgent",
+          },
+        },
+      ],
+    });
+
+    expect(result.entries[0].patch).toEqual({
+      timeSlot: "tomorrow",
+      scope: "half_city",
+      urgency: "very_urgent",
+    });
+  });
+
+  it("rejects obsolete time-slot values and unknown Flash scope or urgency values", () => {
+    for (const patch of [
+      { timeSlot: "morning" },
+      { scope: "nearby_radius" },
+      { urgency: "critical" },
+    ]) {
+      expect(() =>
+        validatePushRequest({
+          protocolVersion: SYNC_PROTOCOL_VERSION,
+          entries: [{ ...mutation, patch }],
+        }),
+      ).toThrow(SyncValidationError);
+    }
+  });
+
   it("rejects an unsupported protocol version", () => {
     expect(() => validatePushRequest({ protocolVersion: 1, entries: [mutation] })).toThrow(
       SyncValidationError,
