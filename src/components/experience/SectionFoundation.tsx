@@ -60,16 +60,16 @@ export function SectionFoundation({
     <div className="page-shell stack-10">
       <header className="stack-2 motion-rise-in">
         <div className="self-start">
-        <Indicator
-          tone={tone}
-          dot
-          label={
-            <span className="inline-flex items-center gap-1.5">
-              {icon ? <Icon as={icon} size="xs" /> : null}
-              {t(eyebrowKey)}
-            </span>
-          }
-        />
+          <Indicator
+            tone={tone}
+            dot
+            label={
+              <span className="inline-flex items-center gap-1.5">
+                {icon ? <Icon as={icon} size="xs" /> : null}
+                {t(eyebrowKey)}
+              </span>
+            }
+          />
         </div>
         <h1 className="text-fluid-display-sm">{t(titleKey)}</h1>
         <p className="text-subtitle max-w-prose">{t(descKey)}</p>

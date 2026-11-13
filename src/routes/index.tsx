@@ -15,6 +15,8 @@ export const Route = createFileRoute("/")({
         property: "og:description",
         content: "Découvrez les espaces de Vitalis et choisissez par où commencer.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: HomeFoundation,

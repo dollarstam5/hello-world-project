@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { create } from "zustand";
 import { defaultLocale, locales, messages, type Locale, type MessageKey } from "./messages";
 
@@ -84,7 +85,10 @@ export function initI18n() {
 
 export function useI18n() {
   const { locale, setLocale } = useI18nStore();
-  const t = (key: MessageKey): string =>
-    messages[locale][key] ?? messages[defaultLocale][key] ?? key;
+  const t = useCallback(
+    (key: MessageKey): string =>
+      messages[locale][key] ?? messages[defaultLocale][key] ?? key,
+    [locale],
+  );
   return { locale, setLocale, t };
 }

@@ -24,6 +24,8 @@ function initials(name: string): string {
 export function PublicProfilePreview({ profile, origin }: PublicProfilePreviewProps) {
   const { t } = useI18n();
   const [open, setOpen] = useState(false);
+  const areaLabel =
+    profile.areaLabel === "Lieu non précisé" ? t("common.location.unspecified") : profile.areaLabel;
 
   return (
     <>
@@ -46,7 +48,7 @@ export function PublicProfilePreview({ profile, origin }: PublicProfilePreviewPr
           </span>
           <span className="flex min-w-0 items-center gap-1 text-xs text-muted-foreground">
             <MapPin className="h-3 w-3 shrink-0" aria-hidden />
-            <span className="truncate">{profile.areaLabel}</span>
+            <span className="truncate">{areaLabel}</span>
           </span>
         </span>
         <span className="max-w-24 truncate rounded-full bg-surface px-2 py-1 text-[10px] font-medium text-muted-foreground">
