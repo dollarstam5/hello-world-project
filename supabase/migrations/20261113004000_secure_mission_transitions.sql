@@ -88,9 +88,10 @@ ON public.missions
 FOR UPDATE
 TO authenticated
 USING (author_id = auth.uid() OR assignee_id = auth.uid())
-WITH CHECK (
-  author_id = auth.uid() OR assignee_id = auth.uid()
-);
+-- USING limits the old row to a participant. The trigger validates the
+-- transition against OLD and NEW; WITH CHECK must allow an assignee to clear
+-- assignee_id when declining (assigned -> open).
+WITH CHECK (true);
 
 -- Database-enforced state machine. Trusted service-role operations are
 -- explicitly separated; all other non-authenticated callers are rejected.
