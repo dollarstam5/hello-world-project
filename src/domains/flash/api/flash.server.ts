@@ -65,15 +65,3 @@ export async function publicFlashes(): Promise<PublicFlash[]> {
   }));
 }
 
-export async function setPrivateFlashLocation(
-  client: SupabaseClient<Database>,
-  input: { flashId: string; latitude: number; longitude: number; accuracyMeters: number },
-) {
-  await callAppRpc<null>(client as never, "set_flash_location", {
-    p_flash_id: input.flashId,
-    p_latitude: input.latitude,
-    p_longitude: input.longitude,
-    p_accuracy_meters: input.accuracyMeters,
-  });
-  return true;
-}
