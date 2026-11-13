@@ -551,8 +551,10 @@ export const messages = {
     "reel.ui.namePlaceholder": "Ex. Awa",
     "reel.ui.areaPlaceholder": "Ex. Bonamoussadi",
     "reel.ui.personalization": "Personnalisation",
-    "reel.ui.settingsIntro": "Choisissez comment vous souhaitez rencontrer les personnes autour de vous.",
-    "reel.ui.memberNotActive": "Vos mises en relation seront accessibles lorsque votre profil Vitalis sera actif.",
+    "reel.ui.settingsIntro":
+      "Choisissez comment vous souhaitez rencontrer les personnes autour de vous.",
+    "reel.ui.memberNotActive":
+      "Vos mises en relation seront accessibles lorsque votre profil Vitalis sera actif.",
     "reel.section.management": "Gérer Réel",
     "reel.section.presence": "Ma présence",
     "reel.section.bips": "Bips reçus",
@@ -1300,7 +1302,8 @@ export const messages = {
     "reel.ui.areaPlaceholder": "E.g. Bonamoussadi",
     "reel.ui.personalization": "Personalization",
     "reel.ui.settingsIntro": "Choose how you would like to meet people around you.",
-    "reel.ui.memberNotActive": "Your connections will be available when your Vitalis profile is active.",
+    "reel.ui.memberNotActive":
+      "Your connections will be available when your Vitalis profile is active.",
     "reel.section.management": "Manage Réel",
     "reel.section.presence": "My presence",
     "reel.section.bips": "Signals received",
