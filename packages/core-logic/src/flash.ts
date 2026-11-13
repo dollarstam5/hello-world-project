@@ -78,7 +78,7 @@ const CATEGORY_PATTERNS: ReadonlyArray<readonly [FlashCategory, RegExp]> = [
 const SLOT_PATTERNS: ReadonlyArray<readonly [FlashTimeSlot, RegExp]> = [
   ["now", /\b(maintenant|now|urgent|immédiatement|immediately|asap|tout de suite)\b/i],
   ["tomorrow", /\b(demain|tomorrow)\b/i],
-  ["this_week", /\b(cette semaine|this week|semaine prochaine|next week)\b/i],
+  ["this_week", /\b(cette semaine|ce week-end|week-end|weekend|this week|next week)\b/i],
   ["today", /\b(aujourd'hui|today|ce soir|tonight|cet après-midi|this afternoon)\b/i],
 ];
 
