@@ -19,4 +19,3 @@ export const commandFlash = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) =>
     (await import("./flash.server")).transitionFlash(context.supabase, data.id, data.status),
   );
-
