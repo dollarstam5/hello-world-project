@@ -552,8 +552,7 @@ export function ReelProximityScreen() {
                           <span>
                             <strong>{t("reel.ui.visibleConsent")}</strong>
                             <small>
-                              Ma position précise reste privée. Seule ma présence dans le rayon
-                              choisi sera proposée aux personnes proches.
+                              {t("reel.ui.privatePosition")}
                             </small>
                           </span>
                           <input
@@ -580,8 +579,7 @@ export function ReelProximityScreen() {
                     )
                   ) : !canUseMemberReel ? (
                     <p className="reel-panel__note">
-                      Pour publier votre présence, commencez par ouvrir une session invitée ou
-                      utilisez votre compte Vitalis.
+                      {t("reel.ui.guestStartPresence")}
                     </p>
                   ) : currentPresence ? (
                     <>
@@ -594,7 +592,7 @@ export function ReelProximityScreen() {
                         disabled={presenceLoading}
                         onClick={() => void stopPresence()}
                       >
-                        Arrêter ma présence
+                        {t("reel.ui.stopPresence")}
                       </button>
                     </>
                   ) : (
