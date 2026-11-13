@@ -2,7 +2,14 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Check, Mic, MicOff, Plus, Sparkles, X, Zap } from "lucide-react";
 import { FLASH_SCOPES, FLASH_URGENCIES } from "@eco/core-contracts";
-import type { FlashCategory, FlashKind, FlashScope, FlashTimeSlot, FlashUrgency, UserId } from "@eco/core-contracts";
+import type {
+  FlashCategory,
+  FlashKind,
+  FlashScope,
+  FlashTimeSlot,
+  FlashUrgency,
+  UserId,
+} from "@eco/core-contracts";
 import { parseFlashIntent } from "@eco/core-logic";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -176,7 +183,16 @@ export function FlashExperienceScreen() {
   }
 
   async function publishFlash() {
-    if (!user || !text.trim() || !scope || !urgency || !FLASH_SCOPE_FILTERING_ENABLED || publishing) return;
+    if (
+      !user ||
+      !text.trim() ||
+      !scope ||
+      !urgency ||
+      !FLASH_SCOPE_FILTERING_ENABLED ||
+      publishing
+    ) {
+      return;
+    }
     setPublishing(true);
     setPublishError(false);
     try {
@@ -460,7 +476,9 @@ export function FlashExperienceScreen() {
                 </label>
                 <fieldset className="grid gap-2 sm:col-span-2">
                   <legend className="text-sm font-semibold">{t("flash.composer.scope")}</legend>
-                  <p className="text-xs leading-relaxed text-muted-foreground">{t("flash.composer.scopeHint")}</p>
+                  <p className="text-xs leading-relaxed text-muted-foreground">
+                    {t("flash.composer.scopeHint")}
+                  </p>
                   <div className="grid grid-cols-2 gap-2">
                     {FLASH_SCOPES.map((value) => (
                       <button
@@ -525,7 +543,15 @@ export function FlashExperienceScreen() {
                   type="button"
                   className="min-h-12 flex-[1.5] rounded-full"
                   onClick={() => void publishFlash()}
-                  disabled={!FLASH_SCOPE_FILTERING_ENABLED || !user || authLoading || publishing || !text.trim() || !scope || !urgency}
+                  disabled={
+                    !FLASH_SCOPE_FILTERING_ENABLED ||
+                    !user ||
+                    authLoading ||
+                    publishing ||
+                    !text.trim() ||
+                    !scope ||
+                    !urgency
+                  }
                 >
                   {publishing ? t("app.loading") : t("flash.composer.confirmPublish")}
                 </Button>
