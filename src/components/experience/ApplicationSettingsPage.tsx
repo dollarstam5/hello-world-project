@@ -108,9 +108,7 @@ export function ApplicationSettingsPage() {
             }}
           >
             <span>
-              {assistantEnabled
-                ? t("settings.assistant.turnOff")
-                : t("settings.assistant.turnOn")}
+              {assistantEnabled ? t("settings.assistant.turnOff") : t("settings.assistant.turnOn")}
             </span>
             <span className="text-xs">
               {assistantEnabled
