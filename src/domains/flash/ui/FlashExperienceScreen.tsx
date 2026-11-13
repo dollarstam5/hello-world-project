@@ -51,6 +51,10 @@ const CATEGORIES: FlashCategory[] = [
   "other",
 ];
 const TIME_SLOTS: FlashTimeSlot[] = ["now", "today", "tomorrow", "this_week"];
+const FLASH_SCOPES = ["current_area", "expanded_area", "half_city", "whole_city"] as const;
+type FlashScope = (typeof FLASH_SCOPES)[number];
+const FLASH_URGENCIES = ["urgent", "very_urgent", "today", "as_soon_as_possible", "anytime"] as const;
+type FlashUrgency = (typeof FLASH_URGENCIES)[number];
 
 function getSpeechConstructor() {
   if (typeof window === "undefined") return undefined;
@@ -78,7 +82,7 @@ export function FlashExperienceScreen() {
   const [kind, setKind] = useState<FlashKind>("need");
   const [category, setCategory] = useState<FlashCategory>("other");
   const [timeSlot, setTimeSlot] = useState<FlashTimeSlot>("today");
-  const [areaLabel, setAreaLabel] = useState("");
+  const [scope, setScope] = useState<FlashScope | null>(null);\n  const [urgency, setUrgency] = useState<FlashUrgency | null>(null);
   const [recording, setRecording] = useState(false);
   const [voiceMessage, setVoiceMessage] = useState("");
   const [publishing, setPublishing] = useState(false);
@@ -102,7 +106,7 @@ export function FlashExperienceScreen() {
 
   function openComposer() {
     setText("");
-    setAreaLabel("");
+    setScope(null);\n    setUrgency(null);
     setKind("need");
     setCategory("other");
     setTimeSlot("today");
@@ -452,21 +456,44 @@ export function FlashExperienceScreen() {
                     ))}
                   </select>
                 </label>
-                <label className="grid gap-1.5 text-sm font-medium">
-                  {t("flash.composer.area")}
-                  <input
-                    value={areaLabel}
-                    onChange={(event) => setAreaLabel(event.target.value)}
-                    maxLength={80}
-                    placeholder={t("flash.composer.areaPlaceholder")}
-                    className="min-h-11 rounded-xl border border-input bg-background px-3 font-normal"
-                  />
-                </label>
+                <fieldset className="grid gap-2 sm:col-span-2">
+                  <legend className="text-sm font-semibold">{t("flash.composer.scope")}</legend>
+                  <p className="text-xs leading-relaxed text-muted-foreground">{t("flash.composer.scopeHint")}</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {FLASH_SCOPES.map((value) => (
+                      <button
+                        key={value}
+                        type="button"
+                        aria-pressed={scope === value}
+                        onClick={() => setScope(value)}
+                        className={`min-h-12 rounded-xl border px-3 py-2 text-left text-sm font-medium transition ${scope === value ? "border-primary bg-primary/10 text-foreground ring-1 ring-primary/30" : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground"}`}
+                      >
+                        {t(`flash.scope.${value}`)}
+                      </button>
+                    ))}
+                  </div>
+                </fieldset>
+                <fieldset className="grid gap-2 sm:col-span-2">
+                  <legend className="text-sm font-semibold">{t("flash.composer.urgency")}</legend>
+                  <div className="flex flex-wrap gap-2">
+                    {FLASH_URGENCIES.map((value) => (
+                      <button
+                        key={value}
+                        type="button"
+                        aria-pressed={urgency === value}
+                        onClick={() => setUrgency(value)}
+                        className={`min-h-10 rounded-full border px-3 py-2 text-sm font-medium transition ${urgency === value ? "border-primary bg-primary/10 text-foreground ring-1 ring-primary/30" : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground"}`}
+                      >
+                        {t(`flash.urgency.${value}`)}
+                      </button>
+                    ))}
+                  </div>
+                </fieldset>
               </div>
 
               <div className="mt-4 flex items-start gap-2 rounded-xl border border-border bg-muted/40 p-3 text-xs leading-relaxed text-muted-foreground">
                 <Check className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
-                <p>{t("flash.composer.confirmHint")}</p>
+                <p>{t("flash.composer.pendingScopeUrgency")}</p>
               </div>
 
               {!user && !authLoading ? (
@@ -496,7 +523,7 @@ export function FlashExperienceScreen() {
                   type="button"
                   className="min-h-12 flex-[1.5] rounded-full"
                   onClick={() => void publishFlash()}
-                  disabled={!user || authLoading || publishing || !text.trim()}
+                  disabled
                 >
                   {publishing ? t("app.loading") : t("flash.composer.confirmPublish")}
                 </Button>
