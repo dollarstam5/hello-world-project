@@ -388,7 +388,7 @@ export function ReelProximityScreen() {
               type="button"
               className="reel-panel__close"
               onClick={() => setPanel(null)}
-              aria-label="Fermer"
+              aria-label={t("reel.ui.close")}
             >
               <X aria-hidden="true" />
             </button>
@@ -398,17 +398,17 @@ export function ReelProximityScreen() {
                 <div className="reel-panel__eyebrow">
                   <Settings2 aria-hidden="true" /> Personnalisation
                 </div>
-                <h2 id="reel-panel-title">Ma présence et mes préférences</h2>
+                <h2 id="reel-panel-title">{t("reel.ui.settingsHeading")}</h2>
                 <p className="reel-panel__intro">
                   Choisissez comment vous souhaitez rencontrer les personnes autour de vous.
                 </p>
 
                 <div className="reel-panel__section">
-                  <h3>Découverte à proximité</h3>
+                  <h3>{t("reel.ui.discovery")}</h3>
                   <p className="reel-panel__note">
                     {discoveryEnabled
-                      ? "La découverte est active pour cette visite. Elle vous permet d’observer les activités autour de vous, sans publier votre propre présence."
-                      : "Vous pouvez activer la découverte pour observer les activités autour de vous. Cela ne rend pas votre propre présence visible."}
+                      ? t("reel.ui.discoveryActive")
+                       : t("reel.ui.discoveryInactive")}
                   </p>
                   {!discoveryEnabled && (
                     <button
@@ -422,7 +422,7 @@ export function ReelProximityScreen() {
                 </div>
 
                 <div className="reel-panel__section">
-                  <h3>Rayon de proximité</h3>
+                  <h3>{t("reel.ui.radius")}</h3>
                   <div className="reel-choice-grid">
                     {RADII.map((value) => (
                       <button
@@ -451,7 +451,7 @@ export function ReelProximityScreen() {
                 )}
 
                 <div className="reel-panel__section">
-                  <h3>Durée souhaitée</h3>
+                  <h3>{t("reel.ui.duration")}</h3>
                   {access.mode === "guest" && (
                     <p className="reel-panel__note">
                       Votre accès invité dure au maximum une heure. Votre présence s’arrêtera
@@ -476,7 +476,7 @@ export function ReelProximityScreen() {
                 </div>
 
                 <div className="reel-panel__section">
-                  <h3>Ma visibilité</h3>
+                  <h3>{t("reel.ui.visibility")}</h3>
                   <p className="reel-panel__note">
                     La découverte vous permet d’observer les activités autour de vous. Activer votre
                     présence est un choix séparé : les autres personnes pourront alors vous voir
@@ -503,8 +503,8 @@ export function ReelProximityScreen() {
                       <>
                         <label className="reel-setting-row reel-setting-row--stacked">
                           <span>
-                            <strong>Le prénom à afficher</strong>
-                            <small>Un prénom ou un nom court, sans créer de compte.</small>
+                            <strong>{t("reel.ui.displayName")}</strong>
+                            <small>{t("reel.ui.displayNameHint")}</small>
                           </span>
                           <input
                             type="text"
@@ -517,8 +517,8 @@ export function ReelProximityScreen() {
                         </label>
                         <label className="reel-setting-row reel-setting-row--stacked">
                           <span>
-                            <strong>Mon secteur</strong>
-                            <small>Un repère général, jamais votre adresse exacte.</small>
+                            <strong>{t("reel.ui.area")}</strong>
+                            <small>{t("reel.ui.areaHint")}</small>
                           </span>
                           <input
                             type="text"
@@ -530,23 +530,23 @@ export function ReelProximityScreen() {
                         </label>
                         <label className="reel-setting-row reel-setting-row--stacked">
                           <span>
-                            <strong>Mon avatar</strong>
-                            <small>Choisissez une couleur pour vous reconnaître.</small>
+                            <strong>{t("reel.ui.avatar")}</strong>
+                            <small>{t("reel.ui.avatarHint")}</small>
                           </span>
                           <select
                             value={guestAvatarKey}
                             onChange={(event) => setGuestAvatarKey(event.target.value)}
                           >
-                            <option value="avatar-blue">Bleu</option>
-                            <option value="avatar-violet">Violet</option>
-                            <option value="avatar-green">Vert</option>
-                            <option value="avatar-orange">Orange</option>
+                            <option value="avatar-blue">{t("reel.ui.blue")}</option>
+                            <option value="avatar-violet">{t("reel.ui.violet")}</option>
+                            <option value="avatar-green">{t("reel.ui.green")}</option>
+                            <option value="avatar-orange">{t("reel.ui.orange")}</option>
                           </select>
                         </label>
                         <label className="reel-setting-row reel-setting-row--stacked">
                           <span>
-                            <strong>Ce que les autres verront</strong>
-                            <small>Une phrase courte pour expliquer votre présence.</small>
+                            <strong>{t("reel.ui.publicDescription")}</strong>
+                            <small>{t("reel.ui.publicDescriptionHint")}</small>
                           </span>
                           <textarea
                             maxLength={180}
@@ -557,7 +557,7 @@ export function ReelProximityScreen() {
                         </label>
                         <label className="reel-setting-row">
                           <span>
-                            <strong>Je souhaite être visible</strong>
+                            <strong>{t("reel.ui.visibleConsent")}</strong>
                             <small>
                               Ma position précise reste privée. Seule ma présence dans le rayon
                               choisi sera proposée aux personnes proches.
@@ -581,7 +581,7 @@ export function ReelProximityScreen() {
                           }
                           onClick={() => void activateGuestPresence()}
                         >
-                          {presenceLoading ? "Activation…" : "Rendre ma présence visible"}
+                          {presenceLoading ? t("reel.ui.activateLoading") : t("reel.ui.makeVisible")}
                         </button>
                       </>
                     )
@@ -609,7 +609,7 @@ export function ReelProximityScreen() {
                       <label className="reel-setting-row reel-setting-row--stacked">
                         <span>
                           <strong>Ce que les autres verront</strong>
-                          <small>Une courte description de votre présence.</small>
+                          <small>{t("reel.ui.publicDescriptionHint")}</small>
                         </span>
                         <textarea
                           maxLength={180}
@@ -640,7 +640,7 @@ export function ReelProximityScreen() {
                         }
                         onClick={() => void activatePresence()}
                       >
-                        {presenceLoading ? "Activation…" : "Activer ma présence"}
+                        {presenceLoading ? t("reel.ui.activateLoading") : t("reel.ui.activate")}
                       </button>
                     </>
                   )}
@@ -668,9 +668,9 @@ export function ReelProximityScreen() {
             {panel === "global" && (
               <>
                 <div className="reel-panel__eyebrow">
-                  <Globe aria-hidden="true" /> Découvrir autrement
+                  <Globe aria-hidden="true" /> {t("reel.ui.global")}
                 </div>
-                <h2 id="reel-panel-title">Propositions globales</h2>
+                <h2 id="reel-panel-title">{t("reel.ui.global")}</h2>
                 <div className="reel-panel__empty">
                   <Globe aria-hidden="true" />
                   <strong>Les découvertes générales arrivent ici</strong>
@@ -685,10 +685,10 @@ export function ReelProximityScreen() {
             {panel === "activity" && (
               <>
                 <div className="reel-panel__eyebrow">
-                  <Bell aria-hidden="true" /> Votre activité
+                  <Bell aria-hidden="true" /> {t("reel.ui.activity")}
                 </div>
-                <h2 id="reel-panel-title">Notifications et rencontres</h2>
-                <div className="reel-panel__tabs" role="tablist" aria-label="Activité">
+                <h2 id="reel-panel-title">{t("reel.ui.activityHeading")}</h2>
+                <div className="reel-panel__tabs" role="tablist" aria-label={t("reel.ui.activity")}>
                   <button
                     type="button"
                     role="tab"
@@ -723,7 +723,7 @@ export function ReelProximityScreen() {
                 </div>
                 {activityTab === "bips" ? (
                   <div className="reel-people-list" aria-live="polite">
-                    {bipsLoading && <p className="reel-panel__note">Chargement de vos bips…</p>}
+                    {bipsLoading && <p className="reel-panel__note">{t("reel.ui.bipsLoading")}</p>}
                     {!canUseMemberReel && access.mode !== "guest" && (
                       <p className="reel-panel__note">
                         Publiez votre présence pour recevoir les signes des personnes proches.
@@ -788,7 +788,7 @@ export function ReelProximityScreen() {
                 ) : activityTab === "connections" ? (
                   <div className="reel-people-list" aria-live="polite">
                     {connectionsLoading && (
-                      <p className="reel-panel__note">Chargement de vos rencontres…</p>
+                      <p className="reel-panel__note">{t("reel.ui.connectionsLoading")}</p>
                     )}
                     {access.mode === "visitor" && (
                       <p className="reel-panel__note">
@@ -894,9 +894,9 @@ export function ReelProximityScreen() {
             {panel === "people" && (
               <>
                 <div className="reel-panel__eyebrow">
-                  <UsersRound aria-hidden="true" /> À proximité
+                  <UsersRound aria-hidden="true" /> {t("reel.ui.peopleNearby")}
                 </div>
-                <h2 id="reel-panel-title">Toutes les personnes proches</h2>
+                <h2 id="reel-panel-title">{t("reel.ui.allNearby")}</h2>
                 {discoveryEnabled && availablePeople.length ? (
                   <div className="reel-people-list">
                     {availablePeople.map((person) => (
@@ -924,7 +924,7 @@ export function ReelProximityScreen() {
                 ) : (
                   <div className="reel-panel__empty">
                     <UsersRound aria-hidden="true" />
-                    <strong>Personne à afficher pour le moment</strong>
+                    <strong>{t("reel.ui.noPeople")}</strong>
                     <span>Les profils disponibles apparaîtront ici au fur et à mesure.</span>
                   </div>
                 )}
@@ -948,7 +948,7 @@ export function ReelProximityScreen() {
             aria-modal="true"
             aria-labelledby="reel-close-connection-title"
           >
-            <h2 id="reel-close-connection-title">Terminer cette mise en relation ?</h2>
+            <h2 id="reel-close-connection-title">{t("reel.ui.closeConnection")}</h2>
             <p className="reel-panel__intro">
               Elle sera fermée pour vous deux et ne sera plus active dans Réel.
             </p>
@@ -996,7 +996,7 @@ export function ReelProximityScreen() {
                 className="reel-profile-sheet__back"
                 onClick={() => setShowFullProfile(false)}
               >
-                <ArrowLeft aria-hidden="true" /> Retour à l’aperçu
+                <ArrowLeft aria-hidden="true" /> {t("reel.ui.backPreview")}
               </button>
             )}
             <PersonAvatar person={selectedPerson} size="me" />
@@ -1047,7 +1047,7 @@ export function ReelProximityScreen() {
                 else setShowFullProfile(true);
               }}
             >
-              {showFullProfile ? "Fermer" : "Voir la fiche complète"}
+              {showFullProfile ? t("reel.ui.close") : t("reel.ui.fullProfile")}
             </button>
           </section>
         </div>
