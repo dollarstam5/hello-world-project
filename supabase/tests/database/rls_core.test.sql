@@ -19,7 +19,9 @@ set display_name = excluded.display_name;
 insert into public.udi (user_id, level)
 values
   ('00000000-0000-0000-0000-000000000001', 'verified'),
-  ('00000000-0000-0000-0000-000000000002', 'guest');
+  ('00000000-0000-0000-0000-000000000002', 'guest')
+on conflict (user_id) do update
+set level = excluded.level;
 
 insert into public.media (owner_id, kind)
 values
