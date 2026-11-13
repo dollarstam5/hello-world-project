@@ -108,38 +108,6 @@ export function HomeFoundation() {
         </div>
       </header>
 
-      <section className="stack-4" aria-labelledby="home-demo-title">
-        <div className="stack-1">
-          <h2 id="home-demo-title" className="text-title-md">
-            {t("home.demo.title")}
-          </h2>
-          <p className="text-sm text-muted-foreground">{t("home.demo.desc")}</p>
-        </div>
-
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-          {demoFlashes.map((flash) => (
-            <Surface
-              key={flash.id}
-              variant="elevated"
-              padding="md"
-              bordered
-              className="flex min-h-32 flex-col justify-between gap-4"
-            >
-              <div className="flex items-center justify-between gap-2">
-                <span className="text-xs font-medium text-muted-foreground">Flash</span>
-                <Indicator tone="primary" label={t("demo.label")} />
-              </div>
-              <p className="text-base font-semibold leading-snug">
-                {demoTitles[flash.id] ?? t("home.demo.fallback")}
-              </p>
-              {flash.authorPreview ? (
-                <PublicProfilePreview profile={flash.authorPreview} origin="demo" />
-              ) : null}
-            </Surface>
-          ))}
-        </div>
-      </section>
-
       <section className="stack-4" aria-labelledby="home-engines-title">
         <div className="stack-1">
           <h2 id="home-engines-title" className="text-title-md">
@@ -189,6 +157,38 @@ export function HomeFoundation() {
             action={t("home.engine.action")}
             tone="violet"
           />
+        </div>
+      </section>
+
+      <section className="stack-4" aria-labelledby="home-demo-title">
+        <div className="stack-1">
+          <h2 id="home-demo-title" className="text-title-md">
+            {t("home.demo.title")}
+          </h2>
+          <p className="text-sm text-muted-foreground">{t("home.demo.desc")}</p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          {demoFlashes.map((flash) => (
+            <Surface
+              key={flash.id}
+              variant="elevated"
+              padding="md"
+              bordered
+              className="flex min-h-32 flex-col justify-between gap-4"
+            >
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-xs font-medium text-muted-foreground">Flash</span>
+                <Indicator tone="primary" label={t("demo.label")} />
+              </div>
+              <p className="text-base font-semibold leading-snug">
+                {demoTitles[flash.id] ?? t("home.demo.fallback")}
+              </p>
+              {flash.authorPreview ? (
+                <PublicProfilePreview profile={flash.authorPreview} origin="demo" />
+              ) : null}
+            </Surface>
+          ))}
         </div>
       </section>
 
