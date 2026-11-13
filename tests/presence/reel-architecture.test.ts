@@ -14,9 +14,7 @@ describe("Réel architecture boundaries", () => {
 
   it("keeps presentation dependencies out of the controller", () => {
     const controller = controllerSource;
-    expect(controller).not.toMatch(
-      /from ["']lucide-react["']/,
-    );
+    expect(controller).not.toMatch(/from ["']lucide-react["']/);
     expect(controller).not.toMatch(/from ["']\.\/.*\.css["']/);
     expect(controller).not.toMatch(/from ["']@\/domains\/presence\/ui\//);
     expect(controller).not.toMatch(/from ["']@\/integrations\/supabase\/client["']/);
