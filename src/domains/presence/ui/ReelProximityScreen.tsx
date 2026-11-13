@@ -157,66 +157,66 @@ export function ReelProximityScreen() {
   return (
     <section className="reel-proximity" aria-label={t("reel.ui.screenLabel")}>
       <header className="reel-proximity__header">
-        <Link
-          to="/"
-          className="reel-proximity__header-action"
-          aria-label={t("reel.ui.home")}
-          title={t("reel.ui.homeTitle")}
-        >
-          <Home aria-hidden="true" />
-        </Link>
         <div className="reel-proximity__heading">
-          <div className="reel-proximity__heading-copy">
-            <RadioTower aria-hidden="true" />
-            <h1>INSTANT</h1>
-          </div>
+          <RadioTower aria-hidden="true" />
+          <h1>INSTANT</h1>
         </div>
-        <button
-          type="button"
-          className="reel-proximity__header-action reel-proximity__notification"
-          onClick={() => openActivity("notifications")}
-          disabled={!activityEnabled}
-          aria-label={
-            activityEnabled ? t("reel.ui.notifications") : t("reel.ui.notificationsPaused")
-          }
-          title={activityEnabled ? t("reel.ui.activity") : t("reel.ui.notificationsPausedShort")}
-        >
-          <Bell aria-hidden="true" />
-        </button>
-        <button
-          type="button"
-          className="reel-proximity__header-action"
-          onClick={() => setPanel("settings")}
-          aria-label={t("reel.ui.preferences")}
-          title={t("reel.ui.preferencesTitle")}
-        >
-          <SlidersHorizontal aria-hidden="true" />
-        </button>
-        <button
-          type="button"
-          className={`reel-proximity__header-action reel-proximity__presence-toggle${isPresenceActive ? " is-active" : ""}`}
-          onClick={() => {
-            if (currentPresence) void stopPresence();
-            else if (guestPresence) void stopGuestPresence();
-            else setPanel("settings");
-          }}
-          disabled={presenceLoading}
-          aria-pressed={isPresenceActive}
-          aria-label={isPresenceActive ? t("reel.ui.hideMyPresence") : t("reel.ui.showMyPresence")}
-          title={isPresenceActive ? t("reel.ui.hideMyPresence") : t("reel.ui.showMyPresence")}
-        >
-          {isPresenceActive ? <Eye aria-hidden="true" /> : <EyeOff aria-hidden="true" />}
-        </button>
-        <button
-          type="button"
-          className="reel-proximity__header-action reel-proximity__bluetooth"
-          disabled
-          aria-label={t("reel.ui.bluetooth")}
-          title={t("reel.ui.bluetoothTitle")}
-        >
-          <Bluetooth aria-hidden="true" />
-          <span className="reel-proximity__bluetooth-label">V3</span>
-        </button>
+        <nav className="reel-proximity__header-actions" aria-label={t("reel.ui.screenLabel")}>
+          <Link
+            to="/"
+            className="reel-proximity__header-action"
+            aria-label={t("reel.ui.home")}
+            title={t("reel.ui.homeTitle")}
+          >
+            <Home aria-hidden="true" />
+          </Link>
+          <button
+            type="button"
+            className="reel-proximity__header-action reel-proximity__notification"
+            onClick={() => openActivity("notifications")}
+            disabled={!activityEnabled}
+            aria-label={
+              activityEnabled ? t("reel.ui.notifications") : t("reel.ui.notificationsPaused")
+            }
+            title={activityEnabled ? t("reel.ui.activity") : t("reel.ui.notificationsPausedShort")}
+          >
+            <Bell aria-hidden="true" />
+          </button>
+          <button
+            type="button"
+            className="reel-proximity__header-action"
+            onClick={() => setPanel("settings")}
+            aria-label={t("reel.ui.preferences")}
+            title={t("reel.ui.preferencesTitle")}
+          >
+            <SlidersHorizontal aria-hidden="true" />
+          </button>
+          <button
+            type="button"
+            className={`reel-proximity__header-action reel-proximity__presence-toggle${isPresenceActive ? " is-active" : ""}`}
+            onClick={() => {
+              if (currentPresence) void stopPresence();
+              else if (guestPresence) void stopGuestPresence();
+              else setPanel("settings");
+            }}
+            disabled={presenceLoading}
+            aria-pressed={isPresenceActive}
+            aria-label={isPresenceActive ? t("reel.ui.hideMyPresence") : t("reel.ui.showMyPresence")}
+            title={isPresenceActive ? t("reel.ui.hideMyPresence") : t("reel.ui.showMyPresence")}
+          >
+            {isPresenceActive ? <Eye aria-hidden="true" /> : <EyeOff aria-hidden="true" />}
+          </button>
+          <button
+            type="button"
+            className="reel-proximity__header-action reel-proximity__bluetooth"
+            disabled
+            aria-label={t("reel.ui.bluetooth")}
+            title={t("reel.ui.bluetoothTitle")}
+          >
+            <Bluetooth aria-hidden="true" />
+            <span className="reel-proximity__bluetooth-label">V3</span>
+          </button>
+        </nav>
       </header>
 
       {!discoveryEnabled && (
@@ -306,8 +306,19 @@ export function ReelProximityScreen() {
             className="reel-radar__me"
             onClick={() => setPanel("settings")}
             aria-label={t("reel.ui.managePresence")}
+            title={t("reel.ui.managePresence")}
           >
-            <CircleUserRound aria-hidden="true" />
+            <span
+              className={`reel-radar__me-avatar${access.mode === "guest" ? ` reel-avatar--${guestAvatarKey}` : ""}`}
+              aria-hidden="true"
+            >
+              <CircleUserRound />
+            </span>
+            <span className="reel-radar__me-label">
+              {access.mode === "guest" && guestDisplayName.trim()
+                ? guestDisplayName.trim()
+                : t("reel.ui.me")}
+            </span>
           </button>
         </div>
         {visiblePeople.map((person) => (
