@@ -1,7 +1,7 @@
 # TECH-001 — Rapport de réconciliation des chaînes de migration
 
 **État de la revue :** inventaire du dépôt effectué ; réconciliation de la base distante non vérifiable à ce stade.  
-**Référence examinée :** branche `main`, après fusion de la PR #66, commit `9a090e55f6d5fb97cb49b2dc4add72549e01274c`.  
+**Référence examinée :** branche `main`, après fusion de la PR #70, commit `8cb601309fe089d2c742140a95d564d45c50e63c`.  
 **Périmètre :** configuration, fichiers versionnés, journal Drizzle, scripts de projet et code consommateur. Aucun SQL n'a été exécuté.
 
 ## 1. Conclusion opérationnelle
