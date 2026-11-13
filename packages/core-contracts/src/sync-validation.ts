@@ -308,7 +308,17 @@ export function validateMutationPatch(
   if (kind === "create") {
     if (!CLIENT_WRITE_POLICY[table].create) fail(`Creation is not allowed for ${table}.`);
     const required: Partial<Record<SyncedTable, readonly string[]>> = {
-      flashes: ["title", "body", "kind", "category", "timeSlot", "scope", "urgency", "expiresAt", "mediaIds"],
+      flashes: [
+        "title",
+        "body",
+        "kind",
+        "category",
+        "timeSlot",
+        "scope",
+        "urgency",
+        "expiresAt",
+        "mediaIds",
+      ],
       missions: [
         "title",
         "brief",
