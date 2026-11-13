@@ -12,16 +12,17 @@ import { CommunicationSheet } from "@/components/experience/CommunicationSheet";
 import { OnboardingSheet } from "@/components/experience/OnboardingSheet";
 import { InstallBanner } from "@/components/experience/InstallBanner";
 import { UpdateBanner } from "@/components/experience/UpdateBanner";
-import { AILayer } from "@/components/experience/AILayer";
 import { useResponsive } from "@/lib/platform/useResponsive";
 import { duration, easing } from "@/lib/design/tokens";
+import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
+import { AssistantNoticeLayer } from "@/components/experience/AssistantNoticeLayer";
 
 /**
  * AppShell — single mount-point that boots foundation services
  * (theme, i18n, onboarding hydration) and provides the calm canvas:
  *  - primary engine navigation on Home, Flash, Scan and Radar
  *  - dedicated navigation on Réel, with its own header and menu access
- *  - ambient AI layer
+ *  - optional assistant access, controlled by the person
  *  - offline awareness
  *  - first-run guided Vitalis onboarding
  *  - low-end / reduced-motion gating (Phase 5/5)
@@ -34,6 +35,10 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   useExperienceBoot();
   useSyncEngine();
+
+  useEffect(() => {
+    useAssistantPreferences.getState().hydrate();
+  }, []);
 
   useEffect(() => {
     if (typeof document === "undefined") return;
@@ -63,6 +68,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="relative min-h-dvh bg-background text-foreground antialiased">
+      <AssistantNoticeLayer />
       <OfflineBanner />
       {!routeOwnsHeader && <AppHeader onOpenCommunication={() => setCommunicationOpen(true)} />}
       <main
@@ -93,7 +99,6 @@ export function AppShell({ children }: { children: ReactNode }) {
       <CommunicationSheet open={communicationOpen} onOpenChange={setCommunicationOpen} />
       <InstallBanner />
       <UpdateBanner />
-      <AILayer />
       <OnboardingSheet />
     </div>
   );
