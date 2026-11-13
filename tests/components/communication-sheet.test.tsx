@@ -46,7 +46,7 @@ describe("CommunicationSheet", () => {
     const reel = markup.indexOf("communication.reel</button>");
 
     expect(markup).toContain('aria-label="communication.title"');
-    expect(markup).toMatch(/role="tablist"[^>]*aria-label="communication\\.title"/);
+    expect(markup).toMatch(/role="tablist"[^>]*aria-label="communication\.title"/);
     expect(markup.match(/role="tab"/g)).toHaveLength(4);
     expect(notifications).toBeGreaterThan(-1);
     expect(notifications).toBeLessThan(assistant);
