@@ -1,7 +1,7 @@
 # TECH-011 — Statut de la chaîne Drizzle
 
 **État :** configuration et artefacts Drizzle présents ; aucun runner d'exécution versionné identifié ; usage historique, manuel ou externe non vérifié.  
-**Référence examinée :** `main`, commit `e0688fa608bf7dbf81b0a130f9bf44830af135ab`.  
+**Référence examinée :** `main`, commit `8cb601309fe089d2c742140a95d564d45c50e63c` (après fusion de la PR #70).  
 **Périmètre :** fichiers versionnés, configuration, dépendances, scripts, workflows et références applicatives.  
 **Aucune commande Drizzle n'a été exécutée. Aucun SQL n'a été appliqué.**
 
