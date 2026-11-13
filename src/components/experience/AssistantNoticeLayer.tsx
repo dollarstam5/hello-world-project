@@ -21,7 +21,10 @@ export function AssistantNoticeLayer() {
   if (!enabled || !notice) return null;
 
   return (
-    <div className="pointer-events-none fixed inset-x-3 z-[70] flex justify-center" style={{ top: "calc(var(--safe-top) + 0.75rem)" }}>
+    <div
+      className="pointer-events-none fixed inset-x-3 z-[70] flex justify-center"
+      style={{ top: "calc(var(--safe-top) + 0.75rem)" }}
+    >
       <div
         role="status"
         aria-live="polite"
