@@ -15,6 +15,14 @@ Les réglages d'un moteur ne doivent pas modifier ceux d'un autre. Une autorisat
 - Lorsqu'une publication possède ses propres réglages, ceux-ci s'appliquent à cette publication sans élargir les autorisations générales du profil.
 - Une modification des réglages doit être vérifiée côté serveur ; masquer une information uniquement dans l'interface ne constitue pas une protection.
 
+## Projection de profil propre à Instant
+
+Instant expose par défaut uniquement le **nom**, la **photo/avatar** et la **description de présence** définie pour ce moteur. Cette description est contextuelle et ne remplace pas la biographie générale du compte.
+
+La consultation du profil complet depuis Instant est un choix distinct, propre à ce moteur, désactivé par défaut et activé uniquement par consentement explicite dans ses paramètres. Le retrait de ce consentement doit être appliqué côté serveur/API et aux consultations suivantes ; il ne doit pas ouvrir l'accès dans Flash, Scan ou Radar. Les fiches rapides restent limitées aux trois champs minimaux, même lorsqu'un accès distinct au profil complet est autorisé.
+
+La fiche canonique détaillée de cette règle est [Instant — périmètre du profil et visibilité](./reel/instant-profile-visibility.md).
+
 ## Périmètres à distinguer
 
 1. **Informations publiques de profil** : éléments que l'utilisateur a explicitement autorisés pour un moteur ou un contexte.

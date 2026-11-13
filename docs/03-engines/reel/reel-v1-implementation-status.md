@@ -419,3 +419,15 @@ Architecture détaillée : `docs/03-engines/reel/reel-ui-architecture.md`.
 - Lorsque plus de 15 profils sont disponibles, les profils supplémentaires au-delà des neuf déjà disposés sur le radar sont représentés par une pile de sept disques superposés au maximum. Chaque disque correspond à un profil individuel ; aucun regroupement métier ni compteur « +N » n'est utilisé. L'appui ouvre la liste complète.
 - Entre 10 et 15 profils, un raccourci icône ouvre la même liste afin que les profils au-delà des neuf affichés sur le radar restent accessibles.
 - Tests de contrat ajoutés pour le remplacement du contrôle et le seuil du regroupement. **Les tests CI, le build et la comparaison visuelle sur appareil restent à confirmer ; aucune réussite n'est revendiquée ici.**
+
+
+## Réconciliation documentaire — accès invité et niveau de preuve
+
+Cette section prévaut sur les formulations plus anciennes de ce journal lorsqu'elles affirment globalement que les invités ne peuvent pas découvrir ou échanger des bips. Les étapes successives ont ajouté une session invitée serveur, une présence invitée temporaire, la découverte réciproque, puis des premières voies de bips et de relations croisées.
+
+- **Ajouté dans la branche, non encore validé de bout en bout :** session invitée opaque, stockage séparé des présences invitées, découverte réciproque, bips et relations membre ↔ invité / invité ↔ invité, et événements destinés aux membres.
+- **À confirmer dans le parcours utilisateur :** publication d'une présence invitée depuis l'écran Instant ; les notes techniques antérieures indiquent que le formulaire correspondant n'était pas encore intégré.
+- **Validation technique toujours nécessaire :** migrations Supabase, tests pgTAP concernés, Quality sur le dernier SHA, build, configuration Realtime et essais multi-appareils.
+- **Toujours indisponible ou non raccordé selon l'état documenté :** conversations générales, notifications générales, suggestions globales sans source métier et certaines fonctions de signalement/partage.
+
+La politique d'accès canonique est `reel-access-policy.md`. Toute modification future de cette politique doit être répercutée ici, et inversement. Ne pas déduire d'une migration ou d'un test ajouté que son exécution a réussi.
