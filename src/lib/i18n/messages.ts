@@ -256,9 +256,11 @@ export const messages = {
     "flash.composer.step1": "Étape 1 sur 2",
     "flash.composer.step2": "Étape 2 sur 2",
     "flash.composer.title": "Qu’aimeriez-vous partager ?",
-    "flash.composer.description": "Expliquez-le avec vos mots. Flash vous aide à organiser votre message.",
+    "flash.composer.description":
+      "Expliquez-le avec vos mots. Flash vous aide à organiser votre message.",
     "flash.composer.reviewTitle": "Vérifiez votre Flash",
-    "flash.composer.reviewDescription": "Voici ce que Flash a retenu. Vous pouvez tout ajuster avant de publier.",
+    "flash.composer.reviewDescription":
+      "Voici ce que Flash a retenu. Vous pouvez tout ajuster avant de publier.",
     "flash.composer.yourMessage": "Votre message",
     "flash.composer.editMessage": "Modifier le message",
     "flash.composer.kind": "Type de Flash",
@@ -266,11 +268,13 @@ export const messages = {
     "flash.composer.when": "Quand ?",
     "flash.composer.area": "Zone (facultatif)",
     "flash.composer.areaPlaceholder": "Ex. : Bonamoussadi, Douala",
-    "flash.composer.confirmHint": "Votre Flash sera enregistré sur cet appareil et synchronisé lorsque la connexion sera disponible.",
+    "flash.composer.confirmHint":
+      "Votre Flash sera enregistré sur cet appareil et synchronisé lorsque la connexion sera disponible.",
     "flash.composer.confirmPublish": "Publier mon Flash",
     "flash.voice.action": "Dicter",
     "flash.voice.stop": "Arrêter",
-    "flash.voice.unsupported": "La dictée vocale n’est pas disponible dans ce navigateur. Vous pouvez écrire votre message.",
+    "flash.voice.unsupported":
+      "La dictée vocale n’est pas disponible dans ce navigateur. Vous pouvez écrire votre message.",
     "flash.voice.permission": "Autorisez le microphone pour dicter votre message.",
     "flash.voice.error": "La dictée n’a pas fonctionné. Réessayez ou écrivez votre message.",
     "flash.voice.listening": "Je vous écoute…",
@@ -1102,9 +1106,11 @@ export const messages = {
     "flash.composer.step1": "Step 1 of 2",
     "flash.composer.step2": "Step 2 of 2",
     "flash.composer.title": "What would you like to share?",
-    "flash.composer.description": "Say it in your own words. Flash will help organize your message.",
+    "flash.composer.description":
+      "Say it in your own words. Flash will help organize your message.",
     "flash.composer.reviewTitle": "Review your Flash",
-    "flash.composer.reviewDescription": "Here is what Flash understood. You can adjust everything before publishing.",
+    "flash.composer.reviewDescription":
+      "Here is what Flash understood. You can adjust everything before publishing.",
     "flash.composer.yourMessage": "Your message",
     "flash.composer.editMessage": "Edit message",
     "flash.composer.kind": "Flash type",
@@ -1112,11 +1118,13 @@ export const messages = {
     "flash.composer.when": "When?",
     "flash.composer.area": "Area (optional)",
     "flash.composer.areaPlaceholder": "E.g. Bonamoussadi, Douala",
-    "flash.composer.confirmHint": "Your Flash will be saved on this device and synced when a connection is available.",
+    "flash.composer.confirmHint":
+      "Your Flash will be saved on this device and synced when a connection is available.",
     "flash.composer.confirmPublish": "Publish my Flash",
     "flash.voice.action": "Dictate",
     "flash.voice.stop": "Stop",
-    "flash.voice.unsupported": "Voice dictation is not available in this browser. You can type your message instead.",
+    "flash.voice.unsupported":
+      "Voice dictation is not available in this browser. You can type your message instead.",
     "flash.voice.permission": "Allow microphone access to dictate your message.",
     "flash.voice.error": "Voice dictation did not work. Try again or type your message.",
     "flash.voice.listening": "I’m listening…",
