@@ -555,6 +555,44 @@ export const messages = {
       "Choisissez comment vous souhaitez rencontrer les personnes autour de vous.",
     "reel.ui.memberNotActive":
       "Vos mises en relation seront accessibles lorsque votre profil Vitalis sera actif.",
+    "reel.controller.nearby": "À proximité",
+    "reel.controller.presenceDescription": "Disponible pour échanger autour de moi",
+    "reel.controller.guestPresenceMissing": "Votre présence invitée n’a pas pu être retrouvée.",
+    "reel.controller.presenceCheckFailed": "Votre présence actuelle n’a pas pu être vérifiée.",
+    "reel.controller.bipsLoadFailed": "Vos bips n’ont pas pu être chargés.",
+    "reel.controller.connectionsLoadFailed": "Votre historique n’a pas pu être chargé.",
+    "reel.controller.deviceSecurityUnavailable":
+      "Votre appareil ne permet pas de sécuriser cette demande.",
+    "reel.controller.publishBeforeBip": "Publiez d’abord votre présence pour faire signe.",
+    "reel.controller.presenceBeforeBip": "Publiez votre présence avant de faire signe.",
+    "reel.controller.bipSent": "Votre signe a bien été envoyé.",
+    "reel.controller.bipSendFailed": "Votre signe n’a pas pu être envoyé.",
+    "reel.controller.connectionEstablished": "La mise en relation est établie.",
+    "reel.controller.bipDeclined": "Le bip a été refusé.",
+    "reel.controller.connectionEnded": "Cette mise en relation est maintenant terminée.",
+    "reel.controller.connectionCloseFailed": "La mise en relation n’a pas pu être fermée.",
+    "reel.controller.consentRequired":
+      "Confirmez d’abord que vous acceptez d’être visible dans votre secteur approximatif.",
+    "reel.controller.presencePermissionFailed":
+      "Votre autorisation de présence n’a pas pu être préparée. Réessayez.",
+    "reel.controller.presenceVisible":
+      "Votre présence est maintenant visible dans votre secteur approximatif.",
+    "reel.controller.presenceActivationFailed": "Votre présence n’a pas pu être activée.",
+    "reel.controller.visibilityConsent":
+      "Confirmez d’abord que vous acceptez de rendre votre présence visible.",
+    "reel.controller.guestFieldsRequired":
+      "Ajoutez un prénom, un secteur et une courte description.",
+    "reel.controller.presenceConfirmFailed": "Votre présence n’a pas pu être confirmée. Réessayez.",
+    "reel.controller.presenceVisibleNearby":
+      "Votre présence est maintenant visible autour de vous.",
+    "reel.controller.presenceNotActive": "Cette présence n’est déjà plus active.",
+    "reel.controller.presenceHidden": "Votre présence n’est plus visible.",
+    "reel.controller.presenceStopFailed": "Votre présence n’a pas pu être arrêtée.",
+    "reel.controller.guestSessionReady":
+      "Votre accès invité est prêt. Vous pouvez maintenant découvrir les présences autour de vous.",
+    "reel.controller.guestSessionOpenFailed": "Votre accès invité n’a pas pu être ouvert.",
+    "reel.controller.discoveryUnavailable":
+      "La découverte à proximité n’est pas disponible pour le moment.",
     "reel.section.management": "Gérer Réel",
     "reel.section.presence": "Ma présence",
     "reel.section.bips": "Bips reçus",
@@ -1304,6 +1342,40 @@ export const messages = {
     "reel.ui.settingsIntro": "Choose how you would like to meet people around you.",
     "reel.ui.memberNotActive":
       "Your connections will be available when your Vitalis profile is active.",
+    "reel.controller.nearby": "Nearby",
+    "reel.controller.presenceDescription": "Available to connect with people around me",
+    "reel.controller.guestPresenceMissing": "Your guest presence could not be found.",
+    "reel.controller.presenceCheckFailed": "Your current presence could not be checked.",
+    "reel.controller.bipsLoadFailed": "Your bips could not be loaded.",
+    "reel.controller.connectionsLoadFailed": "Your history could not be loaded.",
+    "reel.controller.deviceSecurityUnavailable": "Your device cannot secure this request.",
+    "reel.controller.publishBeforeBip": "Share your presence first to send a bip.",
+    "reel.controller.presenceBeforeBip": "Share your presence before sending a bip.",
+    "reel.controller.bipSent": "Your bip was sent.",
+    "reel.controller.bipSendFailed": "Your bip could not be sent.",
+    "reel.controller.connectionEstablished": "Your connection is now active.",
+    "reel.controller.bipDeclined": "The bip was declined.",
+    "reel.controller.connectionEnded": "This connection has now ended.",
+    "reel.controller.connectionCloseFailed": "The connection could not be closed.",
+    "reel.controller.consentRequired":
+      "First confirm that you agree to be visible in your approximate area.",
+    "reel.controller.presencePermissionFailed":
+      "Your presence permission could not be prepared. Please try again.",
+    "reel.controller.presenceVisible": "Your presence is now visible in your approximate area.",
+    "reel.controller.presenceActivationFailed": "Your presence could not be activated.",
+    "reel.controller.visibilityConsent":
+      "First confirm that you agree to make your presence visible.",
+    "reel.controller.guestFieldsRequired": "Add a first name, an area and a short description.",
+    "reel.controller.presenceConfirmFailed":
+      "Your presence could not be confirmed. Please try again.",
+    "reel.controller.presenceVisibleNearby": "Your presence is now visible nearby.",
+    "reel.controller.presenceNotActive": "This presence is no longer active.",
+    "reel.controller.presenceHidden": "Your presence is no longer visible.",
+    "reel.controller.presenceStopFailed": "Your presence could not be stopped.",
+    "reel.controller.guestSessionReady":
+      "Your guest access is ready. You can now discover nearby presence.",
+    "reel.controller.guestSessionOpenFailed": "Your guest access could not be opened.",
+    "reel.controller.discoveryUnavailable": "Nearby discovery is not available right now.",
     "reel.section.management": "Manage Réel",
     "reel.section.presence": "My presence",
     "reel.section.bips": "Signals received",
