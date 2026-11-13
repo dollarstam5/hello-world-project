@@ -15,17 +15,34 @@ Flash est le moteur de publication d'une information courte, locale et limitée 
 - L'action principale au centre de la page est le démarrage d'un Flash.
 - Les informations, états et contenus secondaires se placent sous l'en-tête autour de cette action.
 
-## Utilisation du profil
+## Utilisation du profil et visibilité de l'auteur
 
-Chaque moteur définit sa propre projection du profil. Flash ne doit pas afficher automatiquement le profil complet parce qu'un utilisateur est connecté.
+Flash utilise une projection du profil propre à ce moteur. La visibilité de l'auteur est distincte de la visibilité du contenu Flash : découvrir une publication ne donne jamais automatiquement accès au profil complet de son auteur.
 
-**À décider avant implémentation détaillée :**
-- quelles informations d'auteur sont nécessaires à la compréhension et à la confiance dans un Flash ;
-- si le nom et la photo suffisent ou si une description contextuelle est utile ;
-- si l'ouverture du profil complet doit être possible, avec un consentement propre à Flash ;
-- quelles informations sont visibles en mode invité, si ce mode est prévu pour Flash.
+L'auteur contrôle les informations de profil qu'il rend visibles dans le contexte de Flash et les personnes/zones pouvant découvrir chaque publication. Les règles doivent être définies au niveau du moteur et, pour les paramètres de diffusion, au niveau de chaque Flash.
 
-Ne pas réutiliser automatiquement le réglage de visibilité du profil d'Instant.
+- Les informations d'auteur (nom, photo, description et autres champs) ne sont visibles que si l'auteur les a explicitement autorisées pour Flash.
+- L'accès au profil complet est une autorisation distincte, désactivée par défaut tant qu'une décision produit contraire n'est pas validée.
+- Chaque Flash possède son propre public cible et sa propre zone de découverte, choisis par son auteur.
+- Un Flash ne doit pas être découvert hors du public cible ou des zones autorisées par ses paramètres.
+- Les réglages d'un Flash ne modifient pas les paramètres généraux du profil ni ceux d'un autre moteur.
+- La publication suivante ne doit pas reprendre silencieusement les autorisations d'un Flash précédent.
+- Les options sont présentées avec des cases à cocher, interrupteurs ou choix courts, en langage naturel.
+- Les API ne transmettent jamais les champs non autorisés ; le contrôle est appliqué côté serveur, et non uniquement dans l'interface.
+- Si un mode invité est pris en charge, ses informations temporaires et ses droits doivent rester distincts de ceux d'un membre.
+
+### Choix à présenter lors d'une publication
+
+La conception doit permettre à l'auteur de régler séparément :
+1. les informations de profil visibles avec ce Flash ;
+2. l'autorisation ou non d'ouvrir son profil complet depuis ce Flash ;
+3. le public cible ;
+4. la ou les zones de découverte ;
+5. le mode « découverte de l'expéditeur uniquement ».
+
+La liste exacte des champs et les libellés UI restent à finaliser. Ces règles sont des exigences produit, pas une déclaration d'implémentation déjà disponible.
+
+Voir aussi la [politique transversale de visibilité par moteur](../visibility-and-profile-policy.md).
 
 ## Visibilité propre à chaque Flash
 
