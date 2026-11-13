@@ -1,5 +1,5 @@
 BEGIN;
-SELECT plan(22);
+SELECT plan(23);
 
 SELECT has_constraint('public', 'missions', 'missions_status_check',
   'Mission status is restricted to the canonical state set');
@@ -77,6 +77,14 @@ SELECT ok(
   position('mission_actor_not_authenticated' IN
     pg_get_functiondef('public.protect_mission_transition()'::regprocedure)) > 0,
   'non-authenticated callers are not implicitly trusted'
+);
+SELECT ok(
+  (SELECT with_check = 'true'
+   FROM pg_policies
+   WHERE schemaname = 'public'
+     AND tablename = 'missions'
+     AND policyname = 'mission participants update'),
+  'RLS permits an assignee to clear assignee_id when declining; the trigger validates OLD/NEW'
 );
 SELECT ok(
   (SELECT count(*) = 5 AND bool_and(convalidated)
