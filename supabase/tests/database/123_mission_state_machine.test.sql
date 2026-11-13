@@ -1,16 +1,36 @@
 BEGIN;
 SELECT plan(23);
 
-SELECT has_constraint('public', 'missions', 'missions_status_check',
-  'Mission status is restricted to the canonical state set');
-SELECT has_constraint('public', 'missions', 'missions_reward_amount_check',
-  'Mission reward cannot be negative');
-SELECT has_constraint('public', 'missions', 'missions_reward_currency_check',
-  'Mission reward currency follows the XAF V1 contract');
-SELECT has_constraint('public', 'missions', 'missions_title_length_check',
-  'Mission title length is constrained');
-SELECT has_constraint('public', 'missions', 'missions_brief_length_check',
-  'Mission brief length is constrained');
+SELECT ok(
+  EXISTS (SELECT 1 FROM pg_constraint
+    WHERE conrelid = 'public.missions'::regclass
+      AND conname = 'missions_status_check' AND contype = 'c'),
+  'Mission status is restricted to the canonical state set'
+);
+SELECT ok(
+  EXISTS (SELECT 1 FROM pg_constraint
+    WHERE conrelid = 'public.missions'::regclass
+      AND conname = 'missions_reward_amount_check' AND contype = 'c'),
+  'Mission reward cannot be negative'
+);
+SELECT ok(
+  EXISTS (SELECT 1 FROM pg_constraint
+    WHERE conrelid = 'public.missions'::regclass
+      AND conname = 'missions_reward_currency_check' AND contype = 'c'),
+  'Mission reward currency follows the XAF V1 contract'
+);
+SELECT ok(
+  EXISTS (SELECT 1 FROM pg_constraint
+    WHERE conrelid = 'public.missions'::regclass
+      AND conname = 'missions_title_length_check' AND contype = 'c'),
+  'Mission title length is constrained'
+);
+SELECT ok(
+  EXISTS (SELECT 1 FROM pg_constraint
+    WHERE conrelid = 'public.missions'::regclass
+      AND conname = 'missions_brief_length_check' AND contype = 'c'),
+  'Mission brief length is constrained'
+);
 
 SELECT has_function('public', 'protect_mission_transition', ARRAY[]::text[],
   'The authoritative mission state machine function exists');
