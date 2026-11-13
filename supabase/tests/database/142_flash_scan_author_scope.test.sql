@@ -43,8 +43,8 @@ INSERT INTO public.flashes (
   ('f5500000-0000-4000-8000-000000000006','f5400000-0000-4000-8000-000000000001','5km outside','test','live',(extract(epoch FROM now())*1000)::bigint+3600000,'need','personal','today','Akwa','half_city','today'),
   ('f5500000-0000-4000-8000-000000000007','f5400000-0000-4000-8000-000000000001','15km inside','test','live',(extract(epoch FROM now())*1000)::bigint+3600000,'need','personal','today','Akwa','whole_city','today'),
   ('f5500000-0000-4000-8000-000000000008','f5400000-0000-4000-8000-000000000001','15km outside','test','live',(extract(epoch FROM now())*1000)::bigint+3600000,'need','personal','today','Akwa','whole_city','today'),
-  ('f5500000-0000-4000-8000-000000000009','f5400000-0000-4000-8000-000000000001','visitor radius inside','test','live',(extract(epoch FROM now())*1000)::bigint+3600000,'need','personal','today','Akwa','whole_city','today'),
-  ('f5500000-0000-4000-8000-000000000010','f5400000-0000-4000-8000-000000000001','visitor radius outside','test','live',(extract(epoch FROM now())*1000)::bigint+3600000,'need','personal','today','Akwa','whole_city','today');
+  ('f5500000-0000-4000-8000-000000000009','f5400000-0000-4000-8000-000000000001','visitor radius inside','test','live',(extract(epoch FROM now())*1000)::bigint+3600000,'need','home','today','Akwa','whole_city','today'),
+  ('f5500000-0000-4000-8000-000000000010','f5400000-0000-4000-8000-000000000001','visitor radius outside','test','live',(extract(epoch FROM now())*1000)::bigint+3600000,'need','home','today','Akwa','whole_city','today');
 
 INSERT INTO public.flash_private_locations (
   flash_id, author_id, latitude, longitude, accuracy_meters
@@ -69,7 +69,7 @@ FROM (VALUES
 ) AS v(id, distance_m);
 
 SELECT is(
-  (SELECT count(*)::integer FROM public.scan_public_flashes(NULL,NULL,0,0,50,50)),
+  (SELECT count(*)::integer FROM public.scan_public_flashes(NULL,'personal',0,0,50,50)),
   4,
   'all four author scopes cap results at 500 m, 2 km, 5 km and 15 km'
 );
