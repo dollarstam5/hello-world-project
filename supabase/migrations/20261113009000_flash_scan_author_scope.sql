@@ -75,7 +75,7 @@ BEGIN
         power(sin(radians(loc.latitude - p_latitude) / 2.0), 2)
         + cos(radians(p_latitude)) * cos(radians(loc.latitude))
         * power(sin(radians(loc.longitude - p_longitude) / 2.0), 2)
-      ))) AS raw_distance_m
+      )))) AS raw_distance_m
     FROM public.flashes AS f
     JOIN public.flash_private_locations AS loc
       ON loc.flash_id = f.id
