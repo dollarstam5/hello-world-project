@@ -42,6 +42,8 @@ describe("Réel architecture boundaries", () => {
 
   it("uses the header visibility control only for the user's own presence", () => {
     expect(screenSource).toContain("reel-proximity__presence-toggle");
+    expect(screenSource).toContain("<h1>INSTANT</h1>");
+    expect(screenSource).toContain("<RadioTower aria-hidden=\"true\" />");
     expect(screenSource).toContain("aria-pressed={isPresenceActive}");
     expect(screenSource).toContain("if (currentPresence) void stopPresence()");
     expect(screenSource).toContain("else if (guestPresence) void stopGuestPresence()");
