@@ -32,6 +32,14 @@ export const FLASH_SCOPES = [
 ] as const;
 export type FlashScope = (typeof FLASH_SCOPES)[number];
 
+/** Maximum publication reach, measured in meters from the author's publish-time location. */
+export const FLASH_SCOPE_RADIUS_METERS: Readonly<Record<FlashScope, number>> = {
+  current_area: 500,
+  expanded_area: 2_000,
+  half_city: 5_000,
+  whole_city: 15_000,
+};
+
 export const FLASH_URGENCIES = [
   "urgent",
   "very_urgent",
