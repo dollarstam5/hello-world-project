@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Check, Mic, MicOff, Plus, Sparkles, X, Zap } from "lucide-react";
+import { ArrowRight, Check, Info, Mic, MicOff, Plus, Sparkles, X, Zap } from "lucide-react";
 import { FLASH_SCOPES, FLASH_URGENCIES } from "@eco/core-contracts";
 import type {
   FlashCategory,
@@ -512,7 +512,7 @@ export function FlashExperienceScreen() {
               </div>
 
               <div className="mt-4 flex items-start gap-2 rounded-xl border border-border bg-muted/40 p-3 text-xs leading-relaxed text-muted-foreground">
-                <Check className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
+                <Info className="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
                 <p>{t("flash.composer.pendingScopeUrgency")}</p>
               </div>
 
