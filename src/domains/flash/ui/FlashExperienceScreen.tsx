@@ -1,20 +1,17 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import {
-  ArrowRight,
-  Check,
-  Mic,
-  MicOff,
-  Plus,
-  Sparkles,
-  X,
-  Zap,
-} from "lucide-react";
+import { ArrowRight, Check, Mic, MicOff, Plus, Sparkles, X, Zap } from "lucide-react";
 import type { FlashCategory, FlashKind, FlashTimeSlot, UserId } from "@eco/core-contracts";
 import { parseFlashIntent } from "@eco/core-logic";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useAuth } from "@/domains/auth";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { createFlash } from "../data";
@@ -146,9 +143,7 @@ export function FlashExperienceScreen() {
     };
     recognition.onerror = (event) => {
       setVoiceMessage(
-        event.error === "not-allowed"
-          ? t("flash.voice.permission")
-          : t("flash.voice.error"),
+        event.error === "not-allowed" ? t("flash.voice.permission") : t("flash.voice.error"),
       );
     };
     recognition.onend = () => {
@@ -202,7 +197,10 @@ export function FlashExperienceScreen() {
   }
 
   return (
-    <section className="min-h-[calc(100dvh-5rem)] px-4 pb-8 pt-5 sm:px-6" aria-label={t("flash.screen.label")}>
+    <section
+      className="min-h-[calc(100dvh-5rem)] px-4 pb-8 pt-5 sm:px-6"
+      aria-label={t("flash.screen.label")}
+    >
       <header className="mb-6 flex items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
           <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-primary/12 text-primary">
@@ -222,7 +220,6 @@ export function FlashExperienceScreen() {
           <ArrowRight className="size-5 rotate-180" aria-hidden="true" />
         </Link>
       </header>
-
       <div className="mb-7 overflow-hidden rounded-[1.75rem] border border-primary/15 bg-gradient-to-br from-primary/12 via-card to-card p-5 shadow-sm sm:p-7">
         <div className="mx-auto flex max-w-sm flex-col items-center text-center">
           <span className="mb-3 grid size-[4.25rem] place-items-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/20">
@@ -249,9 +246,11 @@ export function FlashExperienceScreen() {
           <p className="mt-2 text-xs text-muted-foreground">{t("flash.hero.voiceHint")}</p>
         </div>
       </div>
-
       {success ? (
-        <div className="mb-5 flex items-center gap-2 rounded-2xl border border-primary/20 bg-primary/8 px-4 py-3 text-sm" role="status">
+        <div
+          className="mb-5 flex items-center gap-2 rounded-2xl border border-primary/20 bg-primary/8 px-4 py-3 text-sm"
+          role="status"
+        >
           <Check className="size-4 shrink-0 text-primary" aria-hidden="true" />
           <span>{t("flash.composer.published")}</span>
           <button
@@ -264,8 +263,11 @@ export function FlashExperienceScreen() {
           </button>
         </div>
       ) : null}
-
-      <div className="mb-4 flex items-center gap-2 rounded-full bg-muted/70 p-1" role="tablist" aria-label={t("flash.tabs.label")}>
+      <div
+        className="mb-4 flex items-center gap-2 rounded-full bg-muted/70 p-1"
+        role="tablist"
+        aria-label={t("flash.tabs.label")}
+      >
         <button
           type="button"
           role="tab"
@@ -285,7 +287,6 @@ export function FlashExperienceScreen() {
           {t("flash.tabs.mine")}
         </button>
       </div>
-
       <div role="tabpanel" className="min-w-0">
         {tab === "discover" ? (
           <div className="stack-3">
@@ -308,7 +309,6 @@ export function FlashExperienceScreen() {
           </div>
         )}
       </div>
-
       <Dialog
         open={composerOpen}
         onOpenChange={(open) => {
@@ -324,7 +324,9 @@ export function FlashExperienceScreen() {
               {step === "write" ? t("flash.composer.title") : t("flash.composer.reviewTitle")}
             </DialogTitle>
             <DialogDescription className="mt-1 text-sm text-muted-foreground">
-              {step === "write" ? t("flash.composer.description") : t("flash.composer.reviewDescription")}
+              {step === "write"
+                ? t("flash.composer.description")
+                : t("flash.composer.reviewDescription")}
             </DialogDescription>
           </DialogHeader>
 
@@ -351,20 +353,33 @@ export function FlashExperienceScreen() {
                   {recording ? <MicOff className="mr-2 size-4" /> : <Mic className="mr-2 size-4" />}
                   {recording ? t("flash.voice.stop") : t("flash.voice.action")}
                 </Button>
-                <span className="text-xs tabular-nums text-muted-foreground">{text.length}/600</span>
+                <span className="text-xs tabular-nums text-muted-foreground">
+                  {text.length}/600
+                </span>
               </div>
               {voiceMessage ? (
-                <p className="mt-2 text-xs text-muted-foreground" role="status">{voiceMessage}</p>
+                <p className="mt-2 text-xs text-muted-foreground" role="status">
+                  {voiceMessage}
+                </p>
               ) : !speechSupported ? (
                 <p className="mt-2 text-xs text-muted-foreground">{t("flash.voice.unsupported")}</p>
               ) : null}
               {parsedIntent ? (
-                <div className="mt-4 rounded-2xl border border-primary/15 bg-primary/5 p-4" aria-live="polite">
+                <div
+                  className="mt-4 rounded-2xl border border-primary/15 bg-primary/5 p-4"
+                  aria-live="polite"
+                >
                   <p className="mb-2 text-sm font-semibold">{t("flash.composer.understood")}</p>
                   <div className="flex flex-wrap gap-2">
-                    <span className="rounded-full bg-card px-3 py-1.5 text-xs font-medium">{t(`flash.kind.${parsedIntent.kind}`)}</span>
-                    <span className="rounded-full bg-card px-3 py-1.5 text-xs font-medium">{t(`flash.category.${parsedIntent.category}`)}</span>
-                    <span className="rounded-full bg-card px-3 py-1.5 text-xs font-medium">{t(`flash.slot.${parsedIntent.timeSlot}`)}</span>
+                    <span className="rounded-full bg-card px-3 py-1.5 text-xs font-medium">
+                      {t(`flash.kind.${parsedIntent.kind}`)}
+                    </span>
+                    <span className="rounded-full bg-card px-3 py-1.5 text-xs font-medium">
+                      {t(`flash.category.${parsedIntent.category}`)}
+                    </span>
+                    <span className="rounded-full bg-card px-3 py-1.5 text-xs font-medium">
+                      {t(`flash.slot.${parsedIntent.timeSlot}`)}
+                    </span>
                   </div>
                 </div>
               ) : null}
@@ -381,9 +396,15 @@ export function FlashExperienceScreen() {
           ) : (
             <>
               <div className="rounded-2xl bg-muted/60 p-4">
-                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t("flash.composer.yourMessage")}</p>
+                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  {t("flash.composer.yourMessage")}
+                </p>
                 <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed">{text}</p>
-                <button type="button" className="mt-3 text-sm font-semibold text-primary" onClick={() => setStep("write")}>
+                <button
+                  type="button"
+                  className="mt-3 text-sm font-semibold text-primary"
+                  onClick={() => setStep("write")}
+                >
                   {t("flash.composer.editMessage")}
                 </button>
               </div>
@@ -391,25 +412,55 @@ export function FlashExperienceScreen() {
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
                 <label className="grid gap-1.5 text-sm font-medium">
                   {t("flash.composer.kind")}
-                  <select value={kind} onChange={(event) => setKind(event.target.value as FlashKind)} className="min-h-11 rounded-xl border border-input bg-background px-3">
-                    {(["need", "offer"] as FlashKind[]).map((value) => <option key={value} value={value}>{t(`flash.kind.${value}`)}</option>)}
+                  <select
+                    value={kind}
+                    onChange={(event) => setKind(event.target.value as FlashKind)}
+                    className="min-h-11 rounded-xl border border-input bg-background px-3"
+                  >
+                    {(["need", "offer"] as FlashKind[]).map((value) => (
+                      <option key={value} value={value}>
+                        {t(`flash.kind.${value}`)}
+                      </option>
+                    ))}
                   </select>
                 </label>
                 <label className="grid gap-1.5 text-sm font-medium">
                   {t("flash.composer.category")}
-                  <select value={category} onChange={(event) => setCategory(event.target.value as FlashCategory)} className="min-h-11 rounded-xl border border-input bg-background px-3">
-                    {CATEGORIES.map((value) => <option key={value} value={value}>{t(`flash.category.${value}`)}</option>)}
+                  <select
+                    value={category}
+                    onChange={(event) => setCategory(event.target.value as FlashCategory)}
+                    className="min-h-11 rounded-xl border border-input bg-background px-3"
+                  >
+                    {CATEGORIES.map((value) => (
+                      <option key={value} value={value}>
+                        {t(`flash.category.${value}`)}
+                      </option>
+                    ))}
                   </select>
                 </label>
                 <label className="grid gap-1.5 text-sm font-medium">
                   {t("flash.composer.when")}
-                  <select value={timeSlot} onChange={(event) => setTimeSlot(event.target.value as FlashTimeSlot)} className="min-h-11 rounded-xl border border-input bg-background px-3">
-                    {TIME_SLOTS.map((value) => <option key={value} value={value}>{t(`flash.slot.${value}`)}</option>)}
+                  <select
+                    value={timeSlot}
+                    onChange={(event) => setTimeSlot(event.target.value as FlashTimeSlot)}
+                    className="min-h-11 rounded-xl border border-input bg-background px-3"
+                  >
+                    {TIME_SLOTS.map((value) => (
+                      <option key={value} value={value}>
+                        {t(`flash.slot.${value}`)}
+                      </option>
+                    ))}
                   </select>
                 </label>
                 <label className="grid gap-1.5 text-sm font-medium">
                   {t("flash.composer.area")}
-                  <input value={areaLabel} onChange={(event) => setAreaLabel(event.target.value)} maxLength={80} placeholder={t("flash.composer.areaPlaceholder")} className="min-h-11 rounded-xl border border-input bg-background px-3 font-normal" />
+                  <input
+                    value={areaLabel}
+                    onChange={(event) => setAreaLabel(event.target.value)}
+                    maxLength={80}
+                    placeholder={t("flash.composer.areaPlaceholder")}
+                    className="min-h-11 rounded-xl border border-input bg-background px-3 font-normal"
+                  />
                 </label>
               </div>
 
@@ -426,18 +477,34 @@ export function FlashExperienceScreen() {
                   </Button>
                 </div>
               ) : null}
-              {publishError ? <p className="mt-3 text-sm text-destructive" role="alert">{t("flash.composer.error")}</p> : null}
+              {publishError ? (
+                <p className="mt-3 text-sm text-destructive" role="alert">
+                  {t("flash.composer.error")}
+                </p>
+              ) : null}
               <div className="mt-5 flex gap-2">
-                <Button type="button" variant="outline" className="min-h-12 flex-1 rounded-full" onClick={() => setStep("write")} disabled={publishing}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="min-h-12 flex-1 rounded-full"
+                  onClick={() => setStep("write")}
+                  disabled={publishing}
+                >
                   {t("common.cancel")}
                 </Button>
-                <Button type="button" className="min-h-12 flex-[1.5] rounded-full" onClick={() => void publishFlash()} disabled={!user || authLoading || publishing || !text.trim()}>
+                <Button
+                  type="button"
+                  className="min-h-12 flex-[1.5] rounded-full"
+                  onClick={() => void publishFlash()}
+                  disabled={!user || authLoading || publishing || !text.trim()}
+                >
                   {publishing ? t("app.loading") : t("flash.composer.confirmPublish")}
                 </Button>
               </div>
             </>
           )}
         </DialogContent>
-      </Dialog>    </section>
+      </Dialog>
+    </section>
   );
 }
