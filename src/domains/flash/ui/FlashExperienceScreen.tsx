@@ -81,7 +81,8 @@ export function FlashExperienceScreen() {
   const [kind, setKind] = useState<FlashKind>("need");
   const [category, setCategory] = useState<FlashCategory>("other");
   const [timeSlot, setTimeSlot] = useState<FlashTimeSlot>("today");
-  const [scope, setScope] = useState<FlashScope | null>(null);\n  const [urgency, setUrgency] = useState<FlashUrgency | null>(null);
+  const [scope, setScope] = useState<FlashScope | null>(null);
+  const [urgency, setUrgency] = useState<FlashUrgency | null>(null);
   const [recording, setRecording] = useState(false);
   const [voiceMessage, setVoiceMessage] = useState("");
   const [publishing, setPublishing] = useState(false);
@@ -105,7 +106,8 @@ export function FlashExperienceScreen() {
 
   function openComposer() {
     setText("");
-    setScope(null);\n    setUrgency(null);
+    setScope(null);
+    setUrgency(null);
     setKind("need");
     setCategory("other");
     setTimeSlot("today");
