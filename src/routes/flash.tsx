@@ -10,6 +10,8 @@ export const Route = createFileRoute("/flash")({
     meta: [
       { title: "Flash — Vitalis" },
       { name: "description", content: "Moments éphémères de Vitalis." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: () => (
