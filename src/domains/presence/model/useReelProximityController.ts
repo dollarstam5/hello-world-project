@@ -164,16 +164,14 @@ export function useReelProximityController() {
       .catch((error) => {
         if (!cancelled) {
           setPresenceMessage(
-            error instanceof Error
-              ? error.message
-              : t("reel.controller.guestPresenceMissing"),
+            error instanceof Error ? error.message : t("reel.controller.guestPresenceMissing"),
           );
         }
       });
     return () => {
       cancelled = true;
     };
-  }, [access.loading, access.mode, access.guest?.startedAt]);
+  }, [access.loading, access.mode, access.guest?.startedAt, t]);
 
   useEffect(() => {
     let cancelled = false;
@@ -195,7 +193,7 @@ export function useReelProximityController() {
     return () => {
       cancelled = true;
     };
-  }, [access.mode, access.memberProfileState, access.loading, access.memberId]);
+  }, [access.mode, access.memberProfileState, access.loading, access.memberId, t]);
 
   const refreshBips = useCallback(async () => {
     if (access.loading) return;
@@ -232,13 +230,11 @@ export function useReelProximityController() {
       );
       setBipsMessage(null);
     } catch (error) {
-      setBipsMessage(
-        error instanceof Error ? error.message : t("reel.controller.bipsLoadFailed"),
-      );
+      setBipsMessage(error instanceof Error ? error.message : t("reel.controller.bipsLoadFailed"));
     } finally {
       setBipsLoading(false);
     }
-  }, [access.loading, access.mode, access.memberId, canUseMemberReel]);
+  }, [access.loading, access.mode, access.memberId, canUseMemberReel, t]);
 
   useEffect(() => {
     if (
@@ -285,7 +281,7 @@ export function useReelProximityController() {
     } finally {
       setConnectionsLoading(false);
     }
-  }, [access.loading, access.mode, canUseMemberReel, access.memberId]);
+  }, [access.loading, access.mode, canUseMemberReel, access.memberId, t]);
 
   useEffect(() => {
     if (
@@ -337,9 +333,7 @@ export function useReelProximityController() {
       setBipsMessage(t("reel.controller.bipSent"));
       setSelectedPerson(null);
     } catch (error) {
-      setBipsMessage(
-        error instanceof Error ? error.message : t("reel.controller.bipSendFailed"),
-      );
+      setBipsMessage(error instanceof Error ? error.message : t("reel.controller.bipSendFailed"));
     }
   };
 
@@ -348,10 +342,12 @@ export function useReelProximityController() {
       await commandReelBip(bip.id, action);
       await refreshBips();
       setBipsMessage(
-        action === "accept" ? t("reel.controller.connectionEstablished") : t("reel.controller.bipDeclined"),
+        action === "accept"
+          ? t("reel.controller.connectionEstablished")
+          : t("reel.controller.bipDeclined"),
       );
     } catch (error) {
-      setBipsMessage(error instanceof Error ? error.message : "Cette action n’a pas pu aboutir.");
+      setBipsMessage(error instanceof Error ? error.message : t("reel.controller.actionFailed"));
     }
   };
 
@@ -413,9 +409,7 @@ export function useReelProximityController() {
     );
     if (decision.status !== "server_check" || !presenceConsent) {
       setPresenceMessage(
-        !presenceConsent
-          ? t("reel.controller.consentRequired")
-          : decision.message,
+        !presenceConsent ? t("reel.controller.consentRequired") : decision.message,
       );
       return;
     }
@@ -432,8 +426,7 @@ export function useReelProximityController() {
           consent: true,
         },
       });
-      if (!zone.grantId)
-        throw new Error(t("reel.controller.presencePermissionFailed"));
+      if (!zone.grantId) throw new Error(t("reel.controller.presencePermissionFailed"));
       const radiusMeters = radius === "1 km" ? 1000 : Number.parseInt(radius, 10);
       const durationMinutes: Record<string, number> = {
         "30 min": 30,
@@ -564,9 +557,7 @@ export function useReelProximityController() {
     setGuestSessionMessage(null);
     try {
       await access.startGuestSession();
-      setGuestSessionMessage(
-        t("reel.controller.guestSessionReady"),
-      );
+      setGuestSessionMessage(t("reel.controller.guestSessionReady"));
     } catch (error) {
       setGuestSessionMessage(
         error instanceof Error ? error.message : t("reel.controller.guestSessionOpenFailed"),
@@ -663,9 +654,7 @@ export function useReelProximityController() {
     } catch (error) {
       setDiscoveryAccess("denied");
       setLocationMessage(
-        error instanceof Error
-          ? error.message
-          : t("reel.controller.discoveryUnavailable"),
+        error instanceof Error ? error.message : t("reel.controller.discoveryUnavailable"),
       );
     }
   };
