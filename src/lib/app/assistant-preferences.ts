@@ -2,23 +2,23 @@ import { create } from "zustand";
 
 const STORAGE_KEY = "vitalis.assistant.enabled";
 
-function readInitialPreference(): boolean {
-  if (typeof window === "undefined") return false;
-  try {
-    return window.localStorage.getItem(STORAGE_KEY) === "true";
-  } catch {
-    return false;
-  }
-}
-
 interface AssistantPreferencesState {
   enabled: boolean;
+  hydrate: () => void;
   setEnabled: (enabled: boolean) => void;
 }
 
 /** The assistant is opt-in and remains disabled unless the person enables it. */
 export const useAssistantPreferences = create<AssistantPreferencesState>((set) => ({
-  enabled: readInitialPreference(),
+  enabled: false,
+  hydrate: () => {
+    try {
+      if (typeof window === "undefined") return;
+      set({ enabled: window.localStorage.getItem(STORAGE_KEY) === "true" });
+    } catch {
+      set({ enabled: false });
+    }
+  },
   setEnabled: (enabled) => {
     try {
       if (typeof window !== "undefined") {
