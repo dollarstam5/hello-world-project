@@ -396,7 +396,7 @@
 
 .reel-proximity__header-action {
   display: grid;
-  width: var(--reel-header-size);
+  width: 2.5rem;
   aspect-ratio: 1;
   place-items: center;
   border: 0;
@@ -407,8 +407,8 @@
 }
 
 .reel-proximity__header-action svg {
-  width: 1.65rem;
-  height: 1.65rem;
+  width: 1.3rem;
+  height: 1.3rem;
   stroke-width: 1.9;
 }
 
