@@ -34,12 +34,14 @@ export function CommunicationSheet({
           >
             {t("communication.notifications")}
           </TabsTrigger>
-          {assistantEnabled && <TabsTrigger
-            className="min-w-0 whitespace-normal px-1 text-xs leading-tight sm:text-sm"
-            value="assistant"
-          >
-            {t("communication.assistant")}
-          </TabsTrigger>}
+          {assistantEnabled && (
+            <TabsTrigger
+              className="min-w-0 whitespace-normal px-1 text-xs leading-tight sm:text-sm"
+              value="assistant"
+            >
+              {t("communication.assistant")}
+            </TabsTrigger>
+          )}
           <TabsTrigger
             className="min-w-0 whitespace-normal px-1 text-xs leading-tight sm:text-sm"
             value="messages"
