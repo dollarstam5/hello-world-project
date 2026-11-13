@@ -345,7 +345,7 @@ export function ReelProximityScreen() {
         </div>
         {discoveryEnabled && availablePeople.length > 3 && (
           <button type="button" className="reel-nearby__all" onClick={() => setPanel("people")}>
-            Voir toutes les personnes
+            {t("reel.ui.seeAllPeople")}
             <ChevronDown aria-hidden="true" />
           </button>
         )}
@@ -417,7 +417,7 @@ export function ReelProximityScreen() {
                       className="reel-panel__primary"
                       onClick={() => void requestDiscovery()}
                     >
-                      Activer la découverte
+                      {t("reel.ui.enableDiscovery")}
                     </button>
                   )}
                 </div>
@@ -793,8 +793,7 @@ export function ReelProximityScreen() {
                     )}
                     {access.mode === "visitor" && (
                       <p className="reel-panel__note">
-                        Ouvrez une session invitée ou connectez-vous pour accéder à vos mises en
-                        relation.
+                        {t("reel.ui.connectToView")}
                       </p>
                     )}
                     {access.mode === "member" && !canUseMemberReel && (
@@ -808,10 +807,9 @@ export function ReelProximityScreen() {
                       guestConnections.length === 0 && (
                         <div className="reel-panel__empty">
                           <UsersRound aria-hidden="true" />
-                          <strong>Aucune rencontre pour le moment</strong>
+                          <strong>{t("reel.ui.guestNoConnections")}</strong>
                           <span>
-                            Les personnes qui acceptent votre signe apparaîtront ici pendant votre
-                            session invitée.
+                            {t("reel.ui.guestConnectionsHint")}
                           </span>
                         </div>
                       )}
@@ -834,8 +832,8 @@ export function ReelProximityScreen() {
                           <strong>{connection.partner_display_name}</strong>
                           <small>
                             {connection.status === "active"
-                              ? "Mise en relation active"
-                              : "Mise en relation terminée"}
+                              ? t("reel.ui.activeConnection")
+                              : t("reel.ui.endedConnection")}
                           </small>
                         </span>
                         {connection.status === "active" && (
@@ -852,12 +850,12 @@ export function ReelProximityScreen() {
                         </span>
                         <span>
                           <strong>
-                            {connection.partner_display_name || "Mise en relation temporaire"}
+                            {connection.partner_display_name || t("reel.ui.temporaryConnection")}
                           </strong>
                           <small>
                             {connection.status === "active"
-                              ? "Votre rencontre est active pendant la session invitée."
-                              : "Cette mise en relation est terminée."}
+                              ? t("reel.ui.guestConnectionActive")
+                              : t("reel.ui.connectionEnded")}
                           </small>
                         </span>
                         {connection.status === "active" && (
@@ -885,8 +883,7 @@ export function ReelProximityScreen() {
                 )}
                 {!activityEnabled && activityTab === "notifications" && (
                   <p className="reel-panel__note">
-                    En mode calme, les alertes sont suspendues. Vos mises en relation restent
-                    consultables.
+                    {t("reel.ui.calmNotifications")}
                   </p>
                 )}
               </>
@@ -1028,7 +1025,7 @@ export function ReelProximityScreen() {
             ) : (
               <p className="reel-profile-sheet__description">
                 {selectedPerson.description ||
-                  "Consultez les informations disponibles sur ce profil."}
+                  t("reel.ui.profileDetailsHint")}
               </p>
             )}
             {(currentPresence || guestPresence) && !showFullProfile && (
