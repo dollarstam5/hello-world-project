@@ -444,8 +444,7 @@ export function ReelProximityScreen() {
                 </p>
                 {currentPresence && (
                   <p className="reel-panel__note">
-                    Votre présence est déjà active : les changements de rayon ou de durée
-                    s’appliqueront à la prochaine activation, pas à celle-ci.
+                    {t("reel.ui.guestPresenceActive")}
                   </p>
                 )}
 
@@ -453,8 +452,7 @@ export function ReelProximityScreen() {
                   <h3>{t("reel.ui.duration")}</h3>
                   {access.mode === "guest" && (
                     <p className="reel-panel__note">
-                      Votre accès invité dure au maximum une heure. Votre présence s’arrêtera
-                      automatiquement avec votre session.
+                      {t("reel.ui.guestActiveDuration")}
                     </p>
                   )}
                   <div className="reel-choice-grid reel-choice-grid--duration">
@@ -477,17 +475,13 @@ export function ReelProximityScreen() {
                 <div className="reel-panel__section">
                   <h3>{t("reel.ui.visibility")}</h3>
                   <p className="reel-panel__note">
-                    La découverte vous permet d’observer les activités autour de vous. Activer votre
-                    présence est un choix séparé : les autres personnes pourront alors vous voir
-                    dans votre secteur approximatif, pendant la durée choisie.
+                    {t("reel.ui.visibilityNote")}
                   </p>
                   {access.mode === "guest" ? (
                     guestPresence ? (
                       <>
                         <p className="reel-panel__status">
-                          Votre présence est visible sous le nom {guestPresence.display_name}, dans
-                          le secteur « {guestPresence.area_label} », jusqu’à la fin de votre session
-                          invitée.
+                          {t("reel.ui.guestPresenceSummary").replace("{name}", guestPresence.display_name).replace("{area}", guestPresence.area_label)}
                         </p>
                         <button
                           type="button"
@@ -495,7 +489,7 @@ export function ReelProximityScreen() {
                           disabled={presenceLoading}
                           onClick={() => void stopGuestPresence()}
                         >
-                          Arrêter ma présence
+                          {t("reel.ui.stopPresence")}
                         </button>
                       </>
                     ) : (
@@ -657,7 +651,7 @@ export function ReelProximityScreen() {
                   className="reel-panel__primary"
                   onClick={() => setPanel(null)}
                 >
-                  Terminé
+                  {t("reel.ui.finish")}
                 </button>
               </>
             )}
