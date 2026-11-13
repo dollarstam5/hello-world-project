@@ -83,6 +83,51 @@ describe("sync protocol validation", () => {
     });
   });
 
+  it("accepts Flash creation only as a draft", () => {
+    const draft = validatePushRequest({
+      protocolVersion: SYNC_PROTOCOL_VERSION,
+      entries: [{
+        ...mutation,
+        kind: "create",
+        patch: {
+          title: "Besoin de transport",
+          body: "Un trajet local",
+          status: "draft",
+          expiresAt: 1_900_000_000_000,
+          mediaIds: [],
+          kind: "need",
+          category: "transport",
+          timeSlot: "today",
+          scope: "current_area",
+          urgency: "today",
+        },
+      }],
+    });
+    expect(draft.entries[0].patch.status).toBe("draft");
+
+    expect(() => validatePushRequest({
+      protocolVersion: SYNC_PROTOCOL_VERSION,
+      entries: [{
+        ...mutation,
+        kind: "create",
+        patch: {
+          title: "Publication directe",
+          body: "Ne doit pas être visible",
+          status: "live",
+          expiresAt: 1_900_000_000_000,
+          mediaIds: [],
+        },
+      }],
+    })).toThrow(/must be created as draft/i);
+  });
+
+  it("rejects Flash status changes in ordinary Sync updates", () => {
+    expect(() => validatePushRequest({
+      protocolVersion: SYNC_PROTOCOL_VERSION,
+      entries: [{ ...mutation, patch: { status: "archived" } }],
+    })).toThrow(/dedicated lifecycle command/i);
+  });
+
   it("rejects obsolete time-slot values and unknown Flash scope or urgency values", () => {
     for (const patch of [
       { timeSlot: "morning" },
