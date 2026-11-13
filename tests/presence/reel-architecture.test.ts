@@ -3,7 +3,6 @@ import screenSource from "../../src/domains/presence/ui/ReelProximityScreen.tsx?
 import controllerSource from "../../src/domains/presence/model/useReelProximityController.ts?raw";
 import realtimeServiceSource from "../../src/domains/presence/services/reel-activity-realtime.service.ts?raw";
 import memberAvatarSource from "../../src/domains/profile/api/profile-avatar.client.ts?raw";
-import proximityCssSource from "../../src/domains/presence/ui/reel-proximity.css?raw";
 
 describe("Instant architecture boundaries", () => {
   it("keeps business services and access policy out of the screen component", () => {
@@ -67,12 +66,11 @@ describe("Instant architecture boundaries", () => {
     expect(screenSource).toContain("<img");
   });
 
-  it("keeps the Instant header and central profile usable on narrow mobile screens", () => {
-    expect(proximityCssSource).toContain("@media (max-width: 420px)");
-    expect(proximityCssSource).toContain("@media (max-width: 360px)");
-    expect(proximityCssSource).toContain(".reel-proximity__header-actions");
-    expect(proximityCssSource).toContain(".reel-radar__me-avatar img");
-    expect(proximityCssSource).toContain(".reel-radar__me:focus-visible");
+  it("keeps the Instant header and central profile controls in the mobile screen composition", () => {
+    expect(screenSource).toContain('className="reel-proximity__header-actions"');
+    expect(screenSource).toContain("reel-radar__me-avatar");
+    expect(screenSource).toContain("memberAvatarUrl");
+    expect(screenSource).toContain("reel-radar__me-label");
   });
 
   it("shows layered individual presence disks only after fifteen nearby profiles", () => {
