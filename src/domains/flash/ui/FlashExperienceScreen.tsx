@@ -187,7 +187,6 @@ export function FlashExperienceScreen() {
         kind,
         category,
         timeSlot,
-        areaLabel: areaLabel.trim() || undefined,
         expiresAt: expiryFor(timeSlot),
       });
       closeComposer();
