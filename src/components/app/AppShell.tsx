@@ -21,7 +21,7 @@ import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
  * (theme, i18n, onboarding hydration) and provides the calm canvas:
  *  - primary engine navigation on Home, Flash, Scan and Radar
  *  - dedicated navigation on Réel, with its own header and menu access
- *  - ambient AI layer
+ *  - optional assistant access, controlled by the person
  *  - offline awareness
  *  - first-run guided Vitalis onboarding
  *  - low-end / reduced-motion gating (Phase 5/5)
