@@ -505,7 +505,7 @@ export function ReelProximityScreen() {
                             maxLength={40}
                             value={guestDisplayName}
                             onChange={(event) => setGuestDisplayName(event.target.value)}
-                            placeholder="Ex. Awa"
+                            placeholder={t("reel.ui.namePlaceholder")}
                           />
                         </label>
                         <label className="reel-setting-row reel-setting-row--stacked">
@@ -518,7 +518,7 @@ export function ReelProximityScreen() {
                             maxLength={80}
                             value={guestAreaLabel}
                             onChange={(event) => setGuestAreaLabel(event.target.value)}
-                            placeholder="Ex. Bonamoussadi"
+                            placeholder={t("reel.ui.areaPlaceholder")}
                           />
                         </label>
                         <label className="reel-setting-row reel-setting-row--stacked">
@@ -599,7 +599,7 @@ export function ReelProximityScreen() {
                     <>
                       <label className="reel-setting-row reel-setting-row--stacked">
                         <span>
-                          <strong>Ce que les autres verront</strong>
+                          <strong>{t("reel.ui.publicDescription")}</strong>
                           <small>{t("reel.ui.publicDescriptionHint")}</small>
                         </span>
                         <textarea
@@ -757,8 +757,8 @@ export function ReelProximityScreen() {
                           <CircleUserRound aria-hidden="true" />
                         </span>
                         <span>
-                          <strong>Une personne vous a fait signe</strong>
-                          <small>Vous pouvez accepter ou refuser cette mise en relation.</small>
+                          <strong>{t("reel.ui.someoneSignaled")}</strong>
+                          <small>{t("reel.ui.acceptOrDecline")}</small>
                         </span>
                         <button type="button" onClick={() => void resolveGuestBip(bip, "accept")}>
                           Accepter
