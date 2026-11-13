@@ -15,6 +15,7 @@ import { UpdateBanner } from "@/components/experience/UpdateBanner";
 import { useResponsive } from "@/lib/platform/useResponsive";
 import { duration, easing } from "@/lib/design/tokens";
 import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
+import { AssistantNoticeLayer } from "@/components/experience/AssistantNoticeLayer";
 
 /**
  * AppShell — single mount-point that boots foundation services
@@ -67,6 +68,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="relative min-h-dvh bg-background text-foreground antialiased">
+      <AssistantNoticeLayer />
       <OfflineBanner />
       {!routeOwnsHeader && <AppHeader onOpenCommunication={() => setCommunicationOpen(true)} />}
       <main
