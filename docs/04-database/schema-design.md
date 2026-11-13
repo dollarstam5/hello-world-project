@@ -4,9 +4,11 @@ This page records the SQL-backed baseline and the boundaries of what has actuall
 
 ## Migration authority
 
-- Supabase project configuration is at `supabase/config.toml`.
-- The repository's standard migration directory is `supabase/migrations/`, which currently contains three SQL files.
-- `src/supabase/migrations/` contains six additional artifacts, but is not the standard CLI migration path. One of those files is Markdown-wrapped SQL. Their deployment status is unknown from repository contents alone.
+- Supabase project configuration is at `supabase/config.toml`; it does not configure an alternate migration directory.
+- The Supabase CLI migration path declared by the repository is `supabase/migrations/`. It contains the baseline schema and a growing set of later migrations, including the Reel sequence; do not rely on the historical file count in older inventory notes.
+- `src/supabase/migrations/` contains six additional SQL-like artifacts outside that CLI path. One is Markdown-wrapped SQL, not an executable migration file. Their deployment status is unknown.
+- A separate Drizzle configuration and journal exist: `drizzle.config.ts`, `drizzle/schema.ts`, and `drizzle/migrations/`. The journal lists three scripts, but the schema file is empty and the repository scripts reviewed do not establish an active Drizzle migration runner. Treat this as a separate, unverified migration stream, not as an automatic extension of the Supabase CLI chain.
+- The detailed overlap and evidence assessment is maintained in [Migration-chain reconciliation](./migration-chain-reconciliation.md).
 - The database test suite is `supabase/tests/database/rls_core.test.sql`; it uses pgTAP-style assertions and declares a plan of 40 checks.
 
 **Release gate:** do not claim an additional table, grant, function, or RLS policy is deployed until the migration path is corrected/confirmed and the intended migration has been applied and tested against a database.
