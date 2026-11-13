@@ -201,7 +201,9 @@ export function ReelProximityScreen() {
             }}
             disabled={presenceLoading}
             aria-pressed={isPresenceActive}
-            aria-label={isPresenceActive ? t("reel.ui.hideMyPresence") : t("reel.ui.showMyPresence")}
+            aria-label={
+              isPresenceActive ? t("reel.ui.hideMyPresence") : t("reel.ui.showMyPresence")
+            }
             title={isPresenceActive ? t("reel.ui.hideMyPresence") : t("reel.ui.showMyPresence")}
           >
             {isPresenceActive ? <Eye aria-hidden="true" /> : <EyeOff aria-hidden="true" />}
