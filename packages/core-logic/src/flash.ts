@@ -52,7 +52,7 @@ const SLOT_TTL: Record<FlashTimeSlot, number> = {
 };
 
 const NEED_PATTERN =
-  /\b(besoin|cherche|recherch|il me faut|need|needed|looking for|wanted|searching for)\b/i;
+  /\b(besoin|cherche|recherche|recherch\w*|il me faut|je veux|je voudrais|j'aimerais|j’aimerais|need|needed|looking for|wanted|searching for)\b/i;
 
 const CATEGORY_PATTERNS: ReadonlyArray<readonly [FlashCategory, RegExp]> = [
   ["food", /\b(food|meal|restaurant|cook|repas|nourriture|manger|cuisine|livraison)\b/i],
@@ -65,7 +65,7 @@ const CATEGORY_PATTERNS: ReadonlyArray<readonly [FlashCategory, RegExp]> = [
   ["events", /\b(event|événement|concert|soirée|meetup|rencontre|réunion|fête|party)\b/i],
   [
     "home",
-    /\b(maison|home|plombier|plumber|électricien|réparation|repair|ménage|cleaning|travaux)\b/i,
+    /\b(maison|home|plombier|plumber|électricien|réparation|repair|ménage|cleaning|travaux|déménagement|demenagement|déménager|garde d'enfants|garde d’enfants|baby-sitter|babysitter|nounou|enfants)\b/i,
   ],
   ["commercial", /\b(vends|vendre|sell|selling|acheter|buy|product|produit|shop|boutique|prix)\b/i],
   [
