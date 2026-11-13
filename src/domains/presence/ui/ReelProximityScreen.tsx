@@ -319,7 +319,7 @@ export function ReelProximityScreen() {
                 <span className="reel-avatar__initials">
                   {guestDisplayName
                     .trim()
-                    .split(/\\s+/)
+                    .split(/\s+/)
                     .slice(0, 2)
                     .map((part) => part[0])
                     .join("")
