@@ -29,6 +29,12 @@ Les réglages par défaut ne doivent jamais empêcher l'utilisateur de voir les 
 
 Les valeurs de rayon disponibles, les catégories et les modalités de choix du point de référence restent à valider. Ne pas reprendre automatiquement les rayons d'Instant ou de Radar : ces paramètres répondent à des usages différents.
 
+## État technique du rayon — vérification du dépôt
+
+À la date de cette révision, le validateur serveur de `src/domains/scan/api/scan.functions.ts` accepte les rayons de **1 à 50 km**. Le RPC `scan_public_flashes` applique effectivement le filtre de distance demandé. L'ancien plafond de 25 km mentionné dans la fiche technique était donc obsolète.
+
+Cette plage décrit la capacité technique actuelle, pas les options d'interface validées. Les valeurs de rayon proposées à l'utilisateur restent à décider ; ne pas exposer automatiquement toutes les valeurs 1–50 km dans l'interface sans validation produit.
+
 ## Sources et limites de recherche
 - La documentation technique historique de Radar identifie les Flash actifs comme une source de recherche de Scan. Cette source constitue le premier périmètre documentaire connu ; sa disponibilité effective dans le runtime doit être vérifiée.
 - D'autres sources (par exemple des disponibilités ou des opportunités issues d'autres domaines) ne peuvent être ajoutées qu'après définition de leur contrat, de leur fraîcheur, de leurs règles d'accès et de leur coût.
