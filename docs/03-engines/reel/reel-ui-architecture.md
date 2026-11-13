@@ -88,3 +88,16 @@ Instant est le nom affiché du moteur historiquement nommé Réel. Les routes, d
 ## Limite de comparaison visuelle
 
 Le dossier `screenshots/04-reel/` ne contient actuellement aucun fichier de référence, uniquement son fichier de maintien. Les captures automatiques de la page peuvent contrôler le montage et les formats d'écran, mais elles ne constituent pas une comparaison pixel à pixel avec l'image de référence produit. Ne pas déclarer la fidélité exacte validée tant que cette référence n'est pas disponible dans le dépôt ou dans la session de contrôle.
+
+
+## Règle de visibilité du profil — priorité produit
+
+Le profil utilisé dans Instant est une projection contextuelle et limitée du profil Vitalis. La règle détaillée et ses critères d'acceptation sont maintenus dans [Instant — périmètre du profil et visibilité](./instant-profile-visibility.md).
+
+- Par défaut, les autres personnes voient uniquement le **nom**, la **photo** et la **description de présence** définie par l'utilisateur pour Instant.
+- La description de présence est distincte de la biographie générale du profil.
+- Un réglage explicite dans les paramètres d'Instant doit permettre à l'utilisateur d'autoriser la consultation de son profil complet depuis ce moteur.
+- Le réglage est recommandé désactivé par défaut. Sans consentement, aucune fiche, route ou réponse API issue d'Instant ne doit exposer les autres champs du profil.
+- Le réglage ne vaut que pour Instant. Il ne modifie pas les règles de Flash, Scan ou Radar.
+- Le contrôle est appliqué côté serveur/API et doit respecter immédiatement le retrait du consentement pour les consultations suivantes.
+- Cette règle est un élément prioritaire du périmètre Instant. Le présent document décrit la cible produit ; l'existence effective du réglage et de son enforcement doit être vérifiée séparément dans le code avant d'être déclarée terminée.
