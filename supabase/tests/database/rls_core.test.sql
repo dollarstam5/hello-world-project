@@ -229,9 +229,9 @@ select is(
 );
 
 select throws_ok(
-  $update public.udi
+  $$update public.udi
     set level = 'verified'
-    where user_id = '00000000-0000-0000-0000-000000000001'$,
+    where user_id = '00000000-0000-0000-0000-000000000001'$$,
   '42501',
   'permission denied for table udi',
   'authenticated member cannot write UDI'
