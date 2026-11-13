@@ -65,7 +65,7 @@ FROM (VALUES
 ) AS v(id, distance_m);
 
 SELECT is(
-  (SELECT count(*)::integer FROM public.scan_public_flashes(NULL,NULL,0,0,5,50)),
+  (SELECT count(*)::integer FROM public.scan_public_flashes(NULL,NULL,0,0,50,50)),
   4,
   'all four author scopes cap results at 500 m, 2 km, 5 km and 15 km'
 );
