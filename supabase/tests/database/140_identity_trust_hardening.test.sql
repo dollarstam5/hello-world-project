@@ -1,6 +1,6 @@
 BEGIN;
 CREATE EXTENSION IF NOT EXISTS pgtap WITH SCHEMA extensions;
-SELECT plan(23);
+SELECT plan(27);
 
 SELECT has_function('public', 'assign_sync_revision', ARRAY[]::text[]);
 SELECT has_function('public', 'protect_profile_system_fields', ARRAY[]::text[]);
