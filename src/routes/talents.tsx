@@ -8,6 +8,8 @@ export const Route = createFileRoute("/talents")({
     meta: [
       { title: "Talents — Vitalis" },
       { name: "description", content: "Connaissances vivantes, échanges humains." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: () => (
