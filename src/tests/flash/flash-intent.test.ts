@@ -11,6 +11,20 @@ describe("parseFlashIntent", () => {
     expect(intent.expiresAt).toBe(NOW + 2 * 24 * 3_600_000);
   });
 
+  it("understands everyday French requests for childcare and moving help", () => {
+    const childcare = parseFlashIntent(
+      "Je voudrais une personne pour garder mes enfants ce week-end",
+      NOW,
+    );
+    expect(childcare.kind).toBe("need");
+    expect(childcare.category).toBe("home");
+    expect(childcare.timeSlot).toBe("this_week");
+
+    const moving = parseFlashIntent("Je recherche de l'aide pour mon déménagement", NOW);
+    expect(moving.kind).toBe("need");
+    expect(moving.category).toBe("home");
+  });
+
   it("defaults to an offer when no need keyword is present", () => {
     const intent = parseFlashIntent("Je propose mes services de plombier", NOW);
     expect(intent.kind).toBe("offer");

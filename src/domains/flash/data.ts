@@ -2,7 +2,9 @@ import type {
   FlashCategory,
   FlashKind,
   FlashRecord,
+  FlashScope,
   FlashTimeSlot,
+  FlashUrgency,
   UserId,
 } from "@eco/core-contracts";
 import { newId } from "@eco/core-contracts";
@@ -32,6 +34,8 @@ export interface NewFlashInput {
   kind: FlashKind;
   category: FlashCategory;
   timeSlot: FlashTimeSlot;
+  scope: FlashScope;
+  urgency: FlashUrgency;
   areaLabel?: string;
   expiresAt: number | null;
 }
@@ -46,6 +50,8 @@ export function createFlash(input: NewFlashInput) {
     kind: input.kind,
     category: input.category,
     timeSlot: input.timeSlot,
+    scope: input.scope,
+    urgency: input.urgency,
     areaLabel: input.areaLabel,
     expiresAt: input.expiresAt,
     mediaIds: [],
