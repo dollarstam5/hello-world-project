@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Check, Mic, MicOff, Plus, Sparkles, X, Zap } from "lucide-react";
-import type { FlashCategory, FlashKind, FlashTimeSlot, UserId } from "@eco/core-contracts";
+import { FLASH_SCOPES, FLASH_URGENCIES } from "@eco/core-contracts";
+import type { FlashCategory, FlashKind, FlashScope, FlashTimeSlot, FlashUrgency, UserId } from "@eco/core-contracts";
 import { parseFlashIntent } from "@eco/core-logic";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -51,10 +52,8 @@ const CATEGORIES: FlashCategory[] = [
   "other",
 ];
 const TIME_SLOTS: FlashTimeSlot[] = ["now", "today", "tomorrow", "this_week"];
-const FLASH_SCOPES = ["current_area", "expanded_area", "half_city", "whole_city"] as const;
-type FlashScope = (typeof FLASH_SCOPES)[number];
-const FLASH_URGENCIES = ["urgent", "very_urgent", "today", "as_soon_as_possible", "anytime"] as const;
-type FlashUrgency = (typeof FLASH_URGENCIES)[number];
+// Keep publishing disabled until the backend filters each selected scope.
+const FLASH_SCOPE_FILTERING_ENABLED = false;
 
 function getSpeechConstructor() {
   if (typeof window === "undefined") return undefined;
@@ -175,7 +174,7 @@ export function FlashExperienceScreen() {
   }
 
   async function publishFlash() {
-    if (!user || !text.trim() || publishing) return;
+    if (!user || !text.trim() || !scope || !urgency || !FLASH_SCOPE_FILTERING_ENABLED || publishing) return;
     setPublishing(true);
     setPublishError(false);
     try {
@@ -187,6 +186,8 @@ export function FlashExperienceScreen() {
         kind,
         category,
         timeSlot,
+        scope,
+        urgency,
         expiresAt: expiryFor(timeSlot),
       });
       closeComposer();
@@ -522,7 +523,7 @@ export function FlashExperienceScreen() {
                   type="button"
                   className="min-h-12 flex-[1.5] rounded-full"
                   onClick={() => void publishFlash()}
-                  disabled
+                  disabled={!FLASH_SCOPE_FILTERING_ENABLED || !user || authLoading || publishing || !text.trim() || !scope || !urgency}
                 >
                   {publishing ? t("app.loading") : t("flash.composer.confirmPublish")}
                 </Button>
