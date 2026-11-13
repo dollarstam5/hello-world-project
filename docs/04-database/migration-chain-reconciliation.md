@@ -1,7 +1,7 @@
 # TECH-001 — Rapport de réconciliation des chaînes de migration
 
 **État de la revue :** inventaire du dépôt effectué ; réconciliation de la base distante non vérifiable à ce stade.  
-**Référence examinée :** branche `main`, commit `e0688fa608bf7dbf81b0a130f9bf44830af135ab`.  
+**Référence examinée :** branche `main`, après fusion de la PR #66, commit `9a090e55f6d5fb97cb49b2dc4add72549e01274c`.  
 **Périmètre :** configuration, fichiers versionnés, journal Drizzle, scripts de projet et code consommateur. Aucun SQL n'a été exécuté.
 
 ## 1. Conclusion opérationnelle
@@ -19,9 +19,10 @@ La décision sûre à ce stade est de conserver le chemin Supabase comme référ
 ### Supabase CLI
 
 - `supabase/config.toml` contient uniquement `project_id` et ne définit aucun chemin alternatif.
-- Le dossier `supabase/migrations/` contient la migration initiale de schéma, des migrations de stockage et une séquence de migrations Réel ajoutées progressivement.
-- Les documents d'architecture et de schéma confirment que ce dossier est le chemin standard du dépôt.
-- Les migrations Réel sont accompagnées de tests SQL sous `supabase/tests/database/`, mais la présence de ces tests ne prouve pas qu'ils ont été exécutés sur la base hébergée.
+- Le dossier `supabase/migrations/` contient la migration initiale de schéma, des migrations de stockage et les migrations des moteurs.
+- Le cycle de vie Radar est désormais intégré par `20261113000000_radar_lifecycle.sql`, avec son test `supabase/tests/database/120_radar_lifecycle_rls.test.sql`.
+- La PR #49 historique a été fermée sans fusion ; son remplacement, la PR #60, a été fusionné dans `main` (commit `750968aa1ee693c9edb3b50c418b2c4f886f5188`). Le workflow Quality de cette PR a exécuté le test Radar avec succès (`120_radar_lifecycle_rls.test.sql ... ok`).
+- Les documents d'architecture et de schéma confirment que `supabase/migrations/` est le chemin standard du dépôt. La réussite des tests locaux CI ne prouve toutefois pas que la migration a été appliquée à une base hébergée.
 
 ### Artefacts sous `src/supabase/migrations/`
 
@@ -49,7 +50,7 @@ Le fichier Mission contient un chemin de migration proposé dans son propre text
 
 | Objet | Définitions repérées | Risque à lever |
 |---|---|---|
-| `radars` / `command_radar` | Drizzle `0001_create_radars_table.sql` et artefact `src/supabase/migrations/20260912010000_secure_radar_lifecycle.sql` | Deux définitions de table et de cycle de vie ; comparer précisément colonnes, index, triggers, grants, RLS et fonctions |
+| `radars` / `command_radar` | `supabase/migrations/20261113000000_radar_lifecycle.sql`, `src/supabase/migrations/20260912010000_secure_radar_lifecycle.sql` et Drizzle `0001_create_radars_table.sql` | La copie `src/supabase` est identique octet pour octet à la migration canonique Supabase (même blob Git `b637685d4044fbad3df11f21e076b40eb65f61fa`). La version Drizzle reprend les mêmes objets, mais n'est pas identique : elle ne comporte pas `BEGIN`/`COMMIT` et place l'activation RLS après les GRANT, alors que la migration Supabase active RLS avant les GRANT. Ne pas supprimer ni rejouer la version Drizzle avant vérification de son historique d'exécution externe. |
 | `sync_mutation_receipts` | Drizzle `0002_create_sync_mutation_receipts.sql` et artefact `src/supabase/migrations/20260912002000_harden_sync_protocol.sql` | Deux définitions d'une table consommée par `src/lib/sync/transport.server.ts` ; vérifier contraintes, droits et politiques |
 | Projection Flash | Drizzle `0000_flash_scan_public_functions.sql` et artefact Flash sous `src/supabase/migrations/` | Comparer les fonctions, signatures, colonnes et garanties de confidentialité avant toute adoption |
 | Champs profil/UDI et transitions Mission | Artefacts SQL sous `src/supabase/migrations/` | Les migrations standard initiales et les artefacts ultérieurs expriment des états de sécurité différents ; leur ordre d'application est déterminant |
@@ -59,7 +60,7 @@ Une copie directe de tous les fichiers vers `supabase/migrations/` n'est donc pa
 ## 4. Dépendances runtime confirmées
 
 - `src/lib/sync/transport.server.ts` lit et écrit `sync_mutation_receipts` lors du push des mutations. La disponibilité de cette table est donc une dépendance runtime réelle du protocole de synchronisation.
-- Le code Radar appelle `command_radar` et utilise la table `radars`. Le dossier Drizzle contient une définition de ces objets, mais le dossier Supabase CLI ne les établit pas encore par la chaîne inventoriée dans cette revue.
+- Le code Radar appelle `command_radar` et utilise la table `radars`. Ces objets sont maintenant définis dans la chaîne Supabase CLI par `20261113000000_radar_lifecycle.sql`, et le test RLS associé passe dans le workflow Quality de la PR #60. Cela valide la chaîne locale du dépôt, pas l'état d'une base distante.
 - Le code Flash utilise des projections SQL publiques définies dans les artefacts hors chemin CLI. Leur disponibilité distante n'est pas établie par Git.
 - Les voies Assistant documentées dépendent de fonctions et tables définies dans un artefact hors chemin CLI.
 
@@ -89,6 +90,8 @@ Aucune migration n'a été exécutée et aucun déploiement n'a été tenté.
 
 ## 7. Décision de cette étape
 
-**TECH-001 n'est pas encore résolu.** La cartographie des trois ensembles et des principaux chevauchements est maintenant documentée. La prochaine étape bloquante est l'obtention d'une preuve de l'état de la base cible et de l'historique des migrations appliquées.
+**Réconciliation Radar — état du dépôt :** la chaîne Supabase CLI est établie comme source canonique pour les nouveaux changements. La migration Radar et son test sont présents dans les chemins parcourus par le workflow CI. La copie `src/supabase` est strictement identique à la migration canonique ; le fichier Drizzle est un doublon fonctionnel proche, avec les différences de transaction et d'ordre RLS/GRANT décrites ci-dessus.
 
-Aucun fichier SQL historique n'a été déplacé, supprimé, converti ou exécuté. Aucun changement de schéma distant n'a été effectué.
+**Suppression physique du doublon Drizzle — bloquée par manque de preuve :** `drizzle/migrations/meta/_journal.json` référence toujours `0001_create_radars_table`, et `drizzle.config.ts` expose `LOVABLE_DB_MIGRATION_URL`. Aucun runner Drizzle n'a été trouvé dans les scripts npm ou workflows versionnés, mais une exécution manuelle ou un pipeline externe n'est pas exclu. Sans historique de migration et catalogue de la base cible, retirer le fichier ou son entrée de journal pourrait effacer une trace encore nécessaire ou désynchroniser un environnement.
+
+**TECH-001 reste ouvert** pour la réconciliation complète des environnements distants et des autres artefacts. Aucun fichier SQL historique n'a été déplacé, supprimé, converti ou exécuté. Aucun changement de schéma distant n'a été effectué.
