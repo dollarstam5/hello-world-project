@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
+  FLASH_SCOPE_RADIUS_METERS,
+  FLASH_SCOPES,
   SYNC_PROTOCOL_VERSION,
   SyncValidationError,
   validatePullRequest,
@@ -35,6 +37,21 @@ const cursors = [
 ].map((table) => ({ table, revision: 0 }));
 
 describe("sync protocol validation", () => {
+  it("keeps the stable Flash scope identifiers mapped to the approved meter radii", () => {
+    expect(FLASH_SCOPES).toEqual([
+      "current_area",
+      "expanded_area",
+      "half_city",
+      "whole_city",
+    ]);
+    expect(FLASH_SCOPE_RADIUS_METERS).toEqual({
+      current_area: 500,
+      expanded_area: 2_000,
+      half_city: 5_000,
+      whole_city: 15_000,
+    });
+  });
+
   it("accepts the current strict push contract", () => {
     const result = validatePushRequest({
       protocolVersion: SYNC_PROTOCOL_VERSION,
