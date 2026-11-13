@@ -34,6 +34,7 @@ values
 -- Seed legacy fixture rows with the trusted service role. The migration's
 -- trigger intentionally rejects anonymous/test-runner inserts without an
 -- authenticated actor; user-facing writes are exercised below as members.
+select set_config('request.jwt.claims', '{"role":"service_role"}', true);
 set local role service_role;
 insert into public.missions (id, author_id, assignee_id, title, brief, status)
 values
