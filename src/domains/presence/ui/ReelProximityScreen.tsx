@@ -323,10 +323,7 @@ export function ReelProximityScreen() {
             "{count}",
             String(availablePeople.length),
           )}
-          title={t("reel.ui.openAllPresences").replace(
-            "{count}",
-            String(availablePeople.length),
-          )}
+          title={t("reel.ui.openAllPresences").replace("{count}", String(availablePeople.length))}
         >
           <span className="reel-presence-stack__disks" aria-hidden="true">
             {availablePeople.slice(9, 16).map((person, index) => (
@@ -346,7 +343,10 @@ export function ReelProximityScreen() {
           type="button"
           className="reel-presence-list-trigger"
           onClick={() => setPanel("people")}
-          aria-label={t("reel.ui.openAllPresences").replace("{count}", String(availablePeople.length))}
+          aria-label={t("reel.ui.openAllPresences").replace(
+            "{count}",
+            String(availablePeople.length),
+          )}
           title={t("reel.ui.openAllPresences").replace("{count}", String(availablePeople.length))}
         >
           <UsersRound aria-hidden="true" />
@@ -372,7 +372,7 @@ export function ReelProximityScreen() {
             <ChevronDown aria-hidden="true" />
           </button>
         </div>
-        )}
+      )}
 
       {panel && (
         <div
