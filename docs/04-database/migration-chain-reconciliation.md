@@ -1,7 +1,7 @@
 # TECH-001 — Rapport de réconciliation des chaînes de migration
 
 **État de la revue :** inventaire du dépôt effectué ; réconciliation de la base distante non vérifiable à ce stade.  
-**Référence examinée :** branche `main`, après fusion de la PR #66, commit `9a090e55f6d5fb97cb49b2dc4add72549e01274c`.  
+**Référence examinée :** branche `main`, après fusion de la PR #70, commit `8cb601309fe089d2c742140a95d564d45c50e63c`.  
 **Périmètre :** configuration, fichiers versionnés, journal Drizzle, scripts de projet et code consommateur. Aucun SQL n'a été exécuté.
 
 ## 1. Conclusion opérationnelle
@@ -52,10 +52,23 @@ Le fichier Mission contient un chemin de migration proposé dans son propre text
 |---|---|---|
 | `radars` / `command_radar` | `supabase/migrations/20261113000000_radar_lifecycle.sql`, `src/supabase/migrations/20260912010000_secure_radar_lifecycle.sql` et Drizzle `0001_create_radars_table.sql` | La copie `src/supabase` est identique octet pour octet à la migration canonique Supabase (même blob Git `b637685d4044fbad3df11f21e076b40eb65f61fa`). La version Drizzle reprend les mêmes objets, mais n'est pas identique : elle ne comporte pas `BEGIN`/`COMMIT` et place l'activation RLS après les GRANT, alors que la migration Supabase active RLS avant les GRANT. Ne pas supprimer ni rejouer la version Drizzle avant vérification de son historique d'exécution externe. |
 | `sync_mutation_receipts` | Drizzle `0002_create_sync_mutation_receipts.sql` et artefact `src/supabase/migrations/20260912002000_harden_sync_protocol.sql` | Deux définitions d'une table consommée par `src/lib/sync/transport.server.ts` ; vérifier contraintes, droits et politiques |
-| Projection Flash | Drizzle `0000_flash_scan_public_functions.sql` et artefact Flash sous `src/supabase/migrations/` | Comparer les fonctions, signatures, colonnes et garanties de confidentialité avant toute adoption |
+| Projection Flash/Scan | Drizzle `0000_flash_scan_public_functions.sql`, migrations Supabase `20261113002000_flash_schema_columns.sql` et `20261113003000_flash_public_rpcs.sql` | Divergence confirmée : Drizzle ajoute les coordonnées précises à `public.flashes` et les lit/écrit directement ; Supabase les isole dans `flash_private_locations`, utilisée par les RPC. Le pull Sync fait `.select("*")` sur les tables synchronisées. Ne pas rejouer la migration Drizzle ; voir TECH-011. |
 | Champs profil/UDI et transitions Mission | Artefacts SQL sous `src/supabase/migrations/` | Les migrations standard initiales et les artefacts ultérieurs expriment des états de sécurité différents ; leur ordre d'application est déterminant |
 
 Une copie directe de tous les fichiers vers `supabase/migrations/` n'est donc pas une correction acceptable. Elle pourrait provoquer des conflits, réappliquer des changements ou rendre les politiques et fonctions incohérentes.
+
+
+### Détail de la divergence Flash/Scan
+
+La migration Drizzle `0000_flash_scan_public_functions.sql` ajoute les coordonnées précises comme colonnes de `public.flashes`. Elle définit aussi une RPC Scan qui calcule une distance non arrondie à partir de ces colonnes et une RPC de localisation qui met à jour directement la ligne Flash.
+
+Les migrations Supabase actuelles ont remplacé ce modèle par `flash_private_locations`. Les coordonnées sont lues par Scan à l'intérieur d'une fonction contrôlée, la RPC de localisation les écrit dans la table privée, et le résultat public ne renvoie que la distance arrondie à 0,1 km. Le rayon est validé et plafonné à 50 km. Cette séparation est particulièrement importante parce que le pull Sync lit les lignes synchronisées avec `.select("*")` dans `src/lib/sync/transport.server.ts`.
+
+Les tests `121_flash_schema_columns.test.sql` et `122_flash_public_rpcs.test.sql` vérifient l'absence des coordonnées dans `public.flashes`, la protection RLS de la table privée et l'utilisation de celle-ci par les RPC. Il s'agit de preuves de la chaîne locale testée en CI, pas d'une preuve de l'état d'une base hébergée.
+
+**Conséquence :** la migration Drizzle `0000` ne doit pas être rejouée ou réactivée sur un environnement utilisant le modèle Supabase actuel. L'existence éventuelle de colonnes, fonctions ou migrations déjà appliquées dans un environnement externe reste à vérifier en lecture seule.
+
+**Limite de migration à ne pas manquer :** `20261113002000_flash_schema_columns.sql` crée la table privée mais ne retire pas les éventuelles colonnes de coordonnées déjà ajoutées à `public.flashes`. Le test `121` valide l'état final d'une base locale issue de la chaîne Supabase, pas le passage depuis un état où Drizzle `0000` aurait déjà ajouté ces colonnes. Un environnement historique pourrait donc conserver les colonnes synchronisées malgré la présence de `flash_private_locations`. Leur présence doit être contrôlée en lecture seule avant toute conclusion ; une migration corrective ne pourra être préparée qu'après preuve et approbation.
 
 ## 4. Dépendances runtime confirmées
 

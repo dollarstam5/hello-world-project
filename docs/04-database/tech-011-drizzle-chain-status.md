@@ -1,7 +1,7 @@
 # TECH-011 — Statut de la chaîne Drizzle
 
-**État :** chaîne non opérationnelle dans le dépôt, usage historique ou externe non vérifié.  
-**Référence examinée :** `main`, commit `e0688fa608bf7dbf81b0a130f9bf44830af135ab`.  
+**État :** configuration et artefacts Drizzle présents ; aucun runner d'exécution versionné identifié ; usage historique, manuel ou externe non vérifié.  
+**Référence examinée :** `main`, commit `8cb601309fe089d2c742140a95d564d45c50e63c` (après fusion de la PR #70).  
 **Périmètre :** fichiers versionnés, configuration, dépendances, scripts, workflows et références applicatives.  
 **Aucune commande Drizzle n'a été exécutée. Aucun SQL n'a été appliqué.**
 
@@ -44,6 +44,29 @@ Le schéma TypeScript vide est explicitement intentionnel. Ajouter des tables un
 
 Une génération depuis ce schéma vide pourrait produire un état incomplet ou des opérations destructrices si elle était utilisée avec un outil de synchronisation de schéma. Il ne faut donc pas essayer de « réparer » le fichier en y recopiant les tables du SQL.
 
+
+
+### Divergence Flash/Scan : risque de réexposition des coordonnées précises
+
+La migration Drizzle `0000_flash_scan_public_functions.sql` n'est pas une simple copie de la chaîne Supabase actuelle :
+
+- elle ajoute `latitude`, `longitude` et `accuracy_meters` directement à `public.flashes` ;
+- sa fonction `set_flash_location` écrit ces coordonnées directement dans cette table ;
+- sa fonction `scan_public_flashes` calcule la distance à partir de ces colonnes et retourne une distance non arrondie ; elle ne reprend pas les validations de coordonnées et le plafond de rayon de la version Supabase actuelle ;
+- sa projection publique et ses règles de filtrage ne sont pas identiques aux RPC Supabase actuelles.
+
+La chaîne Supabase actuelle a pris une décision de confidentialité différente :
+
+- `20261113002000_flash_schema_columns.sql` crée `public.flash_private_locations`, active RLS et n'accorde aux membres authentifiés qu'un SELECT soumis à la politique propriétaire ; les coordonnées ne sont pas des colonnes de `public.flashes` ;
+- `20261113003000_flash_public_rpcs.sql` fait lire/écrire les coordonnées par les RPC via la table privée, valide les coordonnées et le rayon (maximum 50 km), et retourne une distance arrondie à 0,1 km ;
+- `src/lib/sync/transport.server.ts` utilise `.select("*")` lors du pull Sync. Des coordonnées ajoutées à `public.flashes` entreraient donc dans les lignes lues par ce transport, sous réserve des privilèges/RLS de l'environnement.
+
+Les tests PostgreSQL versionnés rendent cette frontière explicite : `121_flash_schema_columns.test.sql` vérifie l'absence des trois colonnes précises dans `flashes` et la protection de la table privée ; `122_flash_public_rpcs.test.sql` vérifie que Scan et l'écriture de position utilisent `flash_private_locations` et n'exposent pas les coordonnées.
+
+**Décision de sécurité :** ne jamais rejouer ni réactiver `0000_flash_scan_public_functions.sql` sur un environnement utilisant la chaîne Supabase actuelle. Toute décision sur son historique exige d'abord un relevé en lecture seule du schéma, des fonctions, privilèges, politiques et de l'historique de migration de l'environnement. Cette divergence ne prouve pas que les coordonnées ont été exposées sur une base hébergée ; cet état reste inconnu.
+
+**Limite importante de la migration actuelle :** `20261113002000_flash_schema_columns.sql` crée `flash_private_locations`, mais ne supprime pas explicitement les colonnes `latitude`, `longitude` et `accuracy_meters` si elles existaient déjà dans `public.flashes`. Le test `121_flash_schema_columns.test.sql` vérifie leur absence dans la base locale construite par la chaîne Supabase ; il ne simule pas une base préalablement modifiée par Drizzle `0000`. Si cette ancienne migration a été appliquée sur un environnement, les colonnes peuvent donc y subsister malgré la création de la table privée. Il faut contrôler leur présence en lecture seule dans chaque environnement avant de conclure que la séparation des coordonnées y est effective.
+
 ## 4. Artefacts conservés
 
 Les éléments suivants restent volontairement en place :
@@ -72,7 +95,7 @@ En l'absence de ces preuves, le gel documentaire reste la seule décision sûre.
 
 ## 6. Validation et limites
 
-Cette revue confirme l'absence de runner Drizzle dans les scripts et workflows versionnés examinés. Elle ne permet pas d'exclure un usage historique manuel ou un processus externe non versionné.
+Cette revue confirme la présence de la configuration, du journal et des trois scripts Drizzle, mais n'identifie aucun runner Drizzle dans les scripts npm ni dans le workflow qualité versionné examiné. Elle ne permet pas d'exclure un usage historique manuel ou un processus externe non versionné. La migration Flash/Scan Drizzle présente en outre une divergence de confidentialité substantielle avec les migrations Supabase actuelles.
 
 - Aucune migration Drizzle n'a été générée ou exécutée.
 - Aucun test PostgreSQL n'a été lancé dans le cadre de cette revue.
@@ -80,4 +103,4 @@ Cette revue confirme l'absence de runner Drizzle dans les scripts et workflows v
 - Aucun artefact Drizzle historique n'a été supprimé.
 - La chaîne Supabase CLI reste la référence pour les nouveaux changements.
 
-**Conclusion :** l'ambiguïté de gouvernance de Drizzle est résolue au niveau du dépôt par une règle explicite de gel et de non-utilisation pour les nouveaux travaux. La suppression physique des artefacts et la confirmation de leur historique restent conditionnées à une vérification des environnements externes.
+**Conclusion :** la règle de gouvernance du dépôt est claire pour les nouveaux travaux : Supabase CLI est la chaîne de référence et Drizzle reste gelé. L'usage réel passé de Drizzle et l'état des environnements restent non établis. La migration Flash/Scan Drizzle est incompatible avec la frontière de confidentialité de la chaîne Supabase actuelle et ne doit pas être rejouée. La suppression physique des artefacts et toute conclusion sur leur historique restent conditionnées à une vérification en lecture seule des environnements externes.
