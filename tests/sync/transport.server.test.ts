@@ -34,7 +34,10 @@ class FakeQuery {
   private filters: Array<[string, unknown]> = [];
   private returning = false;
 
-  constructor(private readonly database: FakeDatabase, private readonly table: string) {}
+  constructor(
+    private readonly database: FakeDatabase,
+    private readonly table: string,
+  ) {}
 
   select(): this {
     this.returning = true;
@@ -84,9 +87,11 @@ class FakeQuery {
         return { data: null, error: { code: "08006", message: "simulated receipt write failure" } };
       }
       const receipt = this.payload ?? {};
-      if (this.database.receipts.some((row) =>
-        row.mutation_id === receipt.mutation_id && row.owner_id === receipt.owner_id
-      )) {
+      if (
+        this.database.receipts.some(
+          (row) => row.mutation_id === receipt.mutation_id && row.owner_id === receipt.owner_id,
+        )
+      ) {
         return { data: null, error: { code: "23505", message: "duplicate receipt" } };
       }
       this.database.receipts.push({ ...receipt });
@@ -243,9 +248,7 @@ describe("runPush transport — Radar mutation receipts", () => {
     const first = await runPush(db.client(), request(entry), ownerId);
 
     expect(first.accepted).toEqual([]);
-    expect(first.rejected).toEqual([
-      { id: mutationId, code: "server_error", retryable: true },
-    ]);
+    expect(first.rejected).toEqual([{ id: mutationId, code: "server_error", retryable: true }]);
     expect(db.tables.radars).toHaveLength(1);
     expect(db.receipts).toHaveLength(0);
 
