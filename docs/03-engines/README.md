@@ -2,7 +2,7 @@
 
 Ce répertoire regroupe les contrats produit, UI/UX, architecture et références historiques des moteurs Vitalis. Une documentation présente ne certifie pas à elle seule que la fonctionnalité correspondante est implémentée dans le runtime.
 
-## Les quatre moteurs prioritaires
+## Règle transversale de visibilité\n\n- [Visibilité et confidentialité propres à chaque moteur](./visibility-and-profile-policy.md) : chaque moteur et, lorsque pertinent, chaque publication possède ses propres autorisations ; aucune permission n'est héritée automatiquement d'un autre moteur.\n\n## Les quatre moteurs prioritaires
 
 Chaque moteur possède son propre périmètre, son action centrale, ses commandes, ses données et ses règles de visibilité du profil.
 
