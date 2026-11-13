@@ -75,7 +75,7 @@ export const messages = {
     "communication.notifications": "Notifications",
     "communication.assistant": "Assistant",
     "communication.messages": "Messages",
-    "communication.reel": "Réel",
+    "communication.reel": "Instant",
     "communication.notifications.empty":
       "Les nouvelles liées à vos actions apparaîtront ici, sans faux compteur.",
     "communication.messages.empty":
@@ -118,7 +118,7 @@ export const messages = {
     "home.engine.scan.desc":
       "Repérez les publications Flash actives dans la zone que vous choisissez.",
     "home.engine.scan.example": "Rechercher une aide pour un déménagement près de vous.",
-    "home.engine.reel.title": "Réel",
+    "home.engine.reel.title": "Instant",
     "home.engine.reel.desc":
       "Cet espace se prépare. Il permettra de signaler volontairement votre présence et de découvrir les personnes réellement à proximité.",
     "home.engine.reel.example":
@@ -158,7 +158,7 @@ export const messages = {
     "onboarding.spaces.title": "Et tout un monde à explorer",
     "onboarding.spaces.body":
       "Le menu 2×2 vous ouvre les espaces et fonctionnalités complémentaires de Vitalis. Vous pouvez les découvrir quand vous en avez besoin.",
-    "onboarding.reel.title": "Réel",
+    "onboarding.reel.title": "Instant",
     "onboarding.reel.body":
       "Signalez votre présence et découvrez les personnes à proximité, avec la liberté d'utiliser le mode invité.",
     "onboarding.radar.title": "Radar",
@@ -167,7 +167,7 @@ export const messages = {
     "onboarding.ready.body":
       "Installez-vous, explorez à votre rythme et commencez par l'espace qui vous attire. Toute l'expérience Vitalis vous attend.",
     "onboarding.ready.guest":
-      "Vous pouvez commencer sans créer de compte lorsque le moteur le permet. Réel est accessible en mode invité.",
+      "Vous pouvez commencer sans créer de compte lorsque le moteur le permet. Instant est accessible en mode invité.",
 
     "identity.guest": "Invité",
     "identity.identified": "Identifié",
@@ -185,7 +185,7 @@ export const messages = {
     "page.error.desc": "Une erreur est survenue. Réessayez ou revenez à l’accueil.",
     "page.error.retry": "Réessayer",
     "nav.primary": "Navigation principale",
-    "nav.reel": "Réel",
+    "nav.reel": "Instant",
     "nav.flash": "Flash",
     "nav.scan": "Scan",
     "nav.radar": "Radar",
@@ -300,7 +300,7 @@ export const messages = {
       "Repérez les Flash actifs autour de vous, sans jamais révéler votre position.",
     "page.scan.section.scan": "Scanner",
     "page.reel.eyebrow": "Votre présence",
-    "page.reel.title": "Réel",
+    "page.reel.title": "Instant",
     "page.reel.desc":
       "Cet espace se prépare. Vous pourrez bientôt signaler votre présence et découvrir les personnes à proximité.",
     "page.radar.title": "Radar",
@@ -397,13 +397,13 @@ export const messages = {
     "scan.history.clear": "Effacer",
     "scan.history.results": "{count} résultat(s)",
 
-    "reel.ui.screenLabel": "Temps réel de proximité",
+    "reel.ui.screenLabel": "Instant — présence à proximité",
     "reel.ui.home": "Retour à l’accueil Vitalis",
     "reel.ui.homeTitle": "Accueil",
     "reel.ui.subtitle": "Les personnes présentes autour de vous",
     "reel.ui.notifications": "Notifications, bips et mises en relation",
     "reel.ui.notificationsPaused":
-      "Les notifications Réel sont en pause sans autorisation de proximité",
+      "Les notifications Instant sont en pause sans autorisation de proximité",
     "reel.ui.activity": "Activité",
     "reel.ui.notificationsPausedShort": "Notifications en pause",
     "reel.ui.preferences": "Personnaliser mes préférences",
@@ -411,24 +411,24 @@ export const messages = {
     "reel.ui.bluetooth": "Bluetooth — bientôt disponible en version 3",
     "reel.ui.bluetoothTitle": "Bientôt (V3)",
     "reel.ui.location": "Accès à la position",
-    "reel.ui.guestTitle": "Vous découvrez Réel en invité",
-    "reel.ui.visitorTitle": "Découvrez Réel sans créer de compte",
-    "reel.ui.noAccessTitle": "Votre compte n’a pas encore accès à Réel",
+    "reel.ui.guestTitle": "Vous découvrez Instant en invité",
+    "reel.ui.visitorTitle": "Découvrez Instant sans créer de compte",
+    "reel.ui.noAccessTitle": "Votre compte n’a pas encore accès à Instant",
     "reel.ui.promptTitle": "Envie de découvrir ce qui se passe près de vous ?",
     "reel.ui.requestingTitle": "Nous vérifions votre position…",
     "reel.ui.privateTitle": "Votre position reste privée",
-    "reel.ui.calmTitle": "Vous découvrez Réel à votre rythme",
+    "reel.ui.calmTitle": "Vous découvrez Instant à votre rythme",
     "reel.ui.guestDescription":
       "Votre session est temporaire. Vous pouvez découvrir les présences autour de vous sans créer de compte.",
     "reel.ui.visitorDescription":
       "Commencez avec une session temporaire. Elle ne crée pas de compte ni de profil permanent.",
     "reel.ui.noAccessDescription":
-      "L’accès à Réel sera disponible lorsque votre profil Vitalis sera actif.",
+      "L’accès à Instant sera disponible lorsque votre profil Vitalis sera actif.",
     "reel.ui.permissionDescription":
-      "Autorisez Réel à utiliser votre position pour observer les personnes et les activités autour de vous. Votre choix reste libre.",
+      "Autorisez Instant à utiliser votre position pour observer les personnes et les activités autour de vous. Votre choix reste libre.",
     "reel.ui.waitingDescription": "Cela ne prend que quelques instants.",
     "reel.ui.locationPausedDescription":
-      "Vous pouvez parcourir Réel sans localisation. Les découvertes proches, les bips et les réactions resteront en pause.",
+      "Vous pouvez parcourir Instant sans localisation. Les découvertes proches, les bips et les réactions resteront en pause.",
     "reel.ui.seeNearby": "Voir les personnes autour de moi",
     "reel.ui.retry": "Réessayer",
     "reel.ui.guestLoading": "Ouverture de votre accès…",
@@ -441,7 +441,7 @@ export const messages = {
     "reel.ui.noNearby": "Aucune présence réelle ne se trouve dans votre rayon pour le moment",
     "reel.ui.nearbyCount": "{count} personne(s) à proximité",
     "reel.ui.seeAllPeople": "Voir toutes les personnes",
-    "reel.ui.otherWays": "Autres façons de découvrir Réel",
+    "reel.ui.otherWays": "Autres façons de découvrir Instant",
 
     "reel.ui.close": "Fermer",
     "reel.ui.settingsHeading": "Ma présence et mes préférences",
@@ -516,12 +516,12 @@ export const messages = {
     "reel.ui.noConnectionsHint": "Les personnes qui acceptent votre signe apparaîtront ici.",
     "reel.ui.noNotifications": "Tout est calme pour le moment",
     "reel.ui.notificationsHint":
-      "Les notifications liées à Réel apparaîtront ici lorsqu’un événement réel sera disponible.",
+      "Les notifications liées à Instant apparaîtront ici lorsqu’un événement réel sera disponible.",
     "reel.ui.nearbyProfile": "Profil à proximité",
     "reel.ui.noExtraProfile":
       "Cette personne n’a pas encore ajouté d’autres informations à son profil.",
     "reel.ui.endConnectionNotice":
-      "Elle sera fermée pour vous deux et ne sera plus active dans Réel.",
+      "Elle sera fermée pour vous deux et ne sera plus active dans Instant.",
     "reel.ui.closeProfile": "Fermer le profil",
     "reel.ui.alerts": "Alertes",
     "reel.ui.connectionsTab": "Rencontres",
@@ -607,7 +607,7 @@ export const messages = {
     "reel.controller.guestSessionOpenFailed": "Votre accès invité n’a pas pu être ouvert.",
     "reel.controller.discoveryUnavailable":
       "La découverte à proximité n’est pas disponible pour le moment.",
-    "reel.section.management": "Gérer Réel",
+    "reel.section.management": "Gérer Instant",
     "reel.section.presence": "Ma présence",
     "reel.section.bips": "Bips reçus",
     "reel.section.connections": "Mes mises en relation",
@@ -620,7 +620,7 @@ export const messages = {
     "reel.section.history.desc":
       "Retrouver vos anciennes mises en relation et conversations, selon les règles de conservation.",
     "reel.section.unavailable":
-      "Cette partie sera disponible quand Réel pourra partager les présences et gérer les interactions en toute sécurité. Aucune présence ni relation n'est simulée.",
+      "Cette partie sera disponible quand Instant pourra partager les présences et gérer les interactions en toute sécurité. Aucune présence ni relation n'est simulée.",
     "radar.manage.intro":
       "Enregistrez une recherche et gardez ses critères à portée de main. La détection automatique n'est pas encore active.",
     "radar.manage.edit.title": "Modifier ma veille",
@@ -1208,7 +1208,7 @@ export const messages = {
     "reel.ui.subtitle": "People who are here around you",
     "reel.ui.notifications": "Notifications, bips and connections",
     "reel.ui.notificationsPaused":
-      "Réel notifications are paused until proximity access is enabled",
+      "Instant notifications are paused until proximity access is enabled",
     "reel.ui.activity": "Activity",
     "reel.ui.notificationsPausedShort": "Notifications paused",
     "reel.ui.preferences": "Personalize my preferences",
@@ -1216,23 +1216,23 @@ export const messages = {
     "reel.ui.bluetooth": "Bluetooth — planned for version 3",
     "reel.ui.bluetoothTitle": "Coming in V3",
     "reel.ui.location": "Location access",
-    "reel.ui.guestTitle": "You’re exploring Réel as a guest",
-    "reel.ui.visitorTitle": "Explore Réel without creating an account",
-    "reel.ui.noAccessTitle": "Your account does not have access to Réel yet",
+    "reel.ui.guestTitle": "You’re exploring Instant as a guest",
+    "reel.ui.visitorTitle": "Explore Instant without creating an account",
+    "reel.ui.noAccessTitle": "Your account does not have access to Instant yet",
     "reel.ui.promptTitle": "Would you like to discover what’s happening nearby?",
     "reel.ui.requestingTitle": "We’re checking your location…",
     "reel.ui.privateTitle": "Your location stays private",
-    "reel.ui.calmTitle": "Explore Réel at your own pace",
+    "reel.ui.calmTitle": "Explore Instant at your own pace",
     "reel.ui.guestDescription":
       "Your session is temporary. You can discover nearby presence without creating an account.",
     "reel.ui.visitorDescription":
       "Start with a temporary session. It does not create an account or a permanent profile.",
-    "reel.ui.noAccessDescription": "Réel will be available when your Vitalis profile is active.",
+    "reel.ui.noAccessDescription": "Instant will be available when your Vitalis profile is active.",
     "reel.ui.permissionDescription":
-      "Allow Réel to use your location to discover people and activities nearby. It’s always your choice.",
+      "Allow Instant to use your location to discover people and activities nearby. It’s always your choice.",
     "reel.ui.waitingDescription": "This will only take a moment.",
     "reel.ui.locationPausedDescription":
-      "You can explore Réel without sharing your location. Nearby discovery, bips and reactions will stay paused.",
+      "You can explore Instant without sharing your location. Nearby discovery, bips and reactions will stay paused.",
     "reel.ui.seeNearby": "See people around me",
     "reel.ui.retry": "Try again",
     "reel.ui.guestLoading": "Opening your access…",
@@ -1245,7 +1245,7 @@ export const messages = {
     "reel.ui.noNearby": "No real presence is within your radius right now",
     "reel.ui.nearbyCount": "{count} people nearby",
     "reel.ui.seeAllPeople": "See everyone nearby",
-    "reel.ui.otherWays": "Other ways to explore Réel",
+    "reel.ui.otherWays": "Other ways to explore Instant",
 
     "reel.ui.close": "Close",
     "reel.ui.settingsHeading": "My presence and preferences",
@@ -1318,11 +1318,11 @@ export const messages = {
     "reel.ui.noConnectionsHint": "People who accept your bip will appear here.",
     "reel.ui.noNotifications": "All quiet for now",
     "reel.ui.notificationsHint":
-      "Réel notifications will appear here when a real event is available.",
+      "Instant notifications will appear here when a real event is available.",
     "reel.ui.nearbyProfile": "Nearby profile",
     "reel.ui.noExtraProfile": "This person hasn’t added any more information to their profile yet.",
     "reel.ui.endConnectionNotice":
-      "It will close for both of you and will no longer be active in Réel.",
+      "It will close for both of you and will no longer be active in Instant.",
     "reel.ui.closeProfile": "Close profile",
     "reel.ui.alerts": "Alerts",
     "reel.ui.connectionsTab": "Connections",
@@ -1403,7 +1403,7 @@ export const messages = {
       "Your guest access is ready. You can now discover nearby presence.",
     "reel.controller.guestSessionOpenFailed": "Your guest access could not be opened.",
     "reel.controller.discoveryUnavailable": "Nearby discovery is not available right now.",
-    "reel.section.management": "Manage Réel",
+    "reel.section.management": "Manage Instant",
     "reel.section.presence": "My presence",
     "reel.section.bips": "Signals received",
     "reel.section.connections": "My connections",
@@ -1415,7 +1415,7 @@ export const messages = {
     "reel.section.history.desc":
       "Find past connections and conversations, according to the retention rules.",
     "reel.section.unavailable":
-      "This section will be ready when Réel can share presence and manage interactions securely. No presence or connection is simulated.",
+      "This section will be ready when Instant can share presence and manage interactions securely. No presence or connection is simulated.",
     "radar.manage.intro":
       "Save a search and keep its criteria close at hand. Automatic matching is not active yet.",
     "radar.manage.edit.title": "Edit my watch",
