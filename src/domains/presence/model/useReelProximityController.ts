@@ -360,7 +360,9 @@ export function useReelProximityController() {
       }
       await refreshBips();
       setBipsMessage(
-        action === "accept" ? t("reel.controller.connectionEstablished") : t("reel.controller.bipDeclined"),
+        action === "accept"
+          ? t("reel.controller.connectionEstablished")
+          : t("reel.controller.bipDeclined"),
       );
     } catch (error) {
       setBipsMessage(error instanceof Error ? error.message : "Cette action n’a pas pu aboutir.");
