@@ -1,10 +1,11 @@
-import { ArrowLeft, Languages, Monitor, Moon, Sun } from "lucide-react";
+import { ArrowLeft, Languages, Monitor, Moon, Sun, Bot } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Surface } from "@/components/app/Surface";
 import { Button } from "@/components/ui/button";
 import type { MessageKey } from "@/lib/i18n/messages";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useThemeStore, type ThemeMode } from "@/lib/app/theme";
+import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
 
 const themeOptions: { value: ThemeMode; icon: typeof Moon; key: MessageKey }[] = [
   { value: "dark", icon: Moon, key: "settings.theme.dark" },
@@ -16,6 +17,8 @@ export function ApplicationSettingsPage() {
   const { t, locale, setLocale } = useI18n();
   const mode = useThemeStore((state) => state.mode);
   const setMode = useThemeStore((state) => state.setMode);
+  const assistantEnabled = useAssistantPreferences((state) => state.enabled);
+  const setAssistantEnabled = useAssistantPreferences((state) => state.setEnabled);
 
   return (
     <div className="page-shell stack-6">
@@ -81,6 +84,26 @@ export function ApplicationSettingsPage() {
               );
             })}
           </div>
+        </Surface>
+      </section>
+
+      <section className="stack-3">
+        <div className="flex items-center gap-2">
+          <Bot className="h-5 w-5 text-primary" aria-hidden />
+          <h2 className="text-base font-semibold">{t("settings.assistant.title")}</h2>
+        </div>
+        <Surface variant="elevated" padding="md" bordered>
+          <p className="text-sm text-muted-foreground">{t("settings.assistant.desc")}</p>
+          <Button
+            type="button"
+            variant={assistantEnabled ? "default" : "outline"}
+            className="mt-3 w-full justify-between"
+            aria-pressed={assistantEnabled}
+            onClick={() => setAssistantEnabled(!assistantEnabled)}
+          >
+            <span>{assistantEnabled ? t("settings.assistant.enabled") : t("settings.assistant.disabled")}</span>
+            <span className="text-xs">{assistantEnabled ? t("common.on") : t("common.off")}</span>
+          </Button>
         </Surface>
       </section>
 
