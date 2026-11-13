@@ -102,7 +102,7 @@ export function ApplicationSettingsPage() {
             onClick={() => setAssistantEnabled(!assistantEnabled)}
           >
             <span>{assistantEnabled ? t("settings.assistant.enabled") : t("settings.assistant.disabled")}</span>
-            <span className="text-xs">{assistantEnabled ? t("common.on") : t("common.off")}</span>
+            <span className="text-xs">{assistantEnabled ? t("settings.assistant.enabled") : t("settings.assistant.disabled")}</span>
           </Button>
         </Surface>
       </section>
