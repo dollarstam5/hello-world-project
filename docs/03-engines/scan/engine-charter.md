@@ -33,15 +33,13 @@ Le rayon et les catégories effectivement choisis doivent être transmis au mote
 
 **À préciser avant implémentation :** valeurs de rayon disponibles, point de référence (position actuelle ou autre lieu autorisé), catégories de possibilités, distinction entre filtre strict et simple classement, durée/actualisation éventuelle du scan.
 
-## Utilisation du profil
+## Utilisation du profil et confidentialité
 
-Scan définit sa propre projection du profil selon les informations réellement nécessaires à ses possibilités et à ses résultats. Il ne doit pas hériter automatiquement du profil complet ni du réglage de visibilité d'Instant.
+Scan définit sa propre projection du profil selon les informations strictement nécessaires à ses résultats et interactions. Il ne doit pas hériter automatiquement du profil complet ni des réglages de visibilité d'Instant ou de Flash.
 
-**À décider avant implémentation détaillée :**
-- si Scan a besoin d'une identité visible ou peut fonctionner avec une identité minimale ;
-- quels champs du profil sont strictement nécessaires ;
-- si l'utilisateur peut autoriser séparément l'affichage du profil complet depuis Scan ;
-- comment traiter les utilisateurs invités et les résultats qui les concernent.
+Les champs visibles, l'éventuel accès au profil complet et les règles membre/invité restent à définir dans le contrat propre à Scan. En attendant cette décision, ne pas supposer qu'un résultat de scan autorise l'affichage de l'identité complète d'une personne.
+
+Les paramètres de recherche (rayon, catégories et priorité) ne constituent pas des autorisations de profil et ne doivent pas élargir la visibilité des personnes ou publications. Toute donnée non autorisée est exclue de la réponse côté service/API.
 
 ## Sections à compléter pendant la conception
 
