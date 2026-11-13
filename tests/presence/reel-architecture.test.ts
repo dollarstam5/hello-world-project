@@ -45,7 +45,7 @@ describe("Réel architecture boundaries", () => {
     expect(screenSource).toContain("<h1>INSTANT</h1>");
     expect(screenSource).toContain('<RadioTower aria-hidden="true" />');
     expect(screenSource).toContain('className="reel-proximity__header-actions"');
-    expect(screenSource).toContain('className="reel-radar__me-avatar');
+    expect(screenSource).toContain("reel-radar__me-avatar");
     expect(screenSource).toContain('className="reel-radar__me-label"');
     expect(screenSource).toContain("aria-pressed={isPresenceActive}");
     expect(screenSource).toContain("if (currentPresence) void stopPresence()");
