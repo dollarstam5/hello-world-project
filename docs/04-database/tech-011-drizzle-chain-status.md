@@ -65,6 +65,8 @@ Les tests PostgreSQL versionnés rendent cette frontière explicite : `121_flash
 
 **Décision de sécurité :** ne jamais rejouer ni réactiver `0000_flash_scan_public_functions.sql` sur un environnement utilisant la chaîne Supabase actuelle. Toute décision sur son historique exige d'abord un relevé en lecture seule du schéma, des fonctions, privilèges, politiques et de l'historique de migration de l'environnement. Cette divergence ne prouve pas que les coordonnées ont été exposées sur une base hébergée ; cet état reste inconnu.
 
+**Limite importante de la migration actuelle :** `20261113002000_flash_schema_columns.sql` crée `flash_private_locations`, mais ne supprime pas explicitement les colonnes `latitude`, `longitude` et `accuracy_meters` si elles existaient déjà dans `public.flashes`. Le test `121_flash_schema_columns.test.sql` vérifie leur absence dans la base locale construite par la chaîne Supabase ; il ne simule pas une base préalablement modifiée par Drizzle `0000`. Si cette ancienne migration a été appliquée sur un environnement, les colonnes peuvent donc y subsister malgré la création de la table privée. Il faut contrôler leur présence en lecture seule dans chaque environnement avant de conclure que la séparation des coordonnées y est effective.
+
 ## 4. Artefacts conservés
 
 Les éléments suivants restent volontairement en place :
