@@ -14,6 +14,7 @@ import type { FlashCategory, FlashKind, FlashTimeSlot, UserId } from "@eco/core-
 import { parseFlashIntent } from "@eco/core-logic";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useAuth } from "@/domains/auth";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { createFlash } from "../data";
@@ -308,154 +309,135 @@ export function FlashExperienceScreen() {
         )}
       </div>
 
-      {composerOpen ? (
-        <div
-          className="fixed inset-0 z-[60] flex items-end justify-center bg-black/55 p-0 backdrop-blur-[2px] sm:items-center sm:p-4"
-          onMouseDown={(event) => {
-            if (event.target === event.currentTarget && !publishing) closeComposer();
-          }}
-        >
-          <section
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="flash-composer-title"
-            className="max-h-[92dvh] w-full max-w-lg overflow-y-auto rounded-t-[1.75rem] border border-border bg-background p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] shadow-2xl sm:rounded-[1.75rem] sm:p-6"
-          >
-            <div className="mb-5 flex items-start justify-between gap-3">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-                  {step === "write" ? t("flash.composer.step1") : t("flash.composer.step2")}
-                </p>
-                <h2 id="flash-composer-title" className="mt-1 text-xl font-bold">
-                  {step === "write" ? t("flash.composer.title") : t("flash.composer.reviewTitle")}
-                </h2>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {step === "write" ? t("flash.composer.description") : t("flash.composer.reviewDescription")}
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={closeComposer}
-                disabled={publishing}
-                className="grid size-10 shrink-0 place-items-center rounded-full bg-muted text-muted-foreground hover:text-foreground"
-                aria-label={t("common.close")}
-              >
-                <X className="size-5" aria-hidden="true" />
-              </button>
-            </div>
+      <Dialog
+        open={composerOpen}
+        onOpenChange={(open) => {
+          if (!open && !publishing) closeComposer();
+        }}
+      >
+        <DialogContent className="fixed bottom-0 left-0 top-auto max-h-[92dvh] w-full max-w-lg translate-x-0 translate-y-0 overflow-y-auto rounded-t-[1.75rem] border-border bg-background p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] shadow-2xl sm:left-[50%] sm:top-[50%] sm:bottom-auto sm:translate-x-[-50%] sm:translate-y-[-50%] sm:rounded-[1.75rem] sm:p-6">
+          <DialogHeader className="mb-5 pr-10 text-left">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
+              {step === "write" ? t("flash.composer.step1") : t("flash.composer.step2")}
+            </p>
+            <DialogTitle className="mt-1 text-xl font-bold">
+              {step === "write" ? t("flash.composer.title") : t("flash.composer.reviewTitle")}
+            </DialogTitle>
+            <DialogDescription className="mt-1 text-sm text-muted-foreground">
+              {step === "write" ? t("flash.composer.description") : t("flash.composer.reviewDescription")}
+            </DialogDescription>
+          </DialogHeader>
 
-            {step === "write" ? (
-              <>
-                <Textarea
-                  value={text}
-                  onChange={(event) => setText(event.target.value)}
-                  maxLength={600}
-                  rows={5}
-                  autoFocus
-                  placeholder={t("flash.composer.placeholder")}
-                  aria-label={t("flash.composer.placeholder")}
-                  className="min-h-36 resize-y rounded-2xl text-base"
-                />
-                <div className="mt-3 flex items-center justify-between gap-3">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="min-h-11 rounded-full"
-                    onClick={recording ? () => recognitionRef.current?.stop() : startVoiceInput}
-                    disabled={!speechSupported && !recording}
-                  >
-                    {recording ? <MicOff className="mr-2 size-4" /> : <Mic className="mr-2 size-4" />}
-                    {recording ? t("flash.voice.stop") : t("flash.voice.action")}
-                  </Button>
-                  <span className="text-xs tabular-nums text-muted-foreground">{text.length}/600</span>
-                </div>
-                {voiceMessage ? (
-                  <p className="mt-2 text-xs text-muted-foreground" role="status">{voiceMessage}</p>
-                ) : !speechSupported ? (
-                  <p className="mt-2 text-xs text-muted-foreground">{t("flash.voice.unsupported")}</p>
-                ) : null}
-                {parsedIntent ? (
-                  <div className="mt-4 rounded-2xl border border-primary/15 bg-primary/5 p-4" aria-live="polite">
-                    <p className="mb-2 text-sm font-semibold">{t("flash.composer.understood")}</p>
-                    <div className="flex flex-wrap gap-2">
-                      <span className="rounded-full bg-card px-3 py-1.5 text-xs font-medium">{t(`flash.kind.${parsedIntent.kind}`)}</span>
-                      <span className="rounded-full bg-card px-3 py-1.5 text-xs font-medium">{t(`flash.category.${parsedIntent.category}`)}</span>
-                      <span className="rounded-full bg-card px-3 py-1.5 text-xs font-medium">{t(`flash.slot.${parsedIntent.timeSlot}`)}</span>
-                    </div>
-                  </div>
-                ) : null}
+          {step === "write" ? (
+            <>
+              <Textarea
+                value={text}
+                onChange={(event) => setText(event.target.value)}
+                maxLength={600}
+                rows={5}
+                autoFocus
+                placeholder={t("flash.composer.placeholder")}
+                aria-label={t("flash.composer.placeholder")}
+                className="min-h-36 resize-y rounded-2xl text-base"
+              />
+              <div className="mt-3 flex items-center justify-between gap-3">
                 <Button
                   type="button"
-                  className="mt-5 min-h-12 w-full rounded-full"
-                  disabled={!parsedIntent || !text.trim()}
-                  onClick={continueToReview}
+                  variant="outline"
+                  className="min-h-11 rounded-full"
+                  onClick={recording ? () => recognitionRef.current?.stop() : startVoiceInput}
+                  disabled={!speechSupported && !recording}
                 >
-                  {t("common.continue")}
-                  <ArrowRight className="ml-2 size-4" aria-hidden="true" />
+                  {recording ? <MicOff className="mr-2 size-4" /> : <Mic className="mr-2 size-4" />}
+                  {recording ? t("flash.voice.stop") : t("flash.voice.action")}
                 </Button>
-              </>
-            ) : (
-              <>
-                <div className="rounded-2xl bg-muted/60 p-4">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t("flash.composer.yourMessage")}</p>
-                  <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed">{text}</p>
-                  <button type="button" className="mt-3 text-sm font-semibold text-primary" onClick={() => setStep("write")}>
-                    {t("flash.composer.editMessage")}
-                  </button>
-                </div>
-
-                <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                  <label className="grid gap-1.5 text-sm font-medium">
-                    {t("flash.composer.kind")}
-                    <select value={kind} onChange={(event) => setKind(event.target.value as FlashKind)} className="min-h-11 rounded-xl border border-input bg-background px-3">
-                      {(["need", "offer"] as FlashKind[]).map((value) => <option key={value} value={value}>{t(`flash.kind.${value}`)}</option>)}
-                    </select>
-                  </label>
-                  <label className="grid gap-1.5 text-sm font-medium">
-                    {t("flash.composer.category")}
-                    <select value={category} onChange={(event) => setCategory(event.target.value as FlashCategory)} className="min-h-11 rounded-xl border border-input bg-background px-3">
-                      {CATEGORIES.map((value) => <option key={value} value={value}>{t(`flash.category.${value}`)}</option>)}
-                    </select>
-                  </label>
-                  <label className="grid gap-1.5 text-sm font-medium">
-                    {t("flash.composer.when")}
-                    <select value={timeSlot} onChange={(event) => setTimeSlot(event.target.value as FlashTimeSlot)} className="min-h-11 rounded-xl border border-input bg-background px-3">
-                      {TIME_SLOTS.map((value) => <option key={value} value={value}>{t(`flash.slot.${value}`)}</option>)}
-                    </select>
-                  </label>
-                  <label className="grid gap-1.5 text-sm font-medium">
-                    {t("flash.composer.area")}
-                    <input value={areaLabel} onChange={(event) => setAreaLabel(event.target.value)} maxLength={80} placeholder={t("flash.composer.areaPlaceholder")} className="min-h-11 rounded-xl border border-input bg-background px-3 font-normal" />
-                  </label>
-                </div>
-
-                <div className="mt-4 flex items-start gap-2 rounded-xl border border-border bg-muted/40 p-3 text-xs leading-relaxed text-muted-foreground">
-                  <Check className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
-                  <p>{t("flash.composer.confirmHint")}</p>
-                </div>
-
-                {!user && !authLoading ? (
-                  <div className="mt-4 rounded-xl border border-border p-3">
-                    <p className="text-sm text-muted-foreground">{t("flash.composer.signIn")}</p>
-                    <Button asChild className="mt-3 w-full rounded-full">
-                      <Link to="/auth">{t("auth.signIn")}</Link>
-                    </Button>
+                <span className="text-xs tabular-nums text-muted-foreground">{text.length}/600</span>
+              </div>
+              {voiceMessage ? (
+                <p className="mt-2 text-xs text-muted-foreground" role="status">{voiceMessage}</p>
+              ) : !speechSupported ? (
+                <p className="mt-2 text-xs text-muted-foreground">{t("flash.voice.unsupported")}</p>
+              ) : null}
+              {parsedIntent ? (
+                <div className="mt-4 rounded-2xl border border-primary/15 bg-primary/5 p-4" aria-live="polite">
+                  <p className="mb-2 text-sm font-semibold">{t("flash.composer.understood")}</p>
+                  <div className="flex flex-wrap gap-2">
+                    <span className="rounded-full bg-card px-3 py-1.5 text-xs font-medium">{t(`flash.kind.${parsedIntent.kind}`)}</span>
+                    <span className="rounded-full bg-card px-3 py-1.5 text-xs font-medium">{t(`flash.category.${parsedIntent.category}`)}</span>
+                    <span className="rounded-full bg-card px-3 py-1.5 text-xs font-medium">{t(`flash.slot.${parsedIntent.timeSlot}`)}</span>
                   </div>
-                ) : null}
-                {publishError ? <p className="mt-3 text-sm text-destructive" role="alert">{t("flash.composer.error")}</p> : null}
-                <div className="mt-5 flex gap-2">
-                  <Button type="button" variant="outline" className="min-h-12 flex-1 rounded-full" onClick={() => setStep("write")} disabled={publishing}>
-                    {t("common.cancel")}
-                  </Button>
-                  <Button type="button" className="min-h-12 flex-[1.5] rounded-full" onClick={() => void publishFlash()} disabled={!user || authLoading || publishing || !text.trim()}>
-                    {publishing ? t("app.loading") : t("flash.composer.confirmPublish")}
+                </div>
+              ) : null}
+              <Button
+                type="button"
+                className="mt-5 min-h-12 w-full rounded-full"
+                disabled={!parsedIntent || !text.trim()}
+                onClick={continueToReview}
+              >
+                {t("common.continue")}
+                <ArrowRight className="ml-2 size-4" aria-hidden="true" />
+              </Button>
+            </>
+          ) : (
+            <>
+              <div className="rounded-2xl bg-muted/60 p-4">
+                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t("flash.composer.yourMessage")}</p>
+                <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed">{text}</p>
+                <button type="button" className="mt-3 text-sm font-semibold text-primary" onClick={() => setStep("write")}>
+                  {t("flash.composer.editMessage")}
+                </button>
+              </div>
+
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <label className="grid gap-1.5 text-sm font-medium">
+                  {t("flash.composer.kind")}
+                  <select value={kind} onChange={(event) => setKind(event.target.value as FlashKind)} className="min-h-11 rounded-xl border border-input bg-background px-3">
+                    {(["need", "offer"] as FlashKind[]).map((value) => <option key={value} value={value}>{t(`flash.kind.${value}`)}</option>)}
+                  </select>
+                </label>
+                <label className="grid gap-1.5 text-sm font-medium">
+                  {t("flash.composer.category")}
+                  <select value={category} onChange={(event) => setCategory(event.target.value as FlashCategory)} className="min-h-11 rounded-xl border border-input bg-background px-3">
+                    {CATEGORIES.map((value) => <option key={value} value={value}>{t(`flash.category.${value}`)}</option>)}
+                  </select>
+                </label>
+                <label className="grid gap-1.5 text-sm font-medium">
+                  {t("flash.composer.when")}
+                  <select value={timeSlot} onChange={(event) => setTimeSlot(event.target.value as FlashTimeSlot)} className="min-h-11 rounded-xl border border-input bg-background px-3">
+                    {TIME_SLOTS.map((value) => <option key={value} value={value}>{t(`flash.slot.${value}`)}</option>)}
+                  </select>
+                </label>
+                <label className="grid gap-1.5 text-sm font-medium">
+                  {t("flash.composer.area")}
+                  <input value={areaLabel} onChange={(event) => setAreaLabel(event.target.value)} maxLength={80} placeholder={t("flash.composer.areaPlaceholder")} className="min-h-11 rounded-xl border border-input bg-background px-3 font-normal" />
+                </label>
+              </div>
+
+              <div className="mt-4 flex items-start gap-2 rounded-xl border border-border bg-muted/40 p-3 text-xs leading-relaxed text-muted-foreground">
+                <Check className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
+                <p>{t("flash.composer.confirmHint")}</p>
+              </div>
+
+              {!user && !authLoading ? (
+                <div className="mt-4 rounded-xl border border-border p-3">
+                  <p className="text-sm text-muted-foreground">{t("flash.composer.signIn")}</p>
+                  <Button asChild className="mt-3 w-full rounded-full">
+                    <Link to="/auth">{t("auth.signIn")}</Link>
                   </Button>
                 </div>
-              </>
-            )}
-          </section>
-        </div>
-      ) : null}
-    </section>
+              ) : null}
+              {publishError ? <p className="mt-3 text-sm text-destructive" role="alert">{t("flash.composer.error")}</p> : null}
+              <div className="mt-5 flex gap-2">
+                <Button type="button" variant="outline" className="min-h-12 flex-1 rounded-full" onClick={() => setStep("write")} disabled={publishing}>
+                  {t("common.cancel")}
+                </Button>
+                <Button type="button" className="min-h-12 flex-[1.5] rounded-full" onClick={() => void publishFlash()} disabled={!user || authLoading || publishing || !text.trim()}>
+                  {publishing ? t("app.loading") : t("flash.composer.confirmPublish")}
+                </Button>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>    </section>
   );
 }
