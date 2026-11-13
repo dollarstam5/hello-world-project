@@ -2,8 +2,10 @@ import { describe, expect, it } from "vitest";
 import screenSource from "../../src/domains/presence/ui/ReelProximityScreen.tsx?raw";
 import controllerSource from "../../src/domains/presence/model/useReelProximityController.ts?raw";
 import realtimeServiceSource from "../../src/domains/presence/services/reel-activity-realtime.service.ts?raw";
+import memberAvatarSource from "../../src/domains/profile/api/profile-avatar.client.ts?raw";
+import proximityCssSource from "../../src/domains/presence/ui/reel-proximity.css?raw";
 
-describe("Réel architecture boundaries", () => {
+describe("Instant architecture boundaries", () => {
   it("keeps business services and access policy out of the screen component", () => {
     const screen = screenSource;
     expect(screen).not.toMatch(/from ["']@\/domains\/presence\/api\//);
@@ -51,6 +53,26 @@ describe("Réel architecture boundaries", () => {
     expect(screenSource).toContain("if (currentPresence) void stopPresence()");
     expect(screenSource).toContain("else if (guestPresence) void stopGuestPresence()");
     expect(screenSource).not.toContain("messagesHidden");
+  });
+
+  it("loads only the signed-in member avatar from the canonical profile and media records", () => {
+    expect(memberAvatarSource).toContain('.from("profiles")');
+    expect(memberAvatarSource).toContain('.select("avatar_media_id")');
+    expect(memberAvatarSource).toContain('.from("media")');
+    expect(memberAvatarSource).toContain('.eq("owner_id", memberId)');
+    expect(memberAvatarSource).toContain('.from("avatars")');
+    expect(memberAvatarSource).toContain('path.startsWith(`${memberId}/`)');
+    expect(controllerSource).toContain('access.mode !== "member"');
+    expect(screenSource).toContain("access.mode === \"member\" && memberAvatarUrl");
+    expect(screenSource).toContain("<img");
+  });
+
+  it("keeps the Instant header and central profile usable on narrow mobile screens", () => {
+    expect(proximityCssSource).toContain("@media (max-width: 420px)");
+    expect(proximityCssSource).toContain("@media (max-width: 360px)");
+    expect(proximityCssSource).toContain(".reel-proximity__header-actions");
+    expect(proximityCssSource).toContain(".reel-radar__me-avatar img");
+    expect(proximityCssSource).toContain(".reel-radar__me:focus-visible");
   });
 
   it("shows layered individual presence disks only after fifteen nearby profiles", () => {
