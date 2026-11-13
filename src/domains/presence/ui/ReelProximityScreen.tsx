@@ -131,8 +131,6 @@ export function ReelProximityScreen() {
     activityEnabled,
     availablePeople,
     visiblePeople,
-    nearbyPeople,
-    additionalCount,
     refreshBips,
     refreshConnections,
     endConnection,
@@ -326,7 +324,7 @@ export function ReelProximityScreen() {
           title={t("reel.ui.openAllPresences").replace("{count}", String(availablePeople.length))}
         >
           <span className="reel-presence-stack__disks" aria-hidden="true">
-            {availablePeople.slice(0, 7).map((person, index) => (
+            {availablePeople.slice(9, 16).map((person, index) => (
               <span
                 className="reel-presence-stack__disk"
                 key={person.id}
