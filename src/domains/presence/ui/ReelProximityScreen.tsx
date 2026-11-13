@@ -168,7 +168,6 @@ export function ReelProximityScreen() {
         <div className="reel-proximity__heading">
           <div className="reel-proximity__heading-copy">
             <h1>RÉEL</h1>
-            
           </div>
         </div>
         <button
@@ -320,8 +319,14 @@ export function ReelProximityScreen() {
           type="button"
           className="reel-presence-stack"
           onClick={() => setPanel("people")}
-          aria-label={t("reel.ui.openAllPresences").replace("{count}", String(availablePeople.length))}
-          title={t("reel.ui.openAllPresences").replace("{count}", String(availablePeople.length))}
+          aria-label={t("reel.ui.openAllPresences").replace(
+            "{count}",
+            String(availablePeople.length),
+          )}
+          title={t("reel.ui.openAllPresences").replace(
+            "{count}",
+            String(availablePeople.length),
+          )}
         >
           <span className="reel-presence-stack__disks" aria-hidden="true">
             {availablePeople.slice(9, 16).map((person, index) => (
@@ -348,27 +353,25 @@ export function ReelProximityScreen() {
         </button>
       )}
 
-      {!discoveryEnabled &&
-        discoveryAccess !== "prompt" &&
-        discoveryAccess !== "requesting" && (
-          <div className="reel-calm-shortcuts" aria-label={t("reel.ui.otherWays")}>
-            <button type="button" onClick={() => setPanel("global")}>
-              <Globe aria-hidden="true" />
-              <span>
-                <strong>{t("reel.ui.global")}</strong>
-                <small>{t("reel.ui.discoverPrivate")}</small>
-              </span>
-              <ChevronDown aria-hidden="true" />
-            </button>
-            <button type="button" onClick={() => openActivity("connections")}>
-              <History aria-hidden="true" />
-              <span>
-                <strong>{t("reel.ui.pastActivity")}</strong>
-                <small>{t("reel.ui.pastActivityHint")}</small>
-              </span>
-              <ChevronDown aria-hidden="true" />
-            </button>
-          </div>
+      {!discoveryEnabled && discoveryAccess !== "prompt" && discoveryAccess !== "requesting" && (
+        <div className="reel-calm-shortcuts" aria-label={t("reel.ui.otherWays")}>
+          <button type="button" onClick={() => setPanel("global")}>
+            <Globe aria-hidden="true" />
+            <span>
+              <strong>{t("reel.ui.global")}</strong>
+              <small>{t("reel.ui.discoverPrivate")}</small>
+            </span>
+            <ChevronDown aria-hidden="true" />
+          </button>
+          <button type="button" onClick={() => openActivity("connections")}>
+            <History aria-hidden="true" />
+            <span>
+              <strong>{t("reel.ui.pastActivity")}</strong>
+              <small>{t("reel.ui.pastActivityHint")}</small>
+            </span>
+            <ChevronDown aria-hidden="true" />
+          </button>
+        </div>
         )}
 
       {panel && (
