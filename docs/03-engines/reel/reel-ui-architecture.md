@@ -77,11 +77,11 @@ Instant est le nom affiché du moteur historiquement nommé Réel. Les routes, d
 - L'écran reste mobile-first, clair, aéré, accessible au clavier et compatible avec les zones sûres Android/iOS.
 - L’en-tête conserve l’identité du moteur à gauche et ses cinq commandes à droite ; les règles compactes à 420 px et 360 px réduisent les espacements et les commandes sans déplacer un titre au centre.
 - Le profil central garde une taille carrée stable ; l’image membre utilise `object-fit: cover`, et le profil invité conserve son avatar temporaire choisi et ses initiales.
-- La matrice de référence couvre 320×720, 360×800, 390×844, 412×915, 768×1024, 1024×768, 1280×800 et 844×390. Le contrat Vitest vérifie les règles responsive ; le script Playwright `bun run test:e2e` produit les captures de contrôle lorsqu’il est exécuté dans un environnement équipé de Chromium.
+- La matrice de référence couvre 320×720, 360×800, 390×844, 412×915, 768×1024, 1024×768, 1280×800 et 844×390. Le contrat Vitest vérifie que la matrice de huit viewports reste couverte ; le script Playwright `bun run test:e2e` produit les captures de contrôle lorsqu’il est exécuté dans un environnement équipé de Chromium.
 
 ## Contrôles automatisés
 
-- `tests/presence/reel-architecture.test.ts` protège les frontières entre présentation, contrôleur et service Realtime, la résolution privée de l’avatar membre et les règles responsive de l’en-tête et du profil central.
+- `tests/presence/reel-architecture.test.ts` protège les frontières entre présentation, contrôleur et service Realtime, la résolution privée de l’avatar membre et la composition de l’en-tête et du profil central.
 - `tests/mobile-e2e-contract.test.ts` protège la matrice de huit viewports : 320×720, 360×800, 390×844, 412×915, 768×1024, 1024×768, 1280×800 et 844×390.
 - `scripts/test-mobile-e2e.sh` doit produire les captures de la route Réel et vérifier que le composant `.reel-proximity` est monté avant la capture.
 
