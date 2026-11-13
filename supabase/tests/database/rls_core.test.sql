@@ -31,10 +31,16 @@ values
   ('10000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001', 'A public', 'public', 'published'),
   ('10000000-0000-0000-0000-000000000002', '00000000-0000-0000-0000-000000000001', 'A draft', 'draft', 'draft');
 
+-- Seed legacy fixture rows with the trusted service role. The migration's
+-- trigger intentionally rejects anonymous/test-runner inserts without an
+-- authenticated actor; user-facing writes are exercised below as members.
+select set_config('request.jwt.claims', '{"role":"service_role"}', true);
+set local role service_role;
 insert into public.missions (id, author_id, assignee_id, title, brief, status)
 values
-  ('20000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000002', 'Assigned', 'brief', 'open'),
+  ('20000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000002', 'Assigned', 'brief', 'assigned'),
   ('20000000-0000-0000-0000-000000000002', '00000000-0000-0000-0000-000000000001', null, 'Unassigned', 'brief', 'open');
+reset role;
 
 insert into public.posts (id, author_id, body, visibility)
 values
@@ -98,7 +104,7 @@ select policies_are(
 );
 select policies_are(
   'public', 'missions',
-  array['missions readable by members', 'own missions write', 'assignee advances mission']
+  array['missions readable by members', 'mission author creates', 'mission participants update']
 );
 select policies_are(
   'public', 'posts',
