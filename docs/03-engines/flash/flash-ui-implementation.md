@@ -23,6 +23,7 @@ Flash aide une personne à exprimer rapidement un besoin ou une proposition, à 
 - Dictée vocale lorsque le navigateur expose Web Speech Recognition.
 - Si cette capacité n'est pas disponible ou si l'autorisation microphone est refusée, la saisie texte reste utilisable et un message l'explique.
 - Le texte est analysé localement avec `parseFlashIntent`. L'analyse actuelle est déterministe et fondée sur des règles, pas sur une compréhension IA distante.
+- Le parseur couvre notamment les formulations françaises courantes de garde d'enfants et de déménagement, ainsi que les repères temporels comme « ce week-end ».
 - Le moteur propose un type, une catégorie et un créneau temporel lorsqu'il les reconnaît.
 
 ### Étape 2 — Vérifier
