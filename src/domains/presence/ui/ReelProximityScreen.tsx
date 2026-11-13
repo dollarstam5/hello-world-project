@@ -202,6 +202,7 @@ export function ReelProximityScreen() {
           title={t("reel.ui.bluetoothTitle")}
         >
           <Bluetooth aria-hidden="true" />
+          <span className="reel-proximity__bluetooth-label">V3</span>
         </button>
       </header>
 
