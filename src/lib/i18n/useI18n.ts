@@ -86,8 +86,7 @@ export function initI18n() {
 export function useI18n() {
   const { locale, setLocale } = useI18nStore();
   const t = useCallback(
-    (key: MessageKey): string =>
-      messages[locale][key] ?? messages[defaultLocale][key] ?? key,
+    (key: MessageKey): string => messages[locale][key] ?? messages[defaultLocale][key] ?? key,
     [locale],
   );
   return { locale, setLocale, t };
