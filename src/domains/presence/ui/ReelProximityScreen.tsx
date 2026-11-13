@@ -315,7 +315,7 @@ export function ReelProximityScreen() {
             ? t("reel.ui.discoveryPaused")
             : availablePeople.length === 0
               ? t("reel.ui.noNearby")
-              : `${availablePeople.length} personne${availablePeople.length > 1 ? "s" : ""} à proximité`}
+              : t("reel.ui.nearbyCount").replace("{count}", String(availablePeople.length))}
         </p>
         <div className="reel-nearby__row">
           <div className="reel-nearby__avatars">
@@ -352,7 +352,7 @@ export function ReelProximityScreen() {
       </div>
 
       {!discoveryEnabled && discoveryAccess !== "prompt" && discoveryAccess !== "requesting" && (
-        <div className="reel-calm-shortcuts" aria-label="Autres façons de découvrir Réel">
+        <div className="reel-calm-shortcuts" aria-label={t("reel.ui.otherWays")}>
           <button type="button" onClick={() => setPanel("global")}>
             <Globe aria-hidden="true" />
             <span>
@@ -440,9 +440,7 @@ export function ReelProximityScreen() {
                 </div>
 
                 <p className="reel-panel__note">
-                  Le rayon choisi est appliqué côté serveur en mètres. Les positions précises
-                  restent privées et temporaires ; aucune distance exacte n’est affichée. La
-                  précision dépend aussi du GPS de votre appareil.
+                  {t("reel.ui.radiusApplied")}
                 </p>
                 {currentPresence && (
                   <p className="reel-panel__note">
@@ -594,7 +592,7 @@ export function ReelProximityScreen() {
                   ) : currentPresence ? (
                     <>
                       <p className="reel-panel__status">
-                        Votre présence est active jusqu’à la fin de la durée choisie.
+                        {t("reel.ui.presenceActiveUntil")}
                       </p>
                       <button
                         type="button"
@@ -621,10 +619,9 @@ export function ReelProximityScreen() {
                       </label>
                       <label className="reel-setting-row">
                         <span>
-                          <strong>Je souhaite être visible</strong>
+                          <strong>{t("reel.ui.visibleConsent")}</strong>
                           <small>
-                            Ma position sera indiquée de façon approximative, jamais sous forme de
-                            coordonnées GPS exactes.
+                            {t("reel.ui.visiblePosition")}
                           </small>
                         </span>
                         <input
@@ -653,8 +650,7 @@ export function ReelProximityScreen() {
                 </div>
 
                 <p className="reel-panel__note">
-                  Les réglages de visibilité sont appliqués uniquement lorsqu’ils sont confirmés par
-                  Vitalis. Vous gardez le contrôle sur l’activation et l’arrêt de votre présence.
+                  {t("reel.ui.visibilityConfirmed")}
                 </p>
                 <button
                   type="button"
@@ -710,7 +706,7 @@ export function ReelProximityScreen() {
                     className={activityTab === "bips" ? "is-active" : ""}
                     onClick={() => setActivityTab("bips")}
                   >
-                    Bips reçus
+                    {t("reel.ui.receivedBips")}
                   </button>
                   <button
                     type="button"
@@ -876,8 +872,7 @@ export function ReelProximityScreen() {
                     <Bell aria-hidden="true" />
                     <strong>{t("reel.ui.noNotifications")}</strong>
                     <span>
-                      Les notifications liées à Réel apparaîtront ici lorsqu’un événement réel sera
-                      disponible.
+                      {t("reel.ui.notificationsHint")}
                     </span>
                   </div>
                 )}
@@ -923,7 +918,7 @@ export function ReelProximityScreen() {
                   <div className="reel-panel__empty">
                     <UsersRound aria-hidden="true" />
                     <strong>{t("reel.ui.noPeople")}</strong>
-                    <span>Les profils disponibles apparaîtront ici au fur et à mesure.</span>
+                    <span>{t("reel.ui.noProfilesHint")}</span>
                   </div>
                 )}
               </>
