@@ -123,9 +123,7 @@ class IsolationQuery {
 
     const rows = this.database.radars;
     if (this.operation === "select") {
-      const row = rows.find(
-        (candidate) => this.isVisible(candidate) && this.matches(candidate),
-      );
+      const row = rows.find((candidate) => this.isVisible(candidate) && this.matches(candidate));
       return { data: row ? { ...row } : null, error: null };
     }
 
@@ -143,9 +141,7 @@ class IsolationQuery {
       return { data: this.returning ? { ...saved } : null, error: null };
     }
 
-    const existing = rows.find(
-      (candidate) => this.isVisible(candidate) && this.matches(candidate),
-    );
+    const existing = rows.find((candidate) => this.isVisible(candidate) && this.matches(candidate));
     if (!existing) return { data: null, error: null };
     Object.assign(existing, this.payload ?? {});
     this.database.businessWrites += 1;
@@ -157,9 +153,7 @@ class IsolationDatabase {
   radars: Row[] = [];
   receipts: Row[] = [];
   businessWrites = 0;
-  private receiptReadBarrier:
-    | { target: number; arrivals: number; promise: Promise<void>; release: () => void }
-    | undefined;
+  private receiptReadBarrier: { target: number; arrivals: number; promise: Promise<void>; release: () => void } | undefined;
 
   armReceiptReadBarrier(target: number): void {
     let release = () => {};
@@ -201,26 +195,14 @@ describe("runPush transport — owner isolation and concurrency", () => {
       radiusKm: 5,
     });
 
-    const firstOwnerPush = await runPush(
-      database.client(ownerA),
-      pushRequest(ownerAEntry),
-      ownerA,
-    );
+    const firstOwnerPush = await runPush(database.client(ownerA), pushRequest(ownerAEntry), ownerA);
     const secondOwnerPush = await runPush(
       database.client(ownerB),
       pushRequest(ownerBEntry),
       ownerB,
     );
-    const ownerARetry = await runPush(
-      database.client(ownerA),
-      pushRequest(ownerAEntry),
-      ownerA,
-    );
-    const ownerBRetry = await runPush(
-      database.client(ownerB),
-      pushRequest(ownerBEntry),
-      ownerB,
-    );
+    const ownerARetry = await runPush(database.client(ownerA), pushRequest(ownerAEntry), ownerA);
+    const ownerBRetry = await runPush(database.client(ownerB), pushRequest(ownerBEntry), ownerB);
 
     expect(firstOwnerPush.accepted).toEqual([mutationA]);
     expect(secondOwnerPush.accepted).toEqual([mutationB]);
@@ -230,9 +212,9 @@ describe("runPush transport — owner isolation and concurrency", () => {
     expect(ownerBRetry.records[0]?.data).toMatchObject({ title: "Radar privé B" });
     expect(database.radars).toHaveLength(2);
     expect(database.receipts).toHaveLength(2);
-    expect(database.receipts.every((receipt) => receipt.owner_id === ownerA || receipt.owner_id === ownerB)).toBe(
-      true,
-    );
+    expect(
+      database.receipts.every((receipt) => receipt.owner_id === ownerA || receipt.owner_id === ownerB),
+    ).toBe(true);
   });
 
   it("does not let one owner update another owner's Radar or create a receipt for that attempt", async () => {
@@ -271,9 +253,7 @@ describe("runPush transport — owner isolation and concurrency", () => {
     const result = await runPush(database.client(ownerB), pushRequest(forgedEntry), ownerB);
 
     expect(result.accepted).toEqual([]);
-    expect(result.rejected).toEqual([
-      { id: mutationA, code: "owner_mismatch", retryable: false },
-    ]);
+    expect(result.rejected).toEqual([{ id: mutationA, code: "owner_mismatch", retryable: false }]);
     expect(database.radars).toHaveLength(0);
     expect(database.receipts).toHaveLength(0);
   });
