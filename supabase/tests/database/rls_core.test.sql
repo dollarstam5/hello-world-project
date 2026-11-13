@@ -90,11 +90,11 @@ select policies_are(
 );
 select policies_are(
   'public', 'profiles',
-  array['profiles readable by members', 'own profile insert', 'own profile update']
+  array['profiles readable by members', 'own profile update']
 );
 select policies_are(
   'public', 'udi',
-  array['own identity readable', 'own identity insert', 'own identity update']
+  array['identity readable by owner and administrators']
 );
 select policies_are(
   'public', 'media',
@@ -228,9 +228,14 @@ select is(
   'user B cannot update user A profile'
 );
 
-update public.udi
-set level = 'verified'
-where user_id = '00000000-0000-0000-0000-000000000001';
+select throws_ok(
+  $update public.udi
+    set level = 'verified'
+    where user_id = '00000000-0000-0000-0000-000000000001'$,
+  '42501',
+  'permission denied for table udi',
+  'authenticated member cannot write UDI'
+);
 reset role;
 select is(
   (select level from public.udi where user_id = '00000000-0000-0000-0000-000000000001'),
