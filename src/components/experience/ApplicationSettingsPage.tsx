@@ -106,8 +106,16 @@ export function ApplicationSettingsPage() {
               if (nextEnabled) publishAssistantWelcome();
             }}
           >
-            <span>{assistantEnabled ? t("settings.assistant.turnOff") : t("settings.assistant.turnOn")}</span>
-            <span className="text-xs">{assistantEnabled ? t("settings.assistant.enabled") : t("settings.assistant.disabled")}</span>
+            <span>
+              {assistantEnabled
+                ? t("settings.assistant.turnOff")
+                : t("settings.assistant.turnOn")}
+            </span>
+            <span className="text-xs">
+              {assistantEnabled
+                ? t("settings.assistant.enabled")
+                : t("settings.assistant.disabled")}
+            </span>
           </Button>
         </Surface>
       </section>
