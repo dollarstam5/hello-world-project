@@ -1577,10 +1577,6 @@
   grid-template-columns: 2.5rem minmax(0, 1fr) repeat(4, 2.5rem);
 }
 
-.reel-proximity__display-toggle {
-  color: #2878f0;
-}
-
 .reel-radar__core {
   display: grid;
   width: auto;
@@ -1623,52 +1619,6 @@
 @keyframes reel-ring-drift {
   0%, 100% { transform: scale(0.99); opacity: 0.88; }
   50% { transform: scale(1.015); opacity: 1; }
-}
-
-.reel-proximity--clean .reel-proximity__heading-copy p,
-.reel-proximity--clean .reel-nearby,
-.reel-proximity--clean .reel-calm-shortcuts {
-  display: none;
-}
-
-.reel-proximity--clean .reel-location-card__copy > strong,
- .reel-proximity--clean .reel-location-card__copy > p,
-.reel-proximity--clean .reel-location-card__actions > p {
-  display: none;
-}
-
-.reel-proximity--clean .reel-location-card {
-  width: auto;
-  max-width: none;
-  align-self: flex-start;
-  margin-top: 0.5rem;
-  padding: 0.4rem;
-  border: 0;
-  background: transparent;
-  box-shadow: none;
-}
-
-.reel-proximity--clean .reel-location-card__icon {
-  display: none;
-}
-
-.reel-proximity--clean .reel-location-card__copy {
-  flex: 0 1 auto;
-}
-
-.reel-proximity--clean .reel-location-card__actions {
-  gap: 0.35rem;
-}
-
-.reel-proximity--clean .reel-location-card__primary,
-.reel-proximity--clean .reel-location-card__secondary {
-  min-height: 2.35rem;
-  padding: 0.45rem 0.8rem;
-  font-size: 0.78rem;
-}
-
-.reel-proximity--clean .reel-proximity__radar {
-  margin-top: 0.75rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
