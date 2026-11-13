@@ -38,12 +38,7 @@ const cursors = [
 
 describe("sync protocol validation", () => {
   it("keeps the stable Flash scope identifiers mapped to the approved meter radii", () => {
-    expect(FLASH_SCOPES).toEqual([
-      "current_area",
-      "expanded_area",
-      "half_city",
-      "whole_city",
-    ]);
+    expect(FLASH_SCOPES).toEqual(["current_area", "expanded_area", "half_city", "whole_city"]);
     expect(FLASH_SCOPE_RADIUS_METERS).toEqual({
       current_area: 500,
       expanded_area: 2_000,
@@ -86,48 +81,55 @@ describe("sync protocol validation", () => {
   it("creates Flash records without accepting a client-supplied status", () => {
     const created = validatePushRequest({
       protocolVersion: SYNC_PROTOCOL_VERSION,
-      entries: [{
-        ...mutation,
-        kind: "create",
-        patch: {
-          title: "Besoin de transport",
-          body: "Un trajet local",
-          expiresAt: 1_900_000_000_000,
-          mediaIds: [],
-          kind: "need",
-          category: "transport",
-          timeSlot: "today",
-          scope: "current_area",
-          urgency: "today",
-          areaLabel: "Akwa",
+      entries: [
+        {
+          ...mutation,
+          kind: "create",
+          patch: {
+            title: "Besoin de transport",
+            body: "Un trajet local",
+            expiresAt: 1_900_000_000_000,
+            mediaIds: [],
+            kind: "need",
+            category: "transport",
+            timeSlot: "today",
+            scope: "current_area",
+            urgency: "today",
+            areaLabel: "Akwa",
+          },
         },
-      }],
+      ],
     });
     expect(created.entries[0].patch).not.toHaveProperty("status");
 
     for (const kind of ["create", "update"] as const) {
-      expect(() => validatePushRequest({
-        protocolVersion: SYNC_PROTOCOL_VERSION,
-        entries: [{
-          ...mutation,
-          kind,
-          patch: kind === "create"
-            ? {
-                title: "Publication directe",
-                body: "Ne doit pas être visible",
-                expiresAt: 1_900_000_000_000,
-                mediaIds: [],
-                kind: "need",
-                category: "transport",
-                timeSlot: "today",
-                scope: "current_area",
-                urgency: "today",
-                areaLabel: "Akwa",
-                status: "live",
-              }
-            : { status: "archived" },
-        }],
-      })).toThrow(SyncValidationError);
+      expect(() =>
+        validatePushRequest({
+          protocolVersion: SYNC_PROTOCOL_VERSION,
+          entries: [
+            {
+              ...mutation,
+              kind,
+              patch:
+                kind === "create"
+                  ? {
+                      title: "Publication directe",
+                      body: "Ne doit pas être visible",
+                      expiresAt: 1_900_000_000_000,
+                      mediaIds: [],
+                      kind: "need",
+                      category: "transport",
+                      timeSlot: "today",
+                      scope: "current_area",
+                      urgency: "today",
+                      areaLabel: "Akwa",
+                      status: "live",
+                    }
+                  : { status: "archived" },
+            },
+          ],
+        }),
+      ).toThrow(SyncValidationError);
     }
   });
 
