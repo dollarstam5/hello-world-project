@@ -355,16 +355,16 @@ export function ReelProximityScreen() {
           <button type="button" onClick={() => setPanel("global")}>
             <Globe aria-hidden="true" />
             <span>
-              <strong>Propositions globales</strong>
-              <small>Découvrir sans partager votre position</small>
+              <strong>{t("reel.ui.global")}</strong>
+              <small>{t("reel.ui.discoverPrivate")}</small>
             </span>
             <ChevronDown aria-hidden="true" />
           </button>
           <button type="button" onClick={() => openActivity("connections")}>
             <History aria-hidden="true" />
             <span>
-              <strong>Mon activité passée</strong>
-              <small>Retrouver les informations déjà disponibles</small>
+              <strong>{t("reel.ui.pastActivity")}</strong>
+              <small>{t("reel.ui.pastActivityHint")}</small>
             </span>
             <ChevronDown aria-hidden="true" />
           </button>
@@ -673,10 +673,10 @@ export function ReelProximityScreen() {
                 <h2 id="reel-panel-title">{t("reel.ui.global")}</h2>
                 <div className="reel-panel__empty">
                   <Globe aria-hidden="true" />
-                  <strong>Les découvertes générales arrivent ici</strong>
+                  <strong>{t("reel.ui.globalDiscoveries")}</strong>
                   <span>
-                    Aucune activité proche n’est chargée lorsque vous gardez votre position privée.
-                    Les propositions globales seront affichées dès que leur source sera disponible.
+                    {t("reel.ui.globalPaused")}
+                    {t("reel.ui.globalUnavailable")}
                   </span>
                 </div>
               </>
@@ -726,7 +726,7 @@ export function ReelProximityScreen() {
                     {bipsLoading && <p className="reel-panel__note">{t("reel.ui.bipsLoading")}</p>}
                     {!canUseMemberReel && access.mode !== "guest" && (
                       <p className="reel-panel__note">
-                        Publiez votre présence pour recevoir les signes des personnes proches.
+                        {t("reel.ui.publishToReceive")}
                       </p>
                     )}
                     {(canUseMemberReel || access.mode === "guest") &&
@@ -735,8 +735,8 @@ export function ReelProximityScreen() {
                       receivedGuestBips.length === 0 && (
                         <div className="reel-panel__empty">
                           <RadioTower aria-hidden="true" />
-                          <strong>Aucun bip reçu pour le moment</strong>
-                          <span>Les signes reçus pendant votre présence apparaîtront ici.</span>
+                          <strong>{t("reel.ui.noBips")}</strong>
+                          <span>{t("reel.ui.noBipsHint")}</span>
                         </div>
                       )}
                     {receivedBips.map((bip) => (
@@ -745,8 +745,8 @@ export function ReelProximityScreen() {
                           <CircleUserRound aria-hidden="true" />
                         </span>
                         <span>
-                          <strong>Une personne vous a fait signe</strong>
-                          <small>Vous pouvez accepter ou refuser cette mise en relation.</small>
+                          <strong>{t("reel.ui.someoneSignaled")}</strong>
+                          <small>{t("reel.ui.acceptOrDecline")}</small>
                         </span>
                         <button
                           type="button"
@@ -820,8 +820,8 @@ export function ReelProximityScreen() {
                       guestConnections.length === 0 && (
                         <div className="reel-panel__empty">
                           <UsersRound aria-hidden="true" />
-                          <strong>Vous n’avez pas encore de mise en relation</strong>
-                          <span>Les personnes qui acceptent votre signe apparaîtront ici.</span>
+                          <strong>{t("reel.ui.noConnections")}</strong>
+                          <span>{t("reel.ui.noConnectionsHint")}</span>
                         </div>
                       )}
                     {connections.map((connection) => (
@@ -875,7 +875,7 @@ export function ReelProximityScreen() {
                 ) : (
                   <div className="reel-panel__empty">
                     <Bell aria-hidden="true" />
-                    <strong>Tout est calme pour le moment</strong>
+                    <strong>{t("reel.ui.noNotifications")}</strong>
                     <span>
                       Les notifications liées à Réel apparaîtront ici lorsqu’un événement réel sera
                       disponible.
@@ -910,7 +910,7 @@ export function ReelProximityScreen() {
                         <span>
                           <strong>{person.name}</strong>
                           <small>
-                            {person.description || person.category || "Profil à proximité"}
+                            {person.description || person.category || t("reel.ui.nearbyProfile")}
                           </small>
                         </span>
                         {person.distanceLabel && (
@@ -950,7 +950,7 @@ export function ReelProximityScreen() {
           >
             <h2 id="reel-close-connection-title">{t("reel.ui.closeConnection")}</h2>
             <p className="reel-panel__intro">
-              Elle sera fermée pour vous deux et ne sera plus active dans Réel.
+              {t("reel.ui.endConnectionNotice")}
             </p>
             <div className="reel-panel__actions">
               <button type="button" className="reel-panel__secondary" onClick={cancelEndConnection}>
@@ -986,7 +986,7 @@ export function ReelProximityScreen() {
               type="button"
               className="reel-profile-sheet__close"
               onClick={closeProfile}
-              aria-label="Fermer le profil"
+              aria-label={t("reel.ui.closeProfile")}
             >
               <X aria-hidden="true" />
             </button>
@@ -1020,7 +1020,7 @@ export function ReelProximityScreen() {
                 )}
                 {!selectedPerson.description && !selectedPerson.locationLabel && (
                   <p className="reel-profile-sheet__empty">
-                    Cette personne n’a pas encore ajouté d’autres informations à son profil.
+                    {t("reel.ui.noExtraProfile")}
                   </p>
                 )}
               </>
