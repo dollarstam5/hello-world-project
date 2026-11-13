@@ -11,6 +11,7 @@ import {
   History,
   Home,
   Eye,
+  EyeOff,
   MapPin,
   RadioTower,
   Settings2,
