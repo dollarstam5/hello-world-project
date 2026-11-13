@@ -243,7 +243,8 @@ La migration `20261113009000_flash_scan_author_scope.sql` remplace le calcul de 
 - la limite effective est `LEAST(rayon demandé par le visiteur, rayon de portée de l'auteur)` ;
 - la distance Haversine est comparée en mètres avant l'arrondi de présentation ;
 - les Flash sans portée reconnue ou sans position privée restent exclus ;
-- aucune coordonnée précise n'est renvoyée.
+- aucune coordonnée précise n'est renvoyée ;
+- l'ancien RPC `set_flash_location` est également privé d'exécution client : il pourrait sinon déplacer la position d'un Flash déjà publié et casser l'invariant de position capturée à la publication. Seule la future RPC atomique `publish_flash` doit écrire cette position.
 
 L'ancien RPC `list_public_flashes(p_limit)` ne reçoit pas la position du visiteur et ne peut donc pas appliquer ces règles. Son exécution est révoquée pour `PUBLIC`, `anon` et `authenticated`. Le flux générique qui l'utilisait doit rester indisponible comme flux distant tant qu'il n'est pas raccordé à une recherche géographique avec position autorisée ; le RPC Scan dédié, lui, reçoit déjà les coordonnées et applique le nouveau filtre.
 
