@@ -1,4 +1,4 @@
-import { ArrowLeft, Languages, Monitor, Moon, Sun, Bot } from "lucide-react";
+import { ArrowLeft, Bot, Languages, Monitor, Moon, Sun } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Surface } from "@/components/app/Surface";
 import { Button } from "@/components/ui/button";
@@ -101,7 +101,7 @@ export function ApplicationSettingsPage() {
             aria-pressed={assistantEnabled}
             onClick={() => setAssistantEnabled(!assistantEnabled)}
           >
-            <span>{assistantEnabled ? t("settings.assistant.enabled") : t("settings.assistant.disabled")}</span>
+            <span>{assistantEnabled ? t("settings.assistant.turnOff") : t("settings.assistant.turnOn")}</span>
             <span className="text-xs">{assistantEnabled ? t("settings.assistant.enabled") : t("settings.assistant.disabled")}</span>
           </Button>
         </Surface>
