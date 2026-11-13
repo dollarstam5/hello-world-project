@@ -22,9 +22,9 @@ SELECT has_function(
 );
 
 SELECT ok(
-  has_function_privilege('anon', 'public.list_public_flashes(integer)', 'EXECUTE')
+  NOT has_function_privilege('anon', 'public.list_public_flashes(integer)', 'EXECUTE')
   AND has_function_privilege('anon', 'public.scan_public_flashes(text,text,double precision,double precision,double precision,integer)', 'EXECUTE'),
-  'anonymous clients can call only the public feed and proximity search'
+  'anonymous clients can call proximity search but not the global feed'
 );
 SELECT ok(
   has_function_privilege('authenticated', 'public.transition_flash(uuid,text)', 'EXECUTE')
@@ -95,9 +95,9 @@ SELECT set_config(
 SET LOCAL ROLE authenticated;
 
 SELECT is(
-  (SELECT count(*)::integer FROM public.list_public_flashes(50)),
+  (SELECT count(*)::integer FROM public.scan_public_flashes(NULL, NULL, 4.0200, 9.6900, 5, 50)),
   1,
-  'public feed returns the live valid Flash but not its draft'
+  'geographic Scan returns the live valid Flash but not its draft'
 );
 SELECT is(
   (SELECT count(*)::integer FROM public.scan_public_flashes(
@@ -174,9 +174,9 @@ SELECT is(
   'the author can archive their own Flash'
 );
 SELECT is(
-  (SELECT count(*)::integer FROM public.list_public_flashes(50)),
+  (SELECT count(*)::integer FROM public.scan_public_flashes(NULL, NULL, 4.0210, 9.6910, 5, 50)),
   0,
-  'archived Flash is removed from the public feed'
+  'archived Flash is removed from geographic discovery'
 );
 SELECT throws_ok(
   $$SELECT public.scan_public_flashes(NULL, NULL, 4.02, 9.69, 51, 50)$$,
