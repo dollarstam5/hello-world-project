@@ -104,9 +104,19 @@ SELECT ok(
   'unknown state transitions are rejected'
 );
 SELECT ok(
-  position('mission_migration_preflight_failed' IN
-    pg_get_functiondef('public.protect_mission_transition()'::regprocedure)) = 0,
-  'preflight remains a migration-time check and is not part of runtime state transitions'
+  (
+    SELECT count(*) = 5 AND bool_and(convalidated)
+    FROM pg_constraint
+    WHERE conrelid = 'public.missions'::regclass
+      AND conname IN (
+        'missions_status_check',
+        'missions_reward_amount_check',
+        'missions_reward_currency_check',
+        'missions_title_length_check',
+        'missions_brief_length_check'
+      )
+  ),
+  'all five mission constraints were validated after the non-destructive preflight'
 );
 
 SELECT * FROM finish();
