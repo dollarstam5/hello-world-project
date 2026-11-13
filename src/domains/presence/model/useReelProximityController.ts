@@ -643,7 +643,7 @@ export function useReelProximityController() {
         }));
         const guestCards = guests.map((person, index) => ({
           id: person.presence_id,
-          name: person.display_name || "Invité",
+          name: person.display_name || t("reel.controller.guestName"),
           avatarUrl: null,
           avatarKey: person.avatar_key,
           initials: (person.display_name || "I")
