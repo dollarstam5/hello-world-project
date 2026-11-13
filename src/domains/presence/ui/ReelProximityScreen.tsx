@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import { useState, type CSSProperties } from "react";
 import { Link } from "@tanstack/react-router";
 import { useI18n } from "@/lib/i18n/useI18n";
 import {
@@ -11,6 +11,8 @@ import {
   Globe,
   History,
   Home,
+  Eye,
+  EyeOff,
   MapPin,
   RadioTower,
   Settings2,
@@ -84,6 +86,7 @@ function RingPerson({ person, onSelect }: { person: Person; onSelect: (person: P
 
 export function ReelProximityScreen() {
   const { t } = useI18n();
+  const [messagesHidden, setMessagesHidden] = useState(false);
   const {
     access,
     discoveryAccess,
@@ -155,7 +158,7 @@ export function ReelProximityScreen() {
   } = useReelProximityController();
 
   return (
-    <section className="reel-proximity" aria-label={t("reel.ui.screenLabel")}>
+    <section className={`reel-proximity${messagesHidden ? " reel-proximity--clean" : ""}`} aria-label={t("reel.ui.screenLabel")}>
       <header className="reel-proximity__header">
         <Link
           to="/"
@@ -168,7 +171,7 @@ export function ReelProximityScreen() {
         <div className="reel-proximity__heading">
           <div className="reel-proximity__heading-copy">
             <h1>RÉEL</h1>
-            <p>{t("reel.ui.subtitle")}</p>
+            {!messagesHidden && <p>{t("reel.ui.subtitle")}</p>}
           </div>
         </div>
         <button
@@ -191,6 +194,16 @@ export function ReelProximityScreen() {
           title={t("reel.ui.preferencesTitle")}
         >
           <SlidersHorizontal aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          className="reel-proximity__header-action reel-proximity__display-toggle"
+          onClick={() => setMessagesHidden((hidden) => !hidden)}
+          aria-pressed={messagesHidden}
+          aria-label={messagesHidden ? "Afficher les messages" : "Masquer les messages"}
+          title={messagesHidden ? "Afficher les messages" : "Masquer les messages"}
+        >
+          {messagesHidden ? <Eye aria-hidden="true" /> : <EyeOff aria-hidden="true" />}
         </button>
         <button
           type="button"
@@ -292,11 +305,7 @@ export function ReelProximityScreen() {
             onClick={() => setPanel("settings")}
             aria-label={t("reel.ui.managePresence")}
           >
-            <span className="reel-radar__me-avatar">
-              <CircleUserRound aria-hidden="true" />
-            </span>
-            <span className="reel-radar__me-label">{t("reel.ui.me")}</span>
-            <span className="reel-radar__me-hint">{t("reel.ui.myPresence")}</span>
+            <CircleUserRound aria-hidden="true" />
           </button>
         </div>
         {visiblePeople.map((person) => (
@@ -304,7 +313,7 @@ export function ReelProximityScreen() {
         ))}
       </div>
 
-      <div className="reel-nearby">
+      {!messagesHidden && <div className="reel-nearby">
         <p className="reel-nearby__title">
           {!discoveryEnabled
             ? t("reel.ui.discoveryPaused")
@@ -343,9 +352,9 @@ export function ReelProximityScreen() {
             <ChevronDown aria-hidden="true" />
           </button>
         )}
-      </div>
+      </div>}
 
-      {!discoveryEnabled && discoveryAccess !== "prompt" && discoveryAccess !== "requesting" && (
+      {!messagesHidden && !discoveryEnabled && discoveryAccess !== "prompt" && discoveryAccess !== "requesting" && (
         <div className="reel-calm-shortcuts" aria-label={t("reel.ui.otherWays")}>
           <button type="button" onClick={() => setPanel("global")}>
             <Globe aria-hidden="true" />
