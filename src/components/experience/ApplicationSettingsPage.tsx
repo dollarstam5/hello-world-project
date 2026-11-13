@@ -6,6 +6,7 @@ import type { MessageKey } from "@/lib/i18n/messages";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useThemeStore, type ThemeMode } from "@/lib/app/theme";
 import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
+import { publishAssistantWelcome } from "@/lib/app/assistant-notices";
 
 const themeOptions: { value: ThemeMode; icon: typeof Moon; key: MessageKey }[] = [
   { value: "dark", icon: Moon, key: "settings.theme.dark" },
@@ -99,7 +100,11 @@ export function ApplicationSettingsPage() {
             variant={assistantEnabled ? "default" : "outline"}
             className="mt-3 w-full justify-between"
             aria-pressed={assistantEnabled}
-            onClick={() => setAssistantEnabled(!assistantEnabled)}
+            onClick={() => {
+              const nextEnabled = !assistantEnabled;
+              setAssistantEnabled(nextEnabled);
+              if (nextEnabled) publishAssistantWelcome();
+            }}
           >
             <span>{assistantEnabled ? t("settings.assistant.turnOff") : t("settings.assistant.turnOn")}</span>
             <span className="text-xs">{assistantEnabled ? t("settings.assistant.enabled") : t("settings.assistant.disabled")}</span>
