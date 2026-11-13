@@ -4,6 +4,8 @@
 **Migration :** `supabase/migrations/20261110010000_reel_presence_and_bips.sql`  
 **Tests :** `supabase/tests/database/130_reel_presence_security.test.sql`
 
+**Nom affiché validé :** **Instant**. L’icône de référence est `RadioTower` (ondes de présence), réutilisée dans l’en-tête et la navigation. Les identifiants techniques historiques (`reel`, route `/reel`, domaine et noms de fichiers) restent inchangés pour éviter une migration technique sans nécessité.
+
 ## État de l'interface
 
 - La route `/reel` monte `ReelProximityScreen`. Les profils réels ne sont chargés qu'après accord de découverte et réponse du service SQL ; aucun profil de démonstration n'est injecté.
