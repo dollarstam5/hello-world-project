@@ -25,6 +25,10 @@ export const useAssistantNotices = create<AssistantNoticeState>((set) => ({
 }));
 
 /** Publish only when enabled; the welcome is shown once after the first opt-in. */
+export function dismissAssistantNotice() {
+  useAssistantNotices.getState().dismiss();
+}
+
 export function publishAssistantNotice(message: MessageKey) {
   if (!useAssistantPreferences.getState().enabled) return;
   useAssistantNotices.getState().publish(message);
