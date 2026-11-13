@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import { Link } from "@tanstack/react-router";
+import { useI18n } from "@/lib/i18n/useI18n";
 import {
   ArrowLeft,
   Bell,
@@ -82,6 +83,7 @@ function RingPerson({ person, onSelect }: { person: Person; onSelect: (person: P
 }
 
 export function ReelProximityScreen() {
+  const { t } = useI18n();
   const {
     access,
     discoveryAccess,
@@ -153,20 +155,20 @@ export function ReelProximityScreen() {
   } = useReelProximityController();
 
   return (
-    <section className="reel-proximity" aria-label="Temps Réel de proximité">
+    <section className="reel-proximity" aria-label={t("reel.ui.screenLabel")}>
       <header className="reel-proximity__header">
         <Link
           to="/"
           className="reel-proximity__header-action"
-          aria-label="Retour à l’accueil Vitalis"
-          title="Accueil"
+          aria-label={t("reel.ui.home")}
+          title={t("reel.ui.homeTitle")}
         >
           <Home aria-hidden="true" />
         </Link>
         <div className="reel-proximity__heading">
           <div className="reel-proximity__heading-copy">
             <h1>RÉEL</h1>
-            <p>Les personnes présentes autour de vous</p>
+            <p>{t("reel.ui.subtitle")}</p>
           </div>
         </div>
         <button
@@ -176,10 +178,10 @@ export function ReelProximityScreen() {
           disabled={!activityEnabled}
           aria-label={
             activityEnabled
-              ? "Notifications, bips et mises en relation"
-              : "Les notifications Réel sont en pause sans autorisation de proximité"
+              ? t("reel.ui.notifications")
+               : t("reel.ui.notificationsPaused")
           }
-          title={activityEnabled ? "Activité" : "Notifications en pause"}
+          title={activityEnabled ? t("reel.ui.activity") : t("reel.ui.notificationsPausedShort")}
         >
           <Bell aria-hidden="true" />
         </button>
@@ -187,8 +189,8 @@ export function ReelProximityScreen() {
           type="button"
           className="reel-proximity__header-action"
           onClick={() => setPanel("settings")}
-          aria-label="Personnaliser mes préférences"
-          title="Mes préférences"
+          aria-label={t("reel.ui.preferences")}
+          title={t("reel.ui.preferencesTitle")}
         >
           <SlidersHorizontal aria-hidden="true" />
         </button>
@@ -196,8 +198,8 @@ export function ReelProximityScreen() {
           type="button"
           className="reel-proximity__header-action reel-proximity__bluetooth"
           disabled
-          aria-label="Bluetooth — bientôt disponible en version 3"
-          title="Bientôt (V3)"
+          aria-label={t("reel.ui.bluetooth")}
+          title={t("reel.ui.bluetoothTitle")}
         >
           <Bluetooth aria-hidden="true" />
         </button>
@@ -206,7 +208,7 @@ export function ReelProximityScreen() {
       {!discoveryEnabled && (
         <section
           className={`reel-location-card reel-location-card--${discoveryAccess}`}
-          aria-label="Accès à la position"
+          aria-label={t("reel.ui.location")}
         >
           <div className="reel-location-card__icon">
             <MapPin aria-hidden="true" />
@@ -215,31 +217,31 @@ export function ReelProximityScreen() {
             <strong>
               {discoveryAccess === "prompt" && !canUseMemberReel
                 ? access.mode === "guest"
-                  ? "Vous découvrez Réel en invité"
+                  ? t("reel.ui.guestTitle")
                   : access.mode === "visitor"
-                    ? "Découvrez Réel sans créer de compte"
-                    : "Votre compte n’a pas encore accès à Réel"
+                    ? t("reel.ui.visitorTitle")
+                     : t("reel.ui.noAccessTitle")
                 : discoveryAccess === "prompt"
-                  ? "Envie de découvrir ce qui se passe près de vous ?"
+                  ? t("reel.ui.promptTitle")
                   : discoveryAccess === "requesting"
-                    ? "Nous vérifions votre position…"
+                    ? t("reel.ui.requestingTitle")
                     : discoveryAccess === "denied"
-                      ? "Votre position reste privée"
-                      : "Vous découvrez Réel à votre rythme"}
+                      ? t("reel.ui.privateTitle")
+                       : t("reel.ui.calmTitle")}
             </strong>
             <p>
               {discoveryAccess === "prompt" && !canUseMemberReel
                 ? access.mode === "guest"
-                  ? "Votre session est temporaire. Vous pouvez découvrir les présences autour de vous sans créer de compte."
+                  ? t("reel.ui.guestDescription")
                   : access.mode === "visitor"
-                    ? "Commencez avec une session temporaire. Elle ne crée pas de compte ni de profil permanent."
-                    : "L’accès à Réel sera disponible lorsque votre profil Vitalis sera actif."
+                    ? t("reel.ui.visitorDescription")
+                     : t("reel.ui.noAccessDescription")
                 : discoveryAccess === "prompt"
-                  ? "Autorisez Réel à utiliser votre position pour observer les personnes et les activités autour de vous. Votre choix reste libre."
+                  ? t("reel.ui.permissionDescription")
                   : discoveryAccess === "requesting"
-                    ? "Cela ne prend que quelques instants."
+                    ? t("reel.ui.waitingDescription")
                     : locationMessage ||
-                      "Vous pouvez parcourir Réel sans localisation. Les découvertes proches, les bips et les réactions resteront en pause."}
+                      t("reel.ui.locationPausedDescription")}
             </p>
             <div className="reel-location-card__actions">
               {(canUseMemberReel || access.mode === "guest") &&
@@ -252,8 +254,8 @@ export function ReelProximityScreen() {
                     onClick={() => void requestDiscovery()}
                   >
                     {discoveryAccess === "prompt"
-                      ? "Voir les personnes autour de moi"
-                      : "Réessayer"}
+                      ? t("reel.ui.seeNearby")
+                       : t("reel.ui.retry")}
                   </button>
                 )}
               {access.mode === "visitor" && (
@@ -263,7 +265,7 @@ export function ReelProximityScreen() {
                   disabled={guestSessionLoading}
                   onClick={() => void beginGuestSession()}
                 >
-                  {guestSessionLoading ? "Ouverture de votre accès…" : "Continuer en invité"}
+                  {guestSessionLoading ? t("reel.ui.guestLoading") : t("reel.ui.guestContinue")}
                 </button>
               )}
               {guestSessionMessage && <p role="status">{guestSessionMessage}</p>}
@@ -292,13 +294,13 @@ export function ReelProximityScreen() {
             type="button"
             className="reel-radar__me"
             onClick={() => setPanel("settings")}
-            aria-label="Gérer ma présence"
+            aria-label={t("reel.ui.managePresence")}
           >
             <span className="reel-radar__me-avatar">
               <CircleUserRound aria-hidden="true" />
             </span>
-            <span className="reel-radar__me-label">Moi</span>
-            <span className="reel-radar__me-hint">Ma présence</span>
+            <span className="reel-radar__me-label">{t("reel.ui.me")}</span>
+            <span className="reel-radar__me-hint">{t("reel.ui.myPresence")}</span>
           </button>
         </div>
         {visiblePeople.map((person) => (
@@ -309,9 +311,9 @@ export function ReelProximityScreen() {
       <div className="reel-nearby">
         <p className="reel-nearby__title">
           {!discoveryEnabled
-            ? "La découverte à proximité est en pause"
+            ? t("reel.ui.discoveryPaused")
             : availablePeople.length === 0
-              ? "Aucune présence réelle ne se trouve dans votre rayon pour le moment"
+              ? t("reel.ui.noNearby")
               : `${availablePeople.length} personne${availablePeople.length > 1 ? "s" : ""} à proximité`}
         </p>
         <div className="reel-nearby__row">
