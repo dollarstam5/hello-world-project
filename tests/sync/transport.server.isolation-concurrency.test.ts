@@ -153,7 +153,14 @@ class IsolationDatabase {
   radars: Row[] = [];
   receipts: Row[] = [];
   businessWrites = 0;
-  private receiptReadBarrier: { target: number; arrivals: number; promise: Promise<void>; release: () => void } | undefined;
+  private receiptReadBarrier:
+    | {
+        target: number;
+        arrivals: number;
+        promise: Promise<void>;
+        release: () => void;
+      }
+    | undefined;
 
   armReceiptReadBarrier(target: number): void {
     let release = () => {};
