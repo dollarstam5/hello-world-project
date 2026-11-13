@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import { Link } from "@tanstack/react-router";
 import {
   ArrowLeft,
   Bell,
@@ -8,6 +9,7 @@ import {
   CircleUserRound,
   Globe,
   History,
+  Home,
   MapPin,
   RadioTower,
   Settings2,
@@ -153,15 +155,14 @@ export function ReelProximityScreen() {
   return (
     <section className="reel-proximity" aria-label="Temps Réel de proximité">
       <header className="reel-proximity__header">
-        <button
-          type="button"
+        <Link
+          to="/"
           className="reel-proximity__header-action"
-          onClick={() => setPanel("settings")}
-          aria-label="Personnaliser mes préférences"
-          title="Mes préférences"
+          aria-label="Retour à l’accueil Vitalis"
+          title="Accueil"
         >
-          <SlidersHorizontal aria-hidden="true" />
-        </button>
+          <Home aria-hidden="true" />
+        </Link>
         <div className="reel-proximity__heading">
           <div className="reel-proximity__heading-copy">
             <h1>RÉEL</h1>
@@ -181,6 +182,24 @@ export function ReelProximityScreen() {
           title={activityEnabled ? "Activité" : "Notifications en pause"}
         >
           <Bell aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          className="reel-proximity__header-action"
+          onClick={() => setPanel("settings")}
+          aria-label="Personnaliser mes préférences"
+          title="Mes préférences"
+        >
+          <SlidersHorizontal aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          className="reel-proximity__header-action reel-proximity__bluetooth"
+          disabled
+          aria-label="Bluetooth — bientôt disponible en version 3"
+          title="Bientôt (V3)"
+        >
+          <Bluetooth aria-hidden="true" />
         </button>
       </header>
 
@@ -319,15 +338,7 @@ export function ReelProximityScreen() {
               </button>
             )}
           </div>
-          <button
-            className="reel-nearby__bluetooth"
-            type="button"
-            disabled
-            aria-label="Bluetooth — prévu en version 3"
-            title="Bluetooth — sera développé en version 3"
-          >
-            <Bluetooth aria-hidden="true" />
-          </button>
+
         </div>
         {discoveryEnabled && availablePeople.length > 3 && (
           <button type="button" className="reel-nearby__all" onClick={() => setPanel("people")}>
