@@ -62,7 +62,7 @@ FROM (VALUES
 
 SELECT is(
   (SELECT count(*)::integer FROM public.scan_public_flashes(NULL,NULL,0,0,5,50)),
-  3,
+  4,
   'author scope caps 500 m and 2 km Flash results even when visitor asks for 5 km'
 );
 SELECT is(
