@@ -9,7 +9,8 @@ export const Route = createFileRoute("/reel")({
       { property: "og:title", content: "Réel — Vitalis" },
       {
         name: "description",
-        content: "Découvrez les personnes présentes autour de vous et gérez vos mises en relation en temps réel.",
+        content:
+          "Découvrez les personnes présentes autour de vous et gérez vos mises en relation en temps réel.",
       },
       {
         property: "og:description",
