@@ -1,8 +1,8 @@
 # Évolution du Domain Model : Unified Digital Identity (UDI)
 
-## 1. Nouveau principe fondamental
+## 1. Principe fondamental
 
-La **Unified Digital Identity (UDI)** est la représentation métier unifiée de l'identité numérique d'un utilisateur dans l'écosystème Vitalis. Elle fournit un point de référence cohérent pour présenter les informations issues des domaines métier.
+La **Unified Digital Identity (UDI)** est la représentation métier unifiée de l'identité numérique d'un utilisateur dans l'écosystème Vitalis. Elle constitue un point de référence cohérent pour présenter les informations issues des domaines métier.
 
 L'UDI n'est pas une permission générale de consulter toutes les données de l'utilisateur. La visibilité dépend des règles de confidentialité, du contexte et des autorisations propres au moteur qui demande ou présente une information.
 
@@ -12,53 +12,110 @@ L'UDI agrège et expose des représentations des informations produites par les 
 
 Chaque domaine reste propriétaire de ses données et de ses règles métier. L'UDI ne duplique pas ces données ; elle fournit une représentation cohérente et contrôlée.
 
-## 3. Modules de représentation
+## 3. Structure de l'UDI
 
 ### Identity
 
-Informations d'identité telles que l'identifiant, le nom, la photo, la langue, le pays, les vérifications et le statut du compte, selon les droits d'accès.
+Informations d'identité :
+- identifiant ;
+- nom ;
+- photo ;
+- langue ;
+- pays ;
+- vérifications ;
+- statut du compte.
 
 ### Capabilities
 
-Compétences, domaines d'expertise, expériences, certifications et centres d'intérêt, selon les autorisations.
+Capacités de la personne :
+- compétences ;
+- domaines d'expertise ;
+- expériences ;
+- certifications ;
+- centres d'intérêt.
 
 ### Context
 
-Localisation, disponibilité, mobilité et fuseau horaire. Les données précises ne sont exposées que lorsque le contexte et le consentement le permettent.
+Contexte actuel :
+- localisation ;
+- disponibilité ;
+- mobilité ;
+- fuseau horaire.
+
+Les données précises ne sont exposées que lorsque le contexte et les autorisations le permettent.
 
 ### Intentions
 
-Objectifs dynamiques de l'utilisateur : rechercher ou proposer une opportunité, développer son réseau, trouver des partenaires, recruter ou rechercher des investisseurs.
+Objectifs dynamiques de l'utilisateur, par exemple :
+- rechercher une opportunité ;
+- proposer une opportunité ;
+- développer son réseau ;
+- trouver des partenaires ;
+- recruter ;
+- rechercher des investisseurs.
+
+Les intentions peuvent évoluer au fil du temps et restent sous la responsabilité du domaine propriétaire.
 
 ### Preferences
 
-Préférences et paramètres produits par les domaines concernés, notamment Radar, Veille et Recommendation. Chaque moteur conserve ses propres réglages.
+Paramètres et préférences utilisés par les moteurs, notamment :
+- préférences Radar ;
+- préférences Veille ;
+- préférences Recommendation ;
+- paramètres de personnalisation.
+
+Chaque moteur conserve ses propres réglages. L'agrégation UDI ne fusionne pas les autorisations de visibilité entre moteurs.
 
 ### Privacy
 
-Politiques de visibilité, consentements et préférences de confidentialité. La politique transversale est détaillée dans [Visibilité et confidentialité propres à chaque moteur](../03-engines/visibility-and-profile-policy.md).
+Représente les règles de visibilité, consentements et préférences de confidentialité définis par l'utilisateur et la plateforme. Les projections exposées dépendent du moteur, de la publication et du contexte. Voir [la politique de visibilité par moteur](../03-engines/visibility-and-profile-policy.md).
 
 ### Activity View
 
-Vue agrégée d'activités telles que les Flash publiés, réponses, missions, interactions et historiques, alimentée par les domaines propriétaires et filtrée selon les droits.
+Vue agrégée de l'activité de l'utilisateur :
+- Flash publiés ;
+- réponses ;
+- missions ;
+- interactions ;
+- historique.
+
+Cette vue est alimentée par les domaines responsables et filtrée selon les droits d'accès.
 
 ### Trust View
 
-Vue issue du Trust Engine : niveau, score, historique et preuves autorisées. Le calcul et la gouvernance du Trust restent sous la responsabilité du domaine Trust.
+Vue produite par le Trust Engine, pouvant exposer :
+- Trust Score ;
+- niveau de confiance ;
+- historique du Trust ;
+- preuves de confiance autorisées.
 
-### Recommendation View, Radar View et Veille View
+Le calcul et la gouvernance du Trust restent entièrement sous la responsabilité du domaine Trust.
 
-Vues alimentées par les domaines Recommendation, Radar et Veille. L'UDI les présente sans modifier leurs données ni prendre leurs décisions métier.
+### Recommendation View
+
+Présente les recommandations générées par le Recommendation Engine, selon les droits applicables.
+
+### Radar View
+
+Présente les informations issues du moteur Radar sans devenir propriétaire de ses missions, critères ou résultats.
+
+### Veille View
+
+Présente les informations produites par Veille sans accéder aux missions personnelles d'autres utilisateurs ni contourner les règles d'anonymisation des signaux collectifs.
 
 ### Statistics
 
-Indicateurs agrégés calculés par les domaines responsables, exposés selon leur niveau de confidentialité.
+Expose des indicateurs agrégés concernant l'activité et l'utilisation de la plateforme, calculés par les domaines responsables.
 
 ## 4. Gouvernance et propriété des données
 
-Chaque donnée appartient à un seul domaine métier. Les autres domaines ne la dupliquent pas et ne la modifient pas directement. Ils la consultent au moyen de contrats métier ou de vues adaptées.
+Chaque donnée appartient à un seul domaine métier. Les autres domaines ne doivent jamais dupliquer cette donnée ni la modifier directement. Ils la consultent ou en présentent une vue via des contrats métier ou des vues adaptées.
 
-Ce principe garantit la cohérence, évite les duplications et préserve l'autonomie des domaines.
+Ce principe garantit :
+- la cohérence des informations ;
+- l'absence de duplication ;
+- la facilité d'évolution ;
+- la maintenabilité de la plateforme.
 
 ## 5. Projections du profil selon le moteur
 
@@ -66,7 +123,7 @@ L'UDI peut fournir plusieurs projections du profil. Une projection est un sous-e
 
 - Chaque moteur définit les informations dont il a besoin et les champs qu'il peut exposer.
 - Les autorisations d'un moteur ne sont jamais héritées automatiquement par un autre.
-- Les paramètres d'une publication ou d'une action s'appliquent à son propre contexte lorsqu'ils sont prévus.
+- Les paramètres d'une publication ou d'une action s'appliquent à leur propre contexte lorsqu'ils sont prévus.
 - L'accès au profil complet exige une autorisation explicite et propre au moteur.
 - Les champs non autorisés ne doivent pas être transmis dans les réponses API, même s'ils sont masqués dans l'interface.
 - Les règles doivent être appliquées côté serveur et testées pour les utilisateurs authentifiés, les invités et les accès hors périmètre.
@@ -77,9 +134,9 @@ L'UDI fournit les données autorisées ; le domaine consommateur reste responsab
 
 L'UDI peut agréger des vues provenant notamment de Auth, Profile, Flash, Scan, Radar, Veille, Recommendation, Trust, Mission, Notification et Media. Ces domaines restent autonomes et propriétaires de leurs données.
 
-## 7. Évolution
+## 7. Principes d'évolution
 
-De nouveaux modules ou domaines pourront être ajoutés sous forme de nouvelles vues sans transformer l'UDI en propriétaire des données métier. Toute extension doit préserver la séparation entre agrégation, propriété des données et autorisation de visibilité.
+De nouveaux modules ou domaines pourront être ajoutés sans transformer l'UDI en propriétaire des données métier. Toute extension doit préserver la séparation entre agrégation, propriété des données et autorisation de visibilité.
 
 ## 8. Statut documentaire
 
