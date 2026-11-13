@@ -41,7 +41,8 @@ export const messages = {
     "assistant.thinking": "Réflexion…",
     "assistant.greeting": "Bonjour. Que cherchez-vous aujourd'hui ?",
     "assistant.cta": "Demander à l'assistant",
-    "assistant.notice.welcome": "Bonjour, je suis là si vous avez besoin d’aide ou si vous avez une question.",
+    "assistant.notice.welcome":
+      "Bonjour, je suis là si vous avez besoin d’aide ou si vous avez une question.",
     "settings.assistant.title": "Assistant Vitalis",
     "settings.assistant.desc": "Activez l’assistant uniquement si vous souhaitez recevoir ses messages ponctuels. Il reste absent de l’écran lorsqu’il est désactivé.",
     "settings.assistant.enabled": "Activé",
@@ -859,7 +860,8 @@ export const messages = {
     "assistant.thinking": "Thinking…",
     "assistant.greeting": "Hello. What are you looking for today?",
     "assistant.cta": "Ask the assistant",
-    "assistant.notice.welcome": "Hello, I’m here if you need help or have a question.",
+    "assistant.notice.welcome":
+      "Hello, I’m here if you need help or have a question.",
     "settings.assistant.title": "Vitalis assistant",
     "settings.assistant.desc": "Enable the assistant only if you want to receive its occasional messages. It stays out of the interface when disabled.",
     "settings.assistant.enabled": "Enabled",
