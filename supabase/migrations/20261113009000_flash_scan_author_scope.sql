@@ -5,6 +5,11 @@ BEGIN;
 -- but remove all public execution paths.
 REVOKE ALL ON FUNCTION public.list_public_flashes(INTEGER) FROM PUBLIC, anon, authenticated;
 
+-- Precise publication coordinates must be written atomically with draft -> live.
+-- The legacy standalone setter could otherwise move an already-live Flash.
+REVOKE ALL ON FUNCTION public.set_flash_location(UUID, DOUBLE PRECISION, DOUBLE PRECISION, DOUBLE PRECISION)
+  FROM PUBLIC, anon, authenticated;
+
 -- Scan enforces BOTH the visitor's requested radius and the author's
 -- publication scope. Distance is compared in raw meters; rounding is output-only.
 CREATE OR REPLACE FUNCTION public.scan_public_flashes(
