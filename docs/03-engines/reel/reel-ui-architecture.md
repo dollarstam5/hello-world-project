@@ -56,7 +56,7 @@ Instant est le nom affiché du moteur historiquement nommé Réel. Les routes, d
 
 - Le centre du radar accueille le profil de la personne qui utilise Instant. Il constitue le point d'ancrage visuel autour duquel apparaissent les profils proches.
 - En mode invité, l'avatar visuel et le nom temporaire configurés pour la présence sont affichés. Aucun identifiant technique de session invitée ne doit apparaître.
-- En mode membre, l'emplacement affiche l'identité « Moi » tant que la source canonique de l'avatar du profil membre n'est pas raccordée à cet écran. Ne pas fabriquer une photo ou une identité de démonstration.
+- En mode membre, le centre affiche « Moi » et charge uniquement l’avatar du compte connecté depuis `profiles.avatar_media_id`, puis `media.remote_path`. Le média doit appartenir au membre, être une image distante non supprimée et utiliser un chemin dans son propre dossier du bucket `avatars`. Une URL signée courte est créée pour cette vue personnelle ; en cas d’absence ou d’échec, l’icône neutre reste affichée. Aucun avatar d’un autre compte n’est chargé dans ce profil central.
 - L'activation du profil central ouvre les réglages de présence existants ; elle ne déclenche pas automatiquement la découverte ni la publication de présence.
 - Les profils proches restent des éléments distincts autour du profil central. Leur sélection ouvre leur fiche. Les disques superposés donnent accès à la liste complète lorsque le nombre de profils dépasse le seuil prévu.
 
@@ -75,10 +75,13 @@ Instant est le nom affiché du moteur historiquement nommé Réel. Les routes, d
 - Les modes membre et invité gardent leurs parcours et identités serveur séparés. L'interface ne doit jamais exposer un identifiant invité.
 - Les commandes bips et mises en relation restent conditionnées aux droits réellement disponibles côté serveur. Un élément visuel ne doit pas laisser croire qu'une action non raccordée fonctionne.
 - L'écran reste mobile-first, clair, aéré, accessible au clavier et compatible avec les zones sûres Android/iOS.
+- L’en-tête conserve l’identité du moteur à gauche et ses cinq commandes à droite ; les règles compactes à 420 px et 360 px réduisent les espacements et les commandes sans déplacer un titre au centre.
+- Le profil central garde une taille carrée stable ; l’image membre utilise `object-fit: cover`, et le profil invité conserve son avatar temporaire choisi et ses initiales.
+- La matrice de référence couvre 320×720, 360×800, 390×844, 412×915, 768×1024, 1024×768, 1280×800 et 844×390. Le contrat Vitest vérifie les règles responsive ; le script Playwright `bun run test:e2e` produit les captures de contrôle lorsqu’il est exécuté dans un environnement équipé de Chromium.
 
 ## Contrôles automatisés
 
-- `tests/presence/reel-architecture.test.ts` protège les frontières entre présentation, contrôleur et service Realtime.
+- `tests/presence/reel-architecture.test.ts` protège les frontières entre présentation, contrôleur et service Realtime, la résolution privée de l’avatar membre et les règles responsive de l’en-tête et du profil central.
 - `tests/mobile-e2e-contract.test.ts` protège la matrice de huit viewports : 320×720, 360×800, 390×844, 412×915, 768×1024, 1024×768, 1280×800 et 844×390.
 - `scripts/test-mobile-e2e.sh` doit produire les captures de la route Réel et vérifier que le composant `.reel-proximity` est monté avant la capture.
 
