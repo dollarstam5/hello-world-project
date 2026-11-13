@@ -556,6 +556,7 @@ export const messages = {
     "reel.ui.memberNotActive":
       "Vos mises en relation seront accessibles lorsque votre profil Vitalis sera actif.",
     "reel.controller.nearby": "À proximité",
+    "reel.controller.guestName": "Invité",
     "reel.controller.presenceDescription": "Disponible pour échanger autour de moi",
     "reel.controller.guestPresenceMissing": "Votre présence invitée n’a pas pu être retrouvée.",
     "reel.controller.presenceCheckFailed": "Votre présence actuelle n’a pas pu être vérifiée.",
@@ -1343,6 +1344,7 @@ export const messages = {
     "reel.ui.memberNotActive":
       "Your connections will be available when your Vitalis profile is active.",
     "reel.controller.nearby": "Nearby",
+    "reel.controller.guestName": "Guest",
     "reel.controller.presenceDescription": "Available to connect with people around me",
     "reel.controller.guestPresenceMissing": "Your guest presence could not be found.",
     "reel.controller.presenceCheckFailed": "Your current presence could not be checked.",
