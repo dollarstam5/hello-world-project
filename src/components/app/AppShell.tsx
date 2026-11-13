@@ -19,7 +19,8 @@ import { duration, easing } from "@/lib/design/tokens";
 /**
  * AppShell — single mount-point that boots foundation services
  * (theme, i18n, onboarding hydration) and provides the calm canvas:
- *  - global navigation (floating bottom nav + menu sheet)
+ *  - primary engine navigation on Home, Flash, Scan and Radar
+ *  - dedicated navigation on Réel, with its own header and menu access
  *  - ambient AI layer
  *  - offline awareness
  *  - first-run guided Vitalis onboarding
