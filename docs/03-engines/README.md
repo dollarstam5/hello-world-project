@@ -1,23 +1,28 @@
-# Moteurs métier — références historiques classées
+# Moteurs métier — documentation de référence
 
-Ce répertoire regroupe des documents de domaine et des contrats historiques par moteur. Il s'agit d'une organisation documentaire : elle ne certifie ni que tous les moteurs existent dans le runtime, ni que les endpoints décrits sont implémentés.
+Ce répertoire regroupe les contrats produit, UI/UX, architecture et références historiques des moteurs Vitalis. Une documentation présente ne certifie pas à elle seule que la fonctionnalité correspondante est implémentée dans le runtime.
 
-## Domaines
+## Règle transversale de visibilité\n\n- [Visibilité et confidentialité propres à chaque moteur](./visibility-and-profile-policy.md) : chaque moteur et, lorsque pertinent, chaque publication possède ses propres autorisations ; aucune permission n'est héritée automatiquement d'un autre moteur.\n\n## Les quatre moteurs prioritaires
 
-### Flash
+Chaque moteur possède son propre périmètre, son action centrale, ses commandes, ses données et ses règles de visibilité du profil.
 
-- [Flash Engine](./flash/11-VITALA-UJ-08-FLASH-ENGINE.md)
-- [Flash API — contrat historique](<./flash/6. Flash API.md>)
+| Moteur | Dossier documentaire | Domaine applicatif actuel | Action centrale |
+| --- | --- | --- | --- |
+| **Instant** (anciennement Réel) | [reel/](./reel/) | `src/domains/presence/` | Profil et présence de l'utilisateur au centre de l'expérience |
+| **Flash** | [flash/](./flash/) | `src/domains/flash/` | Démarrer un Flash |
+| **Scan** | [scan/](./scan/) | `src/domains/scan/` | Démarrer le scanner des possibilités |
+| **Radar** | [radar/](./radar/) | `src/domains/radar/` | Démarrer le balayage des opportunités |
 
-### Scan
+### Dossiers de cadrage
 
-- [Scan Engine / module](./scan/12-VITALA-UJ-09-SCAN-ENGINE.md)
-- [Scan module](./scan/SCAN_MODULE.md)
+- **Instant** : [architecture UI](./reel/reel-ui-architecture.md), [visibilité du profil](./reel/instant-profile-visibility.md), [politique d'accès](./reel/reel-access-policy.md), [sessions invitées](./reel/reel-guest-session-architecture.md), [traçabilité](./reel/reel-traceability-matrix.md), [état d'implémentation V1](./reel/reel-v1-implementation-status.md).
+- **Flash** : [fiche de cadrage](./flash/engine-charter.md).
+- **Scan** : [fiche de cadrage](./scan/engine-charter.md).
+- **Radar** : [fiche de cadrage](./radar/engine-charter.md).
 
-### Radar
+Les fiches Flash, Scan et Radar sont des bases de travail à compléter au fil des décisions produit. Les sujets non décidés y sont explicitement laissés ouverts.
 
-- [Radar module](./radar/RADAR_MODULE.md)
-- [Radar API — contrat historique](<./radar/9. Radar API.md>)
+## Autres domaines et références historiques
 
 ### Missions
 
@@ -44,7 +49,7 @@ Ce répertoire regroupe des documents de domaine et des contrats historiques par
 
 ## Documents encore en attente de classement
 
-Les documents Veille et Recommendation classés ci-dessus ont été déplacés dans cette branche. Les sources Unified Digital Identity (UDI) restent à leur chemin historique, car elles relèvent de l'API transversale et du modèle d'identité, pas d'un moteur dédié. La copie strictement identique `Partie 1(1)` a été retirée après comparaison du blob Git ; la partie 1 sans suffixe est conservée.
+Les sources Unified Digital Identity (UDI) restent à leur chemin historique, car elles relèvent de l'API transversale et du modèle d'identité, pas d'un moteur dédié. La copie strictement identique `Partie 1(1)` a été retirée après comparaison du blob Git ; la partie 1 sans suffixe est conservée.
 
 - `docs/02-architecture/14-VITALA-VEILLE-ENGINE. Model - Unified Digital Identity (UDI).md` — malgré son préfixe Veille, son contenu concerne l'UDI ; ne pas le classer comme moteur Veille.
 - `docs/03-api/5. Unified Digital Identity API.md`
@@ -52,7 +57,7 @@ Les documents Veille et Recommendation classés ci-dessus ont été déplacés d
 
 ## Limites et traçabilité
 
-- Les contrats REST de ces sources sont des contrats cibles historiques tant que le runtime n'a pas été vérifié séparément.
+- Les contrats REST historiques restent des références cibles tant que le runtime n'a pas été vérifié séparément.
 - Les références canoniques transversales restent dans `docs/03-api/`, `docs/02-architecture/` et `docs/01-product/`.
 - Les niveaux de confiance produit restent dans `docs/01-product/trust-levels.md`, et ne sont pas assimilés au Trust Engine.
-- Cette migration documentaire ne ferme aucun ticket technique ; TECH-001 à TECH-006 restent suivis dans le registre technique.
+- Cette organisation documentaire ne ferme aucun ticket technique ; TECH-001 à TECH-006 restent suivis dans le registre technique.

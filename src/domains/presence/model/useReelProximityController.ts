@@ -38,6 +38,7 @@ import {
 } from "@/domains/presence/api/reel-presence.client";
 import { useAccessMode } from "@/domains/access-mode";
 import { useI18n } from "@/lib/i18n/useI18n";
+import { getMyProfileAvatarUrl } from "@/domains/profile/api/profile-avatar.client";
 import { evaluateReelAccess } from "@/domains/presence/policy/reel-access-policy";
 import { subscribeToReelMemberActivity } from "@/domains/presence/services/reel-activity-realtime.service";
 
@@ -63,6 +64,32 @@ const MAX_RING_PEOPLE = 9;
 export function useReelProximityController() {
   const { t } = useI18n();
   const access = useAccessMode();
+  const [memberAvatarUrl, setMemberAvatarUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    setMemberAvatarUrl(null);
+
+    if (
+      access.loading ||
+      access.mode !== "member" ||
+      !access.memberId ||
+      access.memberProfileState !== "active"
+    ) {
+      return () => {
+        active = false;
+      };
+    }
+
+    void getMyProfileAvatarUrl(access.memberId).then((avatarUrl) => {
+      if (active) setMemberAvatarUrl(avatarUrl);
+    });
+
+    return () => {
+      active = false;
+    };
+  }, [access.loading, access.mode, access.memberId, access.memberProfileState]);
+
   const [discoveryAccess, setDiscoveryAccess] = useState<
     "prompt" | "requesting" | "granted" | "ignored" | "denied"
   >("prompt");
@@ -694,6 +721,7 @@ export function useReelProximityController() {
 
   return {
     access,
+    memberAvatarUrl,
     discoveryAccess,
     locationMessage,
     guestSessionLoading,

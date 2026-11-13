@@ -153,12 +153,18 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-1);
+  padding: 0;
+  border: 0;
+  background: transparent;
   color: var(--reel-ink);
+  cursor: pointer;
   font-size: var(--text-base);
   font-weight: 600;
+  pointer-events: auto;
 }
 
 .reel-radar__me-avatar {
+  position: relative;
   display: grid;
   width: var(--reel-center-avatar-size);
   aspect-ratio: 1;
@@ -174,6 +180,22 @@
   width: 72%;
   height: 72%;
   stroke-width: 1.4;
+}
+
+.reel-radar__me-avatar img {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+}
+
+.reel-radar__me:focus-visible {
+  border-radius: var(--reel-round-xl);
+  outline: 2px solid var(--reel-blue-start);
+  outline-offset: 0.4rem;
 }
 
 .reel-radar__me-label {
@@ -386,17 +408,26 @@
 }
 
 .reel-proximity__header {
-  display: grid;
+  display: flex;
   width: 100%;
-  grid-template-columns: 2.5rem 2.5rem minmax(0, 1fr) 2.5rem 2.5rem;
   align-items: center;
-  gap: 0.375rem;
+  justify-content: space-between;
+  gap: 0.5rem;
   flex: 0 0 auto;
+}
+
+.reel-proximity__header-actions {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.375rem;
 }
 
 .reel-proximity__header-action {
   display: grid;
   width: 2.5rem;
+  flex: 0 0 auto;
   aspect-ratio: 1;
   place-items: center;
   border: 0;
@@ -433,9 +464,10 @@
 .reel-proximity__heading {
   display: flex;
   min-width: 0;
+  flex: 0 1 auto;
   align-items: center;
-  justify-content: center;
-  gap: var(--space-1);
+  justify-content: flex-start;
+  gap: var(--space-2);
 }
 
 .reel-proximity__heading h1 {
@@ -444,7 +476,7 @@
   background: linear-gradient(100deg, var(--reel-blue-start), var(--reel-blue-end));
   background-clip: text;
   color: transparent;
-  font-size: clamp(1.25rem, 6.5vw, 2.5rem);
+  font-size: clamp(1.15rem, 5.5vw, 2rem);
   font-weight: 600;
   letter-spacing: 0.045em;
   line-height: 1.1;
@@ -454,16 +486,37 @@
 }
 
 .reel-proximity__heading > svg {
-  width: 1.1rem;
-  height: 1.1rem;
+  width: 1.25rem;
+  height: 1.25rem;
   flex: 0 0 auto;
   color: var(--reel-blue-start);
   stroke-width: 2.4;
 }
 
 @media (max-width: 360px) {
+  .reel-proximity__header {
+    gap: 0.25rem;
+  }
+
+  .reel-proximity__header-actions {
+    gap: 0.2rem;
+  }
+
+  .reel-proximity__header-action {
+    width: 2.2rem;
+  }
+
+  .reel-proximity__header-action svg {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+
+  .reel-proximity__heading {
+    gap: 0.25rem;
+  }
+
   .reel-proximity__heading h1 {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
   }
 }
 
@@ -1577,10 +1630,6 @@
   grid-template-columns: 2.5rem minmax(0, 1fr) repeat(4, 2.5rem);
 }
 
-.reel-proximity__display-toggle {
-  color: #2878f0;
-}
-
 .reel-radar__core {
   display: grid;
   width: auto;
@@ -1625,52 +1674,6 @@
   50% { transform: scale(1.015); opacity: 1; }
 }
 
-.reel-proximity--clean .reel-proximity__heading-copy p,
-.reel-proximity--clean .reel-nearby,
-.reel-proximity--clean .reel-calm-shortcuts {
-  display: none;
-}
-
-.reel-proximity--clean .reel-location-card__copy > strong,
- .reel-proximity--clean .reel-location-card__copy > p,
-.reel-proximity--clean .reel-location-card__actions > p {
-  display: none;
-}
-
-.reel-proximity--clean .reel-location-card {
-  width: auto;
-  max-width: none;
-  align-self: flex-start;
-  margin-top: 0.5rem;
-  padding: 0.4rem;
-  border: 0;
-  background: transparent;
-  box-shadow: none;
-}
-
-.reel-proximity--clean .reel-location-card__icon {
-  display: none;
-}
-
-.reel-proximity--clean .reel-location-card__copy {
-  flex: 0 1 auto;
-}
-
-.reel-proximity--clean .reel-location-card__actions {
-  gap: 0.35rem;
-}
-
-.reel-proximity--clean .reel-location-card__primary,
-.reel-proximity--clean .reel-location-card__secondary {
-  min-height: 2.35rem;
-  padding: 0.45rem 0.8rem;
-  font-size: 0.78rem;
-}
-
-.reel-proximity--clean .reel-proximity__radar {
-  margin-top: 0.75rem;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .reel-radar__outer-ring,
   .reel-radar__inner-ring {
@@ -1680,11 +1683,114 @@
 
 @media (max-width: 420px) {
   .reel-proximity__header {
-    grid-template-columns: 2.25rem minmax(0, 1fr) repeat(4, 2.25rem);
+    gap: 0.3rem;
+  }
+
+  .reel-proximity__header-actions {
     gap: 0.25rem;
   }
 
   .reel-proximity__header-action {
     width: 2.25rem;
+  }
+
+  .reel-proximity__heading h1 {
+    font-size: clamp(1rem, 4vw, 1.25rem);
+  }
+}
+
+
+/* Presence control replaces the former text-visibility switch. */
+.reel-proximity__presence-toggle {
+  color: #71839d;
+}
+
+.reel-proximity__presence-toggle.is-active {
+  border-color: rgb(45 160 105 / 35%);
+  background: #e8f8f0;
+  color: #16845b;
+  box-shadow: 0 0.2rem 0.8rem rgb(45 160 105 / 14%);
+}
+
+.dark .reel-proximity__presence-toggle.is-active {
+  border-color: rgb(92 199 151 / 35%);
+  background: #244b40;
+  color: #9ce0c1;
+}
+
+/* The overlapping disks are individual nearby presences, not categories. */
+.reel-presence-stack {
+  display: grid;
+  min-height: 4.5rem;
+  place-items: center;
+  align-self: center;
+  margin-top: auto;
+  padding: 0.35rem 0.75rem calc(0.75rem + var(--safe-bottom));
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.reel-presence-stack__disks {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 1.05rem;
+}
+
+.reel-presence-stack__disk {
+  display: grid;
+  width: 3.15rem;
+  height: 3.15rem;
+  flex: 0 0 auto;
+  place-items: center;
+  overflow: hidden;
+  border: 3px solid var(--reel-canvas);
+  border-radius: 50%;
+  background: var(--reel-white);
+  box-shadow: 0 0.35rem 1rem rgb(36 76 132 / 18%);
+  transition: transform 180ms ease;
+}
+
+.reel-presence-stack__disk .reel-avatar {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.reel-presence-stack:active .reel-presence-stack__disk {
+  transform: scale(0.96);
+}
+
+.reel-presence-stack:focus-visible,
+.reel-presence-list-trigger:focus-visible {
+  outline: 3px solid #80baff;
+  outline-offset: 3px;
+  border-radius: 999px;
+}
+
+.reel-presence-list-trigger {
+  display: grid;
+  width: 2.9rem;
+  height: 2.9rem;
+  place-items: center;
+  align-self: center;
+  margin-top: auto;
+  border: 1px solid rgb(69 124 220 / 20%);
+  border-radius: 50%;
+  background: var(--reel-white);
+  color: var(--reel-blue-start);
+  box-shadow: var(--reel-shadow-soft);
+}
+
+.reel-presence-list-trigger svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reel-presence-stack__disk {
+    transition: none;
   }
 }

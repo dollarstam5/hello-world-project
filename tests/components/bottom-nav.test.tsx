@@ -25,7 +25,7 @@ vi.mock("@/lib/i18n/useI18n", () => ({
     t: (key: string) =>
       ({
         "nav.primary": "Navigation principale",
-        "nav.reel": "Réel",
+        "nav.reel": "Instant",
         "nav.flash": "Flash",
         "nav.scan": "Scan",
         "nav.radar": "Radar",

@@ -1,8 +1,7 @@
-import { useState, type CSSProperties } from "react";
+import { type CSSProperties } from "react";
 import { Link } from "@tanstack/react-router";
 import { useI18n } from "@/lib/i18n/useI18n";
 import {
-  ArrowLeft,
   Bell,
   Bluetooth,
   Check,
@@ -86,9 +85,9 @@ function RingPerson({ person, onSelect }: { person: Person; onSelect: (person: P
 
 export function ReelProximityScreen() {
   const { t } = useI18n();
-  const [messagesHidden, setMessagesHidden] = useState(false);
   const {
     access,
+    memberAvatarUrl,
     discoveryAccess,
     locationMessage,
     guestSessionLoading,
@@ -133,8 +132,6 @@ export function ReelProximityScreen() {
     activityEnabled,
     availablePeople,
     visiblePeople,
-    nearbyPeople,
-    additionalCount,
     refreshBips,
     refreshConnections,
     endConnection,
@@ -156,68 +153,73 @@ export function ReelProximityScreen() {
     closeProfile,
     openActivity,
   } = useReelProximityController();
+  const isPresenceActive = Boolean(currentPresence || guestPresence);
 
   return (
-    <section
-      className={`reel-proximity${messagesHidden ? " reel-proximity--clean" : ""}`}
-      aria-label={t("reel.ui.screenLabel")}
-    >
+    <section className="reel-proximity" aria-label={t("reel.ui.screenLabel")}>
       <header className="reel-proximity__header">
-        <Link
-          to="/"
-          className="reel-proximity__header-action"
-          aria-label={t("reel.ui.home")}
-          title={t("reel.ui.homeTitle")}
-        >
-          <Home aria-hidden="true" />
-        </Link>
         <div className="reel-proximity__heading">
-          <div className="reel-proximity__heading-copy">
-            <h1>RÉEL</h1>
-            {!messagesHidden && <p>{t("reel.ui.subtitle")}</p>}
-          </div>
+          <RadioTower aria-hidden="true" />
+          <h1>INSTANT</h1>
         </div>
-        <button
-          type="button"
-          className="reel-proximity__header-action reel-proximity__notification"
-          onClick={() => openActivity("notifications")}
-          disabled={!activityEnabled}
-          aria-label={
-            activityEnabled ? t("reel.ui.notifications") : t("reel.ui.notificationsPaused")
-          }
-          title={activityEnabled ? t("reel.ui.activity") : t("reel.ui.notificationsPausedShort")}
-        >
-          <Bell aria-hidden="true" />
-        </button>
-        <button
-          type="button"
-          className="reel-proximity__header-action"
-          onClick={() => setPanel("settings")}
-          aria-label={t("reel.ui.preferences")}
-          title={t("reel.ui.preferencesTitle")}
-        >
-          <SlidersHorizontal aria-hidden="true" />
-        </button>
-        <button
-          type="button"
-          className="reel-proximity__header-action reel-proximity__display-toggle"
-          onClick={() => setMessagesHidden((hidden) => !hidden)}
-          aria-pressed={messagesHidden}
-          aria-label={messagesHidden ? "Afficher les messages" : "Masquer les messages"}
-          title={messagesHidden ? "Afficher les messages" : "Masquer les messages"}
-        >
-          {messagesHidden ? <Eye aria-hidden="true" /> : <EyeOff aria-hidden="true" />}
-        </button>
-        <button
-          type="button"
-          className="reel-proximity__header-action reel-proximity__bluetooth"
-          disabled
-          aria-label={t("reel.ui.bluetooth")}
-          title={t("reel.ui.bluetoothTitle")}
-        >
-          <Bluetooth aria-hidden="true" />
-          <span className="reel-proximity__bluetooth-label">V3</span>
-        </button>
+        <nav className="reel-proximity__header-actions" aria-label={t("reel.ui.screenLabel")}>
+          <Link
+            to="/"
+            className="reel-proximity__header-action"
+            aria-label={t("reel.ui.home")}
+            title={t("reel.ui.homeTitle")}
+          >
+            <Home aria-hidden="true" />
+          </Link>
+          <button
+            type="button"
+            className="reel-proximity__header-action reel-proximity__notification"
+            onClick={() => openActivity("notifications")}
+            disabled={!activityEnabled}
+            aria-label={
+              activityEnabled ? t("reel.ui.notifications") : t("reel.ui.notificationsPaused")
+            }
+            title={activityEnabled ? t("reel.ui.activity") : t("reel.ui.notificationsPausedShort")}
+          >
+            <Bell aria-hidden="true" />
+          </button>
+          <button
+            type="button"
+            className="reel-proximity__header-action"
+            onClick={() => setPanel("settings")}
+            aria-label={t("reel.ui.preferences")}
+            title={t("reel.ui.preferencesTitle")}
+          >
+            <SlidersHorizontal aria-hidden="true" />
+          </button>
+          <button
+            type="button"
+            className={`reel-proximity__header-action reel-proximity__presence-toggle${isPresenceActive ? " is-active" : ""}`}
+            onClick={() => {
+              if (currentPresence) void stopPresence();
+              else if (guestPresence) void stopGuestPresence();
+              else setPanel("settings");
+            }}
+            disabled={presenceLoading}
+            aria-pressed={isPresenceActive}
+            aria-label={
+              isPresenceActive ? t("reel.ui.hideMyPresence") : t("reel.ui.showMyPresence")
+            }
+            title={isPresenceActive ? t("reel.ui.hideMyPresence") : t("reel.ui.showMyPresence")}
+          >
+            {isPresenceActive ? <Eye aria-hidden="true" /> : <EyeOff aria-hidden="true" />}
+          </button>
+          <button
+            type="button"
+            className="reel-proximity__header-action reel-proximity__bluetooth"
+            disabled
+            aria-label={t("reel.ui.bluetooth")}
+            title={t("reel.ui.bluetoothTitle")}
+          >
+            <Bluetooth aria-hidden="true" />
+            <span className="reel-proximity__bluetooth-label">V3</span>
+          </button>
+        </nav>
       </header>
 
       {!discoveryEnabled && (
@@ -307,8 +309,41 @@ export function ReelProximityScreen() {
             className="reel-radar__me"
             onClick={() => setPanel("settings")}
             aria-label={t("reel.ui.managePresence")}
+            title={t("reel.ui.managePresence")}
           >
-            <CircleUserRound aria-hidden="true" />
+            <span
+              className={`reel-radar__me-avatar${access.mode === "guest" ? ` reel-avatar--${guestAvatarKey}` : ""}`}
+              aria-hidden="true"
+            >
+              {access.mode === "guest" && guestDisplayName.trim() ? (
+                <span className="reel-avatar__initials">
+                  {guestDisplayName
+                    .trim()
+                    .split(/\s+/)
+                    .slice(0, 2)
+                    .map((part) => part[0])
+                    .join("")
+                    .toLocaleUpperCase()}
+                </span>
+              ) : (
+                <CircleUserRound />
+              )}
+              {access.mode === "member" && memberAvatarUrl ? (
+                <img
+                  src={memberAvatarUrl}
+                  alt=""
+                  aria-hidden="true"
+                  onError={(event) => {
+                    event.currentTarget.hidden = true;
+                  }}
+                />
+              ) : null}
+            </span>
+            <span className="reel-radar__me-label">
+              {access.mode === "guest" && guestDisplayName.trim()
+                ? guestDisplayName.trim()
+                : t("reel.ui.me")}
+            </span>
           </button>
         </div>
         {visiblePeople.map((person) => (
@@ -316,72 +351,65 @@ export function ReelProximityScreen() {
         ))}
       </div>
 
-      {!messagesHidden && (
-        <div className="reel-nearby">
-          <p className="reel-nearby__title">
-            {!discoveryEnabled
-              ? t("reel.ui.discoveryPaused")
-              : availablePeople.length === 0
-                ? t("reel.ui.noNearby")
-                : t("reel.ui.nearbyCount").replace("{count}", String(availablePeople.length))}
-          </p>
-          <div className="reel-nearby__row">
-            <div className="reel-nearby__avatars">
-              {nearbyPeople.map((person) => (
-                <button
-                  key={person.id}
-                  type="button"
-                  className="reel-nearby__profile"
-                  onClick={() => openProfile(person)}
-                  aria-label={`Voir le profil de ${person.name}`}
-                >
-                  <PersonAvatar person={person} size="small" />
-                </button>
-              ))}
-              {additionalCount > 0 && (
-                <button
-                  type="button"
-                  className="reel-nearby__count"
-                  onClick={() => setPanel("people")}
-                  aria-label={`Afficher les ${additionalCount} autres personnes`}
-                >
-                  +{additionalCount}
-                </button>
-              )}
-            </div>
-          </div>
-          {discoveryEnabled && availablePeople.length > 3 && (
-            <button type="button" className="reel-nearby__all" onClick={() => setPanel("people")}>
-              {t("reel.ui.seeAllPeople")}
-              <ChevronDown aria-hidden="true" />
-            </button>
+      {discoveryEnabled && availablePeople.length > 15 && (
+        <button
+          type="button"
+          className="reel-presence-stack"
+          onClick={() => setPanel("people")}
+          aria-label={t("reel.ui.openAllPresences").replace(
+            "{count}",
+            String(availablePeople.length),
           )}
-        </div>
+          title={t("reel.ui.openAllPresences").replace("{count}", String(availablePeople.length))}
+        >
+          <span className="reel-presence-stack__disks" aria-hidden="true">
+            {availablePeople.slice(9, 16).map((person, index) => (
+              <span
+                className="reel-presence-stack__disk"
+                key={person.id}
+                style={{ zIndex: 7 - index, marginLeft: index === 0 ? 0 : "-1.05rem" }}
+              >
+                <PersonAvatar person={person} size="small" />
+              </span>
+            ))}
+          </span>
+        </button>
+      )}
+      {discoveryEnabled && availablePeople.length > 9 && availablePeople.length <= 15 && (
+        <button
+          type="button"
+          className="reel-presence-list-trigger"
+          onClick={() => setPanel("people")}
+          aria-label={t("reel.ui.openAllPresences").replace(
+            "{count}",
+            String(availablePeople.length),
+          )}
+          title={t("reel.ui.openAllPresences").replace("{count}", String(availablePeople.length))}
+        >
+          <UsersRound aria-hidden="true" />
+        </button>
       )}
 
-      {!messagesHidden &&
-        !discoveryEnabled &&
-        discoveryAccess !== "prompt" &&
-        discoveryAccess !== "requesting" && (
-          <div className="reel-calm-shortcuts" aria-label={t("reel.ui.otherWays")}>
-            <button type="button" onClick={() => setPanel("global")}>
-              <Globe aria-hidden="true" />
-              <span>
-                <strong>{t("reel.ui.global")}</strong>
-                <small>{t("reel.ui.discoverPrivate")}</small>
-              </span>
-              <ChevronDown aria-hidden="true" />
-            </button>
-            <button type="button" onClick={() => openActivity("connections")}>
-              <History aria-hidden="true" />
-              <span>
-                <strong>{t("reel.ui.pastActivity")}</strong>
-                <small>{t("reel.ui.pastActivityHint")}</small>
-              </span>
-              <ChevronDown aria-hidden="true" />
-            </button>
-          </div>
-        )}
+      {!discoveryEnabled && discoveryAccess !== "prompt" && discoveryAccess !== "requesting" && (
+        <div className="reel-calm-shortcuts" aria-label={t("reel.ui.otherWays")}>
+          <button type="button" onClick={() => setPanel("global")}>
+            <Globe aria-hidden="true" />
+            <span>
+              <strong>{t("reel.ui.global")}</strong>
+              <small>{t("reel.ui.discoverPrivate")}</small>
+            </span>
+            <ChevronDown aria-hidden="true" />
+          </button>
+          <button type="button" onClick={() => openActivity("connections")}>
+            <History aria-hidden="true" />
+            <span>
+              <strong>{t("reel.ui.pastActivity")}</strong>
+              <small>{t("reel.ui.pastActivityHint")}</small>
+            </span>
+            <ChevronDown aria-hidden="true" />
+          </button>
+        </div>
+      )}
 
       {panel && (
         <div
