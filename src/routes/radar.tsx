@@ -9,6 +9,8 @@ export const Route = createFileRoute("/radar")({
     meta: [
       { title: "Radar — Vitalis" },
       { name: "description", content: "Enregistrez les recherches que vous souhaitez suivre." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: () => (
