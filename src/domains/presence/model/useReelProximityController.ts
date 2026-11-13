@@ -37,6 +37,7 @@ import {
   type ReelPresence,
 } from "@/domains/presence/api/reel-presence.client";
 import { useAccessMode } from "@/domains/access-mode";
+import { useI18n } from "@/lib/i18n/useI18n";
 import { evaluateReelAccess } from "@/domains/presence/policy/reel-access-policy";
 import { subscribeToReelMemberActivity } from "@/domains/presence/services/reel-activity-realtime.service";
 
@@ -60,6 +61,7 @@ export type ActivityTab = "notifications" | "bips" | "connections";
 const MAX_RING_PEOPLE = 9;
 
 export function useReelProximityController() {
+  const { t } = useI18n();
   const access = useAccessMode();
   const [discoveryAccess, setDiscoveryAccess] = useState<
     "prompt" | "requesting" | "granted" | "ignored" | "denied"
@@ -81,7 +83,7 @@ export function useReelProximityController() {
   const [presenceConsent, setPresenceConsent] = useState(false);
   const [guestPresenceConsent, setGuestPresenceConsent] = useState(false);
   const [guestDisplayName, setGuestDisplayName] = useState("");
-  const [guestAreaLabel, setGuestAreaLabel] = useState("À proximité");
+  const [guestAreaLabel, setGuestAreaLabel] = useState(t("reel.controller.nearby"));
   const [guestAvatarKey, setGuestAvatarKey] = useState("avatar-blue");
   const [guestPresence, setGuestPresence] = useState<{
     id: string;
@@ -94,7 +96,7 @@ export function useReelProximityController() {
     expires_at: string;
   } | null>(null);
   const [presenceDescription, setPresenceDescription] = useState(
-    "Disponible pour échanger autour de moi",
+    t("reel.controller.presenceDescription"),
   );
   const [presenceLoading, setPresenceLoading] = useState(false);
   const [presenceMessage, setPresenceMessage] = useState<string | null>(null);
@@ -164,7 +166,7 @@ export function useReelProximityController() {
           setPresenceMessage(
             error instanceof Error
               ? error.message
-              : "Votre présence invitée n’a pas pu être retrouvée.",
+              : t("reel.controller.guestPresenceMissing"),
           );
         }
       });
@@ -188,7 +190,7 @@ export function useReelProximityController() {
         if (!cancelled) setLoadedPresence({ memberId, presence });
       })
       .catch(() => {
-        if (!cancelled) setPresenceMessage("Votre présence actuelle n’a pas pu être vérifiée.");
+        if (!cancelled) setPresenceMessage(t("reel.controller.presenceCheckFailed"));
       });
     return () => {
       cancelled = true;
@@ -208,7 +210,7 @@ export function useReelProximityController() {
         setBipsMessage(null);
       } catch (error) {
         setBipsMessage(
-          error instanceof Error ? error.message : "Vos bips n’ont pas pu être chargés.",
+          error instanceof Error ? error.message : t("reel.controller.bipsLoadFailed"),
         );
       } finally {
         setBipsLoading(false);
@@ -231,7 +233,7 @@ export function useReelProximityController() {
       setBipsMessage(null);
     } catch (error) {
       setBipsMessage(
-        error instanceof Error ? error.message : "Vos bips n’ont pas pu être chargés.",
+        error instanceof Error ? error.message : t("reel.controller.bipsLoadFailed"),
       );
     } finally {
       setBipsLoading(false);
@@ -278,7 +280,7 @@ export function useReelProximityController() {
       setConnectionsMessage(null);
     } catch (error) {
       setConnectionsMessage(
-        error instanceof Error ? error.message : "Votre historique n’a pas pu être chargé.",
+        error instanceof Error ? error.message : t("reel.controller.connectionsLoadFailed"),
       );
     } finally {
       setConnectionsLoading(false);
@@ -313,9 +315,9 @@ export function useReelProximityController() {
     if (!selectedPerson) return;
     try {
       const requestId = globalThis.crypto?.randomUUID?.();
-      if (!requestId) throw new Error("Votre appareil ne permet pas de sécuriser cette demande.");
+      if (!requestId) throw new Error(t("reel.controller.deviceSecurityUnavailable"));
       if (access.mode === "guest") {
-        if (!guestPresence) throw new Error("Publiez d’abord votre présence pour faire signe.");
+        if (!guestPresence) throw new Error(t("reel.controller.publishBeforeBip"));
         await sendReelGuestBip({
           data: {
             recipientActorKind: selectedPerson.actorKind === "guest" ? "guest" : "member",
@@ -330,13 +332,13 @@ export function useReelProximityController() {
           await sendReelBip(selectedPerson.id, requestId);
         }
       } else {
-        throw new Error("Publiez votre présence avant de faire signe.");
+        throw new Error(t("reel.controller.presenceBeforeBip"));
       }
-      setBipsMessage("Votre signe a bien été envoyé.");
+      setBipsMessage(t("reel.controller.bipSent"));
       setSelectedPerson(null);
     } catch (error) {
       setBipsMessage(
-        error instanceof Error ? error.message : "Votre signe n’a pas pu être envoyé.",
+        error instanceof Error ? error.message : t("reel.controller.bipSendFailed"),
       );
     }
   };
@@ -346,7 +348,7 @@ export function useReelProximityController() {
       await commandReelBip(bip.id, action);
       await refreshBips();
       setBipsMessage(
-        action === "accept" ? "La mise en relation est établie." : "Le bip a été refusé.",
+        action === "accept" ? t("reel.controller.connectionEstablished") : t("reel.controller.bipDeclined"),
       );
     } catch (error) {
       setBipsMessage(error instanceof Error ? error.message : "Cette action n’a pas pu aboutir.");
@@ -362,7 +364,7 @@ export function useReelProximityController() {
       }
       await refreshBips();
       setBipsMessage(
-        action === "accept" ? "La mise en relation est établie." : "Le bip a été refusé.",
+        action === "accept" ? t("reel.controller.connectionEstablished") : t("reel.controller.bipDeclined"),
       );
     } catch (error) {
       setBipsMessage(error instanceof Error ? error.message : "Cette action n’a pas pu aboutir.");
@@ -388,11 +390,11 @@ export function useReelProximityController() {
         await closeReelGuestConnectionForMember(pendingConnectionEnd.connection.connection_id);
       }
       await refreshConnections();
-      setConnectionsMessage("Cette mise en relation est maintenant terminée.");
+      setConnectionsMessage(t("reel.controller.connectionEnded"));
       setPendingConnectionEnd(null);
     } catch (error) {
       setConnectionsMessage(
-        error instanceof Error ? error.message : "La mise en relation n’a pas pu être fermée.",
+        error instanceof Error ? error.message : t("reel.controller.connectionCloseFailed"),
       );
     }
   };
@@ -412,7 +414,7 @@ export function useReelProximityController() {
     if (decision.status !== "server_check" || !presenceConsent) {
       setPresenceMessage(
         !presenceConsent
-          ? "Confirmez d’abord que vous acceptez d’être visible dans votre secteur approximatif."
+          ? t("reel.controller.consentRequired")
           : decision.message,
       );
       return;
@@ -431,7 +433,7 @@ export function useReelProximityController() {
         },
       });
       if (!zone.grantId)
-        throw new Error("Votre autorisation de présence n’a pas pu être préparée. Réessayez.");
+        throw new Error(t("reel.controller.presencePermissionFailed"));
       const radiusMeters = radius === "1 km" ? 1000 : Number.parseInt(radius, 10);
       const durationMinutes: Record<string, number> = {
         "30 min": 30,
@@ -451,10 +453,10 @@ export function useReelProximityController() {
         consent: true,
       });
       if (access.memberId) setLoadedPresence({ memberId: access.memberId, presence });
-      setPresenceMessage("Votre présence est maintenant visible dans votre secteur approximatif.");
+      setPresenceMessage(t("reel.controller.presenceVisible"));
     } catch (error) {
       setPresenceMessage(
-        error instanceof Error ? error.message : "Votre présence n’a pas pu être activée.",
+        error instanceof Error ? error.message : t("reel.controller.presenceActivationFailed"),
       );
     } finally {
       setPresenceLoading(false);
@@ -463,14 +465,14 @@ export function useReelProximityController() {
 
   const activateGuestPresence = async () => {
     if (access.mode !== "guest" || !guestPresenceConsent) {
-      setPresenceMessage("Confirmez d’abord que vous acceptez de rendre votre présence visible.");
+      setPresenceMessage(t("reel.controller.visibilityConsent"));
       return;
     }
     const displayName = guestDisplayName.trim();
     const areaLabel = guestAreaLabel.trim();
     const description = presenceDescription.trim();
     if (!displayName || !areaLabel || !description) {
-      setPresenceMessage("Ajoutez un prénom, un secteur et une courte description.");
+      setPresenceMessage(t("reel.controller.guestFieldsRequired"));
       return;
     }
     setPresenceLoading(true);
@@ -502,14 +504,14 @@ export function useReelProximityController() {
       });
       const nextPresence = await getMyReelGuestPresence();
       if (!nextPresence || nextPresence.id !== result.presenceId) {
-        throw new Error("Votre présence n’a pas pu être confirmée. Réessayez.");
+        throw new Error(t("reel.controller.presenceConfirmFailed"));
       }
       setGuestPresence(nextPresence);
       setGuestPresenceConsent(false);
-      setPresenceMessage("Votre présence est maintenant visible autour de vous.");
+      setPresenceMessage(t("reel.controller.presenceVisibleNearby"));
     } catch (error) {
       setPresenceMessage(
-        error instanceof Error ? error.message : "Votre présence n’a pas pu être activée.",
+        error instanceof Error ? error.message : t("reel.controller.presenceActivationFailed"),
       );
     } finally {
       setPresenceLoading(false);
@@ -524,12 +526,12 @@ export function useReelProximityController() {
       const result = await endReelGuestPresence({
         data: { presenceId: guestPresence.id },
       });
-      if (!result.ended) throw new Error("Cette présence n’est déjà plus active.");
+      if (!result.ended) throw new Error(t("reel.controller.presenceNotActive"));
       setGuestPresence(null);
-      setPresenceMessage("Votre présence n’est plus visible.");
+      setPresenceMessage(t("reel.controller.presenceHidden"));
     } catch (error) {
       setPresenceMessage(
-        error instanceof Error ? error.message : "Votre présence n’a pas pu être arrêtée.",
+        error instanceof Error ? error.message : t("reel.controller.presenceStopFailed"),
       );
     } finally {
       setPresenceLoading(false);
@@ -547,10 +549,10 @@ export function useReelProximityController() {
           memberId: access.memberId,
           presence: ended.status === "active" ? ended : null,
         });
-      setPresenceMessage("Votre présence n’est plus visible.");
+      setPresenceMessage(t("reel.controller.presenceHidden"));
     } catch (error) {
       setPresenceMessage(
-        error instanceof Error ? error.message : "Votre présence n’a pas pu être arrêtée.",
+        error instanceof Error ? error.message : t("reel.controller.presenceStopFailed"),
       );
     } finally {
       setPresenceLoading(false);
@@ -563,11 +565,11 @@ export function useReelProximityController() {
     try {
       await access.startGuestSession();
       setGuestSessionMessage(
-        "Votre accès invité est prêt. Vous pourrez maintenant découvrir les présences autour de vous.",
+        t("reel.controller.guestSessionReady"),
       );
     } catch (error) {
       setGuestSessionMessage(
-        error instanceof Error ? error.message : "Votre accès invité n’a pas pu être ouvert.",
+        error instanceof Error ? error.message : t("reel.controller.guestSessionOpenFailed"),
       );
     } finally {
       setGuestSessionLoading(false);
@@ -663,7 +665,7 @@ export function useReelProximityController() {
       setLocationMessage(
         error instanceof Error
           ? error.message
-          : "La découverte à proximité n’est pas disponible pour le moment.",
+          : t("reel.controller.discoveryUnavailable"),
       );
     }
   };
