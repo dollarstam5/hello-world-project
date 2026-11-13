@@ -27,7 +27,10 @@ export function CommunicationSheet({
       className="max-h-[92dvh]"
     >
       <Tabs defaultValue="notifications">
-        <TabsList aria-label={t("communication.title")} className={`grid w-full ${assistantEnabled ? "grid-cols-4" : "grid-cols-3"}`}>
+        <TabsList
+          aria-label={t("communication.title")}
+          className={`grid w-full ${assistantEnabled ? "grid-cols-4" : "grid-cols-3"}`}
+        >
           <TabsTrigger
             className="min-w-0 whitespace-normal px-1 text-xs leading-tight sm:text-sm"
             value="notifications"
