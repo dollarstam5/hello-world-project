@@ -45,12 +45,9 @@ export function AppShell({ children }: { children: ReactNode }) {
   }, [pathname]);
 
   const bareChrome = pathname.startsWith("/admin") || pathname.startsWith("/auth");
-  const engineRoots = ["/flash", "/scan", "/reel", "/radar"];
-  const isEngineRoute = engineRoots.some(
-    (root) => pathname === root || pathname.startsWith(`${root}/`),
-  );
   const isReelRoute = pathname === "/reel" || pathname.startsWith("/reel/");
   const routeOwnsHeader = isReelRoute;
+  const hasBottomNavigation = !isReelRoute;
 
   const reduce = responsive.shouldReduceMotion;
   const pageTransition = reduce
@@ -69,9 +66,9 @@ export function AppShell({ children }: { children: ReactNode }) {
       {!routeOwnsHeader && <AppHeader onOpenCommunication={() => setCommunicationOpen(true)} />}
       <main
         id="main"
-        className={`mx-auto w-full max-w-screen-md ${isEngineRoute ? "pb-0" : "pb-28"}`}
+        className={`mx-auto w-full max-w-screen-md ${hasBottomNavigation ? "pb-28" : "pb-0"}`}
         style={{
-          paddingBottom: isEngineRoute ? 0 : "calc(7rem + var(--safe-bottom))",
+          paddingBottom: hasBottomNavigation ? "calc(7rem + var(--safe-bottom))" : 0,
         }}
       >
         <AnimatePresence mode="wait" initial={false}>
@@ -87,7 +84,9 @@ export function AppShell({ children }: { children: ReactNode }) {
         </AnimatePresence>
       </main>
 
-      {!isEngineRoute && <BottomNav onOpenMenu={() => setMenuOpen(true)} menuOpen={menuOpen} />}
+      {hasBottomNavigation && (
+        <BottomNav onOpenMenu={() => setMenuOpen(true)} menuOpen={menuOpen} />
+      )}
       {isReelRoute && <ReelBottomNav onOpenMenu={() => setMenuOpen(true)} menuOpen={menuOpen} />}
       <MenuSheet open={menuOpen} onOpenChange={setMenuOpen} />
       <CommunicationSheet open={communicationOpen} onOpenChange={setCommunicationOpen} />
