@@ -83,8 +83,8 @@ BEGIN
     RETURN NEW;
   END IF;
 
-  SELECT authorization.transition INTO authorized_transition
-  FROM private.flash_lifecycle_authorizations AS authorization
+  SELECT lifecycle_auth.transition INTO authorized_transition
+  FROM private.flash_lifecycle_authorizations AS lifecycle_auth
   WHERE authorization.transaction_id = txid_current()
     AND authorization.actor_id = auth.uid()
     AND authorization.flash_id = NEW.id
