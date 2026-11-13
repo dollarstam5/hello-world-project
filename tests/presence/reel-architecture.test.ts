@@ -39,4 +39,21 @@ describe("Réel architecture boundaries", () => {
     expect(guestPresenceActivation).toContain("startReelGuestPresence");
     expect(guestPresenceActivation).not.toContain("requestDiscovery()");
   });
+
+  it("uses the header visibility control only for the user's own presence", () => {
+    expect(screenSource).toContain("reel-proximity__presence-toggle");
+    expect(screenSource).toContain("aria-pressed={isPresenceActive}");
+    expect(screenSource).toContain("if (currentPresence) void stopPresence()");
+    expect(screenSource).toContain("else if (guestPresence) void stopGuestPresence()");
+    expect(screenSource).not.toContain("messagesHidden");
+  });
+
+  it("shows layered individual presence disks only after fifteen nearby profiles", () => {
+    expect(screenSource).toContain("availablePeople.length > 15");
+    expect(screenSource).toContain("availablePeople.slice(0, 7)");
+    expect(screenSource).toContain('className="reel-presence-stack__disk"');
+    expect(screenSource).toContain('onClick={() => setPanel("people")}');
+    expect(screenSource).not.toContain("reel-nearby__count");
+    expect(screenSource).not.toContain("+{additionalCount}");
+  });
 });
