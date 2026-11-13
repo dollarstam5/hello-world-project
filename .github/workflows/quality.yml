@@ -32,7 +32,9 @@ jobs:
       - name: Install Supabase CLI
         uses: supabase/setup-cli@v1
         with:
-          version: latest
+          # Pin the stable CLI version to avoid a GitHub Releases API lookup
+          # for "latest", which can fail under unauthenticated rate limits.
+          version: "3.0.0"
 
       - name: Install locked dependencies
         run: bun install --frozen-lockfile
@@ -82,4 +84,3 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ci_service_role_placeholder_000000000000
           NODE_ENV: production
         run: bun run check:release
-
