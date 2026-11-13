@@ -230,3 +230,25 @@ La branche `feat/flash-engine-experience-reconciled` applique maintenant la prem
 Le test `supabase/tests/database/141_flash_lifecycle.test.sql` couvre la présence des fonctions et du trigger, l'absence de privilège d'exécution de publication, le refus d'une promotion directe et le refus de promouvoir via la RPC d'archivage.
 
 **Limite de validation :** ces changements sont enregistrés dans la branche Git uniquement. Les tests TypeScript et pgtap n'ont pas été exécutés ici ; aucune réussite CI n'est revendiquée. La migration n'a pas été appliquée à une base distante.
+
+
+## 12. Réconciliation Scan — portée auteur et distance métrique
+
+La migration `20261113009000_flash_scan_author_scope.sql` remplace le calcul de visibilité de `scan_public_flashes` :
+
+- `current_area` limite chaque Flash à 500 m ;
+- `expanded_area` limite chaque Flash à 2 km ;
+- `half_city` limite chaque Flash à 5 km ;
+- `whole_city` limite chaque Flash à 15 km ;
+- la limite effective est `LEAST(rayon demandé par le visiteur, rayon de portée de l'auteur)` ;
+- la distance Haversine est comparée en mètres avant l'arrondi de présentation ;
+- les Flash sans portée reconnue ou sans position privée restent exclus ;
+- aucune coordonnée précise n'est renvoyée.
+
+L'ancien RPC `list_public_flashes(p_limit)` ne reçoit pas la position du visiteur et ne peut donc pas appliquer ces règles. Son exécution est révoquée pour `PUBLIC`, `anon` et `authenticated`. Le flux générique qui l'utilisait doit rester indisponible comme flux distant tant qu'il n'est pas raccordé à une recherche géographique avec position autorisée ; le RPC Scan dédié, lui, reçoit déjà les coordonnées et applique le nouveau filtre.
+
+Le type Supabase `flashes` est également réaligné : latitude, longitude et précision sont retirées des types de la table synchronisée ; `scope` et `urgency` sont non nulles et la signature de `publish_flash` est déclarée.
+
+Le test `142_flash_scan_author_scope.test.sql` couvre la fermeture du flux global, l'absence de coordonnées en sortie, la limite de portée auteur et la réduction supplémentaire par le rayon visiteur. Le test historique `122_flash_public_rpcs.test.sql` est ajusté pour vérifier le chemin géographique au lieu du flux global.
+
+**État de validation :** migrations, types et tests sont enregistrés dans la branche de la PR #72. Leur validation automatisée reste en attente des contrôles GitHub sur le dernier commit. Aucune base distante n'a été modifiée. La publication reste désactivée tant que le parcours client complet et ses tests de publication atomique ne sont pas raccordés.
