@@ -34,11 +34,16 @@ L’accès conversationnel manuel, lorsqu’il est proposé, doit rester discret
 - Messages promotionnels ou sollicitations sans utilité immédiate.
 - Désactivation difficile à trouver ou préférence réactivée sans consentement.
 
-## 4. Portée technique de la première implémentation
+## 4. Fonctionnement technique mis en place
 
-La première étape de code met en place une préférence locale persistante, désactivée par défaut, ajoute son contrôle aux paramètres de l’application, retire le bouton flottant global et masque l’onglet Assistant des communications lorsque la préférence est désactivée.
+- Une préférence locale persistante, désactivée par défaut, contrôle l’activation.
+- Le réglage est accessible dans les paramètres de l’application.
+- L’entrée flottante globale est retirée ; l’onglet de conversation n’est visible qu’après activation.
+- Un canal applicatif permet de publier un message ponctuel par événement (fonction `publishAssistantNotice`). Il refuse les messages lorsque l’assistant est désactivé.
+- Une première intervention de bienvenue est déclenchée une seule fois lors de la première activation volontaire.
+- Le message est affiché dans une notification temporaire, fermable, annoncée aux lecteurs d’écran et automatiquement retirée après neuf secondes. La désactivation masque immédiatement cette notification.
 
-**Limite à ne pas masquer :** cette première étape ne crée pas encore un moteur générique d’événements proactifs ni un orchestrateur de messages contextuels. Les futurs messages ponctuels devront être raccordés à des événements explicites, avec règles de fréquence, fermeture et non-répétition. Ne pas prétendre que cette orchestration existe tant qu’elle n’est pas implémentée et testée.
+**Limite à ne pas masquer :** le canal événementiel et le message de bienvenue sont raccordés, mais les événements métier supplémentaires ne sont pas encore branchés. Il ne faut pas déclencher de messages automatiques pour Flash, Scan, Réel, Radar ou les notifications tant que leurs événements réels et leurs règles de fréquence n’ont pas été définis et reliés. Aucun événement fictif ne doit être inventé.
 
 ## 5. Critères d’acceptation
 
