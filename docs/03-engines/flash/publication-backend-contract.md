@@ -110,3 +110,54 @@ Le contrat TypeScript Supabase doit être régénéré ou corrigé à partir du 
 ## 8. Limites de cette préparation
 
 Ce document est un contrat de travail et un audit du code versionné. Il ne prouve pas l’état d’une base distante, n’affirme pas que les migrations ont été exécutées et n’active pas la publication. Aucune base distante ne doit être modifiée dans cette phase.
+
+## 9. Réconciliation du protocole de synchronisation — audit du 13 novembre 2026
+
+**Référence :** code de `main` au commit `b2452f8b9ceda0a3dfb6e3b62dd99ee7bb93bc63`. La PR #47 est toujours divergente (37 commits en avance, 15 en retard). Audit statique uniquement.
+
+### 9.1 Chemin d'écriture constaté
+
+Les deux entrées Sync — `src/routes/api/sync/push.ts` et `src/lib/sync/sync.functions.ts` — valident la requête puis appellent `runPush` dans `src/lib/sync/transport.server.ts`. Ce transport utilise la session Supabase de l'appelant et écrit directement dans la table physique : `INSERT` pour `create`, `UPDATE` pour `update`, et mise à jour de `deleted_at` pour `delete`. Il n'existe pas de branche de commande Flash dédiée dans `runPush`.
+
+### 9.2 Contournement confirmé dans les contrats
+
+Dans `main`, `CLIENT_WRITE_POLICY.flashes` autorise `create: true`, conserve `status` dans les champs `update` et ne déclare aucune commande Flash. La validation accepte les statuts `draft`, `live`, `expired` et `archived`, et exige `status` lors d'une création.
+
+La branche de la PR #47 ne ferme pas ce chemin : elle ajoute `scope` et `urgency` aux champs Flash modifiables génériquement, mais conserve `status` dans `update` et la création générique. La validation continue d'accepter `live`. Enfin, `src/domains/flash/data.ts` crée localement un Flash avec `status: "live"`. Le drapeau UI `FLASH_SCOPE_FILTERING_ENABLED = false` n'est donc pas une frontière de sécurité : une mutation Sync construite directement peut encore tenter de créer ou promouvoir un Flash `live`.
+
+### 9.3 Barrière SQL actuelle insuffisante
+
+La migration historique accorde `SELECT, INSERT, UPDATE, DELETE` sur `public.flashes` au rôle `authenticated`. La politique RLS `own flashes write` vérifie la propriété de la ligne, pas la transition métier ni la présence d'une position privée.
+
+La RPC `transition_flash(p_flash_id, p_status)` accepte encore `live` et `archived`, sans exiger une position privée. `set_flash_location` est une opération séparée. Ces fonctions ne garantissent donc pas une publication atomique.
+
+### 9.4 Pull Sync et confidentialité
+
+`runPull` lit les tables synchronisées avec `.select("*")`, puis `toRecord` sérialise les colonnes reçues. La séparation de `20261113002000_flash_schema_columns.sql` est essentielle : les coordonnées doivent rester exclusivement dans `flash_private_locations`, qui ne figure pas dans la liste des tables synchronisées. Les champs de portée et d'urgence peuvent être synchronisés, à condition d'être ajoutés au schéma SQL et de ne contenir aucune coordonnée privée.
+
+### 9.5 Correction cible — ordre impératif
+
+1. **Contrat Sync :** retirer `status` des champs Flash modifiables directement et interdire sa présence dans les patches Flash `create` et `update`. Une création synchronisée crée uniquement un brouillon `draft` via le statut par défaut de la base. L'état local « en attente de publication » reste distinct de `live` et n'est jamais présenté comme publié à distance.
+2. **Écriture ordinaire :** le transport générique peut créer/modifier les champs de contenu autorisés d'un brouillon, mais ne promeut jamais son statut. L'archivage passe par une commande métier ou une RPC dédiée, pas par une écriture générique de `status`.
+3. **Barrière SQL :** révoquer les privilèges table-level `INSERT`/`UPDATE` trop larges du rôle `authenticated`, puis accorder uniquement les privilèges de colonnes nécessaires à la création d'un brouillon et à l'édition autorisée. Ne jamais accorder l'écriture directe sur `status`. Conserver RLS et la vérification du propriétaire. Cette barrière doit bloquer aussi un appel PostgREST direct qui contournerait TypeScript.
+4. **Publication atomique :** introduire une RPC authentifiée `publish_flash` (`SECURITY DEFINER`) qui vérifie l'auteur, l'état brouillon, la portée, l'urgence, les coordonnées et leur précision, puis écrit `scope`, `urgency`, la ligne `flash_private_locations` et `status = 'live'` dans une seule transaction. Toute erreur annule l'ensemble.
+5. **Transition existante :** restreindre `transition_flash` à l'archivage (ou la remplacer par une RPC d'archivage dédiée). Elle ne doit plus accepter `live`.
+6. **Offline :** la création reste en attente jusqu'à la synchronisation du brouillon et au succès confirmé de `publish_flash`. En cas d'échec réseau ou métier, aucun Flash distant `live` ni message de succès n'est enregistré.
+7. **Découverte :** fermer `list_public_flashes` comme voie de découverte globale dès que le flux géographique de remplacement existe ; aucun autre chemin public ne doit contourner le filtre géographique.
+
+Ne pas utiliser un indicateur de session ou un paramètre de configuration modifiable par le client comme autorisation de passer `status` à `live`. La frontière doit reposer sur les privilèges SQL et la RPC dédiée.
+
+### 9.6 Tests de sécurité à ajouter
+
+- Sync `create` avec `status: "live"` : rejeté par validation.
+- Sync `update` avec `status: "live"` ou `"archived"` : rejeté, aucune écriture SQL.
+- Sync `create` sans statut : crée uniquement un brouillon avec le statut par défaut.
+- Appel PostgREST direct authentifié tentant un `INSERT` ou `UPDATE` avec `status = 'live'` : refusé par les privilèges SQL.
+- `transition_flash(..., 'live')` : refusé.
+- Publication valide : statut, portée, urgence et position privée écrits ensemble.
+- Échec de validation ou d'écriture de position : rollback complet, statut toujours `draft`.
+- Un autre membre ne peut ni publier ni archiver le Flash du propriétaire.
+- Pull Sync sans coordonnées précises ; aucune table privée ajoutée au protocole.
+- Flash historique sans portée ou position valide exclu de la découverte géographique.
+
+**Validation :** audit statique du code GitHub uniquement. Aucun test automatisé n'a été lancé pendant cet audit ; aucun résultat CI n'est revendiqué. Aucune migration n'a été exécutée et aucune base distante n'a été modifiée.
