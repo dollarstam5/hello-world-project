@@ -228,7 +228,7 @@ export function ReelProximityScreen() {
                     ? t("reel.ui.requestingTitle")
                     : discoveryAccess === "denied"
                       ? t("reel.ui.privateTitle")
-                       : t("reel.ui.calmTitle")}
+                      : t("reel.ui.calmTitle")}
             </strong>
             <p>
               {discoveryAccess === "prompt" && !canUseMemberReel
@@ -911,9 +911,7 @@ export function ReelProximityScreen() {
             aria-labelledby="reel-close-connection-title"
           >
             <h2 id="reel-close-connection-title">{t("reel.ui.closeConnection")}</h2>
-            <p className="reel-panel__intro">
-              {t("reel.ui.endConnectionNotice")}
-            </p>
+            <p className="reel-panel__intro">{t("reel.ui.endConnectionNotice")}</p>
             <div className="reel-panel__actions">
               <button type="button" className="reel-panel__secondary" onClick={cancelEndConnection}>
                 {t("reel.ui.keepConnection")}
