@@ -177,9 +177,7 @@ export function ReelProximityScreen() {
           onClick={() => openActivity("notifications")}
           disabled={!activityEnabled}
           aria-label={
-            activityEnabled
-              ? t("reel.ui.notifications")
-              : t("reel.ui.notificationsPaused")
+            activityEnabled ? t("reel.ui.notifications") : t("reel.ui.notificationsPaused")
           }
           title={activityEnabled ? t("reel.ui.activity") : t("reel.ui.notificationsPausedShort")}
         >
@@ -253,9 +251,7 @@ export function ReelProximityScreen() {
                     className="reel-location-card__primary"
                     onClick={() => void requestDiscovery()}
                   >
-                    {discoveryAccess === "prompt"
-                      ? t("reel.ui.seeNearby")
-                      : t("reel.ui.retry")}
+                    {discoveryAccess === "prompt" ? t("reel.ui.seeNearby") : t("reel.ui.retry")}
                   </button>
                 )}
               {access.mode === "visitor" && (
@@ -598,9 +594,7 @@ export function ReelProximityScreen() {
                       <label className="reel-setting-row">
                         <span>
                           <strong>{t("reel.ui.visibleConsent")}</strong>
-                          <small>
-                            {t("reel.ui.visiblePosition")}
-                          </small>
+                          <small>{t("reel.ui.visiblePosition")}</small>
                         </span>
                         <input
                           type="checkbox"
@@ -616,9 +610,7 @@ export function ReelProximityScreen() {
                         }
                         onClick={() => void activatePresence()}
                       >
-                        {presenceLoading
-                          ? t("reel.ui.activateLoading")
-                          : t("reel.ui.activate")}
+                        {presenceLoading ? t("reel.ui.activateLoading") : t("reel.ui.activate")}
                       </button>
                     </>
                   )}
@@ -700,9 +692,7 @@ export function ReelProximityScreen() {
                   <div className="reel-people-list" aria-live="polite">
                     {bipsLoading && <p className="reel-panel__note">{t("reel.ui.bipsLoading")}</p>}
                     {!canUseMemberReel && access.mode !== "guest" && (
-                      <p className="reel-panel__note">
-                        {t("reel.ui.publishToReceive")}
-                      </p>
+                      <p className="reel-panel__note">{t("reel.ui.publishToReceive")}</p>
                     )}
                     {(canUseMemberReel || access.mode === "guest") &&
                       !bipsLoading &&
@@ -766,9 +756,7 @@ export function ReelProximityScreen() {
                       <p className="reel-panel__note">{t("reel.ui.connectionsLoading")}</p>
                     )}
                     {access.mode === "visitor" && (
-                      <p className="reel-panel__note">
-                        {t("reel.ui.connectToView")}
-                      </p>
+                      <p className="reel-panel__note">{t("reel.ui.connectToView")}</p>
                     )}
                     {access.mode === "member" && !canUseMemberReel && (
                       <p className="reel-panel__note">{t("reel.ui.memberNotActive")}</p>
