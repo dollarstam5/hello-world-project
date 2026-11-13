@@ -463,6 +463,9 @@ export const messages = {
     "reel.ui.visibilityNote":
       "La découverte vous permet d’observer les activités autour de vous. Activer votre présence est un choix séparé : les autres personnes pourront alors vous voir dans votre secteur approximatif, pendant la durée choisie.",
     "reel.ui.stopPresence": "Arrêter ma présence",
+    "reel.ui.showMyPresence": "Activer ma présence",
+    "reel.ui.hideMyPresence": "Désactiver ma présence",
+    "reel.ui.openAllPresences": "Afficher les {count} présences à proximité",
     "reel.ui.displayName": "Le prénom à afficher",
     "reel.ui.displayNameHint": "Un prénom ou un nom court, sans créer de compte.",
     "reel.ui.area": "Mon secteur",
@@ -1264,6 +1267,9 @@ export const messages = {
     "reel.ui.visibilityNote":
       "Discovery lets you observe nearby activity. Making your own presence visible is a separate choice: others can then see you in your approximate area for the time you choose.",
     "reel.ui.stopPresence": "Stop my presence",
+    "reel.ui.showMyPresence": "Make my presence visible",
+    "reel.ui.hideMyPresence": "Hide my presence",
+    "reel.ui.openAllPresences": "Show all {count} nearby presences",
     "reel.ui.displayName": "Name to display",
     "reel.ui.displayNameHint": "A first name or short name, without creating an account.",
     "reel.ui.area": "My area",
