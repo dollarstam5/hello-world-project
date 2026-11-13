@@ -1570,3 +1570,120 @@
   background: #314159;
   color: #e0eafa;
 }
+
+
+/* Clean discovery view: keep people and controls, remove explanatory copy. */
+.reel-proximity__header {
+  grid-template-columns: 2.5rem minmax(0, 1fr) repeat(5, 2.5rem);
+}
+
+.reel-proximity__display-toggle {
+  color: #2878f0;
+}
+
+.reel-radar__core {
+  display: grid;
+  width: auto;
+  aspect-ratio: auto;
+  place-items: center;
+  background: transparent;
+  box-shadow: none;
+  animation: none;
+}
+
+.reel-radar__me {
+  display: grid;
+  width: 3.25rem;
+  height: 3.25rem;
+  place-items: center;
+  padding: 0;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  background: #eaf4ff;
+  box-shadow: 0 0.2rem 0.8rem rgb(49 83 133 / 16%);
+  color: #2878f0;
+}
+
+.reel-radar__me > svg {
+  width: 2rem;
+  height: 2rem;
+  stroke-width: 1.7;
+}
+
+.reel-radar__outer-ring,
+.reel-radar__inner-ring {
+  transform-origin: center;
+  animation: reel-ring-drift 8s ease-in-out infinite;
+}
+
+.reel-radar__inner-ring {
+  animation-delay: -4s;
+}
+
+@keyframes reel-ring-drift {
+  0%, 100% { transform: scale(0.99); opacity: 0.88; }
+  50% { transform: scale(1.015); opacity: 1; }
+}
+
+.reel-proximity--clean .reel-proximity__heading-copy p,
+.reel-proximity--clean .reel-nearby,
+.reel-proximity--clean .reel-calm-shortcuts {
+  display: none;
+}
+
+.reel-proximity--clean .reel-location-card__copy > strong,
+.reel-proximity--clean .reel-location-card__copy > p {
+  display: none;
+}
+
+.reel-proximity--clean .reel-location-card {
+  width: auto;
+  max-width: none;
+  align-self: flex-start;
+  margin-top: 0.5rem;
+  padding: 0.4rem;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.reel-proximity--clean .reel-location-card__icon {
+  display: none;
+}
+
+.reel-proximity--clean .reel-location-card__copy {
+  flex: 0 1 auto;
+}
+
+.reel-proximity--clean .reel-location-card__actions {
+  gap: 0.35rem;
+}
+
+.reel-proximity--clean .reel-location-card__primary,
+.reel-proximity--clean .reel-location-card__secondary {
+  min-height: 2.35rem;
+  padding: 0.45rem 0.8rem;
+  font-size: 0.78rem;
+}
+
+.reel-proximity--clean .reel-proximity__radar {
+  margin-top: 0.75rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reel-radar__outer-ring,
+  .reel-radar__inner-ring {
+    animation: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .reel-proximity__header {
+    grid-template-columns: 2.25rem minmax(0, 1fr) repeat(5, 2.25rem);
+    gap: 0.25rem;
+  }
+
+  .reel-proximity__header-action {
+    width: 2.25rem;
+  }
+}
