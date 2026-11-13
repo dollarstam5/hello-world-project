@@ -317,7 +317,13 @@ export function ReelProximityScreen() {
             >
               {access.mode === "guest" && guestDisplayName.trim() ? (
                 <span className="reel-avatar__initials">
-                  {guestDisplayName.trim().split(/\\s+/).slice(0, 2).map((part) => part[0]).join("").toLocaleUpperCase()}
+                  {guestDisplayName
+                    .trim()
+                    .split(/\\s+/)
+                    .slice(0, 2)
+                    .map((part) => part[0])
+                    .join("")
+                    .toLocaleUpperCase()}
                 </span>
               ) : (
                 <CircleUserRound />
