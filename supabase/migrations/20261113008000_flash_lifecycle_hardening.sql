@@ -119,6 +119,7 @@ DROP TRIGGER IF EXISTS flashes_guard_status_transition ON public.flashes;
 CREATE TRIGGER flashes_guard_status_transition
   BEFORE INSERT OR UPDATE OF status ON public.flashes
   FOR EACH ROW EXECUTE FUNCTION public.guard_flash_status_transition();
+REVOKE ALL ON FUNCTION public.guard_flash_status_transition() FROM PUBLIC, anon, authenticated;
 
 -- Publishing is one atomic operation: validate draft, save private coordinates,
 -- and move to live. Execution stays revoked until Scan enforces author scope
@@ -231,10 +232,7 @@ BEGIN
     RAISE EXCEPTION 'invalid_status' USING ERRCODE = '22023';
   END IF;
 
-  INSERT INTO private.flash_lifecycle_authorizations (
-    transaction_id, actor_id, flash_id, transition
-  )
-  SELECT txid_current(), auth.uid(), f.id, 'archive'
+  PERFORM 1
   FROM public.flashes AS f
   WHERE f.id = p_flash_id
     AND f.author_id = auth.uid()
@@ -245,6 +243,10 @@ BEGIN
   IF NOT FOUND THEN
     RETURN FALSE;
   END IF;
+
+  INSERT INTO private.flash_lifecycle_authorizations (
+    transaction_id, actor_id, flash_id, transition
+  ) VALUES (txid_current(), auth.uid(), p_flash_id, 'archive');
 
   UPDATE public.flashes
      SET status = 'archived',
