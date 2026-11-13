@@ -24,6 +24,12 @@ export type FlashKind = (typeof FLASH_KINDS)[number];
 export const FLASH_TIME_SLOTS = ["now", "today", "tomorrow", "this_week"] as const;
 export type FlashTimeSlot = (typeof FLASH_TIME_SLOTS)[number];
 
+export const FLASH_SCOPES = ["current_area", "expanded_area", "half_city", "whole_city"] as const;
+export type FlashScope = (typeof FLASH_SCOPES)[number];
+
+export const FLASH_URGENCIES = ["urgent", "very_urgent", "today", "as_soon_as_possible", "anytime"] as const;
+export type FlashUrgency = (typeof FLASH_URGENCIES)[number];
+
 import type { PublicProfilePreview } from "./profile-preview";
 
 /**
