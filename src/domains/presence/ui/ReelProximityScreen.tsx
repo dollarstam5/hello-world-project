@@ -86,7 +86,6 @@ function RingPerson({ person, onSelect }: { person: Person; onSelect: (person: P
 
 export function ReelProximityScreen() {
   const { t } = useI18n();
-  const [messagesHidden, setMessagesHidden] = useState(false);
   const {
     access,
     discoveryAccess,
@@ -156,12 +155,10 @@ export function ReelProximityScreen() {
     closeProfile,
     openActivity,
   } = useReelProximityController();
+  const isPresenceActive = Boolean(currentPresence || guestPresence);
 
   return (
-    <section
-      className={`reel-proximity${messagesHidden ? " reel-proximity--clean" : ""}`}
-      aria-label={t("reel.ui.screenLabel")}
-    >
+    <section className="reel-proximity" aria-label={t("reel.ui.screenLabel")}>
       <header className="reel-proximity__header">
         <Link
           to="/"
@@ -174,7 +171,7 @@ export function ReelProximityScreen() {
         <div className="reel-proximity__heading">
           <div className="reel-proximity__heading-copy">
             <h1>RÉEL</h1>
-            {!messagesHidden && <p>{t("reel.ui.subtitle")}</p>}
+            
           </div>
         </div>
         <button
@@ -200,13 +197,18 @@ export function ReelProximityScreen() {
         </button>
         <button
           type="button"
-          className="reel-proximity__header-action reel-proximity__display-toggle"
-          onClick={() => setMessagesHidden((hidden) => !hidden)}
-          aria-pressed={messagesHidden}
-          aria-label={messagesHidden ? "Afficher les messages" : "Masquer les messages"}
-          title={messagesHidden ? "Afficher les messages" : "Masquer les messages"}
+          className={`reel-proximity__header-action reel-proximity__presence-toggle${isPresenceActive ? " is-active" : ""}`}
+          onClick={() => {
+            if (currentPresence) void stopPresence();
+            else if (guestPresence) void stopGuestPresence();
+            else setPanel("settings");
+          }}
+          disabled={presenceLoading}
+          aria-pressed={isPresenceActive}
+          aria-label={isPresenceActive ? t("reel.ui.hideMyPresence") : t("reel.ui.showMyPresence")}
+          title={isPresenceActive ? t("reel.ui.hideMyPresence") : t("reel.ui.showMyPresence")}
         >
-          {messagesHidden ? <Eye aria-hidden="true" /> : <EyeOff aria-hidden="true" />}
+          {isPresenceActive ? <Eye aria-hidden="true" /> : <EyeOff aria-hidden="true" />}
         </button>
         <button
           type="button"
@@ -316,51 +318,40 @@ export function ReelProximityScreen() {
         ))}
       </div>
 
-      {!messagesHidden && (
-        <div className="reel-nearby">
-          <p className="reel-nearby__title">
-            {!discoveryEnabled
-              ? t("reel.ui.discoveryPaused")
-              : availablePeople.length === 0
-                ? t("reel.ui.noNearby")
-                : t("reel.ui.nearbyCount").replace("{count}", String(availablePeople.length))}
-          </p>
-          <div className="reel-nearby__row">
-            <div className="reel-nearby__avatars">
-              {nearbyPeople.map((person) => (
-                <button
-                  key={person.id}
-                  type="button"
-                  className="reel-nearby__profile"
-                  onClick={() => openProfile(person)}
-                  aria-label={`Voir le profil de ${person.name}`}
-                >
-                  <PersonAvatar person={person} size="small" />
-                </button>
-              ))}
-              {additionalCount > 0 && (
-                <button
-                  type="button"
-                  className="reel-nearby__count"
-                  onClick={() => setPanel("people")}
-                  aria-label={`Afficher les ${additionalCount} autres personnes`}
-                >
-                  +{additionalCount}
-                </button>
-              )}
-            </div>
-          </div>
-          {discoveryEnabled && availablePeople.length > 3 && (
-            <button type="button" className="reel-nearby__all" onClick={() => setPanel("people")}>
-              {t("reel.ui.seeAllPeople")}
-              <ChevronDown aria-hidden="true" />
-            </button>
-          )}
-        </div>
+      {discoveryEnabled && availablePeople.length > 15 && (
+        <button
+          type="button"
+          className="reel-presence-stack"
+          onClick={() => setPanel("people")}
+          aria-label={t("reel.ui.openAllPresences").replace("{count}", String(availablePeople.length))}
+          title={t("reel.ui.openAllPresences").replace("{count}", String(availablePeople.length))}
+        >
+          <span className="reel-presence-stack__disks" aria-hidden="true">
+            {availablePeople.slice(0, 7).map((person, index) => (
+              <span
+                className="reel-presence-stack__disk"
+                key={person.id}
+                style={{ zIndex: 7 - index, marginLeft: index === 0 ? 0 : "-1.05rem" }}
+              >
+                <PersonAvatar person={person} size="small" />
+              </span>
+            ))}
+          </span>
+        </button>
+      )}
+      {discoveryEnabled && availablePeople.length > 9 && availablePeople.length <= 15 && (
+        <button
+          type="button"
+          className="reel-presence-list-trigger"
+          onClick={() => setPanel("people")}
+          aria-label={t("reel.ui.openAllPresences").replace("{count}", String(availablePeople.length))}
+          title={t("reel.ui.openAllPresences").replace("{count}", String(availablePeople.length))}
+        >
+          <UsersRound aria-hidden="true" />
+        </button>
       )}
 
-      {!messagesHidden &&
-        !discoveryEnabled &&
+      {!discoveryEnabled &&
         discoveryAccess !== "prompt" &&
         discoveryAccess !== "requesting" && (
           <div className="reel-calm-shortcuts" aria-label={t("reel.ui.otherWays")}>
