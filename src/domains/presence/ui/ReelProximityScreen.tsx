@@ -363,25 +363,25 @@ export function ReelProximityScreen() {
         !discoveryEnabled &&
         discoveryAccess !== "prompt" &&
         discoveryAccess !== "requesting" && (
-        <div className="reel-calm-shortcuts" aria-label={t("reel.ui.otherWays")}>
-          <button type="button" onClick={() => setPanel("global")}>
-            <Globe aria-hidden="true" />
-            <span>
-              <strong>{t("reel.ui.global")}</strong>
-              <small>{t("reel.ui.discoverPrivate")}</small>
-            </span>
-            <ChevronDown aria-hidden="true" />
-          </button>
-          <button type="button" onClick={() => openActivity("connections")}>
-            <History aria-hidden="true" />
-            <span>
-              <strong>{t("reel.ui.pastActivity")}</strong>
-              <small>{t("reel.ui.pastActivityHint")}</small>
-            </span>
-            <ChevronDown aria-hidden="true" />
-          </button>
-        </div>
-      )}
+          <div className="reel-calm-shortcuts" aria-label={t("reel.ui.otherWays")}>
+            <button type="button" onClick={() => setPanel("global")}>
+              <Globe aria-hidden="true" />
+              <span>
+                <strong>{t("reel.ui.global")}</strong>
+                <small>{t("reel.ui.discoverPrivate")}</small>
+              </span>
+              <ChevronDown aria-hidden="true" />
+            </button>
+            <button type="button" onClick={() => openActivity("connections")}>
+              <History aria-hidden="true" />
+              <span>
+                <strong>{t("reel.ui.pastActivity")}</strong>
+                <small>{t("reel.ui.pastActivityHint")}</small>
+              </span>
+              <ChevronDown aria-hidden="true" />
+            </button>
+          </div>
+        )}
 
       {panel && (
         <div
