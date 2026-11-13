@@ -167,7 +167,8 @@ export function ReelProximityScreen() {
         </Link>
         <div className="reel-proximity__heading">
           <div className="reel-proximity__heading-copy">
-            <h1>RÉEL</h1>
+            <RadioTower aria-hidden="true" />
+            <h1>INSTANT</h1>
           </div>
         </div>
         <button
