@@ -161,3 +161,56 @@ Ne pas utiliser un indicateur de session ou un paramètre de configuration modif
 - Flash historique sans portée ou position valide exclu de la découverte géographique.
 
 **Validation :** audit statique du code GitHub uniquement. Aucun test automatisé n'a été lancé pendant cet audit ; aucun résultat CI n'est revendiqué. Aucune migration n'a été exécutée et aucune base distante n'a été modifiée.
+
+
+## 10. Cycle de vie Flash — contrat des états validé
+
+**Décision produit validée le 13 novembre 2026.** Le cycle de vie distant repose sur quatre états persistés : `draft`, `live`, `archived` et `expired`. L'état local « en attente de synchronisation/publication » n'est pas un état distant et ne doit jamais être assimilé à `live`.
+
+### 10.1 Sens des états
+
+| État | Signification | Visibilité publique |
+|---|---|---|
+| `draft` | Flash enregistré côté serveur mais pas encore publié | Non |
+| `live` | Publication validée et active | Oui, uniquement via les RPC géographiques et dans les limites de portée |
+| `archived` | Flash retiré volontairement par son propriétaire ou une action métier autorisée | Non |
+| `expired` | Durée de vie atteinte ; état appliqué par le serveur | Non |
+
+### 10.2 Transitions autorisées
+
+| État source | État cible | Autorité / opération | Conditions |
+|---|---|---|---|
+| absent | `draft` | création Sync ordinaire ou création métier | propriétaire authentifié ; statut fixé côté serveur |
+| `draft` | `live` | RPC authentifiée `publish_flash` uniquement | propriétaire, contenu valide, portée et urgence valides, position privée valide ; écriture atomique |
+| `live` | `archived` | RPC/commande métier d’archivage | propriétaire du Flash ; aucune modification des coordonnées privées par cette opération |
+| `live` | `expired` | processus serveur d’expiration | échéance atteinte ; transition idempotente |
+| `draft` | `archived` | à ne pas autoriser dans le premier contrat V1 sans décision métier complémentaire | — |
+| `archived` ou `expired` | tout autre état | aucune | états terminaux en V1 |
+
+Aucune transition directe `draft → expired` n'est nécessaire : un brouillon non publié n'entre pas dans la découverte et sa durée de vie publique ne commence qu'à la publication. Si une règle de nettoyage des brouillons est ajoutée, elle devra être définie séparément et ne devra pas les faire apparaître comme des Flash publiés.
+
+### 10.3 Invariants de sécurité
+
+1. Le statut n'est jamais accepté depuis un payload Sync générique pour `create` ou `update`. Une création générique produit un `draft` grâce à une valeur par défaut SQL contrôlée par le serveur.
+2. Les privilèges SQL empêchent un client authentifié de modifier directement la colonne `status`, même en contournant le code TypeScript et le transport Sync.
+3. `publish_flash` vérifie que le statut courant est `draft` et que l'appelant est le propriétaire. Toute seconde publication d'un Flash déjà `live`, `archived` ou `expired` est refusée.
+4. La mise à jour de `scope`, `urgency`, de la position privée et du statut `live` est atomique. Une erreur laisse le Flash en `draft` et ne laisse pas de position partielle.
+5. `transition_flash` ne peut plus accepter `live`. L'archivage et l'expiration sont des opérations serveur distinctes, avec vérification de l'autorité et idempotence appropriées.
+6. Les RPC de découverte excluent systématiquement `draft`, `archived`, `expired`, les Flash supprimés, expirés par date ou sans portée/position privée valide.
+7. Les clients offline peuvent conserver une intention de publication en attente, mais ne montrent jamais un succès de publication avant confirmation serveur.
+
+### 10.4 Tests bloquants avant activation
+
+- Création Sync sans statut : état distant `draft`.
+- Création ou mise à jour Sync avec `status` fourni, quelle que soit sa valeur : rejet avant écriture.
+- Tentative PostgREST directe de modification de `status` par un membre : refus SQL.
+- Publication valide de `draft` : une seule transition vers `live`, avec portée, urgence et position privée cohérentes.
+- Publication sans position, avec portée invalide, par un non-propriétaire ou sur un état autre que `draft` : refus et rollback.
+- Double appel concurrent à `publish_flash` : une seule publication réussit ; aucun doublon ni état partiel.
+- `transition_flash(..., 'live')` : refus.
+- Archivage par le propriétaire : `live → archived`, non visible dès confirmation.
+- Expiration à échéance : `live → expired`, opération idempotente et non visible.
+- `archived` et `expired` ne peuvent pas être réactivés.
+- Les statuts terminaux et brouillons sont exclus de toutes les RPC publiques.
+
+**Portée de cette décision :** contrat et préparation de tests uniquement. Elle n'autorise ni l'exécution de migrations sur une base distante, ni le déploiement, ni l'activation de la publication.
