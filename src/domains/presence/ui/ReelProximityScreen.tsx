@@ -87,6 +87,7 @@ export function ReelProximityScreen() {
   const { t } = useI18n();
   const {
     access,
+    memberAvatarUrl,
     discoveryAccess,
     locationMessage,
     guestSessionLoading,
@@ -314,7 +315,23 @@ export function ReelProximityScreen() {
               className={`reel-radar__me-avatar${access.mode === "guest" ? ` reel-avatar--${guestAvatarKey}` : ""}`}
               aria-hidden="true"
             >
-              <CircleUserRound />
+              {access.mode === "guest" && guestDisplayName.trim() ? (
+                <span className="reel-avatar__initials">
+                  {guestDisplayName.trim().split(/\\s+/).slice(0, 2).map((part) => part[0]).join("").toLocaleUpperCase()}
+                </span>
+              ) : (
+                <CircleUserRound />
+              )}
+              {access.mode === "member" && memberAvatarUrl ? (
+                <img
+                  src={memberAvatarUrl}
+                  alt=""
+                  aria-hidden="true"
+                  onError={(event) => {
+                    event.currentTarget.hidden = true;
+                  }}
+                />
+              ) : null}
             </span>
             <span className="reel-radar__me-label">
               {access.mode === "guest" && guestDisplayName.trim()
