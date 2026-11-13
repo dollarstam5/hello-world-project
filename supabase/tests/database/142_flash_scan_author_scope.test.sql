@@ -39,10 +39,12 @@ INSERT INTO public.flashes (
   ('f5500000-0000-4000-8000-000000000002','f5400000-0000-4000-8000-000000000001','500m outside','test','live',(extract(epoch FROM now())*1000)::bigint+3600000,'need','personal','today','Akwa','current_area','today'),
   ('f5500000-0000-4000-8000-000000000003','f5400000-0000-4000-8000-000000000001','2km inside','test','live',(extract(epoch FROM now())*1000)::bigint+3600000,'need','personal','today','Akwa','expanded_area','today'),
   ('f5500000-0000-4000-8000-000000000004','f5400000-0000-4000-8000-000000000001','2km outside','test','live',(extract(epoch FROM now())*1000)::bigint+3600000,'need','personal','today','Akwa','expanded_area','today'),
-  ('f5500000-0000-4000-8000-000000000005','f5400000-0000-4000-8000-000000000001','15km inside','test','live',(extract(epoch FROM now())*1000)::bigint+3600000,'need','personal','today','Akwa','half_city','today'),
+  ('f5500000-0000-4000-8000-000000000005','f5400000-0000-4000-8000-000000000001','5km inside','test','live',(extract(epoch FROM now())*1000)::bigint+3600000,'need','personal','today','Akwa','half_city','today'),
   ('f5500000-0000-4000-8000-000000000006','f5400000-0000-4000-8000-000000000001','5km outside','test','live',(extract(epoch FROM now())*1000)::bigint+3600000,'need','personal','today','Akwa','half_city','today'),
   ('f5500000-0000-4000-8000-000000000007','f5400000-0000-4000-8000-000000000001','15km inside','test','live',(extract(epoch FROM now())*1000)::bigint+3600000,'need','personal','today','Akwa','whole_city','today'),
-  ('f5500000-0000-4000-8000-000000000008','f5400000-0000-4000-8000-000000000001','15km outside','test','live',(extract(epoch FROM now())*1000)::bigint+3600000,'need','personal','today','Akwa','whole_city','today');
+  ('f5500000-0000-4000-8000-000000000008','f5400000-0000-4000-8000-000000000001','15km outside','test','live',(extract(epoch FROM now())*1000)::bigint+3600000,'need','personal','today','Akwa','whole_city','today'),
+  ('f5500000-0000-4000-8000-000000000009','f5400000-0000-4000-8000-000000000001','visitor radius inside','test','live',(extract(epoch FROM now())*1000)::bigint+3600000,'need','personal','today','Akwa','whole_city','today'),
+  ('f5500000-0000-4000-8000-000000000010','f5400000-0000-4000-8000-000000000001','visitor radius outside','test','live',(extract(epoch FROM now())*1000)::bigint+3600000,'need','personal','today','Akwa','whole_city','today');
 
 INSERT INTO public.flash_private_locations (
   flash_id, author_id, latitude, longitude, accuracy_meters
@@ -61,7 +63,9 @@ FROM (VALUES
   ('f5500000-0000-4000-8000-000000000005'::uuid, 4999.0),
   ('f5500000-0000-4000-8000-000000000006'::uuid, 5001.0),
   ('f5500000-0000-4000-8000-000000000007'::uuid, 14999.0),
-  ('f5500000-0000-4000-8000-000000000008'::uuid, 15001.0)
+  ('f5500000-0000-4000-8000-000000000008'::uuid, 15001.0),
+  ('f5500000-0000-4000-8000-000000000009'::uuid, 400.0),
+  ('f5500000-0000-4000-8000-000000000010'::uuid, 600.0)
 ) AS v(id, distance_m);
 
 SELECT is(
