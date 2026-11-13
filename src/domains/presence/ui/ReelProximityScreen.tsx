@@ -2,7 +2,6 @@ import { type CSSProperties } from "react";
 import { Link } from "@tanstack/react-router";
 import { useI18n } from "@/lib/i18n/useI18n";
 import {
-  ArrowLeft,
   Bell,
   Bluetooth,
   Check,
