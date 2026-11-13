@@ -3,7 +3,6 @@ import { Link } from "@tanstack/react-router";
 import {
   ArrowRight,
   Check,
-  ChevronDown,
   Mic,
   MicOff,
   Plus,
@@ -446,7 +445,7 @@ export function FlashExperienceScreen() {
                 {publishError ? <p className="mt-3 text-sm text-destructive" role="alert">{t("flash.composer.error")}</p> : null}
                 <div className="mt-5 flex gap-2">
                   <Button type="button" variant="outline" className="min-h-12 flex-1 rounded-full" onClick={() => setStep("write")} disabled={publishing}>
-                    {t("common.back")}
+                    {t("common.cancel")}
                   </Button>
                   <Button type="button" className="min-h-12 flex-[1.5] rounded-full" onClick={() => void publishFlash()} disabled={!user || authLoading || publishing || !text.trim()}>
                     {publishing ? t("app.loading") : t("flash.composer.confirmPublish")}
