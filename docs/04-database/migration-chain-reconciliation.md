@@ -68,6 +68,8 @@ Les tests `121_flash_schema_columns.test.sql` et `122_flash_public_rpcs.test.sql
 
 **Conséquence :** la migration Drizzle `0000` ne doit pas être rejouée ou réactivée sur un environnement utilisant le modèle Supabase actuel. L'existence éventuelle de colonnes, fonctions ou migrations déjà appliquées dans un environnement externe reste à vérifier en lecture seule.
 
+**Limite de migration à ne pas manquer :** `20261113002000_flash_schema_columns.sql` crée la table privée mais ne retire pas les éventuelles colonnes de coordonnées déjà ajoutées à `public.flashes`. Le test `121` valide l'état final d'une base locale issue de la chaîne Supabase, pas le passage depuis un état où Drizzle `0000` aurait déjà ajouté ces colonnes. Un environnement historique pourrait donc conserver les colonnes synchronisées malgré la présence de `flash_private_locations`. Leur présence doit être contrôlée en lecture seule avant toute conclusion ; une migration corrective ne pourra être préparée qu'après preuve et approbation.
+
 ## 4. Dépendances runtime confirmées
 
 - `src/lib/sync/transport.server.ts` lit et écrit `sync_mutation_receipts` lors du push des mutations. La disponibilité de cette table est donc une dépendance runtime réelle du protocole de synchronisation.
