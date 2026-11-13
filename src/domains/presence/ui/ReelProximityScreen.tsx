@@ -158,7 +158,10 @@ export function ReelProximityScreen() {
   } = useReelProximityController();
 
   return (
-    <section className={`reel-proximity${messagesHidden ? " reel-proximity--clean" : ""}`} aria-label={t("reel.ui.screenLabel")}>
+    <section
+      className={`reel-proximity${messagesHidden ? " reel-proximity--clean" : ""}`}
+      aria-label={t("reel.ui.screenLabel")}
+    >
       <header className="reel-proximity__header">
         <Link
           to="/"
@@ -313,48 +316,53 @@ export function ReelProximityScreen() {
         ))}
       </div>
 
-      {!messagesHidden && <div className="reel-nearby">
-        <p className="reel-nearby__title">
-          {!discoveryEnabled
-            ? t("reel.ui.discoveryPaused")
-            : availablePeople.length === 0
-              ? t("reel.ui.noNearby")
-              : t("reel.ui.nearbyCount").replace("{count}", String(availablePeople.length))}
-        </p>
-        <div className="reel-nearby__row">
-          <div className="reel-nearby__avatars">
-            {nearbyPeople.map((person) => (
-              <button
-                key={person.id}
-                type="button"
-                className="reel-nearby__profile"
-                onClick={() => openProfile(person)}
-                aria-label={`Voir le profil de ${person.name}`}
-              >
-                <PersonAvatar person={person} size="small" />
-              </button>
-            ))}
-            {additionalCount > 0 && (
-              <button
-                type="button"
-                className="reel-nearby__count"
-                onClick={() => setPanel("people")}
-                aria-label={`Afficher les ${additionalCount} autres personnes`}
-              >
-                +{additionalCount}
-              </button>
-            )}
+      {!messagesHidden && (
+        <div className="reel-nearby">
+          <p className="reel-nearby__title">
+            {!discoveryEnabled
+              ? t("reel.ui.discoveryPaused")
+              : availablePeople.length === 0
+                ? t("reel.ui.noNearby")
+                : t("reel.ui.nearbyCount").replace("{count}", String(availablePeople.length))}
+          </p>
+          <div className="reel-nearby__row">
+            <div className="reel-nearby__avatars">
+              {nearbyPeople.map((person) => (
+                <button
+                  key={person.id}
+                  type="button"
+                  className="reel-nearby__profile"
+                  onClick={() => openProfile(person)}
+                  aria-label={`Voir le profil de ${person.name}`}
+                >
+                  <PersonAvatar person={person} size="small" />
+                </button>
+              ))}
+              {additionalCount > 0 && (
+                <button
+                  type="button"
+                  className="reel-nearby__count"
+                  onClick={() => setPanel("people")}
+                  aria-label={`Afficher les ${additionalCount} autres personnes`}
+                >
+                  +{additionalCount}
+                </button>
+              )}
+            </div>
           </div>
+          {discoveryEnabled && availablePeople.length > 3 && (
+            <button type="button" className="reel-nearby__all" onClick={() => setPanel("people")}>
+              {t("reel.ui.seeAllPeople")}
+              <ChevronDown aria-hidden="true" />
+            </button>
+          )}
         </div>
-        {discoveryEnabled && availablePeople.length > 3 && (
-          <button type="button" className="reel-nearby__all" onClick={() => setPanel("people")}>
-            {t("reel.ui.seeAllPeople")}
-            <ChevronDown aria-hidden="true" />
-          </button>
-        )}
-      </div>}
+      )}
 
-      {!messagesHidden && !discoveryEnabled && discoveryAccess !== "prompt" && discoveryAccess !== "requesting" && (
+      {!messagesHidden &&
+        !discoveryEnabled &&
+        discoveryAccess !== "prompt" &&
+        discoveryAccess !== "requesting" && (
         <div className="reel-calm-shortcuts" aria-label={t("reel.ui.otherWays")}>
           <button type="button" onClick={() => setPanel("global")}>
             <Globe aria-hidden="true" />
