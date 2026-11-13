@@ -267,7 +267,8 @@ export const messages = {
     "flash.composer.category": "Catégorie",
     "flash.composer.when": "Quand ?",
     "flash.composer.scope": "Où souhaitez-vous diffuser ?",
-    "flash.composer.scopeHint": "Choisissez une portée prédéfinie. Votre position précise ne sera pas affichée.",
+    "flash.composer.scopeHint":
+      "Choisissez une portée prédéfinie. Votre position précise ne sera pas affichée.",
     "flash.scope.current_area": "Ma zone actuelle",
     "flash.scope.expanded_area": "Zone élargie",
     "flash.scope.half_city": "La moitié de la ville",
@@ -278,7 +279,8 @@ export const messages = {
     "flash.urgency.today": "Aujourd’hui",
     "flash.urgency.as_soon_as_possible": "Le plus tôt possible",
     "flash.urgency.anytime": "À n’importe quel moment",
-    "flash.composer.pendingScopeUrgency": "La portée et l’urgence sont en préparation. La publication reste désactivée tant que Vitalis ne peut pas enregistrer et appliquer ces choix correctement.",
+    "flash.composer.pendingScopeUrgency":
+      "La portée et l’urgence sont en préparation. La publication reste désactivée tant que Vitalis ne peut pas enregistrer et appliquer ces choix correctement.",
     "flash.composer.confirmHint":
       "Votre Flash sera enregistré sur cet appareil et synchronisé lorsque la connexion sera disponible.",
     "flash.composer.confirmPublish": "Publier mon Flash",
@@ -1128,7 +1130,8 @@ export const messages = {
     "flash.composer.category": "Category",
     "flash.composer.when": "When?",
     "flash.composer.scope": "Where should this Flash reach?",
-    "flash.composer.scopeHint": "Choose a predefined area. Your precise location will not be shown.",
+    "flash.composer.scopeHint":
+      "Choose a predefined area. Your precise location will not be shown.",
     "flash.scope.current_area": "My current area",
     "flash.scope.expanded_area": "Expanded area",
     "flash.scope.half_city": "Half the city",
@@ -1139,7 +1142,8 @@ export const messages = {
     "flash.urgency.today": "Today",
     "flash.urgency.as_soon_as_possible": "As soon as possible",
     "flash.urgency.anytime": "Anytime",
-    "flash.composer.pendingScopeUrgency": "Area reach and urgency are being prepared. Publishing stays disabled until Vitalis can save and apply these choices correctly.",
+    "flash.composer.pendingScopeUrgency":
+      "Area reach and urgency are being prepared. Publishing stays disabled until Vitalis can save and apply these choices correctly.",
     "flash.composer.confirmHint":
       "Your Flash will be saved on this device and synced when a connection is available.",
     "flash.composer.confirmPublish": "Publish my Flash",
