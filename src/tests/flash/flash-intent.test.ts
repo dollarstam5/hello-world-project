@@ -11,9 +11,11 @@ describe("parseFlashIntent", () => {
     expect(intent.expiresAt).toBe(NOW + 2 * 24 * 3_600_000);
   });
 
-
   it("understands everyday French requests for childcare and moving help", () => {
-    const childcare = parseFlashIntent("Je voudrais une personne pour garder mes enfants ce week-end", NOW);
+    const childcare = parseFlashIntent(
+      "Je voudrais une personne pour garder mes enfants ce week-end",
+      NOW,
+    );
     expect(childcare.kind).toBe("need");
     expect(childcare.category).toBe("home");
     expect(childcare.timeSlot).toBe("this_week");
