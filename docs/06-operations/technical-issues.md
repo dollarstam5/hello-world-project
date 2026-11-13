@@ -25,8 +25,12 @@
 
 - **Priorité :** à vérifier avant de revendiquer une reprise exactement-une-fois.
 - **Constat :** `src/lib/sync/transport.server.ts` lit et écrit des reçus dans `sync_mutation_receipts`, et tente de récupérer une mutation éventuellement appliquée malgré une erreur de réponse. La table n'est pas dans la chaîne standard de migrations actuellement inventoriée.
-- **Risque :** si la table, ses contraintes, grants ou politiques manquent dans un environnement, le chemin de reçu échoue et les mutations peuvent rester réessayables sans preuve de la garantie attendue.
-- **Vérification requise :** confirmer le schéma, la clé unique, la propriété, les grants/RLS et le comportement en cas de répétition, d'échec entre écriture et reçu, et de requêtes concurrentes.
+- **Travail intégré dans le dépôt (13 novembre 2026) :** la PR #61 a ajouté `supabase/migrations/20261113001000_allow_radar_sync_receipts.sql` pour autoriser `radars` dans la contrainte des tables logiques, avec un test PostgreSQL dédié. Les PR #68 et #69 ont ajouté respectivement cinq scénarios fonctionnels de `runPush` et quatre scénarios d'isolation/concurrence au niveau transport. Les trois PR sont fusionnées dans `main` et les contrôles CI correspondants ont réussi.
+- **Limite des tests applicatifs :** le test #69 simule les prédicats de propriété avec des doubles `IsolationDatabase` / `IsolationQuery`. Il ne remplace pas les tests RLS PostgreSQL. La suite PostgreSQL locale CI passée sur #61 ne prouve pas que la migration, les grants ou les politiques sont présents sur les bases hébergées.
+- **Risque restant :** si la table, ses contraintes, grants ou politiques manquent dans un environnement, le chemin de reçu échoue et les mutations peuvent rester réessayables sans preuve de la garantie attendue.
+- **Vérification requise :** confirmer en lecture seule le schéma, la clé unique, la propriété, les grants/RLS et le comportement en cas de répétition, d'échec entre écriture et reçu, et de requêtes concurrentes sur chaque environnement concerné.
+- **Rapport de preuves :** [vérification de l'idempotence du transport Sync](../04-database/sync-idempotency-verification.md).
+- **Statut :** volet dépôt/tests ciblés traité ; certification des environnements hébergés toujours ouverte. Ne pas annoncer une garantie exactement-une-fois de production avant cette vérification.
 - **Lien :** [Architecture de synchronisation](../02-architecture/synchronization-offline-realtime.md#idempotence-et-reprise-des-mutations).
 
 ## TECH-004 — Temps réel distant non câblé
