@@ -6,7 +6,7 @@ import type { MessageKey } from "@/lib/i18n/messages";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useThemeStore, type ThemeMode } from "@/lib/app/theme";
 import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
-import { publishAssistantWelcome } from "@/lib/app/assistant-notices";
+import { dismissAssistantNotice, publishAssistantWelcome } from "@/lib/app/assistant-notices";
 
 const themeOptions: { value: ThemeMode; icon: typeof Moon; key: MessageKey }[] = [
   { value: "dark", icon: Moon, key: "settings.theme.dark" },
@@ -104,6 +104,7 @@ export function ApplicationSettingsPage() {
               const nextEnabled = !assistantEnabled;
               setAssistantEnabled(nextEnabled);
               if (nextEnabled) publishAssistantWelcome();
+              else dismissAssistantNotice();
             }}
           >
             <span>
