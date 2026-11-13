@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT plan(13);
+SELECT plan(14);
 
 SELECT has_column('public', 'flashes', 'kind', 'Flash kind column exists');
 SELECT has_column('public', 'flashes', 'category', 'Flash category column exists');
