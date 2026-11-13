@@ -45,6 +45,8 @@ export const messages = {
     "settings.assistant.desc": "Activez l’assistant uniquement si vous souhaitez recevoir ses messages ponctuels. Il reste absent de l’écran lorsqu’il est désactivé.",
     "settings.assistant.enabled": "Activé",
     "settings.assistant.disabled": "Désactivé",
+    "settings.assistant.turnOn": "Activer l’assistant",
+    "settings.assistant.turnOff": "Désactiver l’assistant",
     "assistant.send": "Envoyer la question",
     "assistant.reset": "Effacer la conversation",
     "assistant.privacy":
@@ -860,6 +862,8 @@ export const messages = {
     "settings.assistant.desc": "Enable the assistant only if you want to receive its occasional messages. It stays out of the interface when disabled.",
     "settings.assistant.enabled": "Enabled",
     "settings.assistant.disabled": "Disabled",
+    "settings.assistant.turnOn": "Enable assistant",
+    "settings.assistant.turnOff": "Disable assistant",
     "assistant.send": "Send question",
     "assistant.reset": "Clear conversation",
     "assistant.privacy": "Never share a password, secret code or confidential document.",
