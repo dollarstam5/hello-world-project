@@ -39,7 +39,9 @@ Le serveur vérifie le propriétaire, la politique d'écriture de la table et le
 - `rejected` : mutations refusées avec code et caractère réessayable ;
 - `records` : enregistrements autoritaires renvoyés après fusion.
 
-Le transport utilise `sync_mutation_receipts` pour tenter de rejouer une réponse correspondant à une mutation déjà traitée. La table et ses garanties doivent être vérifiées dans la base déployée : voir [TECH-001 et TECH-003](../06-operations/technical-issues.md).
+Le transport utilise `sync_mutation_receipts` pour tenter de rejouer une réponse correspondant à une mutation déjà traitée. La correction de la contrainte autorisant les reçus Radar est intégrée par la migration `20261113001000_allow_radar_sync_receipts.sql`. Les scénarios de transport, de rejeu après échec de reçu, d'isolation simulée et de concurrence simulée sont consignés dans le [rapport de vérification de l'idempotence](../04-database/sync-idempotency-verification.md).
+
+**Limite importante :** les tests applicatifs d'isolation/concurrence simulent les prédicats de propriété ; ils ne remplacent pas les tests RLS PostgreSQL. Les tests PostgreSQL exécutés en CI utilisent une base locale éphémère. La présence et la configuration de la table, de ses contraintes, grants et politiques sur une base hébergée restent à vérifier. Voir [TECH-001 et TECH-003](../06-operations/technical-issues.md).
 
 ## Pull — changements distants vers le client
 
