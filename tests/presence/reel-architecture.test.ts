@@ -50,7 +50,7 @@ describe("Réel architecture boundaries", () => {
 
   it("shows layered individual presence disks only after fifteen nearby profiles", () => {
     expect(screenSource).toContain("availablePeople.length > 15");
-    expect(screenSource).toContain("availablePeople.slice(0, 7)");
+    expect(screenSource).toContain("availablePeople.slice(9, 16)");
     expect(screenSource).toContain('className="reel-presence-stack__disk"');
     expect(screenSource).toContain('onClick={() => setPanel("people")}');
     expect(screenSource).not.toContain("reel-nearby__count");
