@@ -238,7 +238,7 @@ export function FlashExperienceScreen() {
   }
 
   async function saveFlashDraft() {
-    if (!user || !location || !areaLabel.trim() || !scope || !urgency || !text.trim()) return;
+    if (!user || !scope || !urgency || !text.trim()) return;
     setPublishing(true);
     setPublishError(false);
     try {
@@ -252,7 +252,7 @@ export function FlashExperienceScreen() {
         timeSlot,
         scope,
         urgency,
-        areaLabel: areaLabel.trim(),
+        areaLabel: areaLabel.trim() || undefined,
         expiresAt: expiryFor(timeSlot),
       });
       closeComposer();
@@ -321,7 +321,7 @@ export function FlashExperienceScreen() {
           role="status"
         >
           <Check className="size-4 shrink-0 text-primary" aria-hidden="true" />
-          <span>{t("flash.composer.published")}</span>
+          <span>{t("flash.composer.draftSaved")}</span>
           <button
             type="button"
             className="ml-auto rounded-full p-1 text-muted-foreground hover:text-foreground"
@@ -643,11 +643,7 @@ export function FlashExperienceScreen() {
                     !user ||
                     authLoading ||
                     publishing ||
-                    !text.trim() ||
-                    !scope ||
-                    !urgency ||
-                    !location ||
-                    !areaLabel.trim()
+                    !text.trim() || !scope || !urgency
                   }
                 >
                   {publishing ? t("app.loading") : t("flash.location.saveDraft")}
