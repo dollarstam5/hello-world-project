@@ -60,9 +60,6 @@ const CATEGORIES: FlashCategory[] = [
   "other",
 ];
 const TIME_SLOTS: FlashTimeSlot[] = ["now", "today", "tomorrow", "this_week"];
-// Keep publishing disabled until the backend filters each selected scope.
-const FLASH_SCOPE_FILTERING_ENABLED = false;
-
 function getSpeechConstructor() {
   if (typeof window === "undefined") return undefined;
   const speechWindow = window as SpeechWindow;
@@ -254,42 +251,6 @@ export function FlashExperienceScreen() {
       closeComposer();
       setSuccess(true);
       setTab("mine");
-    } catch {
-      setPublishError(true);
-    } finally {
-      setPublishing(false);
-    }
-  }
-
-  async function publishFlash() {
-    if (
-      !user ||
-      !text.trim() ||
-      !scope ||
-      !urgency ||
-      !FLASH_SCOPE_FILTERING_ENABLED ||
-      publishing
-    ) {
-      return;
-    }
-    setPublishing(true);
-    setPublishError(false);
-    try {
-      const body = text.trim();
-      await createFlash({
-        authorId: user.id as UserId,
-        title: body.length > 80 ? `${body.slice(0, 77)}…` : body,
-        body,
-        kind,
-        category,
-        timeSlot,
-        scope,
-        urgency,
-        expiresAt: expiryFor(timeSlot),
-      });
-      closeComposer();
-      setSuccess(true);
-      setTab("discover");
     } catch {
       setPublishError(true);
     } finally {
@@ -524,7 +485,7 @@ export function FlashExperienceScreen() {
                       {t("flash.location.confirm")}
                       <input value={areaLabel} onChange={(event) => setAreaLabel(event.target.value)} maxLength={160} placeholder={t("flash.location.placeholder")} className="min-h-11 rounded-xl border border-input bg-background px-3 font-normal" />
                     </label>
-                    <p className="text-xs text-muted-foreground">{t("flash.location.accuracy", { meters: Math.round(location.accuracy) })}</p>
+                    <p className="text-xs text-muted-foreground">{t("flash.location.accuracy")}</p>
                   </>
                 ) : null}
                 {locationError ? <p className="text-xs text-muted-foreground" role="status">{locationError}</p> : null}
