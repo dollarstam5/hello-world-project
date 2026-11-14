@@ -73,7 +73,6 @@ describe("Instant architecture boundaries", () => {
     expect(screenSource).toContain("reel-radar__me-label");
   });
 
-
   it("opens the signed-in member profile from the central radar avatar", () => {
     expect(screenSource).toContain('to="/espace/profil"');
     expect(screenSource).toContain('access.mode === "member" ?');
