@@ -1,5 +1,20 @@
 export type WebVitalName = "LCP" | "INP" | "CLS";
 
+/** Browser event emitted for each accepted Web Vital observation. */
+export const WEB_VITAL_EVENT = "vitalis:web-vital";
+
+/**
+ * Publishes a metric to the current page without sending telemetry over the network
+ * or persisting user data. Runtime diagnostics can subscribe to WEB_VITAL_EVENT.
+ */
+export function publishWebVitalMetric(metric: WebVitalMetric): void {
+  if (typeof window === "undefined" || typeof window.dispatchEvent !== "function") {
+    return;
+  }
+
+  window.dispatchEvent(new CustomEvent<WebVitalMetric>(WEB_VITAL_EVENT, { detail: metric }));
+}
+
 export interface WebVitalMetric {
   name: WebVitalName;
   value: number;
