@@ -16,23 +16,28 @@ describe("Geoapify reverse geocoding", () => {
   });
 
   it("normalizes only available locality fields from the provider", async () => {
-    const fetchMock = vi.fn().mockResolvedValue(
-      new Response(
-        JSON.stringify({
-          results: [
-            {
-              neighbourhood: "Bonanjo",
-              city: "Douala",
-              state: "Littoral",
-              country: "Cameroon",
-              lat: 4.0511,
-              lon: 9.7679,
-            },
-          ],
-        }),
-        { status: 200, headers: { "content-type": "application/json" } },
-      ),
-    );
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            results: [
+              {
+                neighbourhood: "Bonanjo",
+                city: "Douala",
+                state: "Littoral",
+                country: "Cameroon",
+                lat: 4.0511,
+                lon: 9.7679,
+              },
+            ],
+          }),
+          {
+            status: 200,
+            headers: { "content-type": "application/json" },
+          },
+        ),
+      );
     vi.stubGlobal("fetch", fetchMock);
 
     const result = await lookupFlashArea(4.0511, 9.7679, "user-bonanjo");
@@ -52,12 +57,14 @@ describe("Geoapify reverse geocoding", () => {
   });
 
   it("does not invent a village when the provider has no locality", async () => {
-    const fetchMock = vi.fn().mockResolvedValue(
-      new Response(
-        JSON.stringify({ results: [{ state: "Littoral", country: "Cameroon" }] }),
-        { status: 200, headers: { "content-type": "application/json" } },
-      ),
-    );
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(
+        new Response(JSON.stringify({ results: [{ state: "Littoral", country: "Cameroon" }] }), {
+          status: 200,
+          headers: { "content-type": "application/json" },
+        }),
+      );
     vi.stubGlobal("fetch", fetchMock);
 
     await expect(lookupFlashArea(3.9012, 10.1123, "user-no-locality")).resolves.toEqual({
@@ -70,12 +77,14 @@ describe("Geoapify reverse geocoding", () => {
   });
 
   it("caches a successful lookup for nearby identical cache cells", async () => {
-    const fetchMock = vi.fn().mockResolvedValue(
-      new Response(
-        JSON.stringify({ results: [{ city: "Douala", country: "Cameroon" }] }),
-        { status: 200, headers: { "content-type": "application/json" } },
-      ),
-    );
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(
+        new Response(JSON.stringify({ results: [{ city: "Douala", country: "Cameroon" }] }), {
+          status: 200,
+          headers: { "content-type": "application/json" },
+        }),
+      );
     vi.stubGlobal("fetch", fetchMock);
 
     await lookupFlashArea(4.061011, 9.771011, "user-cache");
@@ -84,14 +93,15 @@ describe("Geoapify reverse geocoding", () => {
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 
-
   it("throttles repeated uncached requests from the same member", async () => {
-    const fetchMock = vi.fn().mockResolvedValue(
-      new Response(
-        JSON.stringify({ results: [{ city: "Douala", country: "Cameroon" }] }),
-        { status: 200, headers: { "content-type": "application/json" } },
-      ),
-    );
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(
+        new Response(JSON.stringify({ results: [{ city: "Douala", country: "Cameroon" }] }), {
+          status: 200,
+          headers: { "content-type": "application/json" },
+        }),
+      );
     vi.stubGlobal("fetch", fetchMock);
 
     await lookupFlashArea(4.0911, 9.8011, "user-throttle");
@@ -105,7 +115,9 @@ describe("Geoapify reverse geocoding", () => {
     const fetchMock = vi.fn();
     vi.stubGlobal("fetch", fetchMock);
 
-    await expect(lookupFlashArea(91, 0, "user-invalid")).rejects.toThrow("La position reçue n’est pas valide.");
+    await expect(lookupFlashArea(91, 0, "user-invalid")).rejects.toThrow(
+      "La position reçue n’est pas valide.",
+    );
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
