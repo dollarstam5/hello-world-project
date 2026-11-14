@@ -357,9 +357,10 @@ SELECT is(
 SELECT is(
   (SELECT count(*)::integer FROM public.reel_guest_connection_history
    WHERE member_id = 'e5000000-0000-4000-8000-000000000001'
+     AND source_connection_id = current_setting('reel.test_connection_id')::uuid
      AND status = 'closed'),
   1,
-  'the member keeps a minimal six-month relation record after the guest session ends'
+  'the member keeps the minimal six-month record for the ended guest session'
 );
 
 SELECT * FROM finish();
