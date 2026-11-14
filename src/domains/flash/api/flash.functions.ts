@@ -2,10 +2,6 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-export const getPublicFlashFeed = createServerFn({ method: "GET" }).handler(async () =>
-  (await import("./flash.server")).publicFlashes(),
-);
-
 export const commandFlash = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator(
