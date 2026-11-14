@@ -387,7 +387,10 @@ export function useReelProximityController() {
       } else {
         await commandReelGuestBipMember(bip.id, action);
       }
-      await Promise.all([refreshBips(), action === "accept" ? refreshConnections() : Promise.resolve()]);
+      await Promise.all([
+        refreshBips(),
+        action === "accept" ? refreshConnections() : Promise.resolve(),
+      ]);
       setBipsMessage(
         action === "accept"
           ? t("reel.controller.connectionEstablished")
