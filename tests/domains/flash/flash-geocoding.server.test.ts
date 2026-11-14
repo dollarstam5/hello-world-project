@@ -11,7 +11,7 @@ describe("Geoapify reverse geocoding", () => {
     const fetchMock = vi.fn();
     vi.stubGlobal("fetch", fetchMock);
 
-    await expect(lookupFlashArea(4.0511, 9.7679)).resolves.toBeNull();
+    await expect(lookupFlashArea(4.0511, 9.7679, "user-no-key")).resolves.toBeNull();
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
@@ -35,7 +35,7 @@ describe("Geoapify reverse geocoding", () => {
     );
     vi.stubGlobal("fetch", fetchMock);
 
-    const result = await lookupFlashArea(4.0511, 9.7679);
+    const result = await lookupFlashArea(4.0511, 9.7679, "user-bonanjo");
 
     expect(result).toEqual({
       label: "Bonanjo, Douala, Littoral, Cameroon",
@@ -60,7 +60,7 @@ describe("Geoapify reverse geocoding", () => {
     );
     vi.stubGlobal("fetch", fetchMock);
 
-    await expect(lookupFlashArea(3.9012, 10.1123)).resolves.toEqual({
+    await expect(lookupFlashArea(3.9012, 10.1123, "user-no-locality")).resolves.toEqual({
       label: "Littoral, Cameroon",
       locality: null,
       city: null,
@@ -78,9 +78,26 @@ describe("Geoapify reverse geocoding", () => {
     );
     vi.stubGlobal("fetch", fetchMock);
 
-    await lookupFlashArea(4.061011, 9.771011);
-    await lookupFlashArea(4.061012, 9.771012);
+    await lookupFlashArea(4.061011, 9.771011, "user-cache");
+    await lookupFlashArea(4.061012, 9.771012, "user-cache");
 
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+
+  it("throttles repeated uncached requests from the same member", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(
+        JSON.stringify({ results: [{ city: "Douala", country: "Cameroon" }] }),
+        { status: 200, headers: { "content-type": "application/json" } },
+      ),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+
+    await lookupFlashArea(4.0911, 9.8011, "user-throttle");
+    await expect(lookupFlashArea(4.1011, 9.8111, "user-throttle")).rejects.toThrow(
+      "Patientez quelques secondes avant de rechercher un autre lieu.",
+    );
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 
@@ -88,7 +105,7 @@ describe("Geoapify reverse geocoding", () => {
     const fetchMock = vi.fn();
     vi.stubGlobal("fetch", fetchMock);
 
-    await expect(lookupFlashArea(91, 0)).rejects.toThrow("La position reçue n’est pas valide.");
+    await expect(lookupFlashArea(91, 0, "user-invalid")).rejects.toThrow("La position reçue n’est pas valide.");
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
@@ -96,7 +113,7 @@ describe("Geoapify reverse geocoding", () => {
     const fetchMock = vi.fn().mockResolvedValue(new Response("provider error", { status: 503 }));
     vi.stubGlobal("fetch", fetchMock);
 
-    await expect(lookupFlashArea(4.0711, 9.7811)).rejects.toThrow(
+    await expect(lookupFlashArea(4.0711, 9.7811, "user-provider-error")).rejects.toThrow(
       "Impossible de reconnaître ce lieu pour le moment.",
     );
   });
@@ -105,7 +122,7 @@ describe("Geoapify reverse geocoding", () => {
     const fetchMock = vi.fn().mockRejectedValue(new Error("private provider details"));
     vi.stubGlobal("fetch", fetchMock);
 
-    await expect(lookupFlashArea(4.0811, 9.7911)).rejects.toThrow(
+    await expect(lookupFlashArea(4.0811, 9.7911, "user-network-error")).rejects.toThrow(
       "Le service de localisation est momentanément indisponible.",
     );
   });
