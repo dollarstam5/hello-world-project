@@ -221,7 +221,7 @@ export function MyFlashManagement() {
               </p>
             </div>
 
-            {record.status === "live" ? (
+            {resolvedStatus === "live" ? (
               <Button
                 type="button"
                 size="sm"
@@ -242,7 +242,7 @@ export function MyFlashManagement() {
                 size="sm"
                 variant="ghost"
                 disabled={
-                  busyId !== null || record.status === "archived" || record.status === "expired"
+                  busyId !== null || resolvedStatus === "archived" || resolvedStatus === "expired"
                 }
                 onClick={() => {
                   setEditingId(record.id);
