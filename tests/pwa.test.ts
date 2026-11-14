@@ -8,8 +8,14 @@ describe("PWA platform exports", () => {
   it("keeps installation unavailable on the first render, even on a secure Android device", () => {
     const originalSecureContext = Object.getOwnPropertyDescriptor(window, "isSecureContext");
     const originalUserAgent = Object.getOwnPropertyDescriptor(navigator, "userAgent");
-    Object.defineProperty(window, "isSecureContext", { configurable: true, value: true });
-    Object.defineProperty(navigator, "userAgent", { configurable: true, value: "Mozilla/5.0 Android Chrome/130" });
+    Object.defineProperty(window, "isSecureContext", {
+      configurable: true,
+      value: true,
+    });
+    Object.defineProperty(navigator, "userAgent", {
+      configurable: true,
+      value: "Mozilla/5.0 Android Chrome/130",
+    });
     let available: boolean | undefined;
     function Probe() {
       available = useInstallPrompt().available;
@@ -19,10 +25,16 @@ describe("PWA platform exports", () => {
       renderToString(createElement(Probe));
       expect(available).toBe(false);
     } finally {
-      if (originalSecureContext) Object.defineProperty(window, "isSecureContext", originalSecureContext);
-      else Reflect.deleteProperty(window, "isSecureContext");
-      if (originalUserAgent) Object.defineProperty(navigator, "userAgent", originalUserAgent);
-      else Reflect.deleteProperty(navigator, "userAgent");
+      if (originalSecureContext) {
+        Object.defineProperty(window, "isSecureContext", originalSecureContext);
+      } else {
+        Reflect.deleteProperty(window, "isSecureContext");
+      }
+      if (originalUserAgent) {
+        Object.defineProperty(navigator, "userAgent", originalUserAgent);
+      } else {
+        Reflect.deleteProperty(navigator, "userAgent");
+      }
     }
   });
 

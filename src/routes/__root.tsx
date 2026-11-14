@@ -15,7 +15,7 @@ import { AppShell } from "@/components/app/AppShell";
 import { AccessModeProvider } from "@/domains/access-mode";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { registerServiceWorker } from "@/platform/pwa";
-import { startWebVitalsMonitoring } from "@/lib/performance/web-vitals";
+import { publishWebVitalMetric, startWebVitalsMonitoring } from "@/lib/performance/web-vitals";
 
 function NotFoundComponent() {
   const { t } = useI18n();
@@ -126,7 +126,7 @@ function RootShell({ children }: { children: React.ReactNode }) {
 function RootComponent() {
   useEffect(() => {
     registerServiceWorker();
-    return startWebVitalsMonitoring(() => undefined);
+    return startWebVitalsMonitoring(publishWebVitalMetric);
   }, []);
 
   const { queryClient } = Route.useRouteContext();

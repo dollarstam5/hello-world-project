@@ -3,6 +3,7 @@ import {
   getWebVitalsSnapshot,
   resetWebVitalsSnapshot,
   startWebVitalsMonitoring,
+  publishWebVitalMetric,
 } from "@/lib/performance/web-vitals";
 
 const originalObserver = globalThis.PerformanceObserver;
@@ -25,6 +26,18 @@ describe("real Web Vitals monitoring", () => {
     const sink = vi.fn();
     expect(startWebVitalsMonitoring(sink)).toBeTypeOf("function");
     expect(sink).not.toHaveBeenCalled();
+  });
+
+  it("publishes metrics as a browser event without requiring a remote telemetry service", () => {
+    const listener = vi.fn();
+    window.addEventListener("vitalis:web-vital", listener);
+
+    const metric = { name: "LCP" as const, value: 1200, navigationType: "navigate" };
+    publishWebVitalMetric(metric);
+
+    expect(listener).toHaveBeenCalledTimes(1);
+    expect((listener.mock.calls[0][0] as CustomEvent).detail).toEqual(metric);
+    window.removeEventListener("vitalis:web-vital", listener);
   });
 
   it("records observed LCP, CLS, and INP metrics and disconnects observers", () => {
