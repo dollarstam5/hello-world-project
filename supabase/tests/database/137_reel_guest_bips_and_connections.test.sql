@@ -212,11 +212,8 @@ SELECT is(
   'accepting the reverse bip reuses the existing pair relation instead of duplicating it'
 );
 
-SET LOCAL ROLE service_role;
-SELECT set_config('request.jwt.claims', '{"role":"service_role"}', true);
-
 SELECT lives_ok(
-  $SELECT public.close_reel_guest_connection_member(
+  $reel_close$SELECT public.close_reel_guest_connection_member(
     (SELECT connection.id
      FROM public.reel_guest_connections AS connection
      WHERE 'e5000000-0000-4000-8000-000000000001'::uuid IN (
@@ -224,7 +221,7 @@ SELECT lives_ok(
        connection.participant_two_member_id
      )
      LIMIT 1)
-  )$,
+  )$reel_close$,
   'a member can close a cross-mode relation shared with a guest'
 );
 
