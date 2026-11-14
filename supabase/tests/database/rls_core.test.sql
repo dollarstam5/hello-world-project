@@ -1,6 +1,6 @@
 begin;
 
-select plan(41);
+select plan(42);
 
 -- The test runner is a database owner/superuser. Create two real auth users
 -- first, then execute the assertions as the authenticated role.
@@ -160,6 +160,11 @@ select is(
   'user A can read own published flash'
 );
 select is(
+  (select count(*) from public.flashes where id = '10000000-0000-0000-0000-000000000002'),
+  1::bigint,
+  'user A can read own draft through the private sync table'
+);
+select is(
   (select count(*) from public.posts where id = '30000000-0000-0000-0000-000000000002'),
   1::bigint,
   'user A can read own private post'
@@ -189,8 +194,8 @@ select is(
 );
 select is(
   (select count(*) from public.flashes where id = '10000000-0000-0000-0000-000000000001'),
-  1::bigint,
-  'user B can read a published flash'
+  0::bigint,
+  'user B cannot read another author Flash through the private sync table'
 );
 select is(
   (select count(*) from public.flashes where id = '10000000-0000-0000-0000-000000000002'),
