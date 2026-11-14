@@ -1,4 +1,4 @@
-import type { FlashCategory, FlashKind, FlashTimeSlot } from "./flash";
+import type { FlashCategory, FlashKind, FlashScope, FlashTimeSlot, FlashUrgency } from "./flash";
 import type {
   AuditEntryId,
   FlashId,
@@ -69,6 +69,10 @@ export interface FlashRecord extends BaseRecord {
   kind?: FlashKind;
   category?: FlashCategory;
   timeSlot?: FlashTimeSlot;
+  /** Predefined publication reach; absent on historical records. */
+  scope?: FlashScope;
+  /** Priority selected independently from requested time and expiry. */
+  urgency?: FlashUrgency;
   areaLabel?: string;
 
   /** Epoch ms after which the flash stops being visible. */

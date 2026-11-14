@@ -44,6 +44,12 @@ Voir aussi la [politique transversale de visibilité par moteur](../visibility-a
 - Une publication Flash ne devient pas automatiquement une mission Radar, un engagement Mission ou une présence Instant.
 - La durée, l'expiration, la suppression, la modération et les états du Flash doivent être définis dans son propre contrat.
 
+## Première expérience d'interface
+
+La première page Flash et son parcours de création sont décrits dans [Flash — expérience d'interface V1](./flash-ui-implementation.md). Le parcours comprend une expression libre par texte ou dictée vocale lorsque le navigateur le permet, une proposition structurée modifiable, puis une confirmation explicite avant enregistrement. La découverte et « Mes Flashs » sont deux espaces distincts.
+
+Cette livraison d'interface ne valide pas encore la visibilité par publication : les champs de public cible, de zones autorisées et de projection du profil ne sont pas présents dans le contrat local/public actuel. Ils restent à raccorder au stockage, à la synchronisation, aux API et aux protections serveur avant d'être proposés dans l'interface.
+
 ## Sections à compléter pendant la conception
 - Création et durée de vie d'un Flash.
 - Zone géographique et portée de diffusion.

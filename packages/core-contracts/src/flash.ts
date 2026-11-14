@@ -24,6 +24,26 @@ export type FlashKind = (typeof FLASH_KINDS)[number];
 export const FLASH_TIME_SLOTS = ["now", "today", "tomorrow", "this_week"] as const;
 export type FlashTimeSlot = (typeof FLASH_TIME_SLOTS)[number];
 
+export const FLASH_SCOPES = ["current_area", "expanded_area", "half_city", "whole_city"] as const;
+export type FlashScope = (typeof FLASH_SCOPES)[number];
+
+/** Maximum publication reach, measured in meters from the author's publish-time location. */
+export const FLASH_SCOPE_RADIUS_METERS: Readonly<Record<FlashScope, number>> = {
+  current_area: 500,
+  expanded_area: 2_000,
+  half_city: 5_000,
+  whole_city: 15_000,
+};
+
+export const FLASH_URGENCIES = [
+  "urgent",
+  "very_urgent",
+  "today",
+  "as_soon_as_possible",
+  "anytime",
+] as const;
+export type FlashUrgency = (typeof FLASH_URGENCIES)[number];
+
 import type { PublicProfilePreview } from "./profile-preview";
 
 /**
