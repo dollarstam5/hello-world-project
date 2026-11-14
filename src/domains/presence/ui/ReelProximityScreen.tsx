@@ -390,7 +390,7 @@ export function ReelProximityScreen() {
         ))}
       </div>
 
-      {discoveryEnabled && availablePeople.length > 15 && (
+      {discoveryEnabled && availablePeople.length > 0 && (
         <button
           type="button"
           className="reel-presence-stack"
@@ -402,30 +402,21 @@ export function ReelProximityScreen() {
           title={t("reel.ui.openAllPresences").replace("{count}", String(availablePeople.length))}
         >
           <span className="reel-presence-stack__disks" aria-hidden="true">
-            {availablePeople.slice(9, 16).map((person, index) => (
+            {availablePeople.slice(0, 3).map((person, index) => (
               <span
                 className="reel-presence-stack__disk"
                 key={person.id}
-                style={{ zIndex: 7 - index, marginLeft: index === 0 ? 0 : "-1.05rem" }}
+                style={{ zIndex: 3 - index, marginLeft: index === 0 ? 0 : "-1.05rem" }}
               >
                 <PersonAvatar person={person} size="small" />
               </span>
             ))}
+            {availablePeople.length > 3 && (
+              <span className="reel-presence-stack__count">
+                +{availablePeople.length - 3}
+              </span>
+            )}
           </span>
-        </button>
-      )}
-      {discoveryEnabled && availablePeople.length > 9 && availablePeople.length <= 15 && (
-        <button
-          type="button"
-          className="reel-presence-list-trigger"
-          onClick={() => setPanel("people")}
-          aria-label={t("reel.ui.openAllPresences").replace(
-            "{count}",
-            String(availablePeople.length),
-          )}
-          title={t("reel.ui.openAllPresences").replace("{count}", String(availablePeople.length))}
-        >
-          <UsersRound aria-hidden="true" />
         </button>
       )}
 
