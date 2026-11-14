@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { lookupFlashArea } from "@/domains/flash/api/flash-geocoding.server";
 
