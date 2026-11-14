@@ -1,6 +1,6 @@
 BEGIN;
 CREATE EXTENSION IF NOT EXISTS pgtap WITH SCHEMA extensions;
-SELECT plan(20);
+SELECT plan(22);
 
 INSERT INTO auth.users (
   id, aud, role, email, encrypted_password, email_confirmed_at,
@@ -264,6 +264,73 @@ SELECT ok(
   AND NOT has_table_privilege('anon', 'public.reel_guest_connections', 'SELECT'),
   'browser SQL roles cannot read cross-mode bip rows or internal guest session identifiers'
 );
+
+-- Exercise the reverse close path: the guest closes a separate active
+-- member/guest relation, and the member projection must immediately agree.
+UPDATE public.reel_presence_locations
+SET location = extensions.ST_SetSRID(extensions.ST_MakePoint(4.0500, 9.7000), 4326)::extensions.geography
+WHERE presence_id = 'e5000000-0000-4000-8000-000000000021';
+
+SELECT lives_ok(
+  $reel_test$SELECT public.send_reel_guest_bip(
+    'e5000000-0000-4000-8000-000000000012',
+    'member',
+    'e5000000-0000-4000-8000-000000000021',
+    'e5000000-0000-4000-8000-000000000035'
+  )$reel_test$,
+  'the second guest can send a bip to the member for the reverse-close scenario'
+);
+
+SET LOCAL ROLE authenticated;
+SELECT set_config(
+  'request.jwt.claims',
+  '{"sub":"e5000000-0000-4000-8000-000000000001","role":"authenticated"}',
+  true
+);
+SELECT lives_ok(
+  $reel_test$SELECT public.command_reel_guest_bip_member(
+    (SELECT bip.id FROM public.reel_guest_bips AS bip
+     WHERE bip.client_request_id = 'e5000000-0000-4000-8000-000000000035'),
+    'accept'
+  )$reel_test$,
+  'the member accepts the second guest bip'
+);
+
+SET LOCAL ROLE service_role;
+SELECT set_config('request.jwt.claims', '{"role":"service_role"}', true);
+SELECT set_config(
+  'reel.test_guest_close_connection_id',
+  (SELECT connection.id::text
+   FROM public.reel_guest_connections AS connection
+   WHERE connection.participant_one_guest_session_id = 'e5000000-0000-4000-8000-000000000012'
+      OR connection.participant_two_guest_session_id = 'e5000000-0000-4000-8000-000000000012'
+   LIMIT 1),
+  true
+);
+SELECT lives_ok(
+  $reel_close$SELECT public.close_reel_guest_connection_guest(
+    'e5000000-0000-4000-8000-000000000012',
+    current_setting('reel.test_guest_close_connection_id')::uuid
+  )$reel_close$,
+  'the guest can close its active cross-mode relation through its verified server session'
+);
+
+SET LOCAL ROLE authenticated;
+SELECT set_config(
+  'request.jwt.claims',
+  '{"sub":"e5000000-0000-4000-8000-000000000001","role":"authenticated"}',
+  true
+);
+SELECT is(
+  (SELECT connection.status
+   FROM public.list_reel_guest_connections_for_member() AS connection
+   WHERE connection.connection_id = current_setting('reel.test_guest_close_connection_id')::uuid),
+  'closed',
+  'the member sees the guest-initiated closure on the shared relation'
+);
+
+SET LOCAL ROLE service_role;
+SELECT set_config('request.jwt.claims', '{"role":"service_role"}', true);
 
 UPDATE public.reel_guest_sessions
 SET revoked_at = now()
