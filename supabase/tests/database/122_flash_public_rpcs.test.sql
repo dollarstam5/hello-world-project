@@ -62,21 +62,21 @@ INSERT INTO auth.users (
 
 INSERT INTO public.flashes (
   id, author_id, title, body, status, expires_at,
-  kind, category, time_slot, area_label
+  kind, category, time_slot, area_label, scope, urgency
 ) VALUES
   (
     'f5100000-0000-4000-8000-000000000001',
     'f5000000-0000-4000-8000-000000000001',
     'Besoin de transport', 'Un trajet local', 'live',
     (extract(epoch FROM now()) * 1000)::bigint + 3600000,
-    'need', 'transport', 'now', 'Bonapriso'
+    'need', 'transport', 'now', 'Bonapriso', 'whole_city', 'today'
   ),
   (
     'f5100000-0000-4000-8000-000000000002',
     'f5000000-0000-4000-8000-000000000001',
     'Brouillon privé', 'Ne pas afficher', 'draft',
     (extract(epoch FROM now()) * 1000)::bigint + 3600000,
-    'offer', 'personal', 'today', 'Akwa'
+    'offer', 'personal', 'today', 'Akwa', 'current_area', 'today'
   );
 
 INSERT INTO public.flash_private_locations (
