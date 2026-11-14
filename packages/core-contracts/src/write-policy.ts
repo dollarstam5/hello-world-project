@@ -33,7 +33,19 @@ export const CLIENT_WRITE_POLICY = {
 
   flashes: {
     create: true,
-    update: ["title", "body", "status", "expiresAt", "mediaIds"],
+    update: [
+      "title",
+      "body",
+      "kind",
+      "category",
+      "timeSlot",
+      "areaLabel",
+      "responseLimit",
+      "expiresAt",
+      "mediaIds",
+      "scope",
+      "urgency",
+    ],
     command: [],
     delete: true,
   },

@@ -11,6 +11,7 @@ import {
   type SyncedTable,
 } from "./sync";
 import { CLIENT_WRITE_POLICY, clientWritableFields } from "./write-policy";
+import { FLASH_SCOPES, FLASH_TIME_SLOTS, FLASH_URGENCIES } from "./flash";
 
 export const MAX_PUSH_ENTRIES = 50;
 export const MAX_PULL_LIMIT = 100;
@@ -180,7 +181,11 @@ function validateField(table: SyncedTable, field: string, value: unknown): unkno
         label,
       );
     case "flashes.timeSlot":
-      return enumValue(value, ["now", "morning", "afternoon", "evening"], label);
+      return enumValue(value, FLASH_TIME_SLOTS, label);
+    case "flashes.scope":
+      return enumValue(value, FLASH_SCOPES, label);
+    case "flashes.urgency":
+      return enumValue(value, FLASH_URGENCIES, label);
     case "flashes.areaLabel":
       return string(value, label, { min: 2, max: 80 });
     case "flashes.responseLimit":
@@ -303,7 +308,17 @@ export function validateMutationPatch(
   if (kind === "create") {
     if (!CLIENT_WRITE_POLICY[table].create) fail(`Creation is not allowed for ${table}.`);
     const required: Partial<Record<SyncedTable, readonly string[]>> = {
-      flashes: ["title", "body", "status", "expiresAt", "mediaIds"],
+      flashes: [
+        "title",
+        "body",
+        "kind",
+        "category",
+        "timeSlot",
+        "scope",
+        "urgency",
+        "expiresAt",
+        "mediaIds",
+      ],
       missions: [
         "title",
         "brief",

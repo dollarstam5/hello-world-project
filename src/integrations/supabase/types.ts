@@ -58,7 +58,6 @@ export type Database = {
       }
       flashes: {
         Row: {
-          accuracy_meters: number | null
           area_label: string | null
           author_id: string
           body: string
@@ -68,18 +67,17 @@ export type Database = {
           expires_at: number | null
           id: string
           kind: string | null
-          latitude: number | null
-          longitude: number | null
           media_ids: string[]
           revision: number
           server_updated_at: string
           status: string
+          scope: string
+          urgency: string
           time_slot: string | null
           title: string
           updated_at: number
         }
         Insert: {
-          accuracy_meters?: number | null
           area_label?: string | null
           author_id: string
           body?: string
@@ -89,18 +87,17 @@ export type Database = {
           expires_at?: number | null
           id?: string
           kind?: string | null
-          latitude?: number | null
-          longitude?: number | null
           media_ids?: string[]
           revision?: number
           server_updated_at?: string
           status?: string
+          scope?: string
+          urgency?: string
           time_slot?: string | null
           title?: string
           updated_at?: number
         }
         Update: {
-          accuracy_meters?: number | null
           area_label?: string | null
           author_id?: string
           body?: string
@@ -110,12 +107,12 @@ export type Database = {
           expires_at?: number | null
           id?: string
           kind?: string | null
-          latitude?: number | null
-          longitude?: number | null
           media_ids?: string[]
           revision?: number
           server_updated_at?: string
           status?: string
+          scope?: string
+          urgency?: string
           time_slot?: string | null
           title?: string
           updated_at?: number
@@ -543,6 +540,15 @@ export type Database = {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
+        }
+        Returns: boolean
+      }
+      publish_flash: {
+        Args: {
+          p_accuracy_meters: number
+          p_flash_id: string
+          p_latitude: number
+          p_longitude: number
         }
         Returns: boolean
       }

@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
+  FLASH_SCOPE_RADIUS_METERS,
+  FLASH_SCOPES,
   SYNC_PROTOCOL_VERSION,
   SyncValidationError,
   validatePullRequest,
@@ -35,6 +37,16 @@ const cursors = [
 ].map((table) => ({ table, revision: 0 }));
 
 describe("sync protocol validation", () => {
+  it("keeps the stable Flash scope identifiers mapped to the approved meter radii", () => {
+    expect(FLASH_SCOPES).toEqual(["current_area", "expanded_area", "half_city", "whole_city"]);
+    expect(FLASH_SCOPE_RADIUS_METERS).toEqual({
+      current_area: 500,
+      expanded_area: 2_000,
+      half_city: 5_000,
+      whole_city: 15_000,
+    });
+  });
+
   it("accepts the current strict push contract", () => {
     const result = validatePushRequest({
       protocolVersion: SYNC_PROTOCOL_VERSION,
@@ -42,6 +54,98 @@ describe("sync protocol validation", () => {
     });
 
     expect(result.entries[0].table).toBe("flashes");
+  });
+
+  it("accepts the Flash time, scope and urgency values selected by the composer", () => {
+    const result = validatePushRequest({
+      protocolVersion: SYNC_PROTOCOL_VERSION,
+      entries: [
+        {
+          ...mutation,
+          patch: {
+            timeSlot: "tomorrow",
+            scope: "half_city",
+            urgency: "very_urgent",
+          },
+        },
+      ],
+    });
+
+    expect(result.entries[0].patch).toEqual({
+      timeSlot: "tomorrow",
+      scope: "half_city",
+      urgency: "very_urgent",
+    });
+  });
+
+  it("creates Flash records without accepting a client-supplied status", () => {
+    const created = validatePushRequest({
+      protocolVersion: SYNC_PROTOCOL_VERSION,
+      entries: [
+        {
+          ...mutation,
+          kind: "create",
+          patch: {
+            title: "Besoin de transport",
+            body: "Un trajet local",
+            expiresAt: 1_900_000_000_000,
+            mediaIds: [],
+            kind: "need",
+            category: "transport",
+            timeSlot: "today",
+            scope: "current_area",
+            urgency: "today",
+            areaLabel: "Akwa",
+          },
+        },
+      ],
+    });
+    expect(created.entries[0].patch).not.toHaveProperty("status");
+
+    for (const kind of ["create", "update"] as const) {
+      expect(() =>
+        validatePushRequest({
+          protocolVersion: SYNC_PROTOCOL_VERSION,
+          entries: [
+            {
+              ...mutation,
+              kind,
+              patch:
+                kind === "create"
+                  ? {
+                      title: "Publication directe",
+                      body: "Ne doit pas être visible",
+                      expiresAt: 1_900_000_000_000,
+                      mediaIds: [],
+                      kind: "need",
+                      category: "transport",
+                      timeSlot: "today",
+                      scope: "current_area",
+                      urgency: "today",
+                      areaLabel: "Akwa",
+                      status: "live",
+                    }
+                  : { status: "archived" },
+            },
+          ],
+        }),
+      ).toThrow(SyncValidationError);
+    }
+  });
+
+  it("rejects obsolete time-slot values and unknown Flash scope or urgency values", () => {
+    for (const patch of [
+      { timeSlot: "morning" },
+      { scope: "nearby_radius" },
+      { urgency: "critical" },
+    ]) {
+      expect(() =>
+        validatePushRequest({
+          protocolVersion: SYNC_PROTOCOL_VERSION,
+          entries: [{ ...mutation, patch }],
+        }),
+      ).toThrow(SyncValidationError);
+    }
   });
 
   it("rejects an unsupported protocol version", () => {

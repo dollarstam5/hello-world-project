@@ -56,6 +56,8 @@ export const PROFILE_FIELD_COLUMNS = {
 } as const;
 export const FLASH_FIELD_COLUMNS = {
   timeSlot: "time_slot",
+  scope: "scope",
+  urgency: "urgency",
   areaLabel: "area_label",
   responseLimit: "response_limit",
   expiresAt: "expires_at",
