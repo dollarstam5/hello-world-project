@@ -93,7 +93,11 @@ export function FlashExperienceScreen() {
   const [publishing, setPublishing] = useState(false);
   const [publishError, setPublishError] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [location, setLocation] = useState<{ latitude: number; longitude: number; accuracy: number } | null>(null);
+  const [location, setLocation] = useState<{
+    latitude: number;
+    longitude: number;
+    accuracy: number;
+  } | null>(null);
   const [areaLabel, setAreaLabel] = useState("");
   const [locating, setLocating] = useState(false);
   const [locationError, setLocationError] = useState("");
@@ -471,24 +475,49 @@ export function FlashExperienceScreen() {
                 </button>
               </div>
 
-              <section className="mt-4 grid gap-3 rounded-2xl border border-border p-4" aria-labelledby="flash-location-title">
+              <section
+                className="mt-4 grid gap-3 rounded-2xl border border-border p-4"
+                aria-labelledby="flash-location-title"
+              >
                 <div>
-                  <h3 id="flash-location-title" className="text-sm font-semibold">{t("flash.location.title")}</h3>
-                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{t("flash.location.description")}</p>
+                  <h3 id="flash-location-title" className="text-sm font-semibold">
+                    {t("flash.location.title")}
+                  </h3>
+                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                    {t("flash.location.description")}
+                  </p>
                 </div>
-                <Button type="button" variant="outline" className="min-h-11 rounded-full" onClick={() => void detectFlashLocation()} disabled={locating || publishing}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="min-h-11 rounded-full"
+                  onClick={() => void detectFlashLocation()}
+                  disabled={locating || publishing}
+                >
                   {locating ? t("flash.location.detecting") : location ? t("flash.location.refresh") : t("flash.location.detect")}
                 </Button>
                 {location ? (
                   <>
                     <label className="grid gap-1.5 text-sm font-medium">
                       {t("flash.location.confirm")}
-                      <input value={areaLabel} onChange={(event) => setAreaLabel(event.target.value)} maxLength={160} placeholder={t("flash.location.placeholder")} className="min-h-11 rounded-xl border border-input bg-background px-3 font-normal" />
+                      <input
+                        value={areaLabel}
+                        onChange={(event) => setAreaLabel(event.target.value)}
+                        maxLength={160}
+                        placeholder={t("flash.location.placeholder")}
+                        className="min-h-11 rounded-xl border border-input bg-background px-3 font-normal"
+                      />
                     </label>
-                    <p className="text-xs text-muted-foreground">{t("flash.location.accuracy")}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {t("flash.location.accuracy")} ({Math.round(location.accuracy)} m)
+                    </p>
                   </>
                 ) : null}
-                {locationError ? <p className="text-xs text-muted-foreground" role="status">{locationError}</p> : null}
+                {locationError ? (
+                  <p className="text-xs text-muted-foreground" role="status">
+                    {locationError}
+                  </p>
+                ) : null}
               </section>
 
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
@@ -590,10 +619,30 @@ export function FlashExperienceScreen() {
                 </p>
               ) : null}
               <div className="mt-5 grid gap-2 sm:grid-cols-2">
-                <Button type="button" variant="outline" className="min-h-12 rounded-full" onClick={() => setStep("write")} disabled={publishing}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="min-h-12 rounded-full"
+                  onClick={() => setStep("write")}
+                  disabled={publishing}
+                >
                   {t("common.cancel")}
                 </Button>
-                <Button type="button" className="min-h-12 rounded-full" onClick={() => void saveFlashDraft()} disabled={!user || authLoading || publishing || !text.trim() || !scope || !urgency || !location || !areaLabel.trim()}>
+                <Button
+                  type="button"
+                  className="min-h-12 rounded-full"
+                  onClick={() => void saveFlashDraft()}
+                  disabled={
+                    !user ||
+                    authLoading ||
+                    publishing ||
+                    !text.trim() ||
+                    !scope ||
+                    !urgency ||
+                    !location ||
+                    !areaLabel.trim()
+                  }
+                >
                   {publishing ? t("app.loading") : t("flash.location.saveDraft")}
                 </Button>
               </div>
