@@ -406,7 +406,7 @@ export function ReelProximityScreen() {
               <span
                 className="reel-presence-stack__disk"
                 key={person.id}
-                style={{ zIndex: 3 - index, marginLeft: index === 0 ? 0 : "-1.05rem" }}
+                style={{ zIndex: 3 - index, marginLeft: index === 0 ? 0 : "-0.82rem" }}
               >
                 <PersonAvatar person={person} size="small" />
               </span>
