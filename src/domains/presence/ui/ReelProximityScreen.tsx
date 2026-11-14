@@ -945,28 +945,40 @@ export function ReelProximityScreen() {
                         </span>
                       </div>
                     ))}
-                    {connections.filter((connection) => connection.status === "active").map((connection) => (
-                      <div className="reel-people-list__item" key={`member-connection-${connection.connection_id}`}>
-                        <span className="reel-avatar reel-avatar--small">
-                          <UsersRound aria-hidden="true" />
-                        </span>
-                        <span>
-                          <strong>{connection.partner_display_name}</strong>
-                          <small>{t("reel.ui.activeConnection")}</small>
-                        </span>
-                      </div>
-                    ))}
-                    {guestConnections.filter((connection) => connection.status === "active").map((connection) => (
-                      <div className="reel-people-list__item" key={`guest-connection-${connection.connection_id}`}>
-                        <span className="reel-avatar reel-avatar--small">
-                          <UsersRound aria-hidden="true" />
-                        </span>
-                        <span>
-                          <strong>{connection.partner_display_name || t("reel.ui.temporaryConnection")}</strong>
-                          <small>{t("reel.ui.guestConnectionActive")}</small>
-                        </span>
-                      </div>
-                    ))}
+                    {connections
+                      .filter((connection) => connection.status === "active")
+                      .map((connection) => (
+                        <div
+                          className="reel-people-list__item"
+                          key={`member-connection-${connection.connection_id}`}
+                        >
+                          <span className="reel-avatar reel-avatar--small">
+                            <UsersRound aria-hidden="true" />
+                          </span>
+                          <span>
+                            <strong>{connection.partner_display_name}</strong>
+                            <small>{t("reel.ui.activeConnection")}</small>
+                          </span>
+                        </div>
+                      ))}
+                    {guestConnections
+                      .filter((connection) => connection.status === "active")
+                      .map((connection) => (
+                        <div
+                          className="reel-people-list__item"
+                          key={`guest-connection-${connection.connection_id}`}
+                        >
+                          <span className="reel-avatar reel-avatar--small">
+                            <UsersRound aria-hidden="true" />
+                          </span>
+                          <span>
+                            <strong>
+                              {connection.partner_display_name || t("reel.ui.temporaryConnection")}
+                            </strong>
+                            <small>{t("reel.ui.guestConnectionActive")}</small>
+                          </span>
+                        </div>
+                      ))}
                     {!bipsLoading &&
                       !connectionsLoading &&
                       receivedBips.length === 0 &&
@@ -979,8 +991,16 @@ export function ReelProximityScreen() {
                           <span>{t("reel.ui.notificationsHint")}</span>
                         </div>
                       )}
-                    {bipsMessage && <p className="reel-panel__note" role="status">{bipsMessage}</p>}
-                    {connectionsMessage && <p className="reel-panel__note" role="status">{connectionsMessage}</p>}
+                    {bipsMessage && (
+                      <p className="reel-panel__note" role="status">
+                        {bipsMessage}
+                      </p>
+                    )}
+                    {connectionsMessage && (
+                      <p className="reel-panel__note" role="status">
+                        {connectionsMessage}
+                      </p>
+                    )}
                   </div>
                 )}
                 {!activityEnabled && activityTab === "notifications" && (
