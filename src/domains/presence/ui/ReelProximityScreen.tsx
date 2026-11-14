@@ -304,13 +304,13 @@ export function ReelProximityScreen() {
         <div className="reel-radar__outer-ring" aria-hidden="true" />
         <div className="reel-radar__inner-ring" aria-hidden="true" />
         <div className="reel-radar__core">
-          <button
-            type="button"
-            className="reel-radar__me"
-            onClick={() => setPanel("settings")}
-            aria-label={t("reel.ui.managePresence")}
-            title={t("reel.ui.managePresence")}
-          >
+          {access.mode === "member" ? (
+            <Link
+              to="/espace/profil"
+              className="reel-radar__me"
+              aria-label={t("profile.title")}
+              title={t("profile.title")}
+            >
             <span
               className={`reel-radar__me-avatar${access.mode === "guest" ? ` reel-avatar--${guestAvatarKey}` : ""}`}
               aria-hidden="true"
@@ -344,7 +344,51 @@ export function ReelProximityScreen() {
                 ? guestDisplayName.trim()
                 : t("reel.ui.me")}
             </span>
-          </button>
+
+            </Link>
+          ) : (
+            <button
+              type="button"
+              className="reel-radar__me"
+              onClick={() => setPanel("settings")}
+              aria-label={t("reel.ui.managePresence")}
+              title={t("reel.ui.managePresence")}
+            >
+            <span
+              className={`reel-radar__me-avatar${access.mode === "guest" ? ` reel-avatar--${guestAvatarKey}` : ""}`}
+              aria-hidden="true"
+            >
+              {access.mode === "guest" && guestDisplayName.trim() ? (
+                <span className="reel-avatar__initials">
+                  {guestDisplayName
+                    .trim()
+                    .split(/\s+/)
+                    .slice(0, 2)
+                    .map((part) => part[0])
+                    .join("")
+                    .toLocaleUpperCase()}
+                </span>
+              ) : (
+                <CircleUserRound />
+              )}
+              {access.mode === "member" && memberAvatarUrl ? (
+                <img
+                  src={memberAvatarUrl}
+                  alt=""
+                  aria-hidden="true"
+                  onError={(event) => {
+                    event.currentTarget.hidden = true;
+                  }}
+                />
+              ) : null}
+            </span>
+            <span className="reel-radar__me-label">
+              {access.mode === "guest" && guestDisplayName.trim()
+                ? guestDisplayName.trim()
+                : t("reel.ui.me")}
+            </span>
+            </button>
+          )}
         </div>
         {visiblePeople.map((person) => (
           <RingPerson key={person.id} person={person} onSelect={openProfile} />
