@@ -69,11 +69,12 @@ export function updateFlash(id: string, body: string) {
 }
 
 export async function archiveFlash(id: string) {
-  const { error } = await supabase.rpc("transition_flash", {
+  const { data, error } = await supabase.rpc("transition_flash", {
     p_flash_id: id,
     p_status: "archived",
   });
   if (error) throw error;
+  if (data !== true) throw new Error("flash_archive_not_applied");
   requestSyncNow();
 }
 
