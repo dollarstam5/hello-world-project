@@ -2,7 +2,8 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   getWebVitalsSnapshot,
   resetWebVitalsSnapshot,
-  startWebVitalsMonitoring,\n  publishWebVitalMetric,
+  startWebVitalsMonitoring,
+  publishWebVitalMetric,
 } from "@/lib/performance/web-vitals";
 
 const originalObserver = globalThis.PerformanceObserver;
@@ -32,8 +33,6 @@ describe("real Web Vitals monitoring", () => {
     window.addEventListener("vitalis:web-vital", listener);
 
     const metric = { name: "LCP" as const, value: 1200, navigationType: "navigate" };
-    const { publishWebVitalMetric } = awaitImportPlaceholder;
-
     publishWebVitalMetric(metric);
 
     expect(listener).toHaveBeenCalledTimes(1);
