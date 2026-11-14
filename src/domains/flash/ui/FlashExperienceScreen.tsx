@@ -642,12 +642,7 @@ export function FlashExperienceScreen() {
                   type="button"
                   className="min-h-12 rounded-full"
                   onClick={() => void saveFlashDraft()}
-                  disabled={
-                    !user ||
-                    authLoading ||
-                    publishing ||
-                    !text.trim() || !scope || !urgency
-                  }
+                  disabled={!user || authLoading || publishing || !text.trim() || !scope || !urgency}
                 >
                   {publishing ? t("app.loading") : t("flash.location.saveDraft")}
                 </Button>
