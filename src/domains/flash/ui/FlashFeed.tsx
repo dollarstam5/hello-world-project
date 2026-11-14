@@ -5,7 +5,16 @@ import { useFlashFeed } from "../hooks/useFlashFeed";
 
 export function FlashFeed() {
   const { t } = useI18n();
-  const { rows, source, loading, error, refresh } = useFlashFeed();
+  const {
+    rows,
+    source,
+    loading,
+    error,
+    needsLocation,
+    hasLocation,
+    requestLocation,
+    refresh,
+  } = useFlashFeed();
 
   if (loading && rows.length === 0) {
     return (
@@ -17,6 +26,21 @@ export function FlashFeed() {
 
   return (
     <div className="grid grid-cols-[minmax(0,1fr)] gap-3">
+      {needsLocation ? (
+        <div className="grid gap-3 rounded-2xl border border-border bg-card p-4">
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            {t("flash.discover.locationHint")}
+          </p>
+          <Button
+            type="button"
+            onClick={() => void requestLocation()}
+            disabled={loading}
+            className="min-h-12 w-full rounded-full"
+          >
+            {t("flash.discover.locationAction")}
+          </Button>
+        </div>
+      ) : null}
       {error ? (
         <div className="flex flex-wrap items-center justify-between gap-3">
           <p className="text-xs text-warning" role="alert">
@@ -25,7 +49,7 @@ export function FlashFeed() {
           <Button
             type="button"
             variant="ghost"
-            onClick={() => void refresh()}
+            onClick={() => void (hasLocation ? refresh() : requestLocation())}
             disabled={loading}
             className="min-h-12"
           >
@@ -33,15 +57,30 @@ export function FlashFeed() {
           </Button>
         </div>
       ) : null}
-      {rows.length === 0 ? (
+      {hasLocation ? (
+        <div className="flex justify-end">
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={() => void refresh()}
+            disabled={loading}
+            className="min-h-11"
+          >
+            {t("flash.discover.refresh")}
+          </Button>
+        </div>
+      ) : null}
+      {rows.length === 0 && !needsLocation ? (
         <p className="text-sm text-muted-foreground" role="status">
           {t("flash.empty")}
         </p>
       ) : (
         <>
-          <p className="text-xs text-muted-foreground" role="status">
-            {source === "remote" ? t("flash.feed.remote") : t("flash.feed.offline")}
-          </p>
+          {rows.length > 0 ? (
+            <p className="text-xs text-muted-foreground" role="status">
+              {source === "remote" ? t("flash.feed.remote") : t("flash.feed.offline")}
+            </p>
+          ) : null}
           {rows.map((flash) => (
             <FlashCard
               key={flash.id}
