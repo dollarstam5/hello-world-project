@@ -1052,16 +1052,6 @@ export function ReelProximityScreen() {
                 <RadioTower aria-hidden="true" /> Faire signe
               </button>
             )}
-            <button
-              type="button"
-              className="reel-profile-sheet__primary"
-              onClick={() => {
-                if (showFullProfile) closeProfile();
-                else setShowFullProfile(true);
-              }}
-            >
-              {showFullProfile ? t("reel.ui.close") : t("reel.ui.fullProfile")}
-            </button>
           </section>
         </div>
       )}
