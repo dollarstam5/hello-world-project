@@ -706,7 +706,6 @@ export function useReelProximityController() {
   };
   const closeProfile = () => {
     setSelectedPerson(null);
-    setShowFullProfile(false);
   };
   const openActivity = (tab: ActivityTab) => {
     setActivityTab(tab);
