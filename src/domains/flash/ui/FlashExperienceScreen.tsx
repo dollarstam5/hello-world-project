@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dialog";
 import { useAuth } from "@/domains/auth";
 import { useI18n } from "@/lib/i18n/useI18n";
+import { reverseGeocodeFlashLocation } from "../api/flash-geocoding.functions";
 import { createFlash } from "../data";
 import { FlashFeed } from "./FlashFeed";
 import { MyFlashManagement } from "./MyFlashManagement";
@@ -95,6 +96,10 @@ export function FlashExperienceScreen() {
   const [publishing, setPublishing] = useState(false);
   const [publishError, setPublishError] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [location, setLocation] = useState<{ latitude: number; longitude: number; accuracy: number } | null>(null);
+  const [areaLabel, setAreaLabel] = useState("");
+  const [locating, setLocating] = useState(false);
+  const [locationError, setLocationError] = useState("");
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
 
   const parsedIntent = useMemo(
@@ -121,6 +126,9 @@ export function FlashExperienceScreen() {
     setStep("write");
     setVoiceMessage("");
     setPublishError(false);
+    setLocation(null);
+    setAreaLabel("");
+    setLocationError("");
     setComposerOpen(true);
   }
 
@@ -180,6 +188,77 @@ export function FlashExperienceScreen() {
     setCategory(parsedIntent.category);
     setTimeSlot(parsedIntent.timeSlot);
     setStep("review");
+  }
+
+  async function detectFlashLocation() {
+    if (!navigator.geolocation || locating) {
+      setLocationError(t("flash.location.unavailable"));
+      return;
+    }
+    setLocating(true);
+    setLocationError("");
+    try {
+      const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+          enableHighAccuracy: true,
+          maximumAge: 0,
+          timeout: 12_000,
+        });
+      });
+      const point = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+        accuracy: position.coords.accuracy,
+      };
+      setLocation(point);
+      try {
+        const place = await reverseGeocodeFlashLocation({
+          data: { latitude: point.latitude, longitude: point.longitude, consent: true },
+        });
+        setAreaLabel(place?.label ?? "");
+        if (!place?.label) setLocationError(t("flash.location.manual"));
+      } catch {
+        setAreaLabel("");
+        setLocationError(t("flash.location.manual"));
+      }
+    } catch (error) {
+      const code = (error as GeolocationPositionError)?.code;
+      setLocationError(
+        code === 1 ? t("flash.location.permission") :
+          code === 3 ? t("flash.location.timeout") : t("flash.location.error"),
+      );
+      setLocation(null);
+    } finally {
+      setLocating(false);
+    }
+  }
+
+  async function saveFlashDraft() {
+    if (!user || !location || !areaLabel.trim() || !scope || !urgency || !text.trim()) return;
+    setPublishing(true);
+    setPublishError(false);
+    try {
+      const body = text.trim();
+      await createFlash({
+        authorId: user.id as UserId,
+        title: body.length > 80 ? `${body.slice(0, 77)}…` : body,
+        body,
+        kind,
+        category,
+        timeSlot,
+        scope,
+        urgency,
+        areaLabel: areaLabel.trim(),
+        expiresAt: expiryFor(timeSlot),
+      });
+      closeComposer();
+      setSuccess(true);
+      setTab("mine");
+    } catch {
+      setPublishError(true);
+    } finally {
+      setPublishing(false);
+    }
   }
 
   async function publishFlash() {
@@ -431,6 +510,26 @@ export function FlashExperienceScreen() {
                 </button>
               </div>
 
+              <section className="mt-4 grid gap-3 rounded-2xl border border-border p-4" aria-labelledby="flash-location-title">
+                <div>
+                  <h3 id="flash-location-title" className="text-sm font-semibold">{t("flash.location.title")}</h3>
+                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{t("flash.location.description")}</p>
+                </div>
+                <Button type="button" variant="outline" className="min-h-11 rounded-full" onClick={() => void detectFlashLocation()} disabled={locating || publishing}>
+                  {locating ? t("flash.location.detecting") : location ? t("flash.location.refresh") : t("flash.location.detect")}
+                </Button>
+                {location ? (
+                  <>
+                    <label className="grid gap-1.5 text-sm font-medium">
+                      {t("flash.location.confirm")}
+                      <input value={areaLabel} onChange={(event) => setAreaLabel(event.target.value)} maxLength={160} placeholder={t("flash.location.placeholder")} className="min-h-11 rounded-xl border border-input bg-background px-3 font-normal" />
+                    </label>
+                    <p className="text-xs text-muted-foreground">{t("flash.location.accuracy", { meters: Math.round(location.accuracy) })}</p>
+                  </>
+                ) : null}
+                {locationError ? <p className="text-xs text-muted-foreground" role="status">{locationError}</p> : null}
+              </section>
+
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
                 <label className="grid gap-1.5 text-sm font-medium">
                   {t("flash.composer.kind")}
@@ -513,7 +612,7 @@ export function FlashExperienceScreen() {
 
               <div className="mt-4 flex items-start gap-2 rounded-xl border border-border bg-muted/40 p-3 text-xs leading-relaxed text-muted-foreground">
                 <Info className="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-                <p>{t("flash.composer.pendingScopeUrgency")}</p>
+                <p>{t("flash.location.privateNotice")}</p>
               </div>
 
               {!user && !authLoading ? (
@@ -529,33 +628,15 @@ export function FlashExperienceScreen() {
                   {t("flash.composer.error")}
                 </p>
               ) : null}
-              <div className="mt-5 flex gap-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="min-h-12 flex-1 rounded-full"
-                  onClick={() => setStep("write")}
-                  disabled={publishing}
-                >
+              <div className="mt-5 grid gap-2 sm:grid-cols-2">
+                <Button type="button" variant="outline" className="min-h-12 rounded-full" onClick={() => setStep("write")} disabled={publishing}>
                   {t("common.cancel")}
                 </Button>
-                <Button
-                  type="button"
-                  className="min-h-12 flex-[1.5] rounded-full"
-                  onClick={() => void publishFlash()}
-                  disabled={
-                    !FLASH_SCOPE_FILTERING_ENABLED ||
-                    !user ||
-                    authLoading ||
-                    publishing ||
-                    !text.trim() ||
-                    !scope ||
-                    !urgency
-                  }
-                >
-                  {publishing ? t("app.loading") : t("flash.composer.confirmPublish")}
+                <Button type="button" className="min-h-12 rounded-full" onClick={() => void saveFlashDraft()} disabled={!user || authLoading || publishing || !text.trim() || !scope || !urgency || !location || !areaLabel.trim()}>
+                  {publishing ? t("app.loading") : t("flash.location.saveDraft")}
                 </Button>
               </div>
+              <p className="mt-3 text-center text-xs leading-relaxed text-muted-foreground">{t("flash.location.publishPaused")}</p>
             </>
           )}
         </DialogContent>
