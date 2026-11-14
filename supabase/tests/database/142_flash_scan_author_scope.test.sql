@@ -1,6 +1,6 @@
 BEGIN;
 CREATE EXTENSION IF NOT EXISTS pgtap WITH SCHEMA extensions;
-SELECT plan(5);
+SELECT plan(6);
 
 SELECT ok(
   NOT has_function_privilege('anon', 'public.list_public_flashes(integer)', 'EXECUTE')
@@ -44,7 +44,8 @@ INSERT INTO public.flashes (
   ('f5500000-0000-4000-8000-000000000007','f5400000-0000-4000-8000-000000000001','15km inside','test','live',(extract(epoch FROM now())*1000)::bigint+3600000,'need','personal','today','Akwa','whole_city','today'),
   ('f5500000-0000-4000-8000-000000000008','f5400000-0000-4000-8000-000000000001','15km outside','test','live',(extract(epoch FROM now())*1000)::bigint+3600000,'need','personal','today','Akwa','whole_city','today'),
   ('f5500000-0000-4000-8000-000000000009','f5400000-0000-4000-8000-000000000001','visitor radius inside','test','live',(extract(epoch FROM now())*1000)::bigint+3600000,'need','home','today','Akwa','whole_city','today'),
-  ('f5500000-0000-4000-8000-000000000010','f5400000-0000-4000-8000-000000000001','visitor radius outside','test','live',(extract(epoch FROM now())*1000)::bigint+3600000,'need','home','today','Akwa','whole_city','today');
+  ('f5500000-0000-4000-8000-000000000010','f5400000-0000-4000-8000-000000000001','visitor radius outside','test','live',(extract(epoch FROM now())*1000)::bigint+3600000,'need','home','today','Akwa','whole_city','today'),
+  ('f5500000-0000-4000-8000-000000000011','f5400000-0000-4000-8000-000000000001','legacy scope missing','test','live',(extract(epoch FROM now())*1000)::bigint+3600000,'need','personal','today','Akwa',NULL,NULL);
 
 INSERT INTO public.flash_private_locations (
   flash_id, author_id, latitude, longitude, accuracy_meters
@@ -65,7 +66,8 @@ FROM (VALUES
   ('f5500000-0000-4000-8000-000000000007'::uuid, 14999.0),
   ('f5500000-0000-4000-8000-000000000008'::uuid, 15001.0),
   ('f5500000-0000-4000-8000-000000000009'::uuid, 400.0),
-  ('f5500000-0000-4000-8000-000000000010'::uuid, 600.0)
+  ('f5500000-0000-4000-8000-000000000010'::uuid, 600.0),
+  ('f5500000-0000-4000-8000-000000000011'::uuid, 200.0)
 ) AS v(id, distance_m);
 
 SELECT is(
@@ -77,6 +79,12 @@ SELECT is(
   (SELECT count(*)::integer FROM public.scan_public_flashes(NULL,NULL,0,0,0.5,50)),
   2,
   'visitor radius can further reduce results below the author scope'
+);
+
+SELECT is(
+  (SELECT count(*)::integer FROM public.scan_public_flashes('legacy scope missing',NULL,0,0,50,50)),
+  0,
+  'legacy Flash rows without an author scope stay excluded even when a private location exists'
 );
 
 SELECT * FROM finish();
