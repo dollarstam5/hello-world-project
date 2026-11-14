@@ -1,6 +1,6 @@
 BEGIN;
 CREATE EXTENSION IF NOT EXISTS pgtap WITH SCHEMA extensions;
-SELECT plan(17);
+SELECT plan(20);
 
 INSERT INTO auth.users (
   id, aud, role, email, encrypted_password, email_confirmed_at,
@@ -214,6 +214,35 @@ SELECT is(
 
 SET LOCAL ROLE service_role;
 SELECT set_config('request.jwt.claims', '{"role":"service_role"}', true);
+
+SELECT lives_ok(
+  $SELECT public.close_reel_guest_connection_member(
+    (SELECT connection.id
+     FROM public.reel_guest_connections AS connection
+     WHERE 'e5000000-0000-4000-8000-000000000001'::uuid IN (
+       connection.participant_one_member_id,
+       connection.participant_two_member_id
+     )
+     LIMIT 1)
+  )$,
+  'a member can close a cross-mode relation shared with a guest'
+);
+
+SELECT is(
+  (SELECT status FROM public.list_reel_guest_connections_for_member() LIMIT 1),
+  'closed',
+  'the member sees the cross-mode relation as closed'
+);
+
+SET LOCAL ROLE service_role;
+SELECT set_config('request.jwt.claims', '{"role":"service_role"}', true);
+SELECT is(
+  (SELECT status FROM public.list_reel_guest_connections_for_session(
+    'e5000000-0000-4000-8000-000000000011'
+  ) LIMIT 1),
+  'closed',
+  'the guest sees the same cross-mode relation as closed'
+);
 
 SELECT ok(
   NOT has_table_privilege('authenticated', 'public.reel_guest_bips', 'SELECT')
