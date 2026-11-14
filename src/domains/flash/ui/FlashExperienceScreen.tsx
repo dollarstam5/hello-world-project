@@ -225,8 +225,11 @@ export function FlashExperienceScreen() {
     } catch (error) {
       const code = (error as GeolocationPositionError)?.code;
       setLocationError(
-        code === 1 ? t("flash.location.permission") :
-          code === 3 ? t("flash.location.timeout") : t("flash.location.error"),
+        code === 1
+          ? t("flash.location.permission")
+          : code === 3
+            ? t("flash.location.timeout")
+            : t("flash.location.error"),
       );
       setLocation(null);
     } finally {
@@ -494,7 +497,11 @@ export function FlashExperienceScreen() {
                   onClick={() => void detectFlashLocation()}
                   disabled={locating || publishing}
                 >
-                  {locating ? t("flash.location.detecting") : location ? t("flash.location.refresh") : t("flash.location.detect")}
+                  {locating
+                    ? t("flash.location.detecting")
+                    : location
+                      ? t("flash.location.refresh")
+                      : t("flash.location.detect")}
                 </Button>
                 {location ? (
                   <>
@@ -646,7 +653,9 @@ export function FlashExperienceScreen() {
                   {publishing ? t("app.loading") : t("flash.location.saveDraft")}
                 </Button>
               </div>
-              <p className="mt-3 text-center text-xs leading-relaxed text-muted-foreground">{t("flash.location.publishPaused")}</p>
+              <p className="mt-3 text-center text-xs leading-relaxed text-muted-foreground">
+                {t("flash.location.publishPaused")}
+              </p>
             </>
           )}
         </DialogContent>
