@@ -116,11 +116,14 @@ describe("Instant architecture boundaries", () => {
     expect(screenSource).not.toContain("notificationHistory");
   });
 
-  it("shows layered individual presence disks only after fifteen nearby profiles", () => {
-    expect(screenSource).toContain("availablePeople.length > 15");
-    expect(screenSource).toContain("availablePeople.slice(9, 16)");
+  it("shows a compact nearby-presence stack whenever discovery returns people", () => {
+    expect(screenSource).toContain("discoveryEnabled && availablePeople.length > 0");
+    expect(screenSource).toContain("availablePeople.slice(0, 3)");
     expect(screenSource).toContain('className="reel-presence-stack__disk"');
     expect(screenSource).toContain('onClick={() => setPanel("people")}');
+    expect(screenSource).toContain("availablePeople.length > 3");
+    expect(screenSource).toContain("reel-presence-stack__count");
+    expect(screenSource).toContain("+{availablePeople.length - 3}");
     expect(screenSource).not.toContain("reel-nearby__count");
     expect(screenSource).not.toContain("+{additionalCount}");
   });
