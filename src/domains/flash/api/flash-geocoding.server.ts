@@ -31,6 +31,8 @@ type CacheEntry = {
 const CACHE_TTL_MS = 24 * 60 * 60 * 1_000;
 const CACHE_MAX_ENTRIES = 500;
 const resultCache = new Map<string, CacheEntry>();
+const requesterLastLookup = new Map<string, number>();
+const REQUESTER_MIN_INTERVAL_MS = 10_000;
 
 function clean(value: unknown): string | null {
   if (typeof value !== "string") return null;
@@ -102,6 +104,7 @@ function writeCache(key: string, value: FlashGeocodingResult | null): void {
 export async function lookupFlashArea(
   latitude: number,
   longitude: number,
+  requesterId: string,
 ): Promise<FlashGeocodingResult | null> {
   if (
     !Number.isFinite(latitude) ||
@@ -120,6 +123,17 @@ export async function lookupFlashArea(
   const key = await cacheKey(latitude, longitude);
   const cached = readCache(key);
   if (cached !== undefined) return cached;
+
+  const now = Date.now();
+  const lastLookup = requesterLastLookup.get(requesterId);
+  if (lastLookup !== undefined && now - lastLookup < REQUESTER_MIN_INTERVAL_MS) {
+    throw new Error("Patientez quelques secondes avant de rechercher un autre lieu.");
+  }
+  if (requesterLastLookup.size >= CACHE_MAX_ENTRIES) {
+    const oldestRequester = requesterLastLookup.keys().next().value;
+    if (oldestRequester) requesterLastLookup.delete(oldestRequester);
+  }
+  requesterLastLookup.set(requesterId, now);
 
   const url = new URL("https://api.geoapify.com/v1/geocode/reverse");
   url.searchParams.set("lat", String(latitude));
