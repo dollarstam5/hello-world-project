@@ -11,13 +11,13 @@
   --reel-small-avatar-size: clamp(2.8rem, 14.36vw, 3.5rem);
   --reel-center-avatar-size: 4rem;
   --reel-radar-size: min(88vw, 34rem);
-  --reel-ring-radius: calc(var(--reel-radar-size) * 0.43);
+  --reel-ring-radius: calc(var(--reel-radar-size) * 0.445);
   --reel-header-size: 3.5rem;
   --reel-round-lg: 1.125rem;
   --reel-round-xl: 1.5rem;
   --reel-round-full: 9999px;
   --reel-shadow-soft: 0 0.75rem 2rem rgb(50 91 160 / 12%);
-  --reel-shadow-glow: 0 0 2.5rem rgb(66 132 255 / 30%);
+  --reel-shadow-glow: 0 0 1.6rem rgb(36 126 255 / 38%), 0 0 3rem rgb(36 126 255 / 22%);
   position: relative;
   isolation: isolate;
   display: flex;
@@ -84,8 +84,25 @@
   aspect-ratio: 1;
   flex: 0 0 auto;
   place-items: center;
-  margin-top: clamp(1.5rem, 5vh, 3rem);
+  margin-top: clamp(0.75rem, 3vh, 1.75rem);
   isolation: isolate;
+}
+
+.reel-proximity__radar::before,
+.reel-proximity__radar::after {
+  position: absolute;
+  z-index: -4;
+  inset: 0;
+  border: 2px solid rgb(38 132 255 / 42%);
+  border-radius: 50%;
+  box-shadow: 0 0 1.1rem rgb(38 132 255 / 28%), inset 0 0 1.1rem rgb(38 132 255 / 12%);
+  content: "";
+  pointer-events: none;
+  animation: reel-radar-wave 5.6s ease-out infinite;
+}
+
+.reel-proximity__radar::after {
+  animation-delay: 2.8s;
 }
 
 .reel-radar__outer-halo,
@@ -102,12 +119,12 @@
   inset: -19%;
   background: radial-gradient(
     circle,
-    rgb(91 155 255 / 24%) 0%,
-    rgb(91 155 255 / 11%) 48%,
+    rgb(53 142 255 / 20%) 0%,
+    rgb(91 155 255 / 9%) 48%,
     transparent 72%
   );
-  filter: blur(0.4rem);
-  animation: reel-halo-breathe 4s ease-in-out infinite;
+  filter: blur(0.55rem);
+  animation: reel-halo-breathe 5.8s ease-in-out infinite;
 }
 
 .reel-radar__outer-ring {
@@ -118,9 +135,10 @@
     linear-gradient(145deg, rgb(255 255 255 / 75%), rgb(91 155 255 / 18%)) padding-box,
     linear-gradient(145deg, rgb(91 155 255 / 50%), rgb(47 107 255 / 25%)) border-box;
   box-shadow:
-    inset 0 0.35rem 1.5rem rgb(255 255 255 / 82%),
-    inset 0 -0.65rem 1.4rem rgb(67 126 235 / 19%),
-    0 0.5rem 1.8rem rgb(69 124 220 / 12%);
+    inset 0 0.35rem 1.5rem rgb(255 255 255 / 88%),
+    inset 0 -0.65rem 1.4rem rgb(67 126 235 / 16%),
+    0 0.55rem 1.8rem rgb(38 112 230 / 20%),
+    0 0 1.4rem rgb(48 139 255 / 16%);
 }
 
 .reel-radar__inner-ring {
@@ -133,7 +151,7 @@
     rgb(104 160 255 / 13%) 72%,
     transparent
   );
-  box-shadow: 0 0 2.2rem rgb(91 155 255 / 18%);
+  box-shadow: 0 0 1.5rem rgb(48 139 255 / 24%), inset 0 0 1.1rem rgb(255 255 255 / 80%);
 }
 
 .reel-radar__core {
@@ -145,7 +163,7 @@
   box-shadow:
     var(--reel-shadow-glow),
     inset 0 0.25rem 1rem rgb(255 255 255 / 55%);
-  animation: reel-halo-breathe 4s ease-in-out infinite;
+  animation: reel-halo-breathe 5.8s ease-in-out infinite;
 }
 
 .reel-radar__me {
@@ -209,7 +227,7 @@
   width: calc(var(--reel-avatar-size) + 1.5rem);
   flex-direction: column;
   align-items: center;
-  gap: var(--space-1);
+  gap: 0.4rem;
   transform: translate(-50%, -50%);
   text-align: center;
 }
@@ -225,7 +243,7 @@
   border: 2px solid rgb(255 255 255 / 92%);
   border-radius: var(--reel-round-full);
   background: linear-gradient(145deg, #e4ebf4, #aebfd4);
-  box-shadow: 0 0.2rem 0.8rem rgb(49 83 133 / 14%);
+  box-shadow: 0 0.25rem 0.9rem rgb(35 105 205 / 24%), 0 0 0 1px rgb(255 255 255 / 80%);
   color: var(--reel-white);
 }
 
@@ -371,6 +389,20 @@
   stroke-width: 2.2;
 }
 
+@keyframes reel-radar-wave {
+  0% {
+    opacity: 0.42;
+    transform: scale(0.96);
+  }
+  75% {
+    opacity: 0.12;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.35);
+  }
+}
+
 @keyframes reel-halo-breathe {
   0%,
   100% {
@@ -384,6 +416,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .reel-proximity__radar::before,
+  .reel-proximity__radar::after,
   .reel-radar__outer-halo,
   .reel-radar__core {
     animation: none;
@@ -1724,7 +1758,7 @@
   min-height: 4.5rem;
   place-items: center;
   align-self: center;
-  margin-top: auto;
+  margin-top: clamp(0.85rem, 2.5vh, 1.5rem);
   padding: 0.35rem 0.75rem calc(0.75rem + var(--safe-bottom));
   border: 0;
   background: transparent;
@@ -1757,6 +1791,22 @@
   width: 100%;
   height: 100%;
   border: 0;
+}
+
+.reel-presence-stack__count {
+  display: grid;
+  width: 3.15rem;
+  height: 3.15rem;
+  flex: 0 0 auto;
+  place-items: center;
+  margin-left: -0.82rem;
+  border: 3px solid var(--reel-canvas);
+  border-radius: 50%;
+  background: #e9f3ff;
+  color: var(--reel-blue-start);
+  box-shadow: 0 0.35rem 1rem rgb(36 76 132 / 18%);
+  font-size: 0.82rem;
+  font-weight: 700;
 }
 
 .reel-presence-stack:active .reel-presence-stack__disk {

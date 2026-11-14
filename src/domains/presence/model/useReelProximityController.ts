@@ -98,7 +98,6 @@ export function useReelProximityController() {
   const [guestSessionMessage, setGuestSessionMessage] = useState<string | null>(null);
   const [discoveredPeople, setDiscoveredPeople] = useState<Person[]>([]);
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
-  const [showFullProfile, setShowFullProfile] = useState(false);
   const [panel, setPanel] = useState<Panel>(null);
   const [activityTab, setActivityTab] = useState<ActivityTab>("notifications");
   const [radius, setRadius] = useState("100 m");
@@ -328,6 +327,36 @@ export function useReelProximityController() {
     ]);
   }, [panel, activityTab, refreshConnections, access.memberId, canUseMemberReel, access.mode]);
 
+  useEffect(() => {
+    if (
+      panel !== "activity" ||
+      activityTab !== "notifications" ||
+      (!canUseMemberReel && access.mode !== "guest")
+    ) {
+      return;
+    }
+    const refreshActivity = () => {
+      void Promise.all([refreshBips(), refreshConnections()]);
+    };
+    refreshActivity();
+    if (access.mode === "guest") {
+      const poll = window.setInterval(refreshActivity, 3000);
+      return () => window.clearInterval(poll);
+    }
+    return subscribeToReelMemberActivity(access.memberId, refreshActivity, [
+      "reel_bips",
+      "reel_connections",
+    ]);
+  }, [
+    panel,
+    activityTab,
+    refreshBips,
+    refreshConnections,
+    access.memberId,
+    canUseMemberReel,
+    access.mode,
+  ]);
+
   const endConnection = (connection: ReelConnection) => {
     if (connection.status === "active") {
       setPendingConnectionEnd({ kind: "member", connection });
@@ -367,7 +396,10 @@ export function useReelProximityController() {
   const resolveReceivedBip = async (bip: ReelBip, action: "accept" | "decline") => {
     try {
       await commandReelBip(bip.id, action);
-      await refreshBips();
+      await Promise.all([
+        refreshBips(),
+        action === "accept" ? refreshConnections() : Promise.resolve(),
+      ]);
       setBipsMessage(
         action === "accept"
           ? t("reel.controller.connectionEstablished")
@@ -385,7 +417,10 @@ export function useReelProximityController() {
       } else {
         await commandReelGuestBipMember(bip.id, action);
       }
-      await refreshBips();
+      await Promise.all([
+        refreshBips(),
+        action === "accept" ? refreshConnections() : Promise.resolve(),
+      ]);
       setBipsMessage(
         action === "accept"
           ? t("reel.controller.connectionEstablished")
@@ -693,22 +728,15 @@ export function useReelProximityController() {
     setLocationMessage(null);
   };
   const discoveryEnabled = discoveryAccess === "granted";
-  const activityEnabled =
-    discoveryEnabled ||
-    Boolean(currentPresence) ||
-    Boolean(guestPresence) ||
-    canUseMemberReel ||
-    access.mode === "guest";
+  const activityEnabled = discoveryEnabled || Boolean(currentPresence) || Boolean(guestPresence);
   const availablePeople = discoveryEnabled ? discoveredPeople : [];
 
   const openProfile = (person: Person) => {
     setPanel(null);
     setSelectedPerson(person);
-    setShowFullProfile(false);
   };
   const closeProfile = () => {
     setSelectedPerson(null);
-    setShowFullProfile(false);
   };
   const openActivity = (tab: ActivityTab) => {
     setActivityTab(tab);
@@ -727,8 +755,6 @@ export function useReelProximityController() {
     guestSessionLoading,
     guestSessionMessage,
     selectedPerson,
-    showFullProfile,
-    setShowFullProfile,
     panel,
     setPanel,
     activityTab,

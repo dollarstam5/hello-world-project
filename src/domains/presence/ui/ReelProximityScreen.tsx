@@ -83,6 +83,56 @@ function RingPerson({ person, onSelect }: { person: Person; onSelect: (person: P
   );
 }
 
+function SelfRadarIdentity({
+  accessMode,
+  guestAvatarKey,
+  guestDisplayName,
+  memberAvatarUrl,
+  meLabel,
+}: {
+  accessMode: "member" | "guest" | "visitor";
+  guestAvatarKey: string;
+  guestDisplayName: string;
+  memberAvatarUrl: string | null;
+  meLabel: string;
+}) {
+  const guestName = guestDisplayName.trim();
+  const initials = guestName
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("")
+    .toLocaleUpperCase();
+
+  return (
+    <>
+      <span
+        className={`reel-radar__me-avatar${accessMode === "guest" ? ` reel-avatar--${guestAvatarKey}` : ""}`}
+        aria-hidden="true"
+      >
+        {accessMode === "guest" && guestName ? (
+          <span className="reel-avatar__initials">{initials}</span>
+        ) : (
+          <CircleUserRound />
+        )}
+        {accessMode === "member" && memberAvatarUrl ? (
+          <img
+            src={memberAvatarUrl}
+            alt=""
+            aria-hidden="true"
+            onError={(event) => {
+              event.currentTarget.hidden = true;
+            }}
+          />
+        ) : null}
+      </span>
+      <span className="reel-radar__me-label">
+        {accessMode === "guest" && guestName ? guestName : meLabel}
+      </span>
+    </>
+  );
+}
+
 export function ReelProximityScreen() {
   const { t } = useI18n();
   const {
@@ -93,8 +143,6 @@ export function ReelProximityScreen() {
     guestSessionLoading,
     guestSessionMessage,
     selectedPerson,
-    showFullProfile,
-    setShowFullProfile,
     panel,
     setPanel,
     activityTab,
@@ -304,54 +352,45 @@ export function ReelProximityScreen() {
         <div className="reel-radar__outer-ring" aria-hidden="true" />
         <div className="reel-radar__inner-ring" aria-hidden="true" />
         <div className="reel-radar__core">
-          <button
-            type="button"
-            className="reel-radar__me"
-            onClick={() => setPanel("settings")}
-            aria-label={t("reel.ui.managePresence")}
-            title={t("reel.ui.managePresence")}
-          >
-            <span
-              className={`reel-radar__me-avatar${access.mode === "guest" ? ` reel-avatar--${guestAvatarKey}` : ""}`}
-              aria-hidden="true"
+          {access.mode === "member" ? (
+            <Link
+              to="/espace/profil"
+              className="reel-radar__me"
+              aria-label={t("profile.title")}
+              title={t("profile.title")}
             >
-              {access.mode === "guest" && guestDisplayName.trim() ? (
-                <span className="reel-avatar__initials">
-                  {guestDisplayName
-                    .trim()
-                    .split(/\s+/)
-                    .slice(0, 2)
-                    .map((part) => part[0])
-                    .join("")
-                    .toLocaleUpperCase()}
-                </span>
-              ) : (
-                <CircleUserRound />
-              )}
-              {access.mode === "member" && memberAvatarUrl ? (
-                <img
-                  src={memberAvatarUrl}
-                  alt=""
-                  aria-hidden="true"
-                  onError={(event) => {
-                    event.currentTarget.hidden = true;
-                  }}
-                />
-              ) : null}
-            </span>
-            <span className="reel-radar__me-label">
-              {access.mode === "guest" && guestDisplayName.trim()
-                ? guestDisplayName.trim()
-                : t("reel.ui.me")}
-            </span>
-          </button>
+              <SelfRadarIdentity
+                accessMode={access.mode}
+                guestAvatarKey={guestAvatarKey}
+                guestDisplayName={guestDisplayName}
+                memberAvatarUrl={memberAvatarUrl}
+                meLabel={t("reel.ui.me")}
+              />
+            </Link>
+          ) : (
+            <button
+              type="button"
+              className="reel-radar__me"
+              onClick={() => setPanel("settings")}
+              aria-label={t("reel.ui.managePresence")}
+              title={t("reel.ui.managePresence")}
+            >
+              <SelfRadarIdentity
+                accessMode={access.mode}
+                guestAvatarKey={guestAvatarKey}
+                guestDisplayName={guestDisplayName}
+                memberAvatarUrl={memberAvatarUrl}
+                meLabel={t("reel.ui.me")}
+              />
+            </button>
+          )}
         </div>
         {visiblePeople.map((person) => (
           <RingPerson key={person.id} person={person} onSelect={openProfile} />
         ))}
       </div>
 
-      {discoveryEnabled && availablePeople.length > 15 && (
+      {discoveryEnabled && availablePeople.length > 0 && (
         <button
           type="button"
           className="reel-presence-stack"
@@ -363,30 +402,19 @@ export function ReelProximityScreen() {
           title={t("reel.ui.openAllPresences").replace("{count}", String(availablePeople.length))}
         >
           <span className="reel-presence-stack__disks" aria-hidden="true">
-            {availablePeople.slice(9, 16).map((person, index) => (
+            {availablePeople.slice(0, 3).map((person, index) => (
               <span
                 className="reel-presence-stack__disk"
                 key={person.id}
-                style={{ zIndex: 7 - index, marginLeft: index === 0 ? 0 : "-1.05rem" }}
+                style={{ zIndex: 3 - index, marginLeft: index === 0 ? 0 : "-0.82rem" }}
               >
                 <PersonAvatar person={person} size="small" />
               </span>
             ))}
+            {availablePeople.length > 3 && (
+              <span className="reel-presence-stack__count">+{availablePeople.length - 3}</span>
+            )}
           </span>
-        </button>
-      )}
-      {discoveryEnabled && availablePeople.length > 9 && availablePeople.length <= 15 && (
-        <button
-          type="button"
-          className="reel-presence-list-trigger"
-          onClick={() => setPanel("people")}
-          aria-label={t("reel.ui.openAllPresences").replace(
-            "{count}",
-            String(availablePeople.length),
-          )}
-          title={t("reel.ui.openAllPresences").replace("{count}", String(availablePeople.length))}
-        >
-          <UsersRound aria-hidden="true" />
         </button>
       )}
 
@@ -874,10 +902,94 @@ export function ReelProximityScreen() {
                     )}
                   </div>
                 ) : (
-                  <div className="reel-panel__empty">
-                    <Bell aria-hidden="true" />
-                    <strong>{t("reel.ui.noNotifications")}</strong>
-                    <span>{t("reel.ui.notificationsHint")}</span>
+                  <div className="reel-people-list" aria-live="polite">
+                    {(bipsLoading || connectionsLoading) && (
+                      <p className="reel-panel__note">{t("reel.ui.bipsLoading")}</p>
+                    )}
+                    {access.mode === "visitor" && (
+                      <p className="reel-panel__note">{t("reel.ui.connectToView")}</p>
+                    )}
+                    {access.mode === "member" && !canUseMemberReel && (
+                      <p className="reel-panel__note">{t("reel.ui.memberNotActive")}</p>
+                    )}
+                    {receivedBips.map((bip) => (
+                      <div className="reel-people-list__item" key={`member-bip-${bip.id}`}>
+                        <span className="reel-avatar reel-avatar--small">
+                          <RadioTower aria-hidden="true" />
+                        </span>
+                        <span>
+                          <strong>{t("reel.ui.someoneSignaled")}</strong>
+                          <small>{t("reel.ui.acceptOrDecline")}</small>
+                        </span>
+                      </div>
+                    ))}
+                    {receivedGuestBips.map((bip) => (
+                      <div className="reel-people-list__item" key={`guest-bip-${bip.id}`}>
+                        <span className="reel-avatar reel-avatar--small">
+                          <RadioTower aria-hidden="true" />
+                        </span>
+                        <span>
+                          <strong>{t("reel.ui.someoneSignaled")}</strong>
+                          <small>{t("reel.ui.acceptOrDecline")}</small>
+                        </span>
+                      </div>
+                    ))}
+                    {connections
+                      .filter((connection) => connection.status === "active")
+                      .map((connection) => (
+                        <div
+                          className="reel-people-list__item"
+                          key={`member-connection-${connection.connection_id}`}
+                        >
+                          <span className="reel-avatar reel-avatar--small">
+                            <UsersRound aria-hidden="true" />
+                          </span>
+                          <span>
+                            <strong>{connection.partner_display_name}</strong>
+                            <small>{t("reel.ui.activeConnection")}</small>
+                          </span>
+                        </div>
+                      ))}
+                    {guestConnections
+                      .filter((connection) => connection.status === "active")
+                      .map((connection) => (
+                        <div
+                          className="reel-people-list__item"
+                          key={`guest-connection-${connection.connection_id}`}
+                        >
+                          <span className="reel-avatar reel-avatar--small">
+                            <UsersRound aria-hidden="true" />
+                          </span>
+                          <span>
+                            <strong>
+                              {connection.partner_display_name || t("reel.ui.temporaryConnection")}
+                            </strong>
+                            <small>{t("reel.ui.guestConnectionActive")}</small>
+                          </span>
+                        </div>
+                      ))}
+                    {!bipsLoading &&
+                      !connectionsLoading &&
+                      receivedBips.length === 0 &&
+                      receivedGuestBips.length === 0 &&
+                      !connections.some((connection) => connection.status === "active") &&
+                      !guestConnections.some((connection) => connection.status === "active") && (
+                        <div className="reel-panel__empty">
+                          <Bell aria-hidden="true" />
+                          <strong>{t("reel.ui.noNotifications")}</strong>
+                          <span>{t("reel.ui.notificationsHint")}</span>
+                        </div>
+                      )}
+                    {bipsMessage && (
+                      <p className="reel-panel__note" role="status">
+                        {bipsMessage}
+                      </p>
+                    )}
+                    {connectionsMessage && (
+                      <p className="reel-panel__note" role="status">
+                        {connectionsMessage}
+                      </p>
+                    )}
                   </div>
                 )}
                 {!activityEnabled && activityTab === "notifications" && (
@@ -983,15 +1095,6 @@ export function ReelProximityScreen() {
             >
               <X aria-hidden="true" />
             </button>
-            {showFullProfile && (
-              <button
-                type="button"
-                className="reel-profile-sheet__back"
-                onClick={() => setShowFullProfile(false)}
-              >
-                <ArrowLeft aria-hidden="true" /> {t("reel.ui.backPreview")}
-              </button>
-            )}
             <PersonAvatar person={selectedPerson} size="me" />
             <h2 id="reel-profile-title">{selectedPerson.name}</h2>
             {selectedPerson.category && (
@@ -1000,27 +1103,17 @@ export function ReelProximityScreen() {
             {selectedPerson.distanceLabel && (
               <p className="reel-profile-sheet__distance">{selectedPerson.distanceLabel}</p>
             )}
-            {showFullProfile ? (
-              <>
-                {selectedPerson.description && (
-                  <p className="reel-profile-sheet__description">{selectedPerson.description}</p>
-                )}
-                {(selectedPerson.locationLabel || selectedPerson.distanceLabel) && (
-                  <div className="reel-profile-sheet__details">
-                    {selectedPerson.locationLabel && <span>{selectedPerson.locationLabel}</span>}
-                    {selectedPerson.distanceLabel && <span>{selectedPerson.distanceLabel}</span>}
-                  </div>
-                )}
-                {!selectedPerson.description && !selectedPerson.locationLabel && (
-                  <p className="reel-profile-sheet__empty">{t("reel.ui.noExtraProfile")}</p>
-                )}
-              </>
+            {selectedPerson.description ? (
+              <p className="reel-profile-sheet__description">{selectedPerson.description}</p>
             ) : (
-              <p className="reel-profile-sheet__description">
-                {selectedPerson.description || t("reel.ui.profileDetailsHint")}
-              </p>
+              <p className="reel-profile-sheet__empty">{t("reel.ui.noExtraProfile")}</p>
             )}
-            {(currentPresence || guestPresence) && !showFullProfile && (
+            {selectedPerson.locationLabel && (
+              <div className="reel-profile-sheet__details">
+                <span>{selectedPerson.locationLabel}</span>
+              </div>
+            )}
+            {(currentPresence || guestPresence) && (
               <button
                 type="button"
                 className="reel-profile-sheet__primary"
@@ -1029,16 +1122,6 @@ export function ReelProximityScreen() {
                 <RadioTower aria-hidden="true" /> Faire signe
               </button>
             )}
-            <button
-              type="button"
-              className="reel-profile-sheet__primary"
-              onClick={() => {
-                if (showFullProfile) closeProfile();
-                else setShowFullProfile(true);
-              }}
-            >
-              {showFullProfile ? t("reel.ui.close") : t("reel.ui.fullProfile")}
-            </button>
           </section>
         </div>
       )}

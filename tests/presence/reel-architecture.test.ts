@@ -62,7 +62,7 @@ describe("Instant architecture boundaries", () => {
     expect(memberAvatarSource).toContain('.from("avatars")');
     expect(memberAvatarSource).toContain("path.startsWith(`${memberId}/`)");
     expect(controllerSource).toContain('access.mode !== "member"');
-    expect(screenSource).toContain('access.mode === "member" && memberAvatarUrl');
+    expect(screenSource).toContain('accessMode === "member" && memberAvatarUrl');
     expect(screenSource).toContain("<img");
   });
 
@@ -73,11 +73,57 @@ describe("Instant architecture boundaries", () => {
     expect(screenSource).toContain("reel-radar__me-label");
   });
 
-  it("shows layered individual presence disks only after fifteen nearby profiles", () => {
-    expect(screenSource).toContain("availablePeople.length > 15");
-    expect(screenSource).toContain("availablePeople.slice(9, 16)");
+  it("opens the signed-in member profile from the central radar avatar", () => {
+    expect(screenSource).toContain('to="/espace/profil"');
+    expect(screenSource).toContain('access.mode === "member" ?');
+    expect(screenSource).toContain('aria-label={t("profile.title")}');
+  });
+
+  it("does not expose an unsupported full-profile expansion from nearby presence data", () => {
+    expect(screenSource).not.toContain("setShowFullProfile");
+    expect(screenSource).not.toContain("reel.ui.fullProfile");
+    expect(controllerSource).not.toContain("showFullProfile");
+    expect(screenSource).toContain("selectedPerson.description");
+    expect(screenSource).toContain("selectedPerson.locationLabel");
+  });
+
+  it("refreshes both received bips and connections immediately after acceptance", () => {
+    expect(controllerSource).toContain(
+      'action === "accept" ? refreshConnections() : Promise.resolve()',
+    );
+    expect(controllerSource).toContain("await Promise.all([");
+  });
+
+  it("keeps live alerts disabled until nearby discovery or presence is authorized", () => {
+    const activityStart = controllerSource.indexOf("const activityEnabled =");
+    const activityEnd = controllerSource.indexOf("const availablePeople", activityStart);
+    const activityBlock = controllerSource.slice(activityStart, activityEnd);
+    expect(activityBlock).toContain("discoveryEnabled");
+    expect(activityBlock).toContain("Boolean(currentPresence)");
+    expect(activityBlock).toContain("Boolean(guestPresence)");
+    expect(activityBlock).not.toContain("canUseMemberReel");
+    expect(activityBlock).not.toContain('access.mode === "guest"');
+  });
+
+  it("builds the alerts view from live bips and active connections", () => {
+    expect(controllerSource).toContain('activityTab !== "notifications"');
+    expect(controllerSource).toContain("const refreshActivity = () =>");
+    expect(controllerSource).toContain('"reel_bips"');
+    expect(controllerSource).toContain('"reel_connections"');
+    expect(screenSource).toContain("receivedGuestBips.map((bip)");
+    expect(screenSource).toContain('connection.status === "active"');
+    expect(screenSource).toContain("connectionsMessage");
+    expect(screenSource).not.toContain("notificationHistory");
+  });
+
+  it("shows a compact nearby-presence stack whenever discovery returns people", () => {
+    expect(screenSource).toContain("discoveryEnabled && availablePeople.length > 0");
+    expect(screenSource).toContain("availablePeople.slice(0, 3)");
     expect(screenSource).toContain('className="reel-presence-stack__disk"');
     expect(screenSource).toContain('onClick={() => setPanel("people")}');
+    expect(screenSource).toContain("availablePeople.length > 3");
+    expect(screenSource).toContain("reel-presence-stack__count");
+    expect(screenSource).toContain("+{availablePeople.length - 3}");
     expect(screenSource).not.toContain("reel-nearby__count");
     expect(screenSource).not.toContain("+{additionalCount}");
   });
