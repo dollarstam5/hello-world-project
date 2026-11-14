@@ -98,7 +98,7 @@ function SelfRadarIdentity({
 }) {
   const guestName = guestDisplayName.trim();
   const initials = guestName
-    .split(/\\s+/)
+    .split(/\s+/)
     .slice(0, 2)
     .map((part) => part[0])
     .join("")
