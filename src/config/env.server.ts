@@ -147,6 +147,16 @@ export function getMaintenanceEnvironment(): MaintenanceEnvironment {
   };
 }
 
+/** Optional server-only Geoapify key. Missing configuration disables reverse geocoding. */
+export function getGeoapifyApiKey(): string | null {
+  const value = text(process.env.GEOAPIFY_API_KEY);
+  if (!value) return null;
+  if (value.length < 16 || value.length > 256) {
+    throw new Error("GEOAPIFY_API_KEY must contain between 16 and 256 characters.");
+  }
+  return value;
+}
+
 export function getReelZoneHmacSecret(): string {
   const value = required("REEL_ZONE_HMAC_SECRET");
   if (value.length < 32) {
