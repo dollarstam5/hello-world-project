@@ -98,7 +98,6 @@ export function useReelProximityController() {
   const [guestSessionMessage, setGuestSessionMessage] = useState<string | null>(null);
   const [discoveredPeople, setDiscoveredPeople] = useState<Person[]>([]);
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
-  const [showFullProfile, setShowFullProfile] = useState(false);
   const [panel, setPanel] = useState<Panel>(null);
   const [activityTab, setActivityTab] = useState<ActivityTab>("notifications");
   const [radius, setRadius] = useState("100 m");
@@ -704,7 +703,6 @@ export function useReelProximityController() {
   const openProfile = (person: Person) => {
     setPanel(null);
     setSelectedPerson(person);
-    setShowFullProfile(false);
   };
   const closeProfile = () => {
     setSelectedPerson(null);
@@ -727,8 +725,6 @@ export function useReelProximityController() {
     guestSessionLoading,
     guestSessionMessage,
     selectedPerson,
-    showFullProfile,
-    setShowFullProfile,
     panel,
     setPanel,
     activityTab,
