@@ -111,8 +111,8 @@ export type Database = {
           revision?: number
           server_updated_at?: string
           status?: string
-          scope?: string
-          urgency?: string
+          scope?: string | null
+          urgency?: string | null
           time_slot?: string | null
           title?: string
           updated_at?: number
