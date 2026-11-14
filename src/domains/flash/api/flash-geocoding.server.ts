@@ -69,9 +69,11 @@ function normalizeResult(payload: GeoapifyReverseResponse): FlashGeocodingResult
   return { label, locality, city, region, country };
 }
 
-function cacheKey(latitude: number, longitude: number): string {
-  // Four decimal places are used only for cache grouping, never as a public location.
-  return `${latitude.toFixed(4)}:${longitude.toFixed(4)}`;
+async function cacheKey(latitude: number, longitude: number): Promise<string> {
+  // Hash a coarse cache cell so the cache never stores raw or rounded coordinates.
+  const cell = `${latitude.toFixed(5)}:${longitude.toFixed(5)}`;
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(cell));
+  return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
 }
 
 function readCache(key: string): FlashGeocodingResult | null | undefined {
@@ -115,7 +117,7 @@ export async function lookupFlashArea(
   const apiKey = getGeoapifyApiKey();
   if (!apiKey) return null;
 
-  const key = cacheKey(latitude, longitude);
+  const key = await cacheKey(latitude, longitude);
   const cached = readCache(key);
   if (cached !== undefined) return cached;
 
