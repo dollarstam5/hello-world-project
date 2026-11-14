@@ -412,9 +412,7 @@ export function ReelProximityScreen() {
               </span>
             ))}
             {availablePeople.length > 3 && (
-              <span className="reel-presence-stack__count">
-                +{availablePeople.length - 3}
-              </span>
+              <span className="reel-presence-stack__count">+{availablePeople.length - 3}</span>
             )}
           </span>
         </button>
