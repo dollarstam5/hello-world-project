@@ -62,7 +62,7 @@ describe("Instant architecture boundaries", () => {
     expect(memberAvatarSource).toContain('.from("avatars")');
     expect(memberAvatarSource).toContain("path.startsWith(`${memberId}/`)");
     expect(controllerSource).toContain('access.mode !== "member"');
-    expect(screenSource).toContain('access.mode === "member" && memberAvatarUrl');
+    expect(screenSource).toContain('accessMode === "member" && memberAvatarUrl');
     expect(screenSource).toContain("<img");
   });
 
