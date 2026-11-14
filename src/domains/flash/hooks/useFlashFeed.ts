@@ -150,9 +150,7 @@ export function useFlashFeed() {
     return [...pendingLocal, ...remoteRows];
   }, [coordinates, isOffline, remoteRows, offlineRows]);
 
-  const canShowDemo =
-    !loading &&
-    localRows !== undefined &&
+  const canShowDemo = !loading && localRows !== undefined &&
     (remoteRows !== null || feedFailed || isOffline);
   const presentedRows = useMemo(() => selectFlashFeedItems(rows, canShowDemo), [rows, canShowDemo]);
 
