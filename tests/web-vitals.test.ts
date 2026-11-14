@@ -146,6 +146,20 @@ describe("real Web Vitals monitoring", () => {
     stop();
   });
 
+  it("uses the Event Timing threshold when the selected percentile has no reported entry", () => {
+    Object.defineProperty(performance, "interactionCount", {
+      configurable: true,
+      value: 50,
+    });
+    const { emit } = installPerformanceObserverMock();
+    const stop = startWebVitalsMonitoring(vi.fn());
+
+    emit("event", [{ duration: 40, interactionId: 1 } as PerformanceEntry]);
+
+    expect(getWebVitalsSnapshot().INP?.value).toBe(16);
+    stop();
+  });
+
   it("ignores one worst interaction for every 50 page interactions", () => {
     Object.defineProperty(performance, "interactionCount", {
       configurable: true,
