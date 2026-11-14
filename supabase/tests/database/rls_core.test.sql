@@ -102,7 +102,7 @@ select policies_are(
 );
 select policies_are(
   'public', 'flashes',
-  array['flashes readable by members', 'own flashes write', 'moderators moderate flashes']
+  array['flashes readable by owner', 'own flashes write', 'moderators moderate flashes']
 );
 select policies_are(
   'public', 'missions',
