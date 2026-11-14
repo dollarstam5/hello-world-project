@@ -366,7 +366,7 @@ export function useReelProximityController() {
   const resolveReceivedBip = async (bip: ReelBip, action: "accept" | "decline") => {
     try {
       await commandReelBip(bip.id, action);
-      await refreshBips();
+      await Promise.all([refreshBips(), action === "accept" ? refreshConnections() : Promise.resolve()]);
       setBipsMessage(
         action === "accept"
           ? t("reel.controller.connectionEstablished")
@@ -384,7 +384,7 @@ export function useReelProximityController() {
       } else {
         await commandReelGuestBipMember(bip.id, action);
       }
-      await refreshBips();
+      await Promise.all([refreshBips(), action === "accept" ? refreshConnections() : Promise.resolve()]);
       setBipsMessage(
         action === "accept"
           ? t("reel.controller.connectionEstablished")
