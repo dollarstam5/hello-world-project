@@ -1,18 +1,18 @@
 BEGIN;
 
 -- Flash scope and urgency are persisted by the current shared contract.
+-- Keep both nullable and without defaults: historical rows must not acquire
+-- an invented publication reach or urgency during this schema migration.
+-- New drafts provide both values through the validated Sync contract.
 ALTER TABLE public.flashes
-  ADD COLUMN IF NOT EXISTS scope TEXT NOT NULL DEFAULT 'current_area',
-  ADD COLUMN IF NOT EXISTS urgency TEXT NOT NULL DEFAULT 'anytime';
-
-UPDATE public.flashes SET scope = 'current_area' WHERE scope IS NULL;
-UPDATE public.flashes SET urgency = 'anytime' WHERE urgency IS NULL;
+  ADD COLUMN IF NOT EXISTS scope TEXT,
+  ADD COLUMN IF NOT EXISTS urgency TEXT;
 
 ALTER TABLE public.flashes
-  ALTER COLUMN scope SET DEFAULT 'current_area',
-  ALTER COLUMN scope SET NOT NULL,
-  ALTER COLUMN urgency SET DEFAULT 'anytime',
-  ALTER COLUMN urgency SET NOT NULL;
+  ALTER COLUMN scope DROP DEFAULT,
+  ALTER COLUMN urgency DROP DEFAULT,
+  ALTER COLUMN scope DROP NOT NULL,
+  ALTER COLUMN urgency DROP NOT NULL;
 
 DO $$
 BEGIN
