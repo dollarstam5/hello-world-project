@@ -41,18 +41,30 @@ export function MyFlashManagement() {
 
   useEffect(() => {
     let active = true;
+    let receivedAuthEvent = false;
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      receivedAuthEvent = true;
+      if (active) setUserId(session?.user.id ?? null);
+    });
 
     void supabase.auth
-      .getUser()
+      .getSession()
       .then(({ data, error }) => {
-        if (active) setUserId(error || !data.user ? null : data.user.id);
+        // Do not overwrite a newer sign-in/sign-out event with an older snapshot.
+        if (active && !receivedAuthEvent) {
+          setUserId(error ? null : (data.session?.user.id ?? null));
+        }
       })
       .catch(() => {
-        if (active) setUserId(null);
+        if (active && !receivedAuthEvent) setUserId(null);
       });
 
     return () => {
       active = false;
+      subscription.unsubscribe();
     };
   }, []);
 
