@@ -489,6 +489,9 @@ export function FlashExperienceScreen() {
                   <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
                     {t("flash.location.description")}
                   </p>
+                  <p className="text-xs leading-relaxed text-muted-foreground">
+                    {t("flash.location.optionalDraft")}
+                  </p>
                 </div>
                 <Button
                   type="button"
