@@ -276,6 +276,8 @@ export const messages = {
     "flash.location.title": "Votre lieu de publication",
     "flash.location.description":
       "Votre position sert à calculer la zone de diffusion. Elle ne sera pas visible publiquement.",
+    "flash.location.optionalDraft":
+      "Vous pouvez enregistrer le brouillon sans localisation. Elle sera nécessaire avant toute publication.",
     "flash.location.detect": "Détecter ma position",
     "flash.location.detecting": "Recherche du lieu…",
     "flash.location.refresh": "Actualiser ma position",
@@ -334,6 +336,8 @@ export const messages = {
     "flash.composer.publish": "Diffuser",
     "flash.composer.published":
       "Flash enregistré sur cet appareil. Il sera transmis dès que possible.",
+    "flash.composer.draftSaved":
+      "Votre brouillon est enregistré sur cet appareil. Il sera synchronisé dès que possible.",
     "flash.composer.error": "Impossible d’enregistrer ce Flash. Réessayez.",
     "flash.composer.signIn": "Connectez-vous pour diffuser un Flash.",
     "flash.composer.understood": "Vita a compris :",
@@ -1165,6 +1169,8 @@ export const messages = {
     "flash.location.title": "Your publication area",
     "flash.location.description":
       "Your position is used to calculate the reach. It will never be shown publicly.",
+    "flash.location.optionalDraft":
+      "You can save the draft without location. Location will be needed before any public publishing.",
     "flash.location.detect": "Detect my location",
     "flash.location.detecting": "Finding your area…",
     "flash.location.refresh": "Refresh my location",
@@ -1218,6 +1224,8 @@ export const messages = {
     "flash.composer.placeholder": "Share your need or offer, simply…",
     "flash.composer.publish": "Broadcast",
     "flash.composer.published": "Flash saved on this device. It will be sent as soon as possible.",
+    "flash.composer.draftSaved":
+      "Your draft is saved on this device. It will sync as soon as possible.",
     "flash.composer.error": "This Flash could not be saved. Please try again.",
     "flash.composer.signIn": "Sign in to broadcast a Flash.",
     "flash.composer.understood": "Vita understood:",
