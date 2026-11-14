@@ -3,7 +3,7 @@
 **Statut :** parcours brouillon-first implémenté ; clôture de la phase A en cours de vérification  
 **Domaine :** `src/domains/flash/`  
 **Route :** `/flash`  
-**Référence vérifiée :** commit `17216c89f1790b7c3c893249308b5e06f02c2de9`
+**Référence de travail :** branche `feat/flash-engine-experience-reconciled` ; contrôles à confirmer sur le dernier commit
 
 ## Intention de l'écran
 
@@ -55,7 +55,8 @@ La localisation facultative de ce parcours ne doit pas être confondue avec le f
 - La liste lit les enregistrements de la base locale et filtre par propriétaire connecté.
 - L'écoute des événements d'authentification actualise l'identité affichée lors d'une connexion ou déconnexion.
 - Les actions d'édition, d'archivage et de suppression existent ; l'archivage exige une confirmation positive de la RPC.
-- Les statuts sont affichés sur les fiches. À ce stade, les enregistrements ne sont pas encore regroupés dans des vues distinctes par statut : ce point reste à vérifier/améliorer avant clôture de la phase A.
+- Les enregistrements sont regroupés par statut résolu : brouillon, actif, expiré et archivé ; chaque groupe affiche son nombre d'éléments.
+- Les actions suivent le statut résolu : l'archivage n'est proposé que pour un Flash actif ; l'édition est désactivée pour les éléments expirés ou archivés.
 - Le parcours de synchronisation doit être vérifié séparément pour confirmer la reprise réseau et l'absence de doublons.
 
 ## Découverte et données d'exemple
@@ -81,7 +82,7 @@ La reconnaissance vocale dépend du navigateur et de ses permissions ; elle ne c
 - [ ] Brouillon sans GPS, sans Geoapify et sans libellé de zone.
 - [ ] Brouillon hors ligne, synchronisation après reconnexion et absence de doublons.
 - [ ] Isolation propriétaire, changement de compte et suppression.
-- [ ] Statuts brouillon/actif/expiré/archivé compréhensibles et faciles à distinguer.
+- [x] Regroupement des statuts brouillon/actif/expiré/archivé et cohérence des actions selon le statut résolu (tests automatisés encore à confirmer sur le dernier commit).
 - [ ] Parcours clavier, lecteur d'écran, dictée indisponible et petits/grands écrans.
 - [ ] Vérification visuelle réelle sur Android et iOS ; les tests CI seuls ne prouvent pas le rendu sur appareil.
 - [ ] Documentation et CI à jour sur le dernier commit.
