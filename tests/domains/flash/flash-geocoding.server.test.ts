@@ -78,8 +78,8 @@ describe("Geoapify reverse geocoding", () => {
     );
     vi.stubGlobal("fetch", fetchMock);
 
-    await lookupFlashArea(4.06101, 9.77101);
-    await lookupFlashArea(4.06102, 9.77102);
+    await lookupFlashArea(4.061011, 9.771011);
+    await lookupFlashArea(4.061012, 9.771012);
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });
