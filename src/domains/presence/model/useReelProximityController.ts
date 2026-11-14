@@ -729,11 +729,7 @@ export function useReelProximityController() {
   };
   const discoveryEnabled = discoveryAccess === "granted";
   const activityEnabled =
-    discoveryEnabled ||
-    Boolean(currentPresence) ||
-    Boolean(guestPresence) ||
-    canUseMemberReel ||
-    access.mode === "guest";
+    discoveryEnabled || Boolean(currentPresence) || Boolean(guestPresence);
   const availablePeople = discoveryEnabled ? discoveredPeople : [];
 
   const openProfile = (person: Person) => {
