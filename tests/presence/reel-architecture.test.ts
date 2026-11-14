@@ -73,6 +73,27 @@ describe("Instant architecture boundaries", () => {
     expect(screenSource).toContain("reel-radar__me-label");
   });
 
+
+  it("opens the signed-in member profile from the central radar avatar", () => {
+    expect(screenSource).toContain('to="/espace/profil"');
+    expect(screenSource).toContain('access.mode === "member" ?');
+    expect(screenSource).toContain('aria-label={t("profile.title")}');
+  });
+
+  it("does not expose an unsupported full-profile expansion from nearby presence data", () => {
+    expect(screenSource).not.toContain("setShowFullProfile");
+    expect(screenSource).not.toContain("reel.ui.fullProfile");
+    expect(controllerSource).not.toContain("showFullProfile");
+    expect(screenSource).toContain("selectedPerson.description");
+    expect(screenSource).toContain("selectedPerson.locationLabel");
+  });
+
+  it("refreshes both received bips and connections immediately after acceptance", () => {
+    expect(controllerSource).toContain(
+      'await Promise.all([refreshBips(), action === "accept" ? refreshConnections() : Promise.resolve()])',
+    );
+  });
+
   it("shows layered individual presence disks only after fifteen nearby profiles", () => {
     expect(screenSource).toContain("availablePeople.length > 15");
     expect(screenSource).toContain("availablePeople.slice(9, 16)");
