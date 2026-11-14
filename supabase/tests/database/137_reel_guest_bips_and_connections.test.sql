@@ -212,15 +212,29 @@ SELECT is(
   'accepting the reverse bip reuses the existing pair relation instead of duplicating it'
 );
 
+SET LOCAL ROLE service_role;
+SELECT set_config('request.jwt.claims', '{"role":"service_role"}', true);
+SELECT set_config(
+  'reel.test_connection_id',
+  (SELECT connection.id::text
+   FROM public.reel_guest_connections AS connection
+   WHERE 'e5000000-0000-4000-8000-000000000001'::uuid IN (
+     connection.participant_one_member_id,
+     connection.participant_two_member_id
+   )
+   LIMIT 1),
+  true
+);
+
+SET LOCAL ROLE authenticated;
+SELECT set_config(
+  'request.jwt.claims',
+  '{"sub":"e5000000-0000-4000-8000-000000000001","role":"authenticated"}',
+  true
+);
 SELECT lives_ok(
   $reel_close$SELECT public.close_reel_guest_connection_member(
-    (SELECT connection.id
-     FROM public.reel_guest_connections AS connection
-     WHERE 'e5000000-0000-4000-8000-000000000001'::uuid IN (
-       connection.participant_one_member_id,
-       connection.participant_two_member_id
-     )
-     LIMIT 1)
+    current_setting('reel.test_connection_id')::uuid
   )$reel_close$,
   'a member can close a cross-mode relation shared with a guest'
 );
@@ -234,9 +248,11 @@ SELECT is(
 SET LOCAL ROLE service_role;
 SELECT set_config('request.jwt.claims', '{"role":"service_role"}', true);
 SELECT is(
-  (SELECT status FROM public.list_reel_guest_connections_for_session(
-    'e5000000-0000-4000-8000-000000000011'
-  ) LIMIT 1),
+  (SELECT connection.status
+   FROM public.list_reel_guest_connections_for_session(
+     'e5000000-0000-4000-8000-000000000011'
+   ) AS connection
+   LIMIT 1),
   'closed',
   'the guest sees the same cross-mode relation as closed'
 );
