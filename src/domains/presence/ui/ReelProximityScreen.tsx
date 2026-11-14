@@ -83,6 +83,56 @@ function RingPerson({ person, onSelect }: { person: Person; onSelect: (person: P
   );
 }
 
+function SelfRadarIdentity({
+  accessMode,
+  guestAvatarKey,
+  guestDisplayName,
+  memberAvatarUrl,
+  meLabel,
+}: {
+  accessMode: "member" | "guest" | "visitor";
+  guestAvatarKey: string;
+  guestDisplayName: string;
+  memberAvatarUrl: string | null;
+  meLabel: string;
+}) {
+  const guestName = guestDisplayName.trim();
+  const initials = guestName
+    .split(/\\s+/)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("")
+    .toLocaleUpperCase();
+
+  return (
+    <>
+      <span
+        className={`reel-radar__me-avatar${accessMode === "guest" ? ` reel-avatar--${guestAvatarKey}` : ""}`}
+        aria-hidden="true"
+      >
+        {accessMode === "guest" && guestName ? (
+          <span className="reel-avatar__initials">{initials}</span>
+        ) : (
+          <CircleUserRound />
+        )}
+        {accessMode === "member" && memberAvatarUrl ? (
+          <img
+            src={memberAvatarUrl}
+            alt=""
+            aria-hidden="true"
+            onError={(event) => {
+              event.currentTarget.hidden = true;
+            }}
+          />
+        ) : null}
+      </span>
+      <span className="reel-radar__me-label">
+        {accessMode === "guest" && guestName ? guestName : meLabel}
+      </span>
+    </>
+  );
+}
+
 export function ReelProximityScreen() {
   const { t } = useI18n();
   const {
@@ -309,40 +359,13 @@ export function ReelProximityScreen() {
               aria-label={t("profile.title")}
               title={t("profile.title")}
             >
-            <span
-              className={`reel-radar__me-avatar${access.mode === "guest" ? ` reel-avatar--${guestAvatarKey}` : ""}`}
-              aria-hidden="true"
-            >
-              {access.mode === "guest" && guestDisplayName.trim() ? (
-                <span className="reel-avatar__initials">
-                  {guestDisplayName
-                    .trim()
-                    .split(/\s+/)
-                    .slice(0, 2)
-                    .map((part) => part[0])
-                    .join("")
-                    .toLocaleUpperCase()}
-                </span>
-              ) : (
-                <CircleUserRound />
-              )}
-              {access.mode === "member" && memberAvatarUrl ? (
-                <img
-                  src={memberAvatarUrl}
-                  alt=""
-                  aria-hidden="true"
-                  onError={(event) => {
-                    event.currentTarget.hidden = true;
-                  }}
-                />
-              ) : null}
-            </span>
-            <span className="reel-radar__me-label">
-              {access.mode === "guest" && guestDisplayName.trim()
-                ? guestDisplayName.trim()
-                : t("reel.ui.me")}
-            </span>
-
+              <SelfRadarIdentity
+                accessMode={access.mode}
+                guestAvatarKey={guestAvatarKey}
+                guestDisplayName={guestDisplayName}
+                memberAvatarUrl={memberAvatarUrl}
+                meLabel={t("reel.ui.me")}
+              />
             </Link>
           ) : (
             <button
@@ -352,39 +375,13 @@ export function ReelProximityScreen() {
               aria-label={t("reel.ui.managePresence")}
               title={t("reel.ui.managePresence")}
             >
-            <span
-              className={`reel-radar__me-avatar${access.mode === "guest" ? ` reel-avatar--${guestAvatarKey}` : ""}`}
-              aria-hidden="true"
-            >
-              {access.mode === "guest" && guestDisplayName.trim() ? (
-                <span className="reel-avatar__initials">
-                  {guestDisplayName
-                    .trim()
-                    .split(/\s+/)
-                    .slice(0, 2)
-                    .map((part) => part[0])
-                    .join("")
-                    .toLocaleUpperCase()}
-                </span>
-              ) : (
-                <CircleUserRound />
-              )}
-              {access.mode === "member" && memberAvatarUrl ? (
-                <img
-                  src={memberAvatarUrl}
-                  alt=""
-                  aria-hidden="true"
-                  onError={(event) => {
-                    event.currentTarget.hidden = true;
-                  }}
-                />
-              ) : null}
-            </span>
-            <span className="reel-radar__me-label">
-              {access.mode === "guest" && guestDisplayName.trim()
-                ? guestDisplayName.trim()
-                : t("reel.ui.me")}
-            </span>
+              <SelfRadarIdentity
+                accessMode={access.mode}
+                guestAvatarKey={guestAvatarKey}
+                guestDisplayName={guestDisplayName}
+                memberAvatarUrl={memberAvatarUrl}
+                meLabel={t("reel.ui.me")}
+              />
             </button>
           )}
         </div>
