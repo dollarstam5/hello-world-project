@@ -95,10 +95,14 @@ describe("Instant architecture boundaries", () => {
   });
 
   it("keeps live alerts disabled until nearby discovery or presence is authorized", () => {
-    expect(controllerSource).toContain(
-      "const activityEnabled =\\n    discoveryEnabled || Boolean(currentPresence) || Boolean(guestPresence);",
-    );
-    expect(controllerSource).not.toContain("access.mode === \\"guest\\";\\n  const availablePeople");
+    const activityStart = controllerSource.indexOf("const activityEnabled =");
+    const activityEnd = controllerSource.indexOf("const availablePeople", activityStart);
+    const activityBlock = controllerSource.slice(activityStart, activityEnd);
+    expect(activityBlock).toContain("discoveryEnabled");
+    expect(activityBlock).toContain("Boolean(currentPresence)");
+    expect(activityBlock).toContain("Boolean(guestPresence)");
+    expect(activityBlock).not.toContain("canUseMemberReel");
+    expect(activityBlock).not.toContain('access.mode === "guest"');
   });
 
   it("builds the alerts view from live bips and active connections", () => {
