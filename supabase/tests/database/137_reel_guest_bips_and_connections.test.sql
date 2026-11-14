@@ -281,6 +281,14 @@ SELECT lives_ok(
   'the second guest can send a bip to the member for the reverse-close scenario'
 );
 
+SELECT set_config(
+  'reel.test_guest_close_bip_id',
+  (SELECT bip.id::text
+   FROM public.reel_guest_bips AS bip
+   WHERE bip.client_request_id = 'e5000000-0000-4000-8000-000000000035'),
+  true
+);
+
 SET LOCAL ROLE authenticated;
 SELECT set_config(
   'request.jwt.claims',
@@ -289,8 +297,7 @@ SELECT set_config(
 );
 SELECT lives_ok(
   $reel_test$SELECT public.command_reel_guest_bip_member(
-    (SELECT bip.id FROM public.reel_guest_bips AS bip
-     WHERE bip.client_request_id = 'e5000000-0000-4000-8000-000000000035'),
+    current_setting('reel.test_guest_close_bip_id')::uuid,
     'accept'
   )$reel_test$,
   'the member accepts the second guest bip'
@@ -302,8 +309,10 @@ SELECT set_config(
   'reel.test_guest_close_connection_id',
   (SELECT connection.id::text
    FROM public.reel_guest_connections AS connection
-   WHERE connection.participant_one_guest_session_id = 'e5000000-0000-4000-8000-000000000012'
-      OR connection.participant_two_guest_session_id = 'e5000000-0000-4000-8000-000000000012'
+   WHERE (connection.participant_one_guest_session_id = 'e5000000-0000-4000-8000-000000000012'
+       OR connection.participant_two_guest_session_id = 'e5000000-0000-4000-8000-000000000012')
+     AND connection.status = 'active'
+   ORDER BY connection.created_at DESC
    LIMIT 1),
   true
 );
