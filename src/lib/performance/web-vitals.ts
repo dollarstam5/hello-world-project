@@ -64,8 +64,10 @@ function getInpCandidate(
   }
 
   const ranked = [...interactions.values()].sort((a, b) => b.duration - a.duration);
-  const percentileIndex = Math.min(ranked.length - 1, Math.floor(interactionCount / 50));
-  return ranked[percentileIndex]?.duration;
+  const percentileIndex = Math.floor(interactionCount / 50);
+  // Event Timing only reports entries at or above the 16 ms minimum threshold.
+  // If the percentile falls below the observed candidates, its value is therefore <16 ms.
+  return ranked[percentileIndex]?.duration ?? 16;
 }
 
 function getPageInteractionCount(fallbackCount: number): number {
