@@ -93,8 +93,6 @@ export function ReelProximityScreen() {
     guestSessionLoading,
     guestSessionMessage,
     selectedPerson,
-    showFullProfile,
-    setShowFullProfile,
     panel,
     setPanel,
     activityTab,
@@ -1027,15 +1025,6 @@ export function ReelProximityScreen() {
             >
               <X aria-hidden="true" />
             </button>
-            {showFullProfile && (
-              <button
-                type="button"
-                className="reel-profile-sheet__back"
-                onClick={() => setShowFullProfile(false)}
-              >
-                <ArrowLeft aria-hidden="true" /> {t("reel.ui.backPreview")}
-              </button>
-            )}
             <PersonAvatar person={selectedPerson} size="me" />
             <h2 id="reel-profile-title">{selectedPerson.name}</h2>
             {selectedPerson.category && (
@@ -1044,27 +1033,17 @@ export function ReelProximityScreen() {
             {selectedPerson.distanceLabel && (
               <p className="reel-profile-sheet__distance">{selectedPerson.distanceLabel}</p>
             )}
-            {showFullProfile ? (
-              <>
-                {selectedPerson.description && (
-                  <p className="reel-profile-sheet__description">{selectedPerson.description}</p>
-                )}
-                {(selectedPerson.locationLabel || selectedPerson.distanceLabel) && (
-                  <div className="reel-profile-sheet__details">
-                    {selectedPerson.locationLabel && <span>{selectedPerson.locationLabel}</span>}
-                    {selectedPerson.distanceLabel && <span>{selectedPerson.distanceLabel}</span>}
-                  </div>
-                )}
-                {!selectedPerson.description && !selectedPerson.locationLabel && (
-                  <p className="reel-profile-sheet__empty">{t("reel.ui.noExtraProfile")}</p>
-                )}
-              </>
+            {selectedPerson.description ? (
+              <p className="reel-profile-sheet__description">{selectedPerson.description}</p>
             ) : (
-              <p className="reel-profile-sheet__description">
-                {selectedPerson.description || t("reel.ui.profileDetailsHint")}
-              </p>
+              <p className="reel-profile-sheet__empty">{t("reel.ui.noExtraProfile")}</p>
             )}
-            {(currentPresence || guestPresence) && !showFullProfile && (
+            {selectedPerson.locationLabel && (
+              <div className="reel-profile-sheet__details">
+                <span>{selectedPerson.locationLabel}</span>
+              </div>
+            )}
+            {(currentPresence || guestPresence) && (
               <button
                 type="button"
                 className="reel-profile-sheet__primary"
