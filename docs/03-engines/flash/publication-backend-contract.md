@@ -83,7 +83,7 @@ L’audit du code versionné a identifié les points suivants :
 
 Après synchronisation réelle de la branche de travail avec `main`, préparer une migration additive versionnée qui :
 
-- ajoute `scope` et `urgency` avec contraintes de valeurs ;
+- ajoute `scope` et `urgency` avec contraintes de valeurs, sans backfill ni valeur par défaut pour les lignes historiques ;
 - conserve les anciennes lignes avec valeurs nulles, mais les exclut du flux géographique tant qu’elles ne sont pas régularisées ;
 - remplace la recherche par un calcul de distance brute en mètres et un filtre `LEAST(rayon visiteur, portée auteur)` ;
 - ferme l’ancien accès public global sans laisser de chemin de découverte qui contourne le rayon ;
