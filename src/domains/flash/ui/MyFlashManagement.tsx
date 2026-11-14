@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Archive, Pencil, Trash2 } from "lucide-react";
 import type { FlashRecord } from "@eco/core-contracts";
+import { resolveFlashStatus } from "@eco/core-logic";
 import { EmptyState } from "@/components/app/EmptyState";
 import { Surface } from "@/components/app/Surface";
 import {
@@ -119,6 +120,13 @@ export function MyFlashManagement() {
     }
   }
 
+  const statusGroups = (["draft", "live", "expired", "archived"] as const)
+    .map((status) => ({
+      status,
+      items: records?.filter((record) => resolveFlashStatus(record) === status) ?? [],
+    }))
+    .filter((group) => group.items.length > 0);
+
   if (userId === undefined || records === undefined) {
     return (
       <p className="text-sm text-muted-foreground" role="status">
@@ -159,7 +167,15 @@ export function MyFlashManagement() {
         </p>
       ) : null}
 
-      {records.map((record) => (
+      {statusGroups.map((group) => (
+        <section key={group.status}>
+          <h3 className="mb-2 text-sm font-semibold text-muted-foreground">
+            {t(statusKeys[group.status])} ({group.items.length})
+          </h3>
+          <div className="stack-3">
+          {group.items.map((record) => {
+            const resolvedStatus = resolveFlashStatus(record);
+            return (
         <Surface key={record.id} variant="elevated" padding="md" bordered>
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0 flex-1">
@@ -199,7 +215,7 @@ export function MyFlashManagement() {
                 <p className="font-semibold leading-snug">{record.title}</p>
               )}
               <p className="mt-1 text-xs text-muted-foreground">
-                {t(statusKeys[record.status])}
+                {t(statusKeys[resolvedStatus])}
                 {" · "}
                 {new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(record.createdAt)}
               </p>
@@ -250,6 +266,10 @@ export function MyFlashManagement() {
             </Button>
           </div>
         </Surface>
+            );
+          })}
+          </div>
+        </section>
       ))}
 
       <AlertDialog
