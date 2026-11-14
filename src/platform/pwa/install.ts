@@ -64,10 +64,12 @@ export function registerServiceWorker(): void {
 
 export function useInstallPrompt() {
   const capabilities = getPlatformCapabilities();
+  const [hydrated, setHydrated] = useState(false);
   const [available, setAvailable] = useState(deferredPrompt !== null);
   const [installed, setInstalled] = useState(capabilities.standalone);
 
   useEffect(() => {
+    setHydrated(true);
     const onListener = () => setAvailable(deferredPrompt !== null);
     listeners.add(onListener);
 
@@ -110,7 +112,7 @@ export function useInstallPrompt() {
   const canOfferManualInstall = manualInstructions !== null;
 
   return {
-    available: !installed && (available || canOfferManualInstall),
+    available: hydrated && !installed && (available || canOfferManualInstall),
     installed,
     install,
     manualInstructions: available ? null : manualInstructions,

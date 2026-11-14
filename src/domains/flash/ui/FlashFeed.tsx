@@ -1,14 +1,16 @@
+import { useHydrated } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { FlashCard } from "@/components/app/FlashCard";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useFlashFeed } from "../hooks/useFlashFeed";
 
 export function FlashFeed() {
+  const hydrated = useHydrated();
   const { t } = useI18n();
   const { rows, source, loading, error, needsLocation, hasLocation, requestLocation, refresh } =
     useFlashFeed();
 
-  if (loading && rows.length === 0) {
+  if (!hydrated || (loading && rows.length === 0)) {
     return (
       <p className="text-sm text-muted-foreground" role="status">
         {t("flash.feed.loading")}
