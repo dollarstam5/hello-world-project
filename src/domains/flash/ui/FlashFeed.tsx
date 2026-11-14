@@ -5,16 +5,8 @@ import { useFlashFeed } from "../hooks/useFlashFeed";
 
 export function FlashFeed() {
   const { t } = useI18n();
-  const {
-    rows,
-    source,
-    loading,
-    error,
-    needsLocation,
-    hasLocation,
-    requestLocation,
-    refresh,
-  } = useFlashFeed();
+  const { rows, source, loading, error, needsLocation, hasLocation, requestLocation, refresh } =
+    useFlashFeed();
 
   if (loading && rows.length === 0) {
     return (
