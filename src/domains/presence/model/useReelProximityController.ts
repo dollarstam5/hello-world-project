@@ -327,6 +327,36 @@ export function useReelProximityController() {
     ]);
   }, [panel, activityTab, refreshConnections, access.memberId, canUseMemberReel, access.mode]);
 
+  useEffect(() => {
+    if (
+      panel !== "activity" ||
+      activityTab !== "notifications" ||
+      (!canUseMemberReel && access.mode !== "guest")
+    ) {
+      return;
+    }
+    const refreshActivity = () => {
+      void Promise.all([refreshBips(), refreshConnections()]);
+    };
+    refreshActivity();
+    if (access.mode === "guest") {
+      const poll = window.setInterval(refreshActivity, 3000);
+      return () => window.clearInterval(poll);
+    }
+    return subscribeToReelMemberActivity(access.memberId, refreshActivity, [
+      "reel_bips",
+      "reel_connections",
+    ]);
+  }, [
+    panel,
+    activityTab,
+    refreshBips,
+    refreshConnections,
+    access.memberId,
+    canUseMemberReel,
+    access.mode,
+  ]);
+
   const endConnection = (connection: ReelConnection) => {
     if (connection.status === "active") {
       setPendingConnectionEnd({ kind: "member", connection });

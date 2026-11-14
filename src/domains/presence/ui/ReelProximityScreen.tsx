@@ -913,10 +913,74 @@ export function ReelProximityScreen() {
                     )}
                   </div>
                 ) : (
-                  <div className="reel-panel__empty">
-                    <Bell aria-hidden="true" />
-                    <strong>{t("reel.ui.noNotifications")}</strong>
-                    <span>{t("reel.ui.notificationsHint")}</span>
+                  <div className="reel-people-list" aria-live="polite">
+                    {(bipsLoading || connectionsLoading) && (
+                      <p className="reel-panel__note">{t("reel.ui.bipsLoading")}</p>
+                    )}
+                    {access.mode === "visitor" && (
+                      <p className="reel-panel__note">{t("reel.ui.connectToView")}</p>
+                    )}
+                    {access.mode === "member" && !canUseMemberReel && (
+                      <p className="reel-panel__note">{t("reel.ui.memberNotActive")}</p>
+                    )}
+                    {receivedBips.map((bip) => (
+                      <div className="reel-people-list__item" key={`member-bip-${bip.id}`}>
+                        <span className="reel-avatar reel-avatar--small">
+                          <RadioTower aria-hidden="true" />
+                        </span>
+                        <span>
+                          <strong>{t("reel.ui.someoneSignaled")}</strong>
+                          <small>{t("reel.ui.acceptOrDecline")}</small>
+                        </span>
+                      </div>
+                    ))}
+                    {receivedGuestBips.map((bip) => (
+                      <div className="reel-people-list__item" key={`guest-bip-${bip.id}`}>
+                        <span className="reel-avatar reel-avatar--small">
+                          <RadioTower aria-hidden="true" />
+                        </span>
+                        <span>
+                          <strong>{t("reel.ui.someoneSignaled")}</strong>
+                          <small>{t("reel.ui.acceptOrDecline")}</small>
+                        </span>
+                      </div>
+                    ))}
+                    {connections.filter((connection) => connection.status === "active").map((connection) => (
+                      <div className="reel-people-list__item" key={`member-connection-${connection.connection_id}`}>
+                        <span className="reel-avatar reel-avatar--small">
+                          <UsersRound aria-hidden="true" />
+                        </span>
+                        <span>
+                          <strong>{connection.partner_display_name}</strong>
+                          <small>{t("reel.ui.activeConnection")}</small>
+                        </span>
+                      </div>
+                    ))}
+                    {guestConnections.filter((connection) => connection.status === "active").map((connection) => (
+                      <div className="reel-people-list__item" key={`guest-connection-${connection.connection_id}`}>
+                        <span className="reel-avatar reel-avatar--small">
+                          <UsersRound aria-hidden="true" />
+                        </span>
+                        <span>
+                          <strong>{connection.partner_display_name || t("reel.ui.temporaryConnection")}</strong>
+                          <small>{t("reel.ui.guestConnectionActive")}</small>
+                        </span>
+                      </div>
+                    ))}
+                    {!bipsLoading &&
+                      !connectionsLoading &&
+                      receivedBips.length === 0 &&
+                      receivedGuestBips.length === 0 &&
+                      !connections.some((connection) => connection.status === "active") &&
+                      !guestConnections.some((connection) => connection.status === "active") && (
+                        <div className="reel-panel__empty">
+                          <Bell aria-hidden="true" />
+                          <strong>{t("reel.ui.noNotifications")}</strong>
+                          <span>{t("reel.ui.notificationsHint")}</span>
+                        </div>
+                      )}
+                    {bipsMessage && <p className="reel-panel__note" role="status">{bipsMessage}</p>}
+                    {connectionsMessage && <p className="reel-panel__note" role="status">{connectionsMessage}</p>}
                   </div>
                 )}
                 {!activityEnabled && activityTab === "notifications" && (

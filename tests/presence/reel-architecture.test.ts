@@ -94,6 +94,17 @@ describe("Instant architecture boundaries", () => {
     expect(controllerSource).toContain("await Promise.all([");
   });
 
+  it("builds the alerts view from live bips and active connections", () => {
+    expect(controllerSource).toContain('activityTab !== "notifications"');
+    expect(controllerSource).toContain("const refreshActivity = () =>");
+    expect(controllerSource).toContain('"reel_bips"');
+    expect(controllerSource).toContain('"reel_connections"');
+    expect(screenSource).toContain("receivedGuestBips.map((bip)");
+    expect(screenSource).toContain('connection.status === "active"');
+    expect(screenSource).toContain("connectionsMessage");
+    expect(screenSource).not.toContain("notificationHistory");
+  });
+
   it("shows layered individual presence disks only after fifteen nearby profiles", () => {
     expect(screenSource).toContain("availablePeople.length > 15");
     expect(screenSource).toContain("availablePeople.slice(9, 16)");
