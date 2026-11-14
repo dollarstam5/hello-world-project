@@ -140,7 +140,6 @@ export function startWebVitalsMonitoring(sink: WebVitalsSink): () => void {
   });
 
   const interactions = new Map<number, InteractionCandidate>();
-  const observedInteractionIds = new Set<number>();
 
   observe(
     "event",
@@ -162,14 +161,13 @@ export function startWebVitalsMonitoring(sink: WebVitalsSink): () => void {
           continue;
         }
 
-        observedInteractionIds.add(interactionId);
         const current = interactions.get(interactionId);
         if (!current || (duration ?? 0) > current.duration) {
           interactions.set(interactionId, { duration: duration ?? 0 });
         }
       }
 
-      const interactionCount = getPageInteractionCount(observedInteractionIds.size);
+      const interactionCount = getPageInteractionCount(interactions.size);
       const inp = getInpCandidate(interactions, interactionCount);
       if (inp !== undefined) {
         record({ name: "INP", value: inp, navigationType: navigationType() }, sink);
@@ -187,7 +185,6 @@ export function startWebVitalsMonitoring(sink: WebVitalsSink): () => void {
       observer.disconnect();
     }
     interactions.clear();
-    observedInteractionIds.clear();
   };
 
   return stop;
