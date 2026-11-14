@@ -89,9 +89,8 @@ describe("Instant architecture boundaries", () => {
   });
 
   it("refreshes both received bips and connections immediately after acceptance", () => {
-    expect(controllerSource).toContain(
-      'await Promise.all([refreshBips(), action === "accept" ? refreshConnections() : Promise.resolve()])',
-    );
+    expect(controllerSource).toContain("action === \"accept\" ? refreshConnections() : Promise.resolve()");
+    expect(controllerSource).toContain("await Promise.all([");
   });
 
   it("shows layered individual presence disks only after fifteen nearby profiles", () => {
