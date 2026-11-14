@@ -9,7 +9,10 @@ describe("PWA platform exports", () => {
     const originalSecureContext = Object.getOwnPropertyDescriptor(window, "isSecureContext");
     const originalUserAgent = Object.getOwnPropertyDescriptor(navigator, "userAgent");
     Object.defineProperty(window, "isSecureContext", { configurable: true, value: true });
-    Object.defineProperty(navigator, "userAgent", { configurable: true, value: "Mozilla/5.0 Android Chrome/130" });
+    Object.defineProperty(navigator, "userAgent", {
+      configurable: true,
+      value: "Mozilla/5.0 Android Chrome/130",
+    });
     let available: boolean | undefined;
     function Probe() {
       available = useInstallPrompt().available;
@@ -21,7 +24,9 @@ describe("PWA platform exports", () => {
     } finally {
       if (originalSecureContext) Object.defineProperty(window, "isSecureContext", originalSecureContext);
       else Reflect.deleteProperty(window, "isSecureContext");
-      if (originalUserAgent) Object.defineProperty(navigator, "userAgent", originalUserAgent);
+      if (originalUserAgent) {
+        Object.defineProperty(navigator, "userAgent", originalUserAgent);
+      }
       else Reflect.deleteProperty(navigator, "userAgent");
     }
   });
