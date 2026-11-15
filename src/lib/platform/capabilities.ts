@@ -89,9 +89,9 @@ export function detectPlatformIdentity(input: NavigatorHints): PlatformIdentity 
   } else if (/samsungbrowser\//i.test(ua)) {
     browser = "samsung";
     browserVersion = uaVersion(/samsungbrowser\/([\d.]+)/i);
-  } else if (/opr\//i.test(ua) || /opera/i.test(ua)) {
+  } else if (/opr\//i.test(ua) || /opera/i.test(ua) || /opios\//i.test(ua)) {
     browser = "opera";
-    browserVersion = uaVersion(/(?:opr|opera)\/([\d.]+)/i);
+    browserVersion = uaVersion(/(?:opr|opera|opios)\/([\d.]+)/i);
   } else if (/vivaldi\//i.test(ua)) {
     browser = "vivaldi";
     browserVersion = uaVersion(/vivaldi\/([\d.]+)/i);
