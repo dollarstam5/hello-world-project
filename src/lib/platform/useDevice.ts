@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { getPlatformCapabilities, type BrowserName, type PlatformOS } from "./capabilities";
+import {
+  getDetailedPlatformIdentity,
+  getPlatformCapabilities,
+  type BrowserName,
+  type PlatformOS,
+} from "./capabilities";
 
 /**
  * Device awareness — multi-device foundation & low-end optimization.
@@ -18,6 +23,8 @@ export interface DeviceInfo {
   isLowEnd: boolean;
   os: PlatformOS;
   browser: BrowserName;
+  browserVersion?: string;
+  windowsVersion?: "11" | "10" | "older" | "unknown";
   standalone: boolean;
   secureContext: boolean;
   serviceWorker: boolean;
@@ -65,6 +72,8 @@ function read(): DeviceInfo {
     isLowEnd: cores <= 4 && memory <= 2,
     os: capabilities.os,
     browser: capabilities.browser,
+    browserVersion: capabilities.browserVersion,
+    windowsVersion: capabilities.windowsVersion,
     standalone: capabilities.standalone,
     secureContext: capabilities.secureContext,
     serviceWorker: capabilities.serviceWorker,
@@ -80,6 +89,15 @@ export function useDevice(): DeviceInfo {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const update = () => setInfo(read());
+    void getDetailedPlatformIdentity().then((identity) => {
+      setInfo((current) => ({
+        ...current,
+        os: identity.os,
+        browser: identity.browser,
+        browserVersion: identity.browserVersion,
+        windowsVersion: identity.windowsVersion,
+      }));
+    });
     const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
 
