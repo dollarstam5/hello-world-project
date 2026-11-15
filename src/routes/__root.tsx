@@ -1,5 +1,5 @@
 import type { ErrorComponentProps } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -131,11 +131,13 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const routeId = useRouterState({ select: (state) => state.matches.at(-1)?.routeId ?? "/" });
+  const routeIdRef = useRef(routeId);
+  routeIdRef.current = routeId;
 
   useEffect(() => {
     registerServiceWorker();
     const stopWebVitals = startWebVitalsMonitoring(publishWebVitalMetric);
-    const stopInteractions = startInteractionMonitoring(() => routeId);
+    const stopInteractions = startInteractionMonitoring(() => routeIdRef.current);
     const stopNavigation = startNavigationMeasurement();
 
     return () => {
