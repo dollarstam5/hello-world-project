@@ -93,6 +93,17 @@ function measureHtmlEntry(
 
   if (initialJavaScript.size === 0) return undefined;
 
+  console.log(
+    JSON.stringify({
+      type: "performance-budget-assets",
+      page: htmlPath.replace(clientDirectory + "/", ""),
+      initialJavaScript: [...initialJavaScript].map((path) => ({
+        file: path.replace(clientDirectory + "/", ""),
+        gzipKb: Number(gzipKb(path).toFixed(2)),
+      })),
+    }),
+  );
+
   const javascript = [...initialJavaScript];
   const css = [...initialCss];
   const critical = [...criticalResources];
