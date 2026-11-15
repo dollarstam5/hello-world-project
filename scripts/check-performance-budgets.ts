@@ -52,10 +52,6 @@ function measurePerformanceBudgets(clientDirectory: string): PerformanceBudgetRe
 
   const assets = new Set(filesUnder(clientDirectory));
   const htmlFiles = [...assets].filter((path) => path.endsWith(".html") && !path.endsWith("/offline.html") && path !== join(clientDirectory, "offline.html"));
-  if (htmlFiles.length === 0) {
-    throw new Error("No HTML entry documents found in client build: " + clientDirectory);
-  }
-
   const initialJavaScript = new Set<string>();
   const initialCss = new Set<string>();
   const criticalResources = new Set<string>();
@@ -142,9 +138,9 @@ function measurePerformanceBudgets(clientDirectory: string): PerformanceBudgetRe
 
   if (javascript.length === 0) {
     throw new Error(
-      "No initial JavaScript entry or preloaded module was found in the HTML build output. " +
+      "No initial JavaScript entry or preloaded module was found in HTML or the Vite client manifest. " +
         "Inspected HTML documents: " +
-        htmlFiles.map((path) => path.replace(clientDirectory + "/", "")).join(", "),
+        (htmlFiles.length > 0 ? htmlFiles.map((path) => path.replace(clientDirectory + "/", "")).join(", ") : "no application HTML entry documents") + ".",
     );
   }
 
