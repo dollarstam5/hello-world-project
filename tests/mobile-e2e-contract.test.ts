@@ -27,6 +27,6 @@ describe("mobile visual smoke contract", () => {
 
   it("builds the app before browser checks and confirms every screenshot exists", () => {
     expect(script).toContain("bun run build:check");
-    expect(script).toContain("test -s "$output"");
+    expect(script).toContain('test -s "$output"');
   });
 });
