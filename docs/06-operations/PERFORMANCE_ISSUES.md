@@ -29,10 +29,10 @@ Les tailles gzip utilisent le niveau de compression 9. Les seuils sont des limit
 
 ## Méthode et limites de mesure
 
-- Le contrôle s'appuie sur les fichiers HTML du build client et déduplique les ressources par chemin.
+- Le contrôle calcule les ressources initiales séparément pour chaque document HTML du build client, déduplique les ressources par chemin, puis retient la valeur maximale par indicateur (il ne cumule pas les routes entre elles).
 - Les scripts d'entrée et les modules préchargés sont comptés dans le JavaScript initial.
 - Les feuilles de style déclarées et les ressources préchargées reconnues sont comptées dans les ressources critiques.
-- Une référence locale absente, un document HTML absent ou une entrée JavaScript introuvable fait échouer le contrôle afin d'éviter un résultat artificiellement bas.
+- Une référence locale absente ou une entrée JavaScript introuvable fait échouer le contrôle afin d'éviter un résultat artificiellement bas. Si aucun document HTML ne fournit d'entrée JavaScript exploitable, le contrôle utilise le manifeste Vite et suit les imports statiques de chaque entrée.
 - Les ressources chargées plus tard par navigation, import dynamique ou interaction ne font pas partie du budget initial.
 - Le contrôle gzip mesure le poids transférable compressé, pas le coût d'exécution JavaScript, le TTFB ou le LCP.
 
