@@ -12,6 +12,62 @@ describe("platform identity detection", () => {
     ).toMatchObject({ os: "android", browser: "chrome", isIPadOS: false });
   });
 
+  it("recognizes alternative Android browsers and their reported versions", () => {
+    const cases = [
+      {
+        userAgent: "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/120.0.0.0 Mobile Safari/537.36 Phoenix/14.2.0",
+        browser: "phoenix",
+        browserVersion: "14.2.0",
+      },
+      {
+        userAgent: "Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 Chrome/120.0.0.0 Mobile Safari/537.36 UCBrowser/15.5.0.0",
+        browser: "uc",
+        browserVersion: "15.5.0.0",
+      },
+      {
+        userAgent: "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/120.0.0.0 Mobile Safari/537.36 OPR/85.0.0.0",
+        browser: "opera",
+        browserVersion: "85.0.0.0",
+      },
+      {
+        userAgent: "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/120.0.0.0 Mobile Safari/537.36 Vivaldi/6.8.0.0",
+        browser: "vivaldi",
+        browserVersion: "6.8.0.0",
+      },
+      {
+        userAgent: "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/120.0.0.0 Mobile Safari/537.36 YaBrowser/24.1.0.0",
+        browser: "yandex",
+        browserVersion: "24.1.0.0",
+      },
+    ] as const;
+
+    for (const item of cases) {
+      expect(detectPlatformIdentity({ userAgent: item.userAgent })).toMatchObject({
+        os: "android",
+        browser: item.browser,
+        browserVersion: item.browserVersion,
+      });
+    }
+  });
+
+  it("recognizes iOS browser shells while keeping their platform identity", () => {
+    expect(
+      detectPlatformIdentity({
+        userAgent:
+          "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 CriOS/120.0.0.0 Mobile/15E148 Safari/604.1",
+        platform: "iPhone",
+      }),
+    ).toMatchObject({ os: "ios", browser: "chrome", browserVersion: "120.0.0.0" });
+
+    expect(
+      detectPlatformIdentity({
+        userAgent:
+          "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 FxiOS/120.0 Mobile/15E148 Safari/605.1.15",
+        platform: "iPhone",
+      }),
+    ).toMatchObject({ os: "ios", browser: "firefox", browserVersion: "120.0" });
+  });
+
   it("recognizes iPhone Safari", () => {
     expect(
       detectPlatformIdentity({
