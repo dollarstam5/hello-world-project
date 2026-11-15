@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { StatusBanner } from "@/components/app/StatusBanner";
 import { useNetworkStatus } from "@/lib/platform/useNetworkStatus";
-import { useSyncStatus } from "@/platform/offline";
+import { useSyncStatus } from "@/platform/offline/sync-status";
 import { useI18n } from "@/lib/i18n/useI18n";
 
 /**
