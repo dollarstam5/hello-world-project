@@ -155,7 +155,8 @@ function measurePerformanceBudgets(clientDirectory: string): PerformanceBudgetRe
         "Inspected HTML documents: " +
         (htmlFiles.length > 0
           ? htmlFiles.map((path) => path.replace(clientDirectory + "/", "")).join(", ")
-          : "no application HTML entry documents") + ".",
+          : "no application HTML entry documents") +
+        ".",
     );
   }
 
