@@ -1,21 +1,32 @@
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import styles from "../src/styles.css?raw";
 import rootRoute from "../src/routes/__root.tsx?raw";
 import manifestSource from "../public/manifest.webmanifest?raw";
 import { renderErrorPage } from "../src/lib/error-page";
+
+const styles = readFileSync(fileURLToPath(new URL("../src/styles.css", import.meta.url)), "utf8");
+const reelCss = readFileSync(
+  fileURLToPath(new URL("../src/domains/presence/ui/reel-proximity.css", import.meta.url)),
+  "utf8",
+);
 
 describe("installed PWA viewport contract", () => {
   it("uses dynamic viewport height with a legacy viewport fallback", () => {
     expect(styles).toContain("height: 100vh;\n  height: 100dvh;");
     expect(styles).toContain("min-height: 100vh;\n  min-height: 100dvh;");
+    expect(styles).toContain("@supports not (color: oklch(0 0 0))");
+    expect(styles).toContain("@supports not (padding-inline: 1px)");
     expect(rootRoute).not.toContain("min-h-screen");
     expect(rootRoute).toContain("min-h-dvh-full");
   });
 
-  it("keeps the Réel screen sized to the dynamic visible viewport", async () => {
-    const reelCss = await import("../src/domains/presence/ui/reel-proximity.css?raw");
-    expect(reelCss.default).toContain(
+  it("keeps the Réel screen sized to the dynamic visible viewport", () => {
+    expect(reelCss).toContain(
       "min-height: calc(100dvh - var(--safe-top) - var(--safe-bottom));",
+    );
+    expect(reelCss).toContain(
+      "min-height: calc(100vh - var(--safe-top) - var(--safe-bottom));",
     );
   });
 
