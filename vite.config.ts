@@ -17,6 +17,7 @@ export default defineConfig({
     server: { entry: "server" },
   },
   vite: {
+    build: { manifest: true },
     resolve: {
       // The worker bundle is built without tsconfig paths, so the monorepo
       // packages need an explicit alias to stay resolvable everywhere.
