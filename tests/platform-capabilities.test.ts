@@ -131,8 +131,7 @@ describe("platform identity detection", () => {
         browserVersion: "25.0",
       },
       {
-        userAgent:
-          "Mozilla/5.0 (Android 14; Mobile; rv:121.0) Gecko/121.0 Firefox/121.0",
+        userAgent: "Mozilla/5.0 (Android 14; Mobile; rv:121.0) Gecko/121.0 Firefox/121.0",
         browser: "firefox",
         browserVersion: "121.0",
       },
