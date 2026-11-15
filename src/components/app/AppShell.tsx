@@ -1,10 +1,9 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { lazy, Suspense, useEffect, useState, type ReactNode } from "react";
 import { useRouterState } from "@tanstack/react-router";
 import { BottomNav } from "./BottomNav";
 import { ReelBottomNav } from "@/domains/presence/ui/ReelBottomNav";
 import { MenuSheet } from "./MenuSheet";
 import { useExperienceBoot } from "@/lib/experience/orchestrator";
-import { useSyncEngine } from "@/platform/offline";
 import { OfflineBanner } from "@/components/experience/OfflineBanner";
 import { AppHeader } from "@/components/experience/AppHeader";
 import { CommunicationSheet } from "@/components/experience/CommunicationSheet";
@@ -14,6 +13,24 @@ import { UpdateBanner } from "@/components/experience/UpdateBanner";
 import { useResponsive } from "@/lib/platform/useResponsive";
 import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
 import { AssistantNoticeLayer } from "@/components/experience/AssistantNoticeLayer";
+
+const SyncEngineBootstrap = lazy(() =>
+  import("./SyncEngineBootstrap").then((module) => ({
+    default: module.SyncEngineBootstrap,
+  })),
+);
+
+function SyncEngineLoader() {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => setReady(true), []);
+
+  return ready ? (
+    <Suspense fallback={null}>
+      <SyncEngineBootstrap />
+    </Suspense>
+  ) : null;
+}
 
 /**
  * AppShell — single mount-point that boots foundation services
@@ -33,7 +50,6 @@ export function AppShell({ children }: { children: ReactNode }) {
   const responsive = useResponsive();
 
   useExperienceBoot();
-  useSyncEngine();
 
   useEffect(() => {
     useAssistantPreferences.getState().hydrate();
@@ -64,6 +80,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="relative min-h-dvh bg-background text-foreground antialiased">
+      <SyncEngineLoader />
       <AssistantNoticeLayer />
       <OfflineBanner />
       {!routeOwnsHeader && <AppHeader onOpenCommunication={() => setCommunicationOpen(true)} />}
