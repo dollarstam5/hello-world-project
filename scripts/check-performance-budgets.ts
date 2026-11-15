@@ -20,22 +20,24 @@ function gzipKb(path: string): number {
 }
 
 function attribute(tag: string, name: string): string | undefined {
-  const match = tag.match(new RegExp(`\\b${name}\\s*=\\s*["']([^"']+)["']`, "i"));
+  const match = tag.match(new RegExp(`\\\\b${name}\\\\s*=\\\\s*["']([^"']+)["']`, "i"));
   return match?.[1];
 }
 
 function resolveReference(
   clientDirectory: string,
-  assets: string[],
+  assets: Set<string>,
   reference: string | undefined,
 ): string | undefined {
-  if (!reference || reference.startsWith("http") || reference.startsWith("//")) {
+  if (!reference || /^(?:[a-z]+:)?\\/\\//i.test(reference) || reference.startsWith("data:")) {
     return undefined;
   }
 
-  const relative = reference.replace(/^\//, "").split("?")[0].split("#")[0];
+  const relative = reference.replace(/^\\//, "").split("?")[0].split("#")[0];
   const candidate = join(clientDirectory, relative);
-  return assets.includes(candidate) ? candidate : undefined;
+  if (assets.has(candidate)) return candidate;
+
+  throw new Error(`Referenced build asset is missing: ${reference} (resolved to ${candidate})`);
 }
 
 function measurePerformanceBudgets(clientDirectory: string): PerformanceBudgetResult {
@@ -43,8 +45,12 @@ function measurePerformanceBudgets(clientDirectory: string): PerformanceBudgetRe
     throw new Error(`Client build directory does not exist: ${clientDirectory}`);
   }
 
-  const assets = filesUnder(clientDirectory);
-  const htmlFiles = assets.filter((path) => path.endsWith(".html"));
+  const assets = new Set(filesUnder(clientDirectory));
+  const htmlFiles = [...assets].filter((path) => path.endsWith(".html"));
+  if (htmlFiles.length === 0) {
+    throw new Error(`No HTML entry documents found in client build: ${clientDirectory}`);
+  }
+
   const initialJavaScript = new Set<string>();
   const initialCss = new Set<string>();
   const criticalResources = new Set<string>();
@@ -52,30 +58,34 @@ function measurePerformanceBudgets(clientDirectory: string): PerformanceBudgetRe
   for (const htmlPath of htmlFiles) {
     const html = readFileSync(htmlPath, "utf8");
 
-    for (const match of html.matchAll(/<script\b[^>]*>/gi)) {
+    for (const match of html.matchAll(/<script\\b[^>]*>/gi)) {
       const resolved = resolveReference(clientDirectory, assets, attribute(match[0], "src"));
-      if (resolved?.endsWith(".js")) {
+      if (resolved && /\\.(?:m?js)$/i.test(resolved)) {
         initialJavaScript.add(resolved);
         criticalResources.add(resolved);
       }
     }
 
-    for (const match of html.matchAll(/<link\b[^>]*>/gi)) {
+    for (const match of html.matchAll(/<link\\b[^>]*>/gi)) {
       const tag = match[0];
       const resolved = resolveReference(clientDirectory, assets, attribute(tag, "href"));
-      const rel = attribute(tag, "rel")?.toLowerCase() ?? "";
+      const rel = attribute(tag, "rel")?.toLowerCase().split(/\\s+/) ?? [];
+      const resourceType = attribute(tag, "as")?.toLowerCase();
 
-      if (resolved?.endsWith(".css") && rel.split(/\s+/).includes("stylesheet")) {
+      if (resolved && /\\.css$/i.test(resolved) && rel.includes("stylesheet")) {
         initialCss.add(resolved);
         criticalResources.add(resolved);
       }
 
       if (
         resolved &&
-        /(?:modulepreload|preload)/i.test(rel) &&
-        /\.(?:js|css|woff2?|ttf|webp|png|svg)$/i.test(resolved)
+        /(?:modulepreload|preload)/i.test(rel.join(" ")) &&
+        /\\.(?:m?js|css|woff2?|ttf|webp|png|jpe?g|avif|svg)$/i.test(resolved)
       ) {
         criticalResources.add(resolved);
+        if (/\\.(?:m?js)$/i.test(resolved) || resourceType === "script") {
+          initialJavaScript.add(resolved);
+        }
       }
     }
   }
@@ -83,6 +93,10 @@ function measurePerformanceBudgets(clientDirectory: string): PerformanceBudgetRe
   const javascript = [...initialJavaScript];
   const css = [...initialCss];
   const critical = [...criticalResources];
+
+  if (javascript.length === 0) {
+    throw new Error("No initial JavaScript entry or preloaded module was found in the HTML build output.");
+  }
 
   return {
     initialJavaScriptGzipKb: javascript.reduce((sum, path) => sum + gzipKb(path), 0),
@@ -108,6 +122,7 @@ const result = measurePerformanceBudgets(clientDirectory);
 console.log(
   JSON.stringify({
     directory: join(process.cwd(), clientDirectory),
+    compression: "gzip level 9",
     ...result,
   }),
 );
