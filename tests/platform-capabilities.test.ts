@@ -6,7 +6,6 @@ import {
 } from "@/lib/platform/capabilities";
 
 describe("platform identity detection", () => {
-
   it("reads Windows 11 and full browser versions from high-entropy client hints", async () => {
     const original = Object.getOwnPropertyDescriptor(navigator, "userAgentData");
     Object.defineProperty(navigator, "userAgentData", {
@@ -60,21 +59,24 @@ describe("platform identity detection", () => {
   it("identifies Windows 11 only from the high-entropy platform version hint", () => {
     expect(
       detectPlatformIdentity({
-        userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36",
+        userAgent:
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36",
         userAgentData: { platform: "Windows", platformVersion: "13.0.0" },
       }),
     ).toMatchObject({ os: "windows", browser: "chrome", windowsVersion: "11" });
 
     expect(
       detectPlatformIdentity({
-        userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36",
+        userAgent:
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36",
         userAgentData: { platform: "Windows", platformVersion: "10.0.0" },
       }),
     ).toMatchObject({ os: "windows", windowsVersion: "10" });
 
     expect(
       detectPlatformIdentity({
-        userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36",
+        userAgent:
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36",
         userAgentData: { platform: "Windows" },
       }),
     ).toMatchObject({ os: "windows", windowsVersion: "unknown" });
@@ -93,27 +95,32 @@ describe("platform identity detection", () => {
   it("recognizes alternative Android browsers and their reported versions", () => {
     const cases = [
       {
-        userAgent: "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/120.0.0.0 Mobile Safari/537.36 Phoenix/14.2.0",
+        userAgent:
+          "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/120.0.0.0 Mobile Safari/537.36 Phoenix/14.2.0",
         browser: "phoenix",
         browserVersion: "14.2.0",
       },
       {
-        userAgent: "Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 Chrome/120.0.0.0 Mobile Safari/537.36 UCBrowser/15.5.0.0",
+        userAgent:
+          "Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 Chrome/120.0.0.0 Mobile Safari/537.36 UCBrowser/15.5.0.0",
         browser: "uc",
         browserVersion: "15.5.0.0",
       },
       {
-        userAgent: "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/120.0.0.0 Mobile Safari/537.36 OPR/85.0.0.0",
+        userAgent:
+          "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/120.0.0.0 Mobile Safari/537.36 OPR/85.0.0.0",
         browser: "opera",
         browserVersion: "85.0.0.0",
       },
       {
-        userAgent: "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/120.0.0.0 Mobile Safari/537.36 Vivaldi/6.8.0.0",
+        userAgent:
+          "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/120.0.0.0 Mobile Safari/537.36 Vivaldi/6.8.0.0",
         browser: "vivaldi",
         browserVersion: "6.8.0.0",
       },
       {
-        userAgent: "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/120.0.0.0 Mobile Safari/537.36 YaBrowser/24.1.0.0",
+        userAgent:
+          "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/120.0.0.0 Mobile Safari/537.36 YaBrowser/24.1.0.0",
         browser: "yandex",
         browserVersion: "24.1.0.0",
       },
