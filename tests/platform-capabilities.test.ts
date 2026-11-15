@@ -124,6 +124,35 @@ describe("platform identity detection", () => {
         browser: "yandex",
         browserVersion: "24.1.0.0",
       },
+      {
+        userAgent:
+          "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/120.0.0.0 Mobile Safari/537.36 SamsungBrowser/25.0",
+        browser: "samsung",
+        browserVersion: "25.0",
+      },
+      {
+        userAgent:
+          "Mozilla/5.0 (Android 14; Mobile; rv:121.0) Gecko/121.0 Firefox/121.0",
+        browser: "firefox",
+        browserVersion: "121.0",
+      },
+      {
+        userAgent:
+          "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/120.0.0.0 Mobile Safari/537.36 EdgA/120.0.0.0",
+        browser: "edge",
+        browserVersion: "120.0.0.0",
+      },
+      {
+        userAgent:
+          "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/120.0.0.0 Mobile Safari/537.36 DuckDuckGo/5",
+        browser: "duckduckgo",
+        browserVersion: "5",
+      },
+      {
+        userAgent:
+          "Mozilla/5.0 (Linux; Android 14; Pixel 8 Pro Build/UP1A) AppleWebKit/537.36 Version/4.0 Chrome/120.0.0.0 Mobile Safari/537.36 wv)",
+        browser: "webview",
+      },
     ] as const;
 
     for (const item of cases) {
@@ -151,6 +180,22 @@ describe("platform identity detection", () => {
         platform: "iPhone",
       }),
     ).toMatchObject({ os: "ios", browser: "firefox", browserVersion: "120.0" });
+
+    expect(
+      detectPlatformIdentity({
+        userAgent:
+          "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 EdgiOS/120.0 Mobile/15E148 Safari/605.1.15",
+        platform: "iPhone",
+      }),
+    ).toMatchObject({ os: "ios", browser: "edge", browserVersion: "120.0" });
+
+    expect(
+      detectPlatformIdentity({
+        userAgent:
+          "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 OPiOS/4.0 Mobile/15E148 Safari/605.1.15",
+        platform: "iPhone",
+      }),
+    ).toMatchObject({ os: "ios", browser: "opera", browserVersion: "4.0" });
   });
 
   it("recognizes iPhone Safari", () => {
