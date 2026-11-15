@@ -4,7 +4,7 @@
   z-index: 40;
   inset-inline: 0;
   bottom: 0;
-  padding: 0.55rem 0.75rem calc(0.55rem + env(safe-area-inset-bottom, 0px));
+  padding: 0.55rem calc(0.75rem + env(safe-area-inset-right, 0px)) calc(0.55rem + env(safe-area-inset-bottom, 0px)) calc(0.75rem + env(safe-area-inset-left, 0px));
   pointer-events: none;
 }
 
@@ -116,7 +116,7 @@
 
 @media (max-width: 360px) {
   .reel-page-nav {
-    padding-inline: 0.45rem;
+    padding-inline: calc(0.45rem + env(safe-area-inset-left, 0px)) calc(0.45rem + env(safe-area-inset-right, 0px));
   }
 
   .reel-page-nav__item span {
