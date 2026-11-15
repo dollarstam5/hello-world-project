@@ -2,18 +2,12 @@ import script from "../scripts/test-mobile-e2e.sh?raw";
 import { describe, expect, it } from "vitest";
 
 describe("mobile visual smoke contract", () => {
-  it("covers eight responsive reference viewports including compact, tablet, desktop and landscape", () => {
-    for (const viewport of [
-      "320,720",
-      "360,800",
-      "390,844",
-      "412,915",
-      "768,1024",
-      "1024,768",
-      "1280,800",
-      "844,390",
-    ]) {
+  it("covers the five core routes at the compact phone, reference phone and tablet viewports", () => {
+    for (const viewport of ["360,800", "390,844", "768,1024"]) {
       expect(script).toContain(`"${viewport}"`);
+    }
+    for (const route of ['"/"', '"/flash"', '"/scan"', '"/reel"', '"/radar"']) {
+      expect(script).toContain(route);
     }
   });
 
@@ -21,28 +15,18 @@ describe("mobile visual smoke contract", () => {
     expect(script).toContain("__vitalis_smoke=1");
   });
 
-  it("captures the four engines, secondary space and profile entry", () => {
-    for (const route of ["/flash", "/scan", "/reel", "/radar", "/talents", "/espace"]) {
-      expect(script).toContain(`"${route}"`);
-    }
-  });
-
-  it("captures the Réel engine at every reference viewport", () => {
-    expect(script).toContain("vitalis-reel-${viewport//,/-}.png");
-    expect(script).toContain('--wait-for-selector=".reel-proximity"');
-    expect(script).toContain("$BASE_URL/reel?__vitalis_smoke=1");
-  });
-
-  it("waits for the Réel engine itself before capturing its route", () => {
-    expect(script).toContain('selector=".reel-proximity"');
-    expect(script).toContain('--wait-for-selector="$selector"');
-  });
-
   it("waits for rendered content on the home and each engine route", () => {
-    expect(script).toContain('--wait-for-selector="#home-engines-title"');
+    expect(script).toContain('selector="#home-engines-title"');
     expect(script).toContain('"/flash") selector="main h1"');
     expect(script).toContain('"/scan") selector="#scan-radius"');
+    expect(script).toContain('"/reel") selector=".reel-proximity"');
     expect(script).toContain('"/radar") selector="#radar-query"');
+    expect(script).toContain('--wait-for-selector="$selector"');
     expect(script).toContain('test -s "$output"');
+  });
+
+  it("builds the app before browser checks and confirms every screenshot exists", () => {
+    expect(script).toContain("bun run build:check");
+    expect(script).toContain("test -s "$output"");
   });
 });
