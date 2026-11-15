@@ -27,6 +27,12 @@ describe("installed PWA viewport contract", () => {
     expect(reelCss).toContain("min-height: calc(100vh - var(--safe-top) - var(--safe-bottom));");
   });
 
+  it("provides zero-inset defaults when safe-area environment values are unavailable", () => {
+    expect(styles).toContain("--safe-top: 0px;");
+    expect(styles).toContain("--safe-bottom: 0px;");
+    expect(styles).toContain("@supports (padding: env(safe-area-inset-top))");
+  });
+
   it("declares standalone installation and edge-to-edge viewport support", () => {
     const manifest = JSON.parse(manifestSource) as { display: string };
     expect(manifest.display).toBe("standalone");
