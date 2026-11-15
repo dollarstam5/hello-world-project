@@ -275,4 +275,22 @@ describe("platform identity detection", () => {
     expect(result).toHaveProperty("standalone");
     expect(result).toHaveProperty("secureContext");
   });
+
+  it("treats an unavailable secure-context API as unsupported", () => {
+    const original = Object.getOwnPropertyDescriptor(window, "isSecureContext");
+    Object.defineProperty(window, "isSecureContext", {
+      configurable: true,
+      value: undefined,
+    });
+
+    try {
+      expect(getPlatformCapabilities().secureContext).toBe(false);
+    } finally {
+      if (original) {
+        Object.defineProperty(window, "isSecureContext", original);
+      } else {
+        Reflect.deleteProperty(window, "isSecureContext");
+      }
+    }
+  });
 });
