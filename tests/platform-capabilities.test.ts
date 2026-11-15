@@ -2,6 +2,29 @@ import { describe, expect, it, vi } from "vitest";
 import { detectPlatformIdentity, getPlatformCapabilities } from "@/lib/platform/capabilities";
 
 describe("platform identity detection", () => {
+  it("identifies Windows 11 only from the high-entropy platform version hint", () => {
+    expect(
+      detectPlatformIdentity({
+        userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36",
+        userAgentData: { platform: "Windows", platformVersion: "13.0.0" },
+      }),
+    ).toMatchObject({ os: "windows", browser: "chrome", windowsVersion: "11" });
+
+    expect(
+      detectPlatformIdentity({
+        userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36",
+        userAgentData: { platform: "Windows", platformVersion: "10.0.0" },
+      }),
+    ).toMatchObject({ os: "windows", windowsVersion: "10" });
+
+    expect(
+      detectPlatformIdentity({
+        userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36",
+        userAgentData: { platform: "Windows" },
+      }),
+    ).toMatchObject({ os: "windows", windowsVersion: "unknown" });
+  });
+
   it("recognizes Android and common Chromium browsers", () => {
     expect(
       detectPlatformIdentity({
