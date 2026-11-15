@@ -1,11 +1,12 @@
 import type { ErrorComponentProps } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -16,6 +17,11 @@ import { AccessModeProvider } from "@/domains/access-mode";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { registerServiceWorker } from "@/platform/pwa";
 import { publishWebVitalMetric, startWebVitalsMonitoring } from "@/lib/performance/web-vitals";
+import {
+  completeNavigationMeasurement,
+  startInteractionMonitoring,
+  startNavigationMeasurement,
+} from "@/lib/performance/interaction-navigation";
 
 function NotFoundComponent() {
   const { t } = useI18n();
@@ -124,10 +130,29 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
+  const routeId = useRouterState({ select: (state) => state.matches.at(-1)?.routeId ?? "/" });
+  const locationKey = useRouterState({
+    select: (state) => state.location.pathname + state.location.searchStr,
+  });
+  const routeIdRef = useRef(routeId);
+  routeIdRef.current = routeId;
+
   useEffect(() => {
     registerServiceWorker();
-    return startWebVitalsMonitoring(publishWebVitalMetric);
+    const stopWebVitals = startWebVitalsMonitoring(publishWebVitalMetric);
+    const stopInteractions = startInteractionMonitoring(() => routeIdRef.current);
+    const stopNavigation = startNavigationMeasurement();
+
+    return () => {
+      stopWebVitals();
+      stopInteractions();
+      stopNavigation();
+    };
   }, []);
+
+  useEffect(() => {
+    completeNavigationMeasurement(routeId);
+  }, [routeId, locationKey]);
 
   const { queryClient } = Route.useRouteContext();
 
