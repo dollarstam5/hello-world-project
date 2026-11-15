@@ -782,7 +782,7 @@
 }
 @media (min-width: 768px) {
   .container-wide {
-    padding-inline: var(--space-8);
+    padding-inline: calc(var(--space-8) + var(--safe-left)) calc(var(--space-8) + var(--safe-right));
   }
 }
 
