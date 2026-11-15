@@ -14,7 +14,9 @@ describe("installed PWA viewport contract", () => {
 
   it("keeps the Réel screen sized to the dynamic visible viewport", async () => {
     const reelCss = await import("../src/domains/presence/ui/reel-proximity.css?raw");
-    expect(reelCss.default).toContain("min-height: calc(100dvh - var(--safe-top) - var(--safe-bottom));");
+    expect(reelCss.default).toContain(
+      "min-height: calc(100dvh - var(--safe-top) - var(--safe-bottom));",
+    );
   });
 
   it("declares standalone installation and edge-to-edge viewport support", () => {
