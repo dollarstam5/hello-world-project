@@ -1,6 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { useRouterState } from "@tanstack/react-router";
-import { AnimatePresence, motion } from "framer-motion";
 import { BottomNav } from "./BottomNav";
 import { ReelBottomNav } from "@/domains/presence/ui/ReelBottomNav";
 import { MenuSheet } from "./MenuSheet";
@@ -13,7 +12,6 @@ import { OnboardingSheet } from "@/components/experience/OnboardingSheet";
 import { InstallBanner } from "@/components/experience/InstallBanner";
 import { UpdateBanner } from "@/components/experience/UpdateBanner";
 import { useResponsive } from "@/lib/platform/useResponsive";
-import { duration, easing } from "@/lib/design/tokens";
 import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
 import { AssistantNoticeLayer } from "@/components/experience/AssistantNoticeLayer";
 
@@ -58,10 +56,6 @@ export function AppShell({ children }: { children: ReactNode }) {
   const hasBottomNavigation = !isReelRoute;
 
   const reduce = responsive.shouldReduceMotion;
-  const pageTransition = reduce
-    ? { duration: 0 }
-    : { duration: duration.base, ease: easing.standard };
-
   if (bareChrome) {
     return (
       <div className="relative min-h-dvh bg-background text-foreground antialiased">{children}</div>
@@ -80,17 +74,9 @@ export function AppShell({ children }: { children: ReactNode }) {
           paddingBottom: hasBottomNavigation ? "calc(7rem + var(--safe-bottom))" : 0,
         }}
       >
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={pathname}
-            initial={reduce ? false : { opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={reduce ? { opacity: 0 } : { opacity: 0, y: -4 }}
-            transition={pageTransition}
-          >
-            {children}
-          </motion.div>
-        </AnimatePresence>
+        <div key={pathname} className={reduce ? undefined : "motion-rise-in"}>
+          {children}
+        </div>
       </main>
 
       {hasBottomNavigation && (
