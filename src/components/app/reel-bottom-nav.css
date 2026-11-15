@@ -1,5 +1,7 @@
 /* Proximity-only bottom navigation. Uses the screen's scoped theme tokens. */
 .reel-bottom-nav {
+  padding-left: calc(0.75rem + var(--safe-left));
+  padding-right: calc(0.75rem + var(--safe-right));
   padding-inline: calc(0.75rem + var(--safe-left)) calc(0.75rem + var(--safe-right));
   padding-bottom: var(--safe-bottom);
 }
