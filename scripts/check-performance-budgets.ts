@@ -40,7 +40,9 @@ function resolveReference(
   const candidate = join(clientDirectory, relative);
   if (assets.has(candidate)) return candidate;
 
-  throw new Error("Referenced build asset is missing: " + reference + " (resolved to " + candidate + ")");
+  throw new Error(
+    "Referenced build asset is missing: " + reference + " (resolved to " + candidate + ")",
+  );
 }
 
 function measurePerformanceBudgets(clientDirectory: string): PerformanceBudgetResult {
@@ -98,7 +100,9 @@ function measurePerformanceBudgets(clientDirectory: string): PerformanceBudgetRe
   const critical = [...criticalResources];
 
   if (javascript.length === 0) {
-    throw new Error("No initial JavaScript entry or preloaded module was found in the HTML build output.");
+    throw new Error(
+      "No initial JavaScript entry or preloaded module was found in the HTML build output.",
+    );
   }
 
   return {
