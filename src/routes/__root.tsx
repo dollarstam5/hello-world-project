@@ -131,6 +131,9 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const routeId = useRouterState({ select: (state) => state.matches.at(-1)?.routeId ?? "/" });
+  const locationKey = useRouterState({
+    select: (state) => state.location.pathname + state.location.searchStr,
+  });
   const routeIdRef = useRef(routeId);
   routeIdRef.current = routeId;
 
@@ -149,7 +152,7 @@ function RootComponent() {
 
   useEffect(() => {
     completeNavigationMeasurement(routeId);
-  }, [routeId]);
+  }, [routeId, locationKey]);
 
   const { queryClient } = Route.useRouteContext();
 
