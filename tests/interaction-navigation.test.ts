@@ -89,8 +89,8 @@ describe("PERF-003 interaction and navigation metrics", () => {
   });
 
   it("measures same-origin link navigation when the router resolves the next route", () => {
-    const now = vi.spyOn(performance, "now");
-    now.mockReturnValueOnce(100).mockReturnValueOnce(245);
+    let currentTime = 100;
+    vi.spyOn(performance, "now").mockImplementation(() => currentTime);
 
     const listener = vi.fn();
     window.addEventListener(PERFORMANCE_NAVIGATION_EVENT, listener);
@@ -101,6 +101,7 @@ describe("PERF-003 interaction and navigation metrics", () => {
     anchor.href = "/flash";
     document.body.append(anchor);
     anchor.dispatchEvent(new MouseEvent("click", { bubbles: true, button: 0 }));
+    currentTime = 245;
 
     completeNavigationMeasurement("/flash");
 
