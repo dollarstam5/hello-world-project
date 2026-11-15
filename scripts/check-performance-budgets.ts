@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync, statSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { gzipSync } from "node:zlib";
 import {
@@ -51,7 +51,7 @@ function measurePerformanceBudgets(clientDirectory: string): PerformanceBudgetRe
   }
 
   const assets = new Set(filesUnder(clientDirectory));
-  const htmlFiles = [...assets].filter((path) => path.endsWith(".html"));
+  const htmlFiles = [...assets].filter((path) => path.endsWith(".html") && !path.endsWith("/offline.html") && path !== join(clientDirectory, "offline.html"));
   if (htmlFiles.length === 0) {
     throw new Error("No HTML entry documents found in client build: " + clientDirectory);
   }
@@ -98,6 +98,41 @@ function measurePerformanceBudgets(clientDirectory: string): PerformanceBudgetRe
       ) {
         criticalResources.add(resolved);
       }
+    }
+  }
+
+  if (initialJavaScript.size === 0) {
+    const manifestPath = [join(clientDirectory, ".vite/manifest.json"), join(clientDirectory, "manifest.json")].find(existsSync);
+    if (manifestPath) {
+      const manifest = JSON.parse(readFileSync(manifestPath, "utf8")) as Record<string, {
+        file?: string;
+        isEntry?: boolean;
+        imports?: string[];
+        css?: string[];
+      }>;
+      const visited = new Set<string>();
+      const visit = (key: string) => {
+        if (visited.has(key)) return;
+        visited.add(key);
+        const entry = manifest[key];
+        if (!entry) throw new Error("Missing imported entry in Vite manifest: " + key);
+        const file = resolveReference(clientDirectory, assets, entry.file);
+        if (file && /\\.(?:m?js)$/i.test(file)) {
+          initialJavaScript.add(file);
+          criticalResources.add(file);
+        }
+        for (const stylesheet of entry.css ?? []) {
+          const cssFile = resolveReference(clientDirectory, assets, stylesheet);
+          if (cssFile) {
+            initialCss.add(cssFile);
+            criticalResources.add(cssFile);
+          }
+        }
+        for (const imported of entry.imports ?? []) visit(imported);
+      };
+      const entries = Object.entries(manifest).filter(([, entry]) => entry.isEntry);
+      if (entries.length === 0) throw new Error("Vite manifest contains no entry modules: " + manifestPath);
+      for (const [key] of entries) visit(key);
     }
   }
 
