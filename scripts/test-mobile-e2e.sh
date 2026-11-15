@@ -30,7 +30,7 @@ for viewport in "320,720" "360,800" "390,844" "412,915" "768,1024" "1024,768" "1
   bunx playwright screenshot \
     --browser=chromium \
     --viewport-size="$viewport" \
-    --wait-for-selector="#main" \
+    --wait-for-selector="#home-engines-title" \
     "$BASE_URL/?__vitalis_smoke=1" \
     "$output" >/dev/null
   test -s "$output"
@@ -50,9 +50,12 @@ done
 for route in "/flash" "/scan" "/reel" "/radar" "/talents" "/espace"; do
   output="$OUTPUT_DIR/vitalis-route-${route#/}.png"
   selector="#main"
-  if [[ "$route" == "/reel" ]]; then
-    selector=".reel-proximity"
-  fi
+  case "$route" in
+    "/flash") selector="main h1" ;;
+    "/scan") selector="#scan-radius" ;;
+    "/reel") selector=".reel-proximity" ;;
+    "/radar") selector="#radar-query" ;;
+  esac
   bunx playwright screenshot \
     --browser=chromium \
     --viewport-size="390,844" \
