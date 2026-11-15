@@ -563,7 +563,8 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  padding: 1rem;\n  padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom, 0px));
+  padding: 1rem;
+  padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom, 0px));
   background: rgb(35 57 88 / 24%);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
@@ -786,7 +787,8 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  padding: 0.75rem;\n  padding: 0.75rem 0.75rem calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  padding: 0.75rem;
+  padding: 0.75rem 0.75rem calc(0.75rem + env(safe-area-inset-bottom, 0px));
   background: rgb(35 57 88 / 24%);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
