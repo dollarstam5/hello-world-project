@@ -149,8 +149,7 @@ export function startNavigationMeasurement(): () => void {
       if (destination.origin !== window.location.origin) return;
       if (
         destination.pathname === window.location.pathname &&
-        destination.search === window.location.search &&
-        destination.hash !== window.location.hash
+        destination.search === window.location.search
       ) {
         return;
       }
@@ -160,10 +159,16 @@ export function startNavigationMeasurement(): () => void {
     }
   };
 
+  const onPopState = () => {
+    navigationStartedAt = performance.now();
+  };
+
   document.addEventListener("click", onClick, true);
+  window.addEventListener("popstate", onPopState);
 
   return () => {
     document.removeEventListener("click", onClick, true);
+    window.removeEventListener("popstate", onPopState);
     navigationStartedAt = undefined;
   };
 }
