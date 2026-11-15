@@ -113,7 +113,7 @@ function measurePerformanceBudgets(clientDirectory: string): PerformanceBudgetRe
         const entry = manifest[key];
         if (!entry) throw new Error("Missing imported entry in Vite manifest: " + key);
         const file = resolveReference(clientDirectory, assets, entry.file);
-        if (file && /\\.(?:m?js)$/i.test(file)) {
+        if (file && /\.(?:m?js)$/i.test(file)) {
           initialJavaScript.add(file);
           criticalResources.add(file);
         }
