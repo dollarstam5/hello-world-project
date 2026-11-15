@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { detectPlatformIdentity, getPlatformCapabilities } from "@/lib/platform/capabilities";
 
 describe("platform identity detection", () => {
@@ -43,6 +43,27 @@ describe("platform identity detection", () => {
         },
       }),
     ).toMatchObject({ os: "android", browser: "chrome" });
+  });
+
+
+  it("recognizes an installed standalone PWA from the display-mode media query", () => {
+    const originalMatchMedia = window.matchMedia;
+    window.matchMedia = vi.fn((query: string) => ({
+      matches: query === "(display-mode: standalone)",
+      media: query,
+      onchange: null,
+      addListener: () => undefined,
+      removeListener: () => undefined,
+      addEventListener: () => undefined,
+      removeEventListener: () => undefined,
+      dispatchEvent: () => true,
+    })) as typeof window.matchMedia;
+
+    try {
+      expect(getPlatformCapabilities().standalone).toBe(true);
+    } finally {
+      window.matchMedia = originalMatchMedia;
+    }
   });
 
   it("returns a safe capability snapshot in a browser-like environment", () => {
