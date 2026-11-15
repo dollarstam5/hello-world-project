@@ -4,7 +4,6 @@ import { ChevronRight, UserRound } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Sheet } from "@/components/app/Sheet";
 import { Button } from "@/components/ui/button";
-import { supabase } from "@/integrations/supabase/client";
 import { useIdentity } from "@/lib/experience/identity";
 import { useI18n } from "@/lib/i18n/useI18n";
 
@@ -41,6 +40,8 @@ export function ProfileQuickPreview({ open, onOpenChange }: ProfileQuickPreviewP
     setLoadedHandle(null);
 
     async function loadProfilePreview() {
+      const { supabase } = await import("@/integrations/supabase/client");
+      if (!active) return;
       const { data: authData } = await supabase.auth.getUser();
       if (!active || !authData.user) return;
 
