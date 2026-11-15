@@ -32,11 +32,7 @@ function resolveReference(
   assets: Set<string>,
   reference: string | undefined,
 ): string | undefined {
-  if (
-    !reference ||
-    /^(?:[a-z]+:)?\/\//i.test(reference) ||
-    reference.startsWith("data:")
-  ) {
+  if (!reference || /^(?:[a-z]+:)?\/\//i.test(reference) || reference.startsWith("data:")) {
     return undefined;
   }
 
