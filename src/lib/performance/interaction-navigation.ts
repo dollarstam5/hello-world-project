@@ -86,11 +86,7 @@ export function startInteractionMonitoring(
         interactions.delete(id);
         interactions.set(id, candidate);
 
-        publish(
-          PERFORMANCE_INTERACTION_EVENT,
-          { ...candidate, routeId: getRouteId() },
-          sink,
-        );
+        publish(PERFORMANCE_INTERACTION_EVENT, { ...candidate, routeId: getRouteId() }, sink);
 
         // Bound memory for long-lived sessions; IDs are transient browser data.
         if (interactions.size > 200) {
@@ -180,10 +176,7 @@ export function completeNavigationMeasurement(routeId: string): void {
   const previousRouteId = currentRouteId;
   currentRouteId = routeId;
 
-  if (
-    !previousRouteId ||
-    navigationStartedAt === undefined
-  ) {
+  if (!previousRouteId || navigationStartedAt === undefined) {
     return;
   }
 
