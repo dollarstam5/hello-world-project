@@ -64,8 +64,12 @@ function measurePerformanceBudgets(clientDirectory: string): PerformanceBudgetRe
     const html = readFileSync(htmlPath, "utf8");
 
     for (const match of html.matchAll(/<script\b[^>]*>/gi)) {
-      const resolved = resolveReference(clientDirectory, assets, attribute(match[0], "src"));
-      if (resolved && /\.(?:m?js)$/i.test(resolved)) {
+      const tag = match[0];
+      const reference = attribute(tag, "src");
+      const resolved = resolveReference(clientDirectory, assets, reference);
+      const scriptType = attribute(tag, "type")?.toLowerCase();
+
+      if (resolved && (scriptType === "module" || /\.(?:m?js)$/i.test(resolved))) {
         initialJavaScript.add(resolved);
         criticalResources.add(resolved);
       }
@@ -82,15 +86,17 @@ function measurePerformanceBudgets(clientDirectory: string): PerformanceBudgetRe
         criticalResources.add(resolved);
       }
 
-      if (
+      const isModulePreload = rel.includes("modulepreload");
+      const isScriptPreload = rel.includes("preload") && resourceType === "script";
+      if (resolved && (isModulePreload || isScriptPreload)) {
+        initialJavaScript.add(resolved);
+        criticalResources.add(resolved);
+      } else if (
         resolved &&
-        (rel.includes("modulepreload") || rel.includes("preload")) &&
-        /\.(?:m?js|css|woff2?|ttf|webp|png|jpe?g|avif|svg)$/i.test(resolved)
+        rel.includes("preload") &&
+        /\.(?:css|woff2?|ttf|webp|png|jpe?g|avif|svg)$/i.test(resolved)
       ) {
         criticalResources.add(resolved);
-        if (/\.(?:m?js)$/i.test(resolved) || resourceType === "script") {
-          initialJavaScript.add(resolved);
-        }
       }
     }
   }
@@ -101,7 +107,9 @@ function measurePerformanceBudgets(clientDirectory: string): PerformanceBudgetRe
 
   if (javascript.length === 0) {
     throw new Error(
-      "No initial JavaScript entry or preloaded module was found in the HTML build output.",
+      "No initial JavaScript entry or preloaded module was found in the HTML build output. " +
+        "Inspected HTML documents: " +
+        htmlFiles.map((path) => path.replace(clientDirectory + "/", "")).join(", "),
     );
   }
 
