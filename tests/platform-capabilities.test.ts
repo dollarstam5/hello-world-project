@@ -65,7 +65,6 @@ describe("platform identity detection", () => {
     }
   });
 
-
   it("recognizes the iOS Home Screen standalone flag", () => {
     const originalStandalone = Object.getOwnPropertyDescriptor(navigator, "standalone");
     Object.defineProperty(navigator, "standalone", {
