@@ -1,7 +1,62 @@
 import { describe, expect, it, vi } from "vitest";
-import { detectPlatformIdentity, getPlatformCapabilities } from "@/lib/platform/capabilities";
+import {
+  detectPlatformIdentity,
+  getDetailedPlatformIdentity,
+  getPlatformCapabilities,
+} from "@/lib/platform/capabilities";
 
 describe("platform identity detection", () => {
+
+  it("reads Windows 11 and full browser versions from high-entropy client hints", async () => {
+    const original = Object.getOwnPropertyDescriptor(navigator, "userAgentData");
+    Object.defineProperty(navigator, "userAgentData", {
+      configurable: true,
+      value: {
+        platform: "Windows",
+        brands: [{ brand: "Google Chrome", version: "120" }],
+        getHighEntropyValues: vi.fn(async () => ({
+          platformVersion: "13.0.0",
+          fullVersionList: [{ brand: "Google Chrome", version: "128.0.6613.120" }],
+        })),
+      },
+    });
+
+    try {
+      await expect(getDetailedPlatformIdentity()).resolves.toMatchObject({
+        os: "windows",
+        windowsVersion: "11",
+        browser: "chrome",
+        browserVersion: "128.0.6613.120",
+      });
+    } finally {
+      if (original) {
+        Object.defineProperty(navigator, "userAgentData", original);
+      } else {
+        Reflect.deleteProperty(navigator, "userAgentData");
+      }
+    }
+  });
+
+  it("recognizes Brave through its browser-provided detection API", async () => {
+    const original = Object.getOwnPropertyDescriptor(navigator, "brave");
+    Object.defineProperty(navigator, "brave", {
+      configurable: true,
+      value: { isBrave: vi.fn(async () => true) },
+    });
+
+    try {
+      await expect(getDetailedPlatformIdentity()).resolves.toMatchObject({
+        browser: "brave",
+      });
+    } finally {
+      if (original) {
+        Object.defineProperty(navigator, "brave", original);
+      } else {
+        Reflect.deleteProperty(navigator, "brave");
+      }
+    }
+  });
+
   it("identifies Windows 11 only from the high-entropy platform version hint", () => {
     expect(
       detectPlatformIdentity({
