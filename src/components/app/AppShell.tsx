@@ -74,7 +74,12 @@ export function AppShell({ children }: { children: ReactNode }) {
   const reduce = responsive.shouldReduceMotion;
   if (bareChrome) {
     return (
-      <div className="relative min-h-dvh bg-background text-foreground antialiased">{children}</div>
+      <>
+        <SyncEngineLoader />
+        <div className="relative min-h-dvh bg-background text-foreground antialiased">
+          {children}
+        </div>
+      </>
     );
   }
 
