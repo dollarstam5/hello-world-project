@@ -69,49 +69,49 @@ export function detectPlatformIdentity(input: NavigatorHints): PlatformIdentity 
   const brandVersion = (name: string) =>
     brands.find((item) => item.brand.toLowerCase().includes(name))?.version;
 
-  if (/;\\s*wv\\)|\\bwv\\b/i.test(ua)) browser = "webview";
-  else if (/phoenix\\//i.test(ua) || /\\bphoenix browser\\b/i.test(ua)) {
+  if (/;\s*wv\)|\bwv\b/i.test(ua)) browser = "webview";
+  else if (/phoenix\//i.test(ua) || /\bphoenix browser\b/i.test(ua)) {
     browser = "phoenix";
-    browserVersion = uaVersion(/phoenix\\/([\\d.]+)/i);
-  } else if (/ucbrowser\\//i.test(ua)) {
+    browserVersion = uaVersion(/phoenix\/([\d.]+)/i);
+  } else if (/ucbrowser\//i.test(ua)) {
     browser = "uc";
-    browserVersion = uaVersion(/ucbrowser\\/([\\d.]+)/i);
-  } else if (/edg(e|a|ios)?\\//i.test(ua) || normalizedBrands.some((brand) => brand.includes("edge"))) {
+    browserVersion = uaVersion(/ucbrowser\/([\d.]+)/i);
+  } else if (/edg(e|a|ios)?\//i.test(ua) || normalizedBrands.some((brand) => brand.includes("edge"))) {
     browser = "edge";
-    browserVersion = uaVersion(/edg(?:e|a|ios)?\\/([\\d.]+)/i) ?? brandVersion("edge");
-  } else if (/samsungbrowser\\//i.test(ua)) {
+    browserVersion = uaVersion(/edg(?:e|a|ios)?\/([\d.]+)/i) ?? brandVersion("edge");
+  } else if (/samsungbrowser\//i.test(ua)) {
     browser = "samsung";
-    browserVersion = uaVersion(/samsungbrowser\\/([\\d.]+)/i);
-  } else if (/opr\\//i.test(ua) || /opera/i.test(ua)) {
+    browserVersion = uaVersion(/samsungbrowser\/([\d.]+)/i);
+  } else if (/opr\//i.test(ua) || /opera/i.test(ua)) {
     browser = "opera";
-    browserVersion = uaVersion(/(?:opr|opera)\\/([\\d.]+)/i);
-  } else if (/vivaldi\\//i.test(ua)) {
+    browserVersion = uaVersion(/(?:opr|opera)\/([\d.]+)/i);
+  } else if (/vivaldi\//i.test(ua)) {
     browser = "vivaldi";
-    browserVersion = uaVersion(/vivaldi\\/([\\d.]+)/i);
-  } else if (/yabrowser\\//i.test(ua)) {
+    browserVersion = uaVersion(/vivaldi\/([\d.]+)/i);
+  } else if (/yabrowser\//i.test(ua)) {
     browser = "yandex";
-    browserVersion = uaVersion(/yabrowser\\/([\\d.]+)/i);
-  } else if (/duckduckgo\\//i.test(ua)) {
+    browserVersion = uaVersion(/yabrowser\/([\d.]+)/i);
+  } else if (/duckduckgo\//i.test(ua)) {
     browser = "duckduckgo";
-    browserVersion = uaVersion(/duckduckgo\\/([\\d.]+)/i);
-  } else if (/brave\\//i.test(ua)) {
+    browserVersion = uaVersion(/duckduckgo\/([\d.]+)/i);
+  } else if (/brave\//i.test(ua)) {
     browser = "brave";
-    browserVersion = uaVersion(/brave\\/([\\d.]+)/i);
+    browserVersion = uaVersion(/brave\/([\d.]+)/i);
   } else if (/firefox|fxios/i.test(ua)) {
     browser = "firefox";
-    browserVersion = uaVersion(/(?:firefox|fxios)\\/([\\d.]+)/i);
+    browserVersion = uaVersion(/(?:firefox|fxios)\/([\d.]+)/i);
   } else if (/crios/i.test(ua)) {
     browser = "chrome";
-    browserVersion = uaVersion(/crios\\/([\\d.]+)/i);
+    browserVersion = uaVersion(/crios\/([\d.]+)/i);
   } else if (
     normalizedBrands.some((brand) => brand.includes("chrome")) ||
-    /chrome\\//i.test(ua)
+    /chrome\//i.test(ua)
   ) {
     browser = "chrome";
-    browserVersion = uaVersion(/chrome\\/([\\d.]+)/i) ?? brandVersion("chrome");
+    browserVersion = uaVersion(/chrome\/([\d.]+)/i) ?? brandVersion("chrome");
   } else if (/safari/i.test(ua) && !/android/i.test(ua)) {
     browser = "safari";
-    browserVersion = uaVersion(/version\\/([\\d.]+)/i);
+    browserVersion = uaVersion(/version\/([\d.]+)/i);
   } else if (!ua && !platform && brands.length === 0) {
     browser = "unknown";
   }
