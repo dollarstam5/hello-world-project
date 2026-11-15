@@ -11,6 +11,7 @@ const styles = readSource("../src/styles.css");
 const reelCss = readSource("../src/domains/presence/ui/reel-proximity.css");
 const serviceWorker = readSource("../public/sw.js");
 const offlinePage = readSource("../public/offline.html");
+const floatingButton = readSource("../src/components/app/FloatingButton.tsx");
 
 describe("installed PWA viewport contract", () => {
   it("uses dynamic viewport height with a legacy viewport fallback", () => {
@@ -28,6 +29,11 @@ describe("installed PWA viewport contract", () => {
   it("keeps the Réel screen sized to the dynamic visible viewport", () => {
     expect(reelCss).toContain("min-height: calc(100dvh - var(--safe-top) - var(--safe-bottom));");
     expect(reelCss).toContain("min-height: calc(100vh - var(--safe-top) - var(--safe-bottom));");
+  });
+
+  it("keeps floating actions above the bottom navigation with a legacy inset fallback", () => {
+    expect(floatingButton).toContain("bottom-24");
+    expect(floatingButton).toContain("env(safe-area-inset-bottom)");
   });
 
   it("provides zero-inset defaults when safe-area environment values are unavailable", () => {
