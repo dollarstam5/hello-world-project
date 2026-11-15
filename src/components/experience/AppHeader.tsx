@@ -27,6 +27,8 @@ export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => 
         <div
           className="mx-auto flex h-14 w-full max-w-screen-md items-center justify-between"
           style={{
+            paddingLeft: "calc(0.75rem + var(--safe-left))",
+            paddingRight: "calc(0.75rem + var(--safe-right))",
             paddingInline: "calc(0.75rem + var(--safe-left)) calc(0.75rem + var(--safe-right))",
           }}
         >
