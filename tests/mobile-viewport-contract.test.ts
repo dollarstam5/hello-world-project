@@ -18,6 +18,9 @@ describe("installed PWA viewport contract", () => {
     expect(styles).toContain("min-height: 100vh;\n  min-height: 100dvh;");
     expect(styles).toContain("@supports not (color: oklch(0 0 0))");
     expect(styles).toContain("@supports not (padding-inline: 1px)");
+    expect(styles).toContain("@supports not (height: 100dvh)");
+    expect(styles).toContain('[class~="min-h-dvh"]');
+    expect(styles).toContain('[class*="max-h-[92dvh]"]');
     expect(rootRoute).not.toContain("min-h-screen");
     expect(rootRoute).toContain("min-h-dvh-full");
   });
