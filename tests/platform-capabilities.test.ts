@@ -155,11 +155,16 @@ describe("platform identity detection", () => {
     ] as const;
 
     for (const item of cases) {
-      expect(detectPlatformIdentity({ userAgent: item.userAgent })).toMatchObject({
+      const identity = detectPlatformIdentity({ userAgent: item.userAgent });
+      expect(identity).toMatchObject({
         os: "android",
         browser: item.browser,
-        browserVersion: item.browserVersion,
       });
+      if ("browserVersion" in item) {
+        expect(identity.browserVersion).toBe(item.browserVersion);
+      } else {
+        expect(identity.browserVersion).toBeUndefined();
+      }
     }
   });
 
