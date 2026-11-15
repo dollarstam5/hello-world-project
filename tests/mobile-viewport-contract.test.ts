@@ -41,7 +41,7 @@ describe("installed PWA viewport contract", () => {
     expect(serviceWorker).toContain('const OFFLINE_URL = "/offline.html";');
     expect(serviceWorker).toContain('const VERSION = "vitalis-v5";');
     expect(offlinePage).toContain("Vous êtes momentanément hors connexion");
-    expect(offlinePage).toContain("window.location.reload()");
+    expect(offlinePage).toContain('href="/"');
   });
 
   it("uses the dynamic viewport on the standalone error fallback too", () => {
