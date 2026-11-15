@@ -51,7 +51,12 @@ function measurePerformanceBudgets(clientDirectory: string): PerformanceBudgetRe
   }
 
   const assets = new Set(filesUnder(clientDirectory));
-  const htmlFiles = [...assets].filter((path) => path.endsWith(".html") && !path.endsWith("/offline.html") && path !== join(clientDirectory, "offline.html"));
+  const htmlFiles = [...assets].filter(
+    (path) =>
+      path.endsWith(".html") &&
+      !path.endsWith("/offline.html") &&
+      path !== join(clientDirectory, "offline.html"),
+  );
   const initialJavaScript = new Set<string>();
   const initialCss = new Set<string>();
   const criticalResources = new Set<string>();
@@ -98,14 +103,20 @@ function measurePerformanceBudgets(clientDirectory: string): PerformanceBudgetRe
   }
 
   if (initialJavaScript.size === 0) {
-    const manifestPath = [join(clientDirectory, ".vite/manifest.json"), join(clientDirectory, "manifest.json")].find(existsSync);
+    const manifestPath = [
+      join(clientDirectory, ".vite/manifest.json"),
+      join(clientDirectory, "manifest.json"),
+    ].find(existsSync);
     if (manifestPath) {
-      const manifest = JSON.parse(readFileSync(manifestPath, "utf8")) as Record<string, {
-        file?: string;
-        isEntry?: boolean;
-        imports?: string[];
-        css?: string[];
-      }>;
+      const manifest = JSON.parse(readFileSync(manifestPath, "utf8")) as Record<
+        string,
+        {
+          file?: string;
+          isEntry?: boolean;
+          imports?: string[];
+          css?: string[];
+        }
+      >;
       const visited = new Set<string>();
       const visit = (key: string) => {
         if (visited.has(key)) return;
@@ -140,7 +151,9 @@ function measurePerformanceBudgets(clientDirectory: string): PerformanceBudgetRe
     throw new Error(
       "No initial JavaScript entry or preloaded module was found in HTML or the Vite client manifest. " +
         "Inspected HTML documents: " +
-        (htmlFiles.length > 0 ? htmlFiles.map((path) => path.replace(clientDirectory + "/", "")).join(", ") : "no application HTML entry documents") + ".",
+        (htmlFiles.length > 0
+          ? htmlFiles.map((path) => path.replace(clientDirectory + "/", "")).join(", ")
+          : "no application HTML entry documents") + ".",
     );
   }
 
