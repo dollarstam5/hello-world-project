@@ -65,6 +65,25 @@ describe("platform identity detection", () => {
     }
   });
 
+
+  it("recognizes the iOS Home Screen standalone flag", () => {
+    const originalStandalone = Object.getOwnPropertyDescriptor(navigator, "standalone");
+    Object.defineProperty(navigator, "standalone", {
+      configurable: true,
+      value: true,
+    });
+
+    try {
+      expect(getPlatformCapabilities().standalone).toBe(true);
+    } finally {
+      if (originalStandalone) {
+        Object.defineProperty(navigator, "standalone", originalStandalone);
+      } else {
+        Reflect.deleteProperty(navigator, "standalone");
+      }
+    }
+  });
+
   it("returns a safe capability snapshot in a browser-like environment", () => {
     const result = getPlatformCapabilities();
     expect(result).toHaveProperty("serviceWorker");
