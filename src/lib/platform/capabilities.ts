@@ -44,7 +44,12 @@ interface NavigatorHints {
     platform?: string;
     platformVersion?: string;
     brands?: Array<{ brand: string; version?: string }>;
+    getHighEntropyValues?: (hints: string[]) => Promise<{
+      platformVersion?: string;
+      fullVersionList?: Array<{ brand: string; version: string }>;
+    }>;
   };
+  brave?: { isBrave?: () => Promise<boolean> };
 }
 
 /** Pure identity detection, separated so Android/iOS edge cases can be tested. */
@@ -137,6 +142,46 @@ export function detectPlatformIdentity(input: NavigatorHints): PlatformIdentity 
     ...(windowsVersion ? { windowsVersion } : {}),
     isIPadOS,
   };
+}
+
+
+/** Read optional high-entropy browser hints without making them a runtime requirement. */
+export async function getDetailedPlatformIdentity(): Promise<PlatformIdentity> {
+  if (typeof navigator === "undefined") {
+    return detectPlatformIdentity({});
+  }
+
+  const nav = navigator as Navigator & NavigatorHints;
+  let identity = detectPlatformIdentity(nav);
+
+  try {
+    const highEntropy = await nav.userAgentData?.getHighEntropyValues?.([
+      "platformVersion",
+      "fullVersionList",
+    ]);
+    if (highEntropy) {
+      identity = detectPlatformIdentity({
+        ...nav,
+        userAgentData: {
+          ...nav.userAgentData,
+          platformVersion: highEntropy.platformVersion,
+          brands: highEntropy.fullVersionList ?? nav.userAgentData?.brands,
+        },
+      });
+    }
+  } catch {
+    // Some browsers restrict high-entropy hints; keep the low-entropy result.
+  }
+
+  try {
+    if (await nav.brave?.isBrave?.()) {
+      identity = { ...identity, browser: "brave" };
+    }
+  } catch {
+    // Browser branding is optional and must never affect app availability.
+  }
+
+  return identity;
 }
 
 /** Read actual browser APIs at runtime; never infer support from OS alone. */
