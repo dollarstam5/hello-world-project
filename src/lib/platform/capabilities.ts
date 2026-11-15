@@ -20,6 +20,7 @@ export interface PlatformIdentity {
   os: PlatformOS;
   browser: BrowserName;
   browserVersion?: string;
+  windowsVersion?: "11" | "10" | "older" | "unknown";
   isIPadOS: boolean;
 }
 
@@ -41,6 +42,7 @@ interface NavigatorHints {
   maxTouchPoints?: number;
   userAgentData?: {
     platform?: string;
+    platformVersion?: string;
     brands?: Array<{ brand: string; version?: string }>;
   };
 }
@@ -116,7 +118,25 @@ export function detectPlatformIdentity(input: NavigatorHints): PlatformIdentity 
     browser = "unknown";
   }
 
-  return { os, browser, ...(browserVersion ? { browserVersion } : {}), isIPadOS };
+  const platformMajor = Number.parseInt(input.userAgentData?.platformVersion?.split(".")[0] ?? "", 10);
+  const windowsVersion =
+    os === "windows"
+      ? Number.isNaN(platformMajor)
+        ? "unknown"
+        : platformMajor >= 13
+          ? "11"
+          : platformMajor >= 1
+            ? "10"
+            : "older"
+      : undefined;
+
+  return {
+    os,
+    browser,
+    ...(browserVersion ? { browserVersion } : {}),
+    ...(windowsVersion ? { windowsVersion } : {}),
+    isIPadOS,
+  };
 }
 
 /** Read actual browser APIs at runtime; never infer support from OS alone. */
