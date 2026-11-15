@@ -182,7 +182,6 @@ export function completeNavigationMeasurement(routeId: string): void {
 
   if (
     !previousRouteId ||
-    previousRouteId === routeId ||
     navigationStartedAt === undefined
   ) {
     return;
