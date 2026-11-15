@@ -1168,6 +1168,7 @@
 
 /* Center stage — full viewport, safe-area aware. */
 @utility stage-center {
+  min-height: 100vh;
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
@@ -1320,5 +1321,130 @@
   .page-shell {
     max-width: var(--container-lg);
     padding-inline: var(--space-8);
+  }
+}
+
+
+/* Legacy color fallbacks for browsers that do not parse OKLCH or color-mix. */
+@supports not (color: oklch(0 0 0)) {
+  :root {
+    --background: #1a1c20;
+    --foreground: #f4f5f7;
+    --surface: #303238;
+    --surface-sunken: #17191d;
+    --surface-elevated: #383b42;
+    --surface-floating: #40434b;
+    --surface-modal: #454852;
+    --surface-overlay: rgba(12, 14, 18, 0.72);
+    --surface-assistant: #343044;
+    --card: #383b42;
+    --card-foreground: #f4f5f7;
+    --popover: #3d4048;
+    --popover-foreground: #f4f5f7;
+    --primary: #5bb0ff;
+    --primary-foreground: #101820;
+    --primary-soft: #24466b;
+    --primary-glow: #75baff;
+    --warm: #f0c58a;
+    --warm-foreground: #30200b;
+    --warm-soft: #55432d;
+    --trust: #6fd1ae;
+    --trust-foreground: #10251d;
+    --trust-soft: #244b3e;
+    --intelligence: #b49be8;
+    --intelligence-foreground: #211a31;
+    --intelligence-soft: #44375f;
+    --secondary: #383b42;
+    --secondary-foreground: #f4f5f7;
+    --muted: #34373e;
+    --muted-foreground: #b4b8c1;
+    --accent: #24466b;
+    --accent-foreground: #d8eaff;
+    --destructive: #e46d62;
+    --destructive-foreground: #ffffff;
+    --success: #6fd1ae;
+    --warning: #e8b85f;
+    --info: #75baff;
+    --border: rgba(255, 255, 255, 0.09);
+    --border-soft: rgba(255, 255, 255, 0.05);
+    --border-strong: rgba(255, 255, 255, 0.16);
+    --input: rgba(255, 255, 255, 0.1);
+    --ring: rgba(91, 176, 255, 0.6);
+  }
+
+  .light {
+    --background: #fafbfc;
+    --foreground: #252a33;
+    --surface: #f2f4f7;
+    --surface-sunken: #e9edf2;
+    --surface-elevated: #ffffff;
+    --surface-floating: #ffffff;
+    --surface-modal: #ffffff;
+    --surface-overlay: rgba(25, 30, 40, 0.42);
+    --surface-assistant: #f0edf8;
+    --card: #ffffff;
+    --card-foreground: #252a33;
+    --popover: #ffffff;
+    --popover-foreground: #252a33;
+    --primary: #2676c9;
+    --primary-foreground: #ffffff;
+    --primary-soft: #e5f1ff;
+    --primary-glow: #4c91dc;
+    --warm: #a66a20;
+    --warm-foreground: #ffffff;
+    --warm-soft: #f8eddd;
+    --trust: #278b69;
+    --trust-foreground: #ffffff;
+    --trust-soft: #e5f4ee;
+    --intelligence: #7655b6;
+    --intelligence-foreground: #ffffff;
+    --intelligence-soft: #eee8f8;
+    --secondary: #f0f2f5;
+    --secondary-foreground: #252a33;
+    --muted: #eef0f3;
+    --muted-foreground: #687180;
+    --accent: #e5f1ff;
+    --accent-foreground: #245d9a;
+    --destructive: #c43e36;
+    --destructive-foreground: #ffffff;
+    --success: #278b69;
+    --warning: #a66a20;
+    --info: #2676c9;
+    --border: #e2e6ec;
+    --border-soft: #edf0f4;
+    --border-strong: #cbd2dc;
+    --input: #e6eaf0;
+    --ring: rgba(38, 118, 201, 0.48);
+  }
+}
+
+/* Physical-property fallbacks for older engines without CSS logical properties. */
+@supports not (padding-inline: 1px) {
+  .container-page,
+  .container-narrow,
+  .container-wide,
+  .page-shell {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+
+  .stage-center {
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
+  }
+
+  @media (min-width: 768px) {
+    .container-page,
+    .container-wide {
+      padding-left: calc(var(--space-8) + var(--safe-left));
+      padding-right: calc(var(--space-8) + var(--safe-right));
+    }
+
+    .page-shell {
+      padding-left: calc(var(--space-6) + var(--safe-left));
+      padding-right: calc(var(--space-6) + var(--safe-right));
+    }
   }
 }
