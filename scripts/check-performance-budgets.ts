@@ -20,8 +20,11 @@ function gzipKb(path: string): number {
 }
 
 function attribute(tag: string, name: string): string | undefined {
-  const match = tag.match(new RegExp(`\\\\b${name}\\\\s*=\\\\s*["']([^"']+)["']`, "i"));
-  return match?.[1];
+  const attributes = tag.matchAll(/([^\s=]+)\s*=\s*["']([^"']+)["']/g);
+  for (const match of attributes) {
+    if (match[1].toLowerCase() === name.toLowerCase()) return match[2];
+  }
+  return undefined;
 }
 
 function resolveReference(
@@ -29,26 +32,26 @@ function resolveReference(
   assets: Set<string>,
   reference: string | undefined,
 ): string | undefined {
-  if (!reference || /^(?:[a-z]+:)?\\/\\//i.test(reference) || reference.startsWith("data:")) {
+  if (!reference || /^(?:[a-z]+:)?\/\//i.test(reference) || reference.startsWith("data:")) {
     return undefined;
   }
 
-  const relative = reference.replace(/^\\//, "").split("?")[0].split("#")[0];
+  const relative = reference.replace(/^\//, "").split("?")[0].split("#")[0];
   const candidate = join(clientDirectory, relative);
   if (assets.has(candidate)) return candidate;
 
-  throw new Error(`Referenced build asset is missing: ${reference} (resolved to ${candidate})`);
+  throw new Error("Referenced build asset is missing: " + reference + " (resolved to " + candidate + ")");
 }
 
 function measurePerformanceBudgets(clientDirectory: string): PerformanceBudgetResult {
   if (!statSync(clientDirectory).isDirectory()) {
-    throw new Error(`Client build directory does not exist: ${clientDirectory}`);
+    throw new Error("Client build directory does not exist: " + clientDirectory);
   }
 
   const assets = new Set(filesUnder(clientDirectory));
   const htmlFiles = [...assets].filter((path) => path.endsWith(".html"));
   if (htmlFiles.length === 0) {
-    throw new Error(`No HTML entry documents found in client build: ${clientDirectory}`);
+    throw new Error("No HTML entry documents found in client build: " + clientDirectory);
   }
 
   const initialJavaScript = new Set<string>();
@@ -58,32 +61,32 @@ function measurePerformanceBudgets(clientDirectory: string): PerformanceBudgetRe
   for (const htmlPath of htmlFiles) {
     const html = readFileSync(htmlPath, "utf8");
 
-    for (const match of html.matchAll(/<script\\b[^>]*>/gi)) {
+    for (const match of html.matchAll(/<script\b[^>]*>/gi)) {
       const resolved = resolveReference(clientDirectory, assets, attribute(match[0], "src"));
-      if (resolved && /\\.(?:m?js)$/i.test(resolved)) {
+      if (resolved && /\.(?:m?js)$/i.test(resolved)) {
         initialJavaScript.add(resolved);
         criticalResources.add(resolved);
       }
     }
 
-    for (const match of html.matchAll(/<link\\b[^>]*>/gi)) {
+    for (const match of html.matchAll(/<link\b[^>]*>/gi)) {
       const tag = match[0];
       const resolved = resolveReference(clientDirectory, assets, attribute(tag, "href"));
-      const rel = attribute(tag, "rel")?.toLowerCase().split(/\\s+/) ?? [];
+      const rel = attribute(tag, "rel")?.toLowerCase().split(/\s+/) ?? [];
       const resourceType = attribute(tag, "as")?.toLowerCase();
 
-      if (resolved && /\\.css$/i.test(resolved) && rel.includes("stylesheet")) {
+      if (resolved && /\.css$/i.test(resolved) && rel.includes("stylesheet")) {
         initialCss.add(resolved);
         criticalResources.add(resolved);
       }
 
       if (
         resolved &&
-        /(?:modulepreload|preload)/i.test(rel.join(" ")) &&
-        /\\.(?:m?js|css|woff2?|ttf|webp|png|jpe?g|avif|svg)$/i.test(resolved)
+        (rel.includes("modulepreload") || rel.includes("preload")) &&
+        /\.(?:m?js|css|woff2?|ttf|webp|png|jpe?g|avif|svg)$/i.test(resolved)
       ) {
         criticalResources.add(resolved);
-        if (/\\.(?:m?js)$/i.test(resolved) || resourceType === "script") {
+        if (/\.(?:m?js)$/i.test(resolved) || resourceType === "script") {
           initialJavaScript.add(resolved);
         }
       }
@@ -115,7 +118,7 @@ const clientDirectory = candidates.find((path) => {
 });
 
 if (!clientDirectory) {
-  throw new Error(`No client build output found. Expected one of: ${candidates.join(", ")}`);
+  throw new Error("No client build output found. Expected one of: " + candidates.join(", "));
 }
 
 const result = measurePerformanceBudgets(clientDirectory);
