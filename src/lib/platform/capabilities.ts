@@ -83,7 +83,10 @@ export function detectPlatformIdentity(input: NavigatorHints): PlatformIdentity 
   } else if (/ucbrowser\//i.test(ua)) {
     browser = "uc";
     browserVersion = uaVersion(/ucbrowser\/([\d.]+)/i);
-  } else if (/edg(e|a|ios)?\//i.test(ua) || normalizedBrands.some((brand) => brand.includes("edge"))) {
+  } else if (
+    /edg(e|a|ios)?\//i.test(ua) ||
+    normalizedBrands.some((brand) => brand.includes("edge"))
+  ) {
     browser = "edge";
     browserVersion = uaVersion(/edg(?:e|a|ios)?\/([\d.]+)/i) ?? brandVersion("edge");
   } else if (/samsungbrowser\//i.test(ua)) {
@@ -110,10 +113,7 @@ export function detectPlatformIdentity(input: NavigatorHints): PlatformIdentity 
   } else if (/crios/i.test(ua)) {
     browser = "chrome";
     browserVersion = uaVersion(/crios\/([\d.]+)/i);
-  } else if (
-    normalizedBrands.some((brand) => brand.includes("chrome")) ||
-    /chrome\//i.test(ua)
-  ) {
+  } else if (normalizedBrands.some((brand) => brand.includes("chrome")) || /chrome\//i.test(ua)) {
     browser = "chrome";
     browserVersion = uaVersion(/chrome\/([\d.]+)/i) ?? brandVersion("chrome");
   } else if (/safari/i.test(ua) && !/android/i.test(ua)) {
@@ -123,7 +123,10 @@ export function detectPlatformIdentity(input: NavigatorHints): PlatformIdentity 
     browser = "unknown";
   }
 
-  const platformMajor = Number.parseInt(input.userAgentData?.platformVersion?.split(".")[0] ?? "", 10);
+  const platformMajor = Number.parseInt(
+    input.userAgentData?.platformVersion?.split(".")[0] ?? "",
+    10,
+  );
   const windowsVersion =
     os === "windows"
       ? Number.isNaN(platformMajor)
@@ -143,7 +146,6 @@ export function detectPlatformIdentity(input: NavigatorHints): PlatformIdentity 
     isIPadOS,
   };
 }
-
 
 /** Read optional high-entropy browser hints without making them a runtime requirement. */
 export async function getDetailedPlatformIdentity(): Promise<PlatformIdentity> {
