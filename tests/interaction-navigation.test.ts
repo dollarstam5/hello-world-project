@@ -117,6 +117,34 @@ describe("PERF-003 interaction and navigation metrics", () => {
     window.removeEventListener(PERFORMANCE_NAVIGATION_EVENT, listener);
   });
 
+  it("measures transitions within the same dynamic route pattern", () => {
+    let currentTime = 300;
+    vi.spyOn(performance, "now").mockImplementation(() => currentTime);
+
+    const listener = vi.fn();
+    window.addEventListener(PERFORMANCE_NAVIGATION_EVENT, listener);
+    const stop = startNavigationMeasurement();
+
+    completeNavigationMeasurement("/profiles/$profileId");
+    const anchor = document.createElement("a");
+    anchor.href = "/profiles/next";
+    document.body.append(anchor);
+    anchor.dispatchEvent(new MouseEvent("click", { bubbles: true, button: 0 }));
+    currentTime = 390;
+    completeNavigationMeasurement("/profiles/$profileId");
+
+    expect(listener).toHaveBeenCalledTimes(1);
+    expect((listener.mock.calls[0][0] as CustomEvent).detail).toEqual({
+      duration: 90,
+      fromRoute: "/profiles/$profileId",
+      toRoute: "/profiles/$profileId",
+    });
+
+    stop();
+    anchor.remove();
+    window.removeEventListener(PERFORMANCE_NAVIGATION_EVENT, listener);
+  });
+
   it("does not publish a navigation metric for the initial route or unchanged route", () => {
     const listener = vi.fn();
     window.addEventListener(PERFORMANCE_NAVIGATION_EVENT, listener);
