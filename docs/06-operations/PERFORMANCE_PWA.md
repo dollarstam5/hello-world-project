@@ -67,7 +67,7 @@ Le navigateur collecte désormais les signaux réels **LCP, INP et CLS** via Per
 
 ## P0.10.5 — budgets de performance automatisés
 
-Le build de production est maintenant contrôlé automatiquement après compilation. Le contrôle mesure en gzip les ressources JavaScript, CSS et critiques réellement référencées par le HTML initial ; si aucun HTML exploitable n'est trouvé, il utilise les assets du build comme repli conservateur.
+Le build de production est contrôlé automatiquement après compilation. Le contrôle mesure en gzip les ressources JavaScript, CSS et critiques référencées par chaque document HTML initial, puis retient le maximum par indicateur sans additionner les routes entre elles. Si aucun HTML ne fournit d'entrée JavaScript exploitable, il utilise le manifeste Vite et suit les imports statiques de chaque entrée.
 
 Les seuils sont ceux du contrat P0.10.1 :
 
