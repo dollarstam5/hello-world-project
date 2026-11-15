@@ -2,7 +2,7 @@
  * Data never passes through here â€” Dexie owns local data and the sync worker
  * owns the network exchange with the backend.
  */
-const VERSION = "vitala-v4";
+const VERSION = "vitalis-v5";
 const SHELL_CACHE = `${VERSION}-shell`;
 const ASSET_CACHE = `${VERSION}-assets`;
 const OFFLINE_URL = "/offline.html";

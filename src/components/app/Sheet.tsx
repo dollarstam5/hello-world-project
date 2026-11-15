@@ -38,7 +38,7 @@ export function Sheet({
         side={side}
         className={cn(
           "border-border-soft glass-strong",
-          side === "bottom" && "rounded-t-3xl pb-[max(env(safe-area-inset-bottom),1rem)]",
+          side === "bottom" && "rounded-t-3xl pb-4 pb-[max(env(safe-area-inset-bottom),1rem)]",
           side === "top" && "rounded-b-3xl",
           className,
         )}
