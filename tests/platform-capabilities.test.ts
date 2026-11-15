@@ -45,7 +45,6 @@ describe("platform identity detection", () => {
     ).toMatchObject({ os: "android", browser: "chrome" });
   });
 
-
   it("recognizes an installed standalone PWA from the display-mode media query", () => {
     const originalMatchMedia = window.matchMedia;
     window.matchMedia = vi.fn((query: string) => ({
