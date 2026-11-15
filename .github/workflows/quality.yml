@@ -75,6 +75,19 @@ jobs:
         if: always()
         run: supabase stop || true
 
+      - name: Install Chromium for mobile route smoke tests
+        run: bunx playwright install --with-deps chromium
+
+      - name: Mobile route rendering smoke tests
+        env:
+          VITE_SUPABASE_URL: https://ci-placeholder.supabase.co
+          VITE_SUPABASE_PUBLISHABLE_KEY: sb_publishable_ci_placeholder
+          SUPABASE_URL: https://ci-placeholder.supabase.co
+          SUPABASE_PUBLISHABLE_KEY: sb_publishable_ci_placeholder
+          SUPABASE_SERVICE_ROLE_KEY: ci_service_role_placeholder_000000000000
+          NODE_ENV: production
+        run: bun run test:e2e
+
       - name: Release check
         env:
           VITE_SUPABASE_URL: https://ci-placeholder.supabase.co
