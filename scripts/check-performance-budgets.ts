@@ -138,7 +138,9 @@ function measurePerformanceBudgets(clientDirectory: string): PerformanceBudgetRe
         for (const imported of entry.imports ?? []) visit(imported);
       };
       const entries = Object.entries(manifest).filter(([, entry]) => entry.isEntry);
-      if (entries.length === 0) throw new Error("Vite manifest contains no entry modules: " + manifestPath);
+      if (entries.length === 0) {
+        throw new Error("Vite manifest contains no entry modules: " + manifestPath);
+      }
       for (const [key] of entries) visit(key);
     }
   }
