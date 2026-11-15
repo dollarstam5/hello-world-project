@@ -5,11 +5,12 @@ import rootRoute from "../src/routes/__root.tsx?raw";
 import manifestSource from "../public/manifest.webmanifest?raw";
 import { renderErrorPage } from "../src/lib/error-page";
 
-const styles = readFileSync(fileURLToPath(new URL("../src/styles.css", import.meta.url)), "utf8");
-const reelCss = readFileSync(
-  fileURLToPath(new URL("../src/domains/presence/ui/reel-proximity.css", import.meta.url)),
-  "utf8",
-);
+const readSource = (path: string) =>
+  readFileSync(fileURLToPath(new URL(path, import.meta.url)), "utf8");
+const styles = readSource("../src/styles.css");
+const reelCss = readSource("../src/domains/presence/ui/reel-proximity.css");
+const serviceWorker = readSource("../public/sw.js");
+const offlinePage = readSource("../public/offline.html");
 
 describe("installed PWA viewport contract", () => {
   it("uses dynamic viewport height with a legacy viewport fallback", () => {
@@ -34,6 +35,13 @@ describe("installed PWA viewport contract", () => {
     const manifest = JSON.parse(manifestSource) as { display: string };
     expect(manifest.display).toBe("standalone");
     expect(rootRoute).toContain("viewport-fit=cover");
+  });
+
+  it("provides every static resource required to install the offline shell", () => {
+    expect(serviceWorker).toContain('const OFFLINE_URL = "/offline.html";');
+    expect(serviceWorker).toContain('const VERSION = "vitalis-v5";');
+    expect(offlinePage).toContain("Vous êtes momentanément hors connexion");
+    expect(offlinePage).toContain("window.location.reload()");
   });
 
   it("uses the dynamic viewport on the standalone error fallback too", () => {
