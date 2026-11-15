@@ -23,12 +23,8 @@ describe("installed PWA viewport contract", () => {
   });
 
   it("keeps the Réel screen sized to the dynamic visible viewport", () => {
-    expect(reelCss).toContain(
-      "min-height: calc(100dvh - var(--safe-top) - var(--safe-bottom));",
-    );
-    expect(reelCss).toContain(
-      "min-height: calc(100vh - var(--safe-top) - var(--safe-bottom));",
-    );
+    expect(reelCss).toContain("min-height: calc(100dvh - var(--safe-top) - var(--safe-bottom));");
+    expect(reelCss).toContain("min-height: calc(100vh - var(--safe-top) - var(--safe-bottom));");
   });
 
   it("declares standalone installation and edge-to-edge viewport support", () => {
