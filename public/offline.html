@@ -39,19 +39,20 @@
       }
       h1 { margin: 0 0 12px; font-size: clamp(24px, 6vw, 32px); }
       p { margin: 0; color: #c0c7d2; line-height: 1.6; }
-      button {
+      .button {
+        display: inline-flex;
         min-height: 48px;
+        align-items: center;
+        justify-content: center;
         margin-top: 28px;
         padding: 0 22px;
-        border: 0;
         border-radius: 14px;
         background: #5bb0ff;
         color: #101820;
-        font: inherit;
         font-weight: 650;
-        cursor: pointer;
+        text-decoration: none;
       }
-      button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+      .button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
     </style>
   </head>
   <body>
@@ -59,7 +60,7 @@
       <div class="mark" aria-hidden="true">V</div>
       <h1>Vous êtes momentanément hors connexion</h1>
       <p>Les pages déjà consultées restent disponibles sur cet appareil. Dès que le réseau revient, vous pourrez reprendre.</p>
-      <button type="button" onclick="window.location.reload()">Réessayer</button>
+      <a class="button" href="/">Réessayer</a>
     </main>
   </body>
 </html>
