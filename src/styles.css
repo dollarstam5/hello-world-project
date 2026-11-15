@@ -1466,3 +1466,50 @@
     --safe-right: env(safe-area-inset-right, 0px);
   }
 }
+
+
+/* Dynamic viewport utility fallbacks for older WebViews and mobile browsers. */
+@supports not (height: 100dvh) {
+  [class~="h-dvh-full"] {
+    height: 100vh !important;
+  }
+
+  [class~="min-h-dvh"],
+  [class~="min-h-dvh-full"] {
+    min-height: 100vh !important;
+  }
+
+  [class*="max-h-[92dvh]"] {
+    max-height: 92vh !important;
+  }
+
+  [class*="max-h-[88dvh]"] {
+    max-height: 88vh !important;
+  }
+
+  [class*="max-h-[82dvh]"] {
+    max-height: 82vh !important;
+  }
+
+  [class*="max-h-[80dvh]"] {
+    max-height: 80vh !important;
+  }
+
+  [class*="max-h-[calc(100dvh-2rem)]"] {
+    max-height: calc(100vh - 2rem) !important;
+  }
+
+  [class*="h-[min(68dvh,38rem)]"] {
+    height: 68vh !important;
+    max-height: 38rem !important;
+  }
+
+  [class*="min-h-[min(64dvh,560px)]"] {
+    min-height: 64vh !important;
+    max-height: 560px !important;
+  }
+
+  [class*="min-h-[calc(100dvh-5rem)]"] {
+    min-height: calc(100vh - 5rem) !important;
+  }
+}
