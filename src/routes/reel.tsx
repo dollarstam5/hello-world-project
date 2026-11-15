@@ -1,6 +1,4 @@
-import { ClientOnly, createFileRoute } from "@tanstack/react-router";
-import { ReelProximityScreen } from "@/domains/presence/ui/ReelProximityScreen";
-import { useI18n } from "@/lib/i18n/useI18n";
+import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/reel")({
   head: () => ({
@@ -21,21 +19,4 @@ export const Route = createFileRoute("/reel")({
       { name: "twitter:card", content: "summary" },
     ],
   }),
-  component: ReelRoute,
 });
-
-function ReelRoute() {
-  const { t } = useI18n();
-
-  return (
-    <ClientOnly
-      fallback={
-        <section className="reel-screen" aria-busy="true" aria-live="polite">
-          <p className="reel-panel__note">{t("app.loading")}</p>
-        </section>
-      }
-    >
-      <ReelProximityScreen />
-    </ClientOnly>
-  );
-}
