@@ -1152,9 +1152,11 @@
 
 /* ----------------- Viewport helpers ---------------------------- */
 @utility h-dvh-full {
+  height: 100vh;
   height: 100dvh;
 }
 @utility min-h-dvh-full {
+  min-height: 100vh;
   min-height: 100dvh;
 }
 @utility h-svh-full {
