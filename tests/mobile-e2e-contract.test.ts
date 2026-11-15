@@ -38,8 +38,11 @@ describe("mobile visual smoke contract", () => {
     expect(script).toContain('--wait-for-selector="$selector"');
   });
 
-  it("waits for rendered application content and verifies screenshot artifacts", () => {
-    expect(script).toContain('--wait-for-selector="#main"');
+  it("waits for rendered content on the home and each engine route", () => {
+    expect(script).toContain('--wait-for-selector="#home-engines-title"');
+    expect(script).toContain('"/flash") selector="main h1"');
+    expect(script).toContain('"/scan") selector="#scan-radius"');
+    expect(script).toContain('"/radar") selector="#radar-query"');
     expect(script).toContain('test -s "$output"');
   });
 });
