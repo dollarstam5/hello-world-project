@@ -34,6 +34,44 @@ export interface DeviceInfo {
   share: boolean;
 }
 
+/** Match media queries safely when an older embedded browser lacks matchMedia. */
+export function matchesMediaQuery(query: string): boolean {
+  return (
+    typeof window !== "undefined" &&
+    typeof window.matchMedia === "function" &&
+    window.matchMedia(query).matches
+  );
+}
+
+/**
+ * Subscribe through modern MediaQueryList events, with the legacy addListener
+ * fallback used by older Safari/WebViews. Missing APIs become a harmless no-op.
+ */
+export function subscribeToMediaQuery(query: string, listener: () => void): () => void {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+    return () => undefined;
+  }
+
+  let media: MediaQueryList;
+  try {
+    media = window.matchMedia(query);
+  } catch {
+    return () => undefined;
+  }
+
+  if (typeof media.addEventListener === "function") {
+    media.addEventListener("change", listener);
+    return () => media.removeEventListener("change", listener);
+  }
+
+  if (typeof media.addListener === "function") {
+    media.addListener(listener);
+    return () => media.removeListener(listener);
+  }
+
+  return () => undefined;
+}
+
 function read(): DeviceInfo {
   if (typeof window === "undefined") {
     return {
@@ -67,8 +105,8 @@ function read(): DeviceInfo {
     width: w,
     height: h,
     orientation: w >= h ? "landscape" : "portrait",
-    touch: matchMedia("(pointer: coarse)").matches,
-    reducedMotion: matchMedia("(prefers-reduced-motion: reduce)").matches,
+    touch: matchesMediaQuery("(pointer: coarse)"),
+    reducedMotion: matchesMediaQuery("(prefers-reduced-motion: reduce)"),
     isLowEnd: cores <= 4 && memory <= 2,
     os: capabilities.os,
     browser: capabilities.browser,
@@ -98,19 +136,20 @@ export function useDevice(): DeviceInfo {
         windowsVersion: identity.windowsVersion,
       }));
     });
-    const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
 
     window.addEventListener("resize", update);
     window.addEventListener("orientationchange", update);
-    reducedMotionQuery.addEventListener("change", update);
-    coarsePointerQuery.addEventListener("change", update);
+    const unsubscribeReducedMotion = subscribeToMediaQuery(
+      "(prefers-reduced-motion: reduce)",
+      update,
+    );
+    const unsubscribeCoarsePointer = subscribeToMediaQuery("(pointer: coarse)", update);
 
     return () => {
       window.removeEventListener("resize", update);
       window.removeEventListener("orientationchange", update);
-      reducedMotionQuery.removeEventListener("change", update);
-      coarsePointerQuery.removeEventListener("change", update);
+      unsubscribeReducedMotion();
+      unsubscribeCoarsePointer();
     };
   }, []);
   return info;
