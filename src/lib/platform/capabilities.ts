@@ -212,7 +212,7 @@ export function getPlatformCapabilities(): PlatformCapabilities {
 
   return {
     ...identity,
-    secureContext: window.isSecureContext,
+    secureContext: window.isSecureContext === true,
     serviceWorker: "serviceWorker" in navigator,
     geolocation: "geolocation" in navigator,
     notifications: "Notification" in window,
