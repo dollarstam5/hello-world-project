@@ -7,7 +7,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Découvrez les espaces de Vitalis : Flash, Scan, Réel et Radar, puis explorez les fonctions complémentaires du menu 2×2.",
+          "Découvrez les espaces de Vitalis : Flash, Scan, En direct et Radar, puis explorez les fonctions complémentaires du menu 2×2.",
       },
       { property: "og:title", content: "Vitalis — Accueil" },
       {
