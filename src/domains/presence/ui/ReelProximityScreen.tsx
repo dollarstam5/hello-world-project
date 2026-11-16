@@ -655,7 +655,15 @@ export function ReelProximityScreen() {
                       ? t("reel.ui.discoveryActive")
                       : t("reel.ui.discoveryInactive")}
                   </p>
-                  {!discoveryEnabled && (
+                  {discoveryEnabled ? (
+                    <button
+                      type="button"
+                      className="reel-panel__secondary"
+                      onClick={ignoreLocation}
+                    >
+                      {t("reel.ui.disableDiscovery")}
+                    </button>
+                  ) : (
                     <button
                       type="button"
                       className="reel-panel__primary"
