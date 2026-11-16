@@ -143,8 +143,7 @@ export function VitalisVisionPage() {
                   to={engine.route}
                   className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/15"
                 >
-                  {t("vision.deep.open")}{" "}
-                  {t(`vision.engine.${engine.id}.title`)}
+                  {t("vision.deep.open")} {t(`vision.engine.${engine.id}.title`)}
                   <ArrowRight className="size-4" />
                 </Link>
               </div>
