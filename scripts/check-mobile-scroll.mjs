@@ -162,16 +162,20 @@ try {
           const main = document.querySelector("main");
           const content = main?.firstElementChild;
           const nav = document.querySelector(".reel-bottom-nav");
+          const navBar = nav?.querySelector(".reel-bottom-nav__bar");
           const scroller = document.scrollingElement;
-          if (!main || !content || !nav || !scroller) return { error: "Missing main content, navigation, or document scroller" };
+          if (!main || !content || !nav || !navBar || !scroller) return { error: "Missing main content, navigation surface, or document scroller" };
           const contentRect = content.getBoundingClientRect();
           const navRect = nav.getBoundingClientRect();
+          const navStyle = getComputedStyle(navBar);
           return {
             scrollTop: scroller.scrollTop,
             maxScroll: scroller.scrollHeight - scroller.clientHeight,
             contentBottom: Math.round(contentRect.bottom * 100) / 100,
             navTop: Math.round(navRect.top * 100) / 100,
             gap: Math.round((navRect.top - contentRect.bottom) * 100) / 100,
+            navBackground: navStyle.backgroundColor,
+            navBorderRadius: navStyle.borderRadius,
           };
         })()`);
 
@@ -179,7 +183,10 @@ try {
         if (
           measurement?.error ||
           measurement.maxScroll - measurement.scrollTop > 2 ||
-          measurement.gap < 0
+          measurement.gap < 0 ||
+          measurement.navBackground === "transparent" ||
+          measurement.navBackground === "rgba(0, 0, 0, 0)" ||
+          measurement.navBorderRadius === "0px"
         ) {
           failures.push({
             route: route.path,
