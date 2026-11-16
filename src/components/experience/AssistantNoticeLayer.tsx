@@ -16,7 +16,7 @@ export function AssistantNoticeLayer() {
     if (!notice) return;
     const timeout = window.setTimeout(dismiss, 9000);
     return () => window.clearTimeout(timeout);
-  }, [notice?.id, dismiss]);
+  }, [notice, dismiss]);
 
   if (!enabled || !notice) return null;
 
