@@ -49,9 +49,7 @@ export function VisionEngineArtwork({
             <Zap className="size-5 text-amber-500" />
           </div>
           <p className="mt-5 text-lg font-bold">{labels.flashTitle}</p>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {labels.flashDescription}
-          </p>
+          <p className="mt-1 text-sm text-muted-foreground">{labels.flashDescription}</p>
           <div className="mt-5 flex flex-wrap gap-2">
             <span className="rounded-full bg-muted px-3 py-1 text-xs">{labels.today}</span>
             <span className="rounded-full bg-muted px-3 py-1 text-xs">{labels.nearby}</span>
