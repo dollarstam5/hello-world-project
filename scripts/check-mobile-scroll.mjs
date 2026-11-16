@@ -234,7 +234,9 @@ try {
   if (!homePhoto?.complete || homePhoto.naturalWidth <= 0) {
     failures.push({ route: "/", locale: "fr", viewport: "390x844", homePhoto });
   } else {
-    console.log(`PASS Home hero photograph decoded at 390x844: ${homePhoto.naturalWidth}×${homePhoto.naturalHeight}`);
+    console.log(
+      `PASS Home hero photograph decoded at 390x844: ${homePhoto.naturalWidth}×${homePhoto.naturalHeight}`,
+    );
   }
 
   if (failures.length) {
