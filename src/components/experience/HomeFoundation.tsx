@@ -9,7 +9,7 @@ import { useIdentity } from "@/lib/experience/identity";
 import { createDemoFlashes } from "@/domains/flash/model/demo-flashes";
 
 const HOME_PHOTO =
-  "https://images.unsplash.com/photo-1761666520005-3ffcf13e74c8?auto=format&fit=crop&fm=jpg&ixid=NHwxMjA3fDA%3D&ixlib=rb-4.1.0&q=60&w=1800";
+  "https://images.unsplash.com/photo-1761666520005-3ffcf13e74c8?auto=format&fit=crop&w=1800&q=80";
 const HOME_PHOTO_SOURCE =
   "https://unsplash.com/photos/a-diverse-group-of-people-sitting-together-fOeH7Nh2oy0";
 
@@ -111,14 +111,13 @@ export function HomeFoundation() {
       >
         <img
           src={HOME_PHOTO}
-          alt={t("home.hero.photoAlt")}
+          alt=""
+          aria-hidden="true"
           className="absolute inset-0 h-full w-full object-cover object-center"
           loading="eager"
           fetchPriority="high"
-          decoding="async"
-          onError={(event) => {
-            event.currentTarget.style.display = "none";
-          }}
+          decoding="sync"
+          referrerPolicy="no-referrer"
         />
         <div
           aria-hidden="true"
