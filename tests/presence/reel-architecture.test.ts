@@ -1,10 +1,14 @@
 import { describe, expect, it } from "vitest";
-import screenSource from "../../src/domains/presence/ui/ReelProximityScreen.tsx?raw";
+import screenCompositionSource from "../../src/domains/presence/ui/ReelProximityScreen.tsx?raw";
+import radarComponentsSource from "../../src/domains/presence/ui/components/ReelRadarIdentity.tsx?raw";
+
 import controllerSource from "../../src/domains/presence/model/useReelProximityController.ts?raw";
 import realtimeServiceSource from "../../src/domains/presence/services/reel-activity-realtime.service.ts?raw";
 import memberAvatarSource from "../../src/domains/profile/api/profile-avatar.client.ts?raw";
 
-describe("Instant architecture boundaries", () => {
+const screenSource = `${screenCompositionSource}\n${radarComponentsSource}`;
+
+describe("En direct architecture boundaries", () => {
   it("keeps business services and access policy out of the screen component", () => {
     const screen = screenSource;
     expect(screen).not.toMatch(/from ["']@\/domains\/presence\/api\//);
