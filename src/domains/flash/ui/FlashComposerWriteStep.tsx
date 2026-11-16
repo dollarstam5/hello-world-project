@@ -27,9 +27,7 @@ export function FlashComposerWriteStep({ state }: { state: ComposerState }) {
           variant="outline"
           className="min-h-11 rounded-full"
           onClick={
-            state.recording
-              ? () => state.recognitionRef.current?.stop()
-              : state.startVoiceInput
+            state.recording ? () => state.recognitionRef.current?.stop() : state.startVoiceInput
           }
           disabled={!state.speechSupported && !state.recording}
         >
