@@ -173,7 +173,7 @@ export function startWebVitalsMonitoring(sink: WebVitalsSink): () => void {
         record({ name: "INP", value: inp, navigationType: navigationType() }, sink);
       }
     },
-    { buffered: true, durationThreshold: 16 },
+    { buffered: true, durationThreshold: 16 } as PerformanceObserverInit,
   );
 
   const stop = () => {
