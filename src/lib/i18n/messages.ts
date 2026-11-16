@@ -1030,7 +1030,7 @@ export const messages = {
     "vision.end.title": "Vous savez maintenant où commencer.",
     "vision.end.body":
       "Choisissez le moteur qui correspond à votre besoin du moment. Vous pourrez revenir à cette présentation à tout moment.",
-        "vision.deep.flash.why": "Quand vous avez quelque chose d’utile à faire savoir, Flash vous permet de le formuler et de le partager dans une durée et une zone choisies. Cela peut être un besoin ponctuel, un service proposé, une aide recherchée ou une information locale.",
+    "vision.deep.flash.why": "Quand vous avez quelque chose d’utile à faire savoir, Flash vous permet de le formuler et de le partager dans une durée et une zone choisies. Cela peut être un besoin ponctuel, un service proposé, une aide recherchée ou une information locale.",
     "vision.deep.flash.use":
       "Décrivez votre besoin ou votre proposition avec vos mots. Précisez la catégorie, le moment concerné et la portée souhaitée. Relisez le récapitulatif, gardez un brouillon si nécessaire, puis publiez lorsque cette action est effectivement disponible.",
     "vision.deep.flash.flow":
@@ -1096,7 +1096,7 @@ export const messages = {
     "vision.deep.whatHeading": "Une application tournée vers la vie réelle.",
     "vision.deep.enginesHeading": "Quatre façons d’agir, un même objectif.",
     "vision.deep.navLabel": "Accès direct aux moteurs",
-"vision.end.action": "Revenir à l’accueil",
+    "vision.end.action": "Revenir à l’accueil",
   },
   en: {
     "app.name": "Vitalis",
@@ -2155,7 +2155,7 @@ export const messages = {
     "vision.deep.whatHeading": "An app built around real life.",
     "vision.deep.enginesHeading": "Four ways to take action, one shared purpose.",
     "vision.deep.navLabel": "Jump to an engine",
-        "vision.end.action": "Return to home",
+    "vision.end.action": "Return to home",
   },
 } as const;
 
