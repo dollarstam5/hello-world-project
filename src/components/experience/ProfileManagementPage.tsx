@@ -211,10 +211,34 @@ export function ProfileManagementPage() {
         <Surface variant="elevated" padding="lg" bordered>
           <div className="divide-y divide-border-soft">
             <div className="pb-4">
-              {<ProfileFieldRow field="display_name" value={profile.display_name} label={t("profile.name")} editing={editing} draft={draft} saving={saving} t={t} onDraftChange={setDraft} onSave={(field) => void saveField(field)} onCancel={() => setEditing(null)} onEdit={beginEdit} />}
+              <ProfileFieldRow
+                field="display_name"
+                value={profile.display_name}
+                label={t("profile.name")}
+                editing={editing}
+                draft={draft}
+                saving={saving}
+                t={t}
+                onDraftChange={setDraft}
+                onSave={(field) => void saveField(field)}
+                onCancel={() => setEditing(null)}
+                onEdit={beginEdit}
+              />
             </div>
             <div className="pt-4">
-              {<ProfileFieldRow field="handle" value={profile.handle} label={t("profile.handle")} editing={editing} draft={draft} saving={saving} t={t} onDraftChange={setDraft} onSave={(field) => void saveField(field)} onCancel={() => setEditing(null)} onEdit={beginEdit} />}
+              <ProfileFieldRow
+                field="handle"
+                value={profile.handle}
+                label={t("profile.handle")}
+                editing={editing}
+                draft={draft}
+                saving={saving}
+                t={t}
+                onDraftChange={setDraft}
+                onSave={(field) => void saveField(field)}
+                onCancel={() => setEditing(null)}
+                onEdit={beginEdit}
+              />
               {profile.handle && editing !== "handle" ? (
                 <Button
                   type="button"
