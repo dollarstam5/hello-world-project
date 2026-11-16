@@ -13,7 +13,7 @@ import {
   Target,
   Zap,
 } from "lucide-react";
-import { useI18n } from "@/lib/i18n/useI18n";
+import { useVisionI18n } from "@/lib/i18n/useVisionI18n";
 import { VisionEngineArtwork } from "@/components/experience/VisionEngineArtwork";
 
 const engines = [
@@ -24,7 +24,7 @@ const engines = [
 ] as const;
 
 export function VitalisVisionPage() {
-  const { t } = useI18n();
+  const { t } = useVisionI18n();
 
   return (
     <main className="page-shell space-y-16 pb-12 sm:space-y-24">
