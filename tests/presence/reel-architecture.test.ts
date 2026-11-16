@@ -152,7 +152,7 @@ describe("En direct architecture boundaries", () => {
     expect(screenSource).toContain('onClick={() => setPanel("people")}');
     expect(screenSource).toContain("onClick={() => openProfile(person)}");
     expect(screenSource).toContain("onClick={() => openProfile(person)}");
-    expect(screenSource).toContain("discoveryEnabled ? (");
+    expect(nearbyPreviewSource).toContain("if (discoveryEnabled)");
     expect(screenSource).toContain('t("reel.ui.noNearby")');
     expect(screenSource).not.toContain("reel-nearby-preview__empty");
     expect(screenSource).not.toContain("reel-presence-stack");
@@ -171,7 +171,7 @@ describe("En direct architecture boundaries", () => {
 
   it("offers a short, dismissible guided tour without enabling discovery or presence", () => {
     expect(screenSource).toContain('window.localStorage.getItem("vitalis-reel-tour-seen")');
-    expect(screenSource).toContain("onClick={openTour}");
+    expect(headerSource).toContain("onClick={onOpenTour}");
     expect(screenSource).toContain('aria-modal="true"');
     expect(screenSource).toContain('t("reel.ui.tour.finish")');
     expect(guidedTourSource).toContain('t("reel.ui.tour.finish")');
