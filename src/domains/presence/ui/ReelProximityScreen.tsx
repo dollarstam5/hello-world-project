@@ -333,31 +333,20 @@ export function ReelProximityScreen() {
           >
             <div className="reel-tour__topline">
               <span>{t("reel.ui.tour.eyebrow")}</span>
-              <button
-                type="button"
-                onClick={closeTour}
-                aria-label={t("reel.ui.tour.close")}
-              >
+              <button type="button" onClick={closeTour} aria-label={t("reel.ui.tour.close")}>
                 <X aria-hidden="true" />
               </button>
             </div>
             <div className="reel-tour__progress" aria-label={t("reel.ui.tour.progress")}>
               {[0, 1, 2, 3].map((step) => (
-                <span
-                  key={step}
-                  className={step <= tourStep ? "is-active" : ""}
-                />
+                <span key={step} className={step <= tourStep ? "is-active" : ""} />
               ))}
             </div>
             <p className="reel-tour__step">{t(TOUR_STEP_KEYS[tourStep])}</p>
             <h2 id="reel-tour-title">{t(TOUR_TITLE_KEYS[tourStep])}</h2>
             <p id="reel-tour-description">{t(TOUR_DESCRIPTION_KEYS[tourStep])}</p>
             <div className="reel-tour__actions">
-              <button
-                type="button"
-                className="reel-tour__skip"
-                onClick={closeTour}
-              >
+              <button type="button" className="reel-tour__skip" onClick={closeTour}>
                 {t("reel.ui.tour.skip")}
               </button>
               <div>
@@ -373,22 +362,15 @@ export function ReelProximityScreen() {
                 <button
                   type="button"
                   className="reel-tour__next"
-                  onClick={() =>
-                    tourStep === 3
-                      ? closeTour()
-                      : setTourStep((step) => step + 1)
-                  }
+                  onClick={() => (tourStep === 3 ? closeTour() : setTourStep((step) => step + 1))}
                 >
-                  {tourStep === 3
-                    ? t("reel.ui.tour.finish")
-                    : t("reel.ui.tour.next")}
+                  {tourStep === 3 ? t("reel.ui.tour.finish") : t("reel.ui.tour.next")}
                 </button>
               </div>
             </div>
           </section>
         </div>
       )}
-
 
       {!discoveryEnabled && (
         <section
