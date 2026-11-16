@@ -26,19 +26,13 @@ export function FlashComposerWriteStep({ state }: { state: ComposerState }) {
           type="button"
           variant="outline"
           className="min-h-11 rounded-full"
-          onClick={
-            state.recording
-              ? () => state.recognitionRef.current?.stop()
-              : state.startVoiceInput
-          }
+          onClick={state.recording ? () => state.recognitionRef.current?.stop() : state.startVoiceInput}
           disabled={!state.speechSupported && !state.recording}
         >
           {state.recording ? <MicOff className="mr-2 size-4" /> : <Mic className="mr-2 size-4" />}
           {state.recording ? t("flash.voice.stop") : t("flash.voice.action")}
         </Button>
-        <span className="text-xs tabular-nums text-muted-foreground">
-          {state.text.length}/600
-        </span>
+        <span className="text-xs tabular-nums text-muted-foreground">{state.text.length}/600</span>
       </div>
       {state.voiceMessage ? (
         <p className="mt-2 text-xs text-muted-foreground" role="status">
