@@ -21,7 +21,10 @@ export function VitalisVisionPage() {
   return (
     <main className="page-shell stack-8">
       <header className="stack-3">
-        <Link to="/" className="inline-flex min-h-10 w-fit items-center gap-2 rounded-full px-3 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+        <Link
+          to="/"
+          className="inline-flex min-h-10 w-fit items-center gap-2 rounded-full px-3 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        >
           <ArrowLeft className="size-4" aria-hidden="true" />
           {t("vision.back")}
         </Link>
@@ -29,7 +32,9 @@ export function VitalisVisionPage() {
           <span className="grid size-12 place-items-center rounded-2xl bg-primary/12 text-primary">
             <Compass className="size-6" aria-hidden="true" />
           </span>
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">{t("vision.eyebrow")}</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+            {t("vision.eyebrow")}
+          </p>
         </div>
         <h1 className="max-w-3xl text-fluid-display-sm">{t("vision.title")}</h1>
         <p className="max-w-3xl text-subtitle">{t("vision.intro")}</p>
@@ -50,13 +55,23 @@ export function VitalisVisionPage() {
           {engines.map((engine, index) => {
             const Icon = engine.icon;
             return (
-              <Surface key={engine.key} variant="elevated" bordered padding="lg" className="stack-3">
+              <Surface
+                key={engine.key}
+                variant="elevated"
+                bordered
+                padding="lg"
+                className="stack-3"
+              >
                 <div className="flex items-center gap-3">
-                  <span className={`grid size-11 place-items-center rounded-2xl bg-muted ${engine.tone}`}>
+                  <span
+                    className={`grid size-11 place-items-center rounded-2xl bg-muted ${engine.tone}`}
+                  >
                     <Icon className="size-5" aria-hidden="true" />
                   </span>
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("vision.engine.label")} {index + 1}</p>
+                    <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                      {t("vision.engine.label")} {index + 1}
+                    </p>
                     <h3 className="text-lg font-bold">{t(engine.title)}</h3>
                   </div>
                 </div>
@@ -64,14 +79,20 @@ export function VitalisVisionPage() {
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   <div className="rounded-xl bg-muted/60 p-3">
                     <h4 className="text-sm font-semibold">{t("vision.engine.actionTitle")}</h4>
-                    <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{t(engine.action)}</p>
+                    <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                      {t(engine.action)}
+                    </p>
                   </div>
                   <div className="rounded-xl bg-muted/60 p-3">
                     <h4 className="text-sm font-semibold">{t("vision.engine.stepsTitle")}</h4>
-                    <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{t(engine.steps)}</p>
+                    <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                      {t(engine.steps)}
+                    </p>
                   </div>
                 </div>
-                <p className="border-l-2 border-primary/40 pl-3 text-sm leading-relaxed text-muted-foreground">{t(engine.boundary)}</p>
+                <p className="border-l-2 border-primary/40 pl-3 text-sm leading-relaxed text-muted-foreground">
+                  {t(engine.boundary)}
+                </p>
               </Surface>
             );
           })}
@@ -84,7 +105,13 @@ export function VitalisVisionPage() {
           {principles.map((principle) => {
             const Icon = principle.icon;
             return (
-              <Surface key={principle.title} variant="sunken" bordered padding="md" className="stack-2">
+              <Surface
+                key={principle.title}
+                variant="sunken"
+                bordered
+                padding="md"
+                className="stack-2"
+              >
                 <Icon className="size-5 text-primary" aria-hidden="true" />
                 <h3 className="font-semibold">{t(principle.title)}</h3>
                 <p className="text-sm leading-relaxed text-muted-foreground">{t(principle.body)}</p>
@@ -98,14 +125,19 @@ export function VitalisVisionPage() {
         <h2 className="text-title-md">{t("vision.honesty.title")}</h2>
         <Surface variant="elevated" bordered padding="lg" className="stack-2">
           <p className="text-sm leading-relaxed">{t("vision.honesty.body")}</p>
-          <p className="text-sm leading-relaxed text-muted-foreground">{t("vision.honesty.privacy")}</p>
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            {t("vision.honesty.privacy")}
+          </p>
         </Surface>
       </section>
 
       <Surface variant="sunken" bordered padding="lg" className="stack-2 text-center">
         <h2 className="text-lg font-bold">{t("vision.end.title")}</h2>
         <p className="text-sm leading-relaxed text-muted-foreground">{t("vision.end.body")}</p>
-        <Link to="/" className="mx-auto mt-2 inline-flex min-h-11 items-center justify-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+        <Link
+          to="/"
+          className="mx-auto mt-2 inline-flex min-h-11 items-center justify-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        >
           {t("vision.end.action")}
         </Link>
       </Surface>
