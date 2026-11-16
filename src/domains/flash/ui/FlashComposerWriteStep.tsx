@@ -1,12 +1,13 @@
 import { ArrowRight, Mic, MicOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import { useI18n } from "@/lib/i18n/useI18n";
 import type { useFlashComposer } from "./useFlashComposer";
 
 type ComposerState = ReturnType<typeof useFlashComposer>;
 
 export function FlashComposerWriteStep({ state }: { state: ComposerState }) {
-  const { t } = useFlashComposerTranslations();
+  const { t } = useI18n();
+
   return (
     <>
       <Textarea
@@ -24,21 +25,32 @@ export function FlashComposerWriteStep({ state }: { state: ComposerState }) {
           type="button"
           variant="outline"
           className="min-h-11 rounded-full"
-          onClick={state.recording ? () => state.recognitionRef.current?.stop() : state.startVoiceInput}
+          onClick={
+            state.recording
+              ? () => state.recognitionRef.current?.stop()
+              : state.startVoiceInput
+          }
           disabled={!state.speechSupported && !state.recording}
         >
           {state.recording ? <MicOff className="mr-2 size-4" /> : <Mic className="mr-2 size-4" />}
           {state.recording ? t("flash.voice.stop") : t("flash.voice.action")}
         </Button>
-        <span className="text-xs tabular-nums text-muted-foreground">{state.text.length}/600</span>
+        <span className="text-xs tabular-nums text-muted-foreground">
+          {state.text.length}/600
+        </span>
       </div>
       {state.voiceMessage ? (
-        <p className="mt-2 text-xs text-muted-foreground" role="status">{state.voiceMessage}</p>
+        <p className="mt-2 text-xs text-muted-foreground" role="status">
+          {state.voiceMessage}
+        </p>
       ) : !state.speechSupported ? (
         <p className="mt-2 text-xs text-muted-foreground">{t("flash.voice.unsupported")}</p>
       ) : null}
       {state.parsedIntent ? (
-        <div className="mt-4 rounded-2xl border border-primary/15 bg-primary/5 p-4" aria-live="polite">
+        <div
+          className="mt-4 rounded-2xl border border-primary/15 bg-primary/5 p-4"
+          aria-live="polite"
+        >
           <p className="mb-2 text-sm font-semibold">{t("flash.composer.understood")}</p>
           <div className="flex flex-wrap gap-2">
             <span className="rounded-full bg-card px-3 py-1.5 text-xs font-medium">
@@ -65,5 +77,3 @@ export function FlashComposerWriteStep({ state }: { state: ComposerState }) {
     </>
   );
 }
-
-import { useI18n as useFlashComposerTranslations } from "@/lib/i18n/useI18n";
