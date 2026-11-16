@@ -3,7 +3,7 @@ import * as RechartsPrimitive from "recharts";
 import { cn } from "@/lib/utils";
 import { useChart, getPayloadConfigFromPayload } from "./chart-context";
 
-const ChartTooltipContent = React.forwardRef<
+export const ChartTooltipContent = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<typeof RechartsPrimitive.Tooltip> &
     React.ComponentProps<"div"> & {
