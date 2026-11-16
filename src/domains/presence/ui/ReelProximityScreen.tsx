@@ -13,7 +13,6 @@ import { ReelDiscoveryPrompt } from "./components/ReelDiscoveryPrompt";
 import { ReelNearbyPreview } from "./components/ReelNearbyPreview";
 import { ReelGlobalPanel } from "./components/ReelGlobalPanel";
 import { ReelPeoplePanel } from "./components/ReelPeoplePanel";
-import { VitalisVisionCard } from "@/components/experience/VitalisVisionCard";
 import "./reel-proximity.css";
 
 export function ReelProximityScreen() {
@@ -248,9 +247,6 @@ export function ReelProximityScreen() {
         onSendBip={sendBipToSelectedPerson}
       />
 
-      <div className="px-4 pb-6 sm:px-6">
-        <VitalisVisionCard />
-      </div>
     </section>
   );
 }
