@@ -75,7 +75,7 @@ export const messages = {
     "communication.notifications": "Notifications",
     "communication.assistant": "Assistant",
     "communication.messages": "Messages",
-    "communication.reel": "Réel",
+    "communication.reel": "En direct",
     "communication.notifications.empty":
       "Les nouvelles liées à vos actions apparaîtront ici, sans faux compteur.",
     "communication.messages.empty":
@@ -118,7 +118,7 @@ export const messages = {
     "home.engine.scan.desc":
       "Repérez les publications Flash actives dans la zone que vous choisissez.",
     "home.engine.scan.example": "Rechercher une aide pour un déménagement près de vous.",
-    "home.engine.reel.title": "Réel",
+    "home.engine.reel.title": "En direct",
     "home.engine.reel.desc":
       "Cet espace se prépare. Il permettra de signaler volontairement votre présence et de découvrir les personnes réellement à proximité.",
     "home.engine.reel.example":
@@ -158,7 +158,7 @@ export const messages = {
     "onboarding.spaces.title": "Et tout un monde à explorer",
     "onboarding.spaces.body":
       "Le menu 2×2 vous ouvre les espaces et fonctionnalités complémentaires de Vitalis. Vous pouvez les découvrir quand vous en avez besoin.",
-    "onboarding.reel.title": "Réel",
+    "onboarding.reel.title": "En direct",
     "onboarding.reel.body":
       "Signalez votre présence et découvrez les personnes à proximité, avec la liberté d'utiliser le mode invité.",
     "onboarding.radar.title": "Radar",
@@ -185,7 +185,7 @@ export const messages = {
     "page.error.desc": "Une erreur est survenue. Réessayez ou revenez à l’accueil.",
     "page.error.retry": "Réessayer",
     "nav.primary": "Navigation principale",
-    "nav.reel": "Réel",
+    "nav.reel": "En direct",
     "nav.flash": "Flash",
     "nav.scan": "Scan",
     "nav.radar": "Radar",
@@ -478,7 +478,7 @@ export const messages = {
     "scan.history.clear": "Effacer",
     "scan.history.results": "{count} résultat(s)",
 
-    "reel.ui.screenLabel": "Réel — présence à proximité",
+    "reel.ui.screenLabel": "En direct — présence à proximité",
     "reel.ui.home": "Retour à l’accueil Vitalis",
     "reel.ui.homeTitle": "Accueil",
     "reel.ui.subtitle": "Les personnes présentes autour de vous",
@@ -492,13 +492,13 @@ export const messages = {
     "reel.ui.bluetooth": "Bluetooth — bientôt disponible en version 3",
     "reel.ui.bluetoothTitle": "Bientôt (V3)",
     "reel.ui.location": "Accès à la position",
-    "reel.ui.guestTitle": "Vous découvrez Réel en invité",
-    "reel.ui.visitorTitle": "Découvrez Réel sans créer de compte",
-    "reel.ui.noAccessTitle": "Votre compte n’a pas encore accès à Réel",
+    "reel.ui.guestTitle": "Vous découvrez En direct en invité",
+    "reel.ui.visitorTitle": "Découvrez En direct sans créer de compte",
+    "reel.ui.noAccessTitle": "Votre compte n’a pas encore accès à En direct",
     "reel.ui.promptTitle": "Envie de découvrir ce qui se passe près de vous ?",
     "reel.ui.requestingTitle": "Nous vérifions votre position…",
     "reel.ui.privateTitle": "Votre position reste privée",
-    "reel.ui.calmTitle": "Vous découvrez Réel à votre rythme",
+    "reel.ui.calmTitle": "Vous découvrez En direct à votre rythme",
     "reel.ui.guestDescription":
       "Votre session est temporaire. Vous pouvez découvrir les présences autour de vous sans créer de compte.",
     "reel.ui.visitorDescription":
@@ -522,7 +522,7 @@ export const messages = {
     "reel.ui.noNearby": "Aucune présence réelle ne se trouve dans votre rayon pour le moment",
     "reel.ui.nearbyCount": "{count} personne(s) à proximité",
     "reel.ui.seeAllPeople": "Voir toutes les personnes",
-    "reel.ui.otherWays": "Autres façons de découvrir Réel",
+    "reel.ui.otherWays": "Autres façons de découvrir En direct",
 
     "reel.ui.close": "Fermer",
     "reel.ui.settingsHeading": "Ma présence et mes préférences",
@@ -688,7 +688,7 @@ export const messages = {
     "reel.controller.guestSessionOpenFailed": "Votre accès invité n’a pas pu être ouvert.",
     "reel.controller.discoveryUnavailable":
       "La découverte à proximité n’est pas disponible pour le moment.",
-    "reel.section.management": "Gérer Réel",
+    "reel.section.management": "Gérer En direct",
     "reel.section.presence": "Ma présence",
     "reel.section.bips": "Bips reçus",
     "reel.section.connections": "Mes mises en relation",
