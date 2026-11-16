@@ -201,9 +201,7 @@ export function ReelSettingsPanel({
                 }
                 onClick={() => void activateGuestPresence()}
               >
-                {presenceLoading
-                  ? t("reel.ui.activateLoading")
-                  : t("reel.ui.makeVisible")}
+                {presenceLoading ? t("reel.ui.activateLoading") : t("reel.ui.makeVisible")}
               </button>
             </>
           )
@@ -249,9 +247,7 @@ export function ReelSettingsPanel({
             <button
               type="button"
               className="reel-panel__primary"
-              disabled={
-                presenceLoading || !presenceConsent || !presenceDescription.trim()
-              }
+              disabled={presenceLoading || !presenceConsent || !presenceDescription.trim()}
               onClick={() => void activatePresence()}
             >
               {presenceLoading ? t("reel.ui.activateLoading") : t("reel.ui.activate")}

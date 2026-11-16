@@ -120,11 +120,11 @@ export function ReelActivityPanel({ controller }: { controller: ReelController }
             <p className="reel-panel__note">{t("reel.ui.memberNotActive")}</p>
           )}
           {access.mode === "guest" && !connectionsLoading && guestConnections.length === 0 && (
-              <div className="reel-panel__empty">
-                <UsersRound aria-hidden="true" />
-                <strong>{t("reel.ui.guestNoConnections")}</strong>
-                <span>{t("reel.ui.guestConnectionsHint")}</span>
-              </div>
+            <div className="reel-panel__empty">
+              <UsersRound aria-hidden="true" />
+              <strong>{t("reel.ui.guestNoConnections")}</strong>
+              <span>{t("reel.ui.guestConnectionsHint")}</span>
+            </div>
             )}
           {canUseMemberReel &&
             !connectionsLoading &&
