@@ -15,7 +15,7 @@ export function ReelSettingsPanel({ controller, onOpenHelp, onClose }: {
     guestDisplayName, setGuestDisplayName, guestAreaLabel, setGuestAreaLabel, guestAvatarKey,
     setGuestAvatarKey, presenceDescription, setPresenceDescription, guestPresenceConsent,
     setGuestPresenceConsent, activateGuestPresence, presenceConsent, setPresenceConsent,
-    stopPresence, activatePresence, presenceMessage, setPanel } = controller;
+    stopPresence, activatePresence, presenceMessage } = controller;
   return (
 <>
                 <div className="reel-panel__eyebrow">

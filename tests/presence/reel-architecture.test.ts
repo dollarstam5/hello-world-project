@@ -154,7 +154,7 @@ describe("En direct architecture boundaries", () => {
   });
 
   it("explains discovery, presence, radar, radius and privacy in a settings help dialog", () => {
-    expect(screenSource).toContain("onClick={() => setSettingsHelpOpen(true)}");
+    expect(settingsPanelSource).toContain("onClick={onOpenHelp}");
     expect(screenSource).toContain('role="dialog"');
     expect(screenSource).toContain('t("reel.ui.helpDiscoveryTitle")');
     expect(screenSource).toContain('t("reel.ui.helpPresenceTitle")');
