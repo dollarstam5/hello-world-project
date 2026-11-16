@@ -208,7 +208,8 @@ export function ReelProximityScreen() {
       <header className="reel-proximity__header">
         <div className="reel-proximity__heading">
           <RadioTower aria-hidden="true" />
-          <h1>INSTANT</h1>
+          <h1>En direct</h1>
+          <span className="reel-proximity__live-indicator" aria-hidden="true" />
         </div>
         <nav className="reel-proximity__header-actions" aria-label={t("reel.ui.screenLabel")}>
           <Link
