@@ -1,4 +1,5 @@
 import {
+  ArrowRight,
   Bell,
   Check,
   Eye,
