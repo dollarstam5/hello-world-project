@@ -7,6 +7,7 @@ import {
   Check,
   ChevronDown,
   CircleHelp,
+  CircleUserRound,
   Globe,
   History,
   Home,
