@@ -32,7 +32,7 @@ export function VisionEngineArtwork({
   kind,
   labels,
 }: {
-  kind: (typeof engines)[number]["id"];
+  kind: VisionEngineId;
   labels: ArtworkLabels;
 }) {
   if (kind === "flash") {
