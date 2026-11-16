@@ -28,6 +28,24 @@ import "./reel-proximity.css";
 
 const DURATIONS = ["30 min", "1 h", "2 h", "3 h", "6 h", "12 h", "24 h"];
 const RADII = ["10 m", "25 m", "50 m", "100 m", "1 km"];
+const TOUR_TITLE_KEYS = [
+  "reel.ui.tour.title1",
+  "reel.ui.tour.title2",
+  "reel.ui.tour.title3",
+  "reel.ui.tour.title4",
+] as const;
+const TOUR_DESCRIPTION_KEYS = [
+  "reel.ui.tour.description1",
+  "reel.ui.tour.description2",
+  "reel.ui.tour.description3",
+  "reel.ui.tour.description4",
+] as const;
+const TOUR_STEP_KEYS = [
+  "reel.ui.tour.step1",
+  "reel.ui.tour.step2",
+  "reel.ui.tour.step3",
+  "reel.ui.tour.step4",
+] as const;
 
 function PersonAvatar({
   person,
@@ -153,7 +171,10 @@ export function ReelProximityScreen() {
       // The guide remains dismissible for this visit when storage is unavailable.
     }
   };
-  const openTour = () => { setTourStep(0); setTourOpen(true); };
+  const openTour = () => {
+    setTourStep(0);
+    setTourOpen(true);
+  };
   const {
     access,
     memberAvatarUrl,
@@ -311,9 +332,9 @@ export function ReelProximityScreen() {
             <div className="reel-tour__progress" aria-label={t("reel.ui.tour.progress")}>
               {[0, 1, 2, 3].map((step) => <span key={step} className={step <= tourStep ? "is-active" : ""} />)}
             </div>
-            <p className="reel-tour__step">{t(([ "reel.ui.tour.step1", "reel.ui.tour.step2", "reel.ui.tour.step3", "reel.ui.tour.step4" ][tourStep]) as never)}</p>
-            <h2 id="reel-tour-title">{t(([ "reel.ui.tour.title1", "reel.ui.tour.title2", "reel.ui.tour.title3", "reel.ui.tour.title4" ][tourStep]) as never)}</h2>
-            <p id="reel-tour-description">{t(([ "reel.ui.tour.description1", "reel.ui.tour.description2", "reel.ui.tour.description3", "reel.ui.tour.description4" ][tourStep]) as never)}</p>
+            <p className="reel-tour__step">{t(TOUR_STEP_KEYS[tourStep])}</p>
+            <h2 id="reel-tour-title">{t(TOUR_TITLE_KEYS[tourStep])}</h2>
+            <p id="reel-tour-description">{t(TOUR_DESCRIPTION_KEYS[tourStep])}</p>
             <div className="reel-tour__actions">
               <button type="button" className="reel-tour__skip" onClick={closeTour}>{t("reel.ui.tour.skip")}</button>
               <div>
