@@ -288,7 +288,7 @@ Les tests pgTAP 130, 132 et 133 sont des scénarios ajoutés/modifiés dans la b
 Les bips croisés ne disposent pas encore d'un canal de diffusion temps réel dédié. La validation multi-appareils et les cas de tests complémentaires restent ouverts ; ne pas considérer cette tranche comme activée en production avant le succès des migrations, pgTAP et tests d'intégration.
 
 
-| BIP-INV-11 | Les événements croisés doivent actualiser les membres sans révéler d'identifiants invités. | Broadcast privé `reel-member:<auth.uid()>` avec payload limité à un type d'événement ; invités actualisés côté serveur via cookie HttpOnly. | pgTAP 138 : politique du sujet privé et inspection du contenu Broadcast ; test multi-appareils à compléter. | Ajouté, à exécuter |
+| BIP-INV-11 | Les événements croisés doivent actualiser les membres sans révéler d'identifiants invités. | Broadcast privé `reel-member:<auth.uid()>` avec payload limité à un type d'événement ; invités actualisés côté serveur via cookie HttpOnly. | pgTAP 138 exécuté et réussi en CI : politique du sujet privé et inspection du contenu Broadcast ; réception réelle et test multi-appareils à compléter. | Test CI réussi ; validation temps réel réelle à compléter |
 
 ## 11. État des preuves techniques — révision du 16 novembre 2026
 
@@ -302,7 +302,7 @@ Cette section actualise les statuts techniques historiques de la matrice. Elle p
 | ZONE-05 — confidentialité des points | Coordonnées précises conservées dans des tables privées accessibles au rôle serveur ; projections sans GPS exact. | Contrôles SQL/RLS exécutés par le workflow réussis. | CI RÉUSSIE ; audit de configuration de l'environnement cible restant |
 | ZONE-07 — rayon des bips | Chaque envoi vérifie le rayon métrique du destinataire côté SQL. | Test 134 réussi : bip proche autorisé et bip hors rayon refusé avec `recipient_outside_visibility_radius`. | CI RÉUSSIE |
 | BIP-INV — interactions membre/invité | RPC et Server Functions séparées ; session invitée vérifiée côté serveur ; projections sans identifiant de session. | Les scénarios SQL concernés exécutés par le workflow Quality sont réussis selon le journal CI ; couverture fonctionnelle multi-appareils non réalisée. | CI PARTIELLEMENT PROBANTE ; essais de bout en bout à compléter |
-| BIP-INV-11 — événements croisés | Broadcast privé pour les membres ; actualisation côté serveur via cookie HttpOnly pour les invités. | Migration et test 138 présents ; le run CI consulté ne fournit pas de preuve suffisante de l'exécution de ce scénario ni de la réception réelle du canal. | IMPLÉMENTATION AJOUTÉE ; EXÉCUTION DU TEST 138, CONFIGURATION ET ESSAI RÉEL À CONFIRMER |
+| BIP-INV-11 — événements croisés | Broadcast privé pour les membres ; actualisation côté serveur via cookie HttpOnly pour les invités. | pgTAP 138 exécuté et réussi dans le run Quality ; ce test couvre la politique du sujet privé et le contenu du Broadcast, pas la réception réelle du canal. | TEST SQL CI RÉUSSI ; CONFIGURATION ET ESSAI MULTI-APPAREILS À CONFIRMER |
 | Purge / rétention | Fonctions de purge et tests associés présents. | Tests SQL du workflow exécutés avec succès pour les scénarios concernés. | TESTS CI RÉUSSIS ; disponibilité et planification `pg_cron` à confirmer sur la cible |
 
 ### Référence CI
