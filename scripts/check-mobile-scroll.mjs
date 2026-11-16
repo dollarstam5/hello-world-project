@@ -82,7 +82,7 @@ try {
       awaitPromise: true,
     });
     if (result.exceptionDetails) {
-      throw new Error(result.exceptionDetails.text || "Browser evaluation failed");
+      throw new Error(result.exceptionDetails.exception?.description || result.exceptionDetails.text || "Browser evaluation failed");
     }
     return result.result?.value;
   };
