@@ -31,4 +31,9 @@ describe("mobile visual smoke contract", () => {
     expect(script).toContain('--wait-for-selector="$selector"');
     expect(script).toContain('test -s "$output"');
   });
+
+  it("asserts bottom-scroll clearance above the fixed navigation for Flash and Scan", () => {
+    expect(script).toContain("scripts/check-mobile-scroll.mjs");
+    expect(script).toContain("bottom-scroll clearance assertions");
+  });
 });

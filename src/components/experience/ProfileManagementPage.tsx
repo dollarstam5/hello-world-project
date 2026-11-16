@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Check, Pencil, Plus, Trash2, X } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { Surface } from "@/components/app/Surface";
 import {
   AlertDialog,
@@ -13,7 +13,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { ProfileFieldRow } from "./ProfileFieldRow";
 import { supabase } from "@/integrations/supabase/client";
 import { useIdentity } from "@/lib/experience/identity";
 import { useI18n } from "@/lib/i18n/useI18n";
@@ -184,64 +184,6 @@ export function ProfileManagementPage() {
     );
   }
 
-  const fieldRow = (field: EditableField, value: string | null, label: string) => (
-    <div className="flex items-center gap-3">
-      <div className="min-w-0 flex-1">
-        <p className="text-xs text-muted-foreground">{label}</p>
-        {editing === field ? (
-          <div className="mt-2 flex gap-2">
-            <Input
-              autoFocus
-              value={draft}
-              onChange={(event) => setDraft(event.target.value)}
-              className="h-11 min-w-0"
-              aria-label={label}
-            />
-            <Button
-              type="button"
-              size="icon"
-              className="h-11 w-11 shrink-0"
-              disabled={saving}
-              onClick={() => void saveField(field)}
-              aria-label={t("common.save")}
-            >
-              <Check className="h-4 w-4" aria-hidden />
-            </Button>
-            <Button
-              type="button"
-              size="icon"
-              variant="ghost"
-              className="h-11 w-11 shrink-0"
-              disabled={saving}
-              onClick={() => setEditing(null)}
-              aria-label={t("common.cancel")}
-            >
-              <X className="h-4 w-4" aria-hidden />
-            </Button>
-          </div>
-        ) : (
-          <p className="mt-1 truncate text-sm font-medium">{value || t("profile.notProvided")}</p>
-        )}
-      </div>
-      {editing !== field ? (
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          className="h-11 w-11 shrink-0"
-          onClick={() => beginEdit(field)}
-          aria-label={`${t("profile.edit")} ${label}`}
-        >
-          {value ? (
-            <Pencil className="h-4 w-4" aria-hidden />
-          ) : (
-            <Plus className="h-5 w-5" aria-hidden />
-          )}
-        </Button>
-      ) : null}
-    </div>
-  );
-
   return (
     <div className="page-shell stack-6">
       <header className="stack-2 motion-rise-in">
@@ -269,10 +211,34 @@ export function ProfileManagementPage() {
         <Surface variant="elevated" padding="lg" bordered>
           <div className="divide-y divide-border-soft">
             <div className="pb-4">
-              {fieldRow("display_name", profile.display_name, t("profile.name"))}
+              <ProfileFieldRow
+                field="display_name"
+                value={profile.display_name}
+                label={t("profile.name")}
+                editing={editing}
+                draft={draft}
+                saving={saving}
+                t={t}
+                onDraftChange={setDraft}
+                onSave={(field) => void saveField(field)}
+                onCancel={() => setEditing(null)}
+                onEdit={beginEdit}
+              />
             </div>
             <div className="pt-4">
-              {fieldRow("handle", profile.handle, t("profile.handle"))}
+              <ProfileFieldRow
+                field="handle"
+                value={profile.handle}
+                label={t("profile.handle")}
+                editing={editing}
+                draft={draft}
+                saving={saving}
+                t={t}
+                onDraftChange={setDraft}
+                onSave={(field) => void saveField(field)}
+                onCancel={() => setEditing(null)}
+                onEdit={beginEdit}
+              />
               {profile.handle && editing !== "handle" ? (
                 <Button
                   type="button"

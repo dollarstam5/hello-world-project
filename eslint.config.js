@@ -36,5 +36,12 @@ export default tseslint.config(
       "@typescript-eslint/no-unused-vars": "off",
     },
   },
+  {
+    files: ["**/*.tsx"],
+    rules: {
+      // Enforce the component size limit now that the existing TSX inventory is compliant.
+      "max-lines": ["error", { max: 300, skipBlankLines: true, skipComments: true }],
+    },
+  },
   eslintPluginPrettier,
 );
