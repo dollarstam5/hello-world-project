@@ -381,7 +381,7 @@ export const messages = {
       "Repérez les Flash actifs autour de vous, sans jamais révéler votre position.",
     "page.scan.section.scan": "Scanner",
     "page.reel.eyebrow": "Votre présence",
-    "page.reel.title": "Réel",
+    "page.reel.title": "En direct",
     "page.reel.desc":
       "Cet espace se prépare. Vous pourrez bientôt signaler votre présence et découvrir les personnes à proximité.",
     "page.radar.title": "Radar",
