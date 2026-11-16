@@ -19,7 +19,7 @@ export const getAdminOverview = createServerFn({ method: "GET" })
 /** Paginated rows for a records module. The module — not the caller — picks the table. */
 export const listAdminRecords = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: AdminRecordsInput) => parseRecordsInput(input))
+  .validator((input: AdminRecordsInput) => parseRecordsInput(input))
   .handler(async ({ data, context }) => {
     const viewer = await readViewerRole(context.supabase, context.userId);
     return readAdminRecords(viewer, data);
