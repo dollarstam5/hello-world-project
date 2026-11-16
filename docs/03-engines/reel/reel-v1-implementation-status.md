@@ -438,7 +438,7 @@ Cette section est la référence la plus récente pour le niveau de preuve de la
 
 ### Corrections B1 validées par CI
 
-La PR #79 — `fix(reel): isolate discovery from HMAC and test bip radius` — est ouverte en brouillon sur la branche `fix/reel-discovery-hmac-and-bip-radius`, tête `9ad7a7956138487878fba2f8a36ec21a7c7102c5`.
+La PR #79 — `fix(reel): isolate discovery from HMAC and test bip radius` — est ouverte en brouillon sur la branche `fix/reel-discovery-hmac-and-bip-radius`, tête `9e96b481194bd0d71f7d51b2903846f11156b783`.
 
 - Dans `src/domains/presence/api/reel-zone.server.ts`, la lecture de `REEL_ZONE_HMAC_SECRET` est maintenant limitée au parcours de publication de présence. La découverte PostGIS n'émet pas de jeton HMAC et ne dépend donc pas de ce secret.
 - `tests/reel-zone.server.test.ts` vérifie que la découverte fonctionne lorsque `REEL_ZONE_HMAC_SECRET` est absent.
@@ -446,7 +446,7 @@ La PR #79 — `fix(reel): isolate discovery from HMAC and test bip radius` — e
 
 ### Preuves CI sur la tête exacte de la PR
 
-Les workflows ont été exécutés sur le SHA `9ad7a7956138487878fba2f8a36ec21a7c7102c5` :
+Les workflows ont été exécutés sur le SHA `9e96b481194bd0d71f7d51b2903846f11156b783` :
 
 - Quality : succès ; 47 fichiers Vitest et 234 tests passés ; contrôles SQL/RLS exécutés par le workflow réussis, dont le test 134 ; build réussi.
 - Dependency review : succès.
