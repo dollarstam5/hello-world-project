@@ -93,4 +93,8 @@ for locale in fr en; do
   done
 done
 
-echo "Production mobile E2E smoke validation passed for Home, Flash, Scan, En direct and Radar at four target viewports in French and English (40 screenshots)."
+CHROMIUM_BIN="$(find "$HOME/.cache/ms-playwright" -type f -name chrome -print -quit)"
+test -n "$CHROMIUM_BIN"
+bun scripts/check-mobile-scroll.mjs "$CHROMIUM_BIN" "$BASE_URL"
+
+echo "Production mobile E2E smoke validation passed for Home, Flash, Scan, En direct and Radar at four target viewports in French and English (40 screenshots), including bottom-scroll clearance assertions for Flash and Scan."
