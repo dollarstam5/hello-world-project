@@ -246,7 +246,6 @@ export function ReelProximityScreen() {
         onClose={closeProfile}
         onSendBip={sendBipToSelectedPerson}
       />
-
     </section>
   );
 }
