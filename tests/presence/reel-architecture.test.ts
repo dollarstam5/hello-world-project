@@ -112,8 +112,8 @@ describe("En direct architecture boundaries", () => {
     expect(screenSource).not.toContain("setShowFullProfile");
     expect(screenSource).not.toContain("reel.ui.fullProfile");
     expect(controllerSource).not.toContain("showFullProfile");
-    expect(screenSource).toContain("selectedPerson.description");
-    expect(screenSource).toContain("selectedPerson.locationLabel");
+    expect(profileSheetSource).toContain("person.description");
+    expect(profileSheetSource).toContain("person.locationLabel");
   });
 
   it("refreshes both received bips and connections immediately after acceptance", () => {
