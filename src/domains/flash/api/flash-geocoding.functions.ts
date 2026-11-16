@@ -16,7 +16,7 @@ const reverseGeocodeInput = z
  */
 export const reverseGeocodeFlashLocation = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator(reverseGeocodeInput)
+  .validator(reverseGeocodeInput)
   .handler(async ({ data, context }) => {
     const { lookupFlashArea } = await import("./flash-geocoding.server");
     return lookupFlashArea(data.latitude, data.longitude, context.userId);
