@@ -1,20 +1,22 @@
 BEGIN;
 CREATE EXTENSION IF NOT EXISTS pgtap WITH SCHEMA extensions;
-SELECT plan(4);
+SELECT plan(5);
 
 INSERT INTO auth.users (
   id, aud, role, email, encrypted_password, email_confirmed_at,
   raw_app_meta_data, raw_user_meta_data
 ) VALUES
   ('d4000000-0000-4000-8000-000000000001', 'authenticated', 'authenticated', 'reel-bip-sender@example.invalid', '', now(), '{}', '{"display_name":"Awa"}'),
-  ('d4000000-0000-4000-8000-000000000002', 'authenticated', 'authenticated', 'reel-bip-recipient@example.invalid', '', now(), '{}', '{"display_name":"Moussa"}');
+  ('d4000000-0000-4000-8000-000000000002', 'authenticated', 'authenticated', 'reel-bip-recipient@example.invalid', '', now(), '{}', '{"display_name":"Moussa"}'),
+  ('d4000000-0000-4000-8000-000000000003', 'authenticated', 'authenticated', 'reel-bip-outside@example.invalid', '', now(), '{}', '{"display_name":"Nadia"}');
 
 RESET ROLE;
 SET LOCAL ROLE service_role;
 INSERT INTO public.reel_zone_grants (id, owner_id, zone_key, purpose, expires_at, location)
 VALUES
   ('d4000000-0000-4000-8000-000000000401', 'd4000000-0000-4000-8000-000000000001', 'z1_11111111111111111111111111111111111111111111111111111111', 'presence', now() + interval '5 minutes', extensions.ST_SetSRID(extensions.ST_MakePoint(0, 0), 4326)::extensions.geography),
-  ('d4000000-0000-4000-8000-000000000402', 'd4000000-0000-4000-8000-000000000002', 'z1_22222222222222222222222222222222222222222222222222222222', 'presence', now() + interval '5 minutes', extensions.ST_SetSRID(extensions.ST_MakePoint(0.00005, 0), 4326)::extensions.geography);
+  ('d4000000-0000-4000-8000-000000000402', 'd4000000-0000-4000-8000-000000000002', 'z1_22222222222222222222222222222222222222222222222222222222', 'presence', now() + interval '5 minutes', extensions.ST_SetSRID(extensions.ST_MakePoint(0.00005, 0), 4326)::extensions.geography),
+  ('d4000000-0000-4000-8000-000000000403', 'd4000000-0000-4000-8000-000000000003', 'z1_33333333333333333333333333333333333333333333333333333333', 'presence', now() + interval '5 minutes', extensions.ST_SetSRID(extensions.ST_MakePoint(0.0005, 0), 4326)::extensions.geography);
 
 SET LOCAL ROLE authenticated;
 SELECT set_config('request.jwt.claims', '{"sub":"d4000000-0000-4000-8000-000000000001","role":"authenticated"}', true);
@@ -33,6 +35,14 @@ SELECT lives_ok(
   'recipient publishes a presence in a different opaque HMAC cell'
 );
 
+SELECT set_config('request.jwt.claims', '{"sub":"d4000000-0000-4000-8000-000000000003","role":"authenticated"}', true);
+SELECT lives_ok(
+  $reel_test$SELECT public.start_reel_presence_from_grant(
+    'd4000000-0000-4000-8000-000000000403', 'Secteur C', 'Disponible', 25, 30, true
+  )$reel_test$,
+  'a third member publishes a presence beyond the sender-to-recipient visibility radius'
+);
+
 RESET ROLE;
 SET LOCAL ROLE service_role;
 SELECT set_config(
@@ -49,6 +59,18 @@ SELECT lives_ok(
     'd4000000-0000-4000-8000-000000000411'
   )$reel_test$,
   'a bip is allowed across different HMAC cells when PostGIS confirms the recipient visibility radius'
+);
+
+SELECT set_config('request.jwt.claims', '{"sub":"d4000000-0000-4000-8000-000000000001","role":"authenticated"}', true);
+SELECT throws_ok(
+  $reel_test$SELECT public.send_reel_bip(
+    (SELECT id FROM public.reel_presences
+     WHERE owner_id = 'd4000000-0000-4000-8000-000000000003' AND status = 'active'),
+    'd4000000-0000-4000-8000-000000000412'
+  )$reel_test$,
+  '42501',
+  'recipient_outside_visibility_radius',
+  'a bip is rejected when the recipient is outside their configured metric visibility radius'
 );
 
 SELECT is(
