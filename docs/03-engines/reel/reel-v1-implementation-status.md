@@ -431,3 +431,51 @@ Cette section prévaut sur les formulations plus anciennes de ce journal lorsqu'
 - **Toujours indisponible ou non raccordé selon l'état documenté :** conversations générales, notifications générales, suggestions globales sans source métier et certaines fonctions de signalement/partage.
 
 La politique d'accès canonique est `reel-access-policy.md`. Toute modification future de cette politique doit être répercutée ici, et inversement. Ne pas déduire d'une migration ou d'un test ajouté que son exécution a réussi.
+
+## Clôture technique de la phase B — état vérifié au 16 novembre 2026
+
+Cette section est la référence la plus récente pour le niveau de preuve de la phase B. Elle prévaut sur les notes historiques antérieures qui indiquent encore que les migrations, les tests Vitest ou le build n'ont jamais été exécutés. Elle ne transforme pas une validation CI en validation de déploiement.
+
+### Corrections B1 validées par CI
+
+La PR #79 — `fix(reel): isolate discovery from HMAC and test bip radius` — est ouverte en brouillon sur la branche `fix/reel-discovery-hmac-and-bip-radius`, tête `7b6fbdcc2fd69cbc73aa4189c069b1714fbb2f65`.
+
+- Dans `src/domains/presence/api/reel-zone.server.ts`, la lecture de `REEL_ZONE_HMAC_SECRET` est maintenant limitée au parcours de publication de présence. La découverte PostGIS n'émet pas de jeton HMAC et ne dépend donc pas de ce secret.
+- `tests/reel-zone.server.test.ts` vérifie que la découverte fonctionne lorsque `REEL_ZONE_HMAC_SECRET` est absent.
+- `supabase/tests/database/134_reel_bip_metric_radius.test.sql` vérifie désormais le bip autorisé dans le rayon métrique et le refus explicite d'un bip hors du rayon du destinataire (`recipient_outside_visibility_radius`).
+
+### Preuves CI sur la tête exacte de la PR
+
+Les workflows ont été exécutés sur le SHA `7b6fbdcc2fd69cbc73aa4189c069b1714fbb2f65` :
+
+- Quality : succès ; 49 fichiers Vitest et 249 tests passés ; contrôles SQL/RLS exécutés par le workflow réussis, dont le test 134 ; build réussi.
+- Dependency review : succès.
+- Le contrôle release a retourné `GO_CANDIDATE` avec `externalReleaseApprovalRequired: true`. Ce résultat n'est ni une autorisation de publication ni une preuve de déploiement.
+
+### État technique consolidé de B
+
+| Domaine | État de preuve au 16 novembre 2026 | Limite restante |
+| --- | --- | --- |
+| Résolution de zone / secret HMAC | Correction B1 couverte par Vitest et CI réussie | Vérifier la configuration du secret dans l'environnement de déploiement pour la publication de présence |
+| Rayon de découverte et de présence | Implémentation PostGIS et tests SQL exécutés avec succès dans le workflow | Vérifier les extensions et migrations sur l'environnement Supabase cible |
+| Rayon des bips membre → membre | Test 134 réussi, cas dans le rayon et hors rayon couverts | Essai fonctionnel sur deux appareils/comptes |
+| Sessions et interactions invitées | Migrations et tests correspondants présents ; couverture CI partielle des scénarios invités | Compléter les cas de refus/fermeture, puis essais de bout en bout sur deux appareils |
+| Événements privés / Realtime | pgTAP 138 exécuté et réussi dans la CI : politique du sujet privé et inspection du contenu Broadcast | Confirmer la configuration « Allow public access » désactivée et la réception réelle des Broadcasts sur plusieurs appareils |
+| Purges et rétention | Fonctions et tests présents | Confirmer `pg_cron` et l'exécution planifiée sur la pile cible |
+| Interface et affichage | Tests de contrat et build réussis dans la CI courante | Captures navigateur/appareil et comparaison à la référence produit encore nécessaires |
+| Sources globales et notifications générales | Non raccordées ou sans source métier confirmée | Ne pas afficher de données fictives |
+
+### Conditions restant nécessaires avant de déclarer B entièrement clôturée
+
+1. Intégrer la PR #79 dans `main` après revue et autorisation de fusion.
+2. Appliquer/vérifier la chaîne de migrations sur un environnement Supabase de validation et confirmer PostGIS.
+3. Vérifier la présence de `REEL_ZONE_HMAC_SECRET` dans l'environnement serveur ; ne jamais l'exposer dans une variable `VITE_*`.
+4. Vérifier `pg_cron`, les purges planifiées et la configuration des canaux privés Realtime.
+5. Réaliser les essais multi-appareils couvrant découverte, présence, bip dans/hors rayon, acceptation, fermeture et révocation invitée.
+6. Effectuer le contrôle visuel réel de la route Instant/Réel sur les tailles mobiles prévues.
+
+**Périmètre :** cette clôture concerne uniquement les fondations déjà engagées de la phase B. La phase C n'est pas commencée ; conversations, messagerie, notifications générales et autres extensions C ne sont ni incluses ni déclarées livrées.
+
+## Synchronisation avec main — 16 novembre 2026
+
+La branche a été synchronisée avec le commit `d1f9eeac795fc9b295bf97478b56bd2a5e0b5ede` de `main` (PR #78). Les changements fonctionnels de cette PR ont été conservés et les deux documents de suivi ont été réconciliés avec les mises à jour de `main`. Les contrôles Quality et Dependency Review réussis sur la tête précédente `7b6fbdcc2fd69cbc73aa4189c069b1714fbb2f65` restent une preuve historique ; ils doivent être relancés sur la nouvelle tête synchronisée avant toute fusion.
