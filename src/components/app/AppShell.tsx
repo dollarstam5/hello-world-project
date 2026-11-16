@@ -93,7 +93,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         id="main"
         className={`mx-auto w-full max-w-screen-md ${hasBottomNavigation ? "pb-28" : "pb-0"}`}
         style={{
-          paddingBottom: hasBottomNavigation ? "calc(7rem + var(--safe-bottom))" : 0,
+          paddingBottom: hasBottomNavigation ? "calc(8rem + var(--safe-bottom))" : 0,
         }}
       >
         <div key={pathname} className={reduce ? undefined : "motion-rise-in"}>

@@ -2337,3 +2337,14 @@
     border-radius: 1.1rem;
   }
 }
+
+
+/* Keep the guided tour and its actions clear of the fixed En direct navigation. */
+.reel-proximity {
+  padding-bottom: calc(7rem + var(--safe-bottom));
+}
+
+.reel-tour-backdrop {
+  z-index: 60;
+  padding-bottom: calc(6.5rem + env(safe-area-inset-bottom, 0px));
+}
