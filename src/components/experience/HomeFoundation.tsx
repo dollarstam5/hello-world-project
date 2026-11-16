@@ -8,6 +8,11 @@ import { useI18n } from "@/lib/i18n/useI18n";
 import { useIdentity } from "@/lib/experience/identity";
 import { createDemoFlashes } from "@/domains/flash/model/demo-flashes";
 
+const HOME_PHOTO =
+  "https://images.unsplash.com/photo-1761666520005-3ffcf13e74c8?auto=format&fit=crop&fm=jpg&ixid=NHwxMjA3fDA%3D&ixlib=rb-4.1.0&q=60&w=1800";
+const HOME_PHOTO_SOURCE =
+  "https://unsplash.com/photos/a-diverse-group-of-people-sitting-together-fOeH7Nh2oy0";
+
 type EngineCardProps = {
   to: "/flash" | "/scan" | "/reel" | "/radar";
   icon: LucideIcon;
@@ -100,13 +105,55 @@ export function HomeFoundation() {
 
   return (
     <div className="page-shell stack-8">
-      <header className="stack-3 motion-rise-in">
-        <Indicator tone="primary" label={identityLabel} dot />
-        <div className="stack-2">
-          <h1 className="text-fluid-display-lg max-w-[14ch]">{greeting}</h1>
-          <p className="text-subtitle max-w-prose">{t("home.subtitle")}</p>
+      <section
+        aria-labelledby="home-welcome-title"
+        className="relative isolate flex min-h-[25rem] overflow-hidden rounded-[2rem] bg-slate-950 shadow-[0_24px_70px_-36px_rgba(15,23,42,0.7)] sm:min-h-[31rem]"
+      >
+        <img
+          src={HOME_PHOTO}
+          alt={t("home.hero.photoAlt")}
+          className="absolute inset-0 h-full w-full object-cover object-center"
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/45 to-slate-950/10"
+        />
+        <div className="relative z-10 flex w-full flex-col justify-between gap-10 p-5 text-white sm:p-8">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <span className="rounded-full border border-white/25 bg-slate-950/35 px-3 py-1.5 text-xs font-medium text-white shadow-sm backdrop-blur-sm">
+              {identityLabel}
+            </span>
+            <span className="rounded-full bg-white/15 px-3 py-1.5 text-xs font-medium text-white/95 backdrop-blur-sm">
+              {t("app.tagline")}
+            </span>
+          </div>
+          <div className="max-w-2xl space-y-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/80">
+              {t("home.hero.eyebrow")}
+            </p>
+            <h1
+              id="home-welcome-title"
+              className="max-w-[13ch] text-4xl font-semibold leading-[1.04] tracking-tight text-white sm:text-5xl lg:text-6xl"
+            >
+              {greeting}
+            </h1>
+            <p className="max-w-xl text-base leading-relaxed text-white/90 sm:text-lg">
+              {t("home.subtitle")}
+            </p>
+          </div>
+          <a
+            href={HOME_PHOTO_SOURCE}
+            target="_blank"
+            rel="noreferrer"
+            className="self-end rounded-full bg-slate-950/45 px-3 py-1.5 text-[11px] text-white/85 backdrop-blur-sm underline-offset-2 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          >
+            {t("home.hero.photoCredit")}
+          </a>
         </div>
-      </header>
+      </section>
 
       <section className="stack-4" aria-labelledby="home-engines-title">
         <div className="stack-1">
