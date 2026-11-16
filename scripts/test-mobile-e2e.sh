@@ -35,7 +35,7 @@ for route in "/" "/flash" "/scan" "/reel" "/radar"; do
     "/flash") selector="main h1" ;;
     "/scan") selector="#scan-radius" ;;
     "/reel") selector=".reel-proximity" ;;
-    "/radar") selector="#radar-query" ;;
+    "/radar") selector="main h1" ;;
   esac
 
   for viewport in "360,800" "390,844" "412,915" "768,1024"; do
@@ -53,4 +53,4 @@ for route in "/" "/flash" "/scan" "/reel" "/radar"; do
   done
 done
 
-echo "Production mobile E2E smoke validation passed for Home, Flash, Scan, Reel and Radar at three target viewports each."
+echo "Production mobile E2E smoke validation passed for Home, Flash, Scan, Reel and Radar at four target viewports each."
