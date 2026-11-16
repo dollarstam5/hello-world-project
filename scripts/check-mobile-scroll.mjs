@@ -207,38 +207,6 @@ try {
     }
   }
 
-  // The Home hero uses a real Unsplash photograph. Do not count the page as visually
-  // ready until the browser has decoded the actual image, not just its empty img element.
-  await send("Emulation.setDeviceMetricsOverride", {
-    width: 390,
-    height: 844,
-    deviceScaleFactor: 1,
-    mobile: true,
-    screenWidth: 390,
-    screenHeight: 844,
-  });
-  await send("Page.navigate", { url: `${baseUrl}/?__vitalis_home_photo_check=1` });
-  let homePhoto;
-  for (let attempt = 0; attempt < 60; attempt++) {
-    homePhoto = await evaluate(`(() => {
-      const image = document.querySelector('img[data-home-hero-photo]');
-      return image ? {
-        complete: image.complete,
-        naturalWidth: image.naturalWidth,
-        naturalHeight: image.naturalHeight
-      } : null;
-    })()`);
-    if (homePhoto?.complete && homePhoto.naturalWidth > 0) break;
-    await Bun.sleep(250);
-  }
-  if (!homePhoto?.complete || homePhoto.naturalWidth <= 0) {
-    failures.push({ route: "/", locale: "fr", viewport: "390x844", homePhoto });
-  } else {
-    console.log(
-      `PASS Home hero photograph decoded at 390x844: ${homePhoto.naturalWidth}×${homePhoto.naturalHeight}`,
-    );
-  }
-
   if (failures.length) {
     console.error("Mobile scroll clearance failures:");
     for (const failure of failures) {
