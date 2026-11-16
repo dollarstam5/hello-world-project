@@ -1,12 +1,15 @@
 import { describe, expect, it } from "vitest";
 import screenCompositionSource from "../../src/domains/presence/ui/ReelProximityScreen.tsx?raw";
 import radarComponentsSource from "../../src/domains/presence/ui/components/ReelRadarIdentity.tsx?raw";
+import guidedTourSource from "../../src/domains/presence/ui/components/ReelGuidedTour.tsx?raw";
+import settingsHelpSource from "../../src/domains/presence/ui/components/ReelSettingsHelp.tsx?raw";
+import profileSheetSource from "../../src/domains/presence/ui/components/ReelProfileSheet.tsx?raw";
 
 import controllerSource from "../../src/domains/presence/model/useReelProximityController.ts?raw";
 import realtimeServiceSource from "../../src/domains/presence/services/reel-activity-realtime.service.ts?raw";
 import memberAvatarSource from "../../src/domains/profile/api/profile-avatar.client.ts?raw";
 
-const screenSource = `${screenCompositionSource}\n${radarComponentsSource}`;
+const screenSource = `${screenCompositionSource}\n${radarComponentsSource}\n${guidedTourSource}\n${settingsHelpSource}\n${profileSheetSource}`;
 
 describe("En direct architecture boundaries", () => {
   it("keeps business services and access policy out of the screen component", () => {
@@ -164,11 +167,8 @@ describe("En direct architecture boundaries", () => {
     expect(screenSource).toContain("onClick={openTour}");
     expect(screenSource).toContain('aria-modal="true"');
     expect(screenSource).toContain('t("reel.ui.tour.finish")');
-    const tourMarkup = screenSource.slice(
-      screenSource.indexOf("{tourOpen && ("),
-      screenSource.indexOf("{!discoveryEnabled && ("),
-    );
-    expect(tourMarkup).not.toContain("requestDiscovery");
-    expect(tourMarkup).not.toContain("activatePresence");
+    expect(guidedTourSource).toContain('t("reel.ui.tour.finish")');
+    expect(guidedTourSource).not.toContain("requestDiscovery");
+    expect(guidedTourSource).not.toContain("activatePresence");
   });
 });

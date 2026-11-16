@@ -24,6 +24,9 @@ import {
   useReelProximityController,
 } from "@/domains/presence/model/useReelProximityController";
 import { PersonAvatar, RingPerson, SelfRadarIdentity } from "./components/ReelRadarIdentity";
+import { ReelGuidedTour } from "./components/ReelGuidedTour";
+import { ReelSettingsHelp } from "./components/ReelSettingsHelp";
+import { ReelProfileSheet } from "./components/ReelProfileSheet";
 import "./reel-proximity.css";
 
 const DURATIONS = ["30 min", "1 h", "2 h", "3 h", "6 h", "12 h", "24 h"];
@@ -219,55 +222,7 @@ export function ReelProximityScreen() {
           </button>
         </nav>
       </header>
-      {tourOpen && (
-        <div className="reel-tour-backdrop">
-          <section
-            className="reel-tour"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="reel-tour-title"
-            aria-describedby="reel-tour-description"
-          >
-            <div className="reel-tour__topline">
-              <span>{t("reel.ui.tour.eyebrow")}</span>
-              <button type="button" onClick={closeTour} aria-label={t("reel.ui.tour.close")}>
-                <X aria-hidden="true" />
-              </button>
-            </div>
-            <div className="reel-tour__progress" aria-label={t("reel.ui.tour.progress")}>
-              {[0, 1, 2, 3].map((step) => (
-                <span key={step} className={step <= tourStep ? "is-active" : ""} />
-              ))}
-            </div>
-            <p className="reel-tour__step">{t(TOUR_STEP_KEYS[tourStep])}</p>
-            <h2 id="reel-tour-title">{t(TOUR_TITLE_KEYS[tourStep])}</h2>
-            <p id="reel-tour-description">{t(TOUR_DESCRIPTION_KEYS[tourStep])}</p>
-            <div className="reel-tour__actions">
-              <button type="button" className="reel-tour__skip" onClick={closeTour}>
-                {t("reel.ui.tour.skip")}
-              </button>
-              <div>
-                {tourStep > 0 && (
-                  <button
-                    type="button"
-                    className="reel-tour__back"
-                    onClick={() => setTourStep((step) => step - 1)}
-                  >
-                    {t("reel.ui.tour.back")}
-                  </button>
-                )}
-                <button
-                  type="button"
-                  className="reel-tour__next"
-                  onClick={() => (tourStep === 3 ? closeTour() : setTourStep((step) => step + 1))}
-                >
-                  {tourStep === 3 ? t("reel.ui.tour.finish") : t("reel.ui.tour.next")}
-                </button>
-              </div>
-            </div>
-          </section>
-        </div>
-      )}
+      <ReelGuidedTour open={tourOpen} step={tourStep} onClose={closeTour} onStepChange={setTourStep} />
 
       {!discoveryEnabled && (
         <section
@@ -463,59 +418,7 @@ export function ReelProximityScreen() {
         </div>
       )}
 
-      {settingsHelpOpen && panel === "settings" && (
-        <div className="reel-settings-help-backdrop">
-          <section
-            className="reel-settings-help"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="reel-settings-help-title"
-          >
-            <div className="reel-settings-help__header">
-              <div>
-                <span>{t("reel.ui.settingsHelpEyebrow")}</span>
-                <h2 id="reel-settings-help-title">{t("reel.ui.settingsHelpTitle")}</h2>
-              </div>
-              <button
-                type="button"
-                onClick={() => setSettingsHelpOpen(false)}
-                aria-label={t("reel.ui.close")}
-              >
-                <X aria-hidden="true" />
-              </button>
-            </div>
-            <div className="reel-settings-help__content">
-              <article>
-                <h3>{t("reel.ui.helpDiscoveryTitle")}</h3>
-                <p>{t("reel.ui.helpDiscoveryBody")}</p>
-              </article>
-              <article>
-                <h3>{t("reel.ui.helpPresenceTitle")}</h3>
-                <p>{t("reel.ui.helpPresenceBody")}</p>
-              </article>
-              <article>
-                <h3>{t("reel.ui.helpRadarTitle")}</h3>
-                <p>{t("reel.ui.helpRadarBody")}</p>
-              </article>
-              <article>
-                <h3>{t("reel.ui.helpRadiusTitle")}</h3>
-                <p>{t("reel.ui.helpRadiusBody")}</p>
-              </article>
-              <article>
-                <h3>{t("reel.ui.helpPrivacyTitle")}</h3>
-                <p>{t("reel.ui.helpPrivacyBody")}</p>
-              </article>
-            </div>
-            <button
-              type="button"
-              className="reel-panel__primary"
-              onClick={() => setSettingsHelpOpen(false)}
-            >
-              {t("reel.ui.finish")}
-            </button>
-          </section>
-        </div>
-      )}
+      <ReelSettingsHelp open={settingsHelpOpen && panel === "settings"} onClose={() => setSettingsHelpOpen(false)} />
 
       {panel && (
         <div
@@ -1171,58 +1074,12 @@ export function ReelProximityScreen() {
         </div>
       )}
 
-      {selectedPerson && (
-        <div
-          className="reel-profile-backdrop"
-          role="presentation"
-          onMouseDown={(event) => {
-            if (event.target === event.currentTarget) closeProfile();
-          }}
-        >
-          <section
-            className="reel-profile-sheet"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="reel-profile-title"
-          >
-            <button
-              type="button"
-              className="reel-profile-sheet__close"
-              onClick={closeProfile}
-              aria-label={t("reel.ui.closeProfile")}
-            >
-              <X aria-hidden="true" />
-            </button>
-            <PersonAvatar person={selectedPerson} size="me" />
-            <h2 id="reel-profile-title">{selectedPerson.name}</h2>
-            {selectedPerson.category && (
-              <p className="reel-profile-sheet__category">{selectedPerson.category}</p>
-            )}
-            {selectedPerson.distanceLabel && (
-              <p className="reel-profile-sheet__distance">{selectedPerson.distanceLabel}</p>
-            )}
-            {selectedPerson.description ? (
-              <p className="reel-profile-sheet__description">{selectedPerson.description}</p>
-            ) : (
-              <p className="reel-profile-sheet__empty">{t("reel.ui.noExtraProfile")}</p>
-            )}
-            {selectedPerson.locationLabel && (
-              <div className="reel-profile-sheet__details">
-                <span>{selectedPerson.locationLabel}</span>
-              </div>
-            )}
-            {(currentPresence || guestPresence) && (
-              <button
-                type="button"
-                className="reel-profile-sheet__primary"
-                onClick={() => void sendBipToSelectedPerson()}
-              >
-                <RadioTower aria-hidden="true" /> Faire signe
-              </button>
-            )}
-          </section>
-        </div>
-      )}
+      <ReelProfileSheet
+        person={selectedPerson}
+        isPresenceActive={Boolean(currentPresence || guestPresence)}
+        onClose={closeProfile}
+        onSendBip={sendBipToSelectedPerson}
+      />
     </section>
   );
 }
