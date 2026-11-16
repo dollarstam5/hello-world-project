@@ -71,7 +71,7 @@ La provenance ne doit pas être perdue lors du tri, du filtrage, de la fusion de
 
 ## 5. Politique d'affichage progressif
 
-Chaque domaine définit un critère explicite de suffisance des données réelles. Il n'existe pas de seuil numérique universel : une seule présence réelle peut être pertinente dans Réel, tandis qu'un espace de découverte peut nécessiter plusieurs éléments.
+Chaque domaine définit un critère explicite de suffisance des données réelles. Il n'existe pas de seuil numérique universel : une seule présence réelle peut être pertinente dans En direct, tandis qu'un espace de découverte peut nécessiter plusieurs éléments.
 
 Comportement obligatoire :
 
@@ -102,7 +102,7 @@ Les critères de suffisance doivent être documentés, testables et propres au c
 | --------- | ----------------------------------------- | --------------------------------------------------------------------- |
 | Flash     | Besoins et propositions illustratifs      | Ne pas simuler une contribution publiée par un utilisateur réel       |
 | Scan      | Objets, services et résultats explicatifs | Ne pas présenter un résultat fictif comme une identification vérifiée |
-| Réel      | Scénarios guidés de fonctionnement        | Ne jamais simuler une personne réellement présente dans la zone       |
+| En direct      | Scénarios guidés de fonctionnement        | Ne jamais simuler une personne réellement présente dans la zone       |
 | Radar     | Exemples de catégories ou de découvertes  | Ne pas inventer une disponibilité ou une activité en direct           |
 | 2x2       | Catégories et contenus illustratifs       | Toujours distinguer l'exemple d'un contenu utilisateur                |
 | Profil    | Profil fictif de démonstration            | Ne pas créer de faux compte utilisateur                               |
