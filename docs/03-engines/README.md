@@ -12,14 +12,14 @@ Chaque moteur possède son propre périmètre, son action centrale, ses commande
 
 | Moteur | Dossier documentaire | Domaine applicatif actuel | Action centrale |
 | --- | --- | --- | --- |
-| **Instant** (anciennement Réel) | [reel/](./reel/) | `src/domains/presence/` | Profil et présence de l'utilisateur au centre de l'expérience |
+| **En direct** (anciennement En direct) | [reel/](./reel/) | `src/domains/presence/` | Profil et présence de l'utilisateur au centre de l'expérience |
 | **Flash** | [flash/](./flash/) | `src/domains/flash/` | Démarrer un Flash |
 | **Scan** | [scan/](./scan/) | `src/domains/scan/` | Démarrer le scanner des possibilités |
 | **Radar** | [radar/](./radar/) | `src/domains/radar/` | Démarrer une mission de recherche d'opportunités |
 
 ### Dossiers de cadrage
 
-- **Instant** : [architecture UI](./reel/reel-ui-architecture.md), [visibilité du profil](./reel/instant-profile-visibility.md), [politique d'accès](./reel/reel-access-policy.md), [sessions invitées](./reel/reel-guest-session-architecture.md), [traçabilité](./reel/reel-traceability-matrix.md), [état d'implémentation V1](./reel/reel-v1-implementation-status.md).
+- **En direct** : [architecture UI](./reel/reel-ui-architecture.md), [visibilité du profil](./reel/instant-profile-visibility.md), [politique d'accès](./reel/reel-access-policy.md), [sessions invitées](./reel/reel-guest-session-architecture.md), [traçabilité](./reel/reel-traceability-matrix.md), [état d'implémentation V1](./reel/reel-v1-implementation-status.md).
 - **Flash** : [fiche de cadrage](./flash/engine-charter.md).
 - **Scan** : [fiche de cadrage](./scan/engine-charter.md).
 - **Radar** : [fiche de cadrage](./radar/engine-charter.md), [module Radar existant](./radar/RADAR_MODULE.md), [état d'implémentation V1](./radar/radar-v1-implementation-status.md).
