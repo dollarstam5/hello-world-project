@@ -6,7 +6,7 @@ Dans l'architecture actuelle, les quatre moteurs sont modélisés comme des **do
 
 | Moteur produit | Domaine applicatif | Remarque |
 | --- | --- | --- |
-| Instant (anciennement Réel) | `presence` | Le nom technique `presence` est conservé pour la compatibilité des routes et du code existant. |
+| En direct (anciennement En direct) | `presence` | Le nom technique `presence` est conservé pour la compatibilité des routes et du code existant. |
 | Flash | `flash` | Domaine dédié. |
 | Scan | `scan` | Domaine dédié. |
 | Radar | `radar` | Domaine dédié. |
@@ -17,7 +17,7 @@ Dans l'architecture actuelle, les quatre moteurs sont modélisés comme des **do
 - **Feature** : capacité fonctionnelle située à l'intérieur d'un domaine ou réutilisée par plusieurs domaines, sans devenir automatiquement une nouvelle frontière métier.
 - **UI component** : élément de présentation ; il ne constitue pas à lui seul un domain.
 
-Exemples de capacités qui pourront être organisées comme features internes : démarrer un Flash, gérer sa durée de vie, lancer un scan, filtrer les résultats Radar, gérer les bips et les fiches de proximité Instant. Leur découpage exact dépendra des responsabilités et des dépendances réellement observées dans le code.
+Exemples de capacités qui pourront être organisées comme features internes : démarrer un Flash, gérer sa durée de vie, lancer un scan, filtrer les résultats Radar, gérer les bips et les fiches de proximité En direct. Leur découpage exact dépendra des responsabilités et des dépendances réellement observées dans le code.
 
 ## Règles d'architecture
 
