@@ -208,7 +208,10 @@ export function ReelProximityScreen() {
       <header className="reel-proximity__header">
         <div className="reel-proximity__heading">
           <RadioTower aria-hidden="true" />
-          <h1>En direct</h1>
+          <div className="reel-proximity__heading-copy">
+            <h1>En direct</h1>
+            <p>{t("reel.ui.screenLabel")}</p>
+          </div>
           <span className="reel-proximity__live-indicator" aria-hidden="true" />
         </div>
         <nav className="reel-proximity__header-actions" aria-label={t("reel.ui.screenLabel")}>
@@ -391,33 +394,65 @@ export function ReelProximityScreen() {
         ))}
       </div>
 
-      {discoveryEnabled && availablePeople.length > 0 && (
-        <button
-          type="button"
-          className="reel-presence-stack"
-          onClick={() => setPanel("people")}
-          aria-label={t("reel.ui.openAllPresences").replace(
-            "{count}",
-            String(availablePeople.length),
-          )}
-          title={t("reel.ui.openAllPresences").replace("{count}", String(availablePeople.length))}
-        >
-          <span className="reel-presence-stack__disks" aria-hidden="true">
-            {availablePeople.slice(0, 3).map((person, index) => (
-              <span
-                className="reel-presence-stack__disk"
+      {discoveryEnabled && availablePeople.length > 0 ? (
+        <section className="reel-nearby-preview" aria-label={t("reel.ui.peopleNearby")}>
+          <div className="reel-nearby-preview__header">
+            <div>
+              <p>{t("reel.ui.peopleNearby")}</p>
+              <strong>{availablePeople.length}</strong>
+            </div>
+            <button type="button" onClick={() => setPanel("people")}>
+              {t("reel.ui.allNearby")}
+              <ChevronDown aria-hidden="true" />
+            </button>
+          </div>
+          <div className="reel-nearby-preview__list">
+            {availablePeople.slice(0, 3).map((person) => (
+              <button
+                type="button"
+                className="reel-nearby-preview__person"
                 key={person.id}
-                style={{ zIndex: 3 - index, marginLeft: index === 0 ? 0 : "-0.82rem" }}
+                onClick={() => openProfile(person)}
+                aria-label={`Voir le profil de ${person.name}`}
               >
                 <PersonAvatar person={person} size="small" />
-              </span>
+                <span>
+                  <strong>{person.name}</strong>
+                  <small>{person.description || person.category || t("reel.ui.nearbyProfile")}</small>
+                </span>
+                <ChevronDown aria-hidden="true" />
+              </button>
             ))}
-            {availablePeople.length > 3 && (
-              <span className="reel-presence-stack__count">+{availablePeople.length - 3}</span>
+          </div>
+        </section>
+      ) : (access.mode === "guest" || access.mode === "visitor") ? (
+        <section className="reel-nearby-preview reel-nearby-preview--empty" aria-label={t("reel.ui.peopleNearby")}>
+          <div className="reel-nearby-preview__header">
+            <div>
+              <p>{t("reel.ui.peopleNearby")}</p>
+              <strong>—</strong>
+            </div>
+          </div>
+          <div className="reel-nearby-preview__empty">
+            <UsersRound aria-hidden="true" />
+            <strong>{t("reel.ui.noPeople")}</strong>
+            <span>{t("reel.ui.noProfilesHint")}</span>
+            {access.mode === "visitor" ? (
+              <button
+                type="button"
+                onClick={() => void beginGuestSession()}
+                disabled={guestSessionLoading}
+              >
+                {guestSessionLoading ? t("reel.ui.guestLoading") : t("reel.ui.guestContinue")}
+              </button>
+            ) : !discoveryEnabled && discoveryAccess !== "requesting" && (
+              <button type="button" onClick={() => void requestDiscovery()}>
+                {t("reel.ui.seeNearby")}
+              </button>
             )}
-          </span>
-        </button>
-      )}
+          </div>
+        </section>
+      ) : null}
 
       {!discoveryEnabled && discoveryAccess !== "prompt" && discoveryAccess !== "requesting" && (
         <div className="reel-calm-shortcuts" aria-label={t("reel.ui.otherWays")}>
