@@ -1,6 +1,7 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { ScanLine } from "lucide-react";
 import { SectionFoundation } from "@/components/experience/SectionFoundation";
+import { VitalisVisionCard } from "@/components/experience/VitalisVisionCard";
 import { ScanPanel } from "@/domains/scan/ui/ScanPanel";
 import { EnginePreviewCard } from "@/components/experience/EnginePreviewCard";
 
@@ -16,6 +17,7 @@ function ScanRoute() {
       descKey="page.scan.desc"
       tone="info"
       icon={ScanLine}
+      footer={<VitalisVisionCard />}
       sections={[
         {
           key: "scan",
