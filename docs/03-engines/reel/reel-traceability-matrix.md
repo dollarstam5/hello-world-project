@@ -289,3 +289,32 @@ Les bips croisés ne disposent pas encore d'un canal de diffusion temps réel d�
 
 
 | BIP-INV-11 | Les événements croisés doivent actualiser les membres sans révéler d'identifiants invités. | Broadcast privé `reel-member:<auth.uid()>` avec payload limité à un type d'événement ; invités actualisés côté serveur via cookie HttpOnly. | pgTAP 138 : politique du sujet privé et inspection du contenu Broadcast ; test multi-appareils à compléter. | Ajouté, à exécuter |
+
+## 11. État des preuves techniques — révision du 16 novembre 2026
+
+Cette section actualise les statuts techniques historiques de la matrice. Elle prévaut sur les formulations antérieures « ajouté, non exécuté » pour les contrôles effectivement passés dans la CI de la PR #79. Elle ne vaut pas validation sur l'environnement Supabase de déploiement.
+
+| ID / domaine | Implémentation constatée | Preuve CI sur la tête `7b6fbdcc2fd69cbc73aa4189c069b1714fbb2f65` | État actualisé |
+| --- | --- | --- | --- |
+| ZONE-01 — jeton HMAC | Le secret est requis uniquement pour la publication de présence ; la découverte PostGIS n'émet pas de jeton HMAC. | Test Vitest `tests/reel-zone.server.test.ts` : découverte autorisée sans `REEL_ZONE_HMAC_SECRET`. | CI RÉUSSIE ; configuration de déploiement à vérifier pour la publication |
+| ZONE-02 — session de découverte | Session PostGIS temporaire avec expiration et périmètre gérés côté serveur. | Tests SQL/RLS du workflow Quality réussis. | CI RÉUSSIE ; validation sur Supabase cible à effectuer |
+| ZONE-04 — rayon métrique | `ST_DWithin` compare les points privés `geography` selon le rayon de visibilité. | Tests SQL PostGIS du workflow Quality réussis, notamment le test 133. | CI RÉUSSIE ; précision terrain dépendante du GPS |
+| ZONE-05 — confidentialité des points | Coordonnées précises conservées dans des tables privées accessibles au rôle serveur ; projections sans GPS exact. | Contrôles SQL/RLS exécutés par le workflow réussis. | CI RÉUSSIE ; audit de configuration de l'environnement cible restant |
+| ZONE-07 — rayon des bips | Chaque envoi vérifie le rayon métrique du destinataire côté SQL. | Test 134 réussi : bip proche autorisé et bip hors rayon refusé avec `recipient_outside_visibility_radius`. | CI RÉUSSIE |
+| BIP-INV — interactions membre/invité | RPC et Server Functions séparées ; session invitée vérifiée côté serveur ; projections sans identifiant de session. | Les scénarios SQL concernés exécutés par le workflow Quality sont réussis selon le journal CI ; couverture fonctionnelle multi-appareils non réalisée. | CI PARTIELLEMENT PROBANTE ; essais de bout en bout à compléter |
+| BIP-INV-11 — événements croisés | Broadcast privé pour les membres ; actualisation côté serveur via cookie HttpOnly pour les invités. | Migration et test 138 présents ; le run CI consulté ne fournit pas de preuve suffisante de l'exécution de ce scénario ni de la réception réelle du canal. | IMPLÉMENTATION AJOUTÉE ; EXÉCUTION DU TEST 138, CONFIGURATION ET ESSAI RÉEL À CONFIRMER |
+| Purge / rétention | Fonctions de purge et tests associés présents. | Tests SQL du workflow exécutés avec succès pour les scénarios concernés. | TESTS CI RÉUSSIS ; disponibilité et planification `pg_cron` à confirmer sur la cible |
+
+### Référence CI
+
+- PR : #79, branche `fix/reel-discovery-hmac-and-bip-radius`.
+- SHA testé : `7b6fbdcc2fd69cbc73aa4189c069b1714fbb2f65`.
+- Quality : succès ; 49 fichiers Vitest, 249 tests, contrôles SQL/RLS et build réussis.
+- Dependency review : succès.
+- La PR reste ouverte et en brouillon à la date de cette révision. Les corrections ne sont donc pas encore intégrées à `main`.
+
+### Limites de portée
+
+Les résultats ci-dessus prouvent le passage des contrôles automatisés dans l'environnement CI, pas l'application des migrations sur le projet Supabase de production, la configuration réelle de Realtime/pg_cron, ni le fonctionnement multi-appareils.
+
+La phase B reste en clôture technique jusqu'à la revue/fusion autorisée de la PR #79 et aux vérifications d'environnement et d'intégration listées dans `reel-v1-implementation-status.md`. **La phase C n'est pas commencée et n'est pas couverte par cette révision.**

@@ -83,7 +83,6 @@ export async function resolveReelZoneForUser(
   if (profileError || !profile)
     throw new Error("Un profil Vitalis actif est nécessaire pour cette action.");
 
-  const secret = getReelZoneHmacSecret();
   const { error: cleanupError } = await admin.rpc("purge_reel_location_sessions");
   if (cleanupError) throw new Error("Impossible de préparer la découverte à proximité.");
   const expiresAt = new Date(Date.now() + (purpose === "discover" ? 15 : 5) * 60_000).toISOString();
@@ -111,6 +110,9 @@ export async function resolveReelZoneForUser(
     return { zoneKeys: [], areaLabel: "Votre secteur approximatif", expiresAt };
   }
 
+  // Discovery stores an exact, short-lived PostGIS point and does not issue a zone token.
+  // Keep the HMAC secret requirement exclusive to publishing a presence.
+  const secret = getReelZoneHmacSecret();
   const cell = cellFor(latitude, longitude);
   const centerKey = await tokenForCell(cell.latitude, cell.longitude, secret);
   const { data: recentGrant, error: grantThrottleError } = await admin
