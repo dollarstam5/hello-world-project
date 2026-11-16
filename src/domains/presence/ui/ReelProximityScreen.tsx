@@ -1,4 +1,4 @@
-import { type CSSProperties } from "react";
+import { type CSSProperties, useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useI18n } from "@/lib/i18n/useI18n";
 import {
@@ -7,6 +7,7 @@ import {
   Check,
   ChevronDown,
   CircleUserRound,
+  CircleHelp,
   Globe,
   History,
   Home,
@@ -135,6 +136,16 @@ function SelfRadarIdentity({
 
 export function ReelProximityScreen() {
   const { t } = useI18n();
+  const [tourOpen, setTourOpen] = useState(false);
+  const [tourStep, setTourStep] = useState(0);
+  useEffect(() => {
+    setTourOpen(window.localStorage.getItem("vitalis-reel-tour-seen") !== "true");
+  }, []);
+  const closeTour = () => {
+    setTourOpen(false);
+    window.localStorage.setItem("vitalis-reel-tour-seen", "true");
+  };
+  const openTour = () => { setTourStep(0); setTourOpen(true); };
   const {
     access,
     memberAvatarUrl,
@@ -263,6 +274,15 @@ export function ReelProximityScreen() {
           </button>
           <button
             type="button"
+            className="reel-proximity__header-action reel-proximity__tour-trigger"
+            onClick={openTour}
+            aria-label={t("reel.ui.tour.open")}
+            title={t("reel.ui.tour.open")}
+          >
+            <CircleHelp aria-hidden="true" />
+          </button>
+          <button
+            type="button"
             className="reel-proximity__header-action reel-proximity__bluetooth"
             disabled
             aria-label={t("reel.ui.bluetooth")}
@@ -273,6 +293,30 @@ export function ReelProximityScreen() {
           </button>
         </nav>
       </header>
+      {tourOpen && (
+        <div className="reel-tour-backdrop">
+          <section className="reel-tour" role="dialog" aria-modal="true" aria-labelledby="reel-tour-title" aria-describedby="reel-tour-description">
+            <div className="reel-tour__topline">
+              <span>{t("reel.ui.tour.eyebrow")}</span>
+              <button type="button" onClick={closeTour} aria-label={t("reel.ui.tour.close")}><X aria-hidden="true" /></button>
+            </div>
+            <div className="reel-tour__progress" aria-label={t("reel.ui.tour.progress", { current: tourStep + 1, total: 4 })}>
+              {[0, 1, 2, 3].map((step) => <span key={step} className={step <= tourStep ? "is-active" : ""} />)}
+            </div>
+            <p className="reel-tour__step">{t("reel.ui.tour.step", { current: tourStep + 1, total: 4 })}</p>
+            <h2 id="reel-tour-title">{t(([ "reel.ui.tour.title1", "reel.ui.tour.title2", "reel.ui.tour.title3", "reel.ui.tour.title4" ][tourStep]) as never)}</h2>
+            <p id="reel-tour-description">{t(([ "reel.ui.tour.description1", "reel.ui.tour.description2", "reel.ui.tour.description3", "reel.ui.tour.description4" ][tourStep]) as never)}</p>
+            <div className="reel-tour__actions">
+              <button type="button" className="reel-tour__skip" onClick={closeTour}>{t("reel.ui.tour.skip")}</button>
+              <div>
+                {tourStep > 0 && <button type="button" className="reel-tour__back" onClick={() => setTourStep((step) => step - 1)}>{t("reel.ui.tour.back")}</button>}
+                <button type="button" className="reel-tour__next" onClick={() => tourStep === 3 ? closeTour() : setTourStep((step) => step + 1)}>{tourStep === 3 ? t("reel.ui.tour.finish") : t("reel.ui.tour.next")}</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      )}
+
 
       {!discoveryEnabled && (
         <section
@@ -418,7 +462,9 @@ export function ReelProximityScreen() {
                 <PersonAvatar person={person} size="small" />
                 <span>
                   <strong>{person.name}</strong>
-                  <small>{person.description || person.category || t("reel.ui.nearbyProfile")}</small>
+                  <small>{
+                  person.description || person.category || t("reel.ui.nearbyProfile")
+                }</small>
                 </span>
                 <ChevronDown aria-hidden="true" />
               </button>
