@@ -79,9 +79,9 @@ describe("résolution de zone Réel", () => {
   });
 
   it("refuse la publication de présence sans secret HMAC", async () => {
-    await expect(
-      resolveReelZoneForUser("member-1", 48.8566, 2.3522, "presence"),
-    ).rejects.toThrow("Missing required server configuration: REEL_ZONE_HMAC_SECRET.");
+    await expect(resolveReelZoneForUser("member-1", 48.8566, 2.3522, "presence")).rejects.toThrow(
+      "Missing required server configuration: REEL_ZONE_HMAC_SECRET.",
+    );
 
     expect(rpcMock).toHaveBeenCalledTimes(1);
     expect(rpcMock).toHaveBeenCalledWith("purge_reel_location_sessions");
