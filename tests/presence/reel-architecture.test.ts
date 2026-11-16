@@ -4,12 +4,14 @@ import radarComponentsSource from "../../src/domains/presence/ui/components/Reel
 import guidedTourSource from "../../src/domains/presence/ui/components/ReelGuidedTour.tsx?raw";
 import settingsHelpSource from "../../src/domains/presence/ui/components/ReelSettingsHelp.tsx?raw";
 import profileSheetSource from "../../src/domains/presence/ui/components/ReelProfileSheet.tsx?raw";
+import settingsPanelSource from "../../src/domains/presence/ui/components/ReelSettingsPanel.tsx?raw";
+import activityPanelSource from "../../src/domains/presence/ui/components/ReelActivityPanel.tsx?raw";
 
 import controllerSource from "../../src/domains/presence/model/useReelProximityController.ts?raw";
 import realtimeServiceSource from "../../src/domains/presence/services/reel-activity-realtime.service.ts?raw";
 import memberAvatarSource from "../../src/domains/profile/api/profile-avatar.client.ts?raw";
 
-const screenSource = `${screenCompositionSource}\n${radarComponentsSource}\n${guidedTourSource}\n${settingsHelpSource}\n${profileSheetSource}`;
+const screenSource = `${screenCompositionSource}\n${radarComponentsSource}\n${guidedTourSource}\n${settingsHelpSource}\n${profileSheetSource}\\n${settingsPanelSource}\\n${activityPanelSource}`;
 
 describe("En direct architecture boundaries", () => {
   it("keeps business services and access policy out of the screen component", () => {
