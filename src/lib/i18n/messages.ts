@@ -406,14 +406,22 @@ export const messages = {
     "reel.ui.tour.step3": "Étape 3 sur 4",
     "reel.ui.tour.step4": "Étape 4 sur 4",
     "reel.ui.tour.progress": "Progression de la visite guidée",
-    "reel.ui.tour.title1": "Découvrez les présences autour de vous",
-    "reel.ui.tour.description1": "En activant la découverte, vous voyez uniquement les personnes qui partagent réellement leur présence à proximité.",
-    "reel.ui.tour.title2": "Le radar vous aide à vous repérer",
-    "reel.ui.tour.description2": "Les points représentent les présences disponibles dans votre rayon. S’il n’y en a pas, nous vous le disons simplement.",
-    "reel.ui.tour.title3": "Ouvrez une fiche pour en savoir plus",
-    "reel.ui.tour.description3": "Touchez une présence affichée pour consulter les informations que cette personne a choisi de partager.",
-    "reel.ui.tour.title4": "Votre visibilité reste votre choix",
-    "reel.ui.tour.description4": "Découvrir les autres ne vous rend pas visible. Vous pouvez activer votre propre présence séparément, quand vous le souhaitez.",
+    "reel.ui.tour.title1": 
+      "Découvrez les présences autour de vous",
+    "reel.ui.tour.description1": 
+      "En activant la découverte, vous voyez uniquement les personnes qui partagent réellement leur présence à proximité.",
+    "reel.ui.tour.title2": 
+      "Le radar vous aide à vous repérer",
+    "reel.ui.tour.description2": 
+      "Les points représentent les présences disponibles dans votre rayon. S’il n’y en a pas, nous vous le disons simplement.",
+    "reel.ui.tour.title3": 
+      "Ouvrez une fiche pour en savoir plus",
+    "reel.ui.tour.description3": 
+      "Touchez une présence affichée pour consulter les informations que cette personne a choisi de partager.",
+    "reel.ui.tour.title4": 
+      "Votre visibilité reste votre choix",
+    "reel.ui.tour.description4": 
+      "Découvrir les autres ne vous rend pas visible. Vous pouvez activer votre propre présence séparément, quand vous le souhaitez.",
     "reel.ui.tour.skip": "Passer",
     "reel.ui.tour.back": "Retour",
     "reel.ui.tour.next": "Suivant",
@@ -1231,14 +1239,22 @@ export const messages = {
     "reel.ui.tour.step3": "Step 3 of 4",
     "reel.ui.tour.step4": "Step 4 of 4",
     "reel.ui.tour.progress": "Guided tour progress",
-    "reel.ui.tour.title1": "Discover who's nearby",
-    "reel.ui.tour.description1": "When you turn on discovery, you only see people who are genuinely sharing their presence nearby.",
-    "reel.ui.tour.title2": "The radar helps you find your way",
-    "reel.ui.tour.description2": "The points represent available presences within your radius. If there are none, we'll tell you plainly.",
-    "reel.ui.tour.title3": "Open a profile to learn more",
-    "reel.ui.tour.description3": "Tap a displayed presence to see the information that person chose to share.",
-    "reel.ui.tour.title4": "Your visibility is always your choice",
-    "reel.ui.tour.description4": "Discovering others does not make you visible. You can activate your own presence separately, whenever you choose.",
+    "reel.ui.tour.title1": 
+      "Discover who's nearby",
+    "reel.ui.tour.description1": 
+      "When you turn on discovery, you only see people who are genuinely sharing their presence nearby.",
+    "reel.ui.tour.title2": 
+      "The radar helps you find your way",
+    "reel.ui.tour.description2": 
+      "The points represent available presences within your radius. If there are none, we'll tell you plainly.",
+    "reel.ui.tour.title3": 
+      "Open a profile to learn more",
+    "reel.ui.tour.description3": 
+      "Tap a displayed presence to see the information that person chose to share.",
+    "reel.ui.tour.title4": 
+      "Your visibility is always your choice",
+    "reel.ui.tour.description4": 
+      "Discovering others does not make you visible. You can activate your own presence separately, whenever you choose.",
     "reel.ui.tour.skip": "Skip",
     "reel.ui.tour.back": "Back",
     "reel.ui.tour.next": "Next",
