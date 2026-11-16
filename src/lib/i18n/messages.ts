@@ -960,50 +960,76 @@ export const messages = {
     "admin.administration.description": "Qui a le droit de faire quoi",
     "vision.card.eyebrow": "Comprendre Vitalis",
     "vision.card.title": "Découvrez la vision réelle de Vitalis",
-    "vision.card.description": "Comprenez à quoi sert l’application, comment ses quatre moteurs fonctionnent ensemble, ce que vous pouvez faire et les règles qui protègent vos échanges.",
+    "vision.card.description":
+     "Comprenez à quoi sert l’application, comment ses quatre moteurs fonctionnent ensemble, ce que vous pouvez faire et les règles qui protègent vos échanges.",
     "vision.card.action": "Explorer la vision complète",
     "vision.back": "Retour à l’accueil",
     "vision.eyebrow": "Au-delà des écrans",
     "vision.title": "Vitalis rapproche les personnes des possibilités utiles.",
-    "vision.intro": "Vitalis est un espace de découverte, de confiance et d’opportunités concrètes. Il aide à transformer un besoin, une idée, une compétence ou une occasion en une action utile dans la vie réelle.",
+    "vision.intro":
+     "Vitalis est un espace de découverte, de confiance et d’opportunités concrètes. Il aide à transformer un besoin, une idée, une compétence ou une occasion en une action utile dans la vie réelle.",
     "vision.what.title": "Ce qu’est Vitalis — et ce qu’il n’est pas",
-    "vision.what.body": "Vitalis met en relation des besoins, des propositions, des ressources, des compétences et des personnes autour d’actions concrètes : trouver de l’aide, proposer un service, repérer une possibilité, partager une information utile ou créer une relation de confiance.",
-    "vision.what.not": "Vitalis n’a pas vocation à être un réseau social fondé sur la popularité, un fil de divertissement ou une messagerie libre permanente. Les échanges doivent rester liés à une intention, une opportunité ou une action identifiable.",
+    "vision.what.body":
+     "Vitalis met en relation des besoins, des propositions, des ressources, des compétences et des personnes autour d’actions concrètes : trouver de l’aide, proposer un service, repérer une possibilité, partager une information utile ou créer une relation de confiance.",
+    "vision.what.not":
+     "Vitalis n’a pas vocation à être un réseau social fondé sur la popularité, un fil de divertissement ou une messagerie libre permanente. Les échanges doivent rester liés à une intention, une opportunité ou une action identifiable.",
     "vision.engines.title": "Les quatre moteurs, chacun avec son rôle",
-    "vision.engines.intro": "Ils sont complémentaires, mais ne font pas la même chose. Choisissez celui qui correspond à ce que vous voulez faire maintenant.",
+    "vision.engines.intro":
+     "Ils sont complémentaires, mais ne font pas la même chose. Choisissez celui qui correspond à ce que vous voulez faire maintenant.",
     "vision.engine.label": "Moteur",
     "vision.engine.actionTitle": "L’action principale",
     "vision.engine.stepsTitle": "Comment l’utiliser",
     "vision.engine.flash.title": "Flash — partager une information utile",
-    "vision.engine.flash.role": "Flash sert à publier un besoin, une proposition ou une information courte, locale et limitée dans le temps. C’est le point de départ lorsque vous avez quelque chose à signaler aux autres.",
-    "vision.engine.flash.action": "Créer un Flash, décrire simplement ce que vous cherchez ou proposez, préciser les informations demandées et confirmer la publication.",
-    "vision.engine.flash.steps": "Ouvrez Flash, choisissez de découvrir ou de gérer vos publications, puis démarrez une nouvelle publication. Consultez les Flash utiles et gérez les vôtres depuis votre espace.",
-    "vision.engine.flash.boundary": "Un Flash n’est pas une présence en direct ni une recherche continue. Sa visibilité dépend des choix de publication et des règles de diffusion ; elle ne donne pas automatiquement accès au profil complet.",
+    "vision.engine.flash.role":
+     "Flash sert à publier un besoin, une proposition ou une information courte, locale et limitée dans le temps. C’est le point de départ lorsque vous avez quelque chose à signaler aux autres.",
+    "vision.engine.flash.action":
+     "Créer un Flash, décrire simplement ce que vous cherchez ou proposez, préciser les informations demandées et confirmer la publication.",
+    "vision.engine.flash.steps":
+     "Ouvrez Flash, choisissez de découvrir ou de gérer vos publications, puis démarrez une nouvelle publication. Consultez les Flash utiles et gérez les vôtres depuis votre espace.",
+    "vision.engine.flash.boundary":
+     "Un Flash n’est pas une présence en direct ni une recherche continue. Sa visibilité dépend des choix de publication et des règles de diffusion ; elle ne donne pas automatiquement accès au profil complet.",
     "vision.engine.scan.title": "Scan — chercher maintenant",
-    "vision.engine.scan.role": "Scan répond à une recherche ponctuelle : repérer les publications Flash actives et pertinentes dans le périmètre que vous choisissez, selon les sources réellement disponibles.",
-    "vision.engine.scan.action": "Définir ce que vous recherchez et le périmètre autorisé, lancer le scan, puis examiner les résultats et leur contexte.",
-    "vision.engine.scan.steps": "Ouvrez Scan, vérifiez les critères proposés, lancez la recherche et consultez les résultats retournés. Un scan est une recherche à un instant donné.",
-    "vision.engine.scan.boundary": "Scan ne publie pas à votre place, ne montre pas automatiquement les personnes simplement présentes et ne continue pas à surveiller après la recherche. Un résultat ne doit apparaître que si sa source est effectivement raccordée.",
+    "vision.engine.scan.role":
+     "Scan répond à une recherche ponctuelle : repérer les publications Flash actives et pertinentes dans le périmètre que vous choisissez, selon les sources réellement disponibles.",
+    "vision.engine.scan.action":
+     "Définir ce que vous recherchez et le périmètre autorisé, lancer le scan, puis examiner les résultats et leur contexte.",
+    "vision.engine.scan.steps":
+     "Ouvrez Scan, vérifiez les critères proposés, lancez la recherche et consultez les résultats retournés. Un scan est une recherche à un instant donné.",
+    "vision.engine.scan.boundary":
+     "Scan ne publie pas à votre place, ne montre pas automatiquement les personnes simplement présentes et ne continue pas à surveiller après la recherche. Un résultat ne doit apparaître que si sa source est effectivement raccordée.",
     "vision.engine.reel.title": "En direct — se retrouver au même endroit",
-    "vision.engine.reel.role": "En direct concerne la présence à proximité, ici et maintenant. Vous choisissez séparément si vous souhaitez découvrir les personnes proches et si vous souhaitez rendre votre propre présence visible.",
-    "vision.engine.reel.action": "Autoriser la découverte si vous le souhaitez, régler votre présence et votre rayon, puis activer volontairement votre présence. Vous pouvez consulter les profils autorisés et envoyer un bip lorsque les conditions le permettent.",
-    "vision.engine.reel.steps": "Entrez dans En direct, prenez connaissance de la demande de localisation, choisissez vos réglages et activez votre présence uniquement si vous le décidez. Vous pouvez arrêter cette présence et gérer les bips ou relations disponibles.",
-    "vision.engine.reel.boundary": "La localisation accordée à un autre moteur ne vaut pas accord pour En direct. Découvrir et être visible sont deux choix distincts. Le mode invité reste temporaire ; il ne donne pas de droits de membre ni d’historique persistant.",
+    "vision.engine.reel.role":
+     "En direct concerne la présence à proximité, ici et maintenant. Vous choisissez séparément si vous souhaitez découvrir les personnes proches et si vous souhaitez rendre votre propre présence visible.",
+    "vision.engine.reel.action":
+     "Autoriser la découverte si vous le souhaitez, régler votre présence et votre rayon, puis activer volontairement votre présence. Vous pouvez consulter les profils autorisés et envoyer un bip lorsque les conditions le permettent.",
+    "vision.engine.reel.steps":
+     "Entrez dans En direct, prenez connaissance de la demande de localisation, choisissez vos réglages et activez votre présence uniquement si vous le décidez. Vous pouvez arrêter cette présence et gérer les bips ou relations disponibles.",
+    "vision.engine.reel.boundary":
+     "La localisation accordée à un autre moteur ne vaut pas accord pour En direct. Découvrir et être visible sont deux choix distincts. Le mode invité reste temporaire ; il ne donne pas de droits de membre ni d’historique persistant.",
     "vision.engine.radar.title": "Radar — suivre une recherche",
-    "vision.engine.radar.role": "Radar est conçu pour conserver une intention de recherche dans le temps et repérer les nouvelles possibilités qui correspondent à vos critères, lorsque les sources et alertes concernées sont raccordées.",
-    "vision.engine.radar.action": "Décrire ce que vous souhaitez suivre, définir les critères utiles, enregistrer la recherche et gérer son suivi.",
-    "vision.engine.radar.steps": "Ouvrez Radar, créez ou consultez vos recherches enregistrées, ajustez leurs critères et interrompez leur suivi lorsque vous n’en avez plus besoin.",
-    "vision.engine.radar.boundary": "Radar n’est pas un scan ponctuel : il suit une intention dans la durée. Aucune correspondance ni alerte ne doit être inventée ; seules les sources réellement actives peuvent alimenter le suivi.",
+    "vision.engine.radar.role":
+     "Radar est conçu pour conserver une intention de recherche dans le temps et repérer les nouvelles possibilités qui correspondent à vos critères, lorsque les sources et alertes concernées sont raccordées.",
+    "vision.engine.radar.action":
+     "Décrire ce que vous souhaitez suivre, définir les critères utiles, enregistrer la recherche et gérer son suivi.",
+    "vision.engine.radar.steps":
+     "Ouvrez Radar, créez ou consultez vos recherches enregistrées, ajustez leurs critères et interrompez leur suivi lorsque vous n’en avez plus besoin.",
+    "vision.engine.radar.boundary":
+     "Radar n’est pas un scan ponctuel : il suit une intention dans la durée. Aucune correspondance ni alerte ne doit être inventée ; seules les sources réellement actives peuvent alimenter le suivi.",
     "vision.principles.title": "Les principes qui guident l’expérience",
     "vision.principle.trust.title": "La confiance avant la popularité",
-    "vision.principle.trust.body": "La crédibilité doit s’appuyer sur des éléments compréhensibles, des actions et des références utiles, pas sur une course aux likes ou aux étoiles.",
+    "vision.principle.trust.body":
+     "La crédibilité doit s’appuyer sur des éléments compréhensibles, des actions et des références utiles, pas sur une course aux likes ou aux étoiles.",
     "vision.principle.action.title": "L’action avant la discussion",
-    "vision.principle.action.body": "Les échanges servent à avancer sur un besoin ou une opportunité précise. Vitalis privilégie des relations utiles, avec des choix et des limites clairs.",
+    "vision.principle.action.body":
+     "Les échanges servent à avancer sur un besoin ou une opportunité précise. Vitalis privilégie des relations utiles, avec des choix et des limites clairs.",
     "vision.honesty.title": "Ce qui est disponible doit rester clair",
-    "vision.honesty.body": "Les écrans peuvent présenter des exemples pédagogiques pour expliquer un parcours. Ils doivent être identifiés comme des exemples et ne jamais se faire passer pour des publications, des personnes proches, des résultats ou des alertes réels.",
-    "vision.honesty.privacy": "Chaque moteur applique ses propres règles de visibilité et de consentement. Une autorisation donnée dans un espace ne doit pas être considérée comme une autorisation générale dans toute l’application.",
+    "vision.honesty.body":
+     "Les écrans peuvent présenter des exemples pédagogiques pour expliquer un parcours. Ils doivent être identifiés comme des exemples et ne jamais se faire passer pour des publications, des personnes proches, des résultats ou des alertes réels.",
+    "vision.honesty.privacy":
+     "Chaque moteur applique ses propres règles de visibilité et de consentement. Une autorisation donnée dans un espace ne doit pas être considérée comme une autorisation générale dans toute l’application.",
     "vision.end.title": "Vous savez maintenant où commencer.",
-    "vision.end.body": "Choisissez le moteur qui correspond à votre besoin du moment. Vous pourrez revenir à cette présentation à tout moment.",
+    "vision.end.body":
+     "Choisissez le moteur qui correspond à votre besoin du moment. Vous pourrez revenir à cette présentation à tout moment.",
     "vision.end.action": "Revenir à l’accueil",
   },
   en: {
@@ -1926,50 +1952,76 @@ export const messages = {
     "admin.administration.description": "Who is allowed to do what",
     "vision.card.eyebrow": "Understand Vitalis",
     "vision.card.title": "Discover the real vision behind Vitalis",
-    "vision.card.description": "Understand what the app is for, how its four engines work together, what you can do, and the rules that protect your interactions.",
+    "vision.card.description":
+     "Understand what the app is for, how its four engines work together, what you can do, and the rules that protect your interactions.",
     "vision.card.action": "Explore the full vision",
     "vision.back": "Back to home",
     "vision.eyebrow": "Beyond the screens",
     "vision.title": "Vitalis brings people closer to useful possibilities.",
-    "vision.intro": "Vitalis is a place for discovery, trust, and practical opportunities. It helps turn a need, an idea, a skill, or an opening into a useful real-world action.",
+    "vision.intro":
+     "Vitalis is a place for discovery, trust, and practical opportunities. It helps turn a need, an idea, a skill, or an opening into a useful real-world action.",
     "vision.what.title": "What Vitalis is — and what it is not",
-    "vision.what.body": "Vitalis connects needs, offers, resources, skills, and people around practical actions: finding help, offering a service, spotting an opportunity, sharing useful information, or building a trusted connection.",
-    "vision.what.not": "Vitalis is not intended to be a popularity-driven social network, an entertainment feed, or an always-open messaging service. Interactions should relate to a clear intention, opportunity, or action.",
+    "vision.what.body":
+     "Vitalis connects needs, offers, resources, skills, and people around practical actions: finding help, offering a service, spotting an opportunity, sharing useful information, or building a trusted connection.",
+    "vision.what.not":
+     "Vitalis is not intended to be a popularity-driven social network, an entertainment feed, or an always-open messaging service. Interactions should relate to a clear intention, opportunity, or action.",
     "vision.engines.title": "Four engines, each with a distinct role",
-    "vision.engines.intro": "They complement one another, but they do different jobs. Choose the one that matches what you want to do now.",
+    "vision.engines.intro":
+     "They complement one another, but they do different jobs. Choose the one that matches what you want to do now.",
     "vision.engine.label": "Engine",
     "vision.engine.actionTitle": "Main action",
     "vision.engine.stepsTitle": "How to use it",
     "vision.engine.flash.title": "Flash — share useful information",
-    "vision.engine.flash.role": "Flash lets you publish a short-lived, local need, offer, or piece of information. It is the starting point when you have something to let others know.",
-    "vision.engine.flash.action": "Create a Flash, briefly describe what you need or offer, provide the requested details, and confirm publication.",
-    "vision.engine.flash.steps": "Open Flash, choose to discover or manage publications, then start a new one. Browse useful Flash posts and manage your own from your space.",
-    "vision.engine.flash.boundary": "A Flash is not a live presence or an ongoing search. Its visibility depends on publication choices and distribution rules; it does not automatically grant access to the full profile.",
+    "vision.engine.flash.role":
+     "Flash lets you publish a short-lived, local need, offer, or piece of information. It is the starting point when you have something to let others know.",
+    "vision.engine.flash.action":
+     "Create a Flash, briefly describe what you need or offer, provide the requested details, and confirm publication.",
+    "vision.engine.flash.steps":
+     "Open Flash, choose to discover or manage publications, then start a new one. Browse useful Flash posts and manage your own from your space.",
+    "vision.engine.flash.boundary":
+     "A Flash is not a live presence or an ongoing search. Its visibility depends on publication choices and distribution rules; it does not automatically grant access to the full profile.",
     "vision.engine.scan.title": "Scan — search right now",
-    "vision.engine.scan.role": "Scan answers a one-time search: find active and relevant Flash posts within the area you choose, using sources that are actually available.",
-    "vision.engine.scan.action": "Choose what you are looking for and the permitted search area, run the scan, then review the returned results and their context.",
-    "vision.engine.scan.steps": "Open Scan, check the available criteria, start the search, and review the returned results. A scan is a search at a specific moment.",
-    "vision.engine.scan.boundary": "Scan does not publish on your behalf, automatically show people simply because they are nearby, or keep monitoring after the search. A result should only appear when its source is genuinely connected.",
+    "vision.engine.scan.role":
+     "Scan answers a one-time search: find active and relevant Flash posts within the area you choose, using sources that are actually available.",
+    "vision.engine.scan.action":
+     "Choose what you are looking for and the permitted search area, run the scan, then review the returned results and their context.",
+    "vision.engine.scan.steps":
+     "Open Scan, check the available criteria, start the search, and review the returned results. A scan is a search at a specific moment.",
+    "vision.engine.scan.boundary":
+     "Scan does not publish on your behalf, automatically show people simply because they are nearby, or keep monitoring after the search. A result should only appear when its source is genuinely connected.",
     "vision.engine.reel.title": "Live — meet people in the same place",
-    "vision.engine.reel.role": "Live is about nearby presence, here and now. You separately choose whether to discover nearby people and whether to make your own presence visible.",
-    "vision.engine.reel.action": "Allow discovery if you wish, configure your presence and radius, then voluntarily activate your presence. You can view permitted profiles and send a ping when the required conditions are met.",
-    "vision.engine.reel.steps": "Enter Live, review the location request, choose your settings, and activate your presence only if you decide to. You can stop sharing and manage available pings or connections.",
-    "vision.engine.reel.boundary": "Location permission granted to another engine does not grant permission to Live. Discovering others and being visible are separate choices. Guest mode is temporary; it does not grant member rights or persistent history.",
+    "vision.engine.reel.role":
+     "Live is about nearby presence, here and now. You separately choose whether to discover nearby people and whether to make your own presence visible.",
+    "vision.engine.reel.action":
+     "Allow discovery if you wish, configure your presence and radius, then voluntarily activate your presence. You can view permitted profiles and send a ping when the required conditions are met.",
+    "vision.engine.reel.steps":
+     "Enter Live, review the location request, choose your settings, and activate your presence only if you decide to. You can stop sharing and manage available pings or connections.",
+    "vision.engine.reel.boundary":
+     "Location permission granted to another engine does not grant permission to Live. Discovering others and being visible are separate choices. Guest mode is temporary; it does not grant member rights or persistent history.",
     "vision.engine.radar.title": "Radar — keep track of a search",
-    "vision.engine.radar.role": "Radar is designed to retain a search intention over time and spot new possibilities matching your criteria when the relevant sources and alerts are connected.",
-    "vision.engine.radar.action": "Describe what you want to follow, set useful criteria, save the search, and manage its tracking.",
-    "vision.engine.radar.steps": "Open Radar, create or review saved searches, adjust their criteria, and stop tracking when you no longer need it.",
-    "vision.engine.radar.boundary": "Radar is not a one-time scan: it follows an intention over time. Matches and alerts must never be fabricated; only genuinely active sources can feed tracking.",
+    "vision.engine.radar.role":
+     "Radar is designed to retain a search intention over time and spot new possibilities matching your criteria when the relevant sources and alerts are connected.",
+    "vision.engine.radar.action":
+     "Describe what you want to follow, set useful criteria, save the search, and manage its tracking.",
+    "vision.engine.radar.steps":
+     "Open Radar, create or review saved searches, adjust their criteria, and stop tracking when you no longer need it.",
+    "vision.engine.radar.boundary":
+     "Radar is not a one-time scan: it follows an intention over time. Matches and alerts must never be fabricated; only genuinely active sources can feed tracking.",
     "vision.principles.title": "The principles behind the experience",
     "vision.principle.trust.title": "Trust before popularity",
-    "vision.principle.trust.body": "Credibility should be based on understandable signals, actions, and useful references, not a race for likes or stars.",
+    "vision.principle.trust.body":
+     "Credibility should be based on understandable signals, actions, and useful references, not a race for likes or stars.",
     "vision.principle.action.title": "Action before discussion",
-    "vision.principle.action.body": "Interactions help move a specific need or opportunity forward. Vitalis favors useful connections with clear choices and boundaries.",
+    "vision.principle.action.body":
+     "Interactions help move a specific need or opportunity forward. Vitalis favors useful connections with clear choices and boundaries.",
     "vision.honesty.title": "Availability must always be clear",
-    "vision.honesty.body": "Screens may show teaching examples to explain a journey. They must be labelled as examples and never presented as real posts, nearby people, results, or alerts.",
-    "vision.honesty.privacy": "Each engine applies its own visibility and consent rules. Permission granted in one space must never be treated as blanket permission across the app.",
+    "vision.honesty.body":
+     "Screens may show teaching examples to explain a journey. They must be labelled as examples and never presented as real posts, nearby people, results, or alerts.",
+    "vision.honesty.privacy":
+     "Each engine applies its own visibility and consent rules. Permission granted in one space must never be treated as blanket permission across the app.",
     "vision.end.title": "You now know where to start.",
-    "vision.end.body": "Choose the engine that matches your current need. You can return to this guide at any time.",
+    "vision.end.body":
+     "Choose the engine that matches your current need. You can return to this guide at any time.",
     "vision.end.action": "Return to home",
   },
 } as const;
