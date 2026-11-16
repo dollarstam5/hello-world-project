@@ -125,7 +125,7 @@ export function ReelActivityPanel({ controller }: { controller: ReelController }
               <strong>{t("reel.ui.guestNoConnections")}</strong>
               <span>{t("reel.ui.guestConnectionsHint")}</span>
             </div>
-            )}
+          )}
           {canUseMemberReel &&
             !connectionsLoading &&
             connections.length === 0 &&
