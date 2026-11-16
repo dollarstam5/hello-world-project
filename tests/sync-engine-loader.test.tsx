@@ -49,6 +49,8 @@ describe("deferred sync engine loader", () => {
       container.remove();
       if (originalOnline) {
         Object.defineProperty(navigator, "onLine", originalOnline);
+      } else {
+        Reflect.deleteProperty(navigator, "onLine");
       }
     }
   });
