@@ -462,23 +462,30 @@ export function ReelProximityScreen() {
             onClick={() => {
               if (currentPresence) void stopPresence();
               else if (guestPresence) void stopGuestPresence();
-              else if (access.mode === "guest" && guestPresenceConsent && guestDisplayName.trim() && guestAreaLabel.trim() && presenceDescription.trim()) void activateGuestPresence();
-              else if (access.mode === "member" && canUseMemberReel && presenceConsent && presenceDescription.trim()) void activatePresence();
-              else setPanel("settings");
+              else if (
+                access.mode === "guest" &&
+                guestPresenceConsent &&
+                guestDisplayName.trim() &&
+                guestAreaLabel.trim() &&
+                presenceDescription.trim()
+              ) {
+                void activateGuestPresence();
+              } else if (
+                access.mode === "member" &&
+                canUseMemberReel &&
+                presenceConsent &&
+                presenceDescription.trim()
+              ) {
+                void activatePresence();
+              } else {
+                setPanel("settings");
+              }
             }}
             disabled={presenceLoading}
             aria-pressed={isPresenceActive}
             aria-label={isPresenceActive ? t("reel.ui.hideMyPresence") : t("reel.ui.showMyPresence")}
             title={isPresenceActive ? t("reel.ui.hideMyPresence") : t("reel.ui.showMyPresence")}
           >
-              <SelfRadarIdentity
-                accessMode={access.mode}
-                guestAvatarKey={guestAvatarKey}
-                guestDisplayName={guestDisplayName}
-                memberAvatarUrl={memberAvatarUrl}
-                meLabel={t("reel.ui.me")}
-              />
-            </Link>
             <SelfRadarIdentity
               accessMode={access.mode}
               guestAvatarKey={guestAvatarKey}
