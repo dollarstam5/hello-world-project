@@ -6,123 +6,154 @@ type ReelController = ReturnType<typeof useReelProximityController>;
 const DURATIONS = ["30 min", "1 h", "2 h", "3 h", "6 h", "12 h", "24 h"];
 const RADII = ["10 m", "25 m", "50 m", "100 m", "1 km"];
 
-export function ReelSettingsPanel({ controller, onOpenHelp, onClose }: {
-  controller: ReelController; onOpenHelp: () => void; onClose: () => void;
+export function ReelSettingsPanel({
+  controller,
+  onOpenHelp,
+  onClose,
+}: {
+  controller: ReelController;
+  onOpenHelp: () => void;
+  onClose: () => void;
 }) {
   const { t } = useI18n();
-  const { access, discoveryEnabled, ignoreLocation, canUseMemberReel, requestDiscovery, radius, setRadius,
-    currentPresence, duration, setDuration, guestPresence, presenceLoading, stopGuestPresence,
-    guestDisplayName, setGuestDisplayName, guestAreaLabel, setGuestAreaLabel, guestAvatarKey,
-    setGuestAvatarKey, presenceDescription, setPresenceDescription, guestPresenceConsent,
-    setGuestPresenceConsent, activateGuestPresence, presenceConsent, setPresenceConsent,
-    stopPresence, activatePresence, presenceMessage } = controller;
+  const {
+    access,
+    discoveryEnabled,
+    ignoreLocation,
+    canUseMemberReel,
+    requestDiscovery,
+    radius,
+    setRadius,
+    currentPresence,
+    duration,
+    setDuration,
+    guestPresence,
+    presenceLoading,
+    stopGuestPresence,
+    guestDisplayName,
+    setGuestDisplayName,
+    guestAreaLabel,
+    setGuestAreaLabel,
+    guestAvatarKey,
+    setGuestAvatarKey,
+    presenceDescription,
+    setPresenceDescription,
+    guestPresenceConsent,
+    setGuestPresenceConsent,
+    activateGuestPresence,
+    presenceConsent,
+    setPresenceConsent,
+    stopPresence,
+    activatePresence,
+    presenceMessage,
+  } = controller;
   return (
-<>
-                <div className="reel-panel__eyebrow">
-                  <Settings2 aria-hidden="true" /> {t("reel.ui.personalization")}
-                </div>
-                <h2 id="reel-panel-title">{t("reel.ui.settingsHeading")}</h2>
-                <p className="reel-panel__intro">{t("reel.ui.settingsIntro")}</p>
-                <button
-                  type="button"
-                  className="reel-panel__help-trigger"
-                  onClick={onOpenHelp}
-                >
-                  <CircleHelp aria-hidden="true" />
-                  {t("reel.ui.settingsHelp")}
-                </button>
+    <>
+      <div className="reel-panel__eyebrow">
+        <Settings2 aria-hidden="true" /> {t("reel.ui.personalization")}
+      </div>
+      <h2 id="reel-panel-title">{t("reel.ui.settingsHeading")}</h2>
+      <p className="reel-panel__intro">{t("reel.ui.settingsIntro")}</p>
+      <button
+        type="button"
+        className="reel-panel__help-trigger"
+        onClick={onOpenHelp}
+      >
+        <CircleHelp aria-hidden="true" />
+        {t("reel.ui.settingsHelp")}
+      </button>
 
-                <div className="reel-panel__section">
-                  <h3>{t("reel.ui.discovery")}</h3>
-                  <p className="reel-panel__note">
-                    {discoveryEnabled
-                      ? t("reel.ui.discoveryActive")
-                      : t("reel.ui.discoveryInactive")}
-                  </p>
-                  {discoveryEnabled ? (
-                    <button
-                      type="button"
-                      className="reel-panel__secondary"
-                      onClick={ignoreLocation}
-                    >
-                      {t("reel.ui.disableDiscovery")}
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      className="reel-panel__primary"
-                      onClick={() => void requestDiscovery()}
-                      disabled={!canUseMemberReel && access.mode !== "guest"}
-                    >
-                      {t("reel.ui.enableDiscovery")}
-                    </button>
-                  )}
-                </div>
+      <div className="reel-panel__section">
+        <h3>{t("reel.ui.discovery")}</h3>
+        <p className="reel-panel__note">
+          {discoveryEnabled
+            ? t("reel.ui.discoveryActive")
+            : t("reel.ui.discoveryInactive")}
+        </p>
+        {discoveryEnabled ? (
+          <button
+            type="button"
+            className="reel-panel__secondary"
+            onClick={ignoreLocation}
+          >
+            {t("reel.ui.disableDiscovery")}
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="reel-panel__primary"
+            onClick={() => void requestDiscovery()}
+            disabled={!canUseMemberReel && access.mode !== "guest"}
+          >
+            {t("reel.ui.enableDiscovery")}
+          </button>
+        )}
+      </div>
 
-                <div className="reel-panel__section">
-                  <h3>{t("reel.ui.radius")}</h3>
-                  <div className="reel-choice-grid">
-                    {RADII.map((value) => (
-                      <button
-                        key={value}
-                        type="button"
-                        className={radius === value ? "is-selected" : ""}
-                        onClick={() => setRadius(value)}
-                      >
-                        {value}
-                        {radius === value && <Check aria-hidden="true" />}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+      <div className="reel-panel__section">
+        <h3>{t("reel.ui.radius")}</h3>
+        <div className="reel-choice-grid">
+          {RADII.map((value) => (
+            <button
+              key={value}
+              type="button"
+              className={radius === value ? "is-selected" : ""}
+              onClick={() => setRadius(value)}
+            >
+              {value}
+              {radius === value && <Check aria-hidden="true" />}
+            </button>
+          ))}
+        </div>
+      </div>
 
-                <p className="reel-panel__note">{t("reel.ui.radiusApplied")}</p>
-                {currentPresence && (
-                  <p className="reel-panel__note">{t("reel.ui.guestPresenceActive")}</p>
-                )}
+      <p className="reel-panel__note">{t("reel.ui.radiusApplied")}</p>
+      {currentPresence && (
+        <p className="reel-panel__note">{t("reel.ui.guestPresenceActive")}</p>
+      )}
 
-                <div className="reel-panel__section">
-                  <h3>{t("reel.ui.duration")}</h3>
-                  {access.mode === "guest" && (
-                    <p className="reel-panel__note">{t("reel.ui.guestActiveDuration")}</p>
-                  )}
-                  <div className="reel-choice-grid reel-choice-grid--duration">
-                    {DURATIONS.filter(
-                      (value) => access.mode !== "guest" || value === "30 min" || value === "1 h",
-                    ).map((value) => (
-                      <button
-                        key={value}
-                        type="button"
-                        className={duration === value ? "is-selected" : ""}
-                        onClick={() => setDuration(value)}
-                      >
-                        {value}
-                        {duration === value && <Check aria-hidden="true" />}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+      <div className="reel-panel__section">
+        <h3>{t("reel.ui.duration")}</h3>
+        {access.mode === "guest" && (
+          <p className="reel-panel__note">{t("reel.ui.guestActiveDuration")}</p>
+        )}
+        <div className="reel-choice-grid reel-choice-grid--duration">
+          {DURATIONS.filter(
+            (value) => access.mode !== "guest" || value === "30 min" || value === "1 h",
+          ).map((value) => (
+            <button
+              key={value}
+              type="button"
+              className={duration === value ? "is-selected" : ""}
+              onClick={() => setDuration(value)}
+            >
+              {value}
+              {duration === value && <Check aria-hidden="true" />}
+            </button>
+          ))}
+        </div>
+      </div>
 
-                <div className="reel-panel__section">
-                  <h3>{t("reel.ui.visibility")}</h3>
-                  <p className="reel-panel__note">{t("reel.ui.visibilityNote")}</p>
-                  {access.mode === "guest" ? (
-                    guestPresence ? (
-                      <>
-                        <p className="reel-panel__status">
-                          {t("reel.ui.guestPresenceSummary")
-                            .replace("{name}", guestPresence.display_name)
-                            .replace("{area}", guestPresence.area_label)}
-                        </p>
-                        <button
-                          type="button"
-                          className="reel-panel__secondary"
-                          disabled={presenceLoading}
-                          onClick={() => void stopGuestPresence()}
-                        >
-                          {t("reel.ui.stopPresence")}
-                        </button>
-                      </>
+      <div className="reel-panel__section">
+        <h3>{t("reel.ui.visibility")}</h3>
+        <p className="reel-panel__note">{t("reel.ui.visibilityNote")}</p>
+        {access.mode === "guest" ? (
+          guestPresence ? (
+            <>
+              <p className="reel-panel__status">
+                {t("reel.ui.guestPresenceSummary")
+                  .replace("{name}", guestPresence.display_name)
+                  .replace("{area}", guestPresence.area_label)}
+              </p>
+              <button
+                type="button"
+                className="reel-panel__secondary"
+                disabled={presenceLoading}
+                onClick={() => void stopGuestPresence()}
+              >
+                {t("reel.ui.stopPresence")}
+              </button>
+    </>
                     ) : (
                       <>
                         <label className="reel-setting-row reel-setting-row--stacked">

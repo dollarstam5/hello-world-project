@@ -17,9 +17,7 @@ import {
   UsersRound,
   X,
 } from "lucide-react";
-import {
-  useReelProximityController,
-} from "@/domains/presence/model/useReelProximityController";
+import { useReelProximityController } from "@/domains/presence/model/useReelProximityController";
 import { PersonAvatar, RingPerson, SelfRadarIdentity } from "./components/ReelRadarIdentity";
 import { ReelGuidedTour } from "./components/ReelGuidedTour";
 import { ReelSettingsHelp } from "./components/ReelSettingsHelp";
@@ -171,7 +169,9 @@ export function ReelProximityScreen() {
               if (discoveryEnabled) ignoreLocation();
               else void requestDiscovery();
             }}
-            disabled={discoveryAccess === "requesting" || (!canUseMemberReel && access.mode !== "guest")}
+            disabled={
+              discoveryAccess === "requesting" || (!canUseMemberReel && access.mode !== "guest")
+            }
             aria-pressed={discoveryEnabled}
             aria-label={
               discoveryEnabled ? t("reel.ui.disableDiscovery") : t("reel.ui.enableDiscovery")
@@ -201,7 +201,12 @@ export function ReelProximityScreen() {
           </button>
         </nav>
       </header>
-      <ReelGuidedTour open={tourOpen} step={tourStep} onClose={closeTour} onStepChange={setTourStep} />
+      <ReelGuidedTour
+        open={tourOpen}
+        step={tourStep}
+        onClose={closeTour}
+        onStepChange={setTourStep}
+      />
 
       {!discoveryEnabled && (
         <section
@@ -315,9 +320,7 @@ export function ReelProximityScreen() {
             aria-label={
               isPresenceActive ? t("reel.ui.hideMyPresence") : t("reel.ui.showMyPresence")
             }
-            title={
-              isPresenceActive ? t("reel.ui.hideMyPresence") : t("reel.ui.showMyPresence")
-            }
+            title={isPresenceActive ? t("reel.ui.hideMyPresence") : t("reel.ui.showMyPresence")}
           >
             <SelfRadarIdentity
               accessMode={access.mode}
