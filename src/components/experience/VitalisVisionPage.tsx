@@ -3,11 +3,13 @@ import {
   ArrowDown,
   ArrowLeft,
   ArrowRight,
+  Check,
   Compass,
   Radar,
   RadioTower,
   ScanLine,
   ShieldCheck,
+  Sparkles,
   Target,
   Zap,
 } from "lucide-react";
@@ -142,7 +144,7 @@ export function VitalisVisionPage() {
                   className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/15"
                 >
                   {t("vision.deep.open")}{" "}
-                  {engine.id === "reel" ? "En direct" : t(`vision.engine.${engine.id}.title`)}
+                  {t(`vision.engine.${engine.id}.title`)}
                   <ArrowRight className="size-4" />
                 </Link>
               </div>
