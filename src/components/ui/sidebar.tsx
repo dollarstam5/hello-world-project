@@ -1,10 +1,5 @@
 export { SidebarProvider, useSidebar } from "./sidebar-provider";
-export {
-  Sidebar,
-  SidebarInset,
-  SidebarRail,
-  SidebarTrigger,
-} from "./sidebar-layout";
+export { Sidebar, SidebarInset, SidebarRail, SidebarTrigger } from "./sidebar-layout";
 export {
   SidebarContent,
   SidebarFooter,
