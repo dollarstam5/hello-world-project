@@ -67,7 +67,9 @@ for route in "/" "/flash" "/scan" "/reel" "/radar"; do
     bunx playwright screenshot \
       --browser=chromium \
       --viewport-size="$viewport" \
+      --full-page \
       --wait-for-selector="$selector" \
+      --wait-for-timeout=1800 \
       "$BASE_URL$route?__vitalis_smoke=1" \
       "$output" >/dev/null
     test -s "$output"
