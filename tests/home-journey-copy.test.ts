@@ -87,4 +87,23 @@ describe("Home journey guidance", () => {
       expect(messages.en[key]).toBeTruthy();
     }
   });
+  it("explains all four Vitalis engines in both languages", () => {
+    const sections = ["why", "use", "flow", "example", "difference"] as const;
+
+    for (const engine of engines) {
+      for (const section of sections) {
+        const key = `vision.deep.${engine}.${section}` as keyof typeof messages.fr;
+        expect(messages.fr[key], `French copy: ${key}`).toBeTruthy();
+        expect(messages.en[key], `English copy: ${key}`).toBeTruthy();
+      }
+    }
+
+    expect(messages.fr["vision.engine.reel.title"]).toContain("En direct");
+    expect(messages.en["vision.engine.reel.title"]).toContain("Live");
+    expect(messages.fr["vision.deep.privacy.body"]).toBeTruthy();
+    expect(messages.en["vision.deep.privacy.body"]).toBeTruthy();
+    expect(messages.fr["vision.deep.status.body"]).toBeTruthy();
+    expect(messages.en["vision.deep.status.body"]).toBeTruthy();
+  });
+
 });
