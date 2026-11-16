@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { FLASH_SCOPES, FLASH_URGENCIES } from "@eco/core-contracts";
 import type {
   FlashCategory,
   FlashKind,
