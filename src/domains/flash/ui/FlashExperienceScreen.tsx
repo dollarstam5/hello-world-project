@@ -144,7 +144,6 @@ export function FlashExperienceScreen() {
         )}
       </div>
 
-
       <FlashComposerDialog state={composer} user={user} authLoading={authLoading} />
     </section>
   );
