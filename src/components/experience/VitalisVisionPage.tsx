@@ -26,7 +26,29 @@ const engines = [
   { id: "radar", icon: Radar, route: "/radar", number: "04" },
 ] as const;
 
-function EngineArtwork({ kind }: { kind: (typeof engines)[number]["id"] }) {
+type ArtworkLabels = {
+  flashTag: string;
+  flashTitle: string;
+  flashDescription: string;
+  today: string;
+  nearby: string;
+  flashFooter: string;
+  scan: string;
+  live: string;
+  radarSearch: string;
+  radarCriteria: string;
+  radarNew: string;
+  radarSource: string;
+  radarActions: string;
+};
+
+function EngineArtwork({
+  kind,
+  labels,
+}: {
+  kind: (typeof engines)[number]["id"];
+  labels: ArtworkLabels;
+}) {
   if (kind === "flash") {
     return (
       <div className="relative mx-auto flex min-h-64 w-full max-w-md items-center justify-center overflow-hidden rounded-[2rem] bg-amber-400/10 p-6">
@@ -35,20 +57,20 @@ function EngineArtwork({ kind }: { kind: (typeof engines)[number]["id"] }) {
         <div className="relative w-full max-w-xs rotate-[-3deg] rounded-3xl border border-border/70 bg-card p-5 shadow-2xl shadow-amber-950/10">
           <div className="flex items-center justify-between">
             <span className="rounded-full bg-amber-400/15 px-3 py-1 text-xs font-semibold text-amber-700 dark:text-amber-300">
-              FLASH · EXEMPLE
+              {labels.flashTag}
             </span>
             <Zap className="size-5 text-amber-500" />
           </div>
-          <p className="mt-5 text-lg font-bold">Un coup de main ?</p>
+          <p className="mt-5 text-lg font-bold">{labels.flashTitle}</p>
           <p className="mt-1 text-sm text-muted-foreground">
-            Déménagement aujourd’hui, vers 16 h
+            {labels.flashDescription}
           </p>
           <div className="mt-5 flex flex-wrap gap-2">
-            <span className="rounded-full bg-muted px-3 py-1 text-xs">Aujourd’hui</span>
-            <span className="rounded-full bg-muted px-3 py-1 text-xs">À proximité</span>
+            <span className="rounded-full bg-muted px-3 py-1 text-xs">{labels.today}</span>
+            <span className="rounded-full bg-muted px-3 py-1 text-xs">{labels.nearby}</span>
           </div>
           <div className="mt-5 flex items-center justify-between border-t border-border pt-4 text-xs text-muted-foreground">
-            <span>Publication courte</span>
+            <span>{labels.flashFooter}</span>
             <ArrowRight className="size-4" />
           </div>
         </div>
@@ -77,7 +99,7 @@ function EngineArtwork({ kind }: { kind: (typeof engines)[number]["id"] }) {
             <Target className="size-4 text-sky-500" />
           </span>
           <span className="absolute -right-5 top-1/2 rounded-full border border-sky-500/20 bg-card px-3 py-1.5 text-xs font-semibold shadow-lg">
-            Recherche ponctuelle
+            {labels.scan}
           </span>
         </div>
       </div>
@@ -103,7 +125,7 @@ function EngineArtwork({ kind }: { kind: (typeof engines)[number]["id"] }) {
           <Bell className="size-5 text-blue-500" />
         </span>
         <span className="absolute bottom-5 right-5 rounded-full border border-blue-500/20 bg-card px-3 py-1.5 text-xs font-semibold shadow-lg">
-          Présence volontaire
+          {labels.live}
         </span>
       </div>
     );
@@ -118,8 +140,8 @@ function EngineArtwork({ kind }: { kind: (typeof engines)[number]["id"] }) {
             <Target className="size-5" />
           </span>
           <span className="min-w-0 flex-1">
-            <span className="block text-sm font-bold">Recherche suivie</span>
-            <span className="text-xs text-muted-foreground">Critères enregistrés</span>
+            <span className="block text-sm font-bold">{labels.radarSearch}</span>
+            <span className="text-xs text-muted-foreground">{labels.radarCriteria}</span>
           </span>
           <Check className="size-4 text-violet-500" />
         </div>
@@ -129,13 +151,13 @@ function EngineArtwork({ kind }: { kind: (typeof engines)[number]["id"] }) {
             <Bell className="size-5" />
           </span>
           <span>
-            <span className="block text-sm font-bold">Nouvelle possibilité</span>
-            <span className="text-xs text-muted-foreground">Si une source la signale</span>
+            <span className="block text-sm font-bold">{labels.radarNew}</span>
+            <span className="text-xs text-muted-foreground">{labels.radarSource}</span>
           </span>
         </div>
         <div className="ml-14 h-5 border-l-2 border-dashed border-violet-500/40" />
         <div className="ml-14 rounded-xl border border-dashed border-violet-500/30 px-4 py-2 text-center text-xs text-muted-foreground">
-          Suivre · Ajuster · Arrêter
+          {labels.radarActions}
         </div>
       </div>
     </div>
@@ -174,7 +196,7 @@ export function VitalisVisionPage() {
             href="#les-moteurs"
             className="mt-8 inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/15 transition hover:-translate-y-0.5"
           >
-            Découvrir les quatre moteurs
+            {t("vision.deep.discover")}
             <ArrowDown className="size-4" />
           </a>
         </div>
@@ -186,7 +208,7 @@ export function VitalisVisionPage() {
             {t("vision.what.title")}
           </p>
           <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-            Une application tournée vers la vie réelle.
+            {t("vision.deep.whatHeading")}
           </h2>
         </div>
         <div className="rounded-3xl border border-border/70 bg-card p-6 shadow-sm sm:p-8">
@@ -203,14 +225,14 @@ export function VitalisVisionPage() {
             {t("vision.engines.title")}
           </p>
           <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-            Quatre façons d’agir, un même objectif.
+            {t("vision.deep.enginesHeading")}
           </h2>
           <p className="text-base leading-relaxed text-muted-foreground">
             {t("vision.engines.intro")}
           </p>
         </div>
         <nav
-          aria-label="Accès direct aux moteurs"
+          aria-label="{t("vision.deep.navLabel")}"
           className="grid grid-cols-2 gap-2 sm:grid-cols-4"
         >
           {engines.map((engine) => (
@@ -262,12 +284,29 @@ export function VitalisVisionPage() {
                   to={engine.route}
                   className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/15"
                 >
-                  Ouvrir{" "}
+                  {t("vision.deep.open")}{" "}
                   {engine.id === "reel" ? "En direct" : t(`vision.engine.${engine.id}.title`)}
                   <ArrowRight className="size-4" />
                 </Link>
               </div>
-              <EngineArtwork kind={engine.id} />
+              <EngineArtwork
+            kind={engine.id}
+            labels={{
+              flashTag: t("vision.deep.visual.flashTag"),
+              flashTitle: t("vision.deep.visual.flashTitle"),
+              flashDescription: t("vision.deep.visual.flashDescription"),
+              today: t("vision.deep.visual.today"),
+              nearby: t("vision.deep.visual.nearby"),
+              flashFooter: t("vision.deep.visual.flashFooter"),
+              scan: t("vision.deep.visual.scan"),
+              live: t("vision.deep.visual.live"),
+              radarSearch: t("vision.deep.visual.radarSearch"),
+              radarCriteria: t("vision.deep.visual.radarCriteria"),
+              radarNew: t("vision.deep.visual.radarNew"),
+              radarSource: t("vision.deep.visual.radarSource"),
+              radarActions: t("vision.deep.visual.radarActions"),
+            }}
+          />
             </div>
 
             <div className="grid gap-4 lg:grid-cols-3">
@@ -292,7 +331,7 @@ export function VitalisVisionPage() {
               <article className="rounded-3xl border border-border/70 bg-muted/50 p-5 sm:p-6">
                 <div className="mb-3 flex items-center gap-2 text-primary">
                   <Sparkles className="size-4" />
-                  <h3 className="text-sm font-bold">Dans la vie réelle</h3>
+                  <h3 className="text-sm font-bold">{t("vision.deep.realLife")}</h3>
                 </div>
                 <p className="text-sm leading-relaxed text-muted-foreground">
                   {t(`vision.deep.${engine.id}.example`)}
@@ -301,13 +340,13 @@ export function VitalisVisionPage() {
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="rounded-2xl border border-border/70 p-5">
-                <h3 className="font-semibold">Ce qui rend ce moteur unique</h3>
+                <h3 className="font-semibold">{t("vision.deep.unique")}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                   {t(`vision.deep.${engine.id}.difference`)}
                 </p>
               </div>
               <div className="rounded-2xl border border-primary/20 bg-primary/5 p-5">
-                <h3 className="font-semibold">À retenir</h3>
+                <h3 className="font-semibold">{t("vision.deep.remember")}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                   {t(`vision.engine.${engine.id}.boundary`)}
                 </p>
