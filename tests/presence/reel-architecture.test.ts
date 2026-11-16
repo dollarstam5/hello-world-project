@@ -83,10 +83,13 @@ describe("Instant architecture boundaries", () => {
     expect(screenSource).toContain("reel-radar__me-label");
   });
 
-  it("opens the signed-in member profile from the central radar avatar", () => {
-    expect(screenSource).toContain('to="/espace/profil"');
-    expect(screenSource).toContain('access.mode === "member" ?');
-    expect(screenSource).toContain('aria-label={t("profile.title")}');
+  it("uses the central radar profile to activate or stop personal presence", () => {
+    expect(screenSource).toContain('className={`reel-radar__me${isPresenceActive ? " is-presence-active" : ""}`}');
+    expect(screenSource).toContain("aria-pressed={isPresenceActive}");
+    expect(screenSource).toContain("void activatePresence()");
+    expect(screenSource).toContain("void activateGuestPresence()");
+    expect(screenSource).toContain("void stopPresence()");
+    expect(screenSource).toContain("void stopGuestPresence()");
   });
 
   it("does not expose an unsupported full-profile expansion from nearby presence data", () => {
