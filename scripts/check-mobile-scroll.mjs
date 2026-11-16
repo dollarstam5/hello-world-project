@@ -5,9 +5,7 @@ import { join } from "node:path";
 
 const [chromePath, baseUrl] = process.argv.slice(2);
 if (!chromePath || !baseUrl) {
-  throw new Error(
-    "Usage: bun scripts/check-mobile-scroll.mjs <chromium-path> <base-url>",
-  );
+  throw new Error("Usage: bun scripts/check-mobile-scroll.mjs <chromium-path> <base-url>");
 }
 
 const port = 9222;
@@ -34,9 +32,7 @@ try {
   let version;
   for (let i = 0; i < 60; i++) {
     try {
-      const response = await fetch(
-        `http://127.0.0.1:${port}/json/version`,
-      );
+      const response = await fetch(`http://127.0.0.1:${port}/json/version`);
       if (response.ok) {
         version = await response.json();
         break;
@@ -53,9 +49,7 @@ try {
     { method: "PUT" },
   );
   if (!targetResponse.ok) {
-    throw new Error(
-      `Could not create Chromium page target: ${targetResponse.status}`,
-    );
+    throw new Error(`Could not create Chromium page target: ${targetResponse.status}`);
   }
   const target = await targetResponse.json();
   socket = new WebSocket(target.webSocketDebuggerUrl);
@@ -88,9 +82,7 @@ try {
       awaitPromise: true,
     });
     if (result.exceptionDetails) {
-      throw new Error(
-        result.exceptionDetails.text || "Browser evaluation failed",
-      );
+      throw new Error(result.exceptionDetails.text || "Browser evaluation failed");
     }
     return result.result?.value;
   };
@@ -128,9 +120,7 @@ try {
   const failures = [];
 
   for (const locale of ["fr", "en"]) {
-    await evaluate(
-      `localStorage.setItem("eco.locale", ${JSON.stringify(locale)})`,
-    );
+    await evaluate(`localStorage.setItem("eco.locale", ${JSON.stringify(locale)})`);
     for (const [width, height] of viewports) {
       await send("Emulation.setDeviceMetricsOverride", {
         width,
