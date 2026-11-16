@@ -107,10 +107,10 @@ export function HomeFoundation() {
       >
         <div className="relative z-10 flex w-full flex-col justify-between gap-10 p-5 text-foreground sm:p-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <span className="rounded-full border border-white/25 bg-slate-950/35 px-3 py-1.5 text-xs font-medium text-white shadow-sm backdrop-blur-sm">
+            <span className="rounded-full border border-border bg-surface/90 px-3 py-1.5 text-xs font-medium text-foreground shadow-sm">
               {identityLabel}
             </span>
-            <span className="rounded-full bg-white/15 px-3 py-1.5 text-xs font-medium text-white/95 backdrop-blur-sm">
+            <span className="rounded-full bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary">
               {t("app.tagline")}
             </span>
           </div>
@@ -120,7 +120,7 @@ export function HomeFoundation() {
             </p>
             <h1
               id="home-welcome-title"
-              className="max-w-[13ch] text-4xl font-semibold leading-[1.04] tracking-tight text-white sm:text-5xl lg:text-6xl"
+              className="max-w-[13ch] text-4xl font-semibold leading-[1.04] tracking-tight text-foreground sm:text-5xl lg:text-6xl"
             >
               {greeting}
             </h1>
