@@ -43,7 +43,8 @@ describe("Instant architecture boundaries", () => {
 
   it("uses the header visibility control only for the user's own presence", () => {
     expect(screenSource).toContain("reel-proximity__presence-toggle");
-    expect(screenSource).toContain("<h1>INSTANT</h1>");
+    expect(screenSource).toContain("<h1>En direct</h1>");
+    expect(screenSource).toContain("reel-proximity__live-indicator");
     expect(screenSource).toContain('<RadioTower aria-hidden="true" />');
     expect(screenSource).toContain('className="reel-proximity__header-actions"');
     expect(screenSource).toContain("reel-radar__me-avatar");
