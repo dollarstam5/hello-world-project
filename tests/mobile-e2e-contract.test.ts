@@ -11,11 +11,14 @@ describe("mobile visual smoke contract", () => {
     }
   });
 
-  it("uses the production preview server rather than the Vite development server", () => {
-    expect(script).toContain("bunx nitro preview");
+  it("serves the generated production Worker rather than a development server", () => {
+    expect(script).toContain("bun run build:check");
+    expect(script).toContain('test -s ".output/server/wrangler.json"');
+    expect(script).toContain("bunx wrangler dev");
+    expect(script).toContain('--config ".output/server/wrangler.json"');
     expect(script).not.toContain("bun run dev");
     expect(script).not.toContain("bun run preview");
-    expect(script).toContain("bun run build:check");
+    expect(script).not.toContain("bunx nitro preview");
   });
 
   it("keeps the 390 by 844 reference viewport and waits for route content", () => {
