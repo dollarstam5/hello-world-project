@@ -4,7 +4,7 @@
 **Migration :** `supabase/migrations/20261110010000_reel_presence_and_bips.sql`  
 **Tests :** `supabase/tests/database/130_reel_presence_security.test.sql`
 
-**Nom affiché validé :** **Instant**. L’icône de référence est `RadioTower` (ondes de présence), réutilisée dans l’en-tête et la navigation. Les identifiants techniques historiques (`reel`, route `/reel`, domaine et noms de fichiers) restent inchangés pour éviter une migration technique sans nécessité.
+**Nom affiché validé :** **En direct**. L’icône de référence est `RadioTower` (ondes de présence), réutilisée dans l’en-tête et la navigation. Les identifiants techniques historiques (`reel`, route `/reel`, domaine et noms de fichiers) restent inchangés pour éviter une migration technique sans nécessité.
 
 ## État de l'interface
 
@@ -431,3 +431,55 @@ Cette section prévaut sur les formulations plus anciennes de ce journal lorsqu'
 - **Toujours indisponible ou non raccordé selon l'état documenté :** conversations générales, notifications générales, suggestions globales sans source métier et certaines fonctions de signalement/partage.
 
 La politique d'accès canonique est `reel-access-policy.md`. Toute modification future de cette politique doit être répercutée ici, et inversement. Ne pas déduire d'une migration ou d'un test ajouté que son exécution a réussi.
+
+
+---
+
+## Mise à jour — interface « En direct » et audit des interactions (16 novembre 2026)
+
+Cette section est la référence la plus récente pour l'interface de la PR #80. Elle prévaut sur les descriptions d'interface plus anciennes de ce document.
+
+### Contrat des commandes et retours visuels
+
+| Élément / action | Comportement attendu | Retour visible | Règle à respecter |
+| --- | --- | --- | --- |
+| Œil — découverte | Demande l'autorisation de position puis charge les présences partagées ; un second clic met la découverte en pause et efface les profils affichés localement | Œil bleu actif lorsque la découverte est autorisée ; carte calme ou explicative lorsqu'elle est inactive | N'active et ne désactive jamais la présence personnelle |
+| Profil central — présence | Ouvre les paramètres si le consentement ou les informations sont absents ; sinon démarre ou arrête la présence membre/invitée | Anneau rouge sur l'avatar central et point rouge animé près du titre uniquement pendant une présence active | Le clic explicite de la personne est nécessaire ; la découverte n'est pas un consentement de visibilité |
+| Radar | Représente uniquement les présences renvoyées par les services après découverte autorisée | Profils réels, limités à neuf autour du centre ; aucun faux profil | Ne pas annoncer une proximité ou une distance métrique exacte que le service ne garantit pas |
+| Aperçu des personnes | Affiche jusqu'à trois personnes et ouvre la liste complète ou la fiche sélectionnée | Carte compacte avec nom et description/catégorie disponibles | Visible uniquement si la découverte est active et si des présences réelles existent |
+| État vide | Affiche un message lorsqu'aucune présence réelle n'est retournée | Bloc « aucune présence à proximité » | Ne jamais remplir avec des données de démonstration |
+| Paramètres | Permet de choisir rayon, durée, consentement et description selon le mode d'accès | Panneau de réglages et choix sélectionné | Les changements de rayon/durée ne modifient pas une présence déjà active ; ils s'appliquent à la prochaine activation |
+| Aide des paramètres | Ouvre une fenêtre explicative en cinq thèmes : découverte, présence, radar, rayon/durée, confidentialité | Fenêtre modale scrollable, fermeture et bouton de fin | L'aide ne déclenche aucune permission et ne modifie aucun réglage |
+| Visite guidée | Présente quatre étapes, peut être ignorée, fermée ou relancée par l'aide | Progression en quatre segments et actions précédent/suivant/ignorer | La visite ne déclenche aucune permission et ne publie aucune présence |
+| Notifications / activité | Ouvre les notifications, bips et mises en relation disponibles | États de chargement, erreurs et états vides issus du contrôleur | Activité désactivée tant qu'aucune découverte ni présence n'est autorisée |
+| Bluetooth | Reste affiché comme fonction future | Contrôle désactivé avec indication V3 | Ne pas présenter cette fonction comme disponible |
+
+### Règles membre / invité / visiteur
+
+- **Membre actif :** la présence personnelle exige le consentement de présence ; la découverte est une autorisation distincte. Les contrôles de présence ne doivent pas être accessibles à un profil membre inactif.
+- **Invité :** utilise une session temporaire et les commandes invitées dédiées. La durée réellement envoyée au service est plafonnée à 60 minutes, même si les durées proposées côté interface sont filtrées. L'invité ne doit jamais recevoir des droits de membre ni exposer son identifiant temporaire.
+- **Visiteur :** peut voir l'écran d'accueil du moteur, mais ne doit pas pouvoir lancer une découverte ou une présence avant d'avoir ouvert une session invitée ou de s'être connecté.
+- **Découverte en pause :** efface la liste locale des personnes découvertes, mais ne doit pas arrêter la présence personnelle déjà active.
+- **Présence arrêtée :** retire le partage de présence ; l'état visuel rouge doit disparaître après confirmation du contrôleur.
+- **Confidentialité :** ne jamais afficher les coordonnées GPS exactes, ni une distance précise non garantie par le modèle de zone.
+
+### État de vérification à ce commit
+
+- Lecture statique du composant, du contrôleur, des styles et des tests effectuée.
+- La séparation des commandes œil/découverte et profil central/présence est présente dans le composant.
+- La découverte vide et la liste de profils sont conditionnées à la découverte active et aux résultats réels du contrôleur.
+- Les styles définissent un état actif de découverte, un état de présence sur l'avatar, un indicateur rouge animé, des états vides et une aide responsive.
+- Les tests d'architecture vérifient des chaînes et frontières de modules ; ils ne remplacent pas des tests d'interaction DOM ou navigateur.
+- **La CI du commit précédent a échoué au lint Prettier.** Les erreurs de formatage relevées ont été corrigées dans les fichiers de la PR ; une nouvelle exécution CI est requise pour confirmer.
+- La revue du code ne constitue pas une validation visuelle réelle. Une capture sur viewport mobile 390 × 844, avec vérification des safe areas, des débordements, des états modal/panneau et des thèmes clair/sombre reste à effectuer.
+- Le comportement du service distant, les permissions réelles du navigateur, les événements Realtime entre deux appareils et la validation de la session invitée doivent être testés sur un environnement Supabase de test avant activation.
+
+### Points restant à prouver avant clôture
+
+1. Rejouer lint, tests unitaires, build et contrôles de sécurité sur le dernier SHA de la PR.
+2. Tester les scénarios visiteur, invité et membre actif, y compris refus de permission, réseau indisponible et session expirée.
+3. Vérifier que mettre la découverte en pause n'arrête pas une présence personnelle active.
+4. Vérifier l'arrêt effectif de présence côté serveur et la disparition du point rouge après réponse réussie.
+5. Tester les bips et mises en relation en temps réel entre deux sessions distinctes, membre ↔ membre et membre ↔ invité.
+6. Effectuer les captures navigateur 390 × 844 et grand écran, en clair et sombre ; vérifier la modal d'aide, la visite guidée, les panneaux et les retours d'erreur.
+7. Ne pas fusionner tant que ces preuves ne sont pas disponibles et revues.
