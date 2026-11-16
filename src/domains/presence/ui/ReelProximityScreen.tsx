@@ -156,6 +156,7 @@ export function ReelProximityScreen() {
   const { t } = useI18n();
   const [tourOpen, setTourOpen] = useState(false);
   const [tourStep, setTourStep] = useState(0);
+  const [settingsHelpOpen, setSettingsHelpOpen] = useState(false);
   useEffect(() => {
     try {
       setTourOpen(window.localStorage.getItem("vitalis-reel-tour-seen") !== "true");
@@ -252,7 +253,9 @@ export function ReelProximityScreen() {
             <h1>En direct</h1>
             <p>{t("reel.ui.screenLabel")}</p>
           </div>
-          <span className="reel-proximity__live-indicator" aria-hidden="true" />
+          {isPresenceActive && (
+            <span className="reel-proximity__live-indicator" aria-hidden="true" />
+          )}
         </div>
         <nav className="reel-proximity__header-actions" aria-label={t("reel.ui.screenLabel")}>
           <Link
@@ -286,20 +289,19 @@ export function ReelProximityScreen() {
           </button>
           <button
             type="button"
-            className={`reel-proximity__header-action reel-proximity__presence-toggle${isPresenceActive ? " is-active" : ""}`}
+            className={`reel-proximity__header-action reel-proximity__discovery-toggle${discoveryEnabled ? " is-active" : ""}`}
             onClick={() => {
-              if (currentPresence) void stopPresence();
-              else if (guestPresence) void stopGuestPresence();
-              else setPanel("settings");
+              if (discoveryEnabled) ignoreLocation();
+              else void requestDiscovery();
             }}
-            disabled={presenceLoading}
-            aria-pressed={isPresenceActive}
+            disabled={discoveryAccess === "requesting"}
+            aria-pressed={discoveryEnabled}
             aria-label={
-              isPresenceActive ? t("reel.ui.hideMyPresence") : t("reel.ui.showMyPresence")
+              discoveryEnabled ? t("reel.ui.disableDiscovery") : t("reel.ui.enableDiscovery")
             }
-            title={isPresenceActive ? t("reel.ui.hideMyPresence") : t("reel.ui.showMyPresence")}
+            title={discoveryEnabled ? t("reel.ui.disableDiscovery") : t("reel.ui.enableDiscovery")}
           >
-            {isPresenceActive ? <Eye aria-hidden="true" /> : <EyeOff aria-hidden="true" />}
+            {discoveryEnabled ? <Eye aria-hidden="true" /> : <EyeOff aria-hidden="true" />}
           </button>
           <button
             type="button"
@@ -454,13 +456,21 @@ export function ReelProximityScreen() {
         <div className="reel-radar__outer-ring" aria-hidden="true" />
         <div className="reel-radar__inner-ring" aria-hidden="true" />
         <div className="reel-radar__core">
-          {access.mode === "member" ? (
-            <Link
-              to="/espace/profil"
-              className="reel-radar__me"
-              aria-label={t("profile.title")}
-              title={t("profile.title")}
-            >
+          <button
+            type="button"
+            className={`reel-radar__me${isPresenceActive ? " is-presence-active" : ""}`}
+            onClick={() => {
+              if (currentPresence) void stopPresence();
+              else if (guestPresence) void stopGuestPresence();
+              else if (access.mode === "guest" && guestPresenceConsent && guestDisplayName.trim() && guestAreaLabel.trim() && presenceDescription.trim()) void activateGuestPresence();
+              else if (access.mode === "member" && canUseMemberReel && presenceConsent && presenceDescription.trim()) void activatePresence();
+              else setPanel("settings");
+            }}
+            disabled={presenceLoading}
+            aria-pressed={isPresenceActive}
+            aria-label={isPresenceActive ? t("reel.ui.hideMyPresence") : t("reel.ui.showMyPresence")}
+            title={isPresenceActive ? t("reel.ui.hideMyPresence") : t("reel.ui.showMyPresence")}
+          >
               <SelfRadarIdentity
                 accessMode={access.mode}
                 guestAvatarKey={guestAvatarKey}
@@ -469,23 +479,14 @@ export function ReelProximityScreen() {
                 meLabel={t("reel.ui.me")}
               />
             </Link>
-          ) : (
-            <button
-              type="button"
-              className="reel-radar__me"
-              onClick={() => setPanel("settings")}
-              aria-label={t("reel.ui.managePresence")}
-              title={t("reel.ui.managePresence")}
-            >
-              <SelfRadarIdentity
-                accessMode={access.mode}
-                guestAvatarKey={guestAvatarKey}
-                guestDisplayName={guestDisplayName}
-                memberAvatarUrl={memberAvatarUrl}
-                meLabel={t("reel.ui.me")}
-              />
-            </button>
-          )}
+            <SelfRadarIdentity
+              accessMode={access.mode}
+              guestAvatarKey={guestAvatarKey}
+              guestDisplayName={guestDisplayName}
+              memberAvatarUrl={memberAvatarUrl}
+              meLabel={t("reel.ui.me")}
+            />
+          </button>
         </div>
         {visiblePeople.map((person) => (
           <RingPerson key={person.id} person={person} onSelect={openProfile} />
@@ -556,6 +557,52 @@ export function ReelProximityScreen() {
         </div>
       )}
 
+      {settingsHelpOpen && panel === "settings" && (
+        <div className="reel-settings-help-backdrop">
+          <section
+            className="reel-settings-help"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="reel-settings-help-title"
+          >
+            <div className="reel-settings-help__header">
+              <div>
+                <span>{t("reel.ui.settingsHelpEyebrow")}</span>
+                <h2 id="reel-settings-help-title">{t("reel.ui.settingsHelpTitle")}</h2>
+              </div>
+              <button type="button" onClick={() => setSettingsHelpOpen(false)} aria-label={t("reel.ui.close")}>
+                <X aria-hidden="true" />
+              </button>
+            </div>
+            <div className="reel-settings-help__content">
+              <article>
+                <h3>{t("reel.ui.helpDiscoveryTitle")}</h3>
+                <p>{t("reel.ui.helpDiscoveryBody")}</p>
+              </article>
+              <article>
+                <h3>{t("reel.ui.helpPresenceTitle")}</h3>
+                <p>{t("reel.ui.helpPresenceBody")}</p>
+              </article>
+              <article>
+                <h3>{t("reel.ui.helpRadarTitle")}</h3>
+                <p>{t("reel.ui.helpRadarBody")}</p>
+              </article>
+              <article>
+                <h3>{t("reel.ui.helpRadiusTitle")}</h3>
+                <p>{t("reel.ui.helpRadiusBody")}</p>
+              </article>
+              <article>
+                <h3>{t("reel.ui.helpPrivacyTitle")}</h3>
+                <p>{t("reel.ui.helpPrivacyBody")}</p>
+              </article>
+            </div>
+            <button type="button" className="reel-panel__primary" onClick={() => setSettingsHelpOpen(false)}>
+              {t("reel.ui.finish")}
+            </button>
+          </section>
+        </div>
+      )}
+
       {panel && (
         <div
           className="reel-panel-backdrop"
@@ -585,6 +632,14 @@ export function ReelProximityScreen() {
                 </div>
                 <h2 id="reel-panel-title">{t("reel.ui.settingsHeading")}</h2>
                 <p className="reel-panel__intro">{t("reel.ui.settingsIntro")}</p>
+                <button
+                  type="button"
+                  className="reel-panel__help-trigger"
+                  onClick={() => setSettingsHelpOpen(true)}
+                >
+                  <CircleHelp aria-hidden="true" />
+                  {t("reel.ui.settingsHelp")}
+                </button>
 
                 <div className="reel-panel__section">
                   <h3>{t("reel.ui.discovery")}</h3>
