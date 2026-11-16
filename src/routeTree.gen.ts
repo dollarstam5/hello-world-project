@@ -36,7 +36,7 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
@@ -55,17 +55,17 @@ const FlashRoute = FlashRouteImport.update({
   id: '/flash',
   path: '/flash',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any).lazy(() => import('./routes/flash.lazy').then((d) => d.Route))
 const RadarRoute = RadarRouteImport.update({
   id: '/radar',
   path: '/radar',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any).lazy(() => import('./routes/radar.lazy').then((d) => d.Route))
 const ReelRoute = ReelRouteImport.update({
   id: '/reel',
   path: '/reel',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any).lazy(() => import('./routes/reel.lazy').then((d) => d.Route))
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
@@ -75,7 +75,7 @@ const ScanRoute = ScanRouteImport.update({
   id: '/scan',
   path: '/scan',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any).lazy(() => import('./routes/scan.lazy').then((d) => d.Route))
 const TalentsRoute = TalentsRouteImport.update({
   id: '/talents',
   path: '/talents',
@@ -85,7 +85,9 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
+} as any).lazy(() =>
+  import('./routes/_authenticated/admin.lazy').then((d) => d.Route),
+)
 const ApiHealthRoute = ApiHealthRouteImport.update({
   id: '/api/health',
   path: '/api/health',
@@ -110,13 +112,17 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthenticatedAdminRoute,
-} as any)
+} as any).lazy(() =>
+  import('./routes/_authenticated/admin.index.lazy').then((d) => d.Route),
+)
 const AuthenticatedAdminModuleRoute =
   AuthenticatedAdminModuleRouteImport.update({
     id: '/$module',
     path: '/$module',
     getParentRoute: () => AuthenticatedAdminRoute,
-  } as any)
+  } as any).lazy(() =>
+    import('./routes/_authenticated/admin.$module.lazy').then((d) => d.Route),
+  )
 const ApiPublicAssistantRoute = ApiPublicAssistantRouteImport.update({
   id: '/api/public/assistant',
   path: '/api/public/assistant',
