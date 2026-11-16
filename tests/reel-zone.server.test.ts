@@ -22,6 +22,10 @@ describe("résolution de zone Réel", () => {
     vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "service_role_test_key_with_more_than_32_chars");
     vi.stubEnv("REEL_ZONE_HMAC_SECRET", "");
 
+    createClientMock.mockClear();
+    fromMock.mockClear();
+    rpcMock.mockClear();
+
     fromMock.mockImplementation((table: string) => {
       const query: Record<string, ReturnType<typeof vi.fn>> = {};
       query.select = vi.fn(() => query);
