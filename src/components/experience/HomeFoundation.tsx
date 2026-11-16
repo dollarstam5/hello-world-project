@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Compass, Radar, RadioTower, ScanLine, Zap, ArrowUpRight } from "lucide-react";
+import { Radar, RadioTower, ScanLine, Zap, ArrowUpRight } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Surface } from "@/components/app/Surface";
 import { PublicProfilePreview } from "@/components/app/PublicProfilePreview";
@@ -116,6 +116,9 @@ export function HomeFoundation() {
           loading="eager"
           fetchPriority="high"
           decoding="async"
+          onError={(event) => {
+            event.currentTarget.style.display = "none";
+          }}
         />
         <div
           aria-hidden="true"
@@ -241,7 +244,7 @@ export function HomeFoundation() {
 
       <Surface variant="sunken" padding="md" bordered className="flex items-start gap-3">
         <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-surface text-muted-foreground">
-          <Compass className="h-5 w-5" aria-hidden />
+          <span className="text-xl leading-none" aria-hidden="true">✧</span>
         </span>
         <p className="text-sm leading-relaxed text-muted-foreground">{t("home.menuHint")}</p>
       </Surface>
