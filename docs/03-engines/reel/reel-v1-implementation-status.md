@@ -460,7 +460,7 @@ Les workflows ont été exécutés sur le SHA `7b6fbdcc2fd69cbc73aa4189c069b1714
 | Rayon de découverte et de présence | Implémentation PostGIS et tests SQL exécutés avec succès dans le workflow | Vérifier les extensions et migrations sur l'environnement Supabase cible |
 | Rayon des bips membre → membre | Test 134 réussi, cas dans le rayon et hors rayon couverts | Essai fonctionnel sur deux appareils/comptes |
 | Sessions et interactions invitées | Migrations et tests correspondants présents ; couverture CI partielle des scénarios invités | Compléter les cas de refus/fermeture, puis essais de bout en bout sur deux appareils |
-| Événements privés / Realtime | Politique et tests SQL présents dans le dépôt | Confirmer la configuration « Allow public access » désactivée et la réception réelle des Broadcasts |
+| Événements privés / Realtime | pgTAP 138 exécuté et réussi dans la CI : politique du sujet privé et inspection du contenu Broadcast | Confirmer la configuration « Allow public access » désactivée et la réception réelle des Broadcasts sur plusieurs appareils |
 | Purges et rétention | Fonctions et tests présents | Confirmer `pg_cron` et l'exécution planifiée sur la pile cible |
 | Interface et affichage | Tests de contrat et build réussis dans la CI courante | Captures navigateur/appareil et comparaison à la référence produit encore nécessaires |
 | Sources globales et notifications générales | Non raccordées ou sans source métier confirmée | Ne pas afficher de données fictives |
