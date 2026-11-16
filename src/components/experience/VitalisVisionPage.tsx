@@ -13,7 +13,7 @@ const engines = [
 const principles = [
   { icon: ShieldCheck, title: "vision.principle.trust.title", body: "vision.principle.trust.body" },
   { icon: Compass, title: "vision.principle.action.title", body: "vision.principle.action.body" },
-];
+] as const;
 
 export function VitalisVisionPage() {
   const { t } = useI18n();
