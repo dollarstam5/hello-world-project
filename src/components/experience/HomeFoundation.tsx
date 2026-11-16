@@ -10,9 +10,9 @@ import { createDemoFlashes } from "@/domains/flash/model/demo-flashes";
 import { VitalisVisionCard } from "@/components/experience/VitalisVisionCard";
 
 const HOME_PHOTO =
-  "https://images.unsplash.com/photo-1761666520005-3ffcf13e74c8?auto=format&fit=crop&fm=jpg&ixid=NHwxMjA3fDA%3D&ixlib=rb-4.1.0&q=80&w=1800";
+  "https://images.pexels.com/photos/3797402/pexels-photo-3797402.jpeg?auto=compress&cs=tinysrgb&w=1800";
 const HOME_PHOTO_SOURCE =
-  "https://unsplash.com/photos/a-diverse-group-of-people-sitting-together-fOeH7Nh2oy0";
+  "https://www.pexels.com/photo/diverse-group-of-people-gathering-together-3797402/";
 
 type EngineCardProps = {
   to: "/flash" | "/scan" | "/reel" | "/radar";
@@ -111,6 +111,7 @@ export function HomeFoundation() {
         className="relative isolate flex min-h-[25rem] overflow-hidden rounded-[2rem] bg-slate-950 shadow-[0_24px_70px_-36px_rgba(15,23,42,0.7)] sm:min-h-[31rem]"
       >
         <img
+          data-home-hero-photo
           src={HOME_PHOTO}
           alt=""
           aria-hidden="true"
