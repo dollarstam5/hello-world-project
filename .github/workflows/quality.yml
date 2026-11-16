@@ -97,5 +97,5 @@ jobs:
           SUPABASE_URL: https://ci-placeholder.supabase.co
           SUPABASE_PUBLISHABLE_KEY: sb_publishable_ci_placeholder
           SUPABASE_SERVICE_ROLE_KEY: ci_service_role_placeholder_000000000000
-          NODE_ENV: production
+          # Vite's build command selects production mode itself. Keep tests in their test environment.
         run: bun run check:release
