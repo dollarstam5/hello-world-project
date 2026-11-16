@@ -9,11 +9,6 @@ import { useIdentity } from "@/lib/experience/identity";
 import { createDemoFlashes } from "@/domains/flash/model/demo-flashes";
 import { VitalisVisionCard } from "@/components/experience/VitalisVisionCard";
 
-const HOME_PHOTO =
-  "https://images.pexels.com/photos/3797402/pexels-photo-3797402.jpeg?auto=compress&cs=tinysrgb&w=1800";
-const HOME_PHOTO_SOURCE =
-  "https://www.pexels.com/photo/diverse-group-of-people-gathering-together-3797402/";
-
 type EngineCardProps = {
   to: "/flash" | "/scan" | "/reel" | "/radar";
   icon: LucideIcon;
@@ -108,23 +103,9 @@ export function HomeFoundation() {
     <div className="page-shell stack-8">
       <section
         aria-labelledby="home-welcome-title"
-        className="relative isolate flex min-h-[25rem] overflow-hidden rounded-[2rem] bg-slate-950 shadow-[0_24px_70px_-36px_rgba(15,23,42,0.7)] sm:min-h-[31rem]"
+        className="relative isolate flex min-h-[25rem] overflow-hidden rounded-[2rem] bg-gradient-to-br from-primary/25 via-card to-card shadow-sm sm:min-h-[31rem]"
       >
-        <img
-          data-home-hero-photo
-          src={HOME_PHOTO}
-          alt=""
-          aria-hidden="true"
-          className="absolute inset-0 h-full w-full object-cover object-center"
-          loading="eager"
-          fetchPriority="high"
-          decoding="sync"
-        />
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/45 to-slate-950/10"
-        />
-        <div className="relative z-10 flex w-full flex-col justify-between gap-10 p-5 text-white sm:p-8">
+        <div className="relative z-10 flex w-full flex-col justify-between gap-10 p-5 text-foreground sm:p-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <span className="rounded-full border border-white/25 bg-slate-950/35 px-3 py-1.5 text-xs font-medium text-white shadow-sm backdrop-blur-sm">
               {identityLabel}
@@ -134,7 +115,7 @@ export function HomeFoundation() {
             </span>
           </div>
           <div className="max-w-2xl space-y-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/80">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
               {t("home.hero.eyebrow")}
             </p>
             <h1
@@ -143,18 +124,10 @@ export function HomeFoundation() {
             >
               {greeting}
             </h1>
-            <p className="max-w-xl text-base leading-relaxed text-white/90 sm:text-lg">
+            <p className="max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
               {t("home.subtitle")}
             </p>
           </div>
-          <a
-            href={HOME_PHOTO_SOURCE}
-            target="_blank"
-            rel="noreferrer"
-            className="self-end rounded-full bg-slate-950/45 px-3 py-1.5 text-[11px] text-white/85 backdrop-blur-sm underline-offset-2 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-          >
-            {t("home.hero.photoCredit")}
-          </a>
         </div>
       </section>
 
