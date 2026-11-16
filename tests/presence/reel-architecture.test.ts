@@ -41,8 +41,17 @@ describe("Instant architecture boundaries", () => {
     expect(guestPresenceActivation).not.toContain("requestDiscovery()");
   });
 
-  it("uses the header visibility control only for the user's own presence", () => {
-    expect(screenSource).toContain("reel-proximity__presence-toggle");
+  it("keeps nearby discovery and personal presence as separate controls", () => {
+    expect(screenSource).toContain("reel-proximity__discovery-toggle");
+    expect(screenSource).toContain("if (discoveryEnabled) ignoreLocation()");
+    expect(screenSource).toContain("else void requestDiscovery()");
+    expect(screenSource).toContain("reel-radar__me");
+    expect(screenSource).toContain("void stopPresence()");
+    expect(screenSource).toContain("void stopGuestPresence()");
+    expect(screenSource).toContain("void activatePresence()");
+    expect(screenSource).toContain("void activateGuestPresence()");
+    expect(screenSource).toContain("isPresenceActive && (");
+    expect(screenSource).not.toContain("reel-proximity__presence-toggle");
     expect(screenSource).toContain("<h1>En direct</h1>");
     expect(screenSource).toContain("reel-proximity__live-indicator");
     expect(screenSource).toContain('<RadioTower aria-hidden="true" />');
@@ -128,6 +137,17 @@ describe("Instant architecture boundaries", () => {
     expect(screenSource).toContain('t("reel.ui.noNearby")');
     expect(screenSource).not.toContain("reel-nearby-preview__empty");
     expect(screenSource).not.toContain("reel-presence-stack");
+  });
+
+  it("explains discovery, presence, radar, radius and privacy in a settings help dialog", () => {
+    expect(screenSource).toContain('onClick={() => setSettingsHelpOpen(true)}');
+    expect(screenSource).toContain('role="dialog"');
+    expect(screenSource).toContain('t("reel.ui.helpDiscoveryTitle")');
+    expect(screenSource).toContain('t("reel.ui.helpPresenceTitle")');
+    expect(screenSource).toContain('t("reel.ui.helpRadarTitle")');
+    expect(screenSource).toContain('t("reel.ui.helpRadiusTitle")');
+    expect(screenSource).toContain('t("reel.ui.helpPrivacyTitle")');
+    expect(screenSource).toContain('t("reel.ui.settingsHelpTitle")');
   });
 
   it("offers a short, dismissible guided tour without enabling discovery or presence", () => {
