@@ -16,7 +16,7 @@ const scanQuerySchema = z
 
 /** Public proximity search; no account required, no private data returned. */
 export const scanNearby = createServerFn({ method: "POST" })
-  .inputValidator(scanQuerySchema)
+  .validator(scanQuerySchema)
   .handler(async ({ data }): Promise<ScanResult[]> =>
     (await import("./scan.server")).scanPublicFlashes(data),
   );
