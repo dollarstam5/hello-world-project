@@ -956,7 +956,7 @@ export const messages = {
     "assistant.send": "Send question",
     "assistant.reset": "Clear conversation",
     "assistant.privacy": "Never share a password, secret code or confidential document.",
-    "assistant.source.instant": "⚡ Live answer",
+    "assistant.source.instant": "⚡ Immediate answer",
     "assistant.source.ai": "🤖 AI",
     "update.title": "A new version is ready",
     "update.subtitle": "Reload to get the latest improvements.",
