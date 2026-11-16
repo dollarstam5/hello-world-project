@@ -20,7 +20,7 @@ jobs:
     timeout-minutes: 50
     steps:
       - name: Checkout without persisted credentials
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           persist-credentials: false
 
@@ -30,7 +30,7 @@ jobs:
           bun-version: "1.2.23"
 
       - name: Install Supabase CLI
-        uses: supabase/setup-cli@v1
+        uses: supabase/setup-cli@v3
         with:
           version: "3.0.0"
 
@@ -83,7 +83,7 @@ jobs:
 
       - name: Upload mobile production screenshots
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: mobile-production-smoke-${{ github.run_id }}
           path: artifacts/mobile-smoke/
