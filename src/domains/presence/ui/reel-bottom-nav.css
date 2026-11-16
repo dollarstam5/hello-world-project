@@ -158,7 +158,7 @@
   margin: 0 auto;
   padding: 0.45rem 0.35rem 0.35rem;
   list-style: none;
-  border: 1px solid var(--border);
+  border: 1px solid rgb(255 255 255 / 14%);
   border-radius: 1.45rem;
   background: rgb(24 30 42 / 97%);
   box-shadow: 0 0.65rem 2rem rgb(0 0 0 / 22%);
@@ -215,7 +215,7 @@
   width: 1.15rem;
   height: 2px;
   border-radius: 999px;
-  background: var(--primary);
+  background: #62a8ff;
 }
 
 .reel-bottom-nav__center-wrap {
@@ -244,7 +244,7 @@
 
 .reel-bottom-nav__control:focus-visible {
   border-radius: 0.8rem;
-  outline: 2px solid var(--ring);
+  outline: 2px solid #62a8ff;
   outline-offset: 2px;
 }
 
