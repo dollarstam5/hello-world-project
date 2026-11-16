@@ -59,16 +59,17 @@ if ! curl --silent --fail "$BASE_URL/" >/dev/null; then
   exit 1
 fi
 
-# Keep the five core routes and the 390 × 844 Réel reference viewport.
+# Check all six public entry routes at four viewport sizes in both supported locales.
 for locale in fr en; do
   STORAGE_STATE="${STORAGE_STATE_BASE}-${locale}.json"
-  for route in "/" "/flash" "/scan" "/reel" "/radar"; do
+  for route in "/" "/flash" "/scan" "/reel" "/radar" "/vision"; do
     selector="#home-engines-title"
     case "$route" in
       "/flash") selector="main h1" ;;
       "/scan") selector="#scan-radius" ;;
       "/reel") selector=".reel-proximity" ;;
       "/radar") selector="main h1" ;;
+      "/vision") selector="main h1" ;;
     esac
 
     for viewport in "360,800" "390,844" "412,915" "768,1024"; do
@@ -78,6 +79,7 @@ for locale in fr en; do
         "/scan") output="$OUTPUT_DIR/vitalis-route-scan-${viewport//,/-}-${locale}.png" ;;
         "/reel") output="$OUTPUT_DIR/vitalis-route-reel-${viewport//,/-}-${locale}.png" ;;
         "/radar") output="$OUTPUT_DIR/vitalis-route-radar-${viewport//,/-}-${locale}.png" ;;
+        "/vision") output="$OUTPUT_DIR/vitalis-route-vision-${viewport//,/-}-${locale}.png" ;;
       esac
       bunx playwright screenshot \
         --browser=chromium \
@@ -97,4 +99,4 @@ CHROMIUM_BIN="$(find "$HOME/.cache/ms-playwright" -type f -name chrome -print -q
 test -n "$CHROMIUM_BIN"
 bun scripts/check-mobile-scroll.mjs "$CHROMIUM_BIN" "$BASE_URL"
 
-echo "Production mobile E2E smoke validation passed for Home, Flash, Scan, En direct and Radar at four target viewports in French and English (40 screenshots), including bottom-scroll clearance assertions for Flash and Scan."
+echo "Production mobile E2E smoke validation passed for Home, Flash, Scan, En direct, Radar and Vision at four target viewports in French and English (48 screenshots), including bottom-scroll clearance assertions for Flash and Scan."

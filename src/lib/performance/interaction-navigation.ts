@@ -96,7 +96,11 @@ export function startInteractionMonitoring(
       }
     });
 
-    observer.observe({ type: "event", buffered: true, durationThreshold: 16 } as PerformanceObserverInit);
+    observer.observe({
+      type: "event",
+      buffered: true,
+      durationThreshold: 16,
+    } as PerformanceObserverInit);
   } catch {
     return () => undefined;
   }

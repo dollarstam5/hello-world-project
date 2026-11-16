@@ -19,6 +19,7 @@ import { Route as ReelRouteImport } from './routes/reel'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ScanRouteImport } from './routes/scan'
 import { Route as TalentsRouteImport } from './routes/talents'
+import { Route as VisionRouteImport } from './routes/vision'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as ApiHealthRouteImport } from './routes/api/health'
 import { Route as EspaceApercuRouteImport } from './routes/espace.apercu'
@@ -81,6 +82,11 @@ const TalentsRoute = TalentsRouteImport.update({
   path: '/talents',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VisionRoute = VisionRouteImport.update({
+  id: '/vision',
+  path: '/vision',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./routes/vision.lazy').then((d) => d.Route))
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -160,6 +166,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/scan': typeof ScanRoute
   '/talents': typeof TalentsRoute
+  '/vision': typeof VisionRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/api/health': typeof ApiHealthRoute
   '/espace/apercu': typeof EspaceApercuRoute
@@ -183,6 +190,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/scan': typeof ScanRoute
   '/talents': typeof TalentsRoute
+  '/vision': typeof VisionRoute
   '/api/health': typeof ApiHealthRoute
   '/espace/apercu': typeof EspaceApercuRoute
   '/espace/informations': typeof EspaceInformationsRoute
@@ -232,6 +240,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/scan'
     | '/talents'
+    | '/vision'
     | '/admin'
     | '/api/health'
     | '/espace/apercu'
@@ -255,6 +264,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/scan'
     | '/talents'
+    | '/vision'
     | '/api/health'
     | '/espace/apercu'
     | '/espace/informations'
@@ -278,6 +288,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/scan'
     | '/talents'
+    | '/vision'
     | '/_authenticated/admin'
     | '/api/health'
     | '/espace/apercu'
@@ -303,6 +314,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   ScanRoute: typeof ScanRoute
   TalentsRoute: typeof TalentsRoute
+  VisionRoute: typeof VisionRoute
   ApiHealthRoute: typeof ApiHealthRoute
   ApiPublicAssistantRoute: typeof ApiPublicAssistantRoute
   ApiSyncPullRoute: typeof ApiSyncPullRoute
@@ -379,6 +391,13 @@ declare module '@tanstack/react-router' {
       path: '/talents'
       fullPath: '/talents'
       preLoaderRoute: typeof TalentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vision': {
+      id: '/vision'
+      path: '/vision'
+      fullPath: '/vision'
+      preLoaderRoute: typeof VisionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin': {
@@ -522,6 +541,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   ScanRoute: ScanRoute,
   TalentsRoute: TalentsRoute,
+  VisionRoute: VisionRoute,
   ApiHealthRoute: ApiHealthRoute,
   ApiPublicAssistantRoute: ApiPublicAssistantRoute,
   ApiSyncPullRoute: ApiSyncPullRoute,

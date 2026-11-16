@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Compass, Radar, RadioTower, ScanLine, Zap, ArrowUpRight } from "lucide-react";
+import { Radar, RadioTower, ScanLine, Zap, ArrowUpRight } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Surface } from "@/components/app/Surface";
 import { PublicProfilePreview } from "@/components/app/PublicProfilePreview";
@@ -7,6 +7,7 @@ import { Indicator } from "@/components/app/Indicator";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useIdentity } from "@/lib/experience/identity";
 import { createDemoFlashes } from "@/domains/flash/model/demo-flashes";
+import { VitalisVisionCard } from "@/components/experience/VitalisVisionCard";
 
 type EngineCardProps = {
   to: "/flash" | "/scan" | "/reel" | "/radar";
@@ -100,13 +101,35 @@ export function HomeFoundation() {
 
   return (
     <div className="page-shell stack-8">
-      <header className="stack-3 motion-rise-in">
-        <Indicator tone="primary" label={identityLabel} dot />
-        <div className="stack-2">
-          <h1 className="text-fluid-display-lg max-w-[14ch]">{greeting}</h1>
-          <p className="text-subtitle max-w-prose">{t("home.subtitle")}</p>
+      <section
+        aria-labelledby="home-welcome-title"
+        className="relative isolate flex min-h-[25rem] overflow-hidden rounded-[2rem] bg-gradient-to-br from-primary/25 via-card to-card shadow-sm sm:min-h-[31rem]"
+      >
+        <div className="relative z-10 flex w-full flex-col justify-between gap-10 p-5 text-foreground sm:p-8">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <span className="rounded-full border border-border bg-surface/90 px-3 py-1.5 text-xs font-medium text-foreground shadow-sm">
+              {identityLabel}
+            </span>
+            <span className="rounded-full bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary">
+              {t("app.tagline")}
+            </span>
+          </div>
+          <div className="max-w-2xl space-y-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              {t("home.hero.eyebrow")}
+            </p>
+            <h1
+              id="home-welcome-title"
+              className="max-w-[13ch] text-4xl font-semibold leading-[1.04] tracking-tight text-foreground sm:text-5xl lg:text-6xl"
+            >
+              {greeting}
+            </h1>
+            <p className="max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+              {t("home.subtitle")}
+            </p>
+          </div>
         </div>
-      </header>
+      </section>
 
       <section className="stack-4" aria-labelledby="home-engines-title">
         <div className="stack-1">
@@ -192,9 +215,13 @@ export function HomeFoundation() {
         </div>
       </section>
 
+      <VitalisVisionCard />
+
       <Surface variant="sunken" padding="md" bordered className="flex items-start gap-3">
         <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-surface text-muted-foreground">
-          <Compass className="h-5 w-5" aria-hidden />
+          <span className="text-xl leading-none" aria-hidden="true">
+            ✧
+          </span>
         </span>
         <p className="text-sm leading-relaxed text-muted-foreground">{t("home.menuHint")}</p>
       </Surface>

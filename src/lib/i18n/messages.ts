@@ -83,6 +83,7 @@ export const messages = {
     "communication.reel.empty":
       "Les bips reçus apparaîtront ici pendant votre présence active. Aucun bip fictif n’est ajouté.",
     "home.welcome": "Bienvenue dans Vitalis",
+    "home.hero.eyebrow": "Des rencontres et des coups de main, tout près de vous",
     "home.welcome.guest": "Bonjour et bienvenue chez Vitalis !",
     "home.welcome.named": "Bonjour, {name} !",
     "home.demo.title": "Un petit aperçu de Vitalis",
@@ -955,6 +956,11 @@ export const messages = {
     "admin.support.description": "Les demandes venues des personnes",
     "admin.administration.label": "Administration",
     "admin.administration.description": "Qui a le droit de faire quoi",
+    "vision.card.eyebrow": "Comprendre Vitalis",
+    "vision.card.title": "Découvrez la vision réelle de Vitalis",
+    "vision.card.description":
+      "Comprenez à quoi sert l’application, comment ses quatre moteurs fonctionnent ensemble, ce que vous pouvez faire et les règles qui protègent vos échanges.",
+    "vision.card.action": "Explorer la vision complète",
   },
   en: {
     "app.name": "Vitalis",
@@ -1027,6 +1033,7 @@ export const messages = {
     "communication.reel.empty":
       "Received signals will appear here while your presence is active. No sample signals are added.",
     "home.welcome": "Welcome to Vitalis",
+    "home.hero.eyebrow": "Real people. Useful connections. Nearby.",
     "home.welcome.guest": "Hello, and welcome to Vitalis!",
     "home.welcome.named": "Hello, {name}!",
     "home.demo.title": "A little look at Vitalis",
@@ -1871,6 +1878,11 @@ export const messages = {
     "admin.support.description": "Requests coming from people",
     "admin.administration.label": "Administration",
     "admin.administration.description": "Who is allowed to do what",
+    "vision.card.eyebrow": "Understand Vitalis",
+    "vision.card.title": "Discover the real vision behind Vitalis",
+    "vision.card.description":
+      "Understand what the app is for, how its four engines work together, what you can do, and the rules that protect your interactions.",
+    "vision.card.action": "Explore the full vision",
   },
 } as const;
 
