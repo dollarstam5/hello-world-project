@@ -28,8 +28,6 @@ import { ReelSettingsPanel } from "./components/ReelSettingsPanel";
 import { ReelActivityPanel } from "./components/ReelActivityPanel";
 import "./reel-proximity.css";
 
-const DURATIONS = ["30 min", "1 h", "2 h", "3 h", "6 h", "12 h", "24 h"];
-const RADII = ["10 m", "25 m", "50 m", "100 m", "1 km"];
 export function ReelProximityScreen() {
   const { t } = useI18n();
   const [tourOpen, setTourOpen] = useState(false);
