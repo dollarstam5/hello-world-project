@@ -31,25 +31,6 @@ import "./reel-proximity.css";
 
 const DURATIONS = ["30 min", "1 h", "2 h", "3 h", "6 h", "12 h", "24 h"];
 const RADII = ["10 m", "25 m", "50 m", "100 m", "1 km"];
-const TOUR_TITLE_KEYS = [
-  "reel.ui.tour.title1",
-  "reel.ui.tour.title2",
-  "reel.ui.tour.title3",
-  "reel.ui.tour.title4",
-] as const;
-const TOUR_DESCRIPTION_KEYS = [
-  "reel.ui.tour.description1",
-  "reel.ui.tour.description2",
-  "reel.ui.tour.description3",
-  "reel.ui.tour.description4",
-] as const;
-const TOUR_STEP_KEYS = [
-  "reel.ui.tour.step1",
-  "reel.ui.tour.step2",
-  "reel.ui.tour.step3",
-  "reel.ui.tour.step4",
-] as const;
-
 export function ReelProximityScreen() {
   const { t } = useI18n();
   const [tourOpen, setTourOpen] = useState(false);
