@@ -105,5 +105,4 @@ describe("Home journey guidance", () => {
     expect(messages.fr["vision.deep.status.body"]).toBeTruthy();
     expect(messages.en["vision.deep.status.body"]).toBeTruthy();
   });
-
 });
