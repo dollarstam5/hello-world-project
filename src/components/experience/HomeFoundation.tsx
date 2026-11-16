@@ -7,6 +7,7 @@ import { Indicator } from "@/components/app/Indicator";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useIdentity } from "@/lib/experience/identity";
 import { createDemoFlashes } from "@/domains/flash/model/demo-flashes";
+import { VitalisVisionCard } from "@/components/experience/VitalisVisionCard";
 
 const HOME_PHOTO =
   "https://images.unsplash.com/photo-1761666520005-3ffcf13e74c8?auto=format&fit=crop&w=1800&q=80";
@@ -240,6 +241,8 @@ export function HomeFoundation() {
           ))}
         </div>
       </section>
+
+      <VitalisVisionCard />
 
       <Surface variant="sunken" padding="md" bordered className="flex items-start gap-3">
         <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-surface text-muted-foreground">
