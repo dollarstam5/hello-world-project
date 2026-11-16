@@ -475,3 +475,7 @@ Les workflows ont été exécutés sur le SHA `7b6fbdcc2fd69cbc73aa4189c069b1714
 6. Effectuer le contrôle visuel réel de la route Instant/Réel sur les tailles mobiles prévues.
 
 **Périmètre :** cette clôture concerne uniquement les fondations déjà engagées de la phase B. La phase C n'est pas commencée ; conversations, messagerie, notifications générales et autres extensions C ne sont ni incluses ni déclarées livrées.
+
+## Synchronisation avec main — 16 novembre 2026
+
+La branche a été synchronisée avec le commit `d1f9eeac795fc9b295bf97478b56bd2a5e0b5ede` de `main` (PR #78). Les changements fonctionnels de cette PR ont été conservés et les deux documents de suivi ont été réconciliés avec les mises à jour de `main`. Les contrôles Quality et Dependency Review réussis sur la tête précédente `7b6fbdcc2fd69cbc73aa4189c069b1714fbb2f65` restent une preuve historique ; ils doivent être relancés sur la nouvelle tête synchronisée avant toute fusion.
