@@ -505,7 +505,7 @@ export const messages = {
     "reel.ui.enableDiscovery": "Activer la découverte",
     "reel.ui.radius": "Rayon de proximité",
     "reel.ui.radiusNote":
-      "Le rayon choisi est appliqué côté serveur en mètres. Les positions précises restent privées et temporaires ; aucune distance exacte n’est affichée. La précision dépend aussi du GPS de votre appareil.",
+      "Le rayon est une préférence de proximité. La zone actuelle repose sur un découpage approximatif : elle ne garantit pas une distance exacte en mètres. Les positions GPS précises restent privées et temporaires.",
     "reel.ui.radiusNextTime":
       "Votre présence est déjà active : les changements de rayon ou de durée s’appliqueront à la prochaine activation, pas à celle-ci.",
     "reel.ui.duration": "Durée souhaitée",
@@ -1449,7 +1449,7 @@ export const messages = {
     "reel.ui.calmNotifications":
       "In calm mode, alerts are paused. You can still view your connections.",
     "reel.ui.radiusApplied":
-      "Your selected radius is applied by the server in metres. Precise locations stay private and temporary; exact distances are never shown. Accuracy also depends on your device’s GPS.",
+      "Your radius is a proximity preference. The current area lookup uses an approximate grid and does not guarantee an exact distance in metres. Precise GPS locations remain private and temporary.",
     "reel.ui.guestPresenceActive":
       "Your presence is already active. Radius or duration changes will apply the next time you activate it.",
     "reel.ui.guestActiveDuration":
