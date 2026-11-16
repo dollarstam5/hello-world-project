@@ -84,7 +84,9 @@ describe("Instant architecture boundaries", () => {
   });
 
   it("uses the central radar profile to activate or stop personal presence", () => {
-    expect(screenSource).toContain('className={`reel-radar__me${isPresenceActive ? " is-presence-active" : ""}`}');
+    expect(screenSource).toContain(
+      'className={`reel-radar__me${isPresenceActive ? " is-presence-active" : ""}`}',
+    );
     expect(screenSource).toContain("aria-pressed={isPresenceActive}");
     expect(screenSource).toContain("void activatePresence()");
     expect(screenSource).toContain("void activateGuestPresence()");
@@ -143,7 +145,7 @@ describe("Instant architecture boundaries", () => {
   });
 
   it("explains discovery, presence, radar, radius and privacy in a settings help dialog", () => {
-    expect(screenSource).toContain('onClick={() => setSettingsHelpOpen(true)}');
+    expect(screenSource).toContain("onClick={() => setSettingsHelpOpen(true)}");
     expect(screenSource).toContain('role="dialog"');
     expect(screenSource).toContain('t("reel.ui.helpDiscoveryTitle")');
     expect(screenSource).toContain('t("reel.ui.helpPresenceTitle")');
