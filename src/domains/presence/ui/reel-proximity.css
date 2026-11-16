@@ -1844,3 +1844,58 @@
     transition: none;
   }
 }
+
+
+/* En direct: subtle live marker beside the page title. */
+.reel-proximity__heading {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.reel-proximity__live-indicator {
+  position: relative;
+  display: inline-block;
+  width: 0.48rem;
+  height: 0.48rem;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #f04452;
+  box-shadow: 0 0 0 0 rgb(240 68 82 / 42%);
+  animation: reel-live-pulse 1.8s ease-out infinite;
+}
+
+@keyframes reel-live-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgb(240 68 82 / 42%);
+    opacity: 1;
+  }
+  70% {
+    box-shadow: 0 0 0 0.42rem rgb(240 68 82 / 0%);
+    opacity: 0.9;
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgb(240 68 82 / 0%);
+    opacity: 1;
+  }
+}
+
+/* Simplified central identity: keep only the outward radar-wave strokes. */
+.reel-radar__outer-halo,
+.reel-radar__outer-ring,
+.reel-radar__inner-ring {
+  display: none;
+}
+
+.reel-proximity__radar::before,
+.reel-proximity__radar::after {
+  border-color: rgb(38 132 255 / 34%);
+  box-shadow: 0 0 0.65rem rgb(38 132 255 / 16%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reel-proximity__live-indicator {
+    animation: none;
+    box-shadow: 0 0 0 0.12rem rgb(240 68 82 / 18%);
+  }
+}
