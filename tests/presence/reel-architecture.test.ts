@@ -129,4 +129,13 @@ describe("Instant architecture boundaries", () => {
     expect(screenSource).not.toContain("reel-nearby-preview__empty");
     expect(screenSource).not.toContain("reel-presence-stack");
   });
+
+
+  it("offers a short, dismissible guided tour without enabling discovery or presence", () => {
+    expect(screenSource).toContain('window.localStorage.getItem("vitalis-reel-tour-seen")');
+    expect(screenSource).toContain("onClick={openTour}");
+    expect(screenSource).toContain('aria-modal="true"');
+    expect(screenSource).toContain('t("reel.ui.tour.finish")');
+    expect(screenSource).not.toContain("requestDiscovery()");
+  });
 });
