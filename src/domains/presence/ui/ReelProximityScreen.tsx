@@ -425,19 +425,12 @@ export function ReelProximityScreen() {
             ))}
           </div>
         </section>
-      ) : (access.mode === "guest" || access.mode === "visitor") ? (
-        <section className="reel-nearby-preview reel-nearby-preview--empty" aria-label={t("reel.ui.peopleNearby")}>
-          <div className="reel-nearby-preview__header">
-            <div>
-              <p>{t("reel.ui.peopleNearby")}</p>
-              <strong>—</strong>
-            </div>
-          </div>
-          <div className="reel-nearby-preview__empty">
-            <UsersRound aria-hidden="true" />
-            <strong>{t("reel.ui.noPeople")}</strong>
-            <span>{t("reel.ui.noProfilesHint")}</span>
-
+      ) : discoveryEnabled ? (
+        <section className="reel-live-empty" aria-live="polite">
+          <UsersRound aria-hidden="true" />
+          <div>
+            <strong>{t("reel.ui.noNearby")}</strong>
+            <p>{t("reel.ui.noProfilesHint")}</p>
           </div>
         </section>
       ) : null}
