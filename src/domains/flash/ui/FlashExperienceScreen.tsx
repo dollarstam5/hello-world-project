@@ -8,7 +8,6 @@ import { FlashFeed } from "./FlashFeed";
 import { FlashComposerDialog } from "./FlashComposerDialog";
 import { MyFlashManagement } from "./MyFlashManagement";
 import { useFlashComposer } from "./useFlashComposer";
-import { VitalisVisionCard } from "@/components/experience/VitalisVisionCard";
 
 type FlashTab = "discover" | "mine";
 
@@ -145,7 +144,6 @@ export function FlashExperienceScreen() {
         )}
       </div>
 
-      <VitalisVisionCard />
 
       <FlashComposerDialog state={composer} user={user} authLoading={authLoading} />
     </section>
