@@ -8,7 +8,7 @@ Le gestionnaire central fournit un contexte d'accès commun. Le moteur de décis
 
 Il couvre les cinq espaces Vitalis :
 
-- Réel ;
+- En direct ;
 - Flash ;
 - Scan ;
 - Radar ;
@@ -78,12 +78,12 @@ Les informations non fournies ne sont pas inventées. Les contrôles métier abs
 | Situation                          | Présentation publique   | Entrée moteur       | Action métier                                                 |
 | ---------------------------------- | ----------------------- | ------------------- | ------------------------------------------------------------- |
 | Visiteur                           | Autorisée               | Refusée             | Refusée                                                       |
-| Invité                             | Autorisée               | Réel uniquement     | Vérification serveur obligatoire, sans autorisation implicite |
+| Invité                             | Autorisée               | En direct uniquement     | Vérification serveur obligatoire, sans autorisation implicite |
 | Membre actif                       | Autorisée               | Espaces des moteurs | Vérification serveur obligatoire                              |
 | Profil invité/incomplet            | Présentation uniquement | Refusée             | Refusée                                                       |
 | Profil suspendu/fermé/invérifiable | Présentation uniquement | Refusée             | Refusée                                                       |
 
-L'entrée invité dans Réel ouvre uniquement le parcours d'accueil invité. Les opérations Réel pour invités ne sont pas encore activées par ce moteur central.
+L'entrée invité dans En direct ouvre uniquement le parcours d'accueil invité. Les opérations En direct pour invités ne sont pas encore activées par ce moteur central.
 
 ## 6. Hors ligne et données
 
@@ -105,14 +105,14 @@ Une commande hors ligne doit rester minimale, être rattachée à son propriéta
 - Aucune ligne dans `auth.users` ou `public.profiles`.
 - Aucun stockage durable de l'identité invitée dans `localStorage` ou `sessionStorage`.
 - Fin de session, révocation et expiration doivent effacer l'accès temporaire.
-- Le service de session invité existe dans `src/domains/presence/api/`, mais n'autorise encore aucune opération métier Réel.
+- Le service de session invité existe dans `src/domains/presence/api/`, mais n'autorise encore aucune opération métier En direct.
 - Durée d'une heure provisoire ; protections anti-abus et purge effective à vérifier avant exposition publique.
 
 Voir [Architecture de session invitée éphémère](../03-engines/reel/reel-guest-session-architecture.md).
 
 ## 9. Matrice des droits par moteur
 
-La matrice de référence pour Réel, Flash, Scan, Radar et 2×2 est maintenue dans [Matrice centrale des droits et décisions Vitalis](./vitalis-engine-decision-matrix.md). Elle distingue les règles déjà connues des décisions encore à spécifier ; une capacité non confirmée reste désactivée.
+La matrice de référence pour En direct, Flash, Scan, Radar et 2×2 est maintenue dans [Matrice centrale des droits et décisions Vitalis](./vitalis-engine-decision-matrix.md). Elle distingue les règles déjà connues des décisions encore à spécifier ; une capacité non confirmée reste désactivée.
 
 ## 10. Tests et limites actuelles
 
