@@ -37,14 +37,14 @@ const guestPresenceInput = z.object({
 });
 
 export const startReelGuestPresence = createServerFn({ method: "POST" })
-  .inputValidator(guestPresenceInput)
+  .validator(guestPresenceInput)
   .handler(async ({ data }) => {
     const { startReelGuestPresence: start } = await import("./reel-guest-session.server");
     return start(data);
   });
 
 export const endReelGuestPresence = createServerFn({ method: "POST" })
-  .inputValidator(z.object({ presenceId: z.string().uuid() }))
+  .validator(z.object({ presenceId: z.string().uuid() }))
   .handler(async ({ data }) => {
     const { endReelGuestPresence: end } = await import("./reel-guest-session.server");
     return end(data.presenceId);
@@ -55,7 +55,7 @@ const guestDiscoveryInput = z.object({
 });
 
 export const discoverReelGuestNearby = createServerFn({ method: "POST" })
-  .inputValidator(guestDiscoveryInput)
+  .validator(guestDiscoveryInput)
   .handler(async ({ data }) => {
     const { discoverReelGuestNearby: discover } = await import("./reel-guest-session.server");
     return discover(data.latitude, data.longitude);
@@ -73,7 +73,7 @@ const guestBipSendInput = z.object({
 });
 
 export const sendReelGuestBip = createServerFn({ method: "POST" })
-  .inputValidator(guestBipSendInput)
+  .validator(guestBipSendInput)
   .handler(async ({ data }) => {
     const { sendReelGuestBip: send } = await import("./reel-guest-session.server");
     return send(data.recipientActorKind, data.recipientPresenceId, data.clientRequestId);
@@ -90,7 +90,7 @@ export const listMyReelGuestBips = createServerFn({ method: "GET" }).handler(asy
 });
 
 export const commandMyReelGuestBip = createServerFn({ method: "POST" })
-  .inputValidator(guestBipCommandInput)
+  .validator(guestBipCommandInput)
   .handler(async ({ data }) => {
     const { commandMyReelGuestBip: command } = await import("./reel-guest-session.server");
     return command(data.bipId, data.action);
@@ -102,7 +102,7 @@ export const listMyReelGuestConnections = createServerFn({ method: "GET" }).hand
 });
 
 export const closeMyReelGuestConnection = createServerFn({ method: "POST" })
-  .inputValidator(z.object({ connectionId: z.string().uuid() }))
+  .validator(z.object({ connectionId: z.string().uuid() }))
   .handler(async ({ data }) => {
     const { closeMyReelGuestConnection: close } = await import("./reel-guest-session.server");
     return close(data.connectionId);
