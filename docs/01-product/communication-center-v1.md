@@ -11,9 +11,9 @@ La cloche ouvre un centre unique de contrôle des communications et événements
 | 1     | Notifications | Informations système, alertes et changements d'état utiles à la personne.                            |
 | 2     | Assistant     | Accès à Vita, aide contextuelle et suivi des demandes d'assistance.                                  |
 | 3     | Messages      | Conversations rattachées à une action ou à une mise en relation acceptée. Aucune messagerie libre.   |
-| 4     | Réel          | Demandes, invitations, acceptations et interactions Réel qui nécessitent une décision ou une action. |
+| 4     | En direct          | Demandes, invitations, acceptations et interactions En direct qui nécessitent une décision ou une action. |
 
-L'onglet Réel est un point de contrôle et d'accès aux événements du moteur. Il ne constitue pas un second moteur Réel et ne duplique pas ses écrans opérationnels.
+L'onglet En direct est un point de contrôle et d'accès aux événements du moteur. Il ne constitue pas un second moteur En direct et ne duplique pas ses écrans opérationnels.
 
 ## Indicateurs et comptage
 
@@ -28,8 +28,8 @@ L'onglet Réel est un point de contrôle et d'accès aux événements du moteur.
 ## Règles métier et limites
 
 - Les Messages restent liés aux actions et mises en relation ; aucun canal de discussion libre n'est introduit.
-- Une conversation Réel ne devient disponible que dans le cadre de la mise en relation prévue par les règles du moteur.
-- La clôture d'une mise en relation suit le cycle du moteur Réel : elle s'applique aux deux personnes, désactive la communication associée et informe la personne concernée.
+- Une conversation En direct ne devient disponible que dans le cadre de la mise en relation prévue par les règles du moteur.
+- La clôture d'une mise en relation suit le cycle du moteur En direct : elle s'applique aux deux personnes, désactive la communication associée et informe la personne concernée.
 - En mode invité, aucun historique persistant n'est conservé. Avec un compte, l'historique suit les règles de rétention définies pour le moteur concerné.
 - Les Notifications ne doivent pas recopier intégralement une conversation ou un événement déjà consultable dans son espace spécialisé ; elles peuvent fournir un résumé et un lien vers celui-ci.
 
@@ -55,7 +55,7 @@ Aucun compteur dynamique ne doit être simulé côté interface en l'absence de 
 
 ## Critères d'acceptation
 
-- Les quatre onglets sont présents dans l'ordre Notifications, Assistant, Messages, Réel.
+- Les quatre onglets sont présents dans l'ordre Notifications, Assistant, Messages, En direct.
 - Les libellés sont disponibles en français et en anglais.
 - Les onglets restent utilisables sur petit écran sans débordement horizontal.
 - Les responsabilités et les règles de non-duplication sont respectées.
