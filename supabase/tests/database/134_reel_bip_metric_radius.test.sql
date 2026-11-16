@@ -61,11 +61,19 @@ SELECT lives_ok(
   'a bip is allowed across different HMAC cells when PostGIS confirms the recipient visibility radius'
 );
 
+RESET ROLE;
+SET LOCAL ROLE service_role;
+SELECT set_config(
+  'reel.test_outside_presence_id',
+  (SELECT id::text FROM public.reel_presences
+   WHERE owner_id = 'd4000000-0000-4000-8000-000000000003' AND status = 'active'),
+  true
+);
+SET LOCAL ROLE authenticated;
 SELECT set_config('request.jwt.claims', '{"sub":"d4000000-0000-4000-8000-000000000001","role":"authenticated"}', true);
 SELECT throws_ok(
   $reel_test$SELECT public.send_reel_bip(
-    (SELECT id FROM public.reel_presences
-     WHERE owner_id = 'd4000000-0000-4000-8000-000000000003' AND status = 'active'),
+    current_setting('reel.test_outside_presence_id')::uuid,
     'd4000000-0000-4000-8000-000000000412'
   )$reel_test$,
   '42501',
