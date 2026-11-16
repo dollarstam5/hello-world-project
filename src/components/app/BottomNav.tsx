@@ -24,7 +24,7 @@ interface BottomNavProps {
   menuOpen: boolean;
 }
 
-/** Five-point navigation with Réel centered; all existing destinations are preserved. */
+/** Five-point navigation with En direct centered; all existing destinations are preserved. */
 export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
   const { t } = useI18n();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
