@@ -84,9 +84,6 @@ export const messages = {
       "Les bips reçus apparaîtront ici pendant votre présence active. Aucun bip fictif n’est ajouté.",
     "home.welcome": "Bienvenue dans Vitalis",
     "home.hero.eyebrow": "Des rencontres et des coups de main, tout près de vous",
-    "home.hero.photoAlt":
-      "Un grand groupe de personnes réunies en plein air à São Paulo, au Brésil",
-    "home.hero.photoCredit": "Photo : Matheus Bertelli · Pexels",
     "home.welcome.guest": "Bonjour et bienvenue chez Vitalis !",
     "home.welcome.named": "Bonjour, {name} !",
     "home.demo.title": "Un petit aperçu de Vitalis",
@@ -1172,8 +1169,6 @@ export const messages = {
       "Received signals will appear here while your presence is active. No sample signals are added.",
     "home.welcome": "Welcome to Vitalis",
     "home.hero.eyebrow": "Real people. Useful connections. Nearby.",
-    "home.hero.photoAlt": "A large group of people gathered outdoors in São Paulo, Brazil",
-    "home.hero.photoCredit": "Photo: Matheus Bertelli · Pexels",
     "home.welcome.guest": "Hello, and welcome to Vitalis!",
     "home.welcome.named": "Hello, {name}!",
     "home.demo.title": "A little look at Vitalis",
