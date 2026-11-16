@@ -83,6 +83,9 @@ export const messages = {
     "communication.reel.empty":
       "Les bips reçus apparaîtront ici pendant votre présence active. Aucun bip fictif n’est ajouté.",
     "home.welcome": "Bienvenue dans Vitalis",
+    "home.hero.eyebrow": "Des rencontres et des coups de main, tout près de vous",
+    "home.hero.photoAlt": "Un groupe de personnes réunies en plein air à Kenema, en Sierra Leone",
+    "home.hero.photoCredit": "Photo : Random Institute · Sierra Leone",
     "home.welcome.guest": "Bonjour et bienvenue chez Vitalis !",
     "home.welcome.named": "Bonjour, {name} !",
     "home.demo.title": "Un petit aperçu de Vitalis",
@@ -1027,6 +1030,9 @@ export const messages = {
     "communication.reel.empty":
       "Received signals will appear here while your presence is active. No sample signals are added.",
     "home.welcome": "Welcome to Vitalis",
+    "home.hero.eyebrow": "Real people. Useful connections. Nearby.",
+    "home.hero.photoAlt": "A group of people gathered outdoors in Kenema, Sierra Leone",
+    "home.hero.photoCredit": "Photo: Random Institute · Sierra Leone",
     "home.welcome.guest": "Hello, and welcome to Vitalis!",
     "home.welcome.named": "Hello, {name}!",
     "home.demo.title": "A little look at Vitalis",
