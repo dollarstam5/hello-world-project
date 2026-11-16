@@ -26,6 +26,8 @@ import { ReelActivityPanel } from "./components/ReelActivityPanel";
 import { ReelHeader } from "./components/ReelHeader";
 import { ReelDiscoveryPrompt } from "./components/ReelDiscoveryPrompt";
 import { ReelNearbyPreview } from "./components/ReelNearbyPreview";
+import { ReelGlobalPanel } from "./components/ReelGlobalPanel";
+import { ReelPeoplePanel } from "./components/ReelPeoplePanel";
 import "./reel-proximity.css";
 
 export function ReelProximityScreen() {
@@ -238,64 +240,12 @@ export function ReelProximityScreen() {
 
             {panel === "settings" && <ReelSettingsPanel controller={controller} onOpenHelp={() => setSettingsHelpOpen(true)} onClose={() => setPanel(null)} />}
 
-            {panel === "global" && (
-              <>
-                <div className="reel-panel__eyebrow">
-                  <Globe aria-hidden="true" /> {t("reel.ui.global")}
-                </div>
-                <h2 id="reel-panel-title">{t("reel.ui.global")}</h2>
-                <div className="reel-panel__empty">
-                  <Globe aria-hidden="true" />
-                  <strong>{t("reel.ui.globalDiscoveries")}</strong>
-                  <span>
-                    {t("reel.ui.globalPaused")}
-                    {t("reel.ui.globalUnavailable")}
-                  </span>
-                </div>
-              </>
-            )}
+            {panel === "global" && <ReelGlobalPanel />}
 
             {panel === "activity" && <ReelActivityPanel controller={controller} />}
 
-            {panel === "people" && (
-              <>
-                <div className="reel-panel__eyebrow">
-                  <UsersRound aria-hidden="true" /> {t("reel.ui.peopleNearby")}
-                </div>
-                <h2 id="reel-panel-title">{t("reel.ui.allNearby")}</h2>
-                {discoveryEnabled && availablePeople.length ? (
-                  <div className="reel-people-list">
-                    {availablePeople.map((person) => (
-                      <button
-                        type="button"
-                        className="reel-people-list__item"
-                        key={person.id}
-                        onClick={() => openProfile(person)}
-                      >
-                        <PersonAvatar person={person} size="small" />
-                        <span>
-                          <strong>{person.name}</strong>
-                          <small>
-                            {person.description || person.category || t("reel.ui.nearbyProfile")}
-                          </small>
-                        </span>
-                        {person.distanceLabel && (
-                          <small className="reel-people-list__distance">
-                            {person.distanceLabel}
-                          </small>
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="reel-panel__empty">
-                    <UsersRound aria-hidden="true" />
-                    <strong>{t("reel.ui.noPeople")}</strong>
-                    <span>{t("reel.ui.noProfilesHint")}</span>
-                  </div>
-                )}
-              </>
-            )}
+            {panel === "people" && <ReelPeoplePanel controller={controller} />}
+
           </section>
         </div>
       )}
