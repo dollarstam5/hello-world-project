@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { messages } from "@/lib/i18n/messages";
+import { visionMessages } from "@/lib/i18n/vision-messages";
 
 const engines = ["flash", "scan", "reel", "radar"] as const;
 
@@ -83,17 +84,17 @@ describe("Home journey guidance", () => {
 
     for (const engine of engines) {
       for (const section of sections) {
-        const key = `vision.deep.${engine}.${section}` as keyof typeof messages.fr;
-        expect(messages.fr[key], `French copy: ${key}`).toBeTruthy();
-        expect(messages.en[key], `English copy: ${key}`).toBeTruthy();
+        const key = `vision.deep.${engine}.${section}` as keyof typeof visionMessages.fr;
+        expect(visionMessages.fr[key], `French copy: ${key}`).toBeTruthy();
+        expect(visionMessages.en[key], `English copy: ${key}`).toBeTruthy();
       }
     }
 
-    expect(messages.fr["vision.engine.reel.title"]).toContain("En direct");
-    expect(messages.en["vision.engine.reel.title"]).toContain("Live");
-    expect(messages.fr["vision.deep.privacy.body"]).toBeTruthy();
-    expect(messages.en["vision.deep.privacy.body"]).toBeTruthy();
-    expect(messages.fr["vision.deep.status.body"]).toBeTruthy();
-    expect(messages.en["vision.deep.status.body"]).toBeTruthy();
+    expect(visionMessages.fr["vision.engine.reel.title"]).toContain("En direct");
+    expect(visionMessages.en["vision.engine.reel.title"]).toContain("Live");
+    expect(visionMessages.fr["vision.deep.privacy.body"]).toBeTruthy();
+    expect(visionMessages.en["vision.deep.privacy.body"]).toBeTruthy();
+    expect(visionMessages.fr["vision.deep.status.body"]).toBeTruthy();
+    expect(visionMessages.en["vision.deep.status.body"]).toBeTruthy();
   });
 });
