@@ -123,8 +123,8 @@ describe("Instant architecture boundaries", () => {
     expect(screenSource).toContain("reel-nearby-preview__list");
     expect(screenSource).toContain('onClick={() => setPanel("people")}');
     expect(screenSource).toContain("onClick={() => openProfile(person)}");
-    expect(screenSource).toContain('onClick={() => openProfile(person)}');
-    expect(screenSource).toContain('discoveryEnabled ? (');
+    expect(screenSource).toContain("onClick={() => openProfile(person)}");
+    expect(screenSource).toContain("discoveryEnabled ? (");
     expect(screenSource).toContain('t("reel.ui.noNearby")');
     expect(screenSource).not.toContain("reel-nearby-preview__empty");
     expect(screenSource).not.toContain("reel-presence-stack");
@@ -136,6 +136,8 @@ describe("Instant architecture boundaries", () => {
     expect(screenSource).toContain("onClick={openTour}");
     expect(screenSource).toContain('aria-modal="true"');
     expect(screenSource).toContain('t("reel.ui.tour.finish")');
-    expect(screenSource).not.toContain("requestDiscovery()");
+    const tourMarkup = screenSource.slice(screenSource.indexOf("{tourOpen && ("), screenSource.indexOf("{!discoveryEnabled && ("));
+    expect(tourMarkup).not.toContain("requestDiscovery");
+    expect(tourMarkup).not.toContain("activatePresence");
   });
 });
