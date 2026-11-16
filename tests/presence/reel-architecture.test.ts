@@ -123,8 +123,10 @@ describe("Instant architecture boundaries", () => {
     expect(screenSource).toContain("reel-nearby-preview__list");
     expect(screenSource).toContain('onClick={() => setPanel("people")}');
     expect(screenSource).toContain("onClick={() => openProfile(person)}");
-    expect(screenSource).toContain('access.mode === "guest" || access.mode === "visitor"');
-    expect(screenSource).toContain("reel-nearby-preview__empty");
+    expect(screenSource).toContain('onClick={() => openProfile(person)}');
+    expect(screenSource).toContain('discoveryEnabled ? (');
+    expect(screenSource).toContain('t("reel.ui.noNearby")');
+    expect(screenSource).not.toContain("reel-nearby-preview__empty");
     expect(screenSource).not.toContain("reel-presence-stack");
   });
 });
