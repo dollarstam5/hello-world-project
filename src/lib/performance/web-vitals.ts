@@ -1,5 +1,20 @@
 export type WebVitalName = "LCP" | "INP" | "CLS";
 
+/** Browser event emitted for each accepted Web Vital observation. */
+export const WEB_VITAL_EVENT = "vitalis:web-vital";
+
+/**
+ * Publishes a metric to the current page without sending telemetry over the network
+ * or persisting user data. Runtime diagnostics can subscribe to WEB_VITAL_EVENT.
+ */
+export function publishWebVitalMetric(metric: WebVitalMetric): void {
+  if (typeof window === "undefined" || typeof window.dispatchEvent !== "function") {
+    return;
+  }
+
+  window.dispatchEvent(new CustomEvent<WebVitalMetric>(WEB_VITAL_EVENT, { detail: metric }));
+}
+
 export interface WebVitalMetric {
   name: WebVitalName;
   value: number;
@@ -31,6 +46,37 @@ function navigationType(): string {
   return navigation?.type ?? "unknown";
 }
 
+interface InteractionCandidate {
+  duration: number;
+}
+
+/**
+ * Returns the INP candidate using the 98th-percentile interaction rank:
+ * the worst interaction for fewer than 50 interactions, then one fewer
+ * worst interaction for each additional group of 50.
+ */
+function getInpCandidate(
+  interactions: Map<number, InteractionCandidate>,
+  interactionCount: number,
+): number | undefined {
+  if (interactions.size === 0) {
+    return undefined;
+  }
+
+  const ranked = [...interactions.values()].sort((a, b) => b.duration - a.duration);
+  const percentileIndex = Math.floor(interactionCount / 50);
+  // Event Timing only reports entries at or above the 16 ms minimum threshold.
+  // If the percentile falls below the observed candidates, its value is therefore <16 ms.
+  return ranked[percentileIndex]?.duration ?? 16;
+}
+
+function getPageInteractionCount(fallbackCount: number): number {
+  const count = (performance as Performance & { interactionCount?: number }).interactionCount;
+  return typeof count === "number" && Number.isFinite(count) && count >= 0
+    ? Math.max(fallbackCount, count)
+    : fallbackCount;
+}
+
 export function startWebVitalsMonitoring(sink: WebVitalsSink): () => void {
   if (typeof window === "undefined" || typeof PerformanceObserver === "undefined") {
     return () => undefined;
@@ -57,12 +103,10 @@ export function startWebVitalsMonitoring(sink: WebVitalsSink): () => void {
     }
   };
 
-  let latestLcp = 0;
   observe("largest-contentful-paint", (entries) => {
     const entry = entries.at(-1);
     if (entry) {
-      latestLcp = entry.startTime;
-      record({ name: "LCP", value: latestLcp, navigationType: navigationType() }, sink);
+      record({ name: "LCP", value: entry.startTime, navigationType: navigationType() }, sink);
     }
   });
 
@@ -95,20 +139,42 @@ export function startWebVitalsMonitoring(sink: WebVitalsSink): () => void {
     }
   });
 
-  let latestInp = 0;
-  observe("event", (entries) => {
-    for (const entry of entries as PerformanceEntry[]) {
-      const event = entry as PerformanceEntry & {
-        duration?: number;
-        interactionId?: number;
-      };
-      if (!event.interactionId || !Number.isFinite(event.duration)) {
-        continue;
+  const interactions = new Map<number, InteractionCandidate>();
+
+  observe(
+    "event",
+    (entries) => {
+      for (const entry of entries as PerformanceEntry[]) {
+        const event = entry as PerformanceEntry & {
+          duration?: number;
+          interactionId?: number;
+        };
+        const interactionId = event.interactionId;
+        const duration = event.duration;
+
+        if (
+          !interactionId ||
+          !Number.isFinite(interactionId) ||
+          !Number.isFinite(duration) ||
+          (duration ?? 0) < 0
+        ) {
+          continue;
+        }
+
+        const current = interactions.get(interactionId);
+        if (!current || (duration ?? 0) > current.duration) {
+          interactions.set(interactionId, { duration: duration ?? 0 });
+        }
       }
-      latestInp = Math.max(latestInp, event.duration ?? 0);
-      record({ name: "INP", value: latestInp, navigationType: navigationType() }, sink);
-    }
-  });
+
+      const interactionCount = getPageInteractionCount(interactions.size);
+      const inp = getInpCandidate(interactions, interactionCount);
+      if (inp !== undefined) {
+        record({ name: "INP", value: inp, navigationType: navigationType() }, sink);
+      }
+    },
+    { buffered: true, durationThreshold: 16 },
+  );
 
   const stop = () => {
     if (stopped) {
@@ -118,6 +184,7 @@ export function startWebVitalsMonitoring(sink: WebVitalsSink): () => void {
     for (const observer of observers) {
       observer.disconnect();
     }
+    interactions.clear();
   };
 
   return stop;

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Archive, Pencil, Trash2 } from "lucide-react";
 import type { FlashRecord } from "@eco/core-contracts";
+import { resolveFlashStatus } from "@eco/core-logic";
 import { EmptyState } from "@/components/app/EmptyState";
 import { Surface } from "@/components/app/Surface";
 import {
@@ -41,18 +42,30 @@ export function MyFlashManagement() {
 
   useEffect(() => {
     let active = true;
+    let receivedAuthEvent = false;
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      receivedAuthEvent = true;
+      if (active) setUserId(session?.user.id ?? null);
+    });
 
     void supabase.auth
-      .getUser()
+      .getSession()
       .then(({ data, error }) => {
-        if (active) setUserId(error || !data.user ? null : data.user.id);
+        // Do not overwrite a newer sign-in/sign-out event with an older snapshot.
+        if (active && !receivedAuthEvent) {
+          setUserId(error ? null : (data.session?.user.id ?? null));
+        }
       })
       .catch(() => {
-        if (active) setUserId(null);
+        if (active && !receivedAuthEvent) setUserId(null);
       });
 
     return () => {
       active = false;
+      subscription.unsubscribe();
     };
   }, []);
 
@@ -107,6 +120,13 @@ export function MyFlashManagement() {
     }
   }
 
+  const statusGroups = (["draft", "live", "expired", "archived"] as const)
+    .map((status) => ({
+      status,
+      items: records?.filter((record) => resolveFlashStatus(record) === status) ?? [],
+    }))
+    .filter((group) => group.items.length > 0);
+
   if (userId === undefined || records === undefined) {
     return (
       <p className="text-sm text-muted-foreground" role="status">
@@ -147,97 +167,114 @@ export function MyFlashManagement() {
         </p>
       ) : null}
 
-      {records.map((record) => (
-        <Surface key={record.id} variant="elevated" padding="md" bordered>
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0 flex-1">
-              {editingId === record.id ? (
-                <div className="stack-2">
-                  <Textarea
-                    value={editDraft}
-                    onChange={(event) => setEditDraft(event.target.value)}
-                    maxLength={600}
-                    rows={3}
-                    aria-label={t("flash.composer.placeholder")}
-                  />
-                  <div className="flex flex-wrap justify-end gap-2">
+      {statusGroups.map((group) => (
+        <section key={group.status}>
+          <h3 className="mb-2 text-sm font-semibold text-muted-foreground">
+            {t(statusKeys[group.status])} ({group.items.length})
+          </h3>
+          <div className="stack-3">
+            {group.items.map((record) => {
+              const resolvedStatus = resolveFlashStatus(record);
+
+              return (
+                <Surface key={record.id} variant="elevated" padding="md" bordered>
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0 flex-1">
+                      {editingId === record.id ? (
+                        <div className="stack-2">
+                          <Textarea
+                            value={editDraft}
+                            onChange={(event) => setEditDraft(event.target.value)}
+                            maxLength={600}
+                            rows={3}
+                            aria-label={t("flash.composer.placeholder")}
+                          />
+                          <div className="flex flex-wrap justify-end gap-2">
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="ghost"
+                              disabled={busyId === record.id}
+                              onClick={() => {
+                                setEditingId(null);
+                                setEditDraft("");
+                              }}
+                            >
+                              {t("common.cancel")}
+                            </Button>
+                            <Button
+                              type="button"
+                              size="sm"
+                              disabled={busyId === record.id || !editDraft.trim()}
+                              onClick={() => void saveEdit(record)}
+                            >
+                              {t("common.save")}
+                            </Button>
+                          </div>
+                        </div>
+                      ) : (
+                        <p className="font-semibold leading-snug">{record.title}</p>
+                      )}
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {t(statusKeys[resolvedStatus])}
+                        {" · "}
+                        {new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(
+                          record.createdAt,
+                        )}
+                      </p>
+                    </div>
+
+                    {resolvedStatus === "live" ? (
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="outline"
+                        disabled={busyId === record.id}
+                        onClick={() => void archive(record)}
+                      >
+                        <Archive className="mr-2 h-4 w-4" aria-hidden />
+                        {t("flash.mine.archive")}
+                      </Button>
+                    ) : null}
+                  </div>
+
+                  <div className="mt-3 flex flex-wrap justify-end gap-2">
+                    {editingId !== record.id ? (
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="ghost"
+                        disabled={
+                          busyId !== null ||
+                          resolvedStatus === "archived" ||
+                          resolvedStatus === "expired"
+                        }
+                        onClick={() => {
+                          setEditingId(record.id);
+                          setEditDraft(record.body);
+                        }}
+                      >
+                        <Pencil className="mr-2 h-4 w-4" aria-hidden />
+                        {t("flash.mine.edit")}
+                      </Button>
+                    ) : null}
                     <Button
                       type="button"
                       size="sm"
                       variant="ghost"
-                      disabled={busyId === record.id}
-                      onClick={() => {
-                        setEditingId(null);
-                        setEditDraft("");
-                      }}
+                      className="text-muted-foreground"
+                      disabled={busyId !== null || editingId === record.id}
+                      onClick={() => setPendingDelete(record)}
                     >
-                      {t("common.cancel")}
-                    </Button>
-                    <Button
-                      type="button"
-                      size="sm"
-                      disabled={busyId === record.id || !editDraft.trim()}
-                      onClick={() => void saveEdit(record)}
-                    >
-                      {t("common.save")}
+                      <Trash2 className="mr-2 h-4 w-4" aria-hidden />
+                      {t("flash.mine.delete")}
                     </Button>
                   </div>
-                </div>
-              ) : (
-                <p className="font-semibold leading-snug">{record.title}</p>
-              )}
-              <p className="mt-1 text-xs text-muted-foreground">
-                {t(statusKeys[record.status])}
-                {" · "}
-                {new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(record.createdAt)}
-              </p>
-            </div>
-
-            {record.status === "live" ? (
-              <Button
-                type="button"
-                size="sm"
-                variant="outline"
-                disabled={busyId === record.id}
-                onClick={() => void archive(record)}
-              >
-                <Archive className="mr-2 h-4 w-4" aria-hidden />
-                {t("flash.mine.archive")}
-              </Button>
-            ) : null}
+                </Surface>
+              );
+            })}
           </div>
-
-          <div className="mt-3 flex flex-wrap justify-end gap-2">
-            {editingId !== record.id ? (
-              <Button
-                type="button"
-                size="sm"
-                variant="ghost"
-                disabled={
-                  busyId !== null || record.status === "archived" || record.status === "expired"
-                }
-                onClick={() => {
-                  setEditingId(record.id);
-                  setEditDraft(record.body);
-                }}
-              >
-                <Pencil className="mr-2 h-4 w-4" aria-hidden />
-                {t("flash.mine.edit")}
-              </Button>
-            ) : null}
-            <Button
-              type="button"
-              size="sm"
-              variant="ghost"
-              className="text-muted-foreground"
-              disabled={busyId !== null || editingId === record.id}
-              onClick={() => setPendingDelete(record)}
-            >
-              <Trash2 className="mr-2 h-4 w-4" aria-hidden />
-              {t("flash.mine.delete")}
-            </Button>
-          </div>
-        </Surface>
+        </section>
       ))}
 
       <AlertDialog

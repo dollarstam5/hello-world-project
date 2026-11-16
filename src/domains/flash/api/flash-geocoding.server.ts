@@ -1,0 +1,165 @@
+import { getGeoapifyApiKey } from "@/config/env.server";
+
+export interface FlashGeocodingResult {
+  label: string;
+  locality: string | null;
+  city: string | null;
+  region: string | null;
+  country: string | null;
+}
+
+type GeoapifyReverseResponse = {
+  results?: Array<{
+    neighbourhood?: string;
+    suburb?: string;
+    village?: string;
+    town?: string;
+    city?: string;
+    municipality?: string;
+    district?: string;
+    county?: string;
+    state?: string;
+    country?: string;
+  }>;
+};
+
+type CacheEntry = {
+  expiresAt: number;
+  value: FlashGeocodingResult | null;
+};
+
+const CACHE_TTL_MS = 24 * 60 * 60 * 1_000;
+const CACHE_MAX_ENTRIES = 500;
+const resultCache = new Map<string, CacheEntry>();
+const requesterLastLookup = new Map<string, number>();
+const REQUESTER_MIN_INTERVAL_MS = 10_000;
+
+function clean(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const normalized = value.trim();
+  return normalized.length > 0 ? normalized : null;
+}
+
+function first(...values: unknown[]): string | null {
+  for (const value of values) {
+    const normalized = clean(value);
+    if (normalized) return normalized;
+  }
+  return null;
+}
+
+function normalizeResult(payload: GeoapifyReverseResponse): FlashGeocodingResult | null {
+  const result = payload.results?.[0];
+  if (!result) return null;
+
+  const locality = first(
+    result.neighbourhood,
+    result.suburb,
+    result.village,
+    result.town,
+    result.district,
+  );
+  const city = first(result.city, result.municipality, result.county);
+  const region = clean(result.state);
+  const country = clean(result.country);
+  const label = [locality, city, region, country]
+    .filter((part): part is string => Boolean(part))
+    .filter((part, index, parts) => parts.indexOf(part) === index)
+    .join(", ");
+
+  if (!label) return null;
+  return { label, locality, city, region, country };
+}
+
+async function cacheKey(latitude: number, longitude: number): Promise<string> {
+  // Hash a coarse cache cell so the cache never stores raw or rounded coordinates.
+  const cell = `${latitude.toFixed(5)}:${longitude.toFixed(5)}`;
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(cell));
+  return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+function readCache(key: string): FlashGeocodingResult | null | undefined {
+  const entry = resultCache.get(key);
+  if (!entry) return undefined;
+  if (entry.expiresAt <= Date.now()) {
+    resultCache.delete(key);
+    return undefined;
+  }
+  return entry.value;
+}
+
+function writeCache(key: string, value: FlashGeocodingResult | null): void {
+  if (resultCache.size >= CACHE_MAX_ENTRIES) {
+    const oldestKey = resultCache.keys().next().value;
+    if (oldestKey) resultCache.delete(oldestKey);
+  }
+  resultCache.set(key, { value, expiresAt: Date.now() + CACHE_TTL_MS });
+}
+
+/**
+ * Reverse-geocodes a user-consented, one-shot position.
+ * The API key and precise coordinates remain server-side; only address labels
+ * are returned. No location is persisted by this service.
+ */
+export async function lookupFlashArea(
+  latitude: number,
+  longitude: number,
+  requesterId: string,
+): Promise<FlashGeocodingResult | null> {
+  if (
+    !Number.isFinite(latitude) ||
+    latitude < -90 ||
+    latitude > 90 ||
+    !Number.isFinite(longitude) ||
+    longitude < -180 ||
+    longitude > 180
+  ) {
+    throw new Error("La position reçue n’est pas valide.");
+  }
+
+  const apiKey = getGeoapifyApiKey();
+  if (!apiKey) return null;
+
+  const key = await cacheKey(latitude, longitude);
+  const cached = readCache(key);
+  if (cached !== undefined) return cached;
+
+  const now = Date.now();
+  const lastLookup = requesterLastLookup.get(requesterId);
+  if (lastLookup !== undefined && now - lastLookup < REQUESTER_MIN_INTERVAL_MS) {
+    throw new Error("Patientez quelques secondes avant de rechercher un autre lieu.");
+  }
+  if (requesterLastLookup.size >= CACHE_MAX_ENTRIES) {
+    const oldestRequester = requesterLastLookup.keys().next().value;
+    if (oldestRequester) requesterLastLookup.delete(oldestRequester);
+  }
+  requesterLastLookup.set(requesterId, now);
+
+  const url = new URL("https://api.geoapify.com/v1/geocode/reverse");
+  url.searchParams.set("lat", String(latitude));
+  url.searchParams.set("lon", String(longitude));
+  url.searchParams.set("format", "json");
+  url.searchParams.set("apiKey", apiKey);
+
+  let response: Response;
+  try {
+    response = await fetch(url, { method: "GET", signal: AbortSignal.timeout(5_000) });
+  } catch {
+    throw new Error("Le service de localisation est momentanément indisponible.");
+  }
+
+  if (!response.ok) {
+    throw new Error("Impossible de reconnaître ce lieu pour le moment.");
+  }
+
+  let payload: GeoapifyReverseResponse;
+  try {
+    payload = (await response.json()) as GeoapifyReverseResponse;
+  } catch {
+    throw new Error("La réponse du service de localisation est invalide.");
+  }
+
+  const normalized = normalizeResult(payload);
+  writeCache(key, normalized);
+  return normalized;
+}

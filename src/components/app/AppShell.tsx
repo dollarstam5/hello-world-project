@@ -22,6 +22,7 @@ import { AssistantNoticeLayer } from "@/components/experience/AssistantNoticeLay
  * (theme, i18n, onboarding hydration) and provides the calm canvas:
  *  - primary engine navigation on Home, Flash, Scan and Radar
  *  - dedicated navigation on Réel, with its own header and menu access
+ *  - Flash owns its own engine header; the shared primary navigation remains
  *  - optional assistant access, controlled by the person
  *  - offline awareness
  *  - first-run guided Vitalis onboarding
@@ -52,7 +53,8 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   const bareChrome = pathname.startsWith("/admin") || pathname.startsWith("/auth");
   const isReelRoute = pathname === "/reel" || pathname.startsWith("/reel/");
-  const routeOwnsHeader = isReelRoute;
+  const isFlashRoute = pathname === "/flash" || pathname.startsWith("/flash/");
+  const routeOwnsHeader = isReelRoute || isFlashRoute;
   const hasBottomNavigation = !isReelRoute;
 
   const reduce = responsive.shouldReduceMotion;

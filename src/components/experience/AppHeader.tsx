@@ -24,7 +24,14 @@ export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => 
         className="sticky top-0 z-30 bg-transparent"
         style={{ paddingTop: "var(--safe-top)" }}
       >
-        <div className="mx-auto flex h-14 w-full max-w-screen-md items-center justify-between px-3 sm:px-4">
+        <div
+          className="mx-auto flex h-14 w-full max-w-screen-md items-center justify-between"
+          style={{
+            paddingLeft: "calc(0.75rem + var(--safe-left))",
+            paddingRight: "calc(0.75rem + var(--safe-right))",
+            paddingInline: "calc(0.75rem + var(--safe-left)) calc(0.75rem + var(--safe-right))",
+          }}
+        >
           <Link
             to="/"
             aria-label={t("nav.home")}
