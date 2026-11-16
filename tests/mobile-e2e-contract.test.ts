@@ -24,7 +24,7 @@ describe("mobile visual smoke contract", () => {
     expect(script).toContain('"/flash") selector="main h1"');
     expect(script).toContain('"/scan") selector="#scan-radius"');
     expect(script).toContain('"/reel") selector=".reel-proximity"');
-    expect(script).toContain('"/radar") selector="#radar-query"');
+    expect(script).toContain('"/radar") selector="main h1"');
     expect(script).toContain('--wait-for-selector="$selector"');
     expect(script).toContain('test -s "$output"');
   });
