@@ -53,6 +53,9 @@ describe("installed PWA viewport contract", () => {
   it("provides every static resource required to install the offline shell", () => {
     expect(serviceWorker).toContain('const OFFLINE_URL = "/offline.html";');
     expect(serviceWorker).toContain('const VERSION = "vitalis-v5";');
+    expect(serviceWorker).toContain(
+      'const SHELL_ROUTES = ["/", "/flash", "/scan", "/reel", "/radar", "/espace", "/talents"];',
+    );
     expect(offlinePage).toContain("Vous êtes momentanément hors connexion");
     expect(offlinePage).toContain('href="/"');
   });
