@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 
 describe("mobile visual smoke contract", () => {
   it("covers the five core routes at the compact phone, reference phone and tablet viewports", () => {
-    for (const viewport of ["360,800", "390,844", "768,1024"]) {
+    for (const viewport of ["360,800", "390,844", "412,915", "768,1024"]) {
       expect(script).toContain('"' + viewport + '"');
     }
     for (const route of ['"/"', '"/flash"', '"/scan"', '"/reel"', '"/radar"']) {
