@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link } from "@tanstack/react-router";
 import { useI18n } from "@/lib/i18n/useI18n";
 import {
   Bell,
@@ -18,12 +17,15 @@ import {
   X,
 } from "lucide-react";
 import { useReelProximityController } from "@/domains/presence/model/useReelProximityController";
-import { PersonAvatar, RingPerson, SelfRadarIdentity } from "./components/ReelRadarIdentity";
+import { RingPerson, SelfRadarIdentity } from "./components/ReelRadarIdentity";
 import { ReelGuidedTour } from "./components/ReelGuidedTour";
 import { ReelSettingsHelp } from "./components/ReelSettingsHelp";
 import { ReelProfileSheet } from "./components/ReelProfileSheet";
 import { ReelSettingsPanel } from "./components/ReelSettingsPanel";
 import { ReelActivityPanel } from "./components/ReelActivityPanel";
+import { ReelHeader } from "./components/ReelHeader";
+import { ReelDiscoveryPrompt } from "./components/ReelDiscoveryPrompt";
+import { ReelNearbyPreview } from "./components/ReelNearbyPreview";
 import "./reel-proximity.css";
 
 export function ReelProximityScreen() {
@@ -121,86 +123,7 @@ export function ReelProximityScreen() {
 
   return (
     <section className="reel-proximity" aria-label={t("reel.ui.screenLabel")}>
-      <header className="reel-proximity__header">
-        <div className="reel-proximity__heading">
-          <RadioTower aria-hidden="true" />
-          <div className="reel-proximity__heading-copy">
-            <h1>En direct</h1>
-            <p>{t("reel.ui.screenLabel")}</p>
-          </div>
-          {isPresenceActive && (
-            <span className="reel-proximity__live-indicator" aria-hidden="true" />
-          )}
-        </div>
-        <nav className="reel-proximity__header-actions" aria-label={t("reel.ui.screenLabel")}>
-          <Link
-            to="/"
-            className="reel-proximity__header-action"
-            aria-label={t("reel.ui.home")}
-            title={t("reel.ui.homeTitle")}
-          >
-            <Home aria-hidden="true" />
-          </Link>
-          <button
-            type="button"
-            className="reel-proximity__header-action reel-proximity__notification"
-            onClick={() => openActivity("notifications")}
-            disabled={!activityEnabled}
-            aria-label={
-              activityEnabled ? t("reel.ui.notifications") : t("reel.ui.notificationsPaused")
-            }
-            title={activityEnabled ? t("reel.ui.activity") : t("reel.ui.notificationsPausedShort")}
-          >
-            <Bell aria-hidden="true" />
-          </button>
-          <button
-            type="button"
-            className="reel-proximity__header-action"
-            onClick={() => setPanel("settings")}
-            aria-label={t("reel.ui.preferences")}
-            title={t("reel.ui.preferencesTitle")}
-          >
-            <SlidersHorizontal aria-hidden="true" />
-          </button>
-          <button
-            type="button"
-            className={`reel-proximity__header-action reel-proximity__discovery-toggle${discoveryEnabled ? " is-active" : ""}`}
-            onClick={() => {
-              if (discoveryEnabled) ignoreLocation();
-              else void requestDiscovery();
-            }}
-            disabled={
-              discoveryAccess === "requesting" || (!canUseMemberReel && access.mode !== "guest")
-            }
-            aria-pressed={discoveryEnabled}
-            aria-label={
-              discoveryEnabled ? t("reel.ui.disableDiscovery") : t("reel.ui.enableDiscovery")
-            }
-            title={discoveryEnabled ? t("reel.ui.disableDiscovery") : t("reel.ui.enableDiscovery")}
-          >
-            {discoveryEnabled ? <Eye aria-hidden="true" /> : <EyeOff aria-hidden="true" />}
-          </button>
-          <button
-            type="button"
-            className="reel-proximity__header-action reel-proximity__tour-trigger"
-            onClick={openTour}
-            aria-label={t("reel.ui.tour.open")}
-            title={t("reel.ui.tour.open")}
-          >
-            <CircleHelp aria-hidden="true" />
-          </button>
-          <button
-            type="button"
-            className="reel-proximity__header-action reel-proximity__bluetooth"
-            disabled
-            aria-label={t("reel.ui.bluetooth")}
-            title={t("reel.ui.bluetoothTitle")}
-          >
-            <Bluetooth aria-hidden="true" />
-            <span className="reel-proximity__bluetooth-label">V3</span>
-          </button>
-        </nav>
-      </header>
+      <ReelHeader controller={controller} onOpenTour={openTour} />
       <ReelGuidedTour
         open={tourOpen}
         step={tourStep}
@@ -208,80 +131,7 @@ export function ReelProximityScreen() {
         onStepChange={setTourStep}
       />
 
-      {!discoveryEnabled && (
-        <section
-          className={`reel-location-card reel-location-card--${discoveryAccess}`}
-          aria-label={t("reel.ui.location")}
-        >
-          <div className="reel-location-card__icon">
-            <MapPin aria-hidden="true" />
-          </div>
-          <div className="reel-location-card__copy">
-            <strong>
-              {discoveryAccess === "prompt" && !canUseMemberReel
-                ? access.mode === "guest"
-                  ? t("reel.ui.guestTitle")
-                  : access.mode === "visitor"
-                    ? t("reel.ui.visitorTitle")
-                    : t("reel.ui.noAccessTitle")
-                : discoveryAccess === "prompt"
-                  ? t("reel.ui.promptTitle")
-                  : discoveryAccess === "requesting"
-                    ? t("reel.ui.requestingTitle")
-                    : discoveryAccess === "denied"
-                      ? t("reel.ui.privateTitle")
-                      : t("reel.ui.calmTitle")}
-            </strong>
-            <p>
-              {discoveryAccess === "prompt" && !canUseMemberReel
-                ? access.mode === "guest"
-                  ? t("reel.ui.guestDescription")
-                  : access.mode === "visitor"
-                    ? t("reel.ui.visitorDescription")
-                    : t("reel.ui.noAccessDescription")
-                : discoveryAccess === "prompt"
-                  ? t("reel.ui.permissionDescription")
-                  : discoveryAccess === "requesting"
-                    ? t("reel.ui.waitingDescription")
-                    : locationMessage || t("reel.ui.locationPausedDescription")}
-            </p>
-            <div className="reel-location-card__actions">
-              {(canUseMemberReel || access.mode === "guest") &&
-                (discoveryAccess === "prompt" ||
-                  discoveryAccess === "ignored" ||
-                  discoveryAccess === "denied") && (
-                  <button
-                    type="button"
-                    className="reel-location-card__primary"
-                    onClick={() => void requestDiscovery()}
-                  >
-                    {discoveryAccess === "prompt" ? t("reel.ui.seeNearby") : t("reel.ui.retry")}
-                  </button>
-                )}
-              {access.mode === "visitor" && (
-                <button
-                  type="button"
-                  className="reel-location-card__primary"
-                  disabled={guestSessionLoading}
-                  onClick={() => void beginGuestSession()}
-                >
-                  {guestSessionLoading ? t("reel.ui.guestLoading") : t("reel.ui.guestContinue")}
-                </button>
-              )}
-              {guestSessionMessage && <p role="status">{guestSessionMessage}</p>}
-              {discoveryAccess === "prompt" && (
-                <button
-                  type="button"
-                  className="reel-location-card__secondary"
-                  onClick={ignoreLocation}
-                >
-                  Pas maintenant
-                </button>
-              )}
-            </div>
-          </div>
-        </section>
-      )}
+      <ReelDiscoveryPrompt controller={controller} />
 
       <div
         className={`reel-proximity__radar${discoveryEnabled ? "" : " reel-proximity__radar--calm"}`}
@@ -336,48 +186,7 @@ export function ReelProximityScreen() {
         ))}
       </div>
 
-      {discoveryEnabled && availablePeople.length > 0 ? (
-        <section className="reel-nearby-preview" aria-label={t("reel.ui.peopleNearby")}>
-          <div className="reel-nearby-preview__header">
-            <div>
-              <p>{t("reel.ui.peopleNearby")}</p>
-              <strong>{availablePeople.length}</strong>
-            </div>
-            <button type="button" onClick={() => setPanel("people")}>
-              {t("reel.ui.allNearby")}
-              <ChevronDown aria-hidden="true" />
-            </button>
-          </div>
-          <div className="reel-nearby-preview__list">
-            {availablePeople.slice(0, 3).map((person) => (
-              <button
-                type="button"
-                className="reel-nearby-preview__person"
-                key={person.id}
-                onClick={() => openProfile(person)}
-                aria-label={`Voir le profil de ${person.name}`}
-              >
-                <PersonAvatar person={person} size="small" />
-                <span>
-                  <strong>{person.name}</strong>
-                  <small>
-                    {person.description || person.category || t("reel.ui.nearbyProfile")}
-                  </small>
-                </span>
-                <ChevronDown aria-hidden="true" />
-              </button>
-            ))}
-          </div>
-        </section>
-      ) : discoveryEnabled ? (
-        <section className="reel-live-empty" aria-live="polite">
-          <UsersRound aria-hidden="true" />
-          <div>
-            <strong>{t("reel.ui.noNearby")}</strong>
-            <p>{t("reel.ui.noProfilesHint")}</p>
-          </div>
-        </section>
-      ) : null}
+      <ReelNearbyPreview controller={controller} />
 
       {!discoveryEnabled && discoveryAccess !== "prompt" && discoveryAccess !== "requesting" && (
         <div className="reel-calm-shortcuts" aria-label={t("reel.ui.otherWays")}>
