@@ -41,7 +41,7 @@ Voir aussi la [politique transversale de visibilité par moteur](../visibility-a
 - Flash est une source possible de résultats pour Scan et de signaux agrégés pour Veille, selon les autorisations et les règles de confidentialité.
 - Scan peut rechercher des Flash actifs pour répondre à une demande immédiate ; cela ne donne pas à Scan le droit de modifier ou de republier ces Flash.
 - Radar peut utiliser des Flash comme source de correspondances persistantes uniquement lorsque cette source et son traitement sont effectivement raccordés.
-- Une publication Flash ne devient pas automatiquement une mission Radar, un engagement Mission ou une présence Instant.
+- Une publication Flash ne devient pas automatiquement une mission Radar, un engagement Mission ou une présence En direct.
 - La durée, l'expiration, la suppression, la modération et les états du Flash doivent être définis dans son propre contrat.
 
 ## Première expérience d'interface
@@ -63,4 +63,4 @@ Cette livraison d'interface ne valide pas encore la visibilité par publication 
 - Pas de fonctionnalité simulée présentée comme opérationnelle.
 - V1 privilégie une création simple, peu coûteuse et sans média obligatoire.
 - Les règles de confidentialité et de visibilité doivent être vérifiées côté serveur.
-- Les choix d'Instant ne s'appliquent pas à Flash sans décision explicite.
+- Les choix d'En direct ne s'appliquent pas à Flash sans décision explicite.
