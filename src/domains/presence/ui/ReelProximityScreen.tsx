@@ -22,7 +22,6 @@ import {
 } from "lucide-react";
 import {
   useReelProximityController,
-  type Person,
 } from "@/domains/presence/model/useReelProximityController";
 import { PersonAvatar, RingPerson, SelfRadarIdentity } from "./components/ReelRadarIdentity";
 import "./reel-proximity.css";
