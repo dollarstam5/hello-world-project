@@ -136,7 +136,10 @@ describe("Instant architecture boundaries", () => {
     expect(screenSource).toContain("onClick={openTour}");
     expect(screenSource).toContain('aria-modal="true"');
     expect(screenSource).toContain('t("reel.ui.tour.finish")');
-    const tourMarkup = screenSource.slice(screenSource.indexOf("{tourOpen && ("), screenSource.indexOf("{!discoveryEnabled && ("));
+    const tourMarkup = screenSource.slice(
+      screenSource.indexOf("{tourOpen && ("),
+      screenSource.indexOf("{!discoveryEnabled && ("),
+    );
     expect(tourMarkup).not.toContain("requestDiscovery");
     expect(tourMarkup).not.toContain("activatePresence");
   });
