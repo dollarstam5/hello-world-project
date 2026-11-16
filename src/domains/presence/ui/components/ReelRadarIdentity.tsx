@@ -2,7 +2,7 @@ import { type CSSProperties } from "react";
 import { CircleUserRound } from "lucide-react";
 import type { Person } from "@/domains/presence/model/useReelProximityController";
 
-function PersonAvatar({
+export function PersonAvatar({
   person,
   size = "person",
 }: {
@@ -35,7 +35,7 @@ function PersonAvatar({
   );
 }
 
-function RingPerson({ person, onSelect }: { person: Person; onSelect: (person: Person) => void }) {
+export function RingPerson({ person, onSelect }: { person: Person; onSelect: (person: Person) => void }) {
   const radians = ((Number.isFinite(person.angle) ? person.angle : 0) * Math.PI) / 180;
   const orbit = 39;
   const position = {
@@ -57,7 +57,7 @@ function RingPerson({ person, onSelect }: { person: Person; onSelect: (person: P
   );
 }
 
-function SelfRadarIdentity({
+export function SelfRadarIdentity({
   accessMode,
   guestAvatarKey,
   guestDisplayName,
