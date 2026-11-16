@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import type { Session, User } from "@supabase/supabase-js";
-import { supabase } from "@/integrations/supabase/client";
 
 /** Reactive session state for the current visitor. SSR-safe (starts empty). */
 export function useAuth() {
@@ -10,25 +9,38 @@ export function useAuth() {
   useEffect(() => {
     let active = true;
     let receivedAuthEvent = false;
+    let unsubscribe: (() => void) | undefined;
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, next) => {
-      receivedAuthEvent = true;
-      if (active) {
-        setSession(next);
-        setLoading(false);
-      }
-    });
+    void import("@/integrations/supabase/client")
+      .then(({ supabase }) => {
+        if (!active) return;
 
-    void supabase.auth
-      .getSession()
-      .then(({ data: current, error }) => {
-        // A newer auth event always wins over the initial session snapshot.
-        if (active && !receivedAuthEvent) {
-          setSession(error ? null : current.session);
-          setLoading(false);
-        }
+        const {
+          data: { subscription },
+        } = supabase.auth.onAuthStateChange((_event, next) => {
+          receivedAuthEvent = true;
+          if (active) {
+            setSession(next);
+            setLoading(false);
+          }
+        });
+        unsubscribe = () => subscription.unsubscribe();
+
+        void supabase.auth
+          .getSession()
+          .then(({ data: current, error }) => {
+            // A newer auth event always wins over the initial session snapshot.
+            if (active && !receivedAuthEvent) {
+              setSession(error ? null : current.session);
+              setLoading(false);
+            }
+          })
+          .catch(() => {
+            if (active && !receivedAuthEvent) {
+              setSession(null);
+              setLoading(false);
+            }
+          });
       })
       .catch(() => {
         if (active && !receivedAuthEvent) {
@@ -39,7 +51,7 @@ export function useAuth() {
 
     return () => {
       active = false;
-      subscription.unsubscribe();
+      unsubscribe?.();
     };
   }, []);
 
@@ -48,5 +60,6 @@ export function useAuth() {
 }
 
 export async function signOut() {
+  const { supabase } = await import("@/integrations/supabase/client");
   await supabase.auth.signOut();
 }

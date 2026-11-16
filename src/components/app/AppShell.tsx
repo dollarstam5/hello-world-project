@@ -1,21 +1,35 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { lazy, Suspense, useEffect, useState, type ReactNode } from "react";
 import { useRouterState } from "@tanstack/react-router";
-import { AnimatePresence, motion } from "framer-motion";
 import { BottomNav } from "./BottomNav";
-import { ReelBottomNav } from "@/domains/presence/ui/ReelBottomNav";
-import { MenuSheet } from "./MenuSheet";
 import { useExperienceBoot } from "@/lib/experience/orchestrator";
-import { useSyncEngine } from "@/platform/offline";
 import { OfflineBanner } from "@/components/experience/OfflineBanner";
 import { AppHeader } from "@/components/experience/AppHeader";
-import { CommunicationSheet } from "@/components/experience/CommunicationSheet";
-import { OnboardingSheet } from "@/components/experience/OnboardingSheet";
 import { InstallBanner } from "@/components/experience/InstallBanner";
 import { UpdateBanner } from "@/components/experience/UpdateBanner";
 import { useResponsive } from "@/lib/platform/useResponsive";
-import { duration, easing } from "@/lib/design/tokens";
 import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
 import { AssistantNoticeLayer } from "@/components/experience/AssistantNoticeLayer";
+import { useOnboarding } from "@/lib/experience/onboarding";
+import { SyncEngineLoader } from "./SyncEngineLoader";
+
+const ReelBottomNav = lazy(() =>
+  import("@/domains/presence/ui/ReelBottomNav").then((module) => ({
+    default: module.ReelBottomNav,
+  })),
+);
+const MenuSheet = lazy(() =>
+  import("./MenuSheet").then((module) => ({ default: module.MenuSheet })),
+);
+const CommunicationSheet = lazy(() =>
+  import("@/components/experience/CommunicationSheet").then((module) => ({
+    default: module.CommunicationSheet,
+  })),
+);
+const OnboardingSheet = lazy(() =>
+  import("@/components/experience/OnboardingSheet").then((module) => ({
+    default: module.OnboardingSheet,
+  })),
+);
 
 /**
  * AppShell — single mount-point that boots foundation services
@@ -33,9 +47,9 @@ export function AppShell({ children }: { children: ReactNode }) {
   const [communicationOpen, setCommunicationOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const responsive = useResponsive();
+  const onboardingReady = useOnboarding((state) => state.hydrated && state.shouldShow);
 
   useExperienceBoot();
-  useSyncEngine();
 
   useEffect(() => {
     useAssistantPreferences.getState().hydrate();
@@ -58,18 +72,20 @@ export function AppShell({ children }: { children: ReactNode }) {
   const hasBottomNavigation = !isReelRoute;
 
   const reduce = responsive.shouldReduceMotion;
-  const pageTransition = reduce
-    ? { duration: 0 }
-    : { duration: duration.base, ease: easing.standard };
-
   if (bareChrome) {
     return (
-      <div className="relative min-h-dvh bg-background text-foreground antialiased">{children}</div>
+      <>
+        <SyncEngineLoader />
+        <div className="relative min-h-dvh bg-background text-foreground antialiased">
+          {children}
+        </div>
+      </>
     );
   }
 
   return (
     <div className="relative min-h-dvh bg-background text-foreground antialiased">
+      <SyncEngineLoader />
       <AssistantNoticeLayer />
       <OfflineBanner />
       {!routeOwnsHeader && <AppHeader onOpenCommunication={() => setCommunicationOpen(true)} />}
@@ -80,28 +96,36 @@ export function AppShell({ children }: { children: ReactNode }) {
           paddingBottom: hasBottomNavigation ? "calc(7rem + var(--safe-bottom))" : 0,
         }}
       >
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={pathname}
-            initial={reduce ? false : { opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={reduce ? { opacity: 0 } : { opacity: 0, y: -4 }}
-            transition={pageTransition}
-          >
-            {children}
-          </motion.div>
-        </AnimatePresence>
+        <div key={pathname} className={reduce ? undefined : "motion-rise-in"}>
+          {children}
+        </div>
       </main>
 
       {hasBottomNavigation && (
         <BottomNav onOpenMenu={() => setMenuOpen(true)} menuOpen={menuOpen} />
       )}
-      {isReelRoute && <ReelBottomNav onOpenMenu={() => setMenuOpen(true)} menuOpen={menuOpen} />}
-      <MenuSheet open={menuOpen} onOpenChange={setMenuOpen} />
-      <CommunicationSheet open={communicationOpen} onOpenChange={setCommunicationOpen} />
+      {isReelRoute && (
+        <Suspense fallback={null}>
+          <ReelBottomNav onOpenMenu={() => setMenuOpen(true)} menuOpen={menuOpen} />
+        </Suspense>
+      )}
+      {menuOpen && (
+        <Suspense fallback={null}>
+          <MenuSheet open={menuOpen} onOpenChange={setMenuOpen} />
+        </Suspense>
+      )}
+      {communicationOpen && (
+        <Suspense fallback={null}>
+          <CommunicationSheet open={communicationOpen} onOpenChange={setCommunicationOpen} />
+        </Suspense>
+      )}
       <InstallBanner />
       <UpdateBanner />
-      <OnboardingSheet />
+      {onboardingReady && (
+        <Suspense fallback={null}>
+          <OnboardingSheet />
+        </Suspense>
+      )}
     </div>
   );
 }

@@ -113,7 +113,7 @@ Pour les écrans adaptatifs, distinguer clairement mobile, tablette et desktop. 
 | Onboarding            | À ajouter            | —       | À VALIDER |       |
 | Accueil               | À ajouter            | —       | À VALIDER |       |
 | Navigation            | À ajouter            | —       | À VALIDER |       |
-| Réel                  | À ajouter            | —       | À VALIDER |       |
+| En direct                  | À ajouter            | —       | À VALIDER |       |
 | Flash                 | À ajouter            | —       | À VALIDER |       |
 | Scan                  | À ajouter            | —       | À VALIDER |       |
 | Radar                 | À ajouter            | —       | À VALIDER |       |

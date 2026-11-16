@@ -1,10 +1,10 @@
-# Réel — état d'implémentation V1
+# En direct — état d'implémentation V1
 
 **État :** présence et découverte membre raccordées au code ; cycle de session invitée serveur désormais relié au gestionnaire central ; opérations métier invitées, exécution SQL et validation multi-appareils encore ouvertes.  
 **Migration :** `supabase/migrations/20261110010000_reel_presence_and_bips.sql`  
 **Tests :** `supabase/tests/database/130_reel_presence_security.test.sql`
 
-**Nom affiché validé :** **Instant**. L’icône de référence est `RadioTower` (ondes de présence), réutilisée dans l’en-tête et la navigation. Les identifiants techniques historiques (`reel`, route `/reel`, domaine et noms de fichiers) restent inchangés pour éviter une migration technique sans nécessité.
+**Nom affiché validé :** **En direct**. L’icône de référence est `RadioTower` (ondes de présence), réutilisée dans l’en-tête et la navigation. Les identifiants techniques historiques (`reel`, route `/reel`, domaine et noms de fichiers) restent inchangés pour éviter une migration technique sans nécessité.
 
 ## État de l'interface
 
@@ -15,7 +15,7 @@
 
 ## Règle produit confirmée — accès membre et invité
 
-Réel doit accueillir une personne sans lui imposer la création d'un compte Vitalis. Le moteur adapte les possibilités et la conservation au mode d'accès, sans confondre identité provisoire et profil enregistré.
+En direct doit accueillir une personne sans lui imposer la création d'un compte Vitalis. Le moteur adapte les possibilités et la conservation au mode d'accès, sans confondre identité provisoire et profil enregistré.
 
 ### Membre avec profil enregistré
 
@@ -25,7 +25,7 @@ Réel doit accueillir une personne sans lui imposer la création d'un compte Vit
 
 ### Visiteur en mode invité
 
-- Autoriser l'accès aux services Réel prévus pour les invités sans exiger un compte permanent.
+- Autoriser l'accès aux services En direct prévus pour les invités sans exiger un compte permanent.
 - Attribuer une identité provisoire limitée à la session, distincte d'un identifiant de membre et d'un profil Vitalis.
 - Ne pas créer ni enregistrer de profil invité dans les tables durables de profils Vitalis.
 - Limiter les données à ce qui est indispensable à la session et aux services utilisés. Les éléments temporaires nécessaires au fonctionnement temps réel devront avoir une durée de vie courte, ne pas devenir un historique et être supprimés à la fin de la visite ou à l'expiration de la session.
@@ -43,11 +43,11 @@ Le domaine partagé `src/domains/access-mode/` est maintenant monté à la racin
 - Le mode membre repose sur la session Supabase Auth et lit uniquement `status` et `deleted_at` du profil pour distinguer actif, invité/incomplet, suspendu, fermé ou invérifiable.
 - Le mode invité utilise désormais une session serveur éphémère avec secret opaque dans un cookie HttpOnly ; seule une empreinte SHA-256 est conservée en base. L'identifiant local reste un repère d'interface, jamais une preuve d'identité.
 - L'identité temporaire est effacée à la fin de la session de page, à la connexion d'un membre ou par fermeture explicite.
-- La session serveur peut être vérifiée après rechargement, mais elle ne donne encore aucun droit métier Réel. Les opérations invitées restent bloquées jusqu'à la livraison des RPC dédiées et de leurs tests.
+- La session serveur peut être vérifiée après rechargement, mais elle ne donne encore aucun droit métier En direct. Les opérations invitées restent bloquées jusqu'à la livraison des RPC dédiées et de leurs tests.
 
 Document d'architecture : [Gestionnaire central des modes d'accès](../../02-architecture/access-mode-manager.md).
 
-- Le moteur commun `evaluateEngineAccess()` distingue présentation, entrée dans un moteur et opération métier. Un invité peut ouvrir le parcours d'entrée Réel, mais toute opération Réel reste soumise à une vérification serveur. Les autres entrées invitées restent refusées par défaut.
+- Le moteur commun `evaluateEngineAccess()` distingue présentation, entrée dans un moteur et opération métier. Un invité peut ouvrir le parcours d'entrée En direct, mais toute opération En direct reste soumise à une vérification serveur. Les autres entrées invitées restent refusées par défaut.
 - Les décisions sont couvertes par `tests/access-mode/engine-access.test.ts` ; ces tests sont ajoutés au dépôt mais ne sont pas encore exécutés dans cet environnement.
 
 ## Ce qui est ajouté
@@ -57,14 +57,14 @@ Document d'architecture : [Gestionnaire central des modes d'accès](../../02-arc
 - Durées autorisées : 30 min, 1 h, 2 h, 3 h, 6 h, 12 h ou 24 h.
 - Rayons enregistrables : 10 m, 25 m, 50 m, 100 m ou 1 km.
 - Un seul état de présence active par compte.
-- Aucune colonne de latitude, longitude ou coordonnées GPS dans le modèle Réel.
+- Aucune colonne de latitude, longitude ou coordonnées GPS dans le modèle En direct.
 - Lecture des présences limitée au propriétaire actif et aux membres actifs disposant d'une session de découverte serveur valide ou d'une présence active dans la zone concernée.
 - Projection de découverte limitée au nom affiché, à l'identifiant d'avatar, à la description, à l'intitulé de zone et aux horaires utiles. Aucun téléphone, GPS exact ou distance précise n'est retourné.
 - Bips privés aux deux participants, sans message libre, avec identifiant de requête client pour rendre les renvois réseau idempotents.
 - Un seul bip en attente par paire de personnes, quel que soit le sens.
 - Acceptation réservée au destinataire ; elle crée une mise en relation unique. Refus et retrait sont également contrôlés côté serveur.
 - Les bips en attente expirent 24 h après la première fin ou échéance des deux présences associées. Un bip accepté est retiré de la liste et sa trace technique temporaire expire au plus tard 24 h après l'acceptation ; la relation créée reste durable. Aucun bip n'est ajouté à la table Notifications.
-- Nettoyage des bips expirés et des anciennes présences via fonction serveur, avec planification pg_cron si l'extension est disponible et nettoyage différé lors des appels Réel sinon.
+- Nettoyage des bips expirés et des anciennes présences via fonction serveur, avec planification pg_cron si l'extension est disponible et nettoyage différé lors des appels En direct sinon.
 - Publication Postgres Changes activée pour les trois tables si la publication Supabase `supabase_realtime` existe ; les événements restent soumis aux règles RLS.
 
 ## Limites à ne pas masquer
@@ -72,8 +72,8 @@ Document d'architecture : [Gestionnaire central des modes d'accès](../../02-arc
 1. **La zone est une clé HMAC opaque calculée côté serveur à partir d'une grille d'environ 200 m, pas un GPS.** Le secret serveur doit être configuré et la précision doit être validée sur appareil.
 2. **Le rayon est enregistré mais le calcul spatial n'est pas encore appliqué.** La découverte couvre la cellule et ses huit voisines ; elle ne doit afficher ni distance ni prétendre respecter exactement le rayon métrique choisi.
 3. **La publication serveur ne suffit pas à rendre l'interface temps réel.** `src/lib/platform/realtime.ts` reste un bus local en mémoire. Le client Supabase Realtime, les abonnements privés, la reprise après reconnexion et le nettoyage des abonnements restent à raccorder.
-4. **L'outbox locale n'est pas encore branchée aux commandes Réel.** Les RPC de bip sont idempotentes si le client réessaie avec le même `client_request_id`, mais l'enregistrement local et la reprise automatique après coupure restent à intégrer.
-5. **La mise en relation est créée à l'acceptation, mais la conversation Réel n'est pas encore créée.** Les messages, les états envoyé/reçu/lu, le partage de zone ponctuel, la fermeture de relation et la conversation en lecture seule après fermeture restent à livrer.
+4. **L'outbox locale n'est pas encore branchée aux commandes En direct.** Les RPC de bip sont idempotentes si le client réessaie avec le même `client_request_id`, mais l'enregistrement local et la reprise automatique après coupure restent à intégrer.
+5. **La mise en relation est créée à l'acceptation, mais la conversation En direct n'est pas encore créée.** Les messages, les états envoyé/reçu/lu, le partage de zone ponctuel, la fermeture de relation et la conversation en lecture seule après fermeture restent à livrer.
 6. **Le parcours invité n'est pas encore validé de bout en bout.** Les commandes actuelles exigent un utilisateur Supabase authentifié avec un profil actif ; il faut confirmer le comportement du mode invité sur une session anonyme réelle.
 
 ## Contrat de sécurité
@@ -95,7 +95,7 @@ Document d'architecture : [Gestionnaire central des modes d'accès](../../02-arc
 - Valider la précision de la zone opaque et les règles de voisinage avant d'afficher une proximité.
 - Raccorder les conversations uniquement après validation de leur autorisation et de leur cycle de vie.
 
-**Le socle SQL n'est pas une preuve que le parcours Réel est déjà disponible dans l'application.**
+**Le socle SQL n'est pas une preuve que le parcours En direct est déjà disponible dans l'application.**
 
 ## Session invitée serveur — conception préparée
 
@@ -111,34 +111,34 @@ Le document [Architecture de session invitée éphémère](./reel-guest-session-
 - Migration : purge des sessions expirées et révoquées planifiée via pg_cron si disponible.
 - Test pgTAP 131 : privilèges, RLS, absence de données membre/GPS et droit de purge.
 
-**Limites actuelles :** les opérations métier Réel n'acceptent pas encore cette session ; aucune interface ne la démarre automatiquement. La durée d'une heure est un paramètre technique provisoire, sans renouvellement. Les limites anti-abus de la couche d'hébergement et la présence effective de pg_cron doivent être vérifiées. Migration, tests et build n'ont pas été exécutés ici.
+**Limites actuelles :** les opérations métier En direct n'acceptent pas encore cette session ; aucune interface ne la démarre automatiquement. La durée d'une heure est un paramètre technique provisoire, sans renouvellement. Les limites anti-abus de la couche d'hébergement et la présence effective de pg_cron doivent être vérifiées. Migration, tests et build n'ont pas été exécutés ici.
 
-## Politique d’accès Réel — première tranche
+## Politique d’accès En direct — première tranche
 
 - Ajout de `src/domains/presence/policy/reel-access-policy.ts` : règles explicites par opération (entrée, présence, découverte, bips et fermeture de relation).
 - Les visiteurs sont refusés pour les opérations métier.
 - Les invités peuvent entrer dans le parcours, mais restent bloqués pour toute opération métier tant que les RPC ne savent pas vérifier leur session invitée.
 - Le démarrage d’une présence exige le consentement précis `reel_presence`.
 - Les rôles émetteur/destinataire sont distingués pour retrait, acceptation et refus d’un bip.
-- Les opérations Réel ne sont pas mises en file hors connexion dans cette tranche.
+- Les opérations En direct ne sont pas mises en file hors connexion dans cette tranche.
 - Conversation, messages, partage de zone et signalement restent explicitement indisponibles.
 - Tests Vitest ajoutés dans `tests/access-mode/reel-access-policy.test.ts`.
 
 **État de preuve :** code et tests ajoutés à la branche ; exécution Vitest, lint, build, migration Supabase et tests pgTAP non effectués. Cette politique ne rend pas le moteur activable en production à elle seule.
 
-## Service client Réel — première connexion aux RPC
+## Service client En direct — première connexion aux RPC
 
 - Ajout de `src/domains/presence/api/reel-presence.client.ts`.
 - Le service appelle les RPC SQL existantes pour démarrer/terminer une présence, découvrir les présences d'une zone, envoyer un bip, accepter/refuser/retirer un bip et consulter les bips en attente.
 - Les paramètres de présence sont validés côté client avant appel ; le serveur reste responsable de la validation finale.
 - Les identifiants de requête de bip sont uniques par défaut pour permettre les tentatives idempotentes.
-- Les types des réponses sont déclarés localement car le snapshot généré `src/integrations/supabase/types.ts` ne contient pas encore les fonctions Réel. Le cast RPC est isolé dans un seul adaptateur et devra être supprimé après régénération des types depuis le schéma appliqué.
+- Les types des réponses sont déclarés localement car le snapshot généré `src/integrations/supabase/types.ts` ne contient pas encore les fonctions En direct. Le cast RPC est isolé dans un seul adaptateur et devra être supprimé après régénération des types depuis le schéma appliqué.
 
-**Non raccordé à l'écran :** aucun résolveur de zone opaque fiable n'a encore été identifié dans l'application. Le service exige donc une `zoneKey` fournie par ce résolveur et ne fabrique pas de clé à partir du GPS ou du nom de quartier. L'écran Réel continue de ne présenter aucune présence simulée.
+**Non raccordé à l'écran :** aucun résolveur de zone opaque fiable n'a encore été identifié dans l'application. Le service exige donc une `zoneKey` fournie par ce résolveur et ne fabrique pas de clé à partir du GPS ou du nom de quartier. L'écran En direct continue de ne présenter aucune présence simulée.
 
 **Vérifications :** les appels RPC, la migration, les tests pgTAP, le lint et le build n'ont pas été exécutés dans cette tranche.
 
-## Service client Réel — durcissement des entrées
+## Service client En direct — durcissement des entrées
 
 - Vérification à l'exécution des rayons et durées autorisés, même si un appel contourne les types TypeScript.
 - Validation du format UUID pour les identifiants de présence, de bip et de requête idempotente.
@@ -194,7 +194,7 @@ Le plan pgTAP est maintenant de 24 assertions. **Le fichier a été corrigé, ma
 
 ## Audit statique croisé — migrations et pgTAP 130/131
 
-Une relecture croisée des migrations Réel 100 à 600, des deux tests pgTAP et du schéma de profils a été effectuée sur cette branche.
+Une relecture croisée des migrations En direct 100 à 600, des deux tests pgTAP et du schéma de profils a été effectuée sur cette branche.
 
 - Les colonnes utilisées par le test pour les présences (owner_id, status, expires_at), les bips (client_request_id, expires_at) et les relations (participant_low, participant_high, status) correspondent aux définitions SQL consultées.
 - Les signatures appelées par le test correspondent aux fonctions déclarées : démarrage avec six paramètres, envoi de bip avec deux UUID, commande avec UUID et action, liste des bips sans paramètre.
@@ -210,13 +210,13 @@ Le workflow `.github/workflows/quality.yml` contient bien une étape `Database R
 
 Lors du contrôle du commit courant de la PR, GitHub ne retourne toutefois aucun workflow associé et aucun statut de vérification. La présence de cette étape dans le fichier YAML ne prouve donc pas qu'elle a été exécutée. Il faut vérifier que GitHub Actions est activé pour le dépôt et que le workflow `Quality` est autorisé, puis obtenir un run associé au SHA exact de la PR. Si aucun run ne démarre après un nouveau commit, le déclenchement ou les permissions Actions doivent être corrigés avant de considérer les tests comme validés.
 
-## Consentement de position propre à Réel — tranche interface
+## Consentement de position propre à En direct — tranche interface
 
-- À chaque nouvelle entrée dans la page Réel, le moteur présente son propre choix d'utilisation de la position, même si un autre moteur Vitalis a déjà obtenu une autorisation.
+- À chaque nouvelle entrée dans la page En direct, le moteur présente son propre choix d'utilisation de la position, même si un autre moteur Vitalis a déjà obtenu une autorisation.
 - Aucune demande de position ne part au chargement : le navigateur ou le téléphone n'est sollicité qu'après le bouton explicite « Activer ma position ».
-- L'autorisation système et l'accord d'utilisation dans Réel sont deux contrôles distincts. Une autorisation déjà accordée au niveau du téléphone ne vaut pas accord Réel.
+- L'autorisation système et l'accord d'utilisation dans En direct sont deux contrôles distincts. Une autorisation déjà accordée au niveau du téléphone ne vaut pas accord En direct.
 - « Pas maintenant » laisse la page accessible en mode calme. La découverte locale, les réactions, les bips et les alertes locales sont suspendus ; les réglages et les relations déjà établies restent consultables.
-- Une demande refusée ou indisponible laisse également Réel en mode calme, avec une explication et une possibilité de réessayer.
+- Une demande refusée ou indisponible laisse également En direct en mode calme, avec une explication et une possibilité de réessayer.
 - La demande technique est une lecture ponctuelle (getCurrentPosition), sans suivi continu, sans arrière-plan et sans sauvegarde locale des coordonnées dans cette tranche.
 - L'accord de localisation ne démarre pas automatiquement la présence publique. Le partage de sa propre présence exige toujours le consentement métier distinct reel_presence.
 
@@ -228,10 +228,10 @@ Cette section remplace les descriptions antérieures qui liaient la découverte 
 
 ### Deux autorisations distinctes
 
-1. **Découverte** — autorise Réel à observer les activités dans le secteur approximatif de l'utilisateur. Elle ne rend pas son propre profil visible.
+1. **Découverte** — autorise En direct à observer les activités dans le secteur approximatif de l'utilisateur. Elle ne rend pas son propre profil visible.
 2. **Ma présence** — autorise séparément la publication d'une présence approximative, avec une description, un rayon enregistré et une durée. Elle ne donne pas automatiquement accès à la découverte.
 
-L'autorisation du système d'exploitation est demandée uniquement après l'action volontaire correspondante dans Réel. Une permission accordée à Flash, Scan ou Radar n'est jamais réutilisée comme consentement Réel. La présence publique exige aussi le consentement métier distinct `reel_presence`.
+L'autorisation du système d'exploitation est demandée uniquement après l'action volontaire correspondante dans En direct. Une permission accordée à Flash, Scan ou Radar n'est jamais réutilisée comme consentement En direct. La présence publique exige aussi le consentement métier distinct `reel_presence`.
 
 ### Résolveur de zone ajouté
 
@@ -261,16 +261,16 @@ L'autorisation du système d'exploitation est demandée uniquement après l'acti
 
 - La grille d'environ 200 m est une approximation de zone, pas une distance réelle. La recherche couvre la cellule et ses huit voisines ; le rayon choisi (10 m à 1 km) est enregistré mais n'est pas encore appliqué à un calcul de distance fiable. Aucun libellé de distance exacte ne doit être affiché.
 - Le temps réel multi-appareils, les abonnements Realtime, les bips dans l'interface et les notifications ne sont pas encore raccordés.
-- Le mode invité peut entrer dans Réel, mais ses opérations métier restent bloquées : la session invitée serveur n'est pas reliée au résolveur ni aux RPC de découverte/présence. Le visiteur reste limité aux présentations publiques.
+- Le mode invité peut entrer dans En direct, mais ses opérations métier restent bloquées : la session invitée serveur n'est pas reliée au résolveur ni aux RPC de découverte/présence. Le visiteur reste limité aux présentations publiques.
 - Les propositions globales et l'historique affichés en mode calme restent des emplacements honnêtes tant que leurs sources ne sont pas connectées.
 
 ### Matrice réelle des modes d'accès
 
-| Mode                                                                   | Entrée Réel                     | Découverte                      | Publication de présence                  | Bips                                           |
+| Mode                                                                   | Entrée En direct                     | Découverte                      | Publication de présence                  | Bips                                           |
 | ---------------------------------------------------------------------- | ------------------------------- | ------------------------------- | ---------------------------------------- | ---------------------------------------------- |
 | Visiteur                                                               | Présentation publique seulement | Non                             | Non                                      | Non                                            |
-| Invité                                                                 | Parcours Réel accessible        | Non, pas encore raccordée       | Non, pas encore raccordée                | Non                                            |
-| Membre avec profil actif                                               | Oui                             | Oui, après accord propre à Réel | Oui, après accord séparé `reel_presence` | RPC serveur disponibles, interface à raccorder |
+| Invité                                                                 | Parcours En direct accessible        | Non, pas encore raccordée       | Non, pas encore raccordée                | Non                                            |
+| Membre avec profil actif                                               | Oui                             | Oui, après accord propre à En direct | Oui, après accord séparé `reel_presence` | RPC serveur disponibles, interface à raccorder |
 | Profil membre invité/incomplet, suspendu, fermé, manquant ou en erreur | Accès métier refusé             | Non                             | Non                                      | Non                                            |
 
 Les statuts ci-dessus décrivent le code présent dans la branche, pas une validation sur une base déployée. Les migrations et tests doivent encore être exécutés.
@@ -296,7 +296,7 @@ La branche ajoute une nouvelle migration `20261110080000_reel_postgis_metric_rad
 
 ## Mise à jour — bips et mises en relation raccordés à l’interface
 
-- L’écran Réel appelle list_reel_bips() lorsque l’onglet « Bips reçus » est ouvert. Les résultats sont filtrés côté interface pour ne montrer que les demandes reçues par le compte connecté.
+- L’écran En direct appelle list_reel_bips() lorsque l’onglet « Bips reçus » est ouvert. Les résultats sont filtrés côté interface pour ne montrer que les demandes reçues par le compte connecté.
 - Les actions « Accepter » et « Refuser » appellent command_reel_bip(). L’acceptation déclenche la création de la relation dans la fonction SQL existante ; le bip en attente disparaît de la liste.
 - Un membre qui a une présence active peut envoyer un bip depuis la fiche d’une personne réellement découverte. L’appel reste soumis aux contrôles SQL : présence active des deux personnes, identité, rayon métrique du destinataire et idempotence.
 - Un abonnement Supabase Postgres Changes actualise les bips lorsque la table reel_bips change. Il est fermé lorsque le panneau est quitté.
@@ -310,7 +310,7 @@ La branche ajoute une nouvelle migration `20261110080000_reel_postgis_metric_rad
 
 1. Le rayon métrique PostGIS est codé ; migration et tests pgTAP restent à exécuter et à vérifier sur Supabase.
 2. Le raccordement des bips et des mises en relation est ajouté ; les tests serveur et le test multi-appareils restent à faire. Les notifications générales ne sont pas encore reliées à leur source métier.
-3. Le mode invité dispose d’une session serveur temporaire séparée, mais aucune opération métier Réel ne l’accepte encore. Il ne reçoit aucun droit membre.
+3. Le mode invité dispose d’une session serveur temporaire séparée, mais aucune opération métier En direct ne l’accepte encore. Il ne reçoit aucun droit membre.
 4. Les propositions globales et l’historique des activités non liées à une relation n’ont pas encore de source métier connectée. L’écran conserve un état vide honnête.
 5. REEL_ZONE_HMAC_SECRET est validé par le code serveur et documenté dans .env.example. Il doit encore être défini dans l’environnement serveur de déploiement ; il ne doit jamais être placé dans une variable VITE_*.
 6. Les contrôles finaux restent à exécuter : lint, Vitest, migrations, pgTAP, build et tests sur deux appareils.
@@ -320,7 +320,7 @@ La branche ajoute une nouvelle migration `20261110080000_reel_postgis_metric_rad
 - L’historique des relations conserve les relations actives et limite l’affichage des relations fermées aux six derniers mois, conformément à la règle d’archive V1. Le test 135 inclut une relation fermée depuis sept mois pour vérifier cette limite.
 - La politique RLS des bips autorise les deux participants à recevoir les événements d’acceptation/refus pendant leur courte durée de conservation ; la RPC de liste continue de ne retourner que les bips en attente. L’onglet Bips se rafraîchit aussi lors de la création d’une relation, afin que l’expéditeur voie le bip disparaître après acceptation.
 
-- La migration Réel ajoute aussi purge_reel_connection_history(), exécutée chaque jour à 03 h via pg_cron si disponible. Les relations fermées de plus de six mois sont supprimées ; les relations encore actives ne sont pas touchées. Le test 135 vérifie la purge. Le nettoyage nécessite de confirmer pg_cron sur la pile cible.
+- La migration En direct ajoute aussi purge_reel_connection_history(), exécutée chaque jour à 03 h via pg_cron si disponible. Les relations fermées de plus de six mois sont supprimées ; les relations encore actives ne sont pas touchées. Le test 135 vérifie la purge. Le nettoyage nécessite de confirmer pg_cron sur la pile cible.
 
 
 ## Mise à jour — session invitée raccordée (10 novembre 2026)
@@ -342,7 +342,7 @@ Cette livraison est une fondation serveur, pas encore un parcours invité comple
 - Ajout d'un point de découverte PostGIS privé et temporaire par session invitée.
 - Ajout d'une RPC service_role qui retourne à l'invité des cartes sûres de membres et d'autres invités, sans identifiant de session ni coordonnées.
 - Ajout d'une RPC membre active qui retourne uniquement les fiches publiques des présences invitées visibles selon le rayon de leur auteur.
-- La page Réel fusionne les cartes membres et invitées pour les membres ; le mode invité peut lancer une découverte et consulter les présences membres.
+- La page En direct fusionne les cartes membres et invitées pour les membres ; le mode invité peut lancer une découverte et consulter les présences membres.
 - Les cartes invitées ne déclenchent pas de bip : la voie de bip/rélation pour identités invitées reste à concevoir.
 - Le formulaire de publication de présence invitée n'est pas encore intégré à l'écran. Les présences invitées ne sont donc pas encore publiables depuis le parcours utilisateur.
 
@@ -357,7 +357,7 @@ La migration `20261110130000_reel_guest_bips_and_connections.sql` ajoute des tab
 - Acceptation/refus : seuls les destinataires peuvent répondre ; le serveur revalide les deux présences avant l'acceptation.
 - Relation : créée une seule fois par paire, fermable par l'un ou l'autre participant, et supprimée à la révocation/expiration de la session invitée.
 - Confidentialité : aucun identifiant de session invité n'est renvoyé dans les projections destinées au navigateur ; les tables ne sont pas directement lisibles par anon/authenticated.
-- Interface : l'action « Faire signe » est maintenant proposée aux membres et invités disposant d'une présence active ; les bips croisés et les relations temporaires sont chargés dans les onglets Réel correspondants.
+- Interface : l'action « Faire signe » est maintenant proposée aux membres et invités disposant d'une présence active ; les bips croisés et les relations temporaires sont chargés dans les onglets En direct correspondants.
 
 Le test pgTAP 137 couvre les deux directions et la suppression à la révocation. **La migration et le test ne sont pas encore déclarés réussis** ; la validation CI et les essais sur deux appareils restent ouverts. Les événements croisés n'ont pas encore de diffusion temps réel dédiée.
 
@@ -372,9 +372,9 @@ Le test pgTAP 137 couvre les deux directions et la suppression à la révocation
 - **État : à valider.** Aucun run CI n'est associé au dernier SHA de la branche ; la migration, pgTAP 137/138, le build, les tests multi-appareils et la réception effective des Broadcasts restent à vérifier.
 
 
-## Contrôle d'affichage Réel — 10 novembre 2026
+## Contrôle d'affichage En direct — 10 novembre 2026
 
-- Barre inférieure harmonisée avec les cinq entrées Vitalis : Flash, Scan, Réel, Radar et 2×2 ; libellés issus du catalogue FR/EN.
+- Barre inférieure harmonisée avec les cinq entrées Vitalis : Flash, Scan, En direct, Radar et 2×2 ; libellés issus du catalogue FR/EN.
 - Feuille des rencontres corrigée pour afficher l'historique temporaire invité sans demander une connexion membre.
 - Préférences locales sans effet métier retirées de l'écran ; les réglages présentés sont ceux réellement appliqués.
 - Écran rendu défilable sur les petites hauteurs et appareils en paysage ; le contenu ne doit plus être coupé par une hauteur fixe.
@@ -394,7 +394,7 @@ Le Quality suivant, sur le SHA `2538cfca62af617e5e29d7d597bedf1fa6ba09f0`, a dé
 - Extraction du contrôleur de l'écran dans `src/domains/presence/model/useReelProximityController.ts` ; le composant `ReelProximityScreen.tsx` est maintenant centré sur le rendu.
 - Extraction de la gestion du canal privé Supabase dans `src/domains/presence/services/reel-activity-realtime.service.ts`. Le contrôleur ne manipule plus directement le client Supabase.
 - Ajout de `tests/presence/reel-architecture.test.ts` pour empêcher les imports API/Supabase/policy dans la couche de présentation et les imports visuels dans le contrôleur.
-- Remplacement des confirmations natives du navigateur lors de la fermeture d'une mise en relation par un dialogue intégré à Réel.
+- Remplacement des confirmations natives du navigateur lors de la fermeture d'une mise en relation par un dialogue intégré à En direct.
 - Styles et structure de confirmation mobile ajoutés.
 - Le bouton Bluetooth reste dans le rendu et n'est pas activé pour la V1 ; son développement reste réservé à la V3.
 
@@ -407,7 +407,7 @@ Le Quality suivant, sur le SHA `2538cfca62af617e5e29d7d597bedf1fa6ba09f0`, a dé
 
 ### Limite du contrôle visuel
 
-Le répertoire `screenshots/04-reel/` ne contient pas l'image de référence produit. Les tests actuels peuvent capturer Réel sur huit tailles d'écran et vérifier le montage de la page, mais ne prouvent pas une ressemblance pixel à pixel avec l'image reçue précédemment. La fidélité exacte ne doit pas être déclarée avant comparaison visuelle avec cette référence.
+Le répertoire `screenshots/04-reel/` ne contient pas l'image de référence produit. Les tests actuels peuvent capturer En direct sur huit tailles d'écran et vérifier le montage de la page, mais ne prouvent pas une ressemblance pixel à pixel avec l'image reçue précédemment. La fidélité exacte ne doit pas être déclarée avant comparaison visuelle avec cette référence.
 
 Architecture détaillée : `docs/03-engines/reel/reel-ui-architecture.md`.
 
@@ -415,7 +415,7 @@ Architecture détaillée : `docs/03-engines/reel/reel-ui-architecture.md`.
 
 - L'ancien contrôle œil qui masquait des textes est remplacé par « Ma présence ». L'état du contrôle reflète la présence membre ou invitée réellement active ; l'arrêt appelle le service existant. Quand aucune présence n'est active, le contrôle ouvre les réglages de visibilité afin que l'utilisateur fournisse les informations et le consentement nécessaires avant publication.
 - La commande « Ma présence » ne modifie pas l'autorisation ni l'état de découverte. La découverte reste utilisable indépendamment de la visibilité personnelle.
-- Les textes persistants de sous-titre et de résumé des profils proches ont été retirés de l'écran radar. La cloche et les panneaux contextuels restent les accès aux activités et aux échanges Réel.
+- Les textes persistants de sous-titre et de résumé des profils proches ont été retirés de l'écran radar. La cloche et les panneaux contextuels restent les accès aux activités et aux échanges En direct.
 - Lorsque plus de 15 profils sont disponibles, les profils supplémentaires au-delà des neuf déjà disposés sur le radar sont représentés par une pile de sept disques superposés au maximum. Chaque disque correspond à un profil individuel ; aucun regroupement métier ni compteur « +N » n'est utilisé. L'appui ouvre la liste complète.
 - Entre 10 et 15 profils, un raccourci icône ouvre la même liste afin que les profils au-delà des neuf affichés sur le radar restent accessibles.
 - Tests de contrat ajoutés pour le remplacement du contrôle et le seuil du regroupement. **Les tests CI, le build et la comparaison visuelle sur appareil restent à confirmer ; aucune réussite n'est revendiquée ici.**
@@ -426,7 +426,7 @@ Architecture détaillée : `docs/03-engines/reel/reel-ui-architecture.md`.
 Cette section prévaut sur les formulations plus anciennes de ce journal lorsqu'elles affirment globalement que les invités ne peuvent pas découvrir ou échanger des bips. Les étapes successives ont ajouté une session invitée serveur, une présence invitée temporaire, la découverte réciproque, puis des premières voies de bips et de relations croisées.
 
 - **Ajouté dans la branche, non encore validé de bout en bout :** session invitée opaque, stockage séparé des présences invitées, découverte réciproque, bips et relations membre ↔ invité / invité ↔ invité, et événements destinés aux membres.
-- **À confirmer dans le parcours utilisateur :** publication d'une présence invitée depuis l'écran Instant ; les notes techniques antérieures indiquent que le formulaire correspondant n'était pas encore intégré.
+- **À confirmer dans le parcours utilisateur :** publication d'une présence invitée depuis l'écran En direct ; les notes techniques antérieures indiquent que le formulaire correspondant n'était pas encore intégré.
 - **Validation technique toujours nécessaire :** migrations Supabase, tests pgTAP concernés, Quality sur le dernier SHA, build, configuration Realtime et essais multi-appareils.
 - **Toujours indisponible ou non raccordé selon l'état documenté :** conversations générales, notifications générales, suggestions globales sans source métier et certaines fonctions de signalement/partage.
 

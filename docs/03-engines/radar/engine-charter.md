@@ -9,7 +9,7 @@ Radar transforme une intention de recherche en **mission suivie dans le temps**.
 Cette continuité est le comportement cible de Radar ; elle ne signifie pas que le traitement automatique en arrière-plan est déjà actif. L'état d'implémentation V1 indique que l'enregistrement et la synchronisation des critères sont raccordés, mais que la recherche automatique, les correspondances et les alertes ne sont pas encore actives.
 
 ## Frontières avec les autres moteurs
-- **Instant** montre les présences proches et les interactions disponibles maintenant ; il ne suit pas une recherche d'opportunités.
+- **En direct** montre les présences proches et les interactions disponibles maintenant ; il ne suit pas une recherche d'opportunités.
 - **Flash** diffuse une intention, un besoin, une proposition ou une information courte et temporaire.
 - **Scan** recherche à la demande les possibilités immédiatement disponibles, dans un périmètre ponctuel.
 - **Radar** conserve une intention et un ensemble de critères pour une recherche suivie dans le temps.
@@ -70,7 +70,7 @@ Pour chaque résultat ou évolution importante, Radar devra permettre de compren
 Une absence de résultat doit être expliquée. Radar peut proposer une alternative ou un élargissement, sans l'appliquer sans accord.
 
 ## Utilisation du profil et confidentialité
-Radar définit sa propre projection du profil selon le type d'opportunité et les interactions nécessaires. Il ne doit pas afficher automatiquement le profil complet ni réutiliser le réglage de visibilité d'Instant ou de Flash.
+Radar définit sa propre projection du profil selon le type d'opportunité et les interactions nécessaires. Il ne doit pas afficher automatiquement le profil complet ni réutiliser le réglage de visibilité d'En direct ou de Flash.
 
 Les informations nécessaires, les règles membre/invité et l'éventuel accès au profil complet doivent être définis par des autorisations propres à Radar. Les critères et détails d'une mission personnelle restent privés. Les résultats ne doivent exposer que les informations autorisées par leur propriétaire et par le contexte de la mise en relation.
 
@@ -90,7 +90,7 @@ Veille peut également analyser des signaux agrégés et anonymisés provenant d
 - Critères de tests et preuves de fonctionnement réel.
 
 ## Garde-fous
-- Ne pas confondre Radar avec Instant ou Scan.
+- Ne pas confondre Radar avec En direct ou Scan.
 - Ne pas prétendre qu'une mission travaille en arrière-plan si le service planifié n'est pas raccordé et vérifié.
 - Ne pas présenter un état `active` comme preuve suffisante d'une recherche automatique.
 - Ne jamais créer une mission ou une mise en relation concrète à partir d'une simple correspondance sans action explicite de l'utilisateur.

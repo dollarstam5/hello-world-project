@@ -12,7 +12,7 @@ const resolveInput = z.object({
 
 export const resolveReelZone = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator(resolveInput)
+  .validator(resolveInput)
   .handler(async ({ data, context }) => {
     const { resolveReelZoneForUser } = await import("./reel-zone.server");
     return resolveReelZoneForUser(

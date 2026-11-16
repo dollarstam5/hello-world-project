@@ -22,7 +22,7 @@ const askSchema = z
 
 export const askAssistant = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator(askSchema)
+  .validator(askSchema)
   .handler(async ({ data, context }) => {
     const { runPaidAssistant } = await import("@/lib/ai/assistant.server");
     return runPaidAssistant(context.supabase as never, context.userId, data);

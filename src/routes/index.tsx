@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { HomeFoundation } from "@/components/experience/HomeFoundation";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -8,7 +7,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Découvrez les espaces de Vitalis : Flash, Scan, Réel et Radar, puis explorez les fonctions complémentaires du menu 2×2.",
+          "Découvrez les espaces de Vitalis : Flash, Scan, En direct et Radar, puis explorez les fonctions complémentaires du menu 2×2.",
       },
       { property: "og:title", content: "Vitalis — Accueil" },
       {
@@ -19,5 +18,4 @@ export const Route = createFileRoute("/")({
       { name: "twitter:card", content: "summary" },
     ],
   }),
-  component: HomeFoundation,
 });

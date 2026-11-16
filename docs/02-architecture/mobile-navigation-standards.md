@@ -10,7 +10,7 @@ Distinguer exigence normative (ex. WCAG), recommandation de plateforme, décisio
 
 ## 2. Architecture des destinations
 
-Home est l'entrée produit ; Réel, Flash, Scan et Radar sont les quatre moteurs ; Espace et Talents sont secondaires ; notifications, communication, profil et Vita sont transversaux. La navigation principale mobile présente cinq icônes : Flash, Scan, Réel, Radar et 2×2. Les quatre premières ouvrent les moteurs ; 2×2 ouvre le menu secondaire. Home reste hors de la barre inférieure.
+Home est l'entrée produit ; En direct, Flash, Scan et Radar sont les quatre moteurs ; Espace et Talents sont secondaires ; notifications, communication, profil et Vita sont transversaux. La navigation principale mobile présente cinq icônes : Flash, Scan, En direct, Radar et 2×2. Les quatre premières ouvrent les moteurs ; 2×2 ouvre le menu secondaire. Home reste hors de la barre inférieure.
 
 Le changement de moteur doit préserver l'état de navigation pertinent lorsque cela est sûr : sous-route, filtres, recherche et position. Les règles d'expiration, de session et de permissions restent prioritaires.
 
@@ -60,9 +60,9 @@ Une checklist ne constitue pas une certification WCAG : des tests automatisés e
 
 | ID     | Décision                   | Acceptation                                                           |
 | ------ | -------------------------- | --------------------------------------------------------------------- |
-| VNS-01 | Home distincte de Réel     | Identité Vitalis et icône de lancement ouvrent Home ; Réel a sa route |
-| VNS-02 | Quatre moteurs             | Réel, Flash, Scan et Radar accessibles et identifiables               |
-| VNS-03 | Barre mobile à cinq icônes | Flash, Scan, Réel, Radar, 2×2 dans cet ordre                          |
+| VNS-01 | Home distincte de En direct     | Identité Vitalis et icône de lancement ouvrent Home ; En direct a sa route |
+| VNS-02 | Quatre moteurs             | En direct, Flash, Scan et Radar accessibles et identifiables               |
+| VNS-03 | Barre mobile à cinq icônes | Flash, Scan, En direct, Radar, 2×2 dans cet ordre                          |
 | VNS-04 | 2×2 secondaire             | Le cinquième contrôle ouvre le menu, pas un moteur                    |
 | VNS-05 | Cibles tactiles            | ≥48 dp Android et ≥44 pt iOS natif                                    |
 | VNS-06 | WCAG                       | SC 2.5.8 évalué séparément en CSS px et exceptions                    |

@@ -4,12 +4,12 @@
 
 ## Hiérarchie des espaces
 
-- **Home** est le point d'entrée produit, distinct du moteur Réel. L'identité Vitalis dans l'en-tête et l'icône de lancement ouvrent la route d'accueil `/`.
-- Les quatre moteurs métier sont **Flash, Scan, Réel et Radar**. Chacun conserve sa route, son périmètre, ses sections et ses responsabilités de gestion.
+- **Home** est le point d'entrée produit, distinct du moteur En direct. L'identité Vitalis dans l'en-tête et l'icône de lancement ouvrent la route d'accueil `/`.
+- Les quatre moteurs métier sont **Flash, Scan, En direct et Radar**. Chacun conserve sa route, son périmètre, ses sections et ses responsabilités de gestion.
 - **2×2** donne accès au menu des espaces et fonctionnalités complémentaires. Ce n'est pas un cinquième moteur.
 - **Espace** est le tableau de bord personnel : Mes informations, Mon profil, Aperçu du profil, Paramètres du profil et Paramètres de l'application.
 - **Talents** reste une destination secondaire distincte, accessible depuis le menu 2×2.
-- Notifications, Assistant, Messages et le contrôle Réel depuis la cloche sont des accès transversaux ; ils ne créent pas de nouveaux moteurs.
+- Notifications, Assistant, Messages et le contrôle En direct depuis la cloche sont des accès transversaux ; ils ne créent pas de nouveaux moteurs.
 
 ## Espaces indépendants et gestion
 
@@ -17,10 +17,10 @@ Chaque moteur expose ses sections propres et un accès de gestion dédié :
 
 - Flash : découverte, création, modification des Flash actifs, archivage et suppression des enregistrements disponibles localement. Les brouillons et préférences dédiées restent à raccorder lorsqu’ils auront un stockage et des règles métier réels.
 - Scan : recherche de proximité, choix du rayon (1, 5, 10 ou 20 km), états de recherche, dix recherches récentes conservées localement (date et nombre de résultats uniquement). Les filtres avancés et préférences dédiées restent à construire.
-- Réel : accès Présence, Bips reçus, Mises en relation et Historique. Ces espaces restent informatifs tant que le transport temps réel partagé, les données sécurisées et les parcours métier ne sont pas raccordés.
+- En direct : accès Présence, Bips reçus, Mises en relation et Historique. Ces espaces restent informatifs tant que le transport temps réel partagé, les données sécurisées et les parcours métier ne sont pas raccordés.
 - Radar : création, modification et annulation de veilles privées en brouillon, enregistrées localement et synchronisées. La détection automatique, les correspondances et les alertes restent indisponibles.
 
-Les règles métier et les sources de données restent propres à chaque moteur. Pour Radar, la gestion des brouillons est raccordée ; le moteur de correspondances et les alertes ne le sont pas. Pour Réel, les sections sont visibles mais aucune présence, aucun bip ni aucune relation n’est simulé. Voir les matrices d’implémentation [Radar V1](../03-engines/radar/radar-v1-implementation-status.md) et [traçabilité Réel](../03-engines/reel/reel-traceability-matrix.md).
+Les règles métier et les sources de données restent propres à chaque moteur. Pour Radar, la gestion des brouillons est raccordée ; le moteur de correspondances et les alertes ne le sont pas. Pour En direct, les sections sont visibles mais aucune présence, aucun bip ni aucune relation n’est simulé. Voir les matrices d’implémentation [Radar V1](../03-engines/radar/radar-v1-implementation-status.md) et [traçabilité En direct](../03-engines/reel/reel-traceability-matrix.md).
 
 ## Tableau de bord personnel et accès dédiés
 
@@ -40,11 +40,11 @@ La barre inférieure présente exactement cinq icônes, dans cet ordre :
 
 1. Flash
 2. Scan
-3. Réel
+3. En direct
 4. Radar
 5. 2×2
 
-Réel occupe la position centrale et utilise l'icône antenne. Les quatre premières icônes ouvrent leurs routes respectives ; 2×2 ouvre le menu secondaire. Le menu 2×2 reste donc visuellement présent dans la barre, sans être présenté comme un moteur ou une destination métier.
+En direct occupe la position centrale et utilise l'icône antenne. Les quatre premières icônes ouvrent leurs routes respectives ; 2×2 ouvre le menu secondaire. Le menu 2×2 reste donc visuellement présent dans la barre, sans être présenté comme un moteur ou une destination métier.
 
 Home reste hors de cette barre et demeure accessible depuis l'identité Vitalis dans l'en-tête et depuis l'icône de lancement de l'application.
 
@@ -54,7 +54,7 @@ Le parcours V1 comporte cinq écrans, affichés une seule fois après la premiè
 
 1. **Vitalis dans son ensemble** : vision, promesse et utilité de l'application.
 2. **Flash et Scan** : présentation courte des deux moteurs.
-3. **Réel et Radar** : présentation courte des deux moteurs ; Réel est accessible en mode invité, sans compte obligatoire.
+3. **En direct et Radar** : présentation courte des deux moteurs ; En direct est accessible en mode invité, sans compte obligatoire.
 4. **2×2 et les espaces complémentaires** : explication du menu et des destinations secondaires.
 5. **Entrer dans Vitalis** : invitation finale et action « C'est parti ! ».
 

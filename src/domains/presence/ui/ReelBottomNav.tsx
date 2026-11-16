@@ -8,7 +8,7 @@ interface ReelBottomNavProps {
   menuOpen: boolean;
 }
 
-/** Navigation propre à l'écran Réel, calquée sur la barre de la référence visuelle. */
+/** Navigation propre à l'écran En direct, calquée sur la barre de la référence visuelle. */
 export function ReelBottomNav({ onOpenMenu, menuOpen }: ReelBottomNavProps) {
   const { t } = useI18n();
 

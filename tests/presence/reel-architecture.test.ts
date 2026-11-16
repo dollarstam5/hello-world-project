@@ -4,7 +4,7 @@ import controllerSource from "../../src/domains/presence/model/useReelProximityC
 import realtimeServiceSource from "../../src/domains/presence/services/reel-activity-realtime.service.ts?raw";
 import memberAvatarSource from "../../src/domains/profile/api/profile-avatar.client.ts?raw";
 
-describe("Instant architecture boundaries", () => {
+describe("En direct architecture boundaries", () => {
   it("keeps business services and access policy out of the screen component", () => {
     const screen = screenSource;
     expect(screen).not.toMatch(/from ["']@\/domains\/presence\/api\//);
@@ -43,7 +43,7 @@ describe("Instant architecture boundaries", () => {
 
   it("uses the header visibility control only for the user's own presence", () => {
     expect(screenSource).toContain("reel-proximity__presence-toggle");
-    expect(screenSource).toContain("<h1>INSTANT</h1>");
+    expect(screenSource).toContain('<h1>{t("page.reel.title")}</h1>');
     expect(screenSource).toContain('<RadioTower aria-hidden="true" />');
     expect(screenSource).toContain('className="reel-proximity__header-actions"');
     expect(screenSource).toContain("reel-radar__me-avatar");
@@ -66,7 +66,7 @@ describe("Instant architecture boundaries", () => {
     expect(screenSource).toContain("<img");
   });
 
-  it("keeps the Instant header and central profile controls in the mobile screen composition", () => {
+  it("keeps the En direct header and central profile controls in the mobile screen composition", () => {
     expect(screenSource).toContain('className="reel-proximity__header-actions"');
     expect(screenSource).toContain("reel-radar__me-avatar");
     expect(screenSource).toContain("memberAvatarUrl");

@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { FlashExperienceScreen } from "@/domains/flash/ui/FlashExperienceScreen";
 
 export const Route = createFileRoute("/flash")({
   head: () => ({
@@ -13,5 +12,4 @@ export const Route = createFileRoute("/flash")({
       { name: "twitter:card", content: "summary" },
     ],
   }),
-  component: FlashExperienceScreen,
 });

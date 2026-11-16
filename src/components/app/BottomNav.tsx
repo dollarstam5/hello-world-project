@@ -1,8 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Zap, ScanLine, RadioTower, Radar, LayoutGrid } from "lucide-react";
-import { motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n/useI18n";
-import { useReducedMotion } from "@/lib/design/useReducedMotion";
 import { cn } from "@/lib/utils";
 import "./reel-bottom-nav.css";
 
@@ -26,11 +24,10 @@ interface BottomNavProps {
   menuOpen: boolean;
 }
 
-/** Five-point navigation with Réel centered; all existing destinations are preserved. */
+/** Five-point navigation with En direct centered; all existing destinations are preserved. */
 export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
   const { t } = useI18n();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const reduce = useReducedMotion();
 
   return (
     <nav
@@ -57,17 +54,7 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
             </span>
           ) : (
             <span className={cn("reel-bottom-nav__item", active && "is-active")}>
-              {active &&
-                (reduce ? (
-                  <span className="reel-bottom-nav__active" aria-hidden="true" />
-                ) : (
-                  <motion.span
-                    layoutId="reel-nav-active"
-                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                    className="reel-bottom-nav__active"
-                    aria-hidden="true"
-                  />
-                ))}
+              {active && <span className="reel-bottom-nav__active" aria-hidden="true" />}
               <Icon aria-hidden="true" />
               <span>{label}</span>
             </span>

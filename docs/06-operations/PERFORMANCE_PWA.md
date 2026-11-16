@@ -49,7 +49,7 @@ L'authentification n'est pas modifiée par P0.10.1.
 
 ## P0.10.3 — socle PWA/installabilité
 
-Le dépôt fournit désormais un service worker enregistré côté navigateur, un manifeste PWA cohérent avec les icônes versionnées et une commande de validation dédiée. Le service worker utilise le réseau en priorité pour les navigations et conserve un shell de secours ; les routes API et les Server Functions ne sont pas interceptées. Les données métier restent sous la responsabilité de Dexie et du moteur de synchronisation.
+Le dépôt fournit désormais un service worker enregistré côté navigateur, un manifeste PWA cohérent avec les icônes versionnées et une commande de validation dédiée. Le shell de navigation conserve les routes principales Home, Flash, Scan, Réel et Radar, ainsi que les zones Espace et Talents. Le service worker utilise le réseau en priorité pour les navigations et conserve un shell de secours ; les routes API et les Server Functions ne sont pas interceptées. Les données métier restent sous la responsabilité de Dexie et du moteur de synchronisation.
 
 La validation d'installabilité réelle sur appareils représentatifs reste un contrôle E2E de sous-milestone ultérieur.
 
@@ -67,7 +67,7 @@ Le navigateur collecte désormais les signaux réels **LCP, INP et CLS** via Per
 
 ## P0.10.5 — budgets de performance automatisés
 
-Le build de production est maintenant contrôlé automatiquement après compilation. Le contrôle mesure en gzip les ressources JavaScript, CSS et critiques réellement référencées par le HTML initial ; si aucun HTML exploitable n'est trouvé, il utilise les assets du build comme repli conservateur.
+Le build de production est contrôlé automatiquement après compilation. Le contrôle mesure en gzip les ressources JavaScript, CSS et critiques référencées par chaque document HTML initial, puis retient le maximum par indicateur sans additionner les routes entre elles. Si aucun HTML ne fournit d'entrée JavaScript exploitable, il utilise le manifeste Vite et suit les imports statiques de chaque entrée.
 
 Les seuils sont ceux du contrat P0.10.1 :
 
@@ -81,10 +81,12 @@ L'agrégation p75 des mesures LCP/INP/CLS reste distincte de ces budgets de fich
 
 ## P0.10.6 — validation mobile/E2E
 
-Une validation navigateur automatisée couvre désormais les quatre viewports de référence : **360×800**, **390×844**, **412×915** et **768×1024**.
+La validation navigateur automatisée couvre les cinq routes principales `/`, `/flash`, `/scan`, `/reel` et `/radar`, sur les quatre viewports de référence : **360×800**, **390×844**, **412×915** et **768×1024**.
 
-Le script `test:e2e` reconstruit d'abord l'application puis démarre son runtime local pour le smoke navigateur et utilise Chromium/Playwright pour vérifier que le point d'entrée principal et les parcours P0 `/flash`, `/radar`, `/talents` et `/espace` rendent bien leur conteneur principal `#main`.
+Le script `test:e2e` reconstruit l'application, vérifie la présence des artefacts Nitro de production, puis démarre le runtime de production avec `nitro preview`. Chromium/Playwright attend un sélecteur propre à chaque route et enregistre une capture pour chaque couple route/viewport. Les captures sont conservées comme artefact CI pendant sept jours.
 
-Cette validation est un smoke E2E mobile : elle détecte les erreurs de build, de démarrage, de routage et de rendu initial aux dimensions ciblées. Les contrôles manuels restent nécessaires pour les zones tactiles, l'absence de débordement horizontal et les scénarios offline/online réels sur appareils représentatifs.
+Cette validation est un smoke E2E mobile : elle détecte les erreurs de build, de démarrage, de routage et de rendu initial aux dimensions ciblées. Elle ne certifie pas à elle seule l'absence de débordement horizontal, la qualité visuelle, les zones tactiles ou l'usage offline/online réel sur appareils représentatifs ; ces contrôles restent nécessaires.
+
+Le démarrage différé du moteur de synchronisation reste découpé dans un chunk séparé. Si le navigateur est hors ligne au premier affichage, le chargement attend le retour du réseau ; si un chargement échoue, il est retenté au retour en ligne ou lorsque l'application redevient visible. Le test associé vérifie le cas hors ligne puis reconnexion, mais ne remplace pas un test PWA complet sur appareil.
 
 L'authentification n'est pas modifiée par P0.10.6.

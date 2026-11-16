@@ -9,7 +9,7 @@ const OFFLINE_URL = "/offline.html";
 const MAX_ASSET_ENTRIES = 80;
 
 /** Key screens kept warm so they open instantly, online or not. */
-const SHELL_ROUTES = ["/", "/flash", "/radar", "/espace", "/talents"];
+const SHELL_ROUTES = ["/", "/flash", "/scan", "/reel", "/radar", "/espace", "/talents"];
 const SHELL_URLS = [
   ...SHELL_ROUTES,
   "/manifest.webmanifest",

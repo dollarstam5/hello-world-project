@@ -29,8 +29,8 @@ La simplicité prime sur le vocabulaire technique, les effets de style et les fo
 
 ## 3. Noms des espaces
 
-- En français, conserver les noms Flash, Scan, Réel, Radar et 2×2.
-- En anglais, conserver Flash, Scan, Radar et 2×2 ; traduire le nom de l'espace Réel par **Live**, plus naturel pour désigner la présence en temps réel.
+- En français, conserver les noms Flash, Scan, En direct, Radar et 2×2.
+- En anglais, conserver Flash, Scan, Radar et 2×2 ; traduire le nom de l'espace En direct par **Live**, plus naturel pour désigner la présence en temps réel.
 - Utiliser le même nom dans l'accueil, l'onboarding, la navigation, le centre de communication et les pages de destination.
 
 ## 4. Exemples de formulations

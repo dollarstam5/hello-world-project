@@ -27,7 +27,7 @@ Distinguer :
 
 Les réglages par défaut ne doivent jamais empêcher l'utilisateur de voir les paramètres réellement appliqués au scan en cours. Le rayon, les catégories, le mode de sélection et le point de référence choisis doivent être transmis au moteur et appliqués par les sources de données. L'interface ne doit jamais afficher un paramètre comme appliqué si le service de recherche ne le respecte pas.
 
-Les valeurs de rayon disponibles, les catégories et les modalités de choix du point de référence restent à valider. Ne pas reprendre automatiquement les rayons d'Instant ou de Radar : ces paramètres répondent à des usages différents.
+Les valeurs de rayon disponibles, les catégories et les modalités de choix du point de référence restent à valider. Ne pas reprendre automatiquement les rayons d'En direct ou de Radar : ces paramètres répondent à des usages différents.
 
 ## État technique du rayon — vérification du dépôt
 
@@ -43,13 +43,13 @@ Cette plage décrit la capacité technique actuelle, pas les options d'interface
 - La recherche est ponctuelle : elle s'achève avec le scan et ses résultats. Toute surveillance ultérieure dans le temps relève d'une mission Radar ou d'une veille explicitement créée.
 
 ## Frontière avec les autres moteurs
-- **Instant** montre les présences proches maintenant ; Scan ne recherche pas les personnes simplement parce qu'elles sont présentes.
+- **En direct** montre les présences proches maintenant ; Scan ne recherche pas les personnes simplement parce qu'elles sont présentes.
 - **Flash** publie des informations courtes ; Scan peut découvrir les Flash actifs autorisés dans son périmètre, sans modifier leur contenu ni les autorisations de leur auteur.
 - **Radar** suit une intention dans le temps ; Scan ne crée pas automatiquement une mission Radar et ne continue pas à chercher après la fin du scan.
 - **Veille** peut présenter des tendances agrégées ; Scan n'accède pas aux données personnelles ou aux missions privées utilisées pour ces analyses.
 
 ## Utilisation du profil et confidentialité
-Scan définit sa propre projection du profil selon les informations strictement nécessaires à ses résultats et interactions. Il ne doit pas hériter automatiquement du profil complet ni des réglages de visibilité d'Instant ou de Flash.
+Scan définit sa propre projection du profil selon les informations strictement nécessaires à ses résultats et interactions. Il ne doit pas hériter automatiquement du profil complet ni des réglages de visibilité d'En direct ou de Flash.
 
 Les champs visibles, l'éventuel accès au profil complet et les règles membre/invité restent à définir dans le contrat propre à Scan. En attendant cette décision, ne pas supposer qu'un résultat de scan autorise l'affichage de l'identité complète d'une personne.
 

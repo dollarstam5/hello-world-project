@@ -8,7 +8,6 @@ import {
   type ReactNode,
 } from "react";
 import { useAuth } from "@/domains/auth";
-import { supabase } from "@/integrations/supabase/client";
 import {
   endReelGuestSession,
   getReelGuestSession,
@@ -61,12 +60,13 @@ function isMemberProfileState(
  */
 export function AccessModeProvider({ children }: { children: ReactNode }) {
   const { user, loading: authLoading } = useAuth();
+  const userId = user?.id;
   const [guest, setGuest] = useState<TemporaryGuestIdentity | null>(null);
   const [memberProfileState, setMemberProfileState] =
     useState<MemberProfileState>("not_applicable");
 
   useEffect(() => {
-    if (!user) {
+    if (!userId) {
       setMemberProfileState("not_applicable");
       return;
     }
@@ -74,12 +74,17 @@ export function AccessModeProvider({ children }: { children: ReactNode }) {
     let cancelled = false;
     setMemberProfileState("loading");
 
-    void supabase
-      .from("profiles")
-      .select("status, deleted_at")
-      .eq("id", user.id)
-      .maybeSingle()
-      .then(({ data, error }) => {
+    void (async () => {
+      try {
+        const { supabase } = await import("@/integrations/supabase/client");
+        if (cancelled) return;
+
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("status, deleted_at")
+          .eq("id", userId)
+          .maybeSingle();
+
         if (cancelled) return;
         if (error) {
           setMemberProfileState("error");
@@ -94,21 +99,21 @@ export function AccessModeProvider({ children }: { children: ReactNode }) {
           return;
         }
         setMemberProfileState(isMemberProfileState(data.status) ? data.status : "error");
-      })
-      .then(undefined, () => {
+      } catch {
         if (!cancelled) setMemberProfileState("error");
-      });
+      }
+    })();
 
     return () => {
       cancelled = true;
     };
-  }, [user?.id]);
+  }, [userId]);
 
   useEffect(() => {
     if (authLoading) return;
     let cancelled = false;
 
-    if (user) {
+    if (userId) {
       setGuest(null);
       void endReelGuestSession().catch(() => {
         // The member path remains authoritative; the guest cookie expires server-side.
@@ -131,7 +136,7 @@ export function AccessModeProvider({ children }: { children: ReactNode }) {
     return () => {
       cancelled = true;
     };
-  }, [user?.id, authLoading]);
+  }, [userId, authLoading]);
 
   useEffect(() => {
     const clearTemporaryIdentity = () => setGuest(null);

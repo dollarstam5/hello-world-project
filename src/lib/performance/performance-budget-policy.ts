@@ -9,6 +9,12 @@ export interface PerformanceBudgetResult {
 export function assertPerformanceBudgets(result: PerformanceBudgetResult): void {
   const violations: string[] = [];
 
+  for (const [name, value] of Object.entries(result)) {
+    if (!Number.isFinite(value) || value < 0) {
+      violations.push(`${name} must be a finite, non-negative number (received ${value})`);
+    }
+  }
+
   if (result.initialJavaScriptGzipKb > PERFORMANCE_BUDGETS.initialJavaScriptGzipKb) {
     violations.push(
       `initial JavaScript gzip ${result.initialJavaScriptGzipKb.toFixed(1)} kB > ${PERFORMANCE_BUDGETS.initialJavaScriptGzipKb} kB`,
