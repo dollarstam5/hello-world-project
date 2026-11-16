@@ -204,7 +204,6 @@ export function ReelProximityScreen() {
             {panel === "activity" && <ReelActivityPanel controller={controller} />}
 
             {panel === "people" && <ReelPeoplePanel controller={controller} />}
-
           </section>
         </div>
       )}

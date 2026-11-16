@@ -77,16 +77,10 @@ export function ReelActivityPanel({ controller }: { controller: ReelController }
                 <strong>{t("reel.ui.someoneSignaled")}</strong>
                 <small>{t("reel.ui.acceptOrDecline")}</small>
               </span>
-              <button
-                type="button"
-                onClick={() => void resolveReceivedBip(bip, "accept")}
-              >
+              <button type="button" onClick={() => void resolveReceivedBip(bip, "accept")}>
                 {t("reel.ui.accept")}
               </button>
-              <button
-                type="button"
-                onClick={() => void resolveReceivedBip(bip, "decline")}
-              >
+              <button type="button" onClick={() => void resolveReceivedBip(bip, "decline")}>
                 {t("reel.ui.decline")}
               </button>
             </div>
@@ -125,9 +119,7 @@ export function ReelActivityPanel({ controller }: { controller: ReelController }
           {access.mode === "member" && !canUseMemberReel && (
             <p className="reel-panel__note">{t("reel.ui.memberNotActive")}</p>
           )}
-          {access.mode === "guest" &&
-            !connectionsLoading &&
-            guestConnections.length === 0 && (
+          {access.mode === "guest" && !connectionsLoading && guestConnections.length === 0 && (
               <div className="reel-panel__empty">
                 <UsersRound aria-hidden="true" />
                 <strong>{t("reel.ui.guestNoConnections")}</strong>

@@ -34,11 +34,7 @@ export function ReelSettingsPanel({
       </div>
       <h2 id="reel-panel-title">{t("reel.ui.settingsHeading")}</h2>
       <p className="reel-panel__intro">{t("reel.ui.settingsIntro")}</p>
-      <button
-        type="button"
-        className="reel-panel__help-trigger"
-        onClick={onOpenHelp}
-      >
+      <button type="button" className="reel-panel__help-trigger" onClick={onOpenHelp}>
         <CircleHelp aria-hidden="true" />
         {t("reel.ui.settingsHelp")}
       </button>
@@ -46,16 +42,10 @@ export function ReelSettingsPanel({
       <div className="reel-panel__section">
         <h3>{t("reel.ui.discovery")}</h3>
         <p className="reel-panel__note">
-          {discoveryEnabled
-            ? t("reel.ui.discoveryActive")
-            : t("reel.ui.discoveryInactive")}
+          {discoveryEnabled ? t("reel.ui.discoveryActive") : t("reel.ui.discoveryInactive")}
         </p>
         {discoveryEnabled ? (
-          <button
-            type="button"
-            className="reel-panel__secondary"
-            onClick={ignoreLocation}
-          >
+          <button type="button" className="reel-panel__secondary" onClick={ignoreLocation}>
             {t("reel.ui.disableDiscovery")}
           </button>
         ) : (
@@ -88,9 +78,7 @@ export function ReelSettingsPanel({
       </div>
 
       <p className="reel-panel__note">{t("reel.ui.radiusApplied")}</p>
-      {currentPresence && (
-        <p className="reel-panel__note">{t("reel.ui.guestPresenceActive")}</p>
-      )}
+      {currentPresence && <p className="reel-panel__note">{t("reel.ui.guestPresenceActive")}</p>}
 
       <div className="reel-panel__section">
         <h3>{t("reel.ui.duration")}</h3>
@@ -278,11 +266,7 @@ export function ReelSettingsPanel({
       </div>
 
       <p className="reel-panel__note">{t("reel.ui.visibilityConfirmed")}</p>
-      <button
-        type="button"
-        className="reel-panel__primary"
-        onClick={onClose}
-      >
+      <button type="button" className="reel-panel__primary" onClick={onClose}>
         {t("reel.ui.finish")}
       </button>
     </>
