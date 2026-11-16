@@ -6,7 +6,6 @@ import { Sheet } from "@/components/app/Sheet";
 import { Button } from "@/components/ui/button";
 import { useIdentity } from "@/lib/experience/identity";
 import { useI18n } from "@/lib/i18n/useI18n";
-import { supabase } from "@/integrations/supabase/client";
 
 interface ProfileQuickPreviewProps {
   open: boolean;
@@ -42,6 +41,9 @@ export function ProfileQuickPreview({ open, onOpenChange }: ProfileQuickPreviewP
 
     async function loadProfilePreview() {
       if (!active) return;
+      const { supabase } = await import("@/integrations/supabase/client");
+      if (!active) return;
+
       const { data: authData } = await supabase.auth.getUser();
       if (!active || !authData.user) return;
 
@@ -59,7 +61,9 @@ export function ProfileQuickPreview({ open, onOpenChange }: ProfileQuickPreviewP
       setLoadedHandle(data.handle);
     }
 
-    void loadProfilePreview();
+    void loadProfilePreview().catch(() => {
+      // The quick preview remains usable with the locally available identity.
+    });
     return () => {
       active = false;
     };
