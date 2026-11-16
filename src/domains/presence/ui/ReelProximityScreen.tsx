@@ -139,11 +139,19 @@ export function ReelProximityScreen() {
   const [tourOpen, setTourOpen] = useState(false);
   const [tourStep, setTourStep] = useState(0);
   useEffect(() => {
-    setTourOpen(window.localStorage.getItem("vitalis-reel-tour-seen") !== "true");
+    try {
+      setTourOpen(window.localStorage.getItem("vitalis-reel-tour-seen") !== "true");
+    } catch {
+      setTourOpen(true);
+    }
   }, []);
   const closeTour = () => {
     setTourOpen(false);
-    window.localStorage.setItem("vitalis-reel-tour-seen", "true");
+    try {
+      window.localStorage.setItem("vitalis-reel-tour-seen", "true");
+    } catch {
+      // The guide remains dismissible for this visit when storage is unavailable.
+    }
   };
   const openTour = () => { setTourStep(0); setTourOpen(true); };
   const {
@@ -300,10 +308,10 @@ export function ReelProximityScreen() {
               <span>{t("reel.ui.tour.eyebrow")}</span>
               <button type="button" onClick={closeTour} aria-label={t("reel.ui.tour.close")}><X aria-hidden="true" /></button>
             </div>
-            <div className="reel-tour__progress" aria-label={t("reel.ui.tour.progress", { current: tourStep + 1, total: 4 })}>
+            <div className="reel-tour__progress" aria-label={t("reel.ui.tour.progress")}>
               {[0, 1, 2, 3].map((step) => <span key={step} className={step <= tourStep ? "is-active" : ""} />)}
             </div>
-            <p className="reel-tour__step">{t("reel.ui.tour.step", { current: tourStep + 1, total: 4 })}</p>
+            <p className="reel-tour__step">{t(([ "reel.ui.tour.step1", "reel.ui.tour.step2", "reel.ui.tour.step3", "reel.ui.tour.step4" ][tourStep]) as never)}</p>
             <h2 id="reel-tour-title">{t(([ "reel.ui.tour.title1", "reel.ui.tour.title2", "reel.ui.tour.title3", "reel.ui.tour.title4" ][tourStep]) as never)}</h2>
             <p id="reel-tour-description">{t(([ "reel.ui.tour.description1", "reel.ui.tour.description2", "reel.ui.tour.description3", "reel.ui.tour.description4" ][tourStep]) as never)}</p>
             <div className="reel-tour__actions">
