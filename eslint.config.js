@@ -33,6 +33,9 @@ export default tseslint.config(
         },
       ],
       "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
+      // Component files must stay at or below 300 lines. Keep this as a warning
+      // while existing oversized components are progressively split.
+      "max-lines": ["warn", { max: 300, skipBlankLines: true, skipComments: true }],
       "@typescript-eslint/no-unused-vars": "off",
     },
   },
