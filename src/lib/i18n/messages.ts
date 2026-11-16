@@ -167,7 +167,7 @@ export const messages = {
     "onboarding.ready.body":
       "Installez-vous, explorez à votre rythme et commencez par l'espace qui vous attire. Toute l'expérience Vitalis vous attend.",
     "onboarding.ready.guest":
-      "Vous pouvez commencer sans créer de compte lorsque le moteur le permet. Réel est accessible en mode invité.",
+      "Vous pouvez commencer sans créer de compte lorsque le moteur le permet. En direct est accessible en mode invité.",
 
     "identity.guest": "Invité",
     "identity.identified": "Identifié",
@@ -484,7 +484,7 @@ export const messages = {
     "reel.ui.subtitle": "Les personnes présentes autour de vous",
     "reel.ui.notifications": "Notifications, bips et mises en relation",
     "reel.ui.notificationsPaused":
-      "Les notifications Réel sont en pause sans autorisation de proximité",
+      "Les notifications En direct sont en pause sans autorisation de proximité",
     "reel.ui.activity": "Activité",
     "reel.ui.notificationsPausedShort": "Notifications en pause",
     "reel.ui.preferences": "Personnaliser mes préférences",
@@ -504,12 +504,12 @@ export const messages = {
     "reel.ui.visitorDescription":
       "Commencez avec une session temporaire. Elle ne crée pas de compte ni de profil permanent.",
     "reel.ui.noAccessDescription":
-      "L’accès à Réel sera disponible lorsque votre profil Vitalis sera actif.",
+      "L’accès à En direct sera disponible lorsque votre profil Vitalis sera actif.",
     "reel.ui.permissionDescription":
-      "Autorisez Réel à utiliser votre position pour observer les personnes et les activités autour de vous. Votre choix reste libre.",
+      "Autorisez En direct à utiliser votre position pour observer les personnes et les activités autour de vous. Votre choix reste libre.",
     "reel.ui.waitingDescription": "Cela ne prend que quelques instants.",
     "reel.ui.locationPausedDescription":
-      "Vous pouvez parcourir Réel sans localisation. Les découvertes proches, les bips et les réactions resteront en pause.",
+      "Vous pouvez parcourir En direct sans localisation. Les découvertes proches, les bips et les réactions resteront en pause.",
     "reel.ui.seeNearby": "Voir les personnes autour de moi",
     "reel.ui.retry": "Réessayer",
     "reel.ui.guestLoading": "Ouverture de votre accès…",
@@ -597,12 +597,12 @@ export const messages = {
     "reel.ui.noConnectionsHint": "Les personnes qui acceptent votre signe apparaîtront ici.",
     "reel.ui.noNotifications": "Tout est calme pour le moment",
     "reel.ui.notificationsHint":
-      "Les notifications liées à Réel apparaîtront ici lorsqu’un événement réel sera disponible.",
+      "Les notifications liées à En direct apparaîtront ici lorsqu’un événement réel sera disponible.",
     "reel.ui.nearbyProfile": "Profil à proximité",
     "reel.ui.noExtraProfile":
       "Cette personne n’a pas encore ajouté d’autres informations à son profil.",
     "reel.ui.endConnectionNotice":
-      "Elle sera fermée pour vous deux et ne sera plus active dans Réel.",
+      "Elle sera fermée pour vous deux et ne sera plus active dans En direct.",
     "reel.ui.closeProfile": "Fermer le profil",
     "reel.ui.alerts": "Alertes",
     "reel.ui.connectionsTab": "Rencontres",
@@ -701,7 +701,7 @@ export const messages = {
     "reel.section.history.desc":
       "Retrouver vos anciennes mises en relation et conversations, selon les règles de conservation.",
     "reel.section.unavailable":
-      "Cette partie sera disponible quand Réel pourra partager les présences et gérer les interactions en toute sécurité. Aucune présence ni relation n'est simulée.",
+      "Cette partie sera disponible quand En direct pourra partager les présences et gérer les interactions en toute sécurité. Aucune présence ni relation n'est simulée.",
     "radar.manage.intro":
       "Enregistrez une recherche et gardez ses critères à portée de main. La détection automatique n'est pas encore active.",
     "radar.manage.edit.title": "Modifier ma veille",
