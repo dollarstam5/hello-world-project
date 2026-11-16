@@ -2090,29 +2090,50 @@ export const messages = {
     "vision.deep.enginesHeading": "Four ways to take action, one shared purpose.",
     "vision.deep.navLabel": "Jump to an engine",
         "vision.deep.flash.why": "When you have something useful to share, Flash helps you put it into words and publish it for a chosen time and area. It can be a one-off need, a service offer, a request for help, or useful local information.",
-    "vision.deep.flash.use": "Describe your need or offer in your own words. Choose a category, the relevant time, and the intended reach. Review the summary, keep a draft if needed, and publish only when that action is genuinely available.",
-    "vision.deep.flash.flow": "1. Choose what to share. 2. Explain the situation simply. 3. Add the useful time and area. 4. Review, then publish or keep a draft. 5. Find and manage your own Flash posts.",
-    "vision.deep.flash.example": "Examples: find someone to look after children this weekend, offer to prepare food for a gathering, or ask for moving help in two hours. Every demonstration example remains clearly labelled “Example”.",
-    "vision.deep.flash.difference": "Flash is a short-lived publication that informs others. It does not automatically track your search or announce your physical presence.",
-    "vision.deep.scan.why": "Scan is for searching right now. It checks active Flash publications that match the available criteria and permitted area, then presents the results genuinely available at that moment.",
-    "vision.deep.scan.use": "Say what you are looking for, choose the available criteria and area, run the search, then review each result, its context, and its date. You control when it starts: a one-off search does not become continuous monitoring.",
-    "vision.deep.scan.flow": "1. Describe a search. 2. Set the available criteria. 3. Choose an area. 4. Run Scan. 5. Review results and open useful details.",
-    "vision.deep.scan.example": "Example: look for an active Flash offering moving help in your area. If no relevant publication is available or the source is not connected, Scan must say so rather than inventing a result.",
-    "vision.deep.scan.difference": "Scan answers a question at a specific moment. It does not create a publication, make your presence visible, or keep searching after the search ends.",
-    "vision.deep.reel.why": "Live is about people who are genuinely in the same place or nearby at the same time: an event, neighbourhood, room, or public space. Presence is voluntary and temporary.",
-    "vision.deep.reel.use": "When you enter, choose separately whether you want to discover nearby presence and whether you want to make your own presence visible. Review the available settings, activate your presence only if you choose, then view permitted profiles and send a ping when conditions allow. You can stop sharing at any time.",
-    "vision.deep.reel.flow": "1. Open Live. 2. Review the location request for this space. 3. Choose whether to discover nearby people. 4. Prepare and voluntarily activate your presence. 5. View profiles, send or manage pings and connections. 6. Stop your presence whenever you wish.",
-    "vision.deep.reel.example": "Example: you arrive at a concert and choose to make your presence visible to people nearby. You may also choose to discover others without becoming visible. One never implies the other.",
-    "vision.deep.reel.difference": "Live is neither a publication feed nor permanent tracking. Permission granted to Flash or Scan does not grant permission here. Guest mode is temporary and does not provide member rights or persistent history.",
-    "vision.deep.radar.why": "Radar is designed to keep a search intention over time. Instead of repeating the same search on every visit, you prepare criteria and choose to follow them for a defined period.",
-    "vision.deep.radar.use": "Describe what you want to find, set the proposed area, reach, and duration, then save your search. You can review it, change its criteria, or stop following it. Results and alerts appear only when the relevant sources are genuinely connected.",
-    "vision.deep.radar.flow": "1. Describe what you want to follow. 2. Set criteria and area. 3. Choose a duration. 4. Save the watch. 5. Return to manage or stop it. 6. Review matches only when they genuinely exist.",
-    "vision.deep.radar.example": "Example: follow a childcare search for upcoming weekends, or a job opportunity in a defined area. A saved search does not mean a match has already been found.",
-    "vision.deep.radar.difference": "Radar follows an intention over time; Scan performs a one-off search. Until automatic tracking and alerts are connected, saved criteria must not be presented as an active watch.",
+    "vision.deep.flash.use":
+      "Describe your need or offer in your own words. Choose a category, the relevant time, and the intended reach. Review the summary, keep a draft if needed, and publish only when that action is genuinely available.",
+    "vision.deep.flash.flow":
+      "1. Choose what to share. 2. Explain the situation simply. 3. Add the useful time and area. 4. Review, then publish or keep a draft. 5. Find and manage your own Flash posts.",
+    "vision.deep.flash.example":
+      "Examples: find someone to look after children this weekend, offer to prepare food for a gathering, or ask for moving help in two hours. Every demonstration example remains clearly labelled “Example”.",
+    "vision.deep.flash.difference":
+      "Flash is a short-lived publication that informs others. It does not automatically track your search or announce your physical presence.",
+    "vision.deep.scan.why":
+      "Scan is for searching right now. It checks active Flash publications that match the available criteria and permitted area, then presents the results genuinely available at that moment.",
+    "vision.deep.scan.use":
+      "Say what you are looking for, choose the available criteria and area, run the search, then review each result, its context, and its date. You control when it starts: a one-off search does not become continuous monitoring.",
+    "vision.deep.scan.flow":
+      "1. Describe a search. 2. Set the available criteria. 3. Choose an area. 4. Run Scan. 5. Review results and open useful details.",
+    "vision.deep.scan.example":
+      "Example: look for an active Flash offering moving help in your area. If no relevant publication is available or the source is not connected, Scan must say so rather than inventing a result.",
+    "vision.deep.scan.difference":
+      "Scan answers a question at a specific moment. It does not create a publication, make your presence visible, or keep searching after the search ends.",
+    "vision.deep.reel.why":
+      "Live is about people who are genuinely in the same place or nearby at the same time: an event, neighbourhood, room, or public space. Presence is voluntary and temporary.",
+    "vision.deep.reel.use":
+      "When you enter, choose separately whether you want to discover nearby presence and whether you want to make your own presence visible. Review the available settings, activate your presence only if you choose, then view permitted profiles and send a ping when conditions allow. You can stop sharing at any time.",
+    "vision.deep.reel.flow":
+      "1. Open Live. 2. Review the location request for this space. 3. Choose whether to discover nearby people. 4. Prepare and voluntarily activate your presence. 5. View profiles, send or manage pings and connections. 6. Stop your presence whenever you wish.",
+    "vision.deep.reel.example":
+      "Example: you arrive at a concert and choose to make your presence visible to people nearby. You may also choose to discover others without becoming visible. One never implies the other.",
+    "vision.deep.reel.difference":
+      "Live is neither a publication feed nor permanent tracking. Permission granted to Flash or Scan does not grant permission here. Guest mode is temporary and does not provide member rights or persistent history.",
+    "vision.deep.radar.why":
+      "Radar is designed to keep a search intention over time. Instead of repeating the same search on every visit, you prepare criteria and choose to follow them for a defined period.",
+    "vision.deep.radar.use":
+      "Describe what you want to find, set the proposed area, reach, and duration, then save your search. You can review it, change its criteria, or stop following it. Results and alerts appear only when the relevant sources are genuinely connected.",
+    "vision.deep.radar.flow":
+      "1. Describe what you want to follow. 2. Set criteria and area. 3. Choose a duration. 4. Save the watch. 5. Return to manage or stop it. 6. Review matches only when they genuinely exist.",
+    "vision.deep.radar.example":
+      "Example: follow a childcare search for upcoming weekends, or a job opportunity in a defined area. A saved search does not mean a match has already been found.",
+    "vision.deep.radar.difference":
+      "Radar follows an intention over time; Scan performs a one-off search. Until automatic tracking and alerts are connected, saved criteria must not be presented as an active watch.",
     "vision.deep.status.title": "What is available and what is being prepared",
-    "vision.deep.status.body": "Vitalis evolves engine by engine. Some actions may already be available, others are being prepared or depend on a server source. The interface must always distinguish an action that actually ran, a saved draft, and a feature that is announced but not yet active.",
+    "vision.deep.status.body":
+      "Vitalis evolves engine by engine. Some actions may already be available, others are being prepared or depend on a server source. The interface must always distinguish an action that actually ran, a saved draft, and a feature that is announced but not yet active.",
     "vision.deep.privacy.title": "You stay in control",
-    "vision.deep.privacy.body": "Location, visibility, notifications, and connections have rules specific to each engine. Permission is never global. You should be able to understand what is shared, with whom, for how long, and how to stop sharing.",
+    "vision.deep.privacy.body":
+      "Location, visibility, notifications, and connections have rules specific to each engine. Permission is never global. You should be able to understand what is shared, with whom, for how long, and how to stop sharing.",
     "vision.deep.visual.flashTag": "FLASH · EXAMPLE",
     "vision.deep.visual.flashTitle": "Need an extra hand?",
     "vision.deep.visual.flashDescription": "Moving help today, around 4 pm",
