@@ -10,7 +10,7 @@ import { createDemoFlashes } from "@/domains/flash/model/demo-flashes";
 import { VitalisVisionCard } from "@/components/experience/VitalisVisionCard";
 
 const HOME_PHOTO =
-  "https://images.unsplash.com/photo-1761666520005-3ffcf13e74c8?auto=format&fit=crop&w=1800&q=80";
+  "https://images.unsplash.com/photo-1761666520005-3ffcf13e74c8?auto=format&fit=crop&fm=jpg&ixid=NHwxMjA3fDA%3D&ixlib=rb-4.1.0&q=80&w=1800";
 const HOME_PHOTO_SOURCE =
   "https://unsplash.com/photos/a-diverse-group-of-people-sitting-together-fOeH7Nh2oy0";
 
@@ -118,7 +118,6 @@ export function HomeFoundation() {
           loading="eager"
           fetchPriority="high"
           decoding="sync"
-          referrerPolicy="no-referrer"
         />
         <div
           aria-hidden="true"
