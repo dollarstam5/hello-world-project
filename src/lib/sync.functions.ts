@@ -14,7 +14,7 @@ import { validatePull, validatePush } from "./sync/validate";
 /** Pull every change newer than the caller's cursors, table by table. */
 export const pullChanges = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator(validatePull)
+  .validator(validatePull)
   .handler(async ({ data, context }): Promise<PullResult> => {
     const { runPull } = await import("./sync/transport.server");
     return runPull(context.supabase as never, data);
@@ -23,7 +23,7 @@ export const pullChanges = createServerFn({ method: "POST" })
 /** Push pending local writes. Rejected entries are permanent failures. */
 export const pushChanges = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator(validatePush)
+  .validator(validatePush)
   .handler(async ({ data, context }): Promise<PushResult> => {
     const { runPush } = await import("./sync/transport.server");
     return runPush(context.supabase as never, data, context.userId);
