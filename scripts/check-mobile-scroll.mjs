@@ -221,7 +221,7 @@ try {
   let homePhoto;
   for (let attempt = 0; attempt < 60; attempt++) {
     homePhoto = await evaluate(`(() => {
-      const image = document.querySelector('img[src*="photo-1761666520005"]');
+      const image = document.querySelector('img[data-home-hero-photo]');
       return image ? {
         complete: image.complete,
         naturalWidth: image.naturalWidth,
