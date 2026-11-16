@@ -9,9 +9,7 @@ const mocks = vi.hoisted(() => ({
   signInWithPassword: vi.fn(),
   signOut: vi.fn(),
   unsubscribe: vi.fn(),
-  authCallback: undefined as
-    | ((event: string, session: Session | null) => void)
-    | undefined,
+  authCallback: undefined as ((event: string, session: Session | null) => void) | undefined,
 }));
 
 vi.mock("@/integrations/supabase/client", () => ({
@@ -145,7 +143,10 @@ describe("deferred Supabase authentication", () => {
   });
 
   it("routes password sign-in through the Supabase auth client", async () => {
-    const result = { data: { user: { id: "member-1" }, session: createSession("member-1") }, error: null };
+    const result = {
+      data: { user: { id: "member-1" }, session: createSession("member-1") },
+      error: null,
+    };
     mocks.signInWithPassword.mockResolvedValue(result);
 
     await expect(
