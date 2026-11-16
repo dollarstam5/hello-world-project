@@ -2,7 +2,15 @@ import * as React from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { SidebarContext, SIDEBAR_WIDTH, SIDEBAR_WIDTH_ICON, SIDEBAR_COOKIE_NAME, SIDEBAR_COOKIE_MAX_AGE, SIDEBAR_KEYBOARD_SHORTCUT } from "./sidebar-context";
+import {
+  SidebarContext,
+  SIDEBAR_WIDTH,
+  SIDEBAR_WIDTH_ICON,
+  SIDEBAR_COOKIE_NAME,
+  SIDEBAR_COOKIE_MAX_AGE,
+  SIDEBAR_KEYBOARD_SHORTCUT,
+  type SidebarContextProps,
+} from "./sidebar-context";
 
 export const SidebarProvider = React.forwardRef<
   HTMLDivElement,
