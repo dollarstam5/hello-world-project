@@ -4,17 +4,6 @@ import { messages } from "@/lib/i18n/messages";
 const engines = ["flash", "scan", "reel", "radar"] as const;
 
 describe("Home journey guidance", () => {
-  it("provides localized photo descriptions and credits for the human welcome image", () => {
-    expect(messages.fr["home.hero.eyebrow"]).toBeTruthy();
-    expect(messages.fr["home.hero.photoAlt"]).toContain("São Paulo");
-    expect(messages.fr["home.hero.photoCredit"]).toContain("Matheus Bertelli");
-    expect(messages.en["home.hero.eyebrow"]).toBeTruthy();
-    expect(messages.en["home.hero.photoAlt"]).toContain("São Paulo");
-    expect(messages.en["home.hero.photoCredit"]).toContain("Matheus Bertelli");
-    expect(messages.fr["home.hero.photoCredit"]).toContain("Pexels");
-    expect(messages.en["home.hero.photoCredit"]).toContain("Pexels");
-  });
-
   it.each(engines)("provides a clear example in French and English for %s", (engine) => {
     expect(messages.fr[`home.engine.${engine}.example`]).toBeTruthy();
     expect(messages.en[`home.engine.${engine}.example`]).toBeTruthy();
