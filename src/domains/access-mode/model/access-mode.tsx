@@ -8,7 +8,6 @@ import {
   type ReactNode,
 } from "react";
 import { useAuth } from "@/domains/auth";
-import { supabase } from "@/integrations/supabase/client";
 import {
   endReelGuestSession,
   getReelGuestSession,
@@ -75,12 +74,17 @@ export function AccessModeProvider({ children }: { children: ReactNode }) {
     let cancelled = false;
     setMemberProfileState("loading");
 
-    void supabase
-      .from("profiles")
-      .select("status, deleted_at")
-      .eq("id", userId)
-      .maybeSingle()
-      .then(({ data, error }) => {
+    void (async () => {
+      try {
+        const { supabase } = await import("@/integrations/supabase/client");
+        if (cancelled) return;
+
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("status, deleted_at")
+          .eq("id", userId)
+          .maybeSingle();
+
         if (cancelled) return;
         if (error) {
           setMemberProfileState("error");
@@ -95,10 +99,10 @@ export function AccessModeProvider({ children }: { children: ReactNode }) {
           return;
         }
         setMemberProfileState(isMemberProfileState(data.status) ? data.status : "error");
-      })
-      .then(undefined, () => {
+      } catch {
         if (!cancelled) setMemberProfileState("error");
-      });
+      }
+    })();
 
     return () => {
       cancelled = true;
