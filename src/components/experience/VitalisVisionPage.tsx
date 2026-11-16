@@ -147,23 +147,23 @@ export function VitalisVisionPage() {
                 </Link>
               </div>
               <VisionEngineArtwork
-            kind={engine.id}
-            labels={{
-              flashTag: t("vision.deep.visual.flashTag"),
-              flashTitle: t("vision.deep.visual.flashTitle"),
-              flashDescription: t("vision.deep.visual.flashDescription"),
-              today: t("vision.deep.visual.today"),
-              nearby: t("vision.deep.visual.nearby"),
-              flashFooter: t("vision.deep.visual.flashFooter"),
-              scan: t("vision.deep.visual.scan"),
-              live: t("vision.deep.visual.live"),
-              radarSearch: t("vision.deep.visual.radarSearch"),
-              radarCriteria: t("vision.deep.visual.radarCriteria"),
-              radarNew: t("vision.deep.visual.radarNew"),
-              radarSource: t("vision.deep.visual.radarSource"),
-              radarActions: t("vision.deep.visual.radarActions"),
-            }}
-          />
+                kind={engine.id}
+                labels={{
+                  flashTag: t("vision.deep.visual.flashTag"),
+                  flashTitle: t("vision.deep.visual.flashTitle"),
+                  flashDescription: t("vision.deep.visual.flashDescription"),
+                  today: t("vision.deep.visual.today"),
+                  nearby: t("vision.deep.visual.nearby"),
+                  flashFooter: t("vision.deep.visual.flashFooter"),
+                  scan: t("vision.deep.visual.scan"),
+                  live: t("vision.deep.visual.live"),
+                  radarSearch: t("vision.deep.visual.radarSearch"),
+                  radarCriteria: t("vision.deep.visual.radarCriteria"),
+                  radarNew: t("vision.deep.visual.radarNew"),
+                  radarSource: t("vision.deep.visual.radarSource"),
+                  radarActions: t("vision.deep.visual.radarActions"),
+                }}
+              />
             </div>
 
             <div className="grid gap-4 lg:grid-cols-3">
