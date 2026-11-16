@@ -2,6 +2,7 @@ import { createLazyFileRoute } from "@tanstack/react-router";
 import { MapPin } from "lucide-react";
 import { EnginePreviewCard } from "@/components/experience/EnginePreviewCard";
 import { SectionFoundation } from "@/components/experience/SectionFoundation";
+import { VitalisVisionCard } from "@/components/experience/VitalisVisionCard";
 import { RadarManagement } from "@/domains/radar/ui/RadarManagement";
 
 export const Route = createLazyFileRoute("/radar")({
@@ -16,6 +17,7 @@ function RadarRoute() {
       descKey="page.radar.desc"
       tone="info"
       icon={MapPin}
+      footer={<VitalisVisionCard />}
       sections={[
         {
           key: "management",
