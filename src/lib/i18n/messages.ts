@@ -961,7 +961,7 @@ export const messages = {
     "vision.card.description":
       "Comprenez à quoi sert l’application, comment ses quatre moteurs fonctionnent ensemble, ce que vous pouvez faire et les règles qui protègent vos échanges.",
     "vision.card.action": "Explorer la vision complète",
-
+  },
   en: {
     "app.name": "Vitalis",
     "language.switch": "Change language",
@@ -1883,7 +1883,6 @@ export const messages = {
     "vision.card.description":
       "Understand what the app is for, how its four engines work together, what you can do, and the rules that protect your interactions.",
     "vision.card.action": "Explore the full vision",
-
   },
 } as const;
 
