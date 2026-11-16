@@ -4,16 +4,7 @@ import type { FlashRecord } from "@eco/core-contracts";
 import { resolveFlashStatus } from "@eco/core-logic";
 import { EmptyState } from "@/components/app/EmptyState";
 import { Surface } from "@/components/app/Surface";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { FlashDeleteDialog } from "./FlashDeleteDialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
@@ -277,30 +268,16 @@ export function MyFlashManagement() {
         </section>
       ))}
 
-      <AlertDialog
+      <FlashDeleteDialog
         open={pendingDelete !== null}
+        busy={busyId !== null}
         onOpenChange={(open) => {
           if (!open && !busyId) setPendingDelete(null);
         }}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>{t("flash.mine.deleteTitle")}</AlertDialogTitle>
-            <AlertDialogDescription>{t("flash.mine.deleteConfirm")}</AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={busyId !== null}>{t("common.cancel")}</AlertDialogCancel>
-            <AlertDialogAction
-              disabled={!pendingDelete || busyId !== null}
-              onClick={() => {
-                if (pendingDelete) void remove(pendingDelete);
-              }}
-            >
-              {t("flash.mine.delete")}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+        onConfirm={() => {
+          if (pendingDelete) void remove(pendingDelete);
+        }}
+      />
     </div>
   );
 }
