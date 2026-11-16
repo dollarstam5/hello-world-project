@@ -1,4 +1,4 @@
-# Réel — matrice de traçabilité V1
+# En direct — matrice de traçabilité V1
 
 **Statut du document :** consolidation des décisions fonctionnelles connues.  
 **Règle de preuve :** une décision validée n'est pas une preuve d'implémentation. Les statuts techniques et les tests doivent être vérifiés séparément.
@@ -33,7 +33,7 @@
 
 | Point                  | Décision fonctionnelle                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Statut  |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| C-02                   | Un bip est une demande courte, sans texte libre. Le destinataire peut accepter ou refuser. Une seule demande en attente est conservée par paire et son retrait est possible. Les bips en attente, envoyés ou reçus, sont conservés pendant 24 h après la fermeture de la présence. Les bips reçus restent accessibles uniquement dans Réel, jamais dans Notifications. Ils expirent ensuite, sans historique permanent des bips non acceptés. Le point de départ exact des 24 h reste à spécifier. | VALIDÉE |
+| C-02                   | Un bip est une demande courte, sans texte libre. Le destinataire peut accepter ou refuser. Une seule demande en attente est conservée par paire et son retrait est possible. Les bips en attente, envoyés ou reçus, sont conservés pendant 24 h après la fermeture de la présence. Les bips reçus restent accessibles uniquement dans En direct, jamais dans Notifications. Ils expirent ensuite, sans historique permanent des bips non acceptés. Le point de départ exact des 24 h reste à spécifier. | VALIDÉE |
 | C-02 — acceptation     | L'acceptation crée une mise en relation unique et durable. Le bip accepté quitte les bips reçus ; l'acceptation est signalée à son auteur. Les compteurs ne doivent pas compter deux fois le même événement.                                                                                                                                                                                                                                                                                       | VALIDÉE |
 | C-02 — fin de relation | La fermeture par l'une des deux personnes ferme la relation pour les deux, désactive la communication associée, demande confirmation et informe l'autre personne.                                                                                                                                                                                                                                                                                                                                  | VALIDÉE |
 | C-02 — trace           | Seule une trace technique minimale de l'événement (date, état, événement) est conservée pour cette fermeture ; aucun historique de conversation n'est créé par cette action.                                                                                                                                                                                                                                                                                                                       | VALIDÉE |
@@ -68,7 +68,7 @@
 | P-01     | Une conversation fermée affiche exactement : « Cette conversation n'est plus disponible pour l'envoi de messages. »                                                                          | VALIDÉE |
 | P-02     | La personne peut partager volontairement et ponctuellement une zone approximative, jamais son GPS exact ni un suivi de déplacement.                                                          | VALIDÉE |
 | P-03     | Masquer un message le retire uniquement de l'affichage de son auteur ; la copie du destinataire est conservée.                                                                               | VALIDÉE |
-| P-04     | À expiration, la présence disparaît de Réel et du profil, sans historique utilisateur des anciennes présences. Une conservation technique séparée peut subsister selon une durée documentée. | VALIDÉE |
+| P-04     | À expiration, la présence disparaît de En direct et du profil, sans historique utilisateur des anciennes présences. Une conservation technique séparée peut subsister selon une durée documentée. | VALIDÉE |
 
 **Distinctions importantes :** les bips non acceptés expirent après 24 h et ne disposent pas d'historique permanent. Les mises en relation acceptées sont durables. Le mode invité ne conserve pas les données personnelles de session après la fin de celle-ci ; l'historique d'un compte Vitalis suit des règles de conservation distinctes. La décision d'archivage DEC-046 prévoit six mois de conservation après archivage, puis une suppression définitive, avec suppression de l'historique possible à la demande et sans export. La portée exacte de cet archivage (conversations, relations ou autres éléments) doit être reliée au document source avant implémentation ; elle ne doit pas être appliquée aux bips non acceptés.
 
@@ -76,7 +76,7 @@
 
 | Exigence | Règle fonctionnelle                                                                                                                                                                                                            | Statut                                       |
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------- |
-| ACC-01   | Une personne peut accéder au mode Réel invité sans posséder de compte Vitalis.                                                                                                                                                 | VALIDÉE                                      |
+| ACC-01   | Une personne peut accéder au mode En direct invité sans posséder de compte Vitalis.                                                                                                                                                 | VALIDÉE                                      |
 | ACC-02   | Vitalis attribue à l'invité une identité provisoire propre à sa session ; elle ne constitue pas un profil membre et ne doit pas être enregistrée dans les tables durables de profils.                                          | VALIDÉE                                      |
 | ACC-03   | L'accès invité est limité aux services et actions autorisés pour ce mode. Le moteur adapte le parcours selon le mode d'accès, sans inventer de droits ni demander systématiquement les mêmes informations qu'à un membre.      | VALIDÉE                                      |
 | ACC-04   | À la fin de la visite ou à l'expiration de la session, l'identité provisoire et les données temporaires associées sont réinitialisées. Aucun historique invité durable n'est conservé.                                         | VALIDÉE                                      |
@@ -87,7 +87,7 @@
 
 ### Tests attendus pour les accès
 
-- ACC-01-T01 : ouvrir Réel sans compte et sans créer de profil membre.
+- ACC-01-T01 : ouvrir En direct sans compte et sans créer de profil membre.
 - ACC-02-T01 : vérifier qu'une identité provisoire est distincte de tout identifiant de membre.
 - ACC-03-T01 : vérifier les limites d'actions et de données propres au mode invité.
 - ACC-04-T01 : terminer une visite et vérifier la réinitialisation ; ACC-04-T02 : vérifier le nettoyage après expiration/fermeture inattendue.
@@ -104,7 +104,7 @@ Les identifiants ci-dessous proviennent des repères de traçabilité déjà ét
 
 | Décision / exigence                                                                                                            | Tests associés                                                                  | État de preuve            |
 | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------- | ------------------------- |
-| C-02 — bip non accepté visible 24 h dans Réel seulement, expiration ensuite et réconciliation sans doublon au retour du réseau | Identifiant de test à attribuer après spécification du point de départ des 24 h | À SPÉCIFIER / À TESTER    |
+| C-02 — bip non accepté visible 24 h dans En direct seulement, expiration ensuite et réconciliation sans doublon au retour du réseau | Identifiant de test à attribuer après spécification du point de départ des 24 h | À SPÉCIFIER / À TESTER    |
 | C-03.4 — partage de zone volontaire et ponctuel                                                                                | C03-T04 à C03-T07                                                               | À TESTER                  |
 | C-03.7 — retrait local d'un message                                                                                            | C03-T13 à C03-T15                                                               | À TESTER                  |
 | C-04.1 — conversation en lecture seule après fermeture                                                                         | C04-T01 à C04-T03                                                               | À TESTER                  |
@@ -125,11 +125,11 @@ Les exigences techniques T-01 à T-09 restent des éléments de spécification o
 | `src/lib/experience/presence.ts`                                          | Le module publie et écoute toujours un événement dans un bus en mémoire sur le processus courant.                                                                      | Ce n'est pas encore le transport temps réel multi-appareils.                                                 |
 | `src/routes/reel.tsx`                                                     | La page présente les sections Présence, Bips reçus, Mises en relation et Historique comme indisponibles.                                                               | L'interface n'affiche pas de présence ni de relation fictive.                                                |
 | Migration `supabase/migrations/20261110010000_reel_presence_and_bips.sql` | Ajoute les tables de présence, bips et relations, des RPC contrôlées, des règles RLS et une publication Postgres Changes conditionnelle.                               | Socle SQL ajouté ; application sur une base de test et exécution des tests pgTAP encore à prouver.           |
-| Conversations                                                             | Le centre de communication possède des états vides ; aucune conversation Réel réelle n'est produite par le module de présence actuel.                                  | C-03 et C-04 ne sont pas attestées par le runtime actuel.                                                    |
+| Conversations                                                             | Le centre de communication possède des états vides ; aucune conversation En direct réelle n'est produite par le module de présence actuel.                                  | C-03 et C-04 ne sont pas attestées par le runtime actuel.                                                    |
 | Découverte géographique                                                   | La première version filtre sur une clé de zone opaque commune ; le rayon métrique est enregistré mais aucun calcul de distance n'est effectué.                         | Ne pas afficher de distance ni annoncer un filtrage exact par rayon avant l'algorithme spatial et ses tests. |
 | Commandes de bip                                                          | Les RPC de création, acceptation, refus et retrait sont ajoutées ; l'acceptation crée une relation unique et le même identifiant client permet de rejouer une demande. | Le raccordement de l'outbox locale et les tests de reprise réseau restent à réaliser.                        |
 
-## 8. Conditions avant activation du parcours Réel
+## 8. Conditions avant activation du parcours En direct
 
 1. Vérifier la migration dans la chaîne standard, l'appliquer sur une base de test et exécuter le test pgTAP 130 ainsi que les tests RLS existants.
 2. Raccorder Supabase Realtime côté client, avec autorisations, reprise après reconnexion et nettoyage des abonnements.
@@ -150,21 +150,21 @@ Le socle SQL est ajouté, mais aucune de ces conditions d'activation utilisateur
 | ACC-11   | Rotation du secret, protection CSRF, limites anti-abus et nettoyage des données temporaires.                                      | ACC-11-T01 ancien jeton refusé après rotation ; T02 origine/CSRF ; T03 limites de création ; T04 purge ; T05 fin de session. | ORIGINE, FIN ET PURGE AJOUTÉES ; ROTATION/ANTI-ABUS/TESTS À LIVRER       |
 | ACC-12   | La connexion membre termine la session invitée sans rattachement automatique des données.                                         | ACC-12-T01 révocation à la connexion ; T02 absence de transfert sans consentement explicite.                                 | RÉVOCATION LORS DE LA DÉTECTION DU MODE MEMBRE AJOUTÉE ; TEST À EXÉCUTER |
 
-Les exigences ACC-09 à ACC-12 sont des exigences techniques de sécurité dérivées des décisions ACC-01 à ACC-08. Elles ne donnent pas de nouveaux droits métier aux invités. Les durées, quotas et opérations Réel accessibles restent à valider avant la migration.
+Les exigences ACC-09 à ACC-12 sont des exigences techniques de sécurité dérivées des décisions ACC-01 à ACC-08. Elles ne donnent pas de nouveaux droits métier aux invités. Les durées, quotas et opérations En direct accessibles restent à valider avant la migration.
 
 Voir [Architecture de session invitée éphémère](./reel-guest-session-architecture.md).
 
 ### État de preuve du premier lot serveur
 
-La migration `20261110020000_reel_guest_sessions.sql`, le service serveur et le test pgTAP 131 sont présents dans la branche. Ils ne sont pas encore exécutés sur une base de test. La purge planifiée dépend de la disponibilité de `pg_cron`. La limitation anti-abus à la couche d'hébergement reste un prérequis avant activation publique. Le cookie de session ne donne pas encore accès aux actions métier Réel.
+La migration `20261110020000_reel_guest_sessions.sql`, le service serveur et le test pgTAP 131 sont présents dans la branche. Ils ne sont pas encore exécutés sur une base de test. La purge planifiée dépend de la disponibilité de `pg_cron`. La limitation anti-abus à la couche d'hébergement reste un prérequis avant activation publique. Le cookie de session ne donne pas encore accès aux actions métier En direct.
 
-## 10. Politique d’accès applicative Réel
+## 10. Politique d’accès applicative En direct
 
-La première politique applicative est décrite dans [Politique d’accès Réel](./reel-access-policy.md) et implémentée dans `src/domains/presence/policy/reel-access-policy.ts`.
+La première politique applicative est décrite dans [Politique d’accès En direct](./reel-access-policy.md) et implémentée dans `src/domains/presence/policy/reel-access-policy.ts`.
 
 | Opération                                            | Contrôle client attendu                                                         | Preuve                          |
 | ---------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------- |
-| Entrée Réel                                          | Visiteur refusé ; invité limité à l’entrée ; membre actif autorisé à entrer     | Test Vitest ajouté, non exécuté |
+| Entrée En direct                                          | Visiteur refusé ; invité limité à l’entrée ; membre actif autorisé à entrer     | Test Vitest ajouté, non exécuté |
 | Démarrer une présence                                | Membre actif, consentement `reel_presence`, décision serveur                    | Test Vitest ajouté, non exécuté |
 | Terminer sa présence                                 | Propriété de la présence puis décision serveur                                  | Test Vitest ajouté, non exécuté |
 | Découvrir / consulter ses bips                       | Membre actif et vérification serveur                                            | Test Vitest ajouté, non exécuté |
@@ -175,11 +175,11 @@ La première politique applicative est décrite dans [Politique d’accès Réel
 
 Cette politique côté client est un garde-fou d’interface et ne remplace jamais les contrôles SQL. Le parcours invité ne reçoit aucun droit métier par la seule existence de son cookie de session.
 
-## Décisions LOC — utilisation de la position dans Réel
+## Décisions LOC — utilisation de la position dans En direct
 
 | Décision | Règle                                                                                                                                 | Statut  | Traçabilité                                                                   |
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------- | ----------------------------------------------------------------------------- |
-| LOC-01   | Réel demande son propre accord de localisation à chaque nouvelle entrée, sans hériter des autorisations accordées aux autres moteurs. | VALIDÉE | Dialogue à l'entrée ; test d'isolation entre moteurs.                         |
+| LOC-01   | En direct demande son propre accord de localisation à chaque nouvelle entrée, sans hériter des autorisations accordées aux autres moteurs. | VALIDÉE | Dialogue à l'entrée ; test d'isolation entre moteurs.                         |
 | LOC-02   | La demande système n'est déclenchée qu'après une action explicite ; aucune géolocalisation automatique au chargement.                 | VALIDÉE | Appel ponctuel à getCurrentPosition, jamais watchPosition.                    |
 | LOC-03   | Ignorer ou refuser laisse la page utilisable en mode calme, sans découverte locale, réactions, bips ni alertes locales.               | VALIDÉE | Contrôle UI et politique d'accès locationConsent.                             |
 | LOC-04   | Les réglages et la consultation des relations existantes restent accessibles sans localisation.                                       | VALIDÉE | La fermeture d'une relation existante n'est pas conditionnée par la position. |
@@ -189,8 +189,8 @@ Cette politique côté client est un garde-fou d’interface et ne remplace jama
 
 ### Tests LOC attendus
 
-- LOC-T01 : entrée dans Réel avec une autorisation déjà accordée à un autre moteur ; Réel demande tout de même son propre accord.
-- LOC-T02 : chargement de Réel sans clic ; aucune API de géolocalisation n'est appelée.
+- LOC-T01 : entrée dans En direct avec une autorisation déjà accordée à un autre moteur ; En direct demande tout de même son propre accord.
+- LOC-T02 : chargement de En direct sans clic ; aucune API de géolocalisation n'est appelée.
 - LOC-T03 : « Pas maintenant » ; mode calme, aucune découverte/réaction/bip/alerte locale.
 - LOC-T04 : refus système ou géolocalisation indisponible ; la page reste utilisable et propose une nouvelle tentative.
 - LOC-T05 : accord de localisation sans consentement reel_presence ; aucune présence personnelle n'est publiée.
@@ -203,7 +203,7 @@ Ces exigences sont approuvées ; les tests ne sont pas réputés exécutés tant
 
 | ID      | Règle                                                                                                        | Statut                | Preuve attendue                                                                                    |
 | ------- | ------------------------------------------------------------------------------------------------------------ | --------------------- | -------------------------------------------------------------------------------------------------- |
-| DISC-01 | La découverte locale possède un consentement Réel indépendant des autres moteurs.                            | VALIDÉE               | Demande affichée à chaque entrée ; test sans héritage de permission.                               |
+| DISC-01 | La découverte locale possède un consentement En direct indépendant des autres moteurs.                            | VALIDÉE               | Demande affichée à chaque entrée ; test sans héritage de permission.                               |
 | DISC-02 | La découverte permet d'observer sans publier sa propre présence.                                             | VALIDÉE               | Test SQL 132 : utilisateur découvre sans ligne de présence personnelle.                            |
 | DISC-03 | Le refus de découverte maintient le mode calme et n'ouvre aucune session de découverte.                      | VALIDÉE               | Test interface et vérification de l'absence de session.                                            |
 | PRES-01 | La publication de sa présence demande un accord distinct et le consentement `reel_presence`.                 | VALIDÉE               | Test de refus sans consentement.                                                                   |
@@ -215,8 +215,8 @@ Ces exigences sont approuvées ; les tests ne sont pas réputés exécutés tant
 
 ### Modes d'accès constatés dans le code
 
-- Visiteur : présentation publique ; pas d'action métier Réel.
-- Invité : entrée dans le parcours et identité temporaire locale/serveur préparée, mais les opérations métier Réel ne sont pas encore ouvertes à cette session.
+- Visiteur : présentation publique ; pas d'action métier En direct.
+- Invité : entrée dans le parcours et identité temporaire locale/serveur préparée, mais les opérations métier En direct ne sont pas encore ouvertes à cette session.
 - Membre avec profil actif : découverte et publication de présence via les contrôles serveur séparés.
 - Profil invité/incomplet, suspendu, fermé, manquant ou en erreur : opérations métier refusées.
 
@@ -251,11 +251,11 @@ Les tests pgTAP 130, 132 et 133 sont des scénarios ajoutés/modifiés dans la b
 
 | Domaine                  | Implémentation ajoutée                                                                                                          | Preuve attendue                                                                   |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| Bips reçus               | list_reel_bips() appelé depuis l’onglet Réel ; acceptation/refus via command_reel_bip() ; rafraîchissement Postgres Changes     | Tests Vitest du rendu/actions, pgTAP de confidentialité et essai multi-appareils  |
+| Bips reçus               | list_reel_bips() appelé depuis l’onglet En direct ; acceptation/refus via command_reel_bip() ; rafraîchissement Postgres Changes     | Tests Vitest du rendu/actions, pgTAP de confidentialité et essai multi-appareils  |
 | Envoi d’un bip           | Bouton depuis une fiche réellement découverte, uniquement si le membre a une présence active ; validation finale par le serveur | pgTAP 134 et scénario complet sur deux comptes                                    |
 | Historique des relations | Migration 20261110090000_reel_connection_history_and_close.sql, RPC list_reel_connections() limitée aux deux participants       | pgTAP de lecture croisée interdite et vérification de la projection du partenaire |
 | Fermeture d’une relation | RPC close_reel_connection() ; l’un ou l’autre participant ferme la relation commune                                             | pgTAP : participant autorisé, tiers refusé, répétition idempotente                |
-| Invités                  | Les sessions temporaires existent mais ne sont pas acceptées par les RPC métier Réel                                            | Tests d’isolation et de refus jusqu’à la livraison du parcours invité métier      |
+| Invités                  | Les sessions temporaires existent mais ne sont pas acceptées par les RPC métier En direct                                            | Tests d’isolation et de refus jusqu’à la livraison du parcours invité métier      |
 | Propositions globales    | Pas de source métier raccordée ; état vide maintenu                                                                             | Définir et valider une source réelle avant tout affichage                         |
 
 **Tous les éléments ci-dessus sont ajoutés mais restent À TESTER.** Aucun résultat de migration, de test ou de fonctionnement multi-appareils n’est revendiqué.
@@ -268,7 +268,7 @@ Les tests pgTAP 130, 132 et 133 sont des scénarios ajoutés/modifiés dans la b
 | Nettoyage de l’historique | purge_reel_connection_history() supprime les relations fermées de plus de six mois ; planification quotidienne à 03 h via pg_cron | Test pgTAP 135 ajouté ; vérifier l’exécution planifiée sur Supabase |
 
 
-| Réel — découverte invitée réciproque | Session invitée vérifiée par cookie ; point de découverte privé ; requêtes PostGIS dans les deux sens ; fiches sans coordonnées ni identifiant de session ; rayon de l'auteur respecté | Migration 20261110110000 ; test pgTAP 136 ; parcours invité/membre de découverte | Ajouté dans la branche, non exécuté ; publication invitée UI et bips invités encore absents |
+| En direct — découverte invitée réciproque | Session invitée vérifiée par cookie ; point de découverte privé ; requêtes PostGIS dans les deux sens ; fiches sans coordonnées ni identifiant de session ; rayon de l'auteur respecté | Migration 20261110110000 ; test pgTAP 136 ; parcours invité/membre de découverte | Ajouté dans la branche, non exécuté ; publication invitée UI et bips invités encore absents |
 
 ## Traçabilité BIP-INV — interactions croisées membre/invité
 
