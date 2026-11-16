@@ -49,7 +49,7 @@ L'authentification n'est pas modifiée par P0.10.1.
 
 ## P0.10.3 — socle PWA/installabilité
 
-Le dépôt fournit désormais un service worker enregistré côté navigateur, un manifeste PWA cohérent avec les icônes versionnées et une commande de validation dédiée. Le service worker utilise le réseau en priorité pour les navigations et conserve un shell de secours ; les routes API et les Server Functions ne sont pas interceptées. Les données métier restent sous la responsabilité de Dexie et du moteur de synchronisation.
+Le dépôt fournit désormais un service worker enregistré côté navigateur, un manifeste PWA cohérent avec les icônes versionnées et une commande de validation dédiée. Le shell de navigation conserve les routes principales Home, Flash, Scan, Réel et Radar, ainsi que les zones Espace et Talents. Le service worker utilise le réseau en priorité pour les navigations et conserve un shell de secours ; les routes API et les Server Functions ne sont pas interceptées. Les données métier restent sous la responsabilité de Dexie et du moteur de synchronisation.
 
 La validation d'installabilité réelle sur appareils représentatifs reste un contrôle E2E de sous-milestone ultérieur.
 
