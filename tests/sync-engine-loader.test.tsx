@@ -1,5 +1,4 @@
-import { createElement } from "react";
-import { act } from "react-dom/test-utils";
+import { act, createElement } from "react";
 import { createRoot } from "react-dom/client";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
