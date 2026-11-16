@@ -10,6 +10,7 @@ import { useResponsive } from "@/lib/platform/useResponsive";
 import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
 import { AssistantNoticeLayer } from "@/components/experience/AssistantNoticeLayer";
 import { useOnboarding } from "@/lib/experience/onboarding";
+import { SyncEngineLoader } from "./SyncEngineLoader";
 
 const ReelBottomNav = lazy(() =>
   import("@/domains/presence/ui/ReelBottomNav").then((module) => ({
@@ -29,24 +30,6 @@ const OnboardingSheet = lazy(() =>
     default: module.OnboardingSheet,
   })),
 );
-
-const SyncEngineBootstrap = lazy(() =>
-  import("./SyncEngineBootstrap").then((module) => ({
-    default: module.SyncEngineBootstrap,
-  })),
-);
-
-function SyncEngineLoader() {
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => setReady(true), []);
-
-  return ready ? (
-    <Suspense fallback={null}>
-      <SyncEngineBootstrap />
-    </Suspense>
-  ) : null;
-}
 
 /**
  * AppShell — single mount-point that boots foundation services
