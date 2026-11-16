@@ -12,8 +12,9 @@ describe("mobile visual smoke contract", () => {
   });
 
   it("uses the production preview server rather than the Vite development server", () => {
-    expect(script).toContain("bun run preview");
+    expect(script).toContain("bunx nitro preview");
     expect(script).not.toContain("bun run dev");
+    expect(script).not.toContain("bun run preview");
     expect(script).toContain("bun run build:check");
   });
 
