@@ -397,7 +397,7 @@ export const messages = {
     "scan.history.clear": "Effacer",
     "scan.history.results": "{count} résultat(s)",
 
-    "reel.ui.screenLabel": "Instant — présence à proximité",
+    "reel.ui.screenLabel": "Présence à proximité",
     "reel.ui.home": "Retour à l’accueil Vitalis",
     "reel.ui.homeTitle": "Accueil",
     "reel.ui.subtitle": "Les personnes présentes autour de vous",
@@ -1202,7 +1202,7 @@ export const messages = {
     "scan.history.clear": "Clear",
     "scan.history.results": "{count} result(s)",
 
-    "reel.ui.screenLabel": "Nearby live presence",
+    "reel.ui.screenLabel": "Nearby presence",
     "reel.ui.home": "Back to the Vitalis home page",
     "reel.ui.homeTitle": "Home",
     "reel.ui.subtitle": "People who are here around you",
