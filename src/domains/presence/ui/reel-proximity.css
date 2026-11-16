@@ -555,7 +555,7 @@
   }
 }
 
-/* Profile preview — light glass sheet, matching the airy Réel reference. */
+/* Profile preview — light glass sheet, matching the airy En direct reference. */
 .reel-profile-backdrop {
   position: fixed;
   z-index: 80;
@@ -702,7 +702,7 @@
   }
 }
 
-/* Fast access to Réel preferences, activity and the complete nearby list. */
+/* Fast access to En direct preferences, activity and the complete nearby list. */
 .reel-proximity__header-action,
 .reel-radar__me,
 .reel-nearby__profile,
@@ -1114,7 +1114,7 @@
   }
 }
 
-/* Réel first-screen hierarchy: clear engine name and human explanation. */
+/* En direct first-screen hierarchy: clear engine name and human explanation. */
 .reel-proximity__heading {
   min-width: 0;
 }
