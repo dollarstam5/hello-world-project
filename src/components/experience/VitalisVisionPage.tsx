@@ -232,7 +232,7 @@ export function VitalisVisionPage() {
           </p>
         </div>
         <nav
-          aria-label="{t("vision.deep.navLabel")}"
+          aria-label={t("vision.deep.navLabel")}
           className="grid grid-cols-2 gap-2 sm:grid-cols-4"
         >
           {engines.map((engine) => (
