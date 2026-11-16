@@ -2099,3 +2099,36 @@
     --reel-small-avatar-size: 2.35rem;
   }
 }
+
+
+@media (max-width: 420px) {
+  .reel-proximity__header {
+    gap: 0.25rem;
+  }
+
+  .reel-proximity__header-actions {
+    gap: 0.2rem;
+  }
+
+  .reel-proximity__header-action {
+    width: 2.25rem;
+  }
+
+  .reel-proximity__header-action svg {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+
+  .reel-proximity__heading {
+    gap: 0.25rem;
+  }
+
+  .reel-proximity__heading h1 {
+    font-size: 1.08rem;
+  }
+
+  .reel-proximity__heading-copy p {
+    max-width: 8rem;
+    font-size: 0.62rem;
+  }
+}
