@@ -294,7 +294,7 @@ Les bips croisés ne disposent pas encore d'un canal de diffusion temps réel d�
 
 Cette section actualise les statuts techniques historiques de la matrice. Elle prévaut sur les formulations antérieures « ajouté, non exécuté » pour les contrôles effectivement passés dans la CI de la PR #79. Elle ne vaut pas validation sur l'environnement Supabase de déploiement.
 
-| ID / domaine | Implémentation constatée | Preuve CI sur la tête `9ad7a7956138487878fba2f8a36ec21a7c7102c5` | État actualisé |
+| ID / domaine | Implémentation constatée | Preuve CI sur la tête `9e96b481194bd0d71f7d51b2903846f11156b783` | État actualisé |
 | --- | --- | --- | --- |
 | ZONE-01 — jeton HMAC | Le secret est requis uniquement pour la publication de présence ; la découverte PostGIS n'émet pas de jeton HMAC. | Test Vitest `tests/reel-zone.server.test.ts` : découverte autorisée sans `REEL_ZONE_HMAC_SECRET`. | CI RÉUSSIE ; configuration de déploiement à vérifier pour la publication |
 | ZONE-02 — session de découverte | Session PostGIS temporaire avec expiration et périmètre gérés côté serveur. | Tests SQL/RLS du workflow Quality réussis. | CI RÉUSSIE ; validation sur Supabase cible à effectuer |
@@ -308,7 +308,7 @@ Cette section actualise les statuts techniques historiques de la matrice. Elle p
 ### Référence CI
 
 - PR : #79, branche `fix/reel-discovery-hmac-and-bip-radius`.
-- SHA testé : `9ad7a7956138487878fba2f8a36ec21a7c7102c5`.
+- SHA testé : `9e96b481194bd0d71f7d51b2903846f11156b783`.
 - Quality : succès ; 47 fichiers Vitest, 234 tests, contrôles SQL/RLS et build réussis.
 - Dependency review : succès.
 - La PR reste ouverte et en brouillon à la date de cette révision. Les corrections ne sont donc pas encore intégrées à `main`.
