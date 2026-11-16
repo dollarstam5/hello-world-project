@@ -91,11 +91,7 @@ describe("performance budget measurement", () => {
     write(root, "flash/index.html", '<script type="module" src="/assets/large.js"></script>');
 
     const result = measurePerformanceBudgets(root);
-    const large = measureHtmlEntry(
-      join(root, "flash/index.html"),
-      root,
-      new Set(filesUnder(root)),
-    );
+    const large = measureHtmlEntry(join(root, "flash/index.html"), root, new Set(filesUnder(root)));
     expect(result.initialJavaScriptGzipKb).toBe(large.initialJavaScriptGzipKb);
   });
 
