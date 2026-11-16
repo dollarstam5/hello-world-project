@@ -117,15 +117,14 @@ describe("Instant architecture boundaries", () => {
     expect(screenSource).not.toContain("notificationHistory");
   });
 
-  it("shows a compact nearby-presence stack whenever discovery returns people", () => {
+  it("shows a compact nearby profile preview using only discovered people", () => {
     expect(screenSource).toContain("discoveryEnabled && availablePeople.length > 0");
     expect(screenSource).toContain("availablePeople.slice(0, 3)");
-    expect(screenSource).toContain('className="reel-presence-stack__disk"');
+    expect(screenSource).toContain("reel-nearby-preview__list");
     expect(screenSource).toContain('onClick={() => setPanel("people")}');
-    expect(screenSource).toContain("availablePeople.length > 3");
-    expect(screenSource).toContain("reel-presence-stack__count");
-    expect(screenSource).toContain("+{availablePeople.length - 3}");
-    expect(screenSource).not.toContain("reel-nearby__count");
-    expect(screenSource).not.toContain("+{additionalCount}");
+    expect(screenSource).toContain("onClick={() => openProfile(person)}");
+    expect(screenSource).toContain('access.mode === "guest" || access.mode === "visitor"');
+    expect(screenSource).toContain("reel-nearby-preview__empty");
+    expect(screenSource).not.toContain("reel-presence-stack");
   });
 });
