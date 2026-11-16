@@ -39,8 +39,8 @@ export default tseslint.config(
   {
     files: ["**/*.tsx"],
     rules: {
-      // Keep existing oversized UI files visible while they are progressively split.
-      "max-lines": ["warn", { max: 300, skipBlankLines: true, skipComments: true }],
+      // Enforce the component size limit now that the existing TSX inventory is compliant.
+      "max-lines": ["error", { max: 300, skipBlankLines: true, skipComments: true }],
     },
   },
   eslintPluginPrettier,
