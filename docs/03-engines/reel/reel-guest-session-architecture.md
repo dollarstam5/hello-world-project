@@ -1,4 +1,4 @@
-# Réel — architecture de session invitée éphémère
+# En direct — architecture de session invitée éphémère
 
 **Statut :** session invitée serveur implémentée et raccordée au gestionnaire central ; opérations métier invitées encore bloquées.
 **Portée :** établir une identité temporaire côté serveur sans compte Auth, sans profil Vitalis et sans historique durable.
@@ -33,13 +33,13 @@ Table technique envisagée : public.reel_guest_sessions.
 | last_seen_at | Dernière activité, mise à jour avec limitation de fréquence |
 | expires_at   | Échéance absolue                                            |
 | revoked_at   | Révocation explicite, si présente                           |
-| purpose      | Usage limité à Réel invité, pas une autorisation générale   |
+| purpose      | Usage limité à En direct invité, pas une autorisation générale   |
 
 Aucun auth.users, profiles, email, téléphone, nom civil, coordonnées GPS exactes ou historique de navigation ne doit être créé pour cette session. Ne pas ajouter d'adresse IP ou d'empreinte d'appareil persistante par défaut. Les journaux de sécurité doivent être minimisés et soumis à une durée distincte documentée.
 
 La table est inaccessible directement à anon et authenticated. Les lectures/écritures passent par des fonctions serveur contrôlées. La clé de service ne remplace jamais la validation du jeton et du droit demandé.
 
-## 4. Séparer session invitée et présence Réel
+## 4. Séparer session invitée et présence En direct
 
 La table membre actuelle reel_presences référence auth.users. Il ne faut ni supprimer cette contrainte ni fabriquer un faux owner_id pour y faire entrer un invité.
 
@@ -82,13 +82,13 @@ La durée absolue implémentée est de 60 minutes. Il n'y a pas encore de renouv
 
 Le dépôt contient maintenant la migration `20261110020000_reel_guest_sessions.sql`, le service serveur `reel-guest-session.server.ts`, les fonctions Start `reel-guest-session.functions.ts` et le test pgTAP 131. Le service crée un secret aléatoire de 256 bits, stocke uniquement son SHA-256, le transmet par cookie `__Host-` HttpOnly/Secure/SameSite=Lax, vérifie expiration/révocation et permet la fermeture explicite. La présence d'un en-tête d'authentification membre empêche le démarrage invité et révoque une éventuelle session invitée lors de sa lecture.
 
-Cela ne signifie pas que le parcours invité Réel complet est activé : aucune opération de découverte, présence, bip ou relation n'accepte encore cette session. Les points restant à prouver avant activation sont :
+Cela ne signifie pas que le parcours invité En direct complet est activé : aucune opération de découverte, présence, bip ou relation n'accepte encore cette session. Les points restant à prouver avant activation sont :
 
 1. Exécuter la migration sur une base Supabase de test issue de la chaîne standard et exécuter les tests pgTAP 130 et 131.
 2. Exécuter lint, tests et build pour confirmer les imports et types du runtime TanStack Start installé.
 3. Configurer et vérifier la limitation anti-abus à la couche d'hébergement avant exposition publique.
 4. Vérifier que `pg_cron` est présent ou fournir un mécanisme de purge garanti.
-5. Valider la durée d'une heure et les droits invités précis pour chaque action Réel.
+5. Valider la durée d'une heure et les droits invités précis pour chaque action En direct.
 6. Ajouter des tests serveur de cookies, origine, révocation et transitions membre/invité.
 
 ## 9. Règle de livraison
@@ -107,7 +107,7 @@ Le fournisseur `AccessModeProvider` appelle maintenant les Server Functions de s
 
 L'identifiant React reste un repère d'interface uniquement. Le cookie opaque HttpOnly est la seule preuve de session invitée côté serveur. Une erreur de création laisse l'application en mode visiteur.
 
-**Limites encore ouvertes :** la session n'autorise aucune opération métier Réel. La découverte, la publication de présence, les bips et les relations restent refusés aux invités. La limitation anti-abus de création, les tests serveur du cookie/origine/révocation, l'exécution des migrations/pgTAP et la vérification du runtime restent nécessaires. La session a une durée absolue de 60 minutes, sans renouvellement.
+**Limites encore ouvertes :** la session n'autorise aucune opération métier En direct. La découverte, la publication de présence, les bips et les relations restent refusés aux invités. La limitation anti-abus de création, les tests serveur du cookie/origine/révocation, l'exécution des migrations/pgTAP et la vérification du runtime restent nécessaires. La session a une durée absolue de 60 minutes, sans renouvellement.
 
 
 
