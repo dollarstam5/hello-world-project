@@ -437,19 +437,7 @@ export function ReelProximityScreen() {
             <UsersRound aria-hidden="true" />
             <strong>{t("reel.ui.noPeople")}</strong>
             <span>{t("reel.ui.noProfilesHint")}</span>
-            {access.mode === "visitor" ? (
-              <button
-                type="button"
-                onClick={() => void beginGuestSession()}
-                disabled={guestSessionLoading}
-              >
-                {guestSessionLoading ? t("reel.ui.guestLoading") : t("reel.ui.guestContinue")}
-              </button>
-            ) : !discoveryEnabled && discoveryAccess !== "requesting" && (
-              <button type="button" onClick={() => void requestDiscovery()}>
-                {t("reel.ui.seeNearby")}
-              </button>
-            )}
+
           </div>
         </section>
       ) : null}
