@@ -294,7 +294,7 @@ export function ReelProximityScreen() {
               if (discoveryEnabled) ignoreLocation();
               else void requestDiscovery();
             }}
-            disabled={discoveryAccess === "requesting"}
+            disabled={discoveryAccess === "requesting" || (!canUseMemberReel && access.mode !== "guest")}
             aria-pressed={discoveryEnabled}
             aria-label={
               discoveryEnabled ? t("reel.ui.disableDiscovery") : t("reel.ui.enableDiscovery")
@@ -483,8 +483,12 @@ export function ReelProximityScreen() {
             }}
             disabled={presenceLoading}
             aria-pressed={isPresenceActive}
-            aria-label={isPresenceActive ? t("reel.ui.hideMyPresence") : t("reel.ui.showMyPresence")}
-            title={isPresenceActive ? t("reel.ui.hideMyPresence") : t("reel.ui.showMyPresence")}
+            aria-label={
+              isPresenceActive ? t("reel.ui.hideMyPresence") : t("reel.ui.showMyPresence")
+            }
+            title={
+              isPresenceActive ? t("reel.ui.hideMyPresence") : t("reel.ui.showMyPresence")
+            }
           >
             <SelfRadarIdentity
               accessMode={access.mode}
@@ -577,7 +581,11 @@ export function ReelProximityScreen() {
                 <span>{t("reel.ui.settingsHelpEyebrow")}</span>
                 <h2 id="reel-settings-help-title">{t("reel.ui.settingsHelpTitle")}</h2>
               </div>
-              <button type="button" onClick={() => setSettingsHelpOpen(false)} aria-label={t("reel.ui.close")}>
+              <button
+                type="button"
+                onClick={() => setSettingsHelpOpen(false)}
+                aria-label={t("reel.ui.close")}
+              >
                 <X aria-hidden="true" />
               </button>
             </div>
@@ -603,7 +611,11 @@ export function ReelProximityScreen() {
                 <p>{t("reel.ui.helpPrivacyBody")}</p>
               </article>
             </div>
-            <button type="button" className="reel-panel__primary" onClick={() => setSettingsHelpOpen(false)}>
+            <button
+              type="button"
+              className="reel-panel__primary"
+              onClick={() => setSettingsHelpOpen(false)}
+            >
               {t("reel.ui.finish")}
             </button>
           </section>
@@ -626,7 +638,10 @@ export function ReelProximityScreen() {
             <button
               type="button"
               className="reel-panel__close"
-              onClick={() => setPanel(null)}
+              onClick={() => {
+                setSettingsHelpOpen(false);
+                setPanel(null);
+              }}
               aria-label={t("reel.ui.close")}
             >
               <X aria-hidden="true" />
@@ -668,6 +683,7 @@ export function ReelProximityScreen() {
                       type="button"
                       className="reel-panel__primary"
                       onClick={() => void requestDiscovery()}
+                      disabled={!canUseMemberReel && access.mode !== "guest"}
                     >
                       {t("reel.ui.enableDiscovery")}
                     </button>
