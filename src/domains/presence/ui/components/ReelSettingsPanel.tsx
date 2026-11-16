@@ -16,37 +16,17 @@ export function ReelSettingsPanel({
   onClose: () => void;
 }) {
   const { t } = useI18n();
-  const {
-    access,
-    discoveryEnabled,
-    ignoreLocation,
-    canUseMemberReel,
-    requestDiscovery,
-    radius,
-    setRadius,
-    currentPresence,
-    duration,
-    setDuration,
-    guestPresence,
-    presenceLoading,
-    stopGuestPresence,
-    guestDisplayName,
-    setGuestDisplayName,
-    guestAreaLabel,
-    setGuestAreaLabel,
-    guestAvatarKey,
-    setGuestAvatarKey,
-    presenceDescription,
-    setPresenceDescription,
-    guestPresenceConsent,
-    setGuestPresenceConsent,
-    activateGuestPresence,
-    presenceConsent,
-    setPresenceConsent,
-    stopPresence,
-    activatePresence,
-    presenceMessage,
-  } = controller;
+  const { access, discoveryEnabled, ignoreLocation } = controller;
+  const { canUseMemberReel, requestDiscovery, radius } = controller;
+  const { setRadius, currentPresence, duration } = controller;
+  const { setDuration, guestPresence, presenceLoading } = controller;
+  const { stopGuestPresence, guestDisplayName, setGuestDisplayName } = controller;
+  const { guestAreaLabel, setGuestAreaLabel, guestAvatarKey } = controller;
+  const { setGuestAvatarKey, presenceDescription, setPresenceDescription } = controller;
+  const { guestPresenceConsent, setGuestPresenceConsent, activateGuestPresence } = controller;
+  const { presenceConsent, setPresenceConsent, stopPresence } = controller;
+  const { activatePresence, presenceMessage } = controller;
+
   return (
     <>
       <div className="reel-panel__eyebrow">

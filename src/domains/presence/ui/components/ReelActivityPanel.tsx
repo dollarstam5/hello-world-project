@@ -6,27 +6,14 @@ type ReelController = ReturnType<typeof useReelProximityController>;
 
 export function ReelActivityPanel({ controller }: { controller: ReelController }) {
   const { t } = useI18n();
-  const {
-    activityTab,
-    setActivityTab,
-    activityEnabled,
-    currentPresence,
-    guestPresence,
-    bipsLoading,
-    canUseMemberReel,
-    access,
-    receivedBips,
-    receivedGuestBips,
-    resolveReceivedBip,
-    resolveGuestBip,
-    bipsMessage,
-    connectionsLoading,
-    guestConnections,
-    connections,
-    endConnection,
-    endGuestConnection,
-    connectionsMessage,
-  } = controller;
+  const { activityTab, setActivityTab, activityEnabled } = controller;
+  const { currentPresence, guestPresence, bipsLoading } = controller;
+  const { canUseMemberReel, access, receivedBips } = controller;
+  const { receivedGuestBips, resolveReceivedBip, resolveGuestBip } = controller;
+  const { bipsMessage, connectionsLoading, guestConnections } = controller;
+  const { connections, endConnection, endGuestConnection } = controller;
+  const { connectionsMessage } = controller;
+
   return (
     <>
       <div className="reel-panel__eyebrow">
