@@ -478,7 +478,50 @@ export const messages = {
     "scan.history.clear": "Effacer",
     "scan.history.results": "{count} résultat(s)",
 
-    "reel.ui.screenLabel": "En direct — présence à proximité",
+    "reel.ui.screenLabel": "Présence à proximité",
+    "reel.ui.disableDiscovery": "Désactiver la découverte à proximité",
+    "reel.ui.settingsHelp": "Comprendre les commandes et les fonctionnalités",
+    "reel.ui.settingsHelpEyebrow": "Guide des commandes",
+    "reel.ui.settingsHelpTitle": "Comment fonctionne En direct ?",
+    "reel.ui.helpDiscoveryTitle": "1. L’œil — découvrir les autres",
+    "reel.ui.helpDiscoveryBody":
+      "L’œil active ou met en pause la découverte de proximité. Activée, cette fonction permet de voir les personnes qui partagent réellement leur présence dans votre rayon. Elle ne rend jamais votre propre profil visible.",
+    "reel.ui.helpPresenceTitle": "2. Votre profil au centre — partager votre présence",
+    "reel.ui.helpPresenceBody":
+      "Touchez votre profil au centre du radar pour activer votre présence, après avoir donné votre accord et renseigné les informations demandées. Une fois active, touchez-le à nouveau pour arrêter votre présence. Le point rouge clignotant confirme que votre présence est active.",
+    "reel.ui.helpRadarTitle": "3. Le radar — se repérer",
+    "reel.ui.helpRadarBody":
+      "Le radar représente les présences réellement disponibles dans votre rayon. Touchez un profil autour de vous pour consulter uniquement les informations que cette personne a choisi de partager. Si personne n’est disponible, En direct vous le signale sans inventer de profil.",
+    "reel.ui.helpRadiusTitle": "4. Rayon et durée",
+    "reel.ui.helpRadiusBody":
+      "Le rayon règle la distance de découverte et la durée détermine combien de temps votre présence peut rester active. Vous pouvez les ajuster dans les paramètres.",
+    "reel.ui.helpPrivacyTitle": "5. Votre choix et votre confidentialité",
+    "reel.ui.helpPrivacyBody":
+      "Découverte et présence sont deux réglages indépendants. Vous pouvez regarder autour de vous sans être visible, être visible sans lancer la découverte, ou désactiver les deux. Rien ne s’active sans votre action et votre consentement.",
+    "reel.ui.tour.open": "Visite guidée",
+    "reel.ui.tour.close": "Fermer la visite guidée",
+    "reel.ui.tour.eyebrow": "En direct, en quelques mots",
+    "reel.ui.tour.step1": "Étape 1 sur 4",
+    "reel.ui.tour.step2": "Étape 2 sur 4",
+    "reel.ui.tour.step3": "Étape 3 sur 4",
+    "reel.ui.tour.step4": "Étape 4 sur 4",
+    "reel.ui.tour.progress": "Progression de la visite guidée",
+    "reel.ui.tour.title1": "Découvrez les présences autour de vous",
+    "reel.ui.tour.description1":
+      "En activant la découverte, vous voyez uniquement les personnes qui partagent réellement leur présence à proximité.",
+    "reel.ui.tour.title2": "Le radar vous aide à vous repérer",
+    "reel.ui.tour.description2":
+      "Les points représentent les présences disponibles dans votre rayon. S’il n’y en a pas, nous vous le disons simplement.",
+    "reel.ui.tour.title3": "Ouvrez une fiche pour en savoir plus",
+    "reel.ui.tour.description3":
+      "Touchez une présence affichée pour consulter les informations que cette personne a choisi de partager.",
+    "reel.ui.tour.title4": "Votre visibilité reste votre choix",
+    "reel.ui.tour.description4":
+      "Découvrir les autres ne vous rend pas visible. Vous pouvez activer votre propre présence séparément, quand vous le souhaitez.",
+    "reel.ui.tour.skip": "Passer",
+    "reel.ui.tour.back": "Retour",
+    "reel.ui.tour.next": "Suivant",
+    "reel.ui.tour.finish": "C’est compris",
     "reel.ui.home": "Retour à l’accueil Vitalis",
     "reel.ui.homeTitle": "Accueil",
     "reel.ui.subtitle": "Les personnes présentes autour de vous",
@@ -510,7 +553,7 @@ export const messages = {
     "reel.ui.waitingDescription": "Cela ne prend que quelques instants.",
     "reel.ui.locationPausedDescription":
       "Vous pouvez parcourir En direct sans localisation. Les découvertes proches, les bips et les réactions resteront en pause.",
-    "reel.ui.seeNearby": "Voir les personnes autour de moi",
+    "reel.ui.seeNearby": "Démarrer la découverte",
     "reel.ui.retry": "Réessayer",
     "reel.ui.guestLoading": "Ouverture de votre accès…",
     "reel.ui.guestContinue": "Continuer en invité",
@@ -534,7 +577,7 @@ export const messages = {
     "reel.ui.enableDiscovery": "Activer la découverte",
     "reel.ui.radius": "Rayon de proximité",
     "reel.ui.radiusNote":
-      "Le rayon choisi est appliqué côté serveur en mètres. Les positions précises restent privées et temporaires ; aucune distance exacte n’est affichée. La précision dépend aussi du GPS de votre appareil.",
+      "Le rayon est une préférence de proximité. La zone actuelle repose sur un découpage approximatif : elle ne garantit pas une distance exacte en mètres. Les positions GPS précises restent privées et temporaires.",
     "reel.ui.radiusNextTime":
       "Votre présence est déjà active : les changements de rayon ou de durée s’appliqueront à la prochaine activation, pas à celle-ci.",
     "reel.ui.duration": "Durée souhaitée",
@@ -956,7 +999,7 @@ export const messages = {
     "assistant.send": "Send question",
     "assistant.reset": "Clear conversation",
     "assistant.privacy": "Never share a password, secret code or confidential document.",
-    "assistant.source.instant": "⚡ Immediate answer",
+    "assistant.source.instant": "⚡ Instant answer",
     "assistant.source.ai": "🤖 AI",
     "update.title": "A new version is ready",
     "update.subtitle": "Reload to get the latest improvements.",
@@ -1362,7 +1405,50 @@ export const messages = {
     "scan.history.clear": "Clear",
     "scan.history.results": "{count} result(s)",
 
-    "reel.ui.screenLabel": "Nearby live presence",
+    "reel.ui.screenLabel": "Nearby presence",
+    "reel.ui.disableDiscovery": "Turn off nearby discovery",
+    "reel.ui.settingsHelp": "Understand the controls and features",
+    "reel.ui.settingsHelpEyebrow": "Control guide",
+    "reel.ui.settingsHelpTitle": "How does Live work?",
+    "reel.ui.helpDiscoveryTitle": "1. The eye — discover others",
+    "reel.ui.helpDiscoveryBody":
+      "The eye turns nearby discovery on or pauses it. When enabled, you can see people who are genuinely sharing their presence within your radius. It never makes your own profile visible.",
+    "reel.ui.helpPresenceTitle": "2. Your central profile — share your presence",
+    "reel.ui.helpPresenceBody":
+      "Tap your profile in the centre of the radar to activate your presence, after giving consent and providing the requested details. Once active, tap it again to stop sharing your presence. The blinking red dot confirms that your presence is active.",
+    "reel.ui.helpRadarTitle": "3. The radar — find your bearings",
+    "reel.ui.helpRadarBody":
+      "The radar represents real presences available within your radius. Tap a profile around you to see only the information that person chose to share. If nobody is available, Live tells you instead of inventing profiles.",
+    "reel.ui.helpRadiusTitle": "4. Radius and duration",
+    "reel.ui.helpRadiusBody":
+      "The radius sets the discovery distance, while duration determines how long your presence can remain active. You can adjust both in settings.",
+    "reel.ui.helpPrivacyTitle": "5. Your choice and privacy",
+    "reel.ui.helpPrivacyBody":
+      "Discovery and presence are independent settings. You can look around without being visible, be visible without starting discovery, or turn both off. Nothing activates without your action and consent.",
+    "reel.ui.tour.open": "Guided tour",
+    "reel.ui.tour.close": "Close guided tour",
+    "reel.ui.tour.eyebrow": "En direct, in a few words",
+    "reel.ui.tour.step1": "Step 1 of 4",
+    "reel.ui.tour.step2": "Step 2 of 4",
+    "reel.ui.tour.step3": "Step 3 of 4",
+    "reel.ui.tour.step4": "Step 4 of 4",
+    "reel.ui.tour.progress": "Guided tour progress",
+    "reel.ui.tour.title1": "Discover who's nearby",
+    "reel.ui.tour.description1":
+      "When you turn on discovery, you only see people who are genuinely sharing their presence nearby.",
+    "reel.ui.tour.title2": "The radar helps you find your way",
+    "reel.ui.tour.description2":
+      "The points represent available presences within your radius. If there are none, we'll tell you plainly.",
+    "reel.ui.tour.title3": "Open a profile to learn more",
+    "reel.ui.tour.description3":
+      "Tap a displayed presence to see the information that person chose to share.",
+    "reel.ui.tour.title4": "Your visibility is always your choice",
+    "reel.ui.tour.description4":
+      "Discovering others does not make you visible. You can activate your own presence separately, whenever you choose.",
+    "reel.ui.tour.skip": "Skip",
+    "reel.ui.tour.back": "Back",
+    "reel.ui.tour.next": "Next",
+    "reel.ui.tour.finish": "Got it",
     "reel.ui.home": "Back to the Vitalis home page",
     "reel.ui.homeTitle": "Home",
     "reel.ui.subtitle": "People who are here around you",
@@ -1393,7 +1479,7 @@ export const messages = {
     "reel.ui.waitingDescription": "This will only take a moment.",
     "reel.ui.locationPausedDescription":
       "You can explore Live without sharing your location. Nearby discovery, bips and reactions will stay paused.",
-    "reel.ui.seeNearby": "See people around me",
+    "reel.ui.seeNearby": "Start nearby discovery",
     "reel.ui.retry": "Try again",
     "reel.ui.guestLoading": "Opening your access…",
     "reel.ui.guestContinue": "Continue as a guest",
@@ -1505,7 +1591,7 @@ export const messages = {
     "reel.ui.calmNotifications":
       "In calm mode, alerts are paused. You can still view your connections.",
     "reel.ui.radiusApplied":
-      "Your selected radius is applied by the server in metres. Precise locations stay private and temporary; exact distances are never shown. Accuracy also depends on your device’s GPS.",
+      "Your radius is a proximity preference. The current area lookup uses an approximate grid and does not guarantee an exact distance in metres. Precise GPS locations remain private and temporary.",
     "reel.ui.guestPresenceActive":
       "Your presence is already active. Radius or duration changes will apply the next time you activate it.",
     "reel.ui.guestActiveDuration":

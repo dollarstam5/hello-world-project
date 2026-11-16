@@ -49,7 +49,11 @@ Always choose the most restrictive location.
 
 ## File size
 
-- Preferred < 200 lines · Warning > 300 · Refactor > 500.
+- **Hard limit: 300 lines maximum per component file** (blank lines and comments excluded from the ESLint count).
+- Aim for fewer than 200 lines whenever practical.
+- A component approaching 300 lines must be split by responsibility before adding more UI or behavior.
+- Do not bypass the limit by moving unrelated code into opaque helper files; extract cohesive components, hooks, or domain utilities with clear ownership.
+- ESLint reports files over 300 lines as warnings during the progressive cleanup of existing oversized files. New components must never exceed 300 lines.
 
 ## Mock data
 

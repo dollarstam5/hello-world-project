@@ -1,8 +1,22 @@
 import { describe, expect, it } from "vitest";
-import screenSource from "../../src/domains/presence/ui/ReelProximityScreen.tsx?raw";
+import screenCompositionSource from "../../src/domains/presence/ui/ReelProximityScreen.tsx?raw";
+import radarComponentsSource from "../../src/domains/presence/ui/components/ReelRadarIdentity.tsx?raw";
+import guidedTourSource from "../../src/domains/presence/ui/components/ReelGuidedTour.tsx?raw";
+import settingsHelpSource from "../../src/domains/presence/ui/components/ReelSettingsHelp.tsx?raw";
+import profileSheetSource from "../../src/domains/presence/ui/components/ReelProfileSheet.tsx?raw";
+import settingsPanelSource from "../../src/domains/presence/ui/components/ReelSettingsPanel.tsx?raw";
+import activityPanelSource from "../../src/domains/presence/ui/components/ReelActivityPanel.tsx?raw";
+import headerSource from "../../src/domains/presence/ui/components/ReelHeader.tsx?raw";
+import discoveryPromptSource from "../../src/domains/presence/ui/components/ReelDiscoveryPrompt.tsx?raw";
+import nearbyPreviewSource from "../../src/domains/presence/ui/components/ReelNearbyPreview.tsx?raw";
+import globalPanelSource from "../../src/domains/presence/ui/components/ReelGlobalPanel.tsx?raw";
+import peoplePanelSource from "../../src/domains/presence/ui/components/ReelPeoplePanel.tsx?raw";
+
 import controllerSource from "../../src/domains/presence/model/useReelProximityController.ts?raw";
 import realtimeServiceSource from "../../src/domains/presence/services/reel-activity-realtime.service.ts?raw";
 import memberAvatarSource from "../../src/domains/profile/api/profile-avatar.client.ts?raw";
+
+const screenSource = `${screenCompositionSource}\n${radarComponentsSource}\n${guidedTourSource}\n${settingsHelpSource}\n${profileSheetSource}\n${settingsPanelSource}\n${activityPanelSource}\n${headerSource}\n${discoveryPromptSource}\n${nearbyPreviewSource}\n${globalPanelSource}\n${peoplePanelSource}`;
 
 describe("En direct architecture boundaries", () => {
   it("keeps business services and access policy out of the screen component", () => {
@@ -41,9 +55,19 @@ describe("En direct architecture boundaries", () => {
     expect(guestPresenceActivation).not.toContain("requestDiscovery()");
   });
 
-  it("uses the header visibility control only for the user's own presence", () => {
-    expect(screenSource).toContain("reel-proximity__presence-toggle");
-    expect(screenSource).toContain('<h1>{t("page.reel.title")}</h1>');
+  it("keeps nearby discovery and personal presence as separate controls", () => {
+    expect(screenSource).toContain("reel-proximity__discovery-toggle");
+    expect(screenSource).toContain("if (discoveryEnabled) ignoreLocation()");
+    expect(screenSource).toContain("else void requestDiscovery()");
+    expect(screenSource).toContain("reel-radar__me");
+    expect(screenSource).toContain("void stopPresence()");
+    expect(screenSource).toContain("void stopGuestPresence()");
+    expect(screenSource).toContain("void activatePresence()");
+    expect(screenSource).toContain("void activateGuestPresence()");
+    expect(screenSource).toContain("isPresenceActive && (");
+    expect(screenSource).not.toContain("reel-proximity__presence-toggle");
+    expect(headerSource).toContain('<h1>{t("page.reel.title")}</h1>');
+    expect(screenSource).toContain("reel-proximity__live-indicator");
     expect(screenSource).toContain('<RadioTower aria-hidden="true" />');
     expect(screenSource).toContain('className="reel-proximity__header-actions"');
     expect(screenSource).toContain("reel-radar__me-avatar");
@@ -73,18 +97,23 @@ describe("En direct architecture boundaries", () => {
     expect(screenSource).toContain("reel-radar__me-label");
   });
 
-  it("opens the signed-in member profile from the central radar avatar", () => {
-    expect(screenSource).toContain('to="/espace/profil"');
-    expect(screenSource).toContain('access.mode === "member" ?');
-    expect(screenSource).toContain('aria-label={t("profile.title")}');
+  it("uses the central radar profile to activate or stop personal presence", () => {
+    expect(screenSource).toContain(
+      'className={`reel-radar__me${isPresenceActive ? " is-presence-active" : ""}`}',
+    );
+    expect(screenSource).toContain("aria-pressed={isPresenceActive}");
+    expect(screenSource).toContain("void activatePresence()");
+    expect(screenSource).toContain("void activateGuestPresence()");
+    expect(screenSource).toContain("void stopPresence()");
+    expect(screenSource).toContain("void stopGuestPresence()");
   });
 
   it("does not expose an unsupported full-profile expansion from nearby presence data", () => {
     expect(screenSource).not.toContain("setShowFullProfile");
     expect(screenSource).not.toContain("reel.ui.fullProfile");
     expect(controllerSource).not.toContain("showFullProfile");
-    expect(screenSource).toContain("selectedPerson.description");
-    expect(screenSource).toContain("selectedPerson.locationLabel");
+    expect(profileSheetSource).toContain("person.description");
+    expect(profileSheetSource).toContain("person.locationLabel");
   });
 
   it("refreshes both received bips and connections immediately after acceptance", () => {
@@ -116,15 +145,37 @@ describe("En direct architecture boundaries", () => {
     expect(screenSource).not.toContain("notificationHistory");
   });
 
-  it("shows a compact nearby-presence stack whenever discovery returns people", () => {
+  it("shows a compact nearby profile preview using only discovered people", () => {
     expect(screenSource).toContain("discoveryEnabled && availablePeople.length > 0");
     expect(screenSource).toContain("availablePeople.slice(0, 3)");
-    expect(screenSource).toContain('className="reel-presence-stack__disk"');
+    expect(screenSource).toContain("reel-nearby-preview__list");
     expect(screenSource).toContain('onClick={() => setPanel("people")}');
-    expect(screenSource).toContain("availablePeople.length > 3");
-    expect(screenSource).toContain("reel-presence-stack__count");
-    expect(screenSource).toContain("+{availablePeople.length - 3}");
-    expect(screenSource).not.toContain("reel-nearby__count");
-    expect(screenSource).not.toContain("+{additionalCount}");
+    expect(screenSource).toContain("onClick={() => openProfile(person)}");
+    expect(screenSource).toContain("onClick={() => openProfile(person)}");
+    expect(nearbyPreviewSource).toContain("if (discoveryEnabled)");
+    expect(screenSource).toContain('t("reel.ui.noNearby")');
+    expect(screenSource).not.toContain("reel-nearby-preview__empty");
+    expect(screenSource).not.toContain("reel-presence-stack");
+  });
+
+  it("explains discovery, presence, radar, radius and privacy in a settings help dialog", () => {
+    expect(settingsPanelSource).toContain("onClick={onOpenHelp}");
+    expect(screenSource).toContain('role="dialog"');
+    expect(screenSource).toContain('t("reel.ui.helpDiscoveryTitle")');
+    expect(screenSource).toContain('t("reel.ui.helpPresenceTitle")');
+    expect(screenSource).toContain('t("reel.ui.helpRadarTitle")');
+    expect(screenSource).toContain('t("reel.ui.helpRadiusTitle")');
+    expect(screenSource).toContain('t("reel.ui.helpPrivacyTitle")');
+    expect(screenSource).toContain('t("reel.ui.settingsHelpTitle")');
+  });
+
+  it("offers a short, dismissible guided tour without enabling discovery or presence", () => {
+    expect(screenSource).toContain('window.localStorage.getItem("vitalis-reel-tour-seen")');
+    expect(headerSource).toContain("onClick={onOpenTour}");
+    expect(screenSource).toContain('aria-modal="true"');
+    expect(screenSource).toContain('t("reel.ui.tour.finish")');
+    expect(guidedTourSource).toContain('t("reel.ui.tour.finish")');
+    expect(guidedTourSource).not.toContain("requestDiscovery");
+    expect(guidedTourSource).not.toContain("activatePresence");
   });
 });

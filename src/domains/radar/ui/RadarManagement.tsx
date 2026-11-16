@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { Pencil, Radar as RadarIcon, X } from "lucide-react";
+import { Pencil, X } from "lucide-react";
 import type { RadarRadiusKm, RadarRecord, RadarStatus } from "@eco/core-contracts";
 import type { MessageKey } from "@/lib/i18n/messages";
 import {
@@ -13,9 +13,8 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Indicator } from "@/components/app/Indicator";
+import { RadarDraftForm } from "./RadarDraftForm";
 import { Surface } from "@/components/app/Surface";
 import { useAuth } from "@/domains/auth/model/useAuth";
 import { useI18n } from "@/lib/i18n/useI18n";
@@ -140,108 +139,29 @@ export function RadarManagement() {
 
   return (
     <div className="stack-5">
-      <Surface variant="elevated" padding="md" bordered>
-        <div className="mb-3 flex items-center gap-2">
-          <RadarIcon className="h-5 w-5 text-primary" aria-hidden />
-          <h3 className="font-semibold">
-            {t(editingId ? "radar.manage.edit.title" : "radar.manage.create.title")}
-          </h3>
-        </div>
-        <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
-          {t("radar.manage.intro")}
-        </p>
-        <form onSubmit={(event) => void save(event)} className="stack-3">
-          <label className="stack-1 text-sm font-medium" htmlFor="radar-query">
-            {t("radar.manage.query.label")}
-            <Textarea
-              id="radar-query"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder={t("radar.manage.query.placeholder")}
-              maxLength={2000}
-              rows={3}
-              required
-              minLength={3}
-              disabled={busy}
-            />
-          </label>
-          <label className="stack-1 text-sm font-medium" htmlFor="radar-area">
-            {t("radar.manage.area.label")}
-            <Input
-              id="radar-area"
-              value={areaLabel}
-              onChange={(event) => setAreaLabel(event.target.value)}
-              placeholder={t("radar.manage.area.placeholder")}
-              maxLength={80}
-              minLength={2}
-              required
-              disabled={busy}
-            />
-          </label>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <label className="stack-1 text-sm font-medium" htmlFor="radar-radius">
-              {t("radar.manage.radius.label")}
-              <select
-                id="radar-radius"
-                value={radiusKm}
-                onChange={(event) => setRadiusKm(Number(event.target.value) as RadarRadiusKm)}
-                disabled={busy}
-                className="min-h-12 w-full rounded-xl border border-border bg-surface px-3 text-sm font-normal text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
-              >
-                {RADII.map((radius) => (
-                  <option key={radius} value={radius}>
-                    {radius} km
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="stack-1 text-sm font-medium" htmlFor="radar-duration">
-              {t("radar.manage.duration.label")}
-              <select
-                id="radar-duration"
-                value={durationDays}
-                onChange={(event) =>
-                  setDurationDays(Number(event.target.value) as (typeof DURATIONS)[number])
-                }
-                disabled={busy}
-                className="min-h-12 w-full rounded-xl border border-border bg-surface px-3 text-sm font-normal text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
-              >
-                {DURATIONS.map((days) => (
-                  <option key={days} value={days}>
-                    {t("radar.manage.duration.days").replace("{count}", String(days))}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-          <div className="flex flex-wrap justify-end gap-2">
-            {editingId ? (
-              <Button
-                type="button"
-                variant="ghost"
-                disabled={busy}
-                onClick={() => {
-                  setEditingId(null);
-                  setQuery("");
-                  setAreaLabel("");
-                  setRadiusKm(5);
-                  setDurationDays(7);
-                }}
-              >
-                {t("common.cancel")}
-              </Button>
-            ) : null}
-            <Button
-              type="submit"
-              disabled={busy || query.trim().length < 3 || areaLabel.trim().length < 2}
-            >
-              {busy
-                ? t("app.loading")
-                : t(editingId ? "radar.manage.edit.action" : "radar.manage.create.action")}
-            </Button>
-          </div>
-        </form>
-      </Surface>
+      <RadarDraftForm
+        editingId={editingId}
+        busy={busy}
+        query={query}
+        areaLabel={areaLabel}
+        radiusKm={radiusKm}
+        durationDays={durationDays}
+        radii={RADII}
+        durations={DURATIONS}
+        t={t}
+        onQueryChange={setQuery}
+        onAreaChange={setAreaLabel}
+        onRadiusChange={setRadiusKm}
+        onDurationChange={setDurationDays}
+        onSubmit={(event) => void save(event)}
+        onCancelEdit={() => {
+          setEditingId(null);
+          setQuery("");
+          setAreaLabel("");
+          setRadiusKm(5);
+          setDurationDays(7);
+        }}
+      />
 
       {actionError ? (
         <p role="alert" className="text-sm text-destructive">

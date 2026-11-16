@@ -67,10 +67,19 @@ Toute mutation : écriture locale Dexie + entrée `outbox` → l'écran réagit 
 - [ ] Les écritures passent-elles par un repository `@eco/core-db` (jamais Supabase directement) ?
 - [ ] Toute nouvelle table a-t-elle `GRANT` + RLS + politiques dans la même migration ?
 - [ ] Chaque route a-t-elle son `head()` propre (titre, description, og) ?
-- [ ] Fichier < 200 lignes (alerte > 300, refonte > 500) ?
+- [ ] Le composant respecte-t-il le plafond strict de 300 lignes maximum (hors lignes vides et commentaires) ?
+- [ ] Le composant reste-t-il idéalement sous 200 lignes et est-il découpé par responsabilité avant d'approcher le plafond ?
 - [ ] Typecheck et build verts ?
 
-## 6. Interdit
+## 6. Règle de taille des composants
+
+- **300 lignes maximum par composant**, sans exception pour les nouveaux composants.
+- Viser moins de 200 lignes lorsque cela reste cohérent.
+- Dès qu'un composant approche 300 lignes, extraire des sous-composants, hooks ou utilitaires cohérents, chacun avec une responsabilité claire.
+- Ne pas déplacer artificiellement du code pour contourner la limite.
+- ESLint signale actuellement les fichiers TSX dépassant 300 lignes pendant la réduction progressive de la dette existante.
+
+## 7. Interdit
 
 - `react-router-dom` ou tout autre routeur.
 - Import de `@supabase/*` depuis un composant, un widget ou une route.
