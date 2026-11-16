@@ -136,11 +136,9 @@ export function measureHtmlEntry(
   );
 
   return {
-    initialJavaScriptGzipKb:
-      javascript.reduce((sum, path) => sum + gzipKb(path), 0) + inlineGzip,
+    initialJavaScriptGzipKb: javascript.reduce((sum, path) => sum + gzipKb(path), 0) + inlineGzip,
     initialCssGzipKb: css.reduce((sum, path) => sum + gzipKb(path), 0),
-    criticalResourcesGzipKb:
-      critical.reduce((sum, path) => sum + gzipKb(path), 0) + inlineGzip,
+    criticalResourcesGzipKb: critical.reduce((sum, path) => sum + gzipKb(path), 0) + inlineGzip,
   };
 }
 
@@ -162,10 +160,7 @@ export function measureFromManifest(
   ].find(existsSync);
   if (!manifestPath) return undefined;
 
-  const manifest = JSON.parse(readFileSync(manifestPath, "utf8")) as Record<
-    string,
-    ManifestEntry
-  >;
+  const manifest = JSON.parse(readFileSync(manifestPath, "utf8")) as Record<string, ManifestEntry>;
   const entries = Object.entries(manifest).filter(([, entry]) => entry.isEntry);
   if (entries.length === 0) {
     throw new Error("Vite manifest contains no entry modules: " + manifestPath);
