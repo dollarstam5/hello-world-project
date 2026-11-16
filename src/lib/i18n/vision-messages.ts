@@ -137,7 +137,7 @@ export const visionMessages = {
     "vision.deep.whatHeading": "Une application tournée vers la vie réelle.",
     "vision.deep.enginesHeading": "Quatre façons d’agir, un même objectif.",
     "vision.deep.navLabel": "Accès direct aux moteurs",
-    "vision.end.action": "Revenir à l’accueil"
+    "vision.end.action": "Revenir à l’accueil",
   },
   en: {
     "vision.back": "Back to home",
@@ -274,7 +274,7 @@ export const visionMessages = {
     "vision.deep.whatHeading": "An app built around real life.",
     "vision.deep.enginesHeading": "Four ways to take action, one shared purpose.",
     "vision.deep.navLabel": "Jump to an engine",
-    "vision.end.action": "Return to home"
+    "vision.end.action": "Return to home",
   },
 } as const;
 
