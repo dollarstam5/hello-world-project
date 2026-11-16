@@ -324,22 +324,65 @@ export function ReelProximityScreen() {
       </header>
       {tourOpen && (
         <div className="reel-tour-backdrop">
-          <section className="reel-tour" role="dialog" aria-modal="true" aria-labelledby="reel-tour-title" aria-describedby="reel-tour-description">
+          <section
+            className="reel-tour"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="reel-tour-title"
+            aria-describedby="reel-tour-description"
+          >
             <div className="reel-tour__topline">
               <span>{t("reel.ui.tour.eyebrow")}</span>
-              <button type="button" onClick={closeTour} aria-label={t("reel.ui.tour.close")}><X aria-hidden="true" /></button>
+              <button
+                type="button"
+                onClick={closeTour}
+                aria-label={t("reel.ui.tour.close")}
+              >
+                <X aria-hidden="true" />
+              </button>
             </div>
             <div className="reel-tour__progress" aria-label={t("reel.ui.tour.progress")}>
-              {[0, 1, 2, 3].map((step) => <span key={step} className={step <= tourStep ? "is-active" : ""} />)}
+              {[0, 1, 2, 3].map((step) => (
+                <span
+                  key={step}
+                  className={step <= tourStep ? "is-active" : ""}
+                />
+              ))}
             </div>
             <p className="reel-tour__step">{t(TOUR_STEP_KEYS[tourStep])}</p>
             <h2 id="reel-tour-title">{t(TOUR_TITLE_KEYS[tourStep])}</h2>
             <p id="reel-tour-description">{t(TOUR_DESCRIPTION_KEYS[tourStep])}</p>
             <div className="reel-tour__actions">
-              <button type="button" className="reel-tour__skip" onClick={closeTour}>{t("reel.ui.tour.skip")}</button>
+              <button
+                type="button"
+                className="reel-tour__skip"
+                onClick={closeTour}
+              >
+                {t("reel.ui.tour.skip")}
+              </button>
               <div>
-                {tourStep > 0 && <button type="button" className="reel-tour__back" onClick={() => setTourStep((step) => step - 1)}>{t("reel.ui.tour.back")}</button>}
-                <button type="button" className="reel-tour__next" onClick={() => tourStep === 3 ? closeTour() : setTourStep((step) => step + 1)}>{tourStep === 3 ? t("reel.ui.tour.finish") : t("reel.ui.tour.next")}</button>
+                {tourStep > 0 && (
+                  <button
+                    type="button"
+                    className="reel-tour__back"
+                    onClick={() => setTourStep((step) => step - 1)}
+                  >
+                    {t("reel.ui.tour.back")}
+                  </button>
+                )}
+                <button
+                  type="button"
+                  className="reel-tour__next"
+                  onClick={() =>
+                    tourStep === 3
+                      ? closeTour()
+                      : setTourStep((step) => step + 1)
+                  }
+                >
+                  {tourStep === 3
+                    ? t("reel.ui.tour.finish")
+                    : t("reel.ui.tour.next")}
+                </button>
               </div>
             </div>
           </section>
@@ -491,9 +534,9 @@ export function ReelProximityScreen() {
                 <PersonAvatar person={person} size="small" />
                 <span>
                   <strong>{person.name}</strong>
-                  <small>{
-                  person.description || person.category || t("reel.ui.nearbyProfile")
-                }</small>
+                  <small>
+                    {person.description || person.category || t("reel.ui.nearbyProfile")}
+                  </small>
                 </span>
                 <ChevronDown aria-hidden="true" />
               </button>
