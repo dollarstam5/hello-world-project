@@ -1,7 +1,7 @@
 import { Info } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import type { FlashCategory, FlashKind, FlashScope, FlashTimeSlot, FlashUrgency } from "@eco/core-contracts";
+import type { FlashCategory, FlashKind, FlashTimeSlot } from "@eco/core-contracts";
 import { FLASH_SCOPES, FLASH_URGENCIES } from "@eco/core-contracts";
 import type { useFlashComposer } from "./useFlashComposer";
 import { useI18n } from "@/lib/i18n/useI18n";
