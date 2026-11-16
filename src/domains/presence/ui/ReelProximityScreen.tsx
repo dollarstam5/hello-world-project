@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
 import { useI18n } from "@/lib/i18n/useI18n";
-import {
-  ChevronDown,
-  Globe,
-  History,
-  X,
-} from "lucide-react";
+import { ChevronDown, Globe, History, X } from "lucide-react";
 import { useReelProximityController } from "@/domains/presence/model/useReelProximityController";
 import { RingPerson, SelfRadarIdentity } from "./components/ReelRadarIdentity";
 import { ReelGuidedTour } from "./components/ReelGuidedTour";
@@ -166,7 +161,10 @@ export function ReelProximityScreen() {
         </div>
       )}
 
-      <ReelSettingsHelp open={settingsHelpOpen && panel === "settings"} onClose={() => setSettingsHelpOpen(false)} />
+      <ReelSettingsHelp
+        open={settingsHelpOpen && panel === "settings"}
+        onClose={() => setSettingsHelpOpen(false)}
+      />
 
       {panel && (
         <div
@@ -193,7 +191,13 @@ export function ReelProximityScreen() {
               <X aria-hidden="true" />
             </button>
 
-            {panel === "settings" && <ReelSettingsPanel controller={controller} onOpenHelp={() => setSettingsHelpOpen(true)} onClose={() => setPanel(null)} />}
+            {panel === "settings" && (
+              <ReelSettingsPanel
+                controller={controller}
+                onOpenHelp={() => setSettingsHelpOpen(true)}
+                onClose={() => setPanel(null)}
+              />
+            )}
 
             {panel === "global" && <ReelGlobalPanel />}
 

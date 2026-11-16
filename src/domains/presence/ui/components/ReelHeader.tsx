@@ -45,9 +45,7 @@ export function ReelHeader({
           <h1>En direct</h1>
           <p>{t("reel.ui.screenLabel")}</p>
         </div>
-        {isPresenceActive && (
-          <span className="reel-proximity__live-indicator" aria-hidden="true" />
-        )}
+        {isPresenceActive && <span className="reel-proximity__live-indicator" aria-hidden="true" />}
       </div>
       <nav className="reel-proximity__header-actions" aria-label={t("reel.ui.screenLabel")}>
         <Link
@@ -66,9 +64,7 @@ export function ReelHeader({
           aria-label={
             activityEnabled ? t("reel.ui.notifications") : t("reel.ui.notificationsPaused")
           }
-          title={
-            activityEnabled ? t("reel.ui.activity") : t("reel.ui.notificationsPausedShort")
-          }
+          title={activityEnabled ? t("reel.ui.activity") : t("reel.ui.notificationsPausedShort")}
         >
           <Bell aria-hidden="true" />
         </button>
@@ -83,7 +79,10 @@ export function ReelHeader({
         </button>
         <button
           type="button"
-          className={"reel-proximity__header-action reel-proximity__discovery-toggle" + (discoveryEnabled ? " is-active" : "")}
+          className={
+            "reel-proximity__header-action reel-proximity__discovery-toggle" +
+            (discoveryEnabled ? " is-active" : "")
+          }
           onClick={() => {
             if (discoveryEnabled) ignoreLocation();
             else void requestDiscovery();

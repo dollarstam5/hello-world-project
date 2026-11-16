@@ -34,9 +34,7 @@ export function ReelNearbyPreview({ controller }: { controller: ReelController }
               <PersonAvatar person={person} size="small" />
               <span>
                 <strong>{person.name}</strong>
-                <small>
-                  {person.description || person.category || t("reel.ui.nearbyProfile")}
-                </small>
+                <small>{person.description || person.category || t("reel.ui.nearbyProfile")}</small>
               </span>
               <ChevronDown aria-hidden="true" />
             </button>

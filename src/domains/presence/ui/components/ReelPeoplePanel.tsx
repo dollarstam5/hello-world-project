@@ -27,9 +27,7 @@ export function ReelPeoplePanel({ controller }: { controller: ReelController }) 
               <PersonAvatar person={person} size="small" />
               <span>
                 <strong>{person.name}</strong>
-                <small>
-                  {person.description || person.category || t("reel.ui.nearbyProfile")}
-                </small>
+                <small>{person.description || person.category || t("reel.ui.nearbyProfile")}</small>
               </span>
               {person.distanceLabel && (
                 <small className="reel-people-list__distance">{person.distanceLabel}</small>

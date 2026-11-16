@@ -13,7 +13,6 @@ export function ReelActivityPanel({ controller }: { controller: ReelController }
   const { bipsMessage, connectionsLoading, guestConnections } = controller;
   const { connections, endConnection, endGuestConnection } = controller;
   const { connectionsMessage } = controller;
-
   return (
     <>
       <div className="reel-panel__eyebrow">

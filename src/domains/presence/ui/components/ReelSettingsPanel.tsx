@@ -16,17 +16,12 @@ export function ReelSettingsPanel({
   onClose: () => void;
 }) {
   const { t } = useI18n();
-  const { access, discoveryEnabled, ignoreLocation } = controller;
-  const { canUseMemberReel, requestDiscovery, radius } = controller;
-  const { setRadius, currentPresence, duration } = controller;
-  const { setDuration, guestPresence, presenceLoading } = controller;
-  const { stopGuestPresence, guestDisplayName, setGuestDisplayName } = controller;
-  const { guestAreaLabel, setGuestAreaLabel, guestAvatarKey } = controller;
-  const { setGuestAvatarKey, presenceDescription, setPresenceDescription } = controller;
-  const { guestPresenceConsent, setGuestPresenceConsent, activateGuestPresence } = controller;
-  const { presenceConsent, setPresenceConsent, stopPresence } = controller;
-  const { activatePresence, presenceMessage } = controller;
-
+  const { access, discoveryEnabled, ignoreLocation, canUseMemberReel, requestDiscovery, radius, setRadius,
+    currentPresence, duration, setDuration, guestPresence, presenceLoading, stopGuestPresence,
+    guestDisplayName, setGuestDisplayName, guestAreaLabel, setGuestAreaLabel, guestAvatarKey,
+    setGuestAvatarKey, presenceDescription, setPresenceDescription, guestPresenceConsent,
+    setGuestPresenceConsent, activateGuestPresence, presenceConsent, setPresenceConsent,
+    stopPresence, activatePresence, presenceMessage, setPanel } = controller;
   return (
     <>
       <div className="reel-panel__eyebrow">
@@ -133,158 +128,158 @@ export function ReelSettingsPanel({
               >
                 {t("reel.ui.stopPresence")}
               </button>
-    </>
-                    ) : (
-                      <>
-                        <label className="reel-setting-row reel-setting-row--stacked">
-                          <span>
-                            <strong>{t("reel.ui.displayName")}</strong>
-                            <small>{t("reel.ui.displayNameHint")}</small>
-                          </span>
-                          <input
-                            type="text"
-                            autoComplete="nickname"
-                            maxLength={40}
-                            value={guestDisplayName}
-                            onChange={(event) => setGuestDisplayName(event.target.value)}
-                            placeholder={t("reel.ui.namePlaceholder")}
-                          />
-                        </label>
-                        <label className="reel-setting-row reel-setting-row--stacked">
-                          <span>
-                            <strong>{t("reel.ui.area")}</strong>
-                            <small>{t("reel.ui.areaHint")}</small>
-                          </span>
-                          <input
-                            type="text"
-                            maxLength={80}
-                            value={guestAreaLabel}
-                            onChange={(event) => setGuestAreaLabel(event.target.value)}
-                            placeholder={t("reel.ui.areaPlaceholder")}
-                          />
-                        </label>
-                        <label className="reel-setting-row reel-setting-row--stacked">
-                          <span>
-                            <strong>{t("reel.ui.avatar")}</strong>
-                            <small>{t("reel.ui.avatarHint")}</small>
-                          </span>
-                          <select
-                            value={guestAvatarKey}
-                            onChange={(event) => setGuestAvatarKey(event.target.value)}
-                          >
-                            <option value="avatar-blue">{t("reel.ui.blue")}</option>
-                            <option value="avatar-violet">{t("reel.ui.violet")}</option>
-                            <option value="avatar-green">{t("reel.ui.green")}</option>
-                            <option value="avatar-orange">{t("reel.ui.orange")}</option>
-                          </select>
-                        </label>
-                        <label className="reel-setting-row reel-setting-row--stacked">
-                          <span>
-                            <strong>{t("reel.ui.publicDescription")}</strong>
-                            <small>{t("reel.ui.publicDescriptionHint")}</small>
-                          </span>
-                          <textarea
-                            maxLength={180}
-                            value={presenceDescription}
-                            onChange={(event) => setPresenceDescription(event.target.value)}
-                            rows={2}
-                          />
-                        </label>
-                        <label className="reel-setting-row">
-                          <span>
-                            <strong>{t("reel.ui.visibleConsent")}</strong>
-                            <small>{t("reel.ui.privatePosition")}</small>
-                          </span>
-                          <input
-                            type="checkbox"
-                            checked={guestPresenceConsent}
-                            onChange={(event) => setGuestPresenceConsent(event.target.checked)}
-                          />
-                        </label>
-                        <button
-                          type="button"
-                          className="reel-panel__primary"
-                          disabled={
-                            presenceLoading ||
-                            !guestPresenceConsent ||
-                            !guestDisplayName.trim() ||
-                            !guestAreaLabel.trim() ||
-                            !presenceDescription.trim()
-                          }
-                          onClick={() => void activateGuestPresence()}
-                        >
-                          {presenceLoading
-                            ? t("reel.ui.activateLoading")
-                            : t("reel.ui.makeVisible")}
-                        </button>
-                      </>
-                    )
-                  ) : !canUseMemberReel ? (
-                    <p className="reel-panel__note">{t("reel.ui.guestStartPresence")}</p>
-                  ) : currentPresence ? (
-                    <>
-                      <p className="reel-panel__status">{t("reel.ui.presenceActiveUntil")}</p>
-                      <button
-                        type="button"
-                        className="reel-panel__secondary"
-                        disabled={presenceLoading}
-                        onClick={() => void stopPresence()}
-                      >
-                        {t("reel.ui.stopPresence")}
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <label className="reel-setting-row reel-setting-row--stacked">
-                        <span>
-                          <strong>{t("reel.ui.publicDescription")}</strong>
-                          <small>{t("reel.ui.publicDescriptionHint")}</small>
-                        </span>
-                        <textarea
-                          maxLength={180}
-                          value={presenceDescription}
-                          onChange={(event) => setPresenceDescription(event.target.value)}
-                          rows={2}
-                        />
-                      </label>
-                      <label className="reel-setting-row">
-                        <span>
-                          <strong>{t("reel.ui.visibleConsent")}</strong>
-                          <small>{t("reel.ui.visiblePosition")}</small>
-                        </span>
-                        <input
-                          type="checkbox"
-                          checked={presenceConsent}
-                          onChange={(event) => setPresenceConsent(event.target.checked)}
-                        />
-                      </label>
-                      <button
-                        type="button"
-                        className="reel-panel__primary"
-                        disabled={
-                          presenceLoading || !presenceConsent || !presenceDescription.trim()
-                        }
-                        onClick={() => void activatePresence()}
-                      >
-                        {presenceLoading ? t("reel.ui.activateLoading") : t("reel.ui.activate")}
-                      </button>
-                    </>
-                  )}
-                  {presenceMessage && (
-                    <p className="reel-panel__note" role="status">
-                      {presenceMessage}
-                    </p>
-                  )}
-                </div>
-
-                <p className="reel-panel__note">{t("reel.ui.visibilityConfirmed")}</p>
-                <button
-                  type="button"
-                  className="reel-panel__primary"
-                  onClick={onClose}
+            </>
+          ) : (
+            <>
+              <label className="reel-setting-row reel-setting-row--stacked">
+                <span>
+                  <strong>{t("reel.ui.displayName")}</strong>
+                  <small>{t("reel.ui.displayNameHint")}</small>
+                </span>
+                <input
+                  type="text"
+                  autoComplete="nickname"
+                  maxLength={40}
+                  value={guestDisplayName}
+                  onChange={(event) => setGuestDisplayName(event.target.value)}
+                  placeholder={t("reel.ui.namePlaceholder")}
+                />
+              </label>
+              <label className="reel-setting-row reel-setting-row--stacked">
+                <span>
+                  <strong>{t("reel.ui.area")}</strong>
+                  <small>{t("reel.ui.areaHint")}</small>
+                </span>
+                <input
+                  type="text"
+                  maxLength={80}
+                  value={guestAreaLabel}
+                  onChange={(event) => setGuestAreaLabel(event.target.value)}
+                  placeholder={t("reel.ui.areaPlaceholder")}
+                />
+              </label>
+              <label className="reel-setting-row reel-setting-row--stacked">
+                <span>
+                  <strong>{t("reel.ui.avatar")}</strong>
+                  <small>{t("reel.ui.avatarHint")}</small>
+                </span>
+                <select
+                  value={guestAvatarKey}
+                  onChange={(event) => setGuestAvatarKey(event.target.value)}
                 >
-                  {t("reel.ui.finish")}
-                </button>
-              </>
+                  <option value="avatar-blue">{t("reel.ui.blue")}</option>
+                  <option value="avatar-violet">{t("reel.ui.violet")}</option>
+                  <option value="avatar-green">{t("reel.ui.green")}</option>
+                  <option value="avatar-orange">{t("reel.ui.orange")}</option>
+                </select>
+              </label>
+              <label className="reel-setting-row reel-setting-row--stacked">
+                <span>
+                  <strong>{t("reel.ui.publicDescription")}</strong>
+                  <small>{t("reel.ui.publicDescriptionHint")}</small>
+                </span>
+                <textarea
+                  maxLength={180}
+                  value={presenceDescription}
+                  onChange={(event) => setPresenceDescription(event.target.value)}
+                  rows={2}
+                />
+              </label>
+              <label className="reel-setting-row">
+                <span>
+                  <strong>{t("reel.ui.visibleConsent")}</strong>
+                  <small>{t("reel.ui.privatePosition")}</small>
+                </span>
+                <input
+                  type="checkbox"
+                  checked={guestPresenceConsent}
+                  onChange={(event) => setGuestPresenceConsent(event.target.checked)}
+                />
+              </label>
+              <button
+                type="button"
+                className="reel-panel__primary"
+                disabled={
+                  presenceLoading ||
+                  !guestPresenceConsent ||
+                  !guestDisplayName.trim() ||
+                  !guestAreaLabel.trim() ||
+                  !presenceDescription.trim()
+                }
+                onClick={() => void activateGuestPresence()}
+              >
+                {presenceLoading
+                  ? t("reel.ui.activateLoading")
+                  : t("reel.ui.makeVisible")}
+              </button>
+            </>
+          )
+        ) : !canUseMemberReel ? (
+          <p className="reel-panel__note">{t("reel.ui.guestStartPresence")}</p>
+        ) : currentPresence ? (
+          <>
+            <p className="reel-panel__status">{t("reel.ui.presenceActiveUntil")}</p>
+            <button
+              type="button"
+              className="reel-panel__secondary"
+              disabled={presenceLoading}
+              onClick={() => void stopPresence()}
+            >
+              {t("reel.ui.stopPresence")}
+            </button>
+          </>
+        ) : (
+          <>
+            <label className="reel-setting-row reel-setting-row--stacked">
+              <span>
+                <strong>{t("reel.ui.publicDescription")}</strong>
+                <small>{t("reel.ui.publicDescriptionHint")}</small>
+              </span>
+              <textarea
+                maxLength={180}
+                value={presenceDescription}
+                onChange={(event) => setPresenceDescription(event.target.value)}
+                rows={2}
+              />
+            </label>
+            <label className="reel-setting-row">
+              <span>
+                <strong>{t("reel.ui.visibleConsent")}</strong>
+                <small>{t("reel.ui.visiblePosition")}</small>
+              </span>
+              <input
+                type="checkbox"
+                checked={presenceConsent}
+                onChange={(event) => setPresenceConsent(event.target.checked)}
+              />
+            </label>
+            <button
+              type="button"
+              className="reel-panel__primary"
+              disabled={
+                presenceLoading || !presenceConsent || !presenceDescription.trim()
+              }
+              onClick={() => void activatePresence()}
+            >
+              {presenceLoading ? t("reel.ui.activateLoading") : t("reel.ui.activate")}
+            </button>
+          </>
+        )}
+        {presenceMessage && (
+          <p className="reel-panel__note" role="status">
+            {presenceMessage}
+          </p>
+        )}
+      </div>
+
+      <p className="reel-panel__note">{t("reel.ui.visibilityConfirmed")}</p>
+      <button
+        type="button"
+        className="reel-panel__primary"
+        onClick={onClose}
+      >
+        {t("reel.ui.finish")}
+      </button>
+    </>
   );
 }

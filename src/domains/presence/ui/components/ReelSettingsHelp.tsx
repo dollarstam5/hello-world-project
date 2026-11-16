@@ -1,13 +1,7 @@
 import { X } from "lucide-react";
 import { useI18n } from "@/lib/i18n/useI18n";
 
-export function ReelSettingsHelp({
-  open,
-  onClose,
-}: {
-  open: boolean;
-  onClose: () => void;
-}) {
+export function ReelSettingsHelp({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { t } = useI18n();
   if (!open) return null;
 
@@ -50,11 +44,7 @@ export function ReelSettingsHelp({
             <p>{t("reel.ui.helpPrivacyBody")}</p>
           </article>
         </div>
-        <button
-          type="button"
-          className="reel-panel__primary"
-          onClick={onClose}
-        >
+        <button type="button" className="reel-panel__primary" onClick={onClose}>
           {t("reel.ui.finish")}
         </button>
       </section>
