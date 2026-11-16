@@ -43,7 +43,7 @@ L’accès conversationnel manuel, lorsqu’il est proposé, doit rester discret
 - Une première intervention de bienvenue est déclenchée une seule fois lors de la première activation volontaire.
 - Le message est affiché dans une notification temporaire, fermable, annoncée aux lecteurs d’écran et automatiquement retirée après neuf secondes. La désactivation masque immédiatement cette notification.
 
-**Limite à ne pas masquer :** le canal événementiel et le message de bienvenue sont raccordés, mais les événements métier supplémentaires ne sont pas encore branchés. Il ne faut pas déclencher de messages automatiques pour Flash, Scan, Réel, Radar ou les notifications tant que leurs événements réels et leurs règles de fréquence n’ont pas été définis et reliés. Aucun événement fictif ne doit être inventé.
+**Limite à ne pas masquer :** le canal événementiel et le message de bienvenue sont raccordés, mais les événements métier supplémentaires ne sont pas encore branchés. Il ne faut pas déclencher de messages automatiques pour Flash, Scan, En direct, Radar ou les notifications tant que leurs événements réels et leurs règles de fréquence n’ont pas été définis et reliés. Aucun événement fictif ne doit être inventé.
 
 ## 5. Critères d’acceptation
 
@@ -53,7 +53,7 @@ L’accès conversationnel manuel, lorsqu’il est proposé, doit rester discret
 4. La préférence reste enregistrée après rechargement sur le même navigateur/appareil.
 5. L’onglet Assistant n’est visible dans les communications que lorsque l’utilisateur l’a activé.
 6. La désactivation masque immédiatement l’accès conversationnel facultatif.
-7. Les pages Home, Flash, Scan, Réel et Radar ne reçoivent aucun élément assistant permanent.
+7. Les pages Home, Flash, Scan, En direct et Radar ne reçoivent aucun élément assistant permanent.
 8. Les messages ponctuels futurs ne s’affichent que sur événement utile et respectent la possibilité d’ignorer ou de fermer.
 
 ## 6. Hors périmètre de cette décision
