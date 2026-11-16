@@ -1,16 +1,25 @@
 import {
-  Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog";
+import { useI18n } from "@/lib/i18n/useI18n";
 import type { useFlashComposer } from "./useFlashComposer";
 import { FlashComposerWriteStep } from "./FlashComposerWriteStep";
 import { FlashComposerReviewStep } from "./FlashComposerReviewStep";
-import { useI18n } from "@/lib/i18n/useI18n";
 
 type ComposerState = ReturnType<typeof useFlashComposer>;
-type Props = { state: ComposerState; user: { id: string } | null; authLoading: boolean };
+type Props = {
+  state: ComposerState;
+  user: { id: string } | null;
+  authLoading: boolean;
+};
 
 export function FlashComposerDialog({ state, user, authLoading }: Props) {
   const { t } = useI18n();
+
   return (
     <Dialog
       open={state.composerOpen}
@@ -27,9 +36,12 @@ export function FlashComposerDialog({ state, user, authLoading }: Props) {
             {state.step === "write" ? t("flash.composer.title") : t("flash.composer.reviewTitle")}
           </DialogTitle>
           <DialogDescription className="mt-1 text-sm text-muted-foreground">
-            {state.step === "write" ? t("flash.composer.description") : t("flash.composer.reviewDescription")}
+            {state.step === "write"
+              ? t("flash.composer.description")
+              : t("flash.composer.reviewDescription")}
           </DialogDescription>
         </DialogHeader>
+
         {state.step === "write" ? (
           <FlashComposerWriteStep state={state} />
         ) : (
