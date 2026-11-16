@@ -1,6 +1,6 @@
 import { Check, CircleHelp, Settings2 } from "lucide-react";
 import { useI18n } from "@/lib/i18n/useI18n";
-import { useReelProximityController } from "@/domains/presence/model/useReelProximityController";
+import type { useReelProximityController } from "@/domains/presence/model/useReelProximityController";
 
 type ReelController = ReturnType<typeof useReelProximityController>;
 const DURATIONS = ["30 min", "1 h", "2 h", "3 h", "6 h", "12 h", "24 h"];
@@ -26,7 +26,7 @@ export function ReelSettingsPanel({ controller, onOpenHelp, onClose }: {
                 <button
                   type="button"
                   className="reel-panel__help-trigger"
-                  onClick={() => setSettingsHelpOpen(true)}
+                  onClick={onOpenHelp}
                 >
                   <CircleHelp aria-hidden="true" />
                   {t("reel.ui.settingsHelp")}
@@ -270,7 +270,7 @@ export function ReelSettingsPanel({ controller, onOpenHelp, onClose }: {
                 <button
                   type="button"
                   className="reel-panel__primary"
-                  onClick={() => setPanel(null)}
+                  onClick={onClose}
                 >
                   {t("reel.ui.finish")}
                 </button>
