@@ -59,7 +59,7 @@ if ! curl --silent --fail "$BASE_URL/" >/dev/null; then
   exit 1
 fi
 
-# Keep the five core routes and the 390 × 844 Réel reference viewport.
+# Check all six public entry routes at four viewport sizes in both supported locales.
 for locale in fr en; do
   STORAGE_STATE="${STORAGE_STATE_BASE}-${locale}.json"
   for route in "/" "/flash" "/scan" "/reel" "/radar" "/vision"; do
