@@ -198,9 +198,51 @@ Aucun délai de fréquence n'est imposé : la déduplication est déterministe e
 - absence d'historique serveur et d'identifiant invité dans les payloads ;
 - taille du bundle et performance mobile.
 
+
+## 14. Contrat d'architecture pour toute évolution
+
+Toute nouvelle couche doit respecter le contrat de gouvernance produit. La chaîne technique reste : producteur métier propriétaire → adaptateur typé → contexte minimal → catalogue i18n → personnalisation autorisée → politique de consentement/maturité/priorité/fréquence → validation → présentation → accusé de présentation.
+
+Règles d'implémentation :
+- Le producteur est la seule source de vérité pour son événement et son état.
+- L'adaptateur de communication ne modifie jamais l'état métier et ne fabrique aucun événement.
+- Le catalogue i18n existant reste la source des textes ; aucune traduction parallèle.
+- Les confirmations et erreurs essentielles utilisent des canaux non dépendants de l'opt-in assistant.
+- Le centre ne reçoit que des événements munis d'un identifiant stable et d'un propriétaire de domaine clairement défini.
+- L'accusé de livraison est enregistré uniquement après présentation effective.
+- Le mode invité ne fournit aucun identifiant temporaire réutilisable hors de sa session.
+- Toute donnée agrégée de maturité doit venir d'une source autorisée ; aucun comptage côté client des sessions.
+- Les suggestions sont évaluées à partir de la disponibilité réelle de la route, du moteur et de l'action au moment de l'affichage.
+- Les composants En direct restent propriétaires de leurs états jusqu'à la mise en place d'un contrat d'événements partagés vérifié.
+
+## 15. Gouvernance V2/V3 pour les couches intelligentes
+
+Une couche de compréhension naturelle ou de génération ne peut être ajoutée qu'en V2/V3 après décision distincte. Elle doit rester un adaptateur facultatif et remplaçable, avec fallback local déterministe. Elle ne peut ni confirmer une transition métier, ni décider des droits, ni modifier la RLS, ni générer des identifiants ou événements.
+
+Avant connexion d'un fournisseur distant, documenter le flux de données, les champs transmis, la finalité, le consentement, la rétention, les régions de traitement, les coûts, les quotas, le coupe-circuit, les délais, les erreurs et le comportement hors ligne. Aucun contexte sensible ou identifiant invité temporaire ne doit être envoyé. Le système doit rester utilisable lorsque l'assistant est désactivé ou indisponible.
+
+Les outils d'action restent en lecture seule par défaut. Toute action externe ou ayant un effet durable exige une confirmation adaptée au risque et une validation par le domaine métier. La sortie du modèle est une proposition de formulation ou d'aide, jamais une source de vérité.
+
+## 16. Porte de validation avant raccordement
+
+Un raccordement est refusé tant que les éléments suivants ne sont pas établis :
+1. producteur réel et propriétaire identifié ;
+2. contrat de données typé et stable ;
+3. règles invité/membre et autorisations vérifiées ;
+4. clés i18n et fallback disponibles ;
+5. priorité, fréquence, anti-répétition et durée de vie définies ;
+6. état réseau/local/serveur correctement représenté ;
+7. destination UI réelle et accessible ;
+8. tests unitaires, intégration et rendu mobile ;
+9. coût réseau, stockage, bundle et IA acceptable ;
+10. documentation et statut d'implémentation mis à jour.
+
+Une capacité documentée comme future ou expérimentale ne doit pas être raccordée à un écran de production avant franchissement de cette porte.
+
 ## Références
 
 - [Système de communication humaine V1 à V3](../01-product/communication-system-v1-v3.md)
+- [Gouvernance complète V1 à V3](../01-product/communication-system-governance-v1-v3.md)
 - [Catalogue de communication V1](../01-product/communication-catalog-v1.md)
 - [Architecture front-end et expérience](./frontend-experience.md)
 - [Architecture IA et intégrations](./ai-architecture-integrations.md)
