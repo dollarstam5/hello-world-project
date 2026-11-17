@@ -16,8 +16,7 @@ export function publishFlashCommunicationEvent(
     deleted: "communication.event.flash.deleted",
   } as const;
 
-  const eventSuffix =
-    action === "updated" ? `updated:${record.updatedAt}` : action;
+  const eventSuffix = action === "updated" ? `updated:${record.updatedAt}` : action;
 
   communication.publishEvent({
     id: `flash:${record.id}:${eventSuffix}`,
