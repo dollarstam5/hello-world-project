@@ -19,6 +19,7 @@ export function SignInView() {
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-color-scheme: dark)").matches);
   const [mode, setAuthMode] = useState<Mode>("signIn");
+  const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
@@ -41,7 +42,7 @@ export function SignInView() {
       const result =
         mode === "signIn"
           ? await authService.signIn(email, password)
-          : await authService.signUp(email, password);
+          : await authService.signUp(email, password, displayName.trim());
 
       if (result.error) {
         setMessageType("error");
@@ -98,6 +99,21 @@ export function SignInView() {
         </p>
 
         <form onSubmit={submit} className="mt-6 space-y-3">
+          {mode === "signUp" ? (
+            <label className="block text-sm">
+              <span className="text-muted-foreground">{t("auth.displayName")}</span>
+              <input
+                type="text"
+                required
+                minLength={2}
+                maxLength={40}
+                autoComplete="name"
+                value={displayName}
+                onChange={(event) => setDisplayName(event.target.value)}
+                className="mt-1 min-h-12 w-full rounded-xl border border-border/60 bg-card/40 px-3 py-2 outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-ring"
+              />
+            </label>
+          ) : null}
           <label className="block text-sm">
             <span className="text-muted-foreground">{t("auth.email")}</span>
             <input
