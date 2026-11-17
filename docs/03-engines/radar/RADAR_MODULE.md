@@ -5,8 +5,8 @@ Radar permet d'enregistrer une recherche que la personne souhaite suivre sur plu
 ## Frontière avec les autres moteurs
 
 - **Flash** publie un besoin ou une proposition ponctuelle.
-- **Scan** recherche les Flash actifs dans une zone choisie, à la demande.
-- **Radar** conserve une intention de recherche dans le temps et pourra, lorsque le moteur de correspondances sera raccordé, détecter plusieurs possibilités.
+- **Scan** explore ponctuellement l'environnement autour d'un point de référence choisi pour chaque lancement : position GPS actuelle autorisée, zone approximative réellement prise en charge ou lieu public sélectionné manuellement. Plusieurs zones peuvent être explorées dans une même session, mais leurs résultats restent séparés. Scan ne suit pas la position en continu ; une autorisation temporaire de signalement après Scan, si elle est activée, n'est pas une mission Radar.
+- **Radar** conserve une intention de recherche dans le temps sur une ou plusieurs zones choisies par l'utilisateur, indépendamment de sa position actuelle, et pourra, lorsque le moteur de correspondances sera raccordé, détecter plusieurs possibilités.
 - **Mission** représente un engagement entre un auteur et un intervenant, avec attribution, réalisation et validation.
 
 Une correspondance Radar ne crée jamais automatiquement une mission. Une action explicite de la personne sera nécessaire.
@@ -32,7 +32,7 @@ L'activation et la reprise programment une prochaine revue dans un délai maxima
 - Le statut, les échéances de revue, le propriétaire, la révision et les dates système sont protégés.
 - `command_radar` verrouille la ligne et applique les commandes de cycle de vie côté PostgreSQL.
 - Les visiteurs anonymes ne peuvent ni lire ni commander une veille.
-- Le modèle Radar ne stocke aucune latitude ni longitude précise.
+- Le modèle Radar ne stocke aucune latitude ni longitude précise. La zone actuellement enregistrée est textuelle et approximative ; cela ne prouve ni une géolocalisation précise ni une surveillance géographique automatisée.
 
 ## État de l'interface V1
 
