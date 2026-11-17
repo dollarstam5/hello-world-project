@@ -46,6 +46,22 @@ La communication de Vitalis adapte son niveau d'accompagnement à la taille rée
 
 La transition est automatique et déterministe. Les seuils ne modifient ni les droits, ni les notifications métier, ni les préférences personnelles. Ils ne font qu'ajuster la fréquence, le degré d'explication et le style des suggestions. Une suggestion n'est affichée que si la fonctionnalité existe réellement, si ses conditions sont réunies et si elle apporte une aide concrète. L'utilisateur peut toujours ignorer ou désactiver les communications facultatives.
 
+## 2 ter. Accompagner la découverte selon les capacités réellement présentes
+
+Pendant le lancement, Vitalis doit aider activement les premières personnes à comprendre ce qu'elles peuvent faire. Cette proximité prend la forme de conseils courts, progressifs et conversationnels, et non d'une succession de notifications.
+
+Les premières suggestions peuvent expliquer les quatre moteurs à partir de leurs capacités V1 vérifiées :
+- **Flash :** préparer et enregistrer un besoin ou une proposition à durée limitée ; l'enregistrement exige un compte connecté.
+- **Scan :** lancer volontairement une recherche publique de proximité après autorisation de position ; les résultats ne sont annoncés qu'après le retour réel du Scan.
+- **En direct :** comprendre la présence de proximité, les bips et les mises en relation ; respecter les modes invité/membre et les permissions.
+- **Radar :** enregistrer et gérer une intention de recherche privée ; la correspondance automatique et les alertes ne sont pas disponibles tant que leur moteur n'est pas raccordé.
+
+La suggestion doit être liée au moteur affiché ou à une étape réellement atteinte. Elle peut proposer une explication ou guider vers une action existante ; elle ne doit jamais présenter une capacité future comme disponible. En particulier, Radar ne promet pas de résultat automatique, et une suggestion Scan ne déclenche pas elle-même la géolocalisation.
+
+Pendant la phase 0–500, Vitalis peut proposer ces aides plus souvent, mais de façon progressive : une suggestion à la fois, pas de répétition après refus ou fermeture immédiate, et aucune superposition à une erreur, une confirmation ou une décision métier. À mesure que la communauté grandit, la fréquence diminue selon les seuils de la section 2 bis.
+
+**Statut technique :** le dépôt contient le sélecteur de maturité et ses tests, mais le compteur agrégé et les points d'affichage des suggestions ne sont pas encore raccordés. Les formulations de découverte restent donc un contrat éditorial, pas des suggestions runtime actives. Le catalogue précise les capacités observées et leurs limites.
+
 ## 3. Contextes autorisés
 
 Le système peut exploiter uniquement les signaux nécessaires et déjà disponibles : heure locale et fuseau, langue active, nom d'affichage disponible, mode invité ou compte, écran/moteur actif, état réel d'une action et préférences explicitement enregistrées.
