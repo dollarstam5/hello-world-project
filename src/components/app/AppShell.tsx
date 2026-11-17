@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState, type ReactNode } from "react";
+import { lazy, Suspense, useEffect, useMemo, useState, type ReactNode } from "react";
 import { useRouterState } from "@tanstack/react-router";
 import { BottomNav } from "./BottomNav";
 import { useExperienceBoot } from "@/lib/experience/orchestrator";
@@ -12,6 +12,8 @@ import { AssistantNoticeLayer } from "@/components/experience/AssistantNoticeLay
 import { useOnboarding } from "@/lib/experience/onboarding";
 import { SyncEngineLoader } from "./SyncEngineLoader";
 import { CommunicationRuntimeProvider } from "@/lib/communication/CommunicationRuntimeProvider";
+import { useAuth } from "@/domains/auth/model/useAuth";
+import { useI18n } from "@/lib/i18n/useI18n";
 
 const ReelBottomNav = lazy(() =>
   import("@/domains/presence/ui/ReelBottomNav").then((module) => ({
@@ -49,6 +51,19 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const responsive = useResponsive();
   const onboardingReady = useOnboarding((state) => state.hydrated && state.shouldShow);
+  const { user, loading: authLoading } = useAuth();
+  const { locale } = useI18n();
+  const assistantEnabled = useAssistantPreferences((state) => state.enabled);
+  const assistantPreferencesHydrated = useAssistantPreferences((state) => state.hydrated);
+  const communicationContext = useMemo(
+    () => ({
+      identity: authLoading ? ("loading" as const) : user ? ("member" as const) : ("guest" as const),
+      pathname,
+      locale,
+      assistantEnabled: assistantPreferencesHydrated ? assistantEnabled : null,
+    }),
+    [assistantEnabled, assistantPreferencesHydrated, authLoading, locale, pathname, user],
+  );
 
   useExperienceBoot();
 
@@ -75,7 +90,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const reduce = responsive.shouldReduceMotion;
   if (bareChrome) {
     return (
-      <CommunicationRuntimeProvider>
+      <CommunicationRuntimeProvider context={communicationContext}>
         <>
           <SyncEngineLoader />
           <div className="relative min-h-dvh bg-background text-foreground antialiased">
