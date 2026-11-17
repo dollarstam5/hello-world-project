@@ -11,7 +11,7 @@ Cette continuité est le comportement cible de Radar ; elle ne signifie pas que 
 ## Frontières avec les autres moteurs
 - **En direct** montre les présences proches et les interactions disponibles maintenant ; il ne suit pas une recherche d'opportunités.
 - **Flash** diffuse une intention, un besoin, une proposition ou une information courte et temporaire.
-- **Scan** recherche à la demande les possibilités immédiatement disponibles, dans un périmètre ponctuel.
+- **Scan** explore à la demande les lieux, activités, services et informations disponibles autour d'un point de référence choisi, dans un périmètre ponctuel ; plusieurs zones peuvent être explorées dans une session sans fusionner leurs résultats. Une autorisation temporaire de signalement après Scan reste distincte du suivi durable Radar.
 - **Radar** conserve une intention et un ensemble de critères pour une recherche suivie dans le temps.
 - **Veille** supervise la progression des missions Radar et présente des signaux collectifs anonymisés ; Veille n'exécute pas à la place de Radar la stratégie de recherche de la mission.
 - **Mission** peut représenter un engagement concret entre un auteur et un intervenant ; une correspondance Radar ne crée jamais automatiquement un tel engagement.
@@ -37,13 +37,14 @@ Radar peut proposer des précisions, élargissements ou ajustements, mais ne mod
 
 ## Configuration avant chaque mission
 Avant le lancement, l'utilisateur choisit ou confirme :
-- **Zones à explorer** : une ou plusieurs zones géographiques et, si le mode retenu le permet, un rayon associé.
+- **Zones à explorer** : une ou plusieurs zones d'intérêt choisies par l'utilisateur, indépendantes de sa position actuelle ; chaque zone peut avoir un rayon associé si le mode retenu le permet.
+- **Position de l'utilisateur** : elle n'est pas le centre obligatoire de la recherche. L'utilisateur peut surveiller une zone éloignée ou différente de l'endroit où il se trouve.
 - **Critères de recherche** : catégories, types d'opportunités et caractéristiques attendues.
 - **Durée de mission / de surveillance** : période pendant laquelle la mission doit poursuivre son objectif.
 
 Le contrat technique V1 actuellement documenté autorise les rayons de **1, 3, 5, 10, 25 et 50 km** et une durée de **3 à 90 jours**. Ces valeurs constituent les limites documentées actuelles, et non une règle commune aux autres moteurs. Toute évolution exige une décision produit, une mise à jour du contrat et, si nécessaire, une migration.
 
-Distinguer les préférences par défaut enregistrées dans les paramètres Radar des paramètres propres à la mission en cours. L'utilisateur doit pouvoir vérifier les paramètres effectifs avant validation. Les zones, rayons, critères et durée choisis doivent être transmis aux services et réellement appliqués avant qu'une interface puisse prétendre que la mission les respecte.
+Distinguer les préférences par défaut enregistrées dans les paramètres Radar des paramètres propres à la mission en cours. L'utilisateur doit pouvoir vérifier les paramètres effectifs avant validation. Les zones choisies (et non la position actuelle par défaut), rayons, critères et durée doivent être transmis aux services et réellement appliqués avant qu'une interface puisse prétendre que la mission les respecte.
 
 La durée correspond à la période de mission, pas seulement au temps pendant lequel l'application reste ouverte. Toutefois, tant que le traitement planifié et les sources de correspondance ne sont pas raccordés et vérifiés, l'interface doit présenter la capacité comme une cible non disponible, et non comme une surveillance active en arrière-plan.
 
@@ -81,7 +82,7 @@ Veille peut également analyser des signaux agrégés et anonymisés provenant d
 
 ## Sujets à confirmer avant implémentation complète
 - Stratégie de recherche et sources de données autorisées.
-- Confirmation de la sémantique des zones multiples et du rayon par zone.
+- Confirmation de la sémantique des zones multiples, de leur sélection indépendante de la position actuelle et du rayon par zone.
 - Comportement en arrière-plan, fréquence de traitement et coûts.
 - Critères de correspondance, comparaison et élargissement.
 - Notifications et événements transmis à Veille.
