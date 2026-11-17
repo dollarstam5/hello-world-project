@@ -4,6 +4,7 @@ const STORAGE_KEY = "vitalis.assistant.enabled";
 
 interface AssistantPreferencesState {
   enabled: boolean;
+  hydrated: boolean;
   hydrate: () => void;
   setEnabled: (enabled: boolean) => void;
 }
@@ -11,12 +12,13 @@ interface AssistantPreferencesState {
 /** The assistant is opt-in and remains disabled unless the person enables it. */
 export const useAssistantPreferences = create<AssistantPreferencesState>((set) => ({
   enabled: false,
+  hydrated: false,
   hydrate: () => {
     try {
       if (typeof window === "undefined") return;
-      set({ enabled: window.localStorage.getItem(STORAGE_KEY) === "true" });
+      set({ enabled: window.localStorage.getItem(STORAGE_KEY) === "true", hydrated: true });
     } catch {
-      set({ enabled: false });
+      set({ enabled: false, hydrated: true });
     }
   },
   setEnabled: (enabled) => {
@@ -27,6 +29,6 @@ export const useAssistantPreferences = create<AssistantPreferencesState>((set) =
     } catch {
       // Keep the preference for this session when browser storage is unavailable.
     }
-    set({ enabled });
+    set({ enabled, hydrated: true });
   },
 }));
