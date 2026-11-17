@@ -1,10 +1,11 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-afterEach(() => vi.unstubAllGlobals());
 import {
   AssistantStreamError,
   buildAssistantRequestMessages,
   streamAssistant,
 } from "@/domains/assistant/services/assistant-stream.service";
+
+afterEach(() => vi.unstubAllGlobals());
 
 describe("historique transmis à Vita", () => {
   it("collapse les tours sans réponse pour conserver l'alternance attendue", () => {
@@ -29,12 +30,11 @@ describe("historique transmis à Vita", () => {
     }));
     const result = buildAssistantRequestMessages(messages);
     expect(result).toHaveLength(6);
-    expect(
-      result.reduce((total, message) => total + message.content.length, 0),
-    ).toBeLessThanOrEqual(4_000);
+    expect(result.reduce((total, message) => total + message.content.length, 0)).toBeLessThanOrEqual(
+      4_000,
+    );
   });
 });
-
 
 describe("streaming de Vita", () => {
   function mockStream(events: string[]) {
@@ -44,10 +44,22 @@ describe("streaming de Vita", () => {
         controller.close();
       },
     });
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(
-      new Response(body, { status: 200, headers: { "Content-Type": "text/event-stream" } }),
-    ));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(body, {
+          status: 200,
+          headers: { "Content-Type": "text/event-stream" },
+        }),
+      ),
+    );
   }
+
+  const request = (id: string) => ({
+    requestId: id,
+    locale: "fr" as const,
+    messages: [{ role: "user" as const, content: "Salut" }],
+  });
 
   it("accepte une réponse seulement après l'événement de fin", async () => {
     mockStream([
@@ -55,21 +67,18 @@ describe("streaming de Vita", () => {
       'data: {"type":"response.completed"}',
     ]);
     const onDelta = vi.fn();
-    await expect(streamAssistant(
-      { requestId: "00000000-0000-4000-8000-000000000001", locale: "fr", messages: [{ role: "user", content: "Salut" }] },
-      onDelta,
-      "token",
-    )).resolves.toBe("Bonjour");
+
+    await expect(streamAssistant(request("00000000-0000-4000-8000-000000000001"), onDelta, "token"))
+      .resolves.toBe("Bonjour");
     expect(onDelta).toHaveBeenCalledWith("Bonjour");
   });
 
   it("refuse un flux interrompu après des fragments partiels", async () => {
     mockStream(['data: {"type":"response.output_text.delta","delta":"Réponse partielle"}']);
-    await expect(streamAssistant(
-      { requestId: "00000000-0000-4000-8000-000000000002", locale: "fr", messages: [{ role: "user", content: "Salut" }] },
-      vi.fn(),
-      "token",
-    )).rejects.toBeInstanceOf(AssistantStreamError);
+
+    await expect(
+      streamAssistant(request("00000000-0000-4000-8000-000000000002"), vi.fn(), "token"),
+    ).rejects.toBeInstanceOf(AssistantStreamError);
   });
 
   it("accepte le marqueur terminal SSE [DONE]", async () => {
@@ -77,10 +86,8 @@ describe("streaming de Vita", () => {
       'data: {"type":"response.output_text.delta","delta":"Bonjour"}',
       "data: [DONE]",
     ]);
-    await expect(streamAssistant(
-      { requestId: "00000000-0000-4000-8000-000000000003", locale: "fr", messages: [{ role: "user", content: "Salut" }] },
-      vi.fn(),
-      "token",
-    )).resolves.toBe("Bonjour");
+
+    await expect(streamAssistant(request("00000000-0000-4000-8000-000000000003"), vi.fn(), "token"))
+      .resolves.toBe("Bonjour");
   });
 });
