@@ -56,4 +56,32 @@ describe("Réel shared activity projection", () => {
       connectionsReady: false,
     });
   });
+
+  it("keeps the engine and communication centre synchronized through one projection", () => {
+    const engineSnapshots: number[] = [];
+    const centreSnapshots: number[] = [];
+    const unsubscribeEngine = useReelActivityProjection.subscribe((state) => {
+      engineSnapshots.push(state.pendingBips);
+    });
+    const unsubscribeCentre = useReelActivityProjection.subscribe((state) => {
+      centreSnapshots.push(state.pendingBips);
+    });
+
+    useReelActivityProjection.getState().publishBips("member", 2);
+    useReelActivityProjection.getState().publishBips("member", 5);
+
+    expect(engineSnapshots).toEqual([2, 5]);
+    expect(centreSnapshots).toEqual([2, 5]);
+    unsubscribeEngine();
+    unsubscribeCentre();
+  });
+
+  it("does not retain guest session or domain record identifiers in any state value", () => {
+    useReelActivityProjection.getState().publishBips("guest", 1);
+    useReelActivityProjection.getState().publishConnections("guest", 2);
+
+    const serialized = JSON.stringify(useReelActivityProjection.getState());
+    expect(serialized).not.toMatch(/guestSessionId|guest_session_id|presenceId|presence_id|bipId|bip_id|connectionId|connection_id/i);
+  });
+
 });
