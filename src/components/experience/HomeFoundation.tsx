@@ -111,8 +111,8 @@ export function HomeFoundation() {
       : tier === "identified"
         ? t("identity.identified")
         : user
-        ? t("identity.member")
-        : t("identity.guest");
+          ? t("identity.member")
+          : t("identity.guest");
 
   const greetingKey =
     localHour === null || authLoading ? "home.welcome" : getHomeGreetingKey(localHour);
