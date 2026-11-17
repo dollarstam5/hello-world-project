@@ -75,11 +75,25 @@ try {
       socket.send(JSON.stringify({ id, method, params }));
     });
   const evaluate = async (expression) => {
-    const result = await send("Runtime.evaluate", {
-      expression,
-      returnByValue: true,
-      awaitPromise: true,
-    });
+    let result;
+    for (let attempt = 0; attempt < 30; attempt++) {
+      try {
+        result = await send("Runtime.evaluate", {
+          expression,
+          returnByValue: true,
+          awaitPromise: true,
+        });
+        break;
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        if (!message.includes("Cannot find default execution context") || attempt === 29) {
+          throw error;
+        }
+        // Page.navigate destroys the previous document context before the
+        // next one is created. Retry only this transient CDP navigation race.
+        await Bun.sleep(100);
+      }
+    }
     if (result.exceptionDetails) {
       throw new Error(
         result.exceptionDetails.exception?.description ||
