@@ -290,15 +290,15 @@ Une capacité documentée comme future ou expérimentale ne doit pas être racco
 Le centre de communication ne doit afficher que les événements transmis par une source métier réelle et confirmée. En l'absence de source, les états vides localisés restent visibles ; aucun exemple, compteur, événement simulé ou notification de démonstration ne doit être injecté dans les onglets de production.
 
 Le pipeline est prêt à consommer un lot lorsque son domaine producteur sera disponible :
-1. le domaine fournit une clé i18n autorisée et un identifiant d'événement stable, jamais un identifiant temporaire invité ;
-2. prepareCommunicationMessages() valide les doublons et prépare le texte localisé ;
-3. l'interface présente le message ;
-4. seulement après présentation effective, l'appelant transmet le message à markDelivered() du delivery-session ;
-5. un nouvel arrivage portant le même identifiant dans la session est ignoré.
+1. le domaine fournit une source propriétaire typée, une surface de présentation, une clé i18n autorisée et, si nécessaire, un identifiant stable — jamais un identifiant temporaire invité ;
+2. `createCommunicationRuntime().prepare()` applique priorité/déduplication et prépare le texte localisé ;
+3. l'interface présente effectivement le message sur la surface prévue ;
+4. après présentation, l'appelant transmet le lot à `runtime.markPresented()` ;
+5. un nouvel arrivage portant la même clé stable dans la session est ignoré.
 
 Le système ne crée ni événement métier, ni notification, ni compteur, ni historique. Les événements En direct déjà exposés dans ReelActivityPanel restent affichés par leur composant métier tant qu'aucun flux partagé de notifications n'est fourni. Il ne faut pas recopier ou agréger ces données dans le centre par supposition.
 
-**État de préparation :** catalogue, formatage, priorité, déduplication et accusé de livraison en mémoire sont implémentés ; les producteurs de notifications du centre ne sont pas présents dans le dépôt inspecté. Le raccordement UI doit donc rester inactif jusqu'à la disponibilité de ces producteurs.
+**État de préparation :** catalogue, formatage, sources/surfaces typées, priorité, déduplication, runtime de session et accusé de présentation en mémoire sont implémentés. Le runtime est utilisé par les notices facultatives de l'assistant ; les producteurs de notifications du centre ne sont pas présents dans le dépôt inspecté. Le centre reste donc en état vide tant que ces producteurs ne sont pas raccordés.
 
 
 ### Posture selon la taille de la communauté
