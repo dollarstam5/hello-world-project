@@ -249,6 +249,7 @@ export function useFlashComposer({ user, locale, t, onSaved }: ComposerOptions) 
         titleKey: "communication.event.flash.title",
         messageKey: "communication.event.flash.draftSaved",
         href: "/flash",
+        attentionRequired: false,
       });
       closeComposer();
       onSaved();
