@@ -1,5 +1,9 @@
-import { describe, expect, it } from "vitest";
-import { buildAssistantRequestMessages } from "@/domains/assistant/services/assistant-stream.service";
+import { afterEach, describe, expect, it, vi } from "vitest";\nafterEach(() => vi.unstubAllGlobals());
+import {
+  AssistantStreamError,
+  buildAssistantRequestMessages,
+  streamAssistant,
+} from "@/domains/assistant/services/assistant-stream.service";
 
 describe("historique transmis à Vita", () => {
   it("collapse les tours sans réponse pour conserver l'alternance attendue", () => {
@@ -27,5 +31,55 @@ describe("historique transmis à Vita", () => {
     expect(
       result.reduce((total, message) => total + message.content.length, 0),
     ).toBeLessThanOrEqual(4_000);
+  });
+});
+
+
+describe("streaming de Vita", () => {
+  function mockStream(events: string[]) {
+    const body = new ReadableStream<Uint8Array>({
+      start(controller) {
+        controller.enqueue(new TextEncoder().encode(events.join("\\n") + "\\n"));
+        controller.close();
+      },
+    });
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(
+      new Response(body, { status: 200, headers: { "Content-Type": "text/event-stream" } }),
+    ));
+  }
+
+  it("accepte une réponse seulement après l'événement de fin", async () => {
+    mockStream([
+      'data: {"type":"response.output_text.delta","delta":"Bonjour"}',
+      'data: {"type":"response.completed"}',
+    ]);
+    const onDelta = vi.fn();
+    await expect(streamAssistant(
+      { requestId: "00000000-0000-4000-8000-000000000001", locale: "fr", messages: [{ role: "user", content: "Salut" }] },
+      onDelta,
+      "token",
+    )).resolves.toBe("Bonjour");
+    expect(onDelta).toHaveBeenCalledWith("Bonjour");
+  });
+
+  it("refuse un flux interrompu après des fragments partiels", async () => {
+    mockStream(['data: {"type":"response.output_text.delta","delta":"Réponse partielle"}']);
+    await expect(streamAssistant(
+      { requestId: "00000000-0000-4000-8000-000000000002", locale: "fr", messages: [{ role: "user", content: "Salut" }] },
+      vi.fn(),
+      "token",
+    )).rejects.toBeInstanceOf(AssistantStreamError);
+  });
+
+  it("accepte le marqueur terminal SSE [DONE]", async () => {
+    mockStream([
+      'data: {"type":"response.output_text.delta","delta":"Bonjour"}',
+      "data: [DONE]",
+    ]);
+    await expect(streamAssistant(
+      { requestId: "00000000-0000-4000-8000-000000000003", locale: "fr", messages: [{ role: "user", content: "Salut" }] },
+      vi.fn(),
+      "token",
+    )).resolves.toBe("Bonjour");
   });
 });
