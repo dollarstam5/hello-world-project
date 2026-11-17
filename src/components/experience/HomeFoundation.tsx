@@ -116,13 +116,13 @@ export function HomeFoundation() {
           height={1200}
           fetchPriority="high"
           decoding="async"
-          className="absolute inset-0 -z-10 size-full object-cover object-[50%_35%]"
+          className="absolute inset-0 z-0 size-full object-cover object-[50%_35%]"
         />
         <div
           aria-hidden="true"
-          className="absolute inset-0 -z-10 bg-gradient-to-t from-background via-background/75 to-background/10"
+          className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-background/95 via-background/75 to-background/25"
         />
-        <div className="relative z-10 flex w-full flex-col justify-between gap-10 p-5 text-foreground sm:p-8">
+        <div className="relative z-20 flex w-full min-w-0 flex-col justify-between gap-10 p-5 text-foreground sm:p-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <span className="rounded-full border border-border bg-surface/90 px-3 py-1.5 text-xs font-medium text-foreground shadow-sm">
               {identityLabel}
