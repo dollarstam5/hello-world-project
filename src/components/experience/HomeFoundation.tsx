@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Radar, RadioTower, ScanLine, Zap, ArrowUpRight } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -6,6 +7,8 @@ import { PublicProfilePreview } from "@/components/app/PublicProfilePreview";
 import { Indicator } from "@/components/app/Indicator";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useIdentity } from "@/lib/experience/identity";
+import { useAuth } from "@/domains/auth/model/useAuth";
+import { getHomeGreetingKey } from "@/lib/communication/greeting";
 import { createDemoFlashes } from "@/domains/flash/model/demo-flashes";
 import { VitalisVisionCard } from "@/components/experience/VitalisVisionCard";
 import heroPhoto from "@/assets/images/experience/home-neighbours-1600.webp";
@@ -79,8 +82,14 @@ function EngineCard({
 /** Home is the calm entry point; examples are previews, never live activity. */
 export function HomeFoundation() {
   const { t } = useI18n();
+  const { user, loading: authLoading } = useAuth();
   const tier = useIdentity((s) => s.tier);
   const displayName = useIdentity((s) => s.displayName);
+  const [localHour, setLocalHour] = useState<number | null>(null);
+
+  useEffect(() => {
+    setLocalHour(new Date().getHours());
+  }, []);
 
   const identityLabel =
     tier === "trusted"
@@ -89,10 +98,11 @@ export function HomeFoundation() {
         ? t("identity.identified")
         : t("identity.guest");
 
-  const greeting =
-    tier !== "guest" && displayName?.trim()
-      ? t("home.welcome.named").replace("{name}", displayName.trim())
-      : t("home.welcome.guest");
+  const greetingKey = localHour === null || authLoading
+    ? "home.welcome"
+    : getHomeGreetingKey(localHour);
+  const greetingName = user && displayName?.trim() ? `, ${displayName.trim()}` : "";
+  const greeting = t(greetingKey).replace("{name}", greetingName);
 
   const demoFlashes = createDemoFlashes();
   const demoTitles: Record<string, string> = {
