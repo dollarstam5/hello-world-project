@@ -92,7 +92,8 @@ export const messages = {
     "communication.events.openReel": "Ouvrir En direct",
     "communication.event.reel.title": "En direct",
     "communication.event.reel.bipReceived": "Une personne à proximité vous a fait signe.",
-    "communication.event.reel.bipAccepted": "Votre signe a été accepté. Une mise en relation est établie.",
+    "communication.event.reel.bipAccepted":
+      "Votre signe a été accepté. Une mise en relation est établie.",
     "communication.event.reel.bipDeclined": "Votre signe n’a pas été accepté.",
     "communication.event.reel.connectionClosed": "Une mise en relation a été terminée.",
     "communication.event.flash.title": "Flash",
