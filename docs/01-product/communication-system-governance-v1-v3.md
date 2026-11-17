@@ -202,7 +202,7 @@ Toute exception exige décision produit/technique, estimation de coûts, quotas,
 ## 15. Feuille de route fonctionnelle
 
 ### V1 — fondation locale, gratuite et fiable
-Salutations locales ; catalogue FR/EN ; formatage typé ; messages prédéfinis ; règles déterministes ; priorité et anti-répétition ; confirmation de brouillon et erreur de sauvegarde Flash ainsi que les erreurs de localisation/recherche Scan formatées par la couche commune tout en restant inline dans leurs moteurs ; conseils de découverte progressifs dès qu'une source et un point UI réels existent ; centre alimenté seulement par producteurs vérifiés ; assistant facultatif désactivé par défaut ; invité sans historique persistant ; aucune IA distante pour communications standard.
+Salutations locales ; catalogue FR/EN ; formatage typé ; messages prédéfinis ; règles déterministes ; priorité et anti-répétition ; confirmation de brouillon et erreur de sauvegarde Flash, erreurs de localisation/recherche Scan et confirmations de création/modification/annulation Radar formatées par la couche commune tout en restant inline dans leurs moteurs ; conseils de découverte progressifs dès qu'une source et un point UI réels existent ; centre alimenté seulement par producteurs vérifiés ; assistant facultatif désactivé par défaut ; invité sans historique persistant ; aucune IA distante pour communications standard.
 
 ### V2 — adaptation contextuelle et dialogue guidé
 Capacités envisageables : préférences explicites de fréquence, moments de silence, ton et catégories ; onboarding adaptatif selon étapes réellement terminées ; dialogues courts avec réponses prédéfinies ; aide proactive à partir d'états fiables ; personnalisation consentie ; voix ciblée ; assistant intelligent facultatif si budget approuvé.
@@ -298,7 +298,7 @@ Cette photographie doit être recontrôlée sur le HEAD courant avant chaque rel
 | Sélecteur maturité | Présent | Source compteur et UI non raccordées |
 | Conseils par moteur | Documentés | Pas actifs comme suggestions runtime |
 | Réel — activité métier | Présente dans le moteur | Bips/relations membres via RPC + Realtime privé ; invités via fonctions serveur + rafraîchissement périodique ; aucun adaptateur vers le centre global |
-| Radar V1 | Gestion locale offline-first présente | Création, modification, annulation et statuts d'intentions ; matching automatique et alertes non établis |
+| Radar V1 | Gestion locale offline-first présente | Création, modification et annulation confirmées inline après succès du dépôt ; matching automatique et alertes non établis |
 | Centre communication | UI présente | Flux métier et compteurs globaux non raccordés ; les panneaux propres à Réel restent séparés |
 | Assistant | Facultatif, opt-in | Ne porte pas les communications essentielles |
 | Producteurs partagés du centre | Non établis dans l'audit | Ne pas inventer de notifications |
