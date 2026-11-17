@@ -1,10 +1,13 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
 import {
   claimNameGreetingForSession,
   getHomeGreetingKey,
 } from "@/lib/communication/greeting";
 
 describe("getHomeGreetingKey", () => {
+  afterEach(() => {
+    window.sessionStorage.clear();
+  });
   it.each([
     [0, "home.greeting.veryLate"],
     [2, "home.greeting.veryLate"],
