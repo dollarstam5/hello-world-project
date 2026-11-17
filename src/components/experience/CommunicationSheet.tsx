@@ -100,7 +100,9 @@ export function CommunicationSheet({
                         {t(
                           event.source === "flash"
                             ? "communication.events.openFlash"
-                            : "communication.events.openRadar",
+                            : event.source === "radar"
+                              ? "communication.events.openRadar"
+                              : "communication.events.openReel",
                         )}
                       </a>
                     </div>
