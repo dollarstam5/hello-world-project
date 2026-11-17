@@ -5,6 +5,31 @@ import type { MessageKey } from "@/lib/i18n/messages";
 describe("communication runtime", () => {
   const translate = (key: MessageKey) => key;
 
+  it("notifies subscribers when context changes or the session resets", () => {
+    const runtime = createCommunicationRuntime();
+    let notifications = 0;
+    const unsubscribe = runtime.subscribe(() => {
+      notifications += 1;
+    });
+
+    runtime.updateContext({
+      identity: "guest",
+      pathname: "/",
+      locale: "fr",
+      assistantEnabled: false,
+    });
+    expect(runtime.getSnapshot()).toBe(1);
+    expect(notifications).toBe(1);
+
+    runtime.resetSession();
+    expect(runtime.getSnapshot()).toBe(2);
+    expect(notifications).toBe(2);
+
+    unsubscribe();
+    runtime.resetSession();
+    expect(notifications).toBe(2);
+  });
+
   it("stores only an explicitly supplied resolved context snapshot", () => {
     const runtime = createCommunicationRuntime();
     expect(runtime.getContext()).toBeNull();
