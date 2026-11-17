@@ -47,6 +47,8 @@ describe("En direct architecture boundaries", () => {
     expect(service).not.toContain("postgres_changes");
     expect(service).not.toContain("guest_session_id");
     expect(service).not.toContain("presence_id");
+    expect(service).toContain('status === "SUBSCRIBED"');
+    expect(service).toContain("onReconnect?.()");
   });
 
   it("mounts one app-scoped bridge and forwards only server-authored member events", () => {
@@ -66,6 +68,7 @@ describe("En direct architecture boundaries", () => {
     expect(controllerSource).toContain('window.addEventListener("online", refreshWhenAvailable)');
     expect(controllerSource).toContain('document.visibilityState !== "visible"');
     expect(controllerSource).toContain("guestActivityRefreshInFlight.current");
+    expect(controllerSource).toContain('"vitalis:reel-activity-reconnected"');
     expect(controllerSource).toContain("}, 30_000)");
     expect(controllerSource).not.toContain("}, 3000)");
     expect(controllerSource).toContain(
