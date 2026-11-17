@@ -24,8 +24,8 @@ describe("historique transmis à Vita", () => {
     }));
     const result = buildAssistantRequestMessages(messages);
     expect(result).toHaveLength(6);
-    expect(result.reduce((total, message) => total + message.content.length, 0)).toBeLessThanOrEqual(
-      4_000,
-    );
+    expect(
+      result.reduce((total, message) => total + message.content.length, 0),
+    ).toBeLessThanOrEqual(4_000);
   });
 });
