@@ -170,7 +170,7 @@ describe("deferred Supabase authentication", () => {
     mocks.signUp.mockResolvedValue(result);
 
     await expect(
-      authService.signUp("new@example.test", "correct-horse-battery", "Awa"),
+      authService.signUp("new@example.test", "correct-horse-battery", " Awa "),
     ).resolves.toEqual(result);
 
     expect(mocks.signUp).toHaveBeenCalledWith({
