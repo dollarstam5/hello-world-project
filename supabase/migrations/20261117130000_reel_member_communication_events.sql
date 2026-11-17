@@ -13,7 +13,12 @@ SECURITY DEFINER
 SET search_path = pg_catalog, public, realtime
 AS $$
 BEGIN
-  IF p_member_id IS NULL THEN
+  IF p_member_id IS NULL OR p_event_kind NOT IN (
+    'bip_received',
+    'bip_accepted',
+    'bip_declined',
+    'connection_closed'
+  ) THEN
     RETURN;
   END IF;
 
