@@ -294,7 +294,7 @@ Cette photographie doit être recontrôlée sur le HEAD courant avant chaque rel
 | Formateur central | Présent | Résout clés/variables, ne déclenche pas seul |
 | Gate priorité/déduplication | Présent | Dépend des identifiants fournis par domaines ; les messages critiques sont préservés des limites d'affichage |
 | Préparation messages | Présente | Ne crée aucun événement/notification |
-| Runtime de session | Présent et utilisé par les notices Assistant | Pas encore de producteurs métier partagés Flash/Scan/Réel/Radar ni de centre global alimenté |
+| Runtime de session | Présent et utilisé par les notices Assistant ; accusé après présentation et réinitialisation de session disponibles | Pas encore de producteurs métier partagés Flash/Scan/Réel/Radar ni de centre global alimenté |
 | Accusé présentation session | Présent | Mémoire de session, dépend de l'appelant |
 | Sélecteur maturité | Présent | Source compteur et UI non raccordées |
 | Conseils par moteur | Documentés | Pas actifs comme suggestions runtime |
