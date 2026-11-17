@@ -13,6 +13,7 @@ Cette section documente la vision produit, les intentions d'usage, les parcours,
 - [Vitalis Experience System](./experience-system.md)
 - [Centre de communication — règles produit V1](./communication-center-v1.md)
 - [Système de communication humaine V1 à V3](./communication-system-v1-v3.md)
+- [Gouvernance complète du système de communication V1 à V3](./communication-system-governance-v1-v3.md) — règles transversales, limites, architecture, sécurité, IA, tests et processus de développement.
 - [Catalogue de communication V1](./communication-catalog-v1.md)
 - [Onboarding Vitalis — parcours V1](./onboarding-v1.md)
 - [Langage humain et communication Vitalis](./communication-language.md)
