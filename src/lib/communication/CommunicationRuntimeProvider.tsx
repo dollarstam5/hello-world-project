@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import {
   type CommunicationContextInput,
 } from "@/lib/communication/context";
@@ -10,11 +10,22 @@ const CommunicationRuntimeContext = createContext<CommunicationRuntime | null>(n
 export function CommunicationRuntimeProvider({
   children,
   context,
+  sessionIdentityKey,
 }: {
   children: ReactNode;
   context?: CommunicationContextInput | null;
+  /** Ephemeral comparison key; never copied into the communication context. */
+  sessionIdentityKey?: string;
 }) {
   const [runtime] = useState(createCommunicationRuntime);
+  const previousIdentityKey = useRef<string | undefined>(undefined);
+
+  useEffect(() => {
+    if (previousIdentityKey.current !== undefined && previousIdentityKey.current !== sessionIdentityKey) {
+      runtime.resetSession();
+    }
+    previousIdentityKey.current = sessionIdentityKey;
+  }, [runtime, sessionIdentityKey]);
 
   useEffect(() => {
     if (context) runtime.updateContext(context);
