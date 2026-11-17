@@ -162,7 +162,7 @@ export const messages = {
     "onboarding.intro.title": "Vitalis, des liens utiles au quotidien",
     "onboarding.intro.body":
       "Vitalis vous aide à découvrir ce qui vous entoure, à repérer ce qui compte et à créer des liens utiles, simplement.",
-    "onboarding.intro.moreTitle": "Une expérience qui vous ressemble",
+    "onboarding.intro.moreTitle": "Choisissez votre premier pas",
     "onboarding.intro.moreBody":
       "Commencez par un besoin, une recherche ou la présence autour de vous. Vous choisissez ce que vous partagez.",
     "onboarding.discovery.title": "Découvrez et explorez",
@@ -176,7 +176,7 @@ export const messages = {
       "Lancez une recherche volontaire de Flash publics dans une zone choisie. Votre GPS précis n’est pas affiché.",
     "onboarding.connection.title": "Rapprochez-vous de ce qui compte",
     "onboarding.connection.body":
-      "Repérez les possibilités autour de vous et entrez en relation quand le moment s'y prête.",
+      "En direct vous aide à découvrir les personnes proches lorsque vous activez votre présence. Radar vous permet d’enregistrer une recherche privée.",
     "onboarding.spaces.title": "Et tout un monde à explorer",
     "onboarding.spaces.body":
       "Le menu 2×2 vous ouvre les espaces et fonctionnalités complémentaires de Vitalis. Vous pouvez les découvrir quand vous en avez besoin.",
@@ -1138,7 +1138,7 @@ export const messages = {
     "onboarding.intro.title": "Vitalis, useful connections for everyday life",
     "onboarding.intro.body":
       "Vitalis helps you discover what's around you, spot what matters and create useful connections, simply.",
-    "onboarding.intro.moreTitle": "An experience that feels like yours",
+    "onboarding.intro.moreTitle": "Choose your first step",
     "onboarding.intro.moreBody":
       "Start with a need, a search or nearby presence. You choose what you share.",
     "onboarding.discovery.title": "Discover and explore",
@@ -1152,7 +1152,7 @@ export const messages = {
       "Choose when to search public Flashes in an area. Your precise GPS location is not displayed.",
     "onboarding.connection.title": "Get closer to what matters",
     "onboarding.connection.body":
-      "Spot possibilities nearby and connect when the moment feels right.",
+      "Live helps you discover nearby people when you choose to share your presence. Radar lets you save a private search.",
     "onboarding.spaces.title": "More places to explore",
     "onboarding.spaces.body":
       "The 2x2 menu opens Vitalis spaces and extra features. You can explore them whenever you need them.",
