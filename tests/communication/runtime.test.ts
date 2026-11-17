@@ -199,6 +199,44 @@ describe("communication runtime", () => {
     expect(runtime.getEvents()[0]?.readAt).not.toBeNull();
   });
 
+  it("accepts server-backed Réel events only for members and tracks their attention", () => {
+    const runtime = createCommunicationRuntime();
+    runtime.updateContext({
+      identity: "guest",
+      pathname: "/reel",
+      locale: "fr",
+      assistantEnabled: false,
+    });
+    const event = {
+      id: "reel:server-event-uuid",
+      source: "reel" as const,
+      titleKey: "communication.event.reel.title" as const,
+      messageKey: "communication.event.reel.bipReceived" as const,
+      href: "/reel" as const,
+      createdAt: 300,
+      attentionRequired: true,
+    };
+
+    expect(runtime.publishEvent(event)).toBe(false);
+    expect(runtime.getUnreadEventCount()).toBe(0);
+
+    runtime.updateContext({
+      identity: "member",
+      pathname: "/reel",
+      locale: "fr",
+      assistantEnabled: false,
+    });
+    expect(runtime.publishEvent(event)).toBe(true);
+    expect(runtime.publishEvent(event)).toBe(false);
+    expect(runtime.getUnreadEventCount()).toBe(1);
+    expect(runtime.getEvents()[0]).toMatchObject({
+      source: "reel",
+      messageKey: "communication.event.reel.bipReceived",
+      href: "/reel",
+      readAt: null,
+    });
+  });
+
   it("keeps inline confirmations visible in the center without raising the unread bell", () => {
     const runtime = createCommunicationRuntime();
     runtime.updateContext({
