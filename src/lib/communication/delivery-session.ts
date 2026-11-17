@@ -24,5 +24,10 @@ export function createCommunicationDeliverySession() {
     }
   }
 
-  return { getGateState, markDelivered };
+  function reset() {
+    deliveredEventIds.clear();
+    deliveredRepeatKeys.clear();
+  }
+
+  return { getGateState, markDelivered, reset };
 }
