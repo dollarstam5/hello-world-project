@@ -1,9 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  getCronSecrets,
-  getMaintenanceEnvironment,
-} from "@/config/env.server";
+import { getCronSecrets, getMaintenanceEnvironment } from "@/config/env.server";
 import { getServerConfig } from "@/lib/config.server";
 
 async function matchesSecret(candidate: string, expected: string): Promise<boolean> {
