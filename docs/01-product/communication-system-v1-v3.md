@@ -33,7 +33,7 @@ Le nom d'affichage doit déjà être disponible dans un contexte autorisé ; ne 
 
 ## 3. Contextes autorisés
 
-Le système peut exploiter uniquement les signaux nécessaires et déjà disponibles : heure locale et fuseau, langue active, prénom disponible, mode invité ou compte, écran/moteur actif, état réel d'une action et préférences explicitement enregistrées.
+Le système peut exploiter uniquement les signaux nécessaires et déjà disponibles : heure locale et fuseau, langue active, nom d'affichage disponible, mode invité ou compte, écran/moteur actif, état réel d'une action et préférences explicitement enregistrées.
 
 Il ne déduit jamais l'humeur, l'intention, la situation familiale, les habitudes ou la disponibilité d'une personne à partir de signaux indirects. Une donnée absente conduit à une formulation neutre, jamais à une requête réseau dédiée.
 
