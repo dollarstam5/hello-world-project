@@ -8,10 +8,7 @@ import {
   type ReactNode,
 } from "react";
 import type { CommunicationContextInput } from "@/lib/communication/context";
-import {
-  createCommunicationRuntime,
-  type CommunicationRuntime,
-} from "@/lib/communication/runtime";
+import { createCommunicationRuntime, type CommunicationRuntime } from "@/lib/communication/runtime";
 
 const CommunicationRuntimeContext = createContext<CommunicationRuntime | null>(null);
 
@@ -64,7 +61,9 @@ export function useCommunicationRuntime() {
 export function useCommunicationContextVersion() {
   const runtime = useContext(CommunicationRuntimeContext);
   if (!runtime) {
-    throw new Error("useCommunicationContextVersion must be used inside CommunicationRuntimeProvider");
+    throw new Error(
+      "useCommunicationContextVersion must be used inside CommunicationRuntimeProvider",
+    );
   }
   return useSyncExternalStore(runtime.subscribe, runtime.getSnapshot, runtime.getSnapshot);
 }
