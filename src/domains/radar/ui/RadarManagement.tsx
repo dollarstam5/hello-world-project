@@ -20,6 +20,7 @@ import { useAuth } from "@/domains/auth/model/useAuth";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { formatCommunicationMessage } from "@/lib/communication/format";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
+import { publishRadarCommunicationEvent } from "../communication-events";
 import { cancelRadar, createRadarDraft, editRadarDraft, useMyRadars } from "../data";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -93,23 +94,11 @@ export function RadarManagement() {
       };
       if (editingId) {
         const updated = await editRadarDraft(editingId, input);
-        communication.publishEvent({
-          id: `radar:${updated.id}:updated:${updated.updatedAt}`,
-          source: "radar",
-          titleKey: "communication.event.radar.title",
-          messageKey: "communication.event.radar.updated",
-          href: "/radar",
-        });
+        publishRadarCommunicationEvent(communication, updated, "updated");
         setActionNotice("radar.manage.updated");
       } else {
         const saved = await createRadarDraft(input);
-        communication.publishEvent({
-          id: `radar:${saved.id}:saved`,
-          source: "radar",
-          titleKey: "communication.event.radar.title",
-          messageKey: "communication.event.radar.saved",
-          href: "/radar",
-        });
+        publishRadarCommunicationEvent(communication, saved, "saved");
         setActionNotice("radar.manage.saved");
       }
       setEditingId(null);
@@ -129,13 +118,7 @@ export function RadarManagement() {
     setActionNotice(null);
     try {
       const cancelled = await cancelRadar(pendingCancel.id);
-      communication.publishEvent({
-        id: `radar:${cancelled.id}:cancelled:${cancelled.updatedAt}`,
-        source: "radar",
-        titleKey: "communication.event.radar.title",
-        messageKey: "communication.event.radar.cancelled",
-        href: "/radar",
-      });
+      publishRadarCommunicationEvent(communication, cancelled, "cancelled");
       setActionNotice("radar.manage.cancelled");
       setPendingCancel(null);
     } catch {
