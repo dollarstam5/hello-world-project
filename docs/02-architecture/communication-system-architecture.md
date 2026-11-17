@@ -303,3 +303,33 @@ Le système ne crée ni événement métier, ni notification, ni compteur, ni hi
 `getCommunicationMaturityProfile()` applique les seuils définis dans la spécification produit : 0–500, 501–5 000, 5 001–9 999 et 10 000+. Le compteur attendu est un agrégat fiable de comptes inscrits, hors invités et comptes de test. Le module n'effectue aucune lecture réseau et retombe sur la posture de lancement si le nombre est absent. Il ne faut pas brancher un compteur inventé ni déduire le volume depuis les sessions locales.
 
 Cette fonction est un sélecteur de posture, pas un générateur de suggestions. Les suggestions restent conditionnées à l'existence réelle des fonctionnalités et de leurs données. Tant que la source agrégée et les producteurs métier ne sont pas disponibles, le helper peut être testé mais ne doit pas être présenté comme une personnalisation déjà active en production.
+
+## 23. Critères obligatoires de qualité — rapidité, intelligence contextuelle et fluidité
+
+Ces trois critères sont des conditions d'acceptation de toute évolution du système de communication Vitalis, en V1, V2 ou V3. Ils s'appliquent aux messages inline, à l'accueil, à l'onboarding, aux suggestions, aux notifications, au centre de communication et aux éventuels dialogues de l'assistant.
+
+### Rapidité
+- Donner un retour immédiat à une action lorsque son résultat local est connu ; distinguer explicitement ce retour d'une confirmation serveur ou métier.
+- Privilégier les données déjà disponibles et les traitements locaux. Une communication non essentielle ne doit pas déclencher une requête réseau dédiée ni retarder l'affichage ou la navigation.
+- Vérifier le comportement sur mobile, PWA et réseau faible, y compris les états de chargement, d'erreur et de reprise.
+- Pour chaque évolution, définir avant le développement des objectifs de latence adaptés au parcours, puis joindre des mesures sur le commit candidat. Ne pas déclarer la rapidité validée sur une impression subjective.
+
+### Intelligence contextuelle
+- Adapter le contenu uniquement à partir de faits disponibles et autorisés : statut invité/membre issu de la session réelle, écran ou moteur actif, action engagée, état métier confirmé, langue et préférences explicites.
+- Vérifier que le conseil correspond à une fonctionnalité réellement disponible, à une destination existante et aux droits de la personne.
+- Préférer le silence ou une formulation neutre si le contexte ou sa source est absent, ambigu, périmé ou non autorisé.
+- Ne jamais inventer une activité, un résultat, une progression, un compteur, une disponibilité, une relation ou une capacité. La communication n'est jamais une source de vérité métier et ne confère aucun droit.
+
+### Fluidité
+- Préserver un parcours naturel et cohérent entre l'accueil, l'onboarding et les moteurs, sans créer de système parallèle de messages, de traduction, de notifications ou de navigation.
+- Éviter les répétitions, les sollicitations simultanées et les interruptions inutiles ; une seule demande de décision non critique à la fois.
+- Ne pas bloquer la navigation ni masquer les contrôles essentiels. Respecter les préférences, le consentement, les états de silence et le mouvement réduit.
+- Garder les confirmations et erreurs métier près de l'action qui les a produites, sauf si un contrat d'événement partagé justifie réellement une présentation globale.
+
+### Porte de validation obligatoire
+Une évolution n'est acceptée que si les trois axes sont vérifiés séparément et documentés :
+1. **Rapidité :** mesure de réactivité et vérification sur les appareils/parcours ciblés, y compris une situation réseau dégradée pertinente.
+2. **Intelligence contextuelle :** tests des contextes invité/membre, des états métier, des permissions, des données manquantes et des fonctionnalités indisponibles ; aucune affirmation non prouvée.
+3. **Fluidité :** contrôle du parcours complet, de la fréquence, des doublons, de l'accessibilité et de la réutilisation des composants existants.
+
+Le dossier de chaque évolution doit indiquer les scénarios testés, les résultats observés, les limites restantes et le statut réel de chaque critère. Un critère non mesuré ou non testé est **non vérifié**, jamais réputé satisfait. Si l'un des trois axes échoue, l'évolution n'est pas terminée et doit être corrigée ou explicitement désactivée. Ces critères ne signifient pas que toutes les parties du système actuel les satisfont déjà.
