@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n/useI18n";
+import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
 import { flashesRepository, useLocalQuery } from "@/platform/offline";
 import { archiveFlash, deleteFlash, updateFlash } from "../data";
 
@@ -24,6 +25,7 @@ const statusKeys = {
 /** Shows only records owned by the signed-in person and present in their local database. */
 export function MyFlashManagement() {
   const { t, locale } = useI18n();
+  const communication = useCommunicationRuntime();
   const [pendingDelete, setPendingDelete] = useState<PendingDelete>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [actionError, setActionError] = useState(false);
@@ -76,6 +78,14 @@ export function MyFlashManagement() {
 
     try {
       await archiveFlash(record.id);
+      communication.publishEvent({
+        id: `flash:${record.id}:archived`,
+        source: "flash",
+        titleKey: "communication.event.flash.title",
+        messageKey: "communication.event.flash.archived",
+        href: "/flash",
+        attentionRequired: false,
+      });
     } catch {
       setActionError(true);
     } finally {
@@ -87,7 +97,15 @@ export function MyFlashManagement() {
     setBusyId(record.id);
     setActionError(false);
     try {
-      await updateFlash(record.id, editDraft);
+      const updated = await updateFlash(record.id, editDraft);
+      communication.publishEvent({
+        id: `flash:${updated.id}:updated:${updated.updatedAt}`,
+        source: "flash",
+        titleKey: "communication.event.flash.title",
+        messageKey: "communication.event.flash.updated",
+        href: "/flash",
+        attentionRequired: false,
+      });
       setEditingId(null);
       setEditDraft("");
     } catch {
@@ -103,6 +121,14 @@ export function MyFlashManagement() {
 
     try {
       await deleteFlash(record.id);
+      communication.publishEvent({
+        id: `flash:${record.id}:deleted`,
+        source: "flash",
+        titleKey: "communication.event.flash.title",
+        messageKey: "communication.event.flash.deleted",
+        href: "/flash",
+        attentionRequired: false,
+      });
       setPendingDelete(null);
     } catch {
       setActionError(true);
