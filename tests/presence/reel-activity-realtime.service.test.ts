@@ -2,8 +2,12 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
   callback: null as null | ((input: { payload: unknown }) => void),
+  statusCallback: null as null | ((status: string) => void),
   on: vi.fn(),
-  subscribe: vi.fn(),
+  subscribe: vi.fn((callback?: (status: string) => void) => {
+    mocks.statusCallback = callback ?? null;
+    return channel;
+  }),
   removeChannel: vi.fn(),
   channel: vi.fn(),
 }));
@@ -32,6 +36,7 @@ describe("Réel member Realtime service", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mocks.callback = null;
+    mocks.statusCallback = null;
   });
 
   it("uses one private channel and one coarse Broadcast listener without table subscriptions", () => {
@@ -75,6 +80,19 @@ describe("Réel member Realtime service", () => {
       },
     });
     expect(onActivity).toHaveBeenCalledTimes(1);
+  });
+
+  it("refreshes the activity view only after a real reconnect transition", () => {
+    const onReconnect = vi.fn();
+    subscribeToReelMemberActivity("member-1", vi.fn(), onReconnect);
+
+    mocks.statusCallback?.("SUBSCRIBED");
+    expect(onReconnect).not.toHaveBeenCalled();
+    mocks.statusCallback?.("CHANNEL_ERROR");
+    mocks.statusCallback?.("SUBSCRIBED");
+    expect(onReconnect).toHaveBeenCalledTimes(1);
+    mocks.statusCallback?.("SUBSCRIBED");
+    expect(onReconnect).toHaveBeenCalledTimes(1);
   });
 
   it("does not open a channel when there is no member identity", () => {
