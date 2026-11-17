@@ -83,6 +83,8 @@ Ces plages ne sont pas des vérités universelles. Le système utilise l'heure l
 
 Le domaine métier reste propriétaire de la vérité de l'événement et de son statut. Le système de communication décide comment l'annoncer, pas si l'événement a eu lieu.
 
+L'état de compte (invité ou membre connecté) est distinct du niveau de confiance (identifié, vérifié ou de confiance). Une session authentifiée peut être présentée comme « Membre » sans attribuer automatiquement un niveau de confiance. Le système de communication ne calcule ni ne modifie ce niveau.
+
 ## 7. Priorités
 
 Ordre de priorité :
