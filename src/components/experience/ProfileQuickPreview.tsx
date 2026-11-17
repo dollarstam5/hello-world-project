@@ -33,7 +33,7 @@ export function ProfileQuickPreview({ open, onOpenChange }: ProfileQuickPreviewP
   const [loadedHandle, setLoadedHandle] = useState<string | null>(null);
 
   useEffect(() => {
-    setLoadedName(displayNameOwnerId === loadedUserId ? displayName ?? "" : "");
+    setLoadedName(displayNameOwnerId === loadedUserId ? (displayName ?? "") : "");
   }, [displayName, displayNameOwnerId, loadedUserId]);
 
   useEffect(() => {
