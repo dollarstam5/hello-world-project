@@ -198,6 +198,30 @@ describe("communication runtime", () => {
     expect(runtime.getEvents()[0]?.readAt).not.toBeNull();
   });
 
+  it("keeps inline confirmations visible in the center without raising the unread bell", () => {
+    const runtime = createCommunicationRuntime();
+    runtime.updateContext({
+      identity: "member",
+      pathname: "/",
+      locale: "fr",
+      assistantEnabled: false,
+    });
+
+    runtime.publishEvent({
+      id: "flash:record-2:draft-saved",
+      source: "flash",
+      titleKey: "communication.event.flash.title",
+      messageKey: "communication.event.flash.draftSaved",
+      href: "/flash",
+      createdAt: 200,
+      attentionRequired: false,
+    });
+
+    expect(runtime.getEvents()).toHaveLength(1);
+    expect(runtime.getEvents()[0]?.readAt).toBe(200);
+    expect(runtime.getUnreadEventCount()).toBe(0);
+  });
+
   it("never adds guest events to the shared inbox and clears inbox events on session reset", () => {
     const runtime = createCommunicationRuntime();
     const event = {
