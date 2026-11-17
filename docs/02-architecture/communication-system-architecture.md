@@ -65,11 +65,11 @@ Stockage :
 
 ## 5. Contrat conceptuel du message
 
-Le message remis à l'interface devrait contenir une clé stable, une catégorie, une priorité, le texte localisé résolu, une action ou destination facultative fournie par le domaine, une règle de présentation et un identifiant d'événement métier stable lorsqu'il existe.
+Le message remis à l'interface contient une clé stable, la source propriétaire (`app`, `auth`, `home`, `onboarding`, `flash`, `scan`, `reel`, `radar` ou `assistant`), la surface visée (`inline`, `notice` ou `center`), une priorité, le texte localisé résolu, des variables validées et, si nécessaire, un identifiant d'événement métier stable. La surface décrit la destination souhaitée ; elle ne crée ni ne persiste un événement.
 
 Ne jamais inclure de coordonnées précises, identifiants temporaires invités, secrets, jetons d'authentification, contenu de conversation ou données sensibles non nécessaires.
 
-Le contrat TypeScript définitif doit suivre les conventions de types, schémas et validation du dépôt. Ce document ne fournit pas un code prêt à copier.
+Le contrat TypeScript est porté par `CommunicationRequest` et `ResolvedCommunicationMessage` dans `src/lib/communication/dispatch.ts`. La source et la surface sont obligatoires ; l'ajout d'un nouveau moteur doit étendre le type de source et fournir un adaptateur explicite, sans créer un canal parallèle.
 
 ## 6. Événements et raccordement aux domaines
 
