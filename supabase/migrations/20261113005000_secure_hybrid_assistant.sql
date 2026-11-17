@@ -200,9 +200,7 @@ DECLARE
   v_cache_id UUID;
   v_distinct INTEGER;
 BEGIN
-  IF auth.role() IS DISTINCT FROM 'service_role' THEN
-    RAISE EXCEPTION 'service_role_required' USING ERRCODE = '42501';
-  END IF;
+  -- EXECUTE is granted only to service_role; no client role can call this RPC.
 
   IF p_user_id IS NULL
      OR p_question_hash IS NULL
