@@ -30,9 +30,9 @@ describe("historique transmis à Vita", () => {
     }));
     const result = buildAssistantRequestMessages(messages);
     expect(result).toHaveLength(6);
-    expect(result.reduce((total, message) => total + message.content.length, 0)).toBeLessThanOrEqual(
-      4_000,
-    );
+    expect(
+      result.reduce((total, message) => total + message.content.length, 0),
+    ).toBeLessThanOrEqual(4_000);
   });
 });
 
@@ -68,8 +68,9 @@ describe("streaming de Vita", () => {
     ]);
     const onDelta = vi.fn();
 
-    await expect(streamAssistant(request("00000000-0000-4000-8000-000000000001"), onDelta, "token"))
-      .resolves.toBe("Bonjour");
+    await expect(
+      streamAssistant(request("00000000-0000-4000-8000-000000000001"), onDelta, "token"),
+    ).resolves.toBe("Bonjour");
     expect(onDelta).toHaveBeenCalledWith("Bonjour");
   });
 
@@ -87,7 +88,8 @@ describe("streaming de Vita", () => {
       "data: [DONE]",
     ]);
 
-    await expect(streamAssistant(request("00000000-0000-4000-8000-000000000003"), vi.fn(), "token"))
-      .resolves.toBe("Bonjour");
+    await expect(
+      streamAssistant(request("00000000-0000-4000-8000-000000000003"), vi.fn(), "token"),
+    ).resolves.toBe("Bonjour");
   });
 });
