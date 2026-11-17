@@ -17,6 +17,12 @@ const communicationState = vi.hoisted(() => ({
   markEventRead: vi.fn(),
 }));
 
+const networkState = vi.hoisted(() => ({ online: true }));
+
+vi.mock("@/lib/platform/useNetworkStatus", () => ({
+  useNetworkStatus: () => ({ online: networkState.online }),
+}));
+
 vi.mock("@/lib/communication/CommunicationRuntimeProvider", () => ({
   useCommunicationRuntime: () => ({
     getEvents: () => communicationState.events,
@@ -44,8 +50,36 @@ vi.mock("@/lib/i18n/useI18n", () => ({
 describe("CommunicationSheet", () => {
   beforeEach(() => {
     assistantPreference.enabled = false;
+    networkState.online = true;
     communicationState.events = [];
     communicationState.markEventRead.mockClear();
+  });
+
+  it("explains when live activity has not been loaded yet instead of showing a false empty state", () => {
+    const markup = renderToStaticMarkup(<CommunicationSheet open onOpenChange={() => undefined} />);
+
+    expect(markup).toContain("communication.reel.notLoaded");
+    expect(markup).not.toContain("communication.reel.empty");
+  });
+
+  it("keeps existing communications visible and explains offline limitations", () => {
+    networkState.online = false;
+    communicationState.events = [
+      {
+        id: "flash:record-1:updated:100",
+        source: "flash",
+        titleKey: "communication.event.flash.title",
+        messageKey: "communication.event.flash.updated",
+        href: "/flash",
+        createdAt: 100,
+        readAt: null,
+      },
+    ];
+    const markup = renderToStaticMarkup(<CommunicationSheet open onOpenChange={() => undefined} />);
+
+    expect(markup).toContain("communication.offline");
+    expect(markup).toContain("communication.event.flash.updated");
+    expect(markup).toContain("communication.reel.offline");
   });
 
   it("hides the assistant space while the assistant is disabled", () => {
