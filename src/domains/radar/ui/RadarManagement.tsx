@@ -18,6 +18,7 @@ import { RadarDraftForm } from "./RadarDraftForm";
 import { Surface } from "@/components/app/Surface";
 import { useAuth } from "@/domains/auth/model/useAuth";
 import { useI18n } from "@/lib/i18n/useI18n";
+import { formatCommunicationMessage } from "@/lib/communication/format";
 import { cancelRadar, createRadarDraft, editRadarDraft, useMyRadars } from "../data";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -60,6 +61,7 @@ export function RadarManagement() {
   const [busy, setBusy] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [actionError, setActionError] = useState(false);
+  const [actionNotice, setActionNotice] = useState<"radar.manage.saved" | "radar.manage.updated" | "radar.manage.cancelled" | null>(null);
   const [pendingCancel, setPendingCancel] = useState<RadarRecord | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const records = useMyRadars(authLoading ? undefined : userId);
@@ -72,6 +74,7 @@ export function RadarManagement() {
 
     setBusy(true);
     setActionError(false);
+    setActionNotice(null);
     const startsAt = Date.now();
 
     try {
@@ -86,8 +89,10 @@ export function RadarManagement() {
       };
       if (editingId) {
         await editRadarDraft(editingId, input);
+        setActionNotice("radar.manage.updated");
       } else {
         await createRadarDraft(input);
+        setActionNotice("radar.manage.saved");
       }
       setEditingId(null);
       setQuery("");
@@ -103,8 +108,10 @@ export function RadarManagement() {
     if (!pendingCancel) return;
     setBusyId(pendingCancel.id);
     setActionError(false);
+    setActionNotice(null);
     try {
       await cancelRadar(pendingCancel.id);
+      setActionNotice("radar.manage.cancelled");
       setPendingCancel(null);
     } catch {
       setActionError(true);
@@ -165,7 +172,11 @@ export function RadarManagement() {
 
       {actionError ? (
         <p role="alert" className="text-sm text-destructive">
-          {t("radar.manage.actionError")}
+          {formatCommunicationMessage(t, "radar.manage.actionError")}
+        </p>
+      ) : actionNotice ? (
+        <p role="status" className="text-sm text-muted-foreground">
+          {formatCommunicationMessage(t, actionNotice)}
         </p>
       ) : null}
 
