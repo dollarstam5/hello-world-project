@@ -59,3 +59,12 @@ export function useCommunicationRuntime() {
   useSyncExternalStore(runtime.subscribe, runtime.getSnapshot, runtime.getSnapshot);
   return runtime;
 }
+
+/** Subscribe to context changes when memoizing prepared messages or selectors. */
+export function useCommunicationContextVersion() {
+  const runtime = useContext(CommunicationRuntimeContext);
+  if (!runtime) {
+    throw new Error("useCommunicationContextVersion must be used inside CommunicationRuntimeProvider");
+  }
+  return useSyncExternalStore(runtime.subscribe, runtime.getSnapshot, runtime.getSnapshot);
+}
