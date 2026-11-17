@@ -878,7 +878,8 @@ export const messages = {
     "auth.title": "Connexion",
     "auth.subtitle": "Retrouvez votre espace Vitalis en toute sécurité.",
     "auth.signUpTitle": "Créer votre espace Vitalis",
-    "auth.signUpSubtitle": "Quelques informations pour commencer. Vous pourrez compléter votre profil ensuite.",
+    "auth.signUpSubtitle":
+      "Quelques informations pour commencer. Vous pourrez compléter votre profil ensuite.",
     "auth.displayName": "Nom affiché",
     "auth.displayNameRequired": "Saisissez un nom affiché d’au moins deux caractères.",
     "auth.email": "Adresse e-mail",
@@ -1834,7 +1835,8 @@ export const messages = {
     "auth.title": "Sign in",
     "auth.subtitle": "Access your Vitalis space securely.",
     "auth.signUpTitle": "Create your Vitalis account",
-    "auth.signUpSubtitle": "Just a few details to get started. You can complete your profile later.",
+    "auth.signUpSubtitle":
+      "Just a few details to get started. You can complete your profile later.",
     "auth.displayName": "Display name",
     "auth.displayNameRequired": "Enter a display name with at least two characters.",
     "auth.email": "Email address",
