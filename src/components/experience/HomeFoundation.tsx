@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Radar, RadioTower, ScanLine, Zap, ArrowUpRight } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Surface } from "@/components/app/Surface";
+import { Button } from "@/components/ui/button";
 import { PublicProfilePreview } from "@/components/app/PublicProfilePreview";
 import { Indicator } from "@/components/app/Indicator";
 import { useI18n } from "@/lib/i18n/useI18n";
@@ -84,7 +85,6 @@ function EngineCard({
 export function HomeFoundation() {
   const { t } = useI18n();
   const { user, loading: authLoading } = useAuth();
-  const tier = useIdentity((s) => s.tier);
   const displayName = useIdentity((s) => s.displayName);
   const [localHour, setLocalHour] = useState<number | null>(null);
   const [nameGreetingUserId, setNameGreetingUserId] = useState<string | null>(null);
@@ -103,14 +103,9 @@ export function HomeFoundation() {
     if (claimNameGreetingForSession()) setNameGreetingUserId(user.id);
   }, [authLoading, user, displayName, nameGreetingUserId]);
 
-  const identityLabel =
-    tier === "trusted"
-      ? t("identity.trusted")
-      : tier === "identified"
-        ? t("identity.identified")
-        : user
-          ? t("identity.member")
-          : t("identity.guest");
+  // Authentication is the source of truth for member/guest recognition.
+  // UDI trust levels are not inferred from the local identity placeholder.
+  const identityLabel = user ? t("identity.member") : t("identity.guest");
 
   const greetingKey =
     localHour === null || authLoading ? "home.welcome" : getHomeGreetingKey(localHour);
@@ -171,6 +166,41 @@ export function HomeFoundation() {
           </div>
         </div>
       </section>
+
+      {!authLoading ? (
+        <Surface
+          variant="sunken"
+          padding="md"
+          bordered
+          className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+          aria-labelledby="home-journey-title"
+        >
+          <div className="min-w-0 stack-2">
+            <h2 id="home-journey-title" className="text-base font-semibold">
+              {t(user ? "home.journey.member.title" : "home.journey.guest.title")}
+            </h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              {t(user ? "home.journey.member.body" : "home.journey.guest.body")}
+            </p>
+          </div>
+          <div className="flex shrink-0 flex-wrap gap-2">
+            {user ? (
+              <Button asChild className="min-h-11">
+                <Link to="/espace/profil">{t("home.journey.member.profile")}</Link>
+              </Button>
+            ) : (
+              <>
+                <Button asChild className="min-h-11">
+                  <Link to="/reel">{t("home.journey.guest.live")}</Link>
+                </Button>
+                <Button asChild variant="outline" className="min-h-11">
+                  <Link to="/auth">{t("home.journey.guest.signup")}</Link>
+                </Button>
+              </>
+            )}
+          </div>
+        </Surface>
+      ) : null}
 
       <section className="stack-4" aria-labelledby="home-engines-title">
         <div className="stack-1">
