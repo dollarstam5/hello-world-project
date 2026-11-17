@@ -24,7 +24,7 @@ Scan ne doit jamais prétendre avoir exploré une source qui n'est pas raccordé
 | Moteur | Question à laquelle il répond | Comportement |
 |---|---|---|
 | Flash | « Qu'est-ce que je souhaite signaler ou proposer ? » | Publier une information courte, locale et temporaire. |
-| Scan | « Qu'est-ce qui peut répondre à mon besoin maintenant ? » | Recherche ponctuelle, déclenchée et terminée par l'utilisateur. |
+| Scan | « Qu'est-ce qui peut répondre à mon besoin maintenant ? » | Exploration ponctuelle déclenchée par l'utilisateur ; signalement temporaire facultatif après le Scan, sous autorisation distincte. |
 | En direct | « Qui est présent ici, maintenant, et souhaite être visible ? » | Découverte de présence avec consentements distincts. |
 | Radar | « Peux-tu suivre cette recherche dans le temps ? » | Mission persistante, paramètres validés et suivi planifié lorsqu'il est réellement disponible. |
 | Veille | « Que se passe-t-il à l'échelle de mes activités ou d'un ensemble de signaux ? » | Supervision et analyses agrégées autorisées. |
@@ -184,13 +184,13 @@ Les rayons proposés en V1 doivent être confirmés après validation produit et
 
 V1 doit utiliser un classement déterministe, testable et compréhensible. Ordre de traitement proposé :
 
-1. éliminer les ressources expirées, privées, hors zone ou hors filtres stricts ;
-2. vérifier que la source est autorisée et suffisamment fraîche ;
-3. calculer la satisfaction des préférences ;
-4. classer selon proximité, fraîcheur, disponibilité temporelle et compatibilité ;
-5. appliquer un départage stable (date de mise à jour puis identifiant public).
+1. éliminer les ressources expirées, privées, hors périmètre ou incompatibles avec les filtres stricts ;
+2. vérifier que la source est autorisée et examiner sa fraîcheur et sa fiabilité connues ;
+3. évaluer la pertinence par rapport à la demande explicite et la satisfaction des préférences ;
+4. classer selon l'ordre produit validé : **pertinence par rapport à la demande > proximité > actualité/fraîcheur > fiabilité** ;
+5. appliquer un départage stable et documenté lorsque les critères précédents sont équivalents.
 
-Ordre de classement produit validé : **pertinence par rapport à la demande > proximité > actualité/fraîcheur > fiabilité**. La pertinence est évaluée en premier ; la proximité ne doit jamais promouvoir à elle seule un résultat qui répond moins bien à la demande. Les critères stricts et l'exclusion des résultats privés ou expirés restent éliminatoires avant ce classement.
+La proximité ne doit jamais promouvoir à elle seule un résultat qui répond moins bien à la demande. Les critères stricts et l'exclusion des résultats privés ou expirés restent éliminatoires avant ce classement. Les préférences n'annulent jamais une exigence stricte.
 
 Une formule pondérée pourra être introduite seulement lorsque chaque facteur est défini, normalisé, mesurable et testé. Les pondérations ne doivent pas être choisies arbitrairement ni masquer les critères éliminatoires.
 
