@@ -63,6 +63,10 @@ Aucun compteur dynamique ne doit être simulé côté interface en l'absence de 
 - Aucun compteur fictif n'est affiché.
 - Les modes invité et compte respectent leurs règles d'historique respectives.
 
+## Gouvernance générale
+
+Les règles transversales de déclenchement, de fréquence, de confidentialité, d'accessibilité, de sécurité, d'évolution V2/V3 et de validation des sources sont définies dans la [gouvernance complète du système de communication](./communication-system-governance-v1-v3.md). En cas de divergence, les règles de propriété des données et de vérité métier du domaine restent prioritaires ; le centre ne fabrique jamais d'événement.
+
 ## Statut d'implémentation
 
 Le composant V1 expose Notifications, Messages et En direct par défaut, avec leurs états vides localisés. L'espace Assistant apparaît uniquement après activation explicite de l'assistant, conformément à son caractère facultatif et désactivé par défaut. Les compteurs et indicateurs métier ne sont pas encore raccordés aux sources réelles ; ils ne sont donc pas présentés comme implémentés. Les critères ci-dessus restent le contrat de référence pour leur intégration.
