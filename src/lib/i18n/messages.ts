@@ -84,7 +84,8 @@ export const messages = {
       "Les bips reçus apparaîtront ici pendant votre présence active. Aucun bip fictif n’est ajouté.",
     "home.welcome": "Bienvenue dans Vitalis",
     "home.hero.eyebrow": "Des rencontres et des coups de main, tout près de vous",
-    "home.hero.photoAlt": "Cinq amies souriantes réunies en plein air, serrées les unes contre les autres.",
+    "home.hero.photoAlt":
+      "Cinq amies souriantes réunies en plein air, serrées les unes contre les autres.",
     "home.welcome.guest": "Bonjour et bienvenue chez Vitalis !",
     "home.welcome.named": "Bonjour, {name} !",
     "home.demo.title": "Un petit aperçu de Vitalis",
