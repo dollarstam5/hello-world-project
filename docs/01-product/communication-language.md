@@ -88,6 +88,7 @@ Avant publication d'un texte visible, vérifier :
 
 - [Vitalis Experience System](./experience-system.md)
 - [Système de communication humaine V1 à V3](./communication-system-v1-v3.md)
+- [Gouvernance complète de la communication V1 à V3](./communication-system-governance-v1-v3.md)
 - [Catalogue de communication V1](./communication-catalog-v1.md)
 - [Standards UX et accessibilité — Phase 2](../00-foundation/phase-2-ux-standards.md)
 - [Centre de communication — règles produit V1](./communication-center-v1.md)
