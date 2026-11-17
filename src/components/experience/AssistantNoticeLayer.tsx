@@ -18,21 +18,21 @@ export function AssistantNoticeLayer() {
   translateRef.current = t;
   const runtime = runtimeRef.current;
   const prepared = useMemo(() => {
-    if (!notice) return null;
+    if (!enabled || !notice) return null;
     return runtime.prepare(translateRef.current, [
       { key: notice.message, priority: "normal", repeatKey: `assistant-notice:${notice.id}` },
     ]);
-  }, [notice, runtime]);
+  }, [enabled, notice, runtime]);
 
   useEffect(() => {
-    if (prepared?.messages.length) runtime.markPresented(prepared.messages);
-  }, [prepared, runtime]);
+    if (enabled && prepared?.messages.length) runtime.markPresented(prepared.messages);
+  }, [enabled, prepared, runtime]);
 
   useEffect(() => {
-    if (!notice) return;
+    if (!enabled || !notice) return;
     const timeout = window.setTimeout(dismiss, 9000);
     return () => window.clearTimeout(timeout);
-  }, [notice, dismiss]);
+  }, [enabled, notice, dismiss]);
 
   if (!enabled || !notice) return null;
 
