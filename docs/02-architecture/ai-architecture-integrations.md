@@ -45,7 +45,7 @@ La recherche locale est un mécanisme de réponse déterministe à partir des en
 - refuse les demandes utilisateur contenant des secrets détectés par `containsSensitiveSecret` ;
 - réclame un quota avant l'appel fournisseur via `claim_assistant_request` ;
 - conserve le streaming Lovable avec `store: false` ;
-- suit la fin du flux pour marquer la requête terminée ou échouée via `complete_assistant_request` / `fail_assistant_request` ; le client n'accepte une réponse que si `response.completed` ou `[DONE]` est reçu, et rejette un flux coupé après des fragments partiels.
+- suit la fin du flux pour marquer la requête terminée ou échouée via `complete_assistant_request` / `fail_assistant_request` ; le client n'accepte une réponse que si `response.completed` ou `[DONE]` est reçu, et rejette un flux coupé après des fragments partiels ; `useHybridAssistant` retire aussi la réponse partielle de l'écran et du stockage local lorsqu'un flux échoue.
 
 Les demandes sensibles sont rejetées avant l'appel fournisseur. Les erreurs du fournisseur ne journalisent plus le corps de réponse. Le client normalise l'historique pour éviter que des messages restés sans réponse (hors ligne ou erreur) produisent des rôles consécutifs invalides.
 
