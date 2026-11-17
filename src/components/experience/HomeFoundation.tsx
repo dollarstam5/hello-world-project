@@ -234,7 +234,12 @@ export function HomeFoundation() {
 
       <VitalisVisionCard />
 
-      <Surface variant="sunken" padding="md" bordered>
+      <Surface variant="sunken" padding="md" bordered className="flex items-start gap-3">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-surface text-muted-foreground">
+          <span className="text-xl leading-none" aria-hidden="true">
+            ✧
+          </span>
+        </span>
         <p className="text-sm leading-relaxed text-muted-foreground">{t("home.menuHint")}</p>
       </Surface>
     </div>
