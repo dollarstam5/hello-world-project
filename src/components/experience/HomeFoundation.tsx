@@ -86,7 +86,9 @@ export function HomeFoundation() {
   const { t } = useI18n();
   const { user, loading: authLoading } = useAuth();
   const displayName = useIdentity((s) => s.displayName);
+  const setDisplayName = useIdentity((s) => s.setDisplayName);
   const [localHour, setLocalHour] = useState<number | null>(null);
+  const [identityOwnerUserId, setIdentityOwnerUserId] = useState<string | null>(null);
   const [nameGreetingUserId, setNameGreetingUserId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -97,11 +99,26 @@ export function HomeFoundation() {
     if (authLoading) return;
     if (!user) {
       if (nameGreetingUserId !== null) setNameGreetingUserId(null);
+      if (identityOwnerUserId !== null || displayName) setDisplayName(undefined);
+      if (identityOwnerUserId !== null) setIdentityOwnerUserId(null);
+      return;
+    }
+    if (identityOwnerUserId !== user.id) {
+      // A name loaded for a previous account must never greet the next account.
+      setDisplayName(undefined);
+      setIdentityOwnerUserId(user.id);
       return;
     }
     if (!displayName?.trim() || nameGreetingUserId === user.id) return;
     if (claimNameGreetingForSession()) setNameGreetingUserId(user.id);
-  }, [authLoading, user, displayName, nameGreetingUserId]);
+  }, [
+    authLoading,
+    user,
+    displayName,
+    nameGreetingUserId,
+    identityOwnerUserId,
+    setDisplayName,
+  ]);
 
   // Authentication is the source of truth for member/guest recognition.
   // UDI trust levels are not inferred from the local identity placeholder.
