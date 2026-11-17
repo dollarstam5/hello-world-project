@@ -61,7 +61,10 @@ export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => 
             >
               <Bell aria-hidden className="!size-6" />
               {attentionCount > 0 ? (
-                <span className="absolute right-1 top-1 grid min-h-5 min-w-5 place-items-center rounded-full bg-primary px-1 text-[10px] font-bold leading-none text-primary-foreground" aria-hidden="true">
+                <span
+                  className="absolute right-1 top-1 grid min-h-5 min-w-5 place-items-center rounded-full bg-primary px-1 text-[10px] font-bold leading-none text-primary-foreground"
+                  aria-hidden="true"
+                >
                   {attentionCount > 99 ? "99+" : attentionCount}
                 </span>
               ) : null}
