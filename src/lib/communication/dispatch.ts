@@ -20,6 +20,8 @@ export interface CommunicationRequest extends CommunicationCandidate {
   variables?: CommunicationVariables;
   /** True only when the request must not be prepared without a ready context. */
   requiresContext?: boolean;
+  /** Assistant-only requests must wait until the person has opted in. */
+  requiresAssistant?: boolean;
 }
 
 export interface ResolvedCommunicationMessage {
