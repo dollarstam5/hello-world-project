@@ -10,6 +10,7 @@ Cette section rassemble les documents d'architecture technique, les frontières 
 - [Backend and API architecture](./backend-api.md)
 - [Database architecture](./database-architecture.md)
 - [Synchronization, offline mode and realtime](./synchronization-offline-realtime.md)
+- [Communication system architecture](./communication-system-architecture.md)
 - [Demo data governance — V1](./demo-data-governance.md)
 - [Scan history — V1](./scan-history-v1.md) — historique local minimal, données exclues et règles de suppression.
 - [SQL demo fixture adapter — V1](./demo-sql-fixture-adapter-v1.md)
@@ -19,11 +20,11 @@ Cette section rassemble les documents d'architecture technique, les frontières 
 
 ## Legacy references retained pending approval
 
-- `docs/18-VITALA-ARCHITECTURE-V1 Partie 1.md`
-- `docs/18-VITALA-ARCHITECTURE-V1 Partie 2.md`
-- `docs/18-VITALA-ARCHITECTURE-V1 Partie 3.md`
-- `docs/Database Architecture.md`
-- Les sources historiques UDI et Trust restent conservées dans `docs/` jusqu'à validation et autorisation explicite.
+- docs/18-VITALA-ARCHITECTURE-V1 Partie 1.md
+- docs/18-VITALA-ARCHITECTURE-V1 Partie 2.md
+- docs/18-VITALA-ARCHITECTURE-V1 Partie 3.md
+- docs/Database Architecture.md
+- Les sources historiques UDI et Trust restent conservées dans docs/ jusqu'à validation et autorisation explicite.
 
 Les nouveaux changements doivent viser les références canoniques et respecter la propriété des données par domaine. Une référence documentaire n'est pas une preuve que le composant décrit est déjà implémenté.
 
