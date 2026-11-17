@@ -132,7 +132,7 @@ export const messages = {
     "home.engine.scan.example": "Rechercher une aide pour un déménagement près de vous.",
     "home.engine.reel.title": "En direct",
     "home.engine.reel.desc":
-      "Activez volontairement votre présence pour découvrir les personnes à proximité et échanger des bips.",
+      "Découvrez les personnes à proximité et choisissez séparément si vous souhaitez rendre votre présence visible.",
     "home.engine.reel.example":
       "Signaler votre présence lors d’un événement pour voir qui est aussi présent.",
     "home.engine.radar.title": "Radar",
@@ -176,13 +176,13 @@ export const messages = {
       "Lancez une recherche volontaire de Flash publics dans une zone choisie. Votre GPS précis n’est pas affiché.",
     "onboarding.connection.title": "Rapprochez-vous de ce qui compte",
     "onboarding.connection.body":
-      "En direct vous aide à découvrir les personnes proches lorsque vous activez votre présence. Radar vous permet d’enregistrer une recherche privée.",
+      "En direct vous permet de découvrir les personnes à proximité. Vous choisissez séparément si votre présence est visible ; Radar sert à enregistrer une recherche privée.",
     "onboarding.spaces.title": "Et tout un monde à explorer",
     "onboarding.spaces.body":
       "Le menu 2×2 vous ouvre les espaces et fonctionnalités complémentaires de Vitalis. Vous pouvez les découvrir quand vous en avez besoin.",
     "onboarding.reel.title": "En direct",
     "onboarding.reel.body":
-      "Activez volontairement votre présence pour découvrir les personnes à proximité. Vous pouvez commencer en invité.",
+      "Autorisez la découverte pour voir les personnes proches ; activez séparément votre présence si vous souhaitez être visible. Vous pouvez commencer en invité.",
     "onboarding.radar.title": "Radar",
     "onboarding.radar.body":
       "Enregistrez une recherche privée et retrouvez-la dans votre espace. Les correspondances automatiques ne sont pas encore disponibles.",
@@ -1109,7 +1109,7 @@ export const messages = {
     "home.engine.scan.example": "Look for help with a move near you.",
     "home.engine.reel.title": "Live",
     "home.engine.reel.desc":
-      "Choose to share your presence, discover people nearby and exchange quick signals.",
+      "Discover people nearby and choose separately whether you want your presence to be visible.",
     "home.engine.reel.example": "Share your presence at an event to see who else is there.",
     "home.engine.radar.title": "Radar",
     "home.engine.radar.desc":
@@ -1152,13 +1152,13 @@ export const messages = {
       "Choose when to search public Flashes in an area. Your precise GPS location is not displayed.",
     "onboarding.connection.title": "Get closer to what matters",
     "onboarding.connection.body":
-      "Live helps you discover nearby people when you choose to share your presence. Radar lets you save a private search.",
+      "Live lets you discover people nearby. You separately choose whether your presence is visible; Radar lets you save a private search.",
     "onboarding.spaces.title": "More places to explore",
     "onboarding.spaces.body":
       "The 2x2 menu opens Vitalis spaces and extra features. You can explore them whenever you need them.",
     "onboarding.reel.title": "Live",
     "onboarding.reel.body":
-      "Choose to share your presence and discover people nearby. You can start as a guest.",
+      "Allow discovery to see nearby people; activate your presence separately if you want to be visible. You can start as a guest.",
     "onboarding.radar.title": "Radar",
     "onboarding.radar.body":
       "Save a private search and find it in your space. Automatic matching is not available yet.",
