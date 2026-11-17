@@ -26,17 +26,21 @@ function getInitials(name: string): string {
 export function ProfileQuickPreview({ open, onOpenChange }: ProfileQuickPreviewProps) {
   const { t } = useI18n();
   const displayName = useIdentity((state) => state.displayName);
+  const displayNameOwnerId = useIdentity((state) => state.displayNameOwnerId);
   const setDisplayName = useIdentity((state) => state.setDisplayName);
-  const [loadedName, setLoadedName] = useState(displayName ?? "");
+  const [loadedName, setLoadedName] = useState("");
+  const [loadedUserId, setLoadedUserId] = useState<string | null>(null);
   const [loadedHandle, setLoadedHandle] = useState<string | null>(null);
 
   useEffect(() => {
-    setLoadedName(displayName ?? "");
-  }, [displayName]);
+    setLoadedName(displayNameOwnerId === loadedUserId ? displayName ?? "" : "");
+  }, [displayName, displayNameOwnerId, loadedUserId]);
 
   useEffect(() => {
     if (!open) return;
     let active = true;
+    setLoadedName("");
+    setLoadedUserId(null);
     setLoadedHandle(null);
 
     async function loadProfilePreview() {
@@ -46,6 +50,7 @@ export function ProfileQuickPreview({ open, onOpenChange }: ProfileQuickPreviewP
 
       const { data: authData } = await supabase.auth.getUser();
       if (!active || !authData.user) return;
+      setLoadedUserId(authData.user.id);
 
       const { data } = await supabase
         .from("profiles")
@@ -56,7 +61,7 @@ export function ProfileQuickPreview({ open, onOpenChange }: ProfileQuickPreviewP
       if (!active || !data) return;
       if (data.display_name) {
         setLoadedName(data.display_name);
-        setDisplayName(data.display_name);
+        setDisplayName(data.display_name, authData.user.id);
       }
       setLoadedHandle(data.handle);
     }
@@ -69,7 +74,10 @@ export function ProfileQuickPreview({ open, onOpenChange }: ProfileQuickPreviewP
     };
   }, [open, setDisplayName]);
 
-  const name = loadedName.trim() || displayName?.trim() || t("identity.guest");
+  const name =
+    loadedName.trim() ||
+    (displayNameOwnerId === loadedUserId ? displayName?.trim() : "") ||
+    t("identity.guest");
 
   return (
     <Sheet
