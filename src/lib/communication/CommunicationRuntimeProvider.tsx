@@ -1,8 +1,5 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
-import {
-  createCommunicationRuntime,
-  type CommunicationRuntime,
-} from "@/lib/communication/runtime";
+import { createCommunicationRuntime, type CommunicationRuntime } from "@/lib/communication/runtime";
 
 const CommunicationRuntimeContext = createContext<CommunicationRuntime | null>(null);
 
