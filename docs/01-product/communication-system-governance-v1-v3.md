@@ -297,7 +297,9 @@ Cette photographie doit être recontrôlée sur le HEAD courant avant chaque rel
 | Accusé présentation session | Présent | Mémoire de session, dépend de l'appelant |
 | Sélecteur maturité | Présent | Source compteur et UI non raccordées |
 | Conseils par moteur | Documentés | Pas actifs comme suggestions runtime |
-| Centre communication | UI présente | Flux métier et compteurs non raccordés |
+| Réel — activité métier | Présente dans le moteur | Bips/relations membres via RPC + Realtime privé ; invités via fonctions serveur + rafraîchissement périodique ; aucun adaptateur vers le centre global |
+| Radar V1 | Gestion locale offline-first présente | Création, modification, annulation et statuts d'intentions ; matching automatique et alertes non établis |
+| Centre communication | UI présente | Flux métier et compteurs globaux non raccordés ; les panneaux propres à Réel restent séparés |
 | Assistant | Facultatif, opt-in | Ne porte pas les communications essentielles |
 | Producteurs partagés du centre | Non établis dans l'audit | Ne pas inventer de notifications |
 | IA standard | Absente et exclue V1 | Toute évolution demande une décision |
