@@ -41,25 +41,23 @@ export function resolveCommunicationCandidates(
   const deliveredRepeatKeys = state.deliveredRepeatKeys ?? new Set<string>();
   const seenEventIds = new Set<string>();
   const seenRepeatKeys = new Set<string>();
+  const suppressed: CommunicationCandidate[] = [];
 
   const eligible = candidates.filter((candidate) => {
-    if (candidate.eventId) {
-      if (deliveredEventIds.has(candidate.eventId) || seenEventIds.has(candidate.eventId)) {
-        return false;
-      }
-      seenEventIds.add(candidate.eventId);
+    const duplicateEvent =
+      !!candidate.eventId &&
+      (deliveredEventIds.has(candidate.eventId) || seenEventIds.has(candidate.eventId));
+    const duplicateRepeat =
+      !!candidate.repeatKey &&
+      (deliveredRepeatKeys.has(candidate.repeatKey) || seenRepeatKeys.has(candidate.repeatKey));
+
+    if (duplicateEvent || duplicateRepeat) {
+      suppressed.push(candidate);
+      return false;
     }
 
-    if (candidate.repeatKey) {
-      if (
-        deliveredRepeatKeys.has(candidate.repeatKey) ||
-        seenRepeatKeys.has(candidate.repeatKey)
-      ) {
-        return false;
-      }
-      seenRepeatKeys.add(candidate.repeatKey);
-    }
-
+    if (candidate.eventId) seenEventIds.add(candidate.eventId);
+    if (candidate.repeatKey) seenRepeatKeys.add(candidate.repeatKey);
     return true;
   });
 
@@ -78,9 +76,6 @@ export function resolveCommunicationCandidates(
 
   return {
     selected: ordered.slice(0, safeLimit),
-    suppressed: [
-      ...candidates.filter((candidate) => !eligible.includes(candidate)),
-      ...ordered.slice(safeLimit),
-    ],
+    suppressed: [...suppressed, ...ordered.slice(safeLimit)],
   };
 }
