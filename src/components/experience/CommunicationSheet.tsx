@@ -7,9 +7,9 @@ import { useReelActivityProjection } from "@/domains/presence/model/reel-activit
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
 import { useNetworkStatus } from "@/lib/platform/useNetworkStatus";
 
-export function getReelActivityStatusKey(online: boolean):
-  | "communication.reel.notLoaded"
-  | "communication.reel.offline" {
+export function getReelActivityStatusKey(
+  online: boolean,
+): "communication.reel.notLoaded" | "communication.reel.offline" {
   return online ? "communication.reel.notLoaded" : "communication.reel.offline";
 }
 
