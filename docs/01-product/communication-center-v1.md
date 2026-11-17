@@ -86,3 +86,12 @@ L'abonnement privé membre est unique et monté au niveau de l'application. Le c
 - Un bip reçu présent à la fois dans le flux d'événements et dans la projection Réel reste compté une seule fois dans la cloche globale ; il est attribué visuellement à En direct plutôt que dupliqué dans le compteur Notifications.
 - Les compteurs d'onglets sont masqués lorsqu'ils valent zéro. Ils sont accessibles dans le nom des onglets et plafonnés visuellement à « 99+ ».
 - Aucun indicateur n'est inventé pour Messages ou Assistant en l'absence de source métier d'éléments non lus.
+
+
+## Chargement, erreurs et reconnexion — étape 4
+
+- Le centre lit uniquement l’état réseau partagé de la plateforme ; il ne crée aucun écouteur métier, abonnement Realtime, appel réseau ou polling.
+- Hors ligne, les événements de session déjà reçus restent visibles. Un message localisé précise que les nouvelles mises à jour reprendront lorsque la connexion reviendra.
+- Dans En direct, l’absence de projection chargée n’est plus présentée comme une liste vide : le centre invite à ouvrir le moteur propriétaire pour charger les données. Hors ligne, il indique clairement que l’actualisation est impossible.
+- Les erreurs détaillées de lecture ou d’action restent affichées et récupérables dans le moteur propriétaire, qui détient la requête et son état. Le centre renvoie vers ce moteur au lieu de fabriquer un état d’erreur ou de lancer une seconde requête.
+- Le retour réseau fait disparaître l’avertissement grâce au hook réseau partagé. La reprise des événements Réel continue de dépendre de l’abonnement privé unique déjà monté par l’application ; aucun second canal n’est créé par le centre.
