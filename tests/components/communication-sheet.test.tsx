@@ -18,6 +18,17 @@ const communicationState = vi.hoisted(() => ({
 }));
 
 const networkState = vi.hoisted(() => ({ online: true }));
+const reelProjection = vi.hoisted(() => ({
+  pendingBips: 0,
+  activeConnections: 0,
+  bipsReady: false,
+  connectionsReady: false,
+}));
+
+vi.mock("@/domains/presence/model/reel-activity-projection", () => ({
+  useReelActivityProjection: (selector: (state: typeof reelProjection) => unknown) =>
+    selector(reelProjection),
+}));
 
 vi.mock("@/lib/platform/useNetworkStatus", () => ({
   useNetworkStatus: () => ({ online: networkState.online }),
