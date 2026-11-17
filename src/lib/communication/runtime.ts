@@ -1,3 +1,4 @@
+import type { MessageKey } from "@/lib/i18n/messages";
 import {
   resolveCommunicationContext,
   type CommunicationContext,
