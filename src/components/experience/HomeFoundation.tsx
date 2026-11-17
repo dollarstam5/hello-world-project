@@ -110,6 +110,8 @@ export function HomeFoundation() {
       ? t("identity.trusted")
       : tier === "identified"
         ? t("identity.identified")
+        : user
+        ? t("identity.member")
         : t("identity.guest");
 
   const greetingKey =
