@@ -8,7 +8,7 @@ describe("communication runtime", () => {
   it("does not mark a request delivered until the presenter acknowledges it", () => {
     const runtime = createCommunicationRuntime();
     const request = [
-      { key: "common.error", priority: "high" as const, repeatKey: "flash-save-error" },
+      { key: "common.error", source: "assistant", surface: "notice", priority: "high" as const, repeatKey: "flash-save-error" },
     ];
 
     const firstPresentation = runtime.prepare(translate, request);
@@ -21,7 +21,7 @@ describe("communication runtime", () => {
     const first = createCommunicationRuntime();
     const second = createCommunicationRuntime();
     const request = [
-      { key: "common.retry", priority: "normal" as const, repeatKey: "retry-action" },
+      { key: "common.retry", source: "assistant", surface: "notice", priority: "normal" as const, repeatKey: "retry-action" },
     ];
 
     const presented = first.prepare(translate, request).messages;
