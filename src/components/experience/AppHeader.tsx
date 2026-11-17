@@ -56,7 +56,11 @@ export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => 
               variant="ghost"
               size="icon"
               onClick={onOpenCommunication}
-              aria-label={t("communication.open")}
+              aria-label={
+                attentionCount > 0
+                  ? `${t("communication.open")} (${attentionCount})`
+                  : t("communication.open")
+              }
               className="relative h-12 w-12 rounded-full"
             >
               <Bell aria-hidden className="!size-6" />
