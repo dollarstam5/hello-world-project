@@ -20,7 +20,7 @@ describe("historique transmis à Vita", () => {
   it("borne l'historique à huit messages et quatre mille caractères", () => {
     const messages = Array.from({ length: 12 }, (_, index) => ({
       role: index % 2 === 0 ? ("user" as const) : ("assistant" as const),
-      content: String(index).repeat(600),
+      content: "x".repeat(600),
     }));
     const result = buildAssistantRequestMessages(messages);
     expect(result).toHaveLength(6);
