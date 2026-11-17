@@ -82,6 +82,8 @@ export const messages = {
       "Vos échanges apparaîtront ici après une mise en relation ou une action acceptée.",
     "communication.reel.empty":
       "Les bips reçus apparaîtront ici pendant votre présence active. Aucun bip fictif n’est ajouté.",
+    "communication.reel.pendingBips": "Bips en attente",
+    "communication.reel.activeConnections": "Mises en relation actives",
     "home.welcome": "Bienvenue dans Vitalis",
     "home.hero.eyebrow": "Des rencontres et des coups de main, tout près de vous",
     "home.hero.photoAlt":
@@ -1066,6 +1068,8 @@ export const messages = {
       "Your conversations will appear here after a connection or an accepted action.",
     "communication.reel.empty":
       "Received signals will appear here while your presence is active. No sample signals are added.",
+    "communication.reel.pendingBips": "Pending signals",
+    "communication.reel.activeConnections": "Active connections",
     "home.welcome": "Welcome to Vitalis",
     "home.hero.eyebrow": "Real people. Useful connections. Nearby.",
     "home.hero.photoAlt": "Five smiling friends gathered outdoors, huddled close together.",
