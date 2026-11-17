@@ -2,10 +2,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
-import {
-  markAssistantWelcomePresented,
-  useAssistantNotices,
-} from "@/lib/app/assistant-notices";
+import { markAssistantWelcomePresented, useAssistantNotices } from "@/lib/app/assistant-notices";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { createCommunicationRuntime } from "@/lib/communication/runtime";
 
