@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { FLASH_SCOPES, FLASH_URGENCIES } from "@eco/core-contracts";
 import type { FlashCategory, FlashKind, FlashTimeSlot } from "@eco/core-contracts";
 import { Button } from "@/components/ui/button";
+import { formatCommunicationMessage } from "@/lib/communication/format";
 import { useI18n } from "@/lib/i18n/useI18n";
 import type { useFlashComposer } from "./useFlashComposer";
 
@@ -182,7 +183,7 @@ export function FlashComposerReviewStep({ state, user, authLoading }: Props) {
       ) : null}
       {state.publishError ? (
         <p className="mt-3 text-sm text-destructive" role="alert">
-          {t("flash.composer.error")}
+          {formatCommunicationMessage(t, "flash.composer.error")}
         </p>
       ) : null}
 
