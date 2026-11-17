@@ -19,6 +19,7 @@ import { Surface } from "@/components/app/Surface";
 import { useAuth } from "@/domains/auth/model/useAuth";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { formatCommunicationMessage } from "@/lib/communication/format";
+import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
 import { cancelRadar, createRadarDraft, editRadarDraft, useMyRadars } from "../data";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -52,6 +53,7 @@ const statusTones: Record<RadarStatus, "neutral" | "primary" | "success" | "warn
  */
 export function RadarManagement() {
   const { t, locale } = useI18n();
+  const communication = useCommunicationRuntime();
   const { user, loading: authLoading } = useAuth();
   const userId = user?.id ?? null;
   const [query, setQuery] = useState("");
@@ -90,10 +92,24 @@ export function RadarManagement() {
         expiresAt: startsAt + durationDays * DAY_MS,
       };
       if (editingId) {
-        await editRadarDraft(editingId, input);
+        const updated = await editRadarDraft(editingId, input);
+        communication.publishEvent({
+          id: `radar:${updated.id}:updated:${updated.updatedAt}`,
+          source: "radar",
+          titleKey: "communication.event.radar.title",
+          messageKey: "communication.event.radar.updated",
+          href: "/radar",
+        });
         setActionNotice("radar.manage.updated");
       } else {
-        await createRadarDraft(input);
+        const saved = await createRadarDraft(input);
+        communication.publishEvent({
+          id: `radar:${saved.id}:saved`,
+          source: "radar",
+          titleKey: "communication.event.radar.title",
+          messageKey: "communication.event.radar.saved",
+          href: "/radar",
+        });
         setActionNotice("radar.manage.saved");
       }
       setEditingId(null);
@@ -112,7 +128,14 @@ export function RadarManagement() {
     setActionError(false);
     setActionNotice(null);
     try {
-      await cancelRadar(pendingCancel.id);
+      const cancelled = await cancelRadar(pendingCancel.id);
+      communication.publishEvent({
+        id: `radar:${cancelled.id}:cancelled:${cancelled.updatedAt}`,
+        source: "radar",
+        titleKey: "communication.event.radar.title",
+        messageKey: "communication.event.radar.cancelled",
+        href: "/radar",
+      });
       setActionNotice("radar.manage.cancelled");
       setPendingCancel(null);
     } catch {
