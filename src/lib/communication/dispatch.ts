@@ -7,9 +7,7 @@ import {
 import type { MessageKey } from "@/lib/i18n/messages";
 
 export type CommunicationTranslate = (key: MessageKey) => string;
-export type CommunicationVariables = Readonly<
-  Record<string, string | number | null | undefined>
->;
+export type CommunicationVariables = Readonly<Record<string, string | number | null | undefined>>;
 
 export interface CommunicationRequest extends CommunicationCandidate {
   variables?: CommunicationVariables;
