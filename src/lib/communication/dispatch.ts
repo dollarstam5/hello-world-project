@@ -8,13 +8,30 @@ import type { MessageKey } from "@/lib/i18n/messages";
 
 export type CommunicationTranslate = (key: MessageKey) => string;
 export type CommunicationVariables = Readonly<Record<string, string | number | null | undefined>>;
+export type CommunicationSource =
+  | "app"
+  | "auth"
+  | "home"
+  | "onboarding"
+  | "flash"
+  | "scan"
+  | "reel"
+  | "radar"
+  | "assistant";
+export type CommunicationSurface = "inline" | "notice" | "center";
 
 export interface CommunicationRequest extends CommunicationCandidate {
+  /** Domain that owns the fact being communicated. */
+  source: CommunicationSource;
+  /** Intended presentation surface; this does not create or persist the event. */
+  surface: CommunicationSurface;
   variables?: CommunicationVariables;
 }
 
 export interface ResolvedCommunicationMessage {
   key: MessageKey;
+  source: CommunicationSource;
+  surface: CommunicationSurface;
   priority: CommunicationRequest["priority"];
   text: string;
   eventId?: string;
@@ -39,6 +56,8 @@ export function prepareCommunicationMessages(
   const gate = resolveCommunicationCandidates(requests, state, maxItems);
   const messages = gate.selected.map((request) => ({
     key: request.key,
+    source: request.source,
+    surface: request.surface,
     priority: request.priority,
     text: formatCommunicationMessage(translate, request.key, request.variables),
     ...(request.eventId ? { eventId: request.eventId } : {}),
