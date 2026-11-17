@@ -38,8 +38,12 @@ export function createCommunicationRuntime() {
     requests: readonly CommunicationRequest[],
     maxItems = Number.POSITIVE_INFINITY,
   ): CommunicationDispatchResult {
-    const eligible = requests.filter((request) => !request.requiresContext || context?.ready === true);
-    const contextSuppressed = requests.filter((request) => request.requiresContext && context?.ready !== true);
+    const eligible = requests.filter(
+      (request) => !request.requiresContext || context?.ready === true,
+    );
+    const contextSuppressed = requests.filter(
+      (request) => request.requiresContext && context?.ready !== true,
+    );
     const prepared = prepareCommunicationMessages(
       translate,
       eligible,
