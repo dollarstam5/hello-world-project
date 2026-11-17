@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { requestReelLocation } from "@/domains/presence/api/reel-location.client";
 import {
   closeReelConnection,
@@ -38,9 +38,9 @@ import {
 } from "@/domains/presence/api/reel-presence.client";
 import { useAccessMode } from "@/domains/access-mode";
 import { useI18n } from "@/lib/i18n/useI18n";
+import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
 import { getMyProfileAvatarUrl } from "@/domains/profile/api/profile-avatar.client";
 import { evaluateReelAccess } from "@/domains/presence/policy/reel-access-policy";
-import { subscribeToReelMemberActivity } from "@/domains/presence/services/reel-activity-realtime.service";
 import {
   resetReelActivityProjection,
   useReelActivityProjection,
@@ -68,6 +68,9 @@ const MAX_RING_PEOPLE = 9;
 export function useReelProximityController() {
   const { t } = useI18n();
   const access = useAccessMode();
+  const communication = useCommunicationRuntime();
+  const communicationRevision = communication.getSnapshot();
+  const processedReelEvents = useRef(new Set<string>());
   const [memberAvatarUrl, setMemberAvatarUrl] = useState<string | null>(null);
 
   useEffect(() => {
@@ -278,25 +281,6 @@ export function useReelProximityController() {
     }
   }, [access.loading, access.mode, access.memberId, canUseMemberReel, activityIdentity, t]);
 
-  useEffect(() => {
-    if (
-      panel !== "activity" ||
-      activityTab !== "bips" ||
-      (!canUseMemberReel && access.mode !== "guest")
-    ) {
-      return;
-    }
-    void refreshBips();
-    if (access.mode === "guest") {
-      const poll = window.setInterval(() => void refreshBips(), 3000);
-      return () => window.clearInterval(poll);
-    }
-    return subscribeToReelMemberActivity(access.memberId, () => void refreshBips(), [
-      "reel_bips",
-      "reel_connections",
-    ]);
-  }, [panel, activityTab, refreshBips, access.memberId, canUseMemberReel, access.mode]);
-
   const refreshConnections = useCallback(async () => {
     if (access.loading) return;
     setConnectionsLoading(true);
@@ -327,52 +311,81 @@ export function useReelProximityController() {
     }
   }, [access.loading, access.mode, canUseMemberReel, access.memberId, activityIdentity, t]);
 
+  // The app-scoped bridge owns the single member Realtime subscription.
+  // This controller performs one initial read for the visible tab and keeps
+  // guest-only polling local to the temporary guest session.
   useEffect(() => {
     if (
       panel !== "activity" ||
-      activityTab !== "connections" ||
       (!canUseMemberReel && access.mode !== "guest")
     ) {
       return;
     }
-    void refreshConnections();
-    if (access.mode === "guest") {
-      const poll = window.setInterval(() => void refreshConnections(), 3000);
-      return () => window.clearInterval(poll);
-    }
-    return subscribeToReelMemberActivity(access.memberId, () => void refreshConnections(), [
-      "reel_connections",
-    ]);
-  }, [panel, activityTab, refreshConnections, access.memberId, canUseMemberReel, access.mode]);
 
-  useEffect(() => {
-    if (
-      panel !== "activity" ||
-      activityTab !== "notifications" ||
-      (!canUseMemberReel && access.mode !== "guest")
-    ) {
-      return;
-    }
-    const refreshActivity = () => {
-      void Promise.all([refreshBips(), refreshConnections()]);
+    const refreshVisibleActivity = () => {
+      if (activityTab === "bips") {
+        void refreshBips();
+      } else if (activityTab === "connections") {
+        void refreshConnections();
+      } else {
+        void Promise.all([refreshBips(), refreshConnections()]);
+      }
     };
-    refreshActivity();
-    if (access.mode === "guest") {
-      const poll = window.setInterval(refreshActivity, 3000);
-      return () => window.clearInterval(poll);
-    }
-    return subscribeToReelMemberActivity(access.memberId, refreshActivity, [
-      "reel_bips",
-      "reel_connections",
-    ]);
+
+    refreshVisibleActivity();
+    if (access.mode !== "guest") return;
+    const poll = window.setInterval(refreshVisibleActivity, 3000);
+    return () => window.clearInterval(poll);
   }, [
     panel,
     activityTab,
     refreshBips,
     refreshConnections,
-    access.memberId,
     canUseMemberReel,
     access.mode,
+  ]);
+
+  useEffect(() => {
+    const incoming = communication
+      .getEvents()
+      .filter(
+        (event) =>
+          event.source === "reel" && !processedReelEvents.current.has(event.id),
+      );
+    if (incoming.length === 0) return;
+    incoming.forEach((event) => processedReelEvents.current.add(event.id));
+    if (panel !== "activity") return;
+
+    const refreshBipsNeeded = incoming.some((event) =>
+      [
+        "communication.event.reel.bipReceived",
+        "communication.event.reel.bipAccepted",
+        "communication.event.reel.bipDeclined",
+      ].includes(event.messageKey),
+    );
+    const refreshConnectionsNeeded = incoming.some((event) =>
+      [
+        "communication.event.reel.bipAccepted",
+        "communication.event.reel.connectionClosed",
+      ].includes(event.messageKey),
+    );
+
+    if (refreshBipsNeeded && (activityTab === "bips" || activityTab === "notifications")) {
+      void refreshBips();
+    }
+    if (
+      refreshConnectionsNeeded &&
+      (activityTab === "connections" || activityTab === "notifications")
+    ) {
+      void refreshConnections();
+    }
+  }, [
+    communicationRevision,
+    communication,
+    panel,
+    activityTab,
+    refreshBips,
+    refreshConnections,
   ]);
 
   const endConnection = (connection: ReelConnection) => {
