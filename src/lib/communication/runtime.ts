@@ -39,7 +39,7 @@ export interface PublishCommunicationEvent {
   messageKey: MessageKey;
   href: CommunicationInboxEvent["href"];
   createdAt?: number;
-  /** False for a confirmation already shown inline; it must not raise the bell. */
+  /** True only when the event requires attention beyond its inline confirmation. */
   attentionRequired?: boolean;
 }
 
@@ -98,7 +98,7 @@ export function createCommunicationRuntime() {
       messageKey: input.messageKey,
       href: input.href,
       createdAt,
-      readAt: input.attentionRequired === false ? createdAt : null,
+      readAt: input.attentionRequired === true ? null : createdAt,
     });
     notifyContextChange();
     return true;
