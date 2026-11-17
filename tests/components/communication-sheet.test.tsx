@@ -7,10 +7,10 @@ const assistantPreference = vi.hoisted(() => ({ enabled: false }));
 const communicationState = vi.hoisted(() => ({
   events: [] as Array<{
     id: string;
-    source: "flash" | "radar";
+    source: "flash" | "radar" | "reel";
     titleKey: string;
     messageKey: string;
-    href: "/flash" | "/radar";
+    href: "/flash" | "/radar" | "/reel";
     createdAt: number;
     readAt: number | null;
   }>,
@@ -93,6 +93,26 @@ describe("CommunicationSheet", () => {
     expect(markup).toContain("communication.event.radar.saved");
     expect(markup).toContain('href="/radar"');
     expect(markup).toContain("communication.events.markRead");
+  });
+
+  it("routes server-originated Réel events back to the owning engine", () => {
+    communicationState.events = [
+      {
+        id: "reel:server-event",
+        source: "reel",
+        titleKey: "communication.event.reel.title",
+        messageKey: "communication.event.reel.bipReceived",
+        href: "/reel",
+        createdAt: 200,
+        readAt: null,
+      },
+    ];
+    const markup = renderToStaticMarkup(<CommunicationSheet open onOpenChange={() => undefined} />);
+
+    expect(markup).toContain("communication.event.reel.title");
+    expect(markup).toContain("communication.event.reel.bipReceived");
+    expect(markup).toContain('href="/reel"');
+    expect(markup).toContain("communication.events.openReel");
   });
 
   it("keeps communication spaces associated with tab panels", () => {
