@@ -11,7 +11,22 @@ export function AssistantNoticeLayer() {
   const { t } = useI18n();
   const enabled = useAssistantPreferences((state) => state.enabled);
   const notice = useAssistantNotices((state) => state.notice);
-  const dismiss = useAssistantNotices((state) => state.dismiss);\n  const runtimeRef = useRef(createCommunicationRuntime());\n  const translateRef = useRef(t);\n  translateRef.current = t;\n  const runtime = runtimeRef.current;\n  const prepared = useMemo(() => {\n    if (!notice) return null;\n    return runtime.prepare(translateRef.current, [\n      { key: notice.message, priority: "normal", repeatKey: `assistant-notice:${notice.id}` },\n    ]);\n  }, [notice, runtime]);
+  const dismiss = useAssistantNotices((state) => state.dismiss);
+  const runtimeRef = useRef<ReturnType<typeof createCommunicationRuntime> | null>(null);
+  if (!runtimeRef.current) runtimeRef.current = createCommunicationRuntime();
+  const translateRef = useRef(t);
+  translateRef.current = t;
+  const runtime = runtimeRef.current;
+  const prepared = useMemo(() => {
+    if (!notice) return null;
+    return runtime.prepare(translateRef.current, [
+      { key: notice.message, priority: "normal", repeatKey: `assistant-notice:${notice.id}` },
+    ]);
+  }, [notice, runtime]);
+
+  useEffect(() => {
+    if (prepared?.messages.length) runtime.markPresented(prepared.messages);
+  }, [prepared, runtime]);
 
   useEffect(() => {
     if (!notice) return;
