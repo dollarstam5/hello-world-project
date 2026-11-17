@@ -5,6 +5,8 @@
 
 ## 1. Convention
 
+Les règles complètes de déclenchement, de priorité, de fréquence, de sécurité, de maturité et d'évolution V1–V3 sont définies dans la [gouvernance du système de communication](./communication-system-governance-v1-v3.md). Le catalogue ne constitue jamais une source d'événements métier.
+
 Chaque entrée possède une clé stable, une intention, une priorité, un contexte d'affichage et ses variantes FR/EN. Les exemples sont une base éditoriale : ils ne doivent être affichés que si l'événement ou l'état est réel.
 
 Une variable absente déclenche une variante sans variable, jamais un texte incomplet.
