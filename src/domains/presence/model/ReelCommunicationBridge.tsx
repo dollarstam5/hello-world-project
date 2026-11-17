@@ -32,19 +32,23 @@ export function ReelCommunicationBridge() {
       return;
     }
 
-    return subscribeToReelMemberActivity(access.memberId, (event) => {
-      communication.publishEvent({
-        id: `reel:${event.event_id}`,
-        source: "reel",
-        titleKey: "communication.event.reel.title",
-        messageKey: messageByKind[event.kind],
-        href: "/reel",
-        createdAt: event.created_at,
-        attentionRequired: true,
-      });
-    }, () => {
-      window.dispatchEvent(new Event("vitalis:reel-activity-reconnected"));
-    });
+    return subscribeToReelMemberActivity(
+      access.memberId,
+      (event) => {
+        communication.publishEvent({
+          id: `reel:${event.event_id}`,
+          source: "reel",
+          titleKey: "communication.event.reel.title",
+          messageKey: messageByKind[event.kind],
+          href: "/reel",
+          createdAt: event.created_at,
+          attentionRequired: true,
+        });
+      },
+      () => {
+        window.dispatchEvent(new Event("vitalis:reel-activity-reconnected"));
+      },
+    );
   }, [access.loading, access.mode, access.memberId, access.memberProfileState, communication]);
 
   return null;
