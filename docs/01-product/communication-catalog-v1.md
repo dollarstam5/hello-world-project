@@ -113,7 +113,7 @@ Les notifications de bip, mise en relation, mission, Scan ou Flash proviennent d
 | event.mission_update | Changement de statut confirmé | Votre mission a été mise à jour. | Your mission has been updated. |
 | event.flash_available | Nouveau Flash accessible | Un nouveau Flash est disponible autour de vous. | A new Flash is available nearby. |
 
-Ces clés ne sont pas des noms d'événements runtime validés. Le domaine propriétaire fournit la destination et les variables. Aucun identifiant temporaire invité n'apparaît dans le texte ou les métadonnées.
+Les clés indicatives de bip reçu, relation établie, mission et Flash disponible ne sont pas encore des événements runtime actifs : aucun producteur serveur correspondant n’est raccordé ici. Les événements de cycle de vie locaux Flash et Radar actuellement intégrés au centre utilisent les clés communication.event.flash.* et communication.event.radar.*. Les confirmations inline sont classées comme lues et ne déclenchent pas la cloche. Le domaine propriétaire fournit toujours la destination et l’état confirmé. Aucun identifiant temporaire invité n’apparaît dans le texte ou les métadonnées.
 
 ## 9. Contrôle éditorial
 
