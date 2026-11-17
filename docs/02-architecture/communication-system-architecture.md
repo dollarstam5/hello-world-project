@@ -403,3 +403,16 @@ Les demandes peuvent déclarer `requiresAssistant`. Le runtime ne prépare ces d
 Le runtime publie maintenant une révision locale lorsque le contexte est mis à jour ou réinitialisé. `useCommunicationRuntime()` s'abonne à ces changements et `useCommunicationContextVersion()` expose la révision pour les consommateurs qui mémorisent (`useMemo`) des messages préparés. Cela garantit qu'une demande temporairement supprimée pendant l'hydratation peut être réévaluée dès que les sources deviennent disponibles, sans attendre un changement de notice ou d'état métier.
 
 Les notices Assistant déclarent maintenant `requiresAssistant: true` et incluent la révision de contexte dans leurs dépendances de préparation. Leur présentation attend donc l'opt-in explicitement confirmé, puis se réévalue quand la préférence est hydratée ou modifiée.
+
+
+### Première extraction — projection d'activité Réel partagée
+
+Le read model initial est ajouté dans `src/domains/presence/model/reel-activity-projection.ts`. Il expose uniquement un résumé agrégé en mémoire : mode d'accès (membre/invité), nombre de bips reçus en attente, nombre de mises en relation actives et indicateurs de disponibilité des deux lectures.
+
+Le contrôleur Réel reste, pour cette première tranche, le propriétaire des lectures métier existantes. Après chaque mise à jour de ses projections déjà chargées, il publie les agrégats dans le store partagé. Le centre `CommunicationSheet` consomme exclusivement ces agrégats. Il ne rappelle aucune API/RPC Réel et ne crée aucun abonnement Realtime ni polling supplémentaire.
+
+Les tableaux détaillés et leurs identifiants restent dans le contrôleur et ses composants métier. Le store partagé n'accepte que des nombres normalisés et le mode d'accès : aucun identifiant de présence, bip, relation ou session invitée ne peut y être stocké. Un changement de mode réinitialise les agrégats de l'ancien mode ; un changement d'identité applicative réinitialise également la projection.
+
+Les abonnements Realtime membres et le polling invité à trois secondes restent ceux du contrôleur, déclenchés uniquement lorsque son panneau d'activité est ouvert. La projection du centre représente donc le dernier état réellement chargé par le moteur ; elle n'initie pas de rafraîchissement autonome lorsque le moteur n'est pas actif. Cette limite est volontaire pour cette première tranche, afin de ne pas ajouter de trafic réseau. Une éventuelle centralisation du cycle de vie des abonnements nécessitera une étape distincte et des tests de propriété/ref-count avant toute modification.
+
+Les tests dédiés vérifient l'agrégation sans identifiants, la séparation des modes, la normalisation des compteurs et la remise à zéro. Cette extraction ne crée aucune notification métier : elle expose un résumé des données Réel existantes.
