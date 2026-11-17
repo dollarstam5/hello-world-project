@@ -70,9 +70,7 @@ export function resolveCommunicationCandidates(
     )
     .map(({ candidate }) => candidate);
 
-  const safeLimit = Number.isFinite(maxItems)
-    ? Math.max(0, Math.floor(maxItems))
-    : ordered.length;
+  const safeLimit = Number.isFinite(maxItems) ? Math.max(0, Math.floor(maxItems)) : ordered.length;
 
   return {
     selected: ordered.slice(0, safeLimit),
