@@ -8,6 +8,8 @@ import { useI18n } from "@/lib/i18n/useI18n";
 import { useIdentity } from "@/lib/experience/identity";
 import { createDemoFlashes } from "@/domains/flash/model/demo-flashes";
 import { VitalisVisionCard } from "@/components/experience/VitalisVisionCard";
+import heroPhoto from "@/assets/images/experience/home-neighbours-1600.webp";
+import heroPhotoSmall from "@/assets/images/experience/home-neighbours-800.webp";
 
 type EngineCardProps = {
   to: "/flash" | "/scan" | "/reel" | "/radar";
@@ -103,8 +105,23 @@ export function HomeFoundation() {
     <div className="page-shell stack-8">
       <section
         aria-labelledby="home-welcome-title"
-        className="relative isolate flex min-h-[25rem] overflow-hidden rounded-[2rem] bg-gradient-to-br from-primary/25 via-card to-card shadow-sm sm:min-h-[31rem]"
+        className="relative isolate flex min-h-[25rem] overflow-hidden rounded-[2rem] bg-card shadow-sm sm:min-h-[31rem]"
       >
+        <img
+          src={heroPhoto}
+          srcSet={`${heroPhotoSmall} 800w, ${heroPhoto} 1600w`}
+          sizes="(min-width: 1024px) 64rem, 100vw"
+          alt={t("home.hero.photoAlt")}
+          width={1600}
+          height={1200}
+          fetchPriority="high"
+          decoding="async"
+          className="absolute inset-0 -z-10 size-full object-cover object-[50%_35%]"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 -z-10 bg-gradient-to-t from-background via-background/75 to-background/10"
+        />
         <div className="relative z-10 flex w-full flex-col justify-between gap-10 p-5 text-foreground sm:p-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <span className="rounded-full border border-border bg-surface/90 px-3 py-1.5 text-xs font-medium text-foreground shadow-sm">

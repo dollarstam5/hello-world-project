@@ -150,6 +150,7 @@ export function VitalisVisionPage() {
               <VisionEngineArtwork
                 kind={engine.id}
                 labels={{
+                  alt: t(`vision.photo.${engine.id}.alt`),
                   flashTag: t("vision.deep.visual.flashTag"),
                   flashTitle: t("vision.deep.visual.flashTitle"),
                   flashDescription: t("vision.deep.visual.flashDescription"),

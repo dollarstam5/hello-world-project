@@ -215,6 +215,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/scan': typeof ScanRoute
   '/talents': typeof TalentsRoute
+  '/vision': typeof VisionRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/api/health': typeof ApiHealthRoute
   '/espace/apercu': typeof EspaceApercuRoute
