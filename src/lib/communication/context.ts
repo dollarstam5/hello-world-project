@@ -21,6 +21,7 @@ export interface CommunicationContext {
   route: string | null;
   locale: string | null;
   assistantEnabled: boolean | null;
+  assistantPreferenceReady: boolean;
   permissions: {
     discover: CommunicationPermissionState;
     presence: CommunicationPermissionState;
@@ -63,6 +64,7 @@ export function resolveCommunicationContext(
     route,
     locale,
     assistantEnabled: input.assistantEnabled,
+    assistantPreferenceReady: input.assistantEnabled !== null,
     permissions: {
       discover: normalizePermission(input.permissions?.discover),
       presence: normalizePermission(input.permissions?.presence),
@@ -70,7 +72,6 @@ export function resolveCommunicationContext(
     ready:
       input.identity !== "loading" &&
       route !== null &&
-      locale !== null &&
-      input.assistantEnabled !== null,
+      locale !== null,
   };
 }
