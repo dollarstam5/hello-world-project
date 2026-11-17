@@ -109,7 +109,11 @@ export function HomeFoundation() {
 
   // Authentication is the source of truth for member/guest recognition.
   // UDI trust levels are not inferred from the local identity placeholder.
-  const identityLabel = user ? t("identity.member") : t("identity.guest");
+  const identityLabel = authLoading
+    ? null
+    : user
+      ? t("identity.member")
+      : t("identity.guest");
 
   const greetingKey =
     localHour === null || authLoading ? "home.welcome" : getHomeGreetingKey(localHour);
@@ -149,9 +153,11 @@ export function HomeFoundation() {
         />
         <div className="relative z-20 flex w-full min-w-0 flex-col justify-between gap-10 p-5 text-foreground sm:p-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <span className="rounded-full border border-border bg-surface/90 px-3 py-1.5 text-xs font-medium text-foreground shadow-sm">
-              {identityLabel}
-            </span>
+            {identityLabel ? (
+              <span className="rounded-full border border-border bg-surface/90 px-3 py-1.5 text-xs font-medium text-foreground shadow-sm">
+                {identityLabel}
+              </span>
+            ) : null}
             <span className="rounded-full bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary">
               {t("app.tagline")}
             </span>
