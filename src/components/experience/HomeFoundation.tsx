@@ -8,10 +8,7 @@ import { Indicator } from "@/components/app/Indicator";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useIdentity } from "@/lib/experience/identity";
 import { useAuth } from "@/domains/auth/model/useAuth";
-import {
-  claimNameGreetingForSession,
-  getHomeGreetingKey,
-} from "@/lib/communication/greeting";
+import { claimNameGreetingForSession, getHomeGreetingKey } from "@/lib/communication/greeting";
 import { createDemoFlashes } from "@/domains/flash/model/demo-flashes";
 import { VitalisVisionCard } from "@/components/experience/VitalisVisionCard";
 import heroPhoto from "@/assets/images/experience/home-neighbours-1600.webp";
@@ -117,9 +114,7 @@ export function HomeFoundation() {
   const greetingKey =
     localHour === null || authLoading ? "home.welcome" : getHomeGreetingKey(localHour);
   const greetingName =
-    user && nameGreetingUserId === user.id && displayName?.trim()
-      ? `, ${displayName.trim()}`
-      : "";
+    user && nameGreetingUserId === user.id && displayName?.trim() ? `, ${displayName.trim()}` : "";
   const greeting = t(greetingKey).replace("{name}", greetingName);
 
   const demoFlashes = createDemoFlashes();
