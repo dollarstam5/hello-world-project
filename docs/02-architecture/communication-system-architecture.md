@@ -160,7 +160,7 @@ Les modules suivants sont maintenant présents sur la branche :
 | `src/lib/communication/gate.ts` | Trie les demandes par priorité, conserve l'ordre d'origine à priorité égale et supprime les doublons via identifiant d'événement ou clé de répétition fournis | Ne mémorise pas lui-même les messages déjà livrés ; l'appelant fournit cet état |
 | `src/lib/communication/dispatch.ts` | Applique le filtre de priorité/déduplication puis résout le texte avec le formateur et le catalogue i18n existants | Prépare un lot ; ne déclenche pas de notification et ne modifie aucun état métier |
 | `src/lib/communication/delivery-session.ts` | Conserve en mémoire les identifiants réellement présentés après accusé de présentation explicite ; déduplication des lots suivants pendant la session | Aucun stockage local persistant ; aucun producteur de notifications moteur raccordé |
-| `src/lib/communication/runtime.ts` | Façade de session qui compose dispatch, gate et accusé de présentation ; utilisée par `AssistantNoticeLayer` | Raccordement runtime limité aux notices facultatives de l'assistant ; aucun producteur métier partagé des moteurs |
+| `src/lib/communication/runtime.ts` | Façade de session qui compose dispatch, gate et accusé de présentation ; expose aussi `resetSession()` | Utilisée par `AssistantNoticeLayer` ; les producteurs métier partagés des moteurs restent à raccorder |
 | `src/lib/communication/maturity.ts` | Sélectionne une posture conversationnelle selon le nombre agrégé de comptes inscrits : lancement, croissance, communauté établie, maturité | Fonction pure sans requête ; pas encore raccordée à une source de comptage ni aux composants de suggestions |
 | `tests/communication/gate.test.ts` | Vérifie priorités, doublons connus, déduplication dans un lot et limite d'affichage | Tests unitaires, pas tests d'intégration UI |
 | `tests/communication/dispatch.test.ts` | Vérifie la chaîne complète locale et l'interpolation des variables | Ne prouve pas encore le raccordement aux événements des moteurs |
@@ -200,7 +200,7 @@ Radar conserve et gère des intentions privées offline-first. La présence de s
 
 ### Limites observées
 
-- Le canal `publishAssistantNotice` reste facultatif et opt-in. `AssistantNoticeLayer` passe désormais ses notices par `createCommunicationRuntime`, puis accuse leur présentation après rendu ; le seul déclenchement métier observé reste le message de bienvenue après activation volontaire dans les paramètres.
+- Le canal `publishAssistantNotice` reste facultatif et opt-in. `AssistantNoticeLayer` passe désormais ses notices par `createCommunicationRuntime`, puis accuse leur présentation après rendu. Le message de bienvenue n'est persisté comme déjà montré qu'après sa présentation effective ; le seul déclenchement observé reste l'activation volontaire dans les paramètres.
 - Les onglets Notifications, Messages et En direct du centre présentent encore des états vides ; aucun flux de notifications métier ne doit être supposé opérationnel à partir de leur seule présence.
 - Le sélecteur temporel ajouté à Home est une première règle, pas encore un orchestrateur universel pour tous les textes de l'application.
 - Le formateur commun résout les variables du catalogue. Le nouveau runtime compose le gate, le dispatch et l'accusé de présentation pour les messages transitoires ; il ne décide toujours pas des événements métier ni des sources à notifier.
