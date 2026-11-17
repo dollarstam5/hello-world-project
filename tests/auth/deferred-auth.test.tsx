@@ -7,6 +7,7 @@ const mocks = vi.hoisted(() => ({
   getSession: vi.fn(),
   onAuthStateChange: vi.fn(),
   signInWithPassword: vi.fn(),
+  signUp: vi.fn(),
   signOut: vi.fn(),
   unsubscribe: vi.fn(),
   authCallback: undefined as ((event: string, session: Session | null) => void) | undefined,
@@ -18,6 +19,7 @@ vi.mock("@/integrations/supabase/client", () => ({
       getSession: mocks.getSession,
       onAuthStateChange: mocks.onAuthStateChange,
       signInWithPassword: mocks.signInWithPassword,
+      signUp: mocks.signUp,
       signOut: mocks.signOut,
     },
   },
@@ -48,6 +50,7 @@ describe("deferred Supabase authentication", () => {
     mocks.getSession.mockReset();
     mocks.onAuthStateChange.mockReset();
     mocks.signInWithPassword.mockReset();
+    mocks.signUp.mockReset();
     mocks.signOut.mockReset();
     mocks.unsubscribe.mockReset();
     mocks.authCallback = undefined;
@@ -156,6 +159,27 @@ describe("deferred Supabase authentication", () => {
     expect(mocks.signInWithPassword).toHaveBeenCalledWith({
       email: "member@example.test",
       password: "correct-horse-battery",
+    });
+  });
+
+  it("registers with the display name stored in auth metadata", async () => {
+    const result = {
+      data: { user: { id: "new-member" }, session: null },
+      error: null,
+    };
+    mocks.signUp.mockResolvedValue(result);
+
+    await expect(
+      authService.signUp("new@example.test", "correct-horse-battery", "Awa"),
+    ).resolves.toEqual(result);
+
+    expect(mocks.signUp).toHaveBeenCalledWith({
+      email: "new@example.test",
+      password: "correct-horse-battery",
+      options: {
+        emailRedirectTo: window.location.origin,
+        data: { display_name: "Awa" },
+      },
     });
   });
 
