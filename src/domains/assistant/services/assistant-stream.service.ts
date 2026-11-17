@@ -62,6 +62,7 @@ export async function streamAssistant(
   const decoder = new TextDecoder();
   let buffer = "";
   let full = "";
+  let completed = false;
 
   for (;;) {
     const { done, value } = await reader.read();
@@ -72,7 +73,11 @@ export async function streamAssistant(
     for (const line of lines) {
       if (!line.startsWith("data:")) continue;
       const payload = line.slice(5).trim();
-      if (!payload || payload === "[DONE]") continue;
+      if (!payload) continue;
+      if (payload === "[DONE]") {
+        completed = true;
+        continue;
+      }
       let event: { type?: string; delta?: string };
       try {
         event = JSON.parse(payload);
@@ -82,6 +87,8 @@ export async function streamAssistant(
       if (event.type === "response.output_text.delta" && event.delta) {
         full += event.delta;
         onDelta(full);
+      } else if (event.type === "response.completed") {
+        completed = true;
       } else if (event.type === "response.failed" || event.type === "error") {
         throw new AssistantStreamError("provider_error");
       }
@@ -90,12 +97,16 @@ export async function streamAssistant(
   buffer += decoder.decode();
   if (buffer.startsWith("data:")) {
     const payload = buffer.slice(5).trim();
-    if (payload && payload !== "[DONE]") {
+    if (payload === "[DONE]") {
+      completed = true;
+    } else if (payload) {
       try {
         const event = JSON.parse(payload) as { type?: string; delta?: string };
         if (event.type === "response.output_text.delta" && event.delta) {
           full += event.delta;
           onDelta(full);
+        } else if (event.type === "response.completed") {
+          completed = true;
         } else if (event.type === "response.failed" || event.type === "error") {
           throw new AssistantStreamError("provider_error");
         }
@@ -104,6 +115,6 @@ export async function streamAssistant(
       }
     }
   }
-  if (!full.trim()) throw new AssistantStreamError("provider_error");
+  if (!completed || !full.trim()) throw new AssistantStreamError("provider_error");
   return full;
 }
