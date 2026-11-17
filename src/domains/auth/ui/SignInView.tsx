@@ -29,6 +29,11 @@ export function SignInView() {
 
   async function submit(event: FormEvent) {
     event.preventDefault();
+    if (mode === "signUp" && displayName.trim().length < 2) {
+      setMessageType("error");
+      setMessage(t("auth.displayNameRequired"));
+      return;
+    }
     setBusy(true);
     setMessage(null);
 
