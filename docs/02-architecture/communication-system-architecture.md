@@ -169,6 +169,21 @@ Le contrat d'appelant exige un identifiant d'événement stable provenant du dom
 
 Aucun délai de fréquence n'est imposé : la déduplication est déterministe et fondée sur les identifiants fournis. La conservation de l'état « déjà livré » est assurée par delivery-session.ts uniquement après que le composant appelant confirme la présentation. La mémoire est limitée à la session courante et disparaît à sa recréation ; aucun stockage serveur ni appel réseau n'est ajouté.
 
+### État réel des moteurs Réel et Radar — inventaire complémentaire
+
+L'inspection du HEAD `a813f026` confirme des producteurs et rendus métier propres aux moteurs, mais pas leur raccordement au pipeline partagé de communication ni au centre global.
+
+| Domaine | Source et déclencheur observés | Présentation actuelle | Limite / décision |
+|---|---|---|---|
+| Réel — membre | RPC Supabase dédiées pour présence, bips et relations ; abonnement privé `subscribeToReelMemberActivity` aux changements `reel_bips` / `reel_connections` et au broadcast `reel_activity` | `ReelActivityPanel` recharge les projections autorisées et affiche bips reçus, décisions et relations | Garder la propriété au moteur ; ne pas recopier automatiquement dans le centre global |
+| Réel — invité | Fonctions serveur de session invitée ; rafraîchissement périodique de 3 secondes dans le contrôleur lorsque les panneaux d'activité sont ouverts | Même panneau, avec projections et actions invitées séparées | Pas d'identifiant de session invité dans le pipeline partagé ; ne pas transformer le polling local au moteur en nouvelle infrastructure globale |
+| Radar V1 | `radarsRepository` via `useLocalQuery`, opérations créer/modifier/annuler et états conservés par le dépôt offline | `RadarManagement` affiche les intentions personnelles, leur statut et les erreurs d'action | Aucun moteur de matching automatique ni producteur d'alerte confirmé dans ce raccordement ; ne pas annoncer de correspondance ou d'alerte |
+| Centre global | Aucun adaptateur Réel/Radar vers `dispatch.ts` ou producteur de notification partagé établi dans cet inventaire | Les moteurs conservent leurs panneaux et retours locaux | Toute future agrégation exige un contrat d'événement stable, une projection autorisée et des tests anti-doublon |
+
+Le panneau Réel expose des états métier réels et recharge les données après les actions. Son onglet « Alertes » compose localement des bips en attente et des relations actives ; il ne constitue pas à lui seul un flux de notifications global. Les états Réel ne doivent donc pas être dupliqués dans `CommunicationSheet` sans contrat explicite.
+
+Radar conserve et gère des intentions privées offline-first. La présence de statuts dans le modèle ne prouve pas l'existence d'un traitement de matching, d'une alerte planifiée ou d'une source de correspondance. La communication peut confirmer la sauvegarde ou l'échec d'une opération seulement à partir du résultat effectif du dépôt ; elle ne peut pas annoncer un résultat de recherche automatique.
+
 ### Limites observées
 
 - Le canal `publishAssistantNotice` n'a pas d'appel métier externe à son propre module dans l'état inspecté ; le seul déclenchement observé est le message de bienvenue après activation volontaire dans les paramètres.
