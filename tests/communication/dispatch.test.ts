@@ -3,8 +3,7 @@ import { prepareCommunicationMessages } from "@/lib/communication/dispatch";
 import type { MessageKey } from "@/lib/i18n/messages";
 
 describe("prepareCommunicationMessages", () => {
-  const translate = (key: MessageKey) =>
-    key === "home.welcome.named" ? "Bonjour, {name} !" : key;
+  const translate = (key: MessageKey) => (key === "home.welcome.named" ? "Bonjour, {name} !" : key);
 
   it("prioritizes, deduplicates and formats messages through the existing catalog", () => {
     const result = prepareCommunicationMessages(translate, [
