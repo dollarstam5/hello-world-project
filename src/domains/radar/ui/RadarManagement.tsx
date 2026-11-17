@@ -99,7 +99,6 @@ export function RadarManagement() {
           titleKey: "communication.event.radar.title",
           messageKey: "communication.event.radar.updated",
           href: "/radar",
-          attentionRequired: false,
         });
         setActionNotice("radar.manage.updated");
       } else {
@@ -110,7 +109,6 @@ export function RadarManagement() {
           titleKey: "communication.event.radar.title",
           messageKey: "communication.event.radar.saved",
           href: "/radar",
-          attentionRequired: false,
         });
         setActionNotice("radar.manage.saved");
       }
@@ -137,7 +135,6 @@ export function RadarManagement() {
         titleKey: "communication.event.radar.title",
         messageKey: "communication.event.radar.cancelled",
         href: "/radar",
-        attentionRequired: false,
       });
       setActionNotice("radar.manage.cancelled");
       setPendingCancel(null);
