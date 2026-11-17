@@ -396,3 +396,10 @@ Les demandes peuvent déclarer `requiresAssistant`. Le runtime ne prépare ces d
 - **Réel** : bips reçus et relations proviennent de projections métier autorisées. Le contrôleur recharge les projections depuis ses API/RPC après événements Realtime pour les membres ; les sessions invitées utilisent leurs services temporaires et un rafraîchissement local. Le panneau Réel reste propriétaire de ces données aujourd'hui.
 
 **Conséquence :** aucun adaptateur global Flash/Scan/Radar n'est ajouté pour les confirmations déjà affichées localement. Le premier candidat à une projection partagée est une lecture dérivée des bips/relations Réel, mais elle doit être extraite du contrôleur sans créer un second abonnement Realtime, un polling supplémentaire, une deuxième requête RPC, ni exposer les identifiants temporaires invités. Le centre global ne doit pas lancer ses propres lectures tant qu'un contrat de projection partagé et son cycle de vie ne sont pas définis.
+
+
+### Réactivité des consommateurs du contexte
+
+Le runtime publie maintenant une révision locale lorsque le contexte est mis à jour ou réinitialisé. `useCommunicationRuntime()` s'abonne à ces changements et `useCommunicationContextVersion()` expose la révision pour les consommateurs qui mémorisent (`useMemo`) des messages préparés. Cela garantit qu'une demande temporairement supprimée pendant l'hydratation peut être réévaluée dès que les sources deviennent disponibles, sans attendre un changement de notice ou d'état métier.
+
+Les notices Assistant déclarent maintenant `requiresAssistant: true` et incluent la révision de contexte dans leurs dépendances de préparation. Leur présentation attend donc l'opt-in explicitement confirmé, puis se réévalue quand la préférence est hydratée ou modifiée.
