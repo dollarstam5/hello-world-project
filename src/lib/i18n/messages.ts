@@ -182,6 +182,7 @@ export const messages = {
       "Vous pouvez commencer sans créer de compte lorsque le moteur le permet. En direct est accessible en mode invité.",
 
     "identity.guest": "Invité",
+    "identity.member": "Membre",
     "identity.identified": "Identifié",
     "identity.verified": "Vérifié",
     "identity.trusted": "De confiance",
@@ -1137,6 +1138,7 @@ export const messages = {
       "You can get started without an account wherever the engine allows it. Live is available in guest mode.",
 
     "identity.guest": "Guest",
+    "identity.member": "Member",
     "identity.identified": "Identified",
     "identity.verified": "Verified",
     "identity.trusted": "Trusted",
