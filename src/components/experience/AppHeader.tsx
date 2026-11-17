@@ -11,10 +11,18 @@ import { useReelActivityProjection } from "@/domains/presence/model/reel-activit
 
 export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => void }) {
   const { t } = useI18n();
-  const unreadEvents = useCommunicationRuntime().getUnreadEventCount();
+  const communication = useCommunicationRuntime();
+  const unreadEvents = communication.getEvents().filter((event) => event.readAt === null);
+  const unreadBipEvents = unreadEvents.filter(
+    (event) => event.messageKey === "communication.event.reel.bipReceived",
+  ).length;
+  const unreadNonBipEvents = unreadEvents.length - unreadBipEvents;
   const pendingBips = useReelActivityProjection((state) => state.pendingBips);
   const bipsReady = useReelActivityProjection((state) => state.bipsReady);
-  const attentionCount = unreadEvents + (bipsReady ? pendingBips : 0);
+  // The same received bip is represented by both the server event and the
+  // engine projection. Count it once while retaining non-bip notifications.
+  const attentionCount =
+    unreadNonBipEvents + (bipsReady ? Math.max(pendingBips, unreadBipEvents) : unreadBipEvents);
   const [profileOpen, setProfileOpen] = useState(false);
   const { user } = useAuth();
   const displayName = useIdentity((state) => state.displayName);
