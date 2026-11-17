@@ -98,10 +98,10 @@ export function SignInView() {
 
       <div className="w-full max-w-sm">
         <h1 className="text-2xl font-semibold tracking-tight">
-          {t(mode === "forgot" ? "auth.forgotTitle" : "auth.title")}
+          {t(mode === "forgot" ? "auth.forgotTitle" : mode === "signUp" ? "auth.signUpTitle" : "auth.title")}
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          {t(mode === "forgot" ? "auth.forgotSubtitle" : "auth.subtitle")}
+          {t(mode === "forgot" ? "auth.forgotSubtitle" : mode === "signUp" ? "auth.signUpSubtitle" : "auth.subtitle")}
         </p>
 
         <form onSubmit={submit} className="mt-6 space-y-3">
