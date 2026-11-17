@@ -9,7 +9,7 @@ La cloche ouvre un centre unique de contrôle des communications et événements
 | Ordre | Espace        | Responsabilité V1                                                                                    |
 | ----- | ------------- | ---------------------------------------------------------------------------------------------------- |
 | 1     | Notifications | Informations système, alertes et changements d'état utiles à la personne.                            |
-| 2     | Assistant     | Accès à Vita, aide contextuelle et suivi des demandes d'assistance.                                  |
+| 2     | Assistant     | Accès facultatif à Vita, aide contextuelle et suivi des demandes d'assistance. L'espace n'est affiché que si la personne a activé l'assistant. |
 | 3     | Messages      | Conversations rattachées à une action ou à une mise en relation acceptée. Aucune messagerie libre.   |
 | 4     | En direct          | Demandes, invitations, acceptations et interactions En direct qui nécessitent une décision ou une action. |
 
@@ -55,7 +55,7 @@ Aucun compteur dynamique ne doit être simulé côté interface en l'absence de 
 
 ## Critères d'acceptation
 
-- Les quatre onglets sont présents dans l'ordre Notifications, Assistant, Messages, En direct.
+- Les quatre espaces fonctionnels sont définis dans l'ordre Notifications, Assistant, Messages, En direct. L'onglet Assistant est volontairement masqué lorsque l'assistant facultatif est désactivé ; lorsqu'il est activé, les quatre onglets sont présents dans cet ordre.
 - Les libellés sont disponibles en français et en anglais.
 - Les onglets restent utilisables sur petit écran sans débordement horizontal.
 - Les responsabilités et les règles de non-duplication sont respectées.
@@ -63,6 +63,35 @@ Aucun compteur dynamique ne doit être simulé côté interface en l'absence de 
 - Aucun compteur fictif n'est affiché.
 - Les modes invité et compte respectent leurs règles d'historique respectives.
 
+## Gouvernance générale
+
+Les règles transversales de déclenchement, de fréquence, de confidentialité, d'accessibilité, de sécurité, d'évolution V2/V3 et de validation des sources sont définies dans la [gouvernance complète du système de communication](./communication-system-governance-v1-v3.md). En cas de divergence, les règles de propriété des données et de vérité métier du domaine restent prioritaires ; le centre ne fabrique jamais d'événement.
+
 ## Statut d'implémentation
 
-Le composant V1 expose les quatre espaces et leurs états vides localisés. Les compteurs et indicateurs métier ne sont pas encore raccordés aux sources réelles ; ils ne sont donc pas présentés comme implémentés. Les critères ci-dessus restent le contrat de référence pour leur intégration.
+Le composant V1 expose Notifications, Messages et En direct par défaut, avec leurs états vides localisés. L'espace Assistant apparaît uniquement après activation explicite de l'assistant, conformément à son caractère facultatif et désactivé par défaut. Les Notifications affichent les événements Flash et Radar confirmés pendant la session, avec une cible de retour vers le moteur propriétaire. Les confirmations déjà visibles dans le moteur sont classées comme lues et ne déclenchent pas la cloche. Le compteur global additionne les notifications réellement non lues et les bips En direct en attente, à partir de la projection Réel existante. L’espace En direct affiche les agrégats chargés par le moteur et renvoie vers /reel pour les actions ; il ne refait aucune lecture réseau. Scan conserve ses résultats et son historique local dans son écran, car une recherche volontaire et synchrone ne constitue pas une notification. Messages reste vide tant qu’aucun système de conversation lié à une action n’est réellement disponible. Le registre d’événements partagé est en mémoire dans le runtime applicatif : il n’ajoute ni stockage, ni API, ni synchronisation ; il est effacé au changement de session ou au rechargement. Les notifications métier distantes, l’historique durable et les conversations ne sont donc pas déclarés implémentés.
+
+## Évolution — événements serveur Réel
+
+Les événements entrants réellement émis par les transitions serveur de Réel sont maintenant projetés dans le registre du runtime commun : bip reçu, bip accepté/refusé pour le membre expéditeur, et mise en relation clôturée. Ils apparaissent dans Notifications avec un lien vers En direct. Les listes et actions détaillées restent la propriété du moteur.
+
+La cloche ne compte pas deux fois un bip reçu présent à la fois dans le flux d'événements et dans la projection des bips en attente. Le flux reste limité à la session applicative ; aucun historique durable n'est ajouté.
+
+L'abonnement privé membre est unique et monté au niveau de l'application. Le contrôleur Réel ne crée plus d'abonnement par onglet. Le mode invité conserve son parcours temporaire et n'est jamais abonné au canal membre. Les essais multi-appareils et les mesures réseau réelles restent à effectuer avant validation terrain.
+
+## Indicateurs réellement raccordés — étape 4
+
+- L'onglet Notifications affiche uniquement les événements de session non lus qui ne sont pas des bips reçus Réel.
+- L'onglet En direct affiche le nombre de bips en attente à partir de la projection métier Réel lorsqu'elle est prête.
+- Un bip reçu présent à la fois dans le flux d'événements et dans la projection Réel reste compté une seule fois dans la cloche globale ; il est attribué visuellement à En direct plutôt que dupliqué dans le compteur Notifications.
+- Les compteurs d'onglets sont masqués lorsqu'ils valent zéro. Ils sont accessibles dans le nom des onglets et plafonnés visuellement à « 99+ ».
+- Aucun indicateur n'est inventé pour Messages ou Assistant en l'absence de source métier d'éléments non lus.
+
+
+## Chargement, erreurs et reconnexion — étape 4
+
+- Le centre lit uniquement l’état réseau partagé de la plateforme ; il ne crée aucun écouteur métier, abonnement Realtime, appel réseau ou polling.
+- Hors ligne, les événements de session déjà reçus restent visibles. Un message localisé précise que les nouvelles mises à jour reprendront lorsque la connexion reviendra.
+- Dans En direct, l’absence de projection chargée n’est plus présentée comme une liste vide : le centre invite à ouvrir le moteur propriétaire pour charger les données. Hors ligne, il indique clairement que l’actualisation est impossible.
+- Les erreurs détaillées de lecture ou d’action restent affichées et récupérables dans le moteur propriétaire, qui détient la requête et son état. Le centre renvoie vers ce moteur au lieu de fabriquer un état d’erreur ou de lancer une seconde requête.
+- Le retour réseau fait disparaître l’avertissement grâce au hook réseau partagé. La reprise des événements Réel continue de dépendre de l’abonnement privé unique déjà monté par l’application ; aucun second canal n’est créé par le centre.

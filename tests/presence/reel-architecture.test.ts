@@ -14,6 +14,8 @@ import peoplePanelSource from "../../src/domains/presence/ui/components/ReelPeop
 
 import controllerSource from "../../src/domains/presence/model/useReelProximityController.ts?raw";
 import realtimeServiceSource from "../../src/domains/presence/services/reel-activity-realtime.service.ts?raw";
+import communicationBridgeSource from "../../src/domains/presence/model/ReelCommunicationBridge.tsx?raw";
+import appShellSource from "../../src/components/app/AppShell.tsx?raw";
 import memberAvatarSource from "../../src/domains/profile/api/profile-avatar.client.ts?raw";
 
 const screenSource = `${screenCompositionSource}\n${radarComponentsSource}\n${guidedTourSource}\n${settingsHelpSource}\n${profileSheetSource}\n${settingsPanelSource}\n${activityPanelSource}\n${headerSource}\n${discoveryPromptSource}\n${nearbyPreviewSource}\n${globalPanelSource}\n${peoplePanelSource}`;
@@ -33,15 +35,49 @@ describe("En direct architecture boundaries", () => {
     expect(controller).not.toMatch(/from ["']\.\/.*\.css["']/);
     expect(controller).not.toMatch(/from ["']@\/domains\/presence\/ui\//);
     expect(controller).not.toMatch(/from ["']@\/integrations\/supabase\/client["']/);
-    expect(controller).toContain("subscribeToReelMemberActivity");
+    expect(controller).toContain("useCommunicationRuntime");
+    expect(controller).not.toContain("subscribeToReelMemberActivity");
   });
 
   it("keeps private Realtime channel ownership inside its service", () => {
     const service = realtimeServiceSource;
     expect(service).toContain("config: { private: true }");
     expect(service).toContain("supabase.removeChannel(channel)");
+    expect(service).toContain('channel.on("broadcast", { event: "reel_activity" }');
+    expect(service).not.toContain("postgres_changes");
     expect(service).not.toContain("guest_session_id");
     expect(service).not.toContain("presence_id");
+    expect(service).toContain('status === "SUBSCRIBED"');
+    expect(service).toContain("onReconnect?.()");
+  });
+
+  it("mounts one app-scoped bridge and forwards only server-authored member events", () => {
+    expect(appShellSource.match(/<ReelCommunicationBridge \/>/g)?.length).toBe(1);
+    expect(communicationBridgeSource).toContain("subscribeToReelMemberActivity");
+    expect(communicationBridgeSource).toContain("communication.publishEvent");
+    expect(communicationBridgeSource).toContain('source: "reel"');
+    expect(communicationBridgeSource).toContain('access.mode !== "member"');
+    expect(communicationBridgeSource).not.toContain("guest_session_id");
+  });
+
+  it("keeps guest activity refresh event-driven with a low-frequency visible-only fallback", () => {
+    expect(controllerSource).toContain(
+      'document.addEventListener("visibilitychange", refreshWhenAvailable)',
+    );
+    expect(controllerSource).toContain('window.addEventListener("focus", refreshWhenAvailable)');
+    expect(controllerSource).toContain('window.addEventListener("online", refreshWhenAvailable)');
+    expect(controllerSource).toContain('document.visibilityState !== "visible"');
+    expect(controllerSource).toContain("guestActivityRefreshInFlight.current");
+    expect(controllerSource).toContain('"vitalis:reel-activity-reconnected"');
+    expect(controllerSource).toContain("}, 30_000)");
+    expect(controllerSource).not.toContain("}, 3000)");
+    expect(controllerSource).toContain(
+      'document.removeEventListener("visibilitychange", refreshWhenAvailable)',
+    );
+    expect(controllerSource).toContain('window.removeEventListener("focus", refreshWhenAvailable)');
+    expect(controllerSource).toContain(
+      'window.removeEventListener("online", refreshWhenAvailable)',
+    );
   });
 
   it("does not couple guest presence activation to nearby discovery consent", () => {
@@ -134,11 +170,11 @@ describe("En direct architecture boundaries", () => {
     expect(activityBlock).not.toContain('access.mode === "guest"');
   });
 
-  it("builds the alerts view from live bips and active connections", () => {
-    expect(controllerSource).toContain('activityTab !== "notifications"');
-    expect(controllerSource).toContain("const refreshActivity = () =>");
-    expect(controllerSource).toContain('"reel_bips"');
-    expect(controllerSource).toContain('"reel_connections"');
+  it("builds the alerts view from existing bips and connection reads", () => {
+    expect(controllerSource).toContain('activityTab === "notifications"');
+    expect(controllerSource).toContain("Promise.all([refreshBips(), refreshConnections()])");
+    expect(controllerSource).toContain("listReelBips()");
+    expect(controllerSource).toContain("listReelConnections()");
     expect(screenSource).toContain("receivedGuestBips.map((bip)");
     expect(screenSource).toContain('connection.status === "active"');
     expect(screenSource).toContain("connectionsMessage");

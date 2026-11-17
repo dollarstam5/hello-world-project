@@ -4,13 +4,31 @@ import { Bell, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProfileQuickPreview } from "./ProfileQuickPreview";
 import { useIdentity } from "@/lib/experience/identity";
+import { useAuth } from "@/domains/auth/model/useAuth";
 import { useI18n } from "@/lib/i18n/useI18n";
+import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
+import { useReelActivityProjection } from "@/domains/presence/model/reel-activity-projection";
 
 export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => void }) {
   const { t } = useI18n();
+  const communication = useCommunicationRuntime();
+  const unreadEvents = communication.getEvents().filter((event) => event.readAt === null);
+  const unreadBipEvents = unreadEvents.filter(
+    (event) => event.messageKey === "communication.event.reel.bipReceived",
+  ).length;
+  const unreadNonBipEvents = unreadEvents.length - unreadBipEvents;
+  const pendingBips = useReelActivityProjection((state) => state.pendingBips);
+  const bipsReady = useReelActivityProjection((state) => state.bipsReady);
+  // The same received bip is represented by both the server event and the
+  // engine projection. Count it once while retaining non-bip notifications.
+  const attentionCount =
+    unreadNonBipEvents + (bipsReady ? Math.max(pendingBips, unreadBipEvents) : unreadBipEvents);
   const [profileOpen, setProfileOpen] = useState(false);
+  const { user } = useAuth();
   const displayName = useIdentity((state) => state.displayName);
-  const avatarInitials = displayName
+  const displayNameOwnerId = useIdentity((state) => state.displayNameOwnerId);
+  const visibleDisplayName = user && displayNameOwnerId === user.id ? displayName : undefined;
+  const avatarInitials = visibleDisplayName
     ?.trim()
     .split(/\s+/)
     .slice(0, 2)
@@ -46,10 +64,22 @@ export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => 
               variant="ghost"
               size="icon"
               onClick={onOpenCommunication}
-              aria-label={t("communication.open")}
-              className="h-12 w-12 rounded-full"
+              aria-label={
+                attentionCount > 0
+                  ? `${t("communication.open")} (${attentionCount})`
+                  : t("communication.open")
+              }
+              className="relative h-12 w-12 rounded-full"
             >
               <Bell aria-hidden className="!size-6" />
+              {attentionCount > 0 ? (
+                <span
+                  className="absolute right-1 top-1 grid min-h-5 min-w-5 place-items-center rounded-full bg-primary px-1 text-[10px] font-bold leading-none text-primary-foreground"
+                  aria-hidden="true"
+                >
+                  {attentionCount > 99 ? "99+" : attentionCount}
+                </span>
+              ) : null}
             </Button>
 
             <Button

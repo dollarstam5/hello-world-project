@@ -1,11 +1,16 @@
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Radar, RadioTower, ScanLine, Zap, ArrowUpRight } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Surface } from "@/components/app/Surface";
+import { Button } from "@/components/ui/button";
 import { PublicProfilePreview } from "@/components/app/PublicProfilePreview";
 import { Indicator } from "@/components/app/Indicator";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useIdentity } from "@/lib/experience/identity";
+import { useAuth } from "@/domains/auth/model/useAuth";
+import { claimNameGreetingForSession, getHomeGreetingKey } from "@/lib/communication/greeting";
+import { formatCommunicationMessage } from "@/lib/communication/format";
 import { createDemoFlashes } from "@/domains/flash/model/demo-flashes";
 import { VitalisVisionCard } from "@/components/experience/VitalisVisionCard";
 import heroPhoto from "@/assets/images/experience/home-neighbours-1600.webp";
@@ -79,20 +84,40 @@ function EngineCard({
 /** Home is the calm entry point; examples are previews, never live activity. */
 export function HomeFoundation() {
   const { t } = useI18n();
-  const tier = useIdentity((s) => s.tier);
+  const { user, loading: authLoading } = useAuth();
   const displayName = useIdentity((s) => s.displayName);
+  const displayNameOwnerId = useIdentity((s) => s.displayNameOwnerId);
+  const [localHour, setLocalHour] = useState<number | null>(null);
+  const [nameGreetingUserId, setNameGreetingUserId] = useState<string | null>(null);
 
-  const identityLabel =
-    tier === "trusted"
-      ? t("identity.trusted")
-      : tier === "identified"
-        ? t("identity.identified")
-        : t("identity.guest");
+  useEffect(() => {
+    setLocalHour(new Date().getHours());
+  }, []);
 
-  const greeting =
-    tier !== "guest" && displayName?.trim()
-      ? t("home.welcome.named").replace("{name}", displayName.trim())
-      : t("home.welcome.guest");
+  useEffect(() => {
+    if (authLoading) return;
+    if (!user) {
+      if (nameGreetingUserId !== null) setNameGreetingUserId(null);
+      return;
+    }
+    // A cached name is usable only for the account that supplied it.
+    if (displayNameOwnerId !== user.id || !displayName?.trim() || nameGreetingUserId === user.id) {
+      return;
+    }
+    if (claimNameGreetingForSession()) setNameGreetingUserId(user.id);
+  }, [authLoading, user, displayName, displayNameOwnerId, nameGreetingUserId]);
+
+  // Authentication is the source of truth for member/guest recognition.
+  // UDI trust levels are not inferred from the local identity placeholder.
+  const identityLabel = authLoading ? null : user ? t("identity.member") : t("identity.guest");
+
+  const greetingKey =
+    localHour === null || authLoading ? "home.welcome" : getHomeGreetingKey(localHour);
+  const greetingName =
+    user && displayNameOwnerId === user.id && nameGreetingUserId === user.id && displayName?.trim()
+      ? `, ${displayName.trim()}`
+      : "";
+  const greeting = formatCommunicationMessage(t, greetingKey, { name: greetingName });
 
   const demoFlashes = createDemoFlashes();
   const demoTitles: Record<string, string> = {
@@ -124,9 +149,11 @@ export function HomeFoundation() {
         />
         <div className="relative z-20 flex w-full min-w-0 flex-col justify-between gap-10 p-5 text-foreground sm:p-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <span className="rounded-full border border-border bg-surface/90 px-3 py-1.5 text-xs font-medium text-foreground shadow-sm">
-              {identityLabel}
-            </span>
+            {identityLabel ? (
+              <span className="rounded-full border border-border bg-surface/90 px-3 py-1.5 text-xs font-medium text-foreground shadow-sm">
+                {identityLabel}
+              </span>
+            ) : null}
             <span className="rounded-full bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary">
               {t("app.tagline")}
             </span>
@@ -147,6 +174,43 @@ export function HomeFoundation() {
           </div>
         </div>
       </section>
+
+      {!authLoading ? (
+        <Surface
+          variant="sunken"
+          padding="md"
+          bordered
+          className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+          aria-labelledby="home-journey-title"
+        >
+          <div className="min-w-0 stack-2">
+            <h2 id="home-journey-title" className="text-base font-semibold">
+              {t(user ? "home.journey.member.title" : "home.journey.guest.title")}
+            </h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              {t(user ? "home.journey.member.body" : "home.journey.guest.body")}
+            </p>
+          </div>
+          <div className="flex shrink-0 flex-wrap gap-2">
+            {user ? (
+              <Button asChild className="min-h-11">
+                <Link to="/espace/profil">{t("home.journey.member.profile")}</Link>
+              </Button>
+            ) : (
+              <>
+                <Button asChild className="min-h-11">
+                  <Link to="/reel">{t("home.journey.guest.live")}</Link>
+                </Button>
+                <Button asChild variant="outline" className="min-h-11">
+                  <Link to="/auth" search={{ mode: "signUp" }}>
+                    {t("home.journey.guest.signup")}
+                  </Link>
+                </Button>
+              </>
+            )}
+          </div>
+        </Surface>
+      ) : null}
 
       <section className="stack-4" aria-labelledby="home-engines-title">
         <div className="stack-1">

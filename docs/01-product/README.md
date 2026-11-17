@@ -12,6 +12,9 @@ Cette section documente la vision produit, les intentions d'usage, les parcours,
 - [Niveaux de confiance](./trust-levels.md)
 - [Vitalis Experience System](./experience-system.md)
 - [Centre de communication — règles produit V1](./communication-center-v1.md)
+- [Système de communication humaine V1 à V3](./communication-system-v1-v3.md)
+- [Gouvernance complète du système de communication V1 à V3](./communication-system-governance-v1-v3.md) — règles transversales, limites, architecture, sécurité, IA, tests et processus de développement.
+- [Catalogue de communication V1](./communication-catalog-v1.md)
 - [Onboarding Vitalis — parcours V1](./onboarding-v1.md)
 - [Langage humain et communication Vitalis](./communication-language.md)
 - [Audit du langage humain — V1](./language-audit-v1.md)
@@ -21,6 +24,7 @@ Cette section documente la vision produit, les intentions d'usage, les parcours,
 
 ## Références d'architecture liées
 
+- [Architecture du système de communication](../02-architecture/communication-system-architecture.md)
 - [Gouvernance des données de démonstration — V1](../02-architecture/demo-data-governance.md)
 - [Charte des micro-interactions et du mouvement — V1](../02-architecture/micro-interactions-motion-charter-v1.md)
 - [Domaine Trust et Trust Engine](../02-architecture/trust-domain.md)

@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n/useI18n";
+import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
+import { publishFlashCommunicationEvent } from "../communication-events";
 import { flashesRepository, useLocalQuery } from "@/platform/offline";
 import { archiveFlash, deleteFlash, updateFlash } from "../data";
 
@@ -24,6 +26,7 @@ const statusKeys = {
 /** Shows only records owned by the signed-in person and present in their local database. */
 export function MyFlashManagement() {
   const { t, locale } = useI18n();
+  const communication = useCommunicationRuntime();
   const [pendingDelete, setPendingDelete] = useState<PendingDelete>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [actionError, setActionError] = useState(false);
@@ -76,6 +79,7 @@ export function MyFlashManagement() {
 
     try {
       await archiveFlash(record.id);
+      publishFlashCommunicationEvent(communication, record, "archived");
     } catch {
       setActionError(true);
     } finally {
@@ -87,7 +91,8 @@ export function MyFlashManagement() {
     setBusyId(record.id);
     setActionError(false);
     try {
-      await updateFlash(record.id, editDraft);
+      const updated = await updateFlash(record.id, editDraft);
+      publishFlashCommunicationEvent(communication, updated, "updated");
       setEditingId(null);
       setEditDraft("");
     } catch {
@@ -103,6 +108,7 @@ export function MyFlashManagement() {
 
     try {
       await deleteFlash(record.id);
+      publishFlashCommunicationEvent(communication, record, "deleted");
       setPendingDelete(null);
     } catch {
       setActionError(true);

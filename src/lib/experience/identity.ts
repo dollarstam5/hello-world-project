@@ -15,15 +15,17 @@ export type IdentityTier = "guest" | "identified" | "trusted";
 interface IdentityState {
   tier: IdentityTier;
   displayName?: string;
+  displayNameOwnerId?: string;
   setTier: (tier: IdentityTier) => void;
-  setDisplayName: (name: string | undefined) => void;
+  setDisplayName: (name: string | undefined, ownerId?: string) => void;
 }
 
 export const useIdentity = create<IdentityState>((set) => ({
   tier: "guest",
   displayName: undefined,
+  displayNameOwnerId: undefined,
   setTier: (tier) => set({ tier }),
-  setDisplayName: (displayName) => set({ displayName }),
+  setDisplayName: (displayName, displayNameOwnerId) => set({ displayName, displayNameOwnerId }),
 }));
 
 /** Convenience: does this user have at least the given tier? */

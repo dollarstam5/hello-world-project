@@ -1,4 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
+import { useAuth } from "@/domains/auth/model/useAuth";
 import { Sheet } from "@/components/app/Sheet";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -41,6 +42,7 @@ function EngineCard({
 /** A short, five-step introduction to Vitalis, shown once per device. */
 export function OnboardingSheet() {
   const { t, locale, setLocale } = useI18n();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const shouldShow = useOnboarding((state) => state.shouldShow);
   const hydrated = useOnboarding((state) => state.hydrated);
@@ -197,7 +199,11 @@ export function OnboardingSheet() {
                   {t("onboarding.ready.body")}
                 </p>
               </div>
-              <p className="text-sm text-muted-foreground">{t("onboarding.ready.guest")}</p>
+              {!authLoading ? (
+                <p className="text-sm text-muted-foreground">
+                  {t(user ? "onboarding.ready.member" : "onboarding.ready.guest")}
+                </p>
+              ) : null}
             </>
           )}
         </div>

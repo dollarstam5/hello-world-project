@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  CURRENT_ASSISTANT_CACHE_VERSION,
   MIN_FUZZY_CONFIDENCE,
   searchLocalKnowledge,
 } from "@/domains/assistant/services/localSearch.service";
@@ -24,7 +25,7 @@ describe("connaissance locale de Vita", () => {
         answer: "Ouvre Radar puis active la veille.",
         locale: "fr",
         category: "feature",
-        version: 1,
+        version: CURRENT_ASSISTANT_CACHE_VERSION,
         updatedAt: Date.now(),
       },
     ]);

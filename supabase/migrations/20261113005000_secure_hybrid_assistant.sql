@@ -82,7 +82,7 @@ CREATE OR REPLACE FUNCTION public.claim_assistant_request(
 ) RETURNS JSONB
 LANGUAGE plpgsql
 SECURITY DEFINER
-SET search_path = pg_catalog, public
+SET search_path = ''
 AS $$
 DECLARE
   v_user UUID := auth.uid();
@@ -90,7 +90,8 @@ DECLARE
   v_minute_count INTEGER;
   v_day_count INTEGER;
 BEGIN
-  IF v_user IS NULL OR p_request_id IS NULL OR p_locale NOT IN ('fr', 'en') THEN
+  IF v_user IS NULL OR p_request_id IS NULL OR p_locale IS NULL
+     OR p_locale NOT IN ('fr', 'en') THEN
     RETURN jsonb_build_object('decision', 'denied');
   END IF;
 
@@ -134,7 +135,7 @@ CREATE OR REPLACE FUNCTION public.complete_assistant_request(
 ) RETURNS BOOLEAN
 LANGUAGE plpgsql
 SECURITY DEFINER
-SET search_path = pg_catalog, public
+SET search_path = ''
 AS $$
 BEGIN
   IF auth.uid() IS NULL
@@ -165,7 +166,7 @@ CREATE OR REPLACE FUNCTION public.fail_assistant_request(p_request_id UUID)
 RETURNS BOOLEAN
 LANGUAGE plpgsql
 SECURITY DEFINER
-SET search_path = pg_catalog, public
+SET search_path = ''
 AS $$
 BEGIN
   IF auth.uid() IS NULL OR p_request_id IS NULL THEN
@@ -193,19 +194,18 @@ CREATE OR REPLACE FUNCTION public.record_ai_cache_candidate(
 ) RETURNS UUID
 LANGUAGE plpgsql
 SECURITY DEFINER
-SET search_path = pg_catalog, public
+SET search_path = ''
 AS $$
 DECLARE
   v_cache_id UUID;
   v_distinct INTEGER;
 BEGIN
-  IF auth.role() IS DISTINCT FROM 'service_role' THEN
-    RAISE EXCEPTION 'service_role_required' USING ERRCODE = '42501';
-  END IF;
+  -- EXECUTE is granted only to service_role; no client role can call this RPC.
 
   IF p_user_id IS NULL
      OR p_question_hash IS NULL
      OR p_question_hash !~ '^[0-9a-f]{64}$'
+     OR p_locale IS NULL
      OR p_locale NOT IN ('fr', 'en')
      OR p_category NOT IN ('navigation', 'feature', 'account', 'safety', 'other')
      OR p_normalized_question IS NULL

@@ -64,7 +64,7 @@ export function ProfileManagementPage() {
           setError("profile.error");
         } else {
           setProfile(data);
-          setIdentityName(data.display_name || undefined);
+          setIdentityName(data.display_name || undefined, authData.user.id);
         }
       } catch {
         if (active) setError("profile.error");
@@ -114,7 +114,7 @@ export function ProfileManagementPage() {
         } else {
           setProfile({ ...profile, display_name: value });
         }
-        if (field === "display_name") setIdentityName(value);
+        if (field === "display_name") setIdentityName(value, userId);
         setEditing(null);
         setNotice("profile.saved");
       }

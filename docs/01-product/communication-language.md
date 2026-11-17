@@ -8,7 +8,6 @@
 La communication de Vitalis doit être humaine, chaleureuse, naturelle, directe et respectueuse. Elle doit ressembler à celle d'une personne serviable qui accompagne sans juger, sans infantiliser et sans compliquer.
 
 Chaque message doit aider la personne à comprendre :
-
 - ce qui vient de se passer ;
 - ce qu'elle peut faire maintenant ;
 - ce qui dépend d'elle et ce qui est pris en charge par Vitalis.
@@ -27,27 +26,37 @@ La simplicité prime sur le vocabulaire technique, les effets de style et les fo
 - Garder la même voix dans les parcours, les notifications, les erreurs, les permissions et les messages d'aide.
 - Traduire le sens et le ton en français et en anglais ; ne pas produire une traduction mot à mot qui sonne artificielle.
 
-## 3. Noms des espaces
+## 3. Usage du prénom
+
+Le prénom ou le nom d'affichage choisi doit être utilisé de façon occasionnelle et naturelle, jamais systématiquement. Il peut rendre un accueil, un retour pertinent ou un accompagnement personnel plus chaleureux. Il est généralement inutile dans les libellés, les erreurs techniques et les notifications répétitives.
+
+- Utiliser uniquement le prénom ou le nom d'affichage déjà disponible dans un contexte autorisé, sans déduire un prénom à partir d'un nom complet.
+- Ne déclencher aucune lecture réseau supplémentaire uniquement pour récupérer le prénom.
+- Ne pas répéter le prénom dans plusieurs messages rapprochés.
+- Prévoir une formulation naturelle sans prénom si la donnée est absente.
+- Le nom utilisé est une donnée de présentation, jamais une preuve d'identité ou une base d'autorisation.
+
+## 4. Noms des espaces
 
 - En français, conserver les noms Flash, Scan, En direct, Radar et 2×2.
 - En anglais, conserver Flash, Scan, Radar et 2×2 ; traduire le nom de l'espace En direct par **Live**, plus naturel pour désigner la présence en temps réel.
 - Utiliser le même nom dans l'accueil, l'onboarding, la navigation, le centre de communication et les pages de destination.
 
-## 4. Exemples de formulations
+## 5. Exemples de formulations
 
-| À éviter                                       | Préférer                                                                      |
-| ---------------------------------------------- | ----------------------------------------------------------------------------- |
-| « Opération exécutée avec succès »             | « C'est fait ! »                                                              |
-| « Erreur de synchronisation »                  | « Nous n'avons pas pu terminer. Réessayons. »                                 |
-| « Aucun résultat disponible »                  | « Nous n'avons rien trouvé pour le moment. »                                  |
-| « Authentification requise »                   | « Connectez-vous pour continuer. »                                            |
-| « Autorisation de géolocalisation refusée »    | « Nous n'avons pas accès à votre position. Vous pouvez nous l'autoriser. »    |
-| « Requête en cours de traitement »             | « Nous nous en occupons… »                                                    |
+| À éviter | Préférer |
+|---|---|
+| « Opération exécutée avec succès » | « C'est fait ! » |
+| « Erreur de synchronisation » | « Nous n'avons pas pu terminer. Réessayons. » |
+| « Aucun résultat disponible » | « Nous n'avons rien trouvé pour le moment. » |
+| « Authentification requise » | « Connectez-vous pour continuer. » |
+| « Autorisation de géolocalisation refusée » | « Nous n'avons pas accès à votre position. Vous pouvez nous l'autoriser. » |
+| « Requête en cours de traitement » | « Nous nous en occupons… » |
 | « Données locales en attente de transmission » | « Votre action est gardée ici. Elle sera envoyée dès que le réseau revient. » |
 
 Les formulations sont des exemples de ton, pas des textes obligatoires dans tous les contextes. Le message doit toujours refléter l'état technique réel.
 
-## 5. Messages selon le contexte
+## 6. Messages selon le contexte
 
 - **Accueil et onboarding :** inviter à découvrir Vitalis à son rythme, sans pression et sans laisser croire qu'un compte est obligatoire lorsque le mode invité est permis.
 - **Actions et confirmations :** expliquer ce qui va se passer avant une action importante ; confirmer uniquement ce qui a réellement été effectué.
@@ -58,16 +67,15 @@ Les formulations sont des exemples de ton, pas des textes obligatoires dans tous
 - **Erreurs et reprise :** dire ce qui n'a pas fonctionné, proposer une prochaine étape simple et ne jamais faire porter la faute à la personne.
 - **Hors ligne :** distinguer une action gardée sur l'appareil, une action envoyée et une action confirmée par le service.
 
-## 6. Cohérence V1 et versions futures
+## 7. Cohérence V1 et versions futures
 
 En V1, la voix humaine s'exprime au moyen de textes localisés et de boîtes de dialogue courtes, simples et déterministes. Cela ne signifie pas que Vitalis comprend librement une conversation.
 
 La compréhension adaptative, les questions générées dynamiquement et l'interaction vocale de type appel relèvent de V2/V3. Leur absence en V1 ne doit pas être masquée par des formulations qui laisseraient croire à une intelligence conversationnelle déjà disponible.
 
-## 7. Contrôle qualité éditorial
+## 8. Contrôle qualité éditorial
 
 Avant publication d'un texte visible, vérifier :
-
 1. Est-il compris dès la première lecture ?
 2. Est-il humain, naturel et respectueux ?
 3. Évite-t-il le jargon inutile ?
@@ -79,5 +87,8 @@ Avant publication d'un texte visible, vérifier :
 ## Références liées
 
 - [Vitalis Experience System](./experience-system.md)
+- [Système de communication humaine V1 à V3](./communication-system-v1-v3.md)
+- [Gouvernance complète de la communication V1 à V3](./communication-system-governance-v1-v3.md)
+- [Catalogue de communication V1](./communication-catalog-v1.md)
 - [Standards UX et accessibilité — Phase 2](../00-foundation/phase-2-ux-standards.md)
 - [Centre de communication — règles produit V1](./communication-center-v1.md)

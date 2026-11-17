@@ -4,21 +4,27 @@ Ce répertoire suit une structure canonique pour la documentation active.
 
 ## Structure active
 
-- [`00-foundation/`](./00-foundation/README.md) — architecture, conventions et langage de design
-- [`01-product/`](./01-product/README.md) — vision, personas, parcours, navigation, confiance et expérience
-- [`02-architecture/`](./02-architecture/README.md) — architecture système, front-end, backend, base de données, synchronisation et identité numérique
-- [`03-api/`](./03-api/README.md) — contrats et références API
-- [`03-engines/`](./03-engines/README.md) — documents de domaines métier classés par moteur
-- [`04-database/`](./04-database/README.md) — modèle de données, schéma PostgreSQL, grants et politiques RLS
-- [`05-ai/`](./05-ai/README.md) — gouvernance et règles d'ingénierie IA
-- [`06-operations/`](./06-operations/README.md) — déploiement, performance, problèmes techniques et release
-- [`07-annexes/`](./07-annexes/README.md) — glossaire et références complémentaires
+- [00-foundation/](./00-foundation/README.md) — architecture, conventions et langage de design
+- [01-product/](./01-product/README.md) — vision, personas, parcours, navigation, confiance et expérience
+- [02-architecture/](./02-architecture/README.md) — architecture système, front-end, backend, base de données, synchronisation et identité numérique
+- [03-api/](./03-api/README.md) — contrats et références API
+- [03-engines/](./03-engines/README.md) — documents de domaines métier classés par moteur
+- [04-database/](./04-database/README.md) — modèle de données, schéma PostgreSQL, grants et politiques RLS
+- [05-ai/](./05-ai/README.md) — gouvernance et règles d'ingénierie IA
+- [06-operations/](./06-operations/README.md) — déploiement, performance, problèmes techniques et release
+- [07-annexes/](./07-annexes/README.md) — glossaire et références complémentaires
 
 ## Références canoniques
 
 - [Langage de design Vitalis](./00-foundation/design-language.md)
 - [Vitalis Experience System](./01-product/experience-system.md)
 - [Navigation produit Vitalis](./01-product/navigation.md)
+- [Système de communication humaine V1 à V3](./01-product/communication-system-v1-v3.md)
+- [Gouvernance complète de la communication V1 à V3](./01-product/communication-system-governance-v1-v3.md) — exigences, limites, sécurité, maturité, IA future, tests et critères de livraison.
+- [Catalogue de communication V1](./01-product/communication-catalog-v1.md)
+- [Architecture du système de communication](./02-architecture/communication-system-architecture.md)
+- [Centre de communication — règles produit V1](./01-product/communication-center-v1.md)
+- [Langage humain et communication Vitalis](./01-product/communication-language.md)
 - [Espaces personnels et gestion indépendante des moteurs — V1](./01-product/personal-and-engine-management-v1.md)
 - [Parcours utilisateurs](./01-product/user-journeys.md)
 - [Présentation des pages moteurs — V1](./01-product/engine-page-preview-standard-v1.md)

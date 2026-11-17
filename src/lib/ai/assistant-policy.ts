@@ -59,6 +59,15 @@ export function containsSensitiveSecret(content: string): boolean {
   return SENSITIVE_PATTERNS.some((pattern) => pattern.test(content));
 }
 
+/** Apply the same sensitive-input rule to every user turn on every server path. */
+export function hasSensitiveUserContent(
+  messages: readonly { role: string; content: string }[],
+): boolean {
+  return messages.some(
+    (message) => message.role === "user" && containsSensitiveSecret(message.content),
+  );
+}
+
 export function isSharedCacheAnswerEligible(answer: string): boolean {
   return (
     answer.length >= 3 &&

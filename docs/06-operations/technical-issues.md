@@ -50,11 +50,13 @@
 
 ## TECH-006 — Voies d'intégration IA divergentes
 
-- **Priorité :** à clarifier avant toute évolution fonctionnelle, coût ou sécurité de l'assistant.
-- **Constat :** le chemin relié à `AssistantTab` passe par `useHybridAssistant` et `POST /api/public/assistant`, dont le handler appelle la passerelle Lovable. Le dépôt contient aussi `askAssistant` / `runPaidAssistant`, qui utilisent la validation partagée, les quotas SQL, le cache promu et la passerelle Cloudflare AI, ainsi qu'une abstraction `AssistantProvider` mock.
-- **Risque :** les limites de conversation, les filtres de contenu sensible, les quotas, la gestion des erreurs et les paramètres fournisseur ne sont pas identiques par construction. La présence d'un chemin dans le dépôt ne prouve pas qu'il est actif ni qu'il est utilisé par l'interface.
-- **Vérification requise :** inventorier les appelants de chaque voie, confirmer le chemin réellement déployé, choisir une voie canonique ou définir leurs responsabilités, comparer les protections et les budgets, puis ajouter des tests d'intégration.
-- **Garde-fou :** ce constat ne justifie pas une modification de code, de fournisseur, de secrets ou de base de données dans le lot documentaire. Vérifier également TECH-001 avant de s'appuyer sur les tables/fonctions IA.
+- **Priorité :** suivi jusqu'à la validation de la base distante et du parcours canonique.
+- **Constat initial :** l'interface utilisait le streaming Lovable sans appliquer la validation complète ni les quotas SQL. Une voie alternative `askAssistant` / `runPaidAssistant` existait avec Cloudflare AI, cache et quotas, mais son hook n'était pas raccordé à l'interface active.
+- **Correction intégrée dans la branche de la PR #84 :** `POST /api/public/assistant` reste la voie canonique afin de préserver le streaming. Elle appelle désormais `validateConversation`, `containsSensitiveSecret`, `safeAssistantRoute` et les RPC `claim_assistant_request`, `complete_assistant_request`, `fail_assistant_request`. Les limites sont alignées sur la politique commune (8 messages, 600 caractères par message, 4 000 caractères cumulés). Les demandes sensibles sont refusées avant l'appel fournisseur ; le quota est réclamé avant chaque génération ; le résultat est marqué terminé ou échoué selon la fin du flux.
+- **Protection supplémentaire :** le client réduit les historiques à des rôles alternés et à la taille maximale autorisée, y compris après des tours échoués ou hors ligne. Le corps des erreurs fournisseur n'est plus envoyé dans les journaux applicatifs.
+- **Limite de base :** les fonctions RPC et tables nécessaires sont définies dans `src/supabase/migrations/20260912003000_secure_hybrid_assistant.sql`, hors du chemin standard `supabase/migrations/`. Leur présence sur la base distante n'a pas été vérifiée. Si la fonction de quota est absente ou en erreur, le parcours distant échoue de manière fermée ; il ne doit pas basculer vers un appel non plafonné.
+- **Statut :** correction de code intégrée ; tests CI et vérification de l'application de la migration restent requis. Ne pas déclarer les quotas de production actifs avant vérification en lecture seule de la base concernée.
+- **Garde-fou :** la voie Cloudflare héritée n'est pas utilisée par l'interface active et ne doit pas être développée en parallèle. Sa suppression éventuelle et la réconciliation de la migration relèvent de lots distincts après validation.
 - **Référence :** [Architecture IA et intégrations](../02-architecture/ai-architecture-integrations.md).
 
 ## Méthode de triage

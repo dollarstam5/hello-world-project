@@ -82,12 +82,51 @@ export const messages = {
       "Vos échanges apparaîtront ici après une mise en relation ou une action acceptée.",
     "communication.reel.empty":
       "Les bips reçus apparaîtront ici pendant votre présence active. Aucun bip fictif n’est ajouté.",
+    "communication.reel.pendingBips": "Bips en attente",
+    "communication.reel.activeConnections": "Mises en relation actives",
+    "communication.reel.open": "Voir En direct",
+    "communication.offline":
+      "Vous êtes hors ligne. Les informations déjà reçues restent disponibles ; les nouvelles reprendront au retour du réseau.",
+    "communication.reel.notLoaded": "Ouvrez En direct pour charger vos dernières activités.",
+    "communication.reel.offline":
+      "Les activités En direct ne peuvent pas être actualisées hors ligne. Revenez en ligne pour les consulter.",
+    "communication.events.markRead": "Marquer comme lu",
+    "communication.events.empty": "Aucune nouvelle pour le moment.",
+    "communication.events.openFlash": "Ouvrir Flash",
+    "communication.events.openRadar": "Ouvrir Radar",
+    "communication.events.openReel": "Ouvrir En direct",
+    "communication.event.reel.title": "En direct",
+    "communication.event.reel.bipReceived": "Une personne à proximité vous a fait signe.",
+    "communication.event.reel.bipAccepted":
+      "Votre signe a été accepté. Une mise en relation est établie.",
+    "communication.event.reel.bipDeclined": "Votre signe n’a pas été accepté.",
+    "communication.event.reel.connectionClosed": "Une mise en relation a été terminée.",
+    "communication.event.flash.title": "Flash",
+    "communication.event.flash.draftSaved":
+      "Votre brouillon est enregistré sur cet appareil. Il sera synchronisé dès que possible.",
+    "communication.event.flash.updated": "Votre Flash a bien été modifié sur cet appareil.",
+    "communication.event.flash.archived": "Votre Flash a bien été archivé.",
+    "communication.event.flash.deleted": "Votre Flash a bien été supprimé de cet appareil.",
+    "communication.event.radar.title": "Radar",
+    "communication.event.radar.saved": "Votre veille a bien été enregistrée.",
+    "communication.event.radar.updated": "Votre veille a bien été modifiée.",
+    "communication.event.radar.cancelled": "Votre veille a bien été annulée.",
+
     "home.welcome": "Bienvenue dans Vitalis",
     "home.hero.eyebrow": "Des rencontres et des coups de main, tout près de vous",
     "home.hero.photoAlt":
       "Cinq amies souriantes réunies en plein air, serrées les unes contre les autres.",
     "home.welcome.guest": "Bonjour et bienvenue chez Vitalis !",
     "home.welcome.named": "Bonjour, {name} !",
+    "home.greeting.veryLate": "Bonsoir{name}. Prenez votre temps.",
+    "home.greeting.earlyMorning": "Bonjour{name} !",
+    "home.greeting.morning": "Bonjour{name} ! Belle journée à vous.",
+    "home.greeting.lateMorning": "Bonjour{name} ! Que souhaitez-vous faire ?",
+    "home.greeting.midday": "Bonjour{name} !",
+    "home.greeting.afternoon": "Bon après-midi{name} !",
+    "home.greeting.evening": "Bonne fin de journée{name} !",
+    "home.greeting.night": "Bonsoir{name} !",
+    "home.greeting.late": "Bonsoir{name}.",
     "home.demo.title": "Un petit aperçu de Vitalis",
     "home.demo.desc": "Voici quelques exemples de ce que vous pouvez découvrir avec Flash.",
     "home.demo.childcare": "Une personne de confiance pour garder les enfants ce week-end",
@@ -115,7 +154,7 @@ export const messages = {
     "home.engine.flash.title": "Flash",
     "home.engine.exampleLabel": "Exemple",
     "home.engine.flash.desc":
-      "Partagez un besoin ou une proposition, puis découvrez les publications utiles.",
+      "Préparez un besoin ou une proposition, enregistrez votre brouillon et découvrez les Flashs publics disponibles.",
     "home.engine.flash.example": "Proposer de préparer un repas pour une réunion.",
     "home.engine.scan.title": "Scan",
     "home.engine.scan.desc":
@@ -123,16 +162,25 @@ export const messages = {
     "home.engine.scan.example": "Rechercher une aide pour un déménagement près de vous.",
     "home.engine.reel.title": "En direct",
     "home.engine.reel.desc":
-      "Cet espace se prépare. Il permettra de signaler volontairement votre présence et de découvrir les personnes réellement à proximité.",
+      "Découvrez les personnes à proximité et choisissez séparément si vous souhaitez rendre votre présence visible.",
     "home.engine.reel.example":
       "Signaler votre présence lors d’un événement pour voir qui est aussi présent.",
     "home.engine.radar.title": "Radar",
     "home.engine.radar.desc":
-      "Cet espace se prépare. Il permettra de suivre une recherche et de repérer les possibilités qui y correspondent.",
+      "Enregistrez une intention de recherche privée et retrouvez-la dans votre espace, même hors ligne.",
     "home.engine.radar.example": "Suivre une recherche de garde pour les prochains week-ends.",
     "home.engine.action": "Voir cet espace",
     "home.menuHint":
       "Les espaces complémentaires et les autres fonctionnalités de Vitalis sont accessibles depuis le menu 2×2 en bas de l’écran.",
+    "home.journey.guest.title": "Commencez librement",
+    "home.journey.guest.body":
+      "Vous pouvez découvrir En direct sans compte. Un compte vous permettra d’enregistrer vos brouillons Flashs et de retrouver votre profil.",
+    "home.journey.guest.live": "Découvrir En direct",
+    "home.journey.guest.signup": "Créer mon compte",
+    "home.journey.member.title": "Votre espace Vitalis",
+    "home.journey.member.body":
+      "Votre compte vous permet d’enregistrer vos brouillons Flashs et de gérer votre profil. Vous pouvez avancer à votre rythme.",
+    "home.journey.member.profile": "Voir mon profil",
     "onboarding.title": "Bienvenue dans Vitalis",
     "onboarding.desc": "Quelques repères pour découvrir l'essentiel, à votre rythme.",
     "onboarding.stepLabel": "Découverte",
@@ -141,38 +189,43 @@ export const messages = {
     "onboarding.back": "Retour",
     "onboarding.next": "Suivant",
     "onboarding.enter": "C'est parti !",
-    "onboarding.intro.title": "Vitalis, tout un monde à découvrir",
+    "onboarding.intro.title": "Vitalis, des liens utiles au quotidien",
     "onboarding.intro.body":
       "Vitalis vous aide à découvrir ce qui vous entoure, à repérer ce qui compte et à créer des liens utiles, simplement.",
-    "onboarding.intro.moreTitle": "Une expérience qui vous ressemble",
+    "onboarding.intro.moreTitle": "Choisissez votre premier pas",
     "onboarding.intro.moreBody":
-      "Avancez à votre rythme, découvrez ce qui vous est utile et gardez vos repères simplement.",
+      "Commencez par un besoin, une recherche ou la présence autour de vous. Vous choisissez ce que vous partagez.",
     "onboarding.discovery.title": "Découvrez et explorez",
     "onboarding.discovery.body":
       "Deux moteurs pour partager ce qui se passe et trouver ce que vous cherchez.",
     "onboarding.flash.title": "Flash",
     "onboarding.flash.body":
-      "Publiez un besoin ou une proposition, et découvrez les publications utiles autour de vous.",
+      "Préparez un besoin ou une proposition, enregistrez votre brouillon et découvrez les Flashs publics disponibles.",
     "onboarding.scan.title": "Scan",
-    "onboarding.scan.body": "Repérez les Flash actifs autour de vous sans révéler votre position.",
+    "onboarding.scan.body":
+      "Lancez une recherche volontaire de Flash publics dans une zone choisie. Votre GPS précis n’est pas affiché.",
     "onboarding.connection.title": "Rapprochez-vous de ce qui compte",
     "onboarding.connection.body":
-      "Repérez les possibilités autour de vous et entrez en relation quand le moment s'y prête.",
+      "En direct vous permet de découvrir les personnes à proximité. Vous choisissez séparément si votre présence est visible ; Radar sert à enregistrer une recherche privée.",
     "onboarding.spaces.title": "Et tout un monde à explorer",
     "onboarding.spaces.body":
       "Le menu 2×2 vous ouvre les espaces et fonctionnalités complémentaires de Vitalis. Vous pouvez les découvrir quand vous en avez besoin.",
     "onboarding.reel.title": "En direct",
     "onboarding.reel.body":
-      "Signalez votre présence et découvrez les personnes à proximité, avec la liberté d'utiliser le mode invité.",
+      "Autorisez la découverte pour voir les personnes proches ; activez séparément votre présence si vous souhaitez être visible. Vous pouvez commencer en invité.",
     "onboarding.radar.title": "Radar",
-    "onboarding.radar.body": "Repérez les opportunités et les éléments pertinents autour de vous.",
+    "onboarding.radar.body":
+      "Enregistrez une recherche privée et retrouvez-la dans votre espace. Les correspondances automatiques ne sont pas encore disponibles.",
     "onboarding.ready.title": "Prêt à faire votre premier pas ?",
     "onboarding.ready.body":
-      "Installez-vous, explorez à votre rythme et commencez par l'espace qui vous attire. Toute l'expérience Vitalis vous attend.",
+      "Choisissez un premier espace et prenez vos marques. Vous pourrez revenir aux autres quand vous en aurez besoin.",
     "onboarding.ready.guest":
-      "Vous pouvez commencer sans créer de compte lorsque le moteur le permet. En direct est accessible en mode invité.",
+      "Vous pouvez découvrir Vitalis sans compte. En direct propose un accès invité ; certaines actions, comme enregistrer un brouillon Flash, demandent un compte.",
+    "onboarding.ready.member":
+      "Votre compte est reconnu. Vous pouvez gérer votre profil, enregistrer vos brouillons Flashs et découvrir les autres espaces à votre rythme.",
 
     "identity.guest": "Invité",
+    "identity.member": "Membre",
     "identity.identified": "Identifié",
     "identity.verified": "Vérifié",
     "identity.trusted": "De confiance",
@@ -767,6 +820,9 @@ export const messages = {
     "radar.manage.empty": "Vous n'avez pas encore enregistré de veille.",
     "radar.manage.signIn": "Connectez-vous pour enregistrer et retrouver vos veilles Radar.",
     "radar.manage.actionError": "Impossible d'enregistrer cette modification. Réessayez.",
+    "radar.manage.saved": "Votre veille a bien été enregistrée.",
+    "radar.manage.updated": "Votre veille a bien été modifiée.",
+    "radar.manage.cancelled": "Votre veille a bien été annulée.",
     "radar.manage.until": "Jusqu'au {date}",
     "radar.manage.cancel": "Annuler la veille",
     "radar.manage.cancel.title": "Annuler cette veille ?",
@@ -851,6 +907,11 @@ export const messages = {
     "admin.kpi.roles": "Droits",
     "auth.title": "Connexion",
     "auth.subtitle": "Retrouvez votre espace Vitalis en toute sécurité.",
+    "auth.signUpTitle": "Créer votre espace Vitalis",
+    "auth.signUpSubtitle":
+      "Quelques informations pour commencer. Vous pourrez compléter votre profil ensuite.",
+    "auth.displayName": "Nom affiché",
+    "auth.displayNameRequired": "Saisissez un nom affiché d’au moins deux caractères.",
     "auth.email": "Adresse e-mail",
     "auth.password": "Mot de passe",
     "auth.signIn": "Se connecter",
@@ -1035,11 +1096,49 @@ export const messages = {
       "Your conversations will appear here after a connection or an accepted action.",
     "communication.reel.empty":
       "Received signals will appear here while your presence is active. No sample signals are added.",
+    "communication.reel.pendingBips": "Pending signals",
+    "communication.reel.activeConnections": "Active connections",
+    "communication.reel.open": "Open Live",
+    "communication.offline":
+      "You are offline. Information already received remains available; new updates resume when the connection returns.",
+    "communication.reel.notLoaded": "Open Live to load your latest activity.",
+    "communication.reel.offline":
+      "Live activity cannot be refreshed offline. Reconnect to view it.",
+    "communication.events.markRead": "Mark as read",
+    "communication.events.empty": "Nothing new for now.",
+    "communication.events.openFlash": "Open Flash",
+    "communication.events.openRadar": "Open Radar",
+    "communication.events.openReel": "Open Live",
+    "communication.event.reel.title": "Live",
+    "communication.event.reel.bipReceived": "Someone nearby sent you a signal.",
+    "communication.event.reel.bipAccepted": "Your signal was accepted. A connection is now active.",
+    "communication.event.reel.bipDeclined": "Your signal was not accepted.",
+    "communication.event.reel.connectionClosed": "A connection has been ended.",
+    "communication.event.flash.title": "Flash",
+    "communication.event.flash.draftSaved":
+      "Your draft is saved on this device. It will sync as soon as possible.",
+    "communication.event.flash.updated": "Your Flash has been updated on this device.",
+    "communication.event.flash.archived": "Your Flash has been archived.",
+    "communication.event.flash.deleted": "Your Flash has been removed from this device.",
+    "communication.event.radar.title": "Radar",
+    "communication.event.radar.saved": "Your watch has been saved.",
+    "communication.event.radar.updated": "Your watch has been updated.",
+    "communication.event.radar.cancelled": "Your watch has been cancelled.",
+
     "home.welcome": "Welcome to Vitalis",
     "home.hero.eyebrow": "Real people. Useful connections. Nearby.",
     "home.hero.photoAlt": "Five smiling friends gathered outdoors, huddled close together.",
     "home.welcome.guest": "Hello, and welcome to Vitalis!",
     "home.welcome.named": "Hello, {name}!",
+    "home.greeting.veryLate": "Good evening{name}. Take your time.",
+    "home.greeting.earlyMorning": "Good morning{name}!",
+    "home.greeting.morning": "Good morning{name}! Have a lovely day.",
+    "home.greeting.lateMorning": "Good morning{name}! What would you like to do?",
+    "home.greeting.midday": "Hello{name}!",
+    "home.greeting.afternoon": "Good afternoon{name}!",
+    "home.greeting.evening": "Enjoy the rest of your day{name}!",
+    "home.greeting.night": "Good evening{name}!",
+    "home.greeting.late": "Good evening{name}.",
     "home.demo.title": "A little look at Vitalis",
     "home.demo.desc": "Here are a few examples of what you can discover with Flash.",
     "home.demo.childcare": "A trusted person to look after the children this weekend",
@@ -1064,22 +1163,32 @@ export const messages = {
     "home.engines.desc": "Choose a space. You can move between them whenever you like.",
     "home.engine.flash.title": "Flash",
     "home.engine.exampleLabel": "Example",
-    "home.engine.flash.desc": "Share a need or an offer, then discover useful posts.",
+    "home.engine.flash.desc":
+      "Prepare a need or an offer, save your draft and discover available public Flashes.",
     "home.engine.flash.example": "Offer to prepare a meal for a gathering.",
     "home.engine.scan.title": "Scan",
     "home.engine.scan.desc": "Find active Flash posts in the area you choose.",
     "home.engine.scan.example": "Look for help with a move near you.",
     "home.engine.reel.title": "Live",
     "home.engine.reel.desc":
-      "This space is taking shape. It will let you choose to share your presence and discover people who are genuinely nearby.",
+      "Discover people nearby and choose separately whether you want your presence to be visible.",
     "home.engine.reel.example": "Share your presence at an event to see who else is there.",
     "home.engine.radar.title": "Radar",
     "home.engine.radar.desc":
-      "This space is taking shape. It will let you follow a search and spot matching opportunities.",
+      "Save a private search intention and find it in your space, even offline.",
     "home.engine.radar.example": "Keep track of a search for weekend childcare.",
     "home.engine.action": "View this space",
     "home.menuHint":
       "Explore additional spaces and other Vitalis features from the 2x2 menu at the bottom of the screen.",
+    "home.journey.guest.title": "Start at your own pace",
+    "home.journey.guest.body":
+      "You can explore Live without an account. An account lets you save Flash drafts and manage your profile.",
+    "home.journey.guest.live": "Explore Live",
+    "home.journey.guest.signup": "Create my account",
+    "home.journey.member.title": "Your Vitalis space",
+    "home.journey.member.body":
+      "Your account lets you save Flash drafts and manage your profile. Take things at your own pace.",
+    "home.journey.member.profile": "View my profile",
     "onboarding.title": "Welcome to Vitalis",
     "onboarding.desc": "A few quick landmarks to discover the essentials, at your own pace.",
     "onboarding.stepLabel": "Discover",
@@ -1088,37 +1197,43 @@ export const messages = {
     "onboarding.back": "Back",
     "onboarding.next": "Next",
     "onboarding.enter": "Let's go!",
-    "onboarding.intro.title": "Vitalis, a world to discover",
+    "onboarding.intro.title": "Vitalis, useful connections for everyday life",
     "onboarding.intro.body":
       "Vitalis helps you discover what's around you, spot what matters and create useful connections, simply.",
-    "onboarding.intro.moreTitle": "An experience that feels like yours",
+    "onboarding.intro.moreTitle": "Choose your first step",
     "onboarding.intro.moreBody":
-      "Explore at your own pace, find what is useful to you and keep things simple.",
+      "Start with a need, a search or nearby presence. You choose what you share.",
     "onboarding.discovery.title": "Discover and explore",
     "onboarding.discovery.body":
       "Two engines to share what's happening and find what you're looking for.",
     "onboarding.flash.title": "Flash",
-    "onboarding.flash.body": "Publish a need or an offer, and discover useful posts around you.",
+    "onboarding.flash.body":
+      "Prepare a need or an offer, save your draft and discover available public Flashes.",
     "onboarding.scan.title": "Scan",
-    "onboarding.scan.body": "Spot active Flash around you without revealing your location.",
+    "onboarding.scan.body":
+      "Choose when to search public Flashes in an area. Your precise GPS location is not displayed.",
     "onboarding.connection.title": "Get closer to what matters",
     "onboarding.connection.body":
-      "Spot possibilities nearby and connect when the moment feels right.",
+      "Live lets you discover people nearby. You separately choose whether your presence is visible; Radar lets you save a private search.",
     "onboarding.spaces.title": "More places to explore",
     "onboarding.spaces.body":
       "The 2x2 menu opens Vitalis spaces and extra features. You can explore them whenever you need them.",
     "onboarding.reel.title": "Live",
     "onboarding.reel.body":
-      "Share your presence and discover people nearby, with the freedom to use guest mode.",
+      "Allow discovery to see nearby people; activate your presence separately if you want to be visible. You can start as a guest.",
     "onboarding.radar.title": "Radar",
-    "onboarding.radar.body": "Spot opportunities and relevant things around you.",
+    "onboarding.radar.body":
+      "Save a private search and find it in your space. Automatic matching is not available yet.",
     "onboarding.ready.title": "Ready to take your first step?",
     "onboarding.ready.body":
-      "Make yourself at home, explore at your own pace and start wherever you like. Your Vitalis experience is waiting.",
+      "Choose a first space and get comfortable. You can explore the others whenever you need them.",
     "onboarding.ready.guest":
-      "You can get started without an account wherever the engine allows it. Live is available in guest mode.",
+      "You can explore Vitalis without an account. Live offers guest access; some actions, such as saving a Flash draft, require an account.",
+    "onboarding.ready.member":
+      "Your account is recognized. You can manage your profile, save Flash drafts and explore the other spaces at your own pace.",
 
     "identity.guest": "Guest",
+    "identity.member": "Member",
     "identity.identified": "Identified",
     "identity.verified": "Verified",
     "identity.trusted": "Trusted",
@@ -1692,6 +1807,9 @@ export const messages = {
     "radar.manage.empty": "You haven't saved a watch yet.",
     "radar.manage.signIn": "Sign in to save and find your Radar watches.",
     "radar.manage.actionError": "We couldn't save this change. Please try again.",
+    "radar.manage.saved": "Your watch has been saved.",
+    "radar.manage.updated": "Your watch has been updated.",
+    "radar.manage.cancelled": "Your watch has been cancelled.",
     "radar.manage.until": "Until {date}",
     "radar.manage.cancel": "Cancel watch",
     "radar.manage.cancel.title": "Cancel this watch?",
@@ -1775,6 +1893,11 @@ export const messages = {
     "admin.kpi.roles": "Roles",
     "auth.title": "Sign in",
     "auth.subtitle": "Access your Vitalis space securely.",
+    "auth.signUpTitle": "Create your Vitalis account",
+    "auth.signUpSubtitle":
+      "Just a few details to get started. You can complete your profile later.",
+    "auth.displayName": "Display name",
+    "auth.displayNameRequired": "Enter a display name with at least two characters.",
     "auth.email": "Email address",
     "auth.password": "Password",
     "auth.signIn": "Sign in",

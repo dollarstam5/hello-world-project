@@ -1,9 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
-import { useAssistantNotices } from "@/lib/app/assistant-notices";
+import { markAssistantWelcomePresented, useAssistantNotices } from "@/lib/app/assistant-notices";
 import { useI18n } from "@/lib/i18n/useI18n";
+import {
+  useCommunicationContextVersion,
+  useCommunicationRuntime,
+} from "@/lib/communication/CommunicationRuntimeProvider";
 
 /** Appears only while an explicitly published assistant message is available. */
 export function AssistantNoticeLayer() {
@@ -11,12 +15,36 @@ export function AssistantNoticeLayer() {
   const enabled = useAssistantPreferences((state) => state.enabled);
   const notice = useAssistantNotices((state) => state.notice);
   const dismiss = useAssistantNotices((state) => state.dismiss);
+  const runtime = useCommunicationRuntime();
+  const contextVersion = useCommunicationContextVersion();
+  const translateRef = useRef(t);
+  translateRef.current = t;
+  const prepared = useMemo(() => {
+    if (!enabled || !notice) return null;
+    return runtime.prepare(translateRef.current, [
+      {
+        key: notice.message,
+        source: "assistant",
+        surface: "notice",
+        priority: "normal",
+        repeatKey: `assistant-notice:${notice.id}`,
+        requiresAssistant: true,
+      },
+    ]);
+  }, [contextVersion, enabled, notice, runtime]);
 
   useEffect(() => {
-    if (!notice) return;
+    if (enabled && prepared?.messages.length) {
+      runtime.markPresented(prepared.messages);
+      if (notice?.kind === "welcome") markAssistantWelcomePresented();
+    }
+  }, [enabled, notice, prepared, runtime]);
+
+  useEffect(() => {
+    if (!enabled || !notice) return;
     const timeout = window.setTimeout(dismiss, 9000);
     return () => window.clearTimeout(timeout);
-  }, [notice, dismiss]);
+  }, [enabled, notice, dismiss]);
 
   if (!enabled || !notice) return null;
 
@@ -30,7 +58,7 @@ export function AssistantNoticeLayer() {
         aria-live="polite"
         className="pointer-events-auto flex w-full max-w-md items-start gap-3 rounded-2xl border border-border bg-background/95 px-4 py-3 text-sm text-foreground shadow-xl backdrop-blur"
       >
-        <p className="min-w-0 flex-1 leading-relaxed">{t(notice.message)}</p>
+        <p className="min-w-0 flex-1 leading-relaxed">{prepared?.messages[0]?.text ?? ""}</p>
         <Button
           type="button"
           variant="ghost"

@@ -11,6 +11,8 @@ import { parseFlashIntent } from "@eco/core-logic";
 import { reverseGeocodeFlashLocation } from "../api/flash-geocoding.functions";
 import { createFlash } from "../data";
 import type { MessageKey } from "@/lib/i18n/messages";
+import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
+import { publishFlashCommunicationEvent } from "../communication-events";
 
 type SpeechResultEvent = { results: ArrayLike<ArrayLike<{ transcript?: string }>> };
 type SpeechErrorEvent = { error?: string };
@@ -67,6 +69,7 @@ function expiryFor(timeSlot: FlashTimeSlot) {
 }
 
 export function useFlashComposer({ user, locale, t, onSaved }: ComposerOptions) {
+  const communication = useCommunicationRuntime();
   const [composerOpen, setComposerOpen] = useState(false);
   const [step, setStep] = useState<"write" | "review">("write");
   const [text, setText] = useState("");
@@ -229,7 +232,7 @@ export function useFlashComposer({ user, locale, t, onSaved }: ComposerOptions) 
     setPublishError(false);
     try {
       const body = text.trim();
-      await createFlash({
+      const savedFlash = await createFlash({
         authorId: user.id as UserId,
         title: body.length > 80 ? `${body.slice(0, 77)}…` : body,
         body,
@@ -241,6 +244,7 @@ export function useFlashComposer({ user, locale, t, onSaved }: ComposerOptions) 
         areaLabel: areaLabel.trim() || undefined,
         expiresAt: expiryFor(timeSlot),
       });
+      publishFlashCommunicationEvent(communication, savedFlash, "draft-saved");
       closeComposer();
       onSaved();
     } catch {

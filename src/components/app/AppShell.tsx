@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState, type ReactNode } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useRouterState } from "@tanstack/react-router";
 import { BottomNav } from "./BottomNav";
 import { useExperienceBoot } from "@/lib/experience/orchestrator";
@@ -11,6 +11,12 @@ import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
 import { AssistantNoticeLayer } from "@/components/experience/AssistantNoticeLayer";
 import { useOnboarding } from "@/lib/experience/onboarding";
 import { SyncEngineLoader } from "./SyncEngineLoader";
+import { CommunicationRuntimeProvider } from "@/lib/communication/CommunicationRuntimeProvider";
+import { useAuth } from "@/domains/auth/model/useAuth";
+import { useI18n } from "@/lib/i18n/useI18n";
+import { resetReelActivityProjection } from "@/domains/presence/model/reel-activity-projection";
+import { ReelCommunicationBridge } from "@/domains/presence/model/ReelCommunicationBridge";
+import { useAccessMode } from "@/domains/access-mode";
 
 const ReelBottomNav = lazy(() =>
   import("@/domains/presence/ui/ReelBottomNav").then((module) => ({
@@ -48,6 +54,43 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const responsive = useResponsive();
   const onboardingReady = useOnboarding((state) => state.hydrated && state.shouldShow);
+  const { user, loading: authLoading } = useAuth();
+  const access = useAccessMode();
+  const { locale } = useI18n();
+  const assistantEnabled = useAssistantPreferences((state) => state.enabled);
+  const assistantPreferencesHydrated = useAssistantPreferences((state) => state.hydrated);
+  const communicationContext = useMemo(
+    () => ({
+      identity: authLoading
+        ? ("loading" as const)
+        : user
+          ? ("member" as const)
+          : ("guest" as const),
+      pathname,
+      locale,
+      assistantEnabled: assistantPreferencesHydrated ? assistantEnabled : null,
+    }),
+    [assistantEnabled, assistantPreferencesHydrated, authLoading, locale, pathname, user],
+  );
+
+  const previousProjectionIdentity = useRef<string | undefined>(undefined);
+  const projectionIdentity = access.loading
+    ? "loading"
+    : access.mode === "member"
+      ? `member:${access.memberId ?? "unavailable"}`
+      : access.mode === "guest"
+        ? `guest:${access.guest?.startedAt ?? "pending"}`
+        : "visitor";
+
+  useEffect(() => {
+    if (
+      previousProjectionIdentity.current !== undefined &&
+      previousProjectionIdentity.current !== projectionIdentity
+    ) {
+      resetReelActivityProjection();
+    }
+    previousProjectionIdentity.current = projectionIdentity;
+  }, [projectionIdentity]);
 
   useExperienceBoot();
 
@@ -74,58 +117,69 @@ export function AppShell({ children }: { children: ReactNode }) {
   const reduce = responsive.shouldReduceMotion;
   if (bareChrome) {
     return (
-      <>
-        <SyncEngineLoader />
-        <div className="relative min-h-dvh bg-background text-foreground antialiased">
-          {children}
-        </div>
-      </>
+      <CommunicationRuntimeProvider
+        context={communicationContext}
+        sessionIdentityKey={authLoading ? "loading" : (user?.id ?? "guest")}
+      >
+        <>
+          <SyncEngineLoader />
+          <div className="relative min-h-dvh bg-background text-foreground antialiased">
+            {children}
+          </div>
+        </>
+      </CommunicationRuntimeProvider>
     );
   }
 
   return (
-    <div className="relative min-h-dvh bg-background text-foreground antialiased">
-      <SyncEngineLoader />
-      <AssistantNoticeLayer />
-      <OfflineBanner />
-      {!routeOwnsHeader && <AppHeader onOpenCommunication={() => setCommunicationOpen(true)} />}
-      <main
-        id="main"
-        className={`mx-auto w-full max-w-screen-md ${hasBottomNavigation ? "pb-28" : "pb-0"}`}
-        style={{
-          paddingBottom: hasBottomNavigation ? "calc(9rem + var(--safe-bottom))" : 0,
-        }}
-      >
-        <div key={pathname} className={reduce ? undefined : "motion-rise-in"}>
-          {children}
-        </div>
-      </main>
+    <CommunicationRuntimeProvider
+      context={communicationContext}
+      sessionIdentityKey={authLoading ? "loading" : (user?.id ?? "guest")}
+    >
+      <div className="relative min-h-dvh bg-background text-foreground antialiased">
+        <SyncEngineLoader />
+        <ReelCommunicationBridge />
+        <AssistantNoticeLayer />
+        <OfflineBanner />
+        {!routeOwnsHeader && <AppHeader onOpenCommunication={() => setCommunicationOpen(true)} />}
+        <main
+          id="main"
+          className={`mx-auto w-full max-w-screen-md ${hasBottomNavigation ? "pb-28" : "pb-0"}`}
+          style={{
+            paddingBottom: hasBottomNavigation ? "calc(9rem + var(--safe-bottom))" : 0,
+          }}
+        >
+          <div key={pathname} className={reduce ? undefined : "motion-rise-in"}>
+            {children}
+          </div>
+        </main>
 
-      {hasBottomNavigation && (
-        <BottomNav onOpenMenu={() => setMenuOpen(true)} menuOpen={menuOpen} />
-      )}
-      {isReelRoute && (
-        <Suspense fallback={null}>
-          <ReelBottomNav onOpenMenu={() => setMenuOpen(true)} menuOpen={menuOpen} />
-        </Suspense>
-      )}
-      {menuOpen && (
-        <Suspense fallback={null}>
-          <MenuSheet open={menuOpen} onOpenChange={setMenuOpen} />
-        </Suspense>
-      )}
-      {communicationOpen && (
-        <Suspense fallback={null}>
-          <CommunicationSheet open={communicationOpen} onOpenChange={setCommunicationOpen} />
-        </Suspense>
-      )}
-      <InstallBanner />
-      <UpdateBanner />
-      {onboardingReady && (
-        <Suspense fallback={null}>
-          <OnboardingSheet />
-        </Suspense>
-      )}
-    </div>
+        {hasBottomNavigation && (
+          <BottomNav onOpenMenu={() => setMenuOpen(true)} menuOpen={menuOpen} />
+        )}
+        {isReelRoute && (
+          <Suspense fallback={null}>
+            <ReelBottomNav onOpenMenu={() => setMenuOpen(true)} menuOpen={menuOpen} />
+          </Suspense>
+        )}
+        {menuOpen && (
+          <Suspense fallback={null}>
+            <MenuSheet open={menuOpen} onOpenChange={setMenuOpen} />
+          </Suspense>
+        )}
+        {communicationOpen && (
+          <Suspense fallback={null}>
+            <CommunicationSheet open={communicationOpen} onOpenChange={setCommunicationOpen} />
+          </Suspense>
+        )}
+        <InstallBanner />
+        <UpdateBanner />
+        {onboardingReady && (
+          <Suspense fallback={null}>
+            <OnboardingSheet />
+          </Suspense>
+        )}
+      </div>
+    </CommunicationRuntimeProvider>
   );
 }

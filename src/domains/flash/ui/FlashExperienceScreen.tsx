@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight, Check, Plus, Sparkles, X, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/domains/auth";
+import { formatCommunicationMessage } from "@/lib/communication/format";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { FlashFeed } from "./FlashFeed";
 import { FlashComposerDialog } from "./FlashComposerDialog";
@@ -84,7 +85,7 @@ export function FlashExperienceScreen() {
           role="status"
         >
           <Check className="size-4 shrink-0 text-primary" aria-hidden="true" />
-          <span>{t("flash.composer.draftSaved")}</span>
+          <span>{formatCommunicationMessage(t, "flash.composer.draftSaved")}</span>
           <button
             type="button"
             className="ml-auto rounded-full p-1 text-muted-foreground hover:text-foreground"

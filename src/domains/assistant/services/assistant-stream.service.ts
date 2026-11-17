@@ -1,9 +1,31 @@
 import type { AssistantFailure } from "@eco/core-contracts";
 
+export type StreamMessage = { role: "user" | "assistant"; content: string };
+
 export interface StreamRequest {
+  requestId: string;
   locale: "fr" | "en";
   route?: string;
-  messages: { role: "user" | "assistant"; content: string }[];
+  messages: StreamMessage[];
+}
+
+export function buildAssistantRequestMessages(messages: readonly StreamMessage[]): StreamMessage[] {
+  const alternating: StreamMessage[] = [];
+  for (const message of messages) {
+    const previous = alternating.at(-1);
+    if (previous?.role === message.role) {
+      alternating[alternating.length - 1] = message;
+    } else {
+      alternating.push(message);
+    }
+  }
+
+  const bounded = alternating.slice(-8);
+  let totalChars = bounded.reduce((total, message) => total + message.content.length, 0);
+  while (bounded.length > 1 && totalChars > 4_000) {
+    totalChars -= bounded.shift()!.content.length;
+  }
+  return bounded;
 }
 
 export class AssistantStreamError extends Error {
@@ -17,6 +39,7 @@ function reasonFor(status: number): AssistantFailure {
   if (status === 429) return "rate_limited";
   if (status === 402 || status === 403) return "daily_limit";
   if (status === 400) return "invalid_request";
+  if (status === 422) return "unsafe_request";
   return "provider_error";
 }
 
@@ -39,6 +62,7 @@ export async function streamAssistant(
   const decoder = new TextDecoder();
   let buffer = "";
   let full = "";
+  let completed = false;
 
   for (;;) {
     const { done, value } = await reader.read();
@@ -49,7 +73,11 @@ export async function streamAssistant(
     for (const line of lines) {
       if (!line.startsWith("data:")) continue;
       const payload = line.slice(5).trim();
-      if (!payload || payload === "[DONE]") continue;
+      if (!payload) continue;
+      if (payload === "[DONE]") {
+        completed = true;
+        continue;
+      }
       let event: { type?: string; delta?: string };
       try {
         event = JSON.parse(payload);
@@ -59,11 +87,34 @@ export async function streamAssistant(
       if (event.type === "response.output_text.delta" && event.delta) {
         full += event.delta;
         onDelta(full);
+      } else if (event.type === "response.completed") {
+        completed = true;
       } else if (event.type === "response.failed" || event.type === "error") {
         throw new AssistantStreamError("provider_error");
       }
     }
   }
-  if (!full.trim()) throw new AssistantStreamError("provider_error");
+  buffer += decoder.decode();
+  if (buffer.startsWith("data:")) {
+    const payload = buffer.slice(5).trim();
+    if (payload === "[DONE]") {
+      completed = true;
+    } else if (payload) {
+      try {
+        const event = JSON.parse(payload) as { type?: string; delta?: string };
+        if (event.type === "response.output_text.delta" && event.delta) {
+          full += event.delta;
+          onDelta(full);
+        } else if (event.type === "response.completed") {
+          completed = true;
+        } else if (event.type === "response.failed" || event.type === "error") {
+          throw new AssistantStreamError("provider_error");
+        }
+      } catch (error) {
+        if (error instanceof AssistantStreamError) throw error;
+      }
+    }
+  }
+  if (!completed || !full.trim()) throw new AssistantStreamError("provider_error");
   return full;
 }

@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { Pencil, X } from "lucide-react";
-import type { RadarRadiusKm, RadarRecord, RadarStatus } from "@eco/core-contracts";
+import type { RadarRadiusKm, RadarRecord } from "@eco/core-contracts";
 import type { MessageKey } from "@/lib/i18n/messages";
 import {
   AlertDialog,
@@ -18,31 +18,15 @@ import { RadarDraftForm } from "./RadarDraftForm";
 import { Surface } from "@/components/app/Surface";
 import { useAuth } from "@/domains/auth/model/useAuth";
 import { useI18n } from "@/lib/i18n/useI18n";
+import { formatCommunicationMessage } from "@/lib/communication/format";
+import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
+import { publishRadarCommunicationEvent } from "../communication-events";
+import { statusKeys, statusTones } from "./radar-presentation";
 import { cancelRadar, createRadarDraft, editRadarDraft, useMyRadars } from "../data";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const RADII: RadarRadiusKm[] = [1, 3, 5, 10, 25, 50];
 const DURATIONS = [3, 7, 14, 30, 60, 90] as const;
-
-const statusKeys: Record<RadarStatus, MessageKey> = {
-  draft: "radar.manage.status.draft",
-  active: "radar.manage.status.active",
-  watching: "radar.manage.status.watching",
-  matched: "radar.manage.status.matched",
-  paused: "radar.manage.status.paused",
-  expired: "radar.manage.status.expired",
-  cancelled: "radar.manage.status.cancelled",
-};
-
-const statusTones: Record<RadarStatus, "neutral" | "primary" | "success" | "warning" | "info"> = {
-  draft: "neutral",
-  active: "success",
-  watching: "info",
-  matched: "primary",
-  paused: "warning",
-  expired: "neutral",
-  cancelled: "neutral",
-};
 
 /**
  * Radar V1: save and manage private search intentions offline-first.
@@ -51,6 +35,7 @@ const statusTones: Record<RadarStatus, "neutral" | "primary" | "success" | "warn
  */
 export function RadarManagement() {
   const { t, locale } = useI18n();
+  const communication = useCommunicationRuntime();
   const { user, loading: authLoading } = useAuth();
   const userId = user?.id ?? null;
   const [query, setQuery] = useState("");
@@ -60,6 +45,9 @@ export function RadarManagement() {
   const [busy, setBusy] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [actionError, setActionError] = useState(false);
+  const [actionNotice, setActionNotice] = useState<
+    "radar.manage.saved" | "radar.manage.updated" | "radar.manage.cancelled" | null
+  >(null);
   const [pendingCancel, setPendingCancel] = useState<RadarRecord | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const records = useMyRadars(authLoading ? undefined : userId);
@@ -72,6 +60,7 @@ export function RadarManagement() {
 
     setBusy(true);
     setActionError(false);
+    setActionNotice(null);
     const startsAt = Date.now();
 
     try {
@@ -85,9 +74,13 @@ export function RadarManagement() {
         expiresAt: startsAt + durationDays * DAY_MS,
       };
       if (editingId) {
-        await editRadarDraft(editingId, input);
+        const updated = await editRadarDraft(editingId, input);
+        publishRadarCommunicationEvent(communication, updated, "updated");
+        setActionNotice("radar.manage.updated");
       } else {
-        await createRadarDraft(input);
+        const saved = await createRadarDraft(input);
+        publishRadarCommunicationEvent(communication, saved, "saved");
+        setActionNotice("radar.manage.saved");
       }
       setEditingId(null);
       setQuery("");
@@ -103,8 +96,11 @@ export function RadarManagement() {
     if (!pendingCancel) return;
     setBusyId(pendingCancel.id);
     setActionError(false);
+    setActionNotice(null);
     try {
-      await cancelRadar(pendingCancel.id);
+      const cancelled = await cancelRadar(pendingCancel.id);
+      publishRadarCommunicationEvent(communication, cancelled, "cancelled");
+      setActionNotice("radar.manage.cancelled");
       setPendingCancel(null);
     } catch {
       setActionError(true);
@@ -165,7 +161,11 @@ export function RadarManagement() {
 
       {actionError ? (
         <p role="alert" className="text-sm text-destructive">
-          {t("radar.manage.actionError")}
+          {formatCommunicationMessage(t, "radar.manage.actionError")}
+        </p>
+      ) : actionNotice ? (
+        <p role="status" className="text-sm text-muted-foreground">
+          {formatCommunicationMessage(t, actionNotice)}
         </p>
       ) : null}
 

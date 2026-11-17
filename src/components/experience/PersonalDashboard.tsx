@@ -10,6 +10,7 @@ import {
 import { Indicator } from "@/components/app/Indicator";
 import { Surface } from "@/components/app/Surface";
 import { useIdentity } from "@/lib/experience/identity";
+import { useAuth } from "@/domains/auth/model/useAuth";
 import { useI18n } from "@/lib/i18n/useI18n";
 
 const cards = [
@@ -47,7 +48,10 @@ const cards = [
 
 export function PersonalDashboard() {
   const { t } = useI18n();
+  const { user } = useAuth();
   const displayName = useIdentity((state) => state.displayName);
+  const displayNameOwnerId = useIdentity((state) => state.displayNameOwnerId);
+  const visibleDisplayName = user && displayNameOwnerId === user.id ? displayName : undefined;
 
   return (
     <div className="page-shell stack-8">
@@ -55,7 +59,9 @@ export function PersonalDashboard() {
         <Indicator tone="primary" dot label={t("page.espace.eyebrow")} />
         <h1 className="text-fluid-display-sm">{t("space.title")}</h1>
         <p className="text-subtitle max-w-prose">
-          {displayName ? t("space.welcome").replace("{name}", displayName) : t("space.subtitle")}
+          {visibleDisplayName
+            ? t("space.welcome").replace("{name}", visibleDisplayName)
+            : t("space.subtitle")}
         </p>
       </header>
 

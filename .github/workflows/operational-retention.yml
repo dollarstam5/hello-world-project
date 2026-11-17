@@ -1,0 +1,54 @@
+name: Operational retention
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vitalis-operational-retention
+  cancel-in-progress: false
+
+jobs:
+  purge:
+    name: Purge expired operational data
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Validate required secrets
+        env:
+          VITALIS_APP_URL: ${{ secrets.VITALIS_APP_URL }}
+          LOVABLE_CRON_SECRET: ${{ secrets.LOVABLE_CRON_SECRET }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${VITALIS_APP_URL}" || -z "${LOVABLE_CRON_SECRET}" ]]; then
+            echo "::error::Configure VITALIS_APP_URL and LOVABLE_CRON_SECRET in repository Actions secrets."
+            exit 1
+          fi
+          if [[ ! "${VITALIS_APP_URL}" =~ ^https:// ]]; then
+            echo "::error::VITALIS_APP_URL must use HTTPS."
+            exit 1
+          fi
+          if [[ ${#LOVABLE_CRON_SECRET} -lt 32 ]]; then
+            echo "::error::LOVABLE_CRON_SECRET must contain at least 32 characters."
+            exit 1
+          fi
+
+      - name: Run retention purge
+        env:
+          VITALIS_APP_URL: ${{ secrets.VITALIS_APP_URL }}
+          LOVABLE_CRON_SECRET: ${{ secrets.LOVABLE_CRON_SECRET }}
+        run: |
+          set -euo pipefail
+          response="$(curl --fail --silent --show-error \
+            --retry 2 --retry-delay 10 --max-time 45 \
+            --request POST \
+            --header "Authorization: Bearer ${LOVABLE_CRON_SECRET}" \
+            --header "Accept: application/json" \
+            "${VITALIS_APP_URL%/}/api/cron/maintenance")"
+          echo "${response}" | jq -e '.ok == true' >/dev/null
+          echo "Operational retention completed."
+          echo "${response}" | jq '{ok, deleted}'

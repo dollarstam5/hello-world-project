@@ -14,7 +14,11 @@ import { useI18n } from "@/lib/i18n/useI18n";
 import { useNetworkStatus } from "@/lib/platform/useNetworkStatus";
 import { useAuth } from "@/domains/auth";
 import { searchLocalKnowledge } from "../services/localSearch.service";
-import { AssistantStreamError, streamAssistant } from "../services/assistant-stream.service";
+import {
+  AssistantStreamError,
+  buildAssistantRequestMessages,
+  streamAssistant,
+} from "../services/assistant-stream.service";
 
 const LEGACY_STORAGE_KEY = "eco.assistant.conversation.v1";
 const STORAGE_KEY_PREFIX = "eco.assistant.conversation.v2";
@@ -59,8 +63,16 @@ export function useHybridAssistant(): HybridAssistantState {
   const [streaming, setStreaming] = useState(false);
   const [failure, setFailure] = useState<AssistantFailure | "offline" | null>(null);
   const busy = useRef(false);
+  const activeRequest = useRef<AbortController | null>(null);
+  const currentStorageKey = useRef(storageKey);
+  currentStorageKey.current = storageKey;
 
   useEffect(() => {
+    activeRequest.current?.abort();
+    activeRequest.current = null;
+    busy.current = false;
+    setPending(false);
+    setStreaming(false);
     setMessages([]);
     try {
       localStorage.removeItem(LEGACY_STORAGE_KEY);
@@ -70,6 +82,10 @@ export function useHybridAssistant(): HybridAssistantState {
     } catch {
       /* ignore corrupt storage */
     }
+    return () => {
+      activeRequest.current?.abort();
+      activeRequest.current = null;
+    };
   }, [storageKey]);
 
   useEffect(() => {
@@ -95,7 +111,7 @@ export function useHybridAssistant(): HybridAssistantState {
 
   const send = useCallback(
     async (raw: string) => {
-      const question = raw.trim().slice(0, 1200);
+      const question = raw.trim().slice(0, 600);
       if (!question || busy.current) return;
       busy.current = true;
       setFailure(null);
@@ -136,14 +152,18 @@ export function useHybridAssistant(): HybridAssistantState {
 
       setPending(true);
       const answerId = crypto.randomUUID();
+      const controller = new AbortController();
+      activeRequest.current = controller;
       try {
         await streamAssistant(
           {
+            requestId: crypto.randomUUID(),
             locale: language,
             route,
-            messages: history.slice(-10).map(({ role, content }) => ({ role, content })),
+            messages: buildAssistantRequestMessages(history),
           },
           (text) => {
+            if (controller.signal.aborted || currentStorageKey.current !== storageKey) return;
             setPending(false);
             setStreaming(true);
             setMessages((c) => {
@@ -154,23 +174,43 @@ export function useHybridAssistant(): HybridAssistantState {
             });
           },
           token,
+          controller.signal,
         );
-        setMessages((c) => {
-          persist(storageKey, c);
-          return c;
-        });
+        if (!controller.signal.aborted && currentStorageKey.current === storageKey) {
+          setMessages((c) => {
+            persist(storageKey, c);
+            return c;
+          });
+        }
       } catch (error) {
-        setFailure(error instanceof AssistantStreamError ? error.reason : "provider_error");
+        if (currentStorageKey.current === storageKey) {
+          setMessages((current) => {
+            const next = current.filter((message) => message.id !== answerId);
+            persist(storageKey, next);
+            return next;
+          });
+        }
+        if (!controller.signal.aborted && currentStorageKey.current === storageKey) {
+          setFailure(error instanceof AssistantStreamError ? error.reason : "provider_error");
+        }
       } finally {
-        setPending(false);
-        setStreaming(false);
-        busy.current = false;
+        if (activeRequest.current === controller) {
+          activeRequest.current = null;
+          setPending(false);
+          setStreaming(false);
+          busy.current = false;
+        }
       }
     },
     [language, messages, online, promoted, route, storageKey, token, update],
   );
 
   const reset = useCallback(() => {
+    activeRequest.current?.abort();
+    activeRequest.current = null;
+    busy.current = false;
+    setPending(false);
+    setStreaming(false);
     update(() => []);
     setFailure(null);
   }, [update]);

@@ -233,7 +233,7 @@ export function ReelProximityScreen() {
                 className="reel-panel__primary"
                 onClick={() => void confirmEndConnection()}
               >
-                Terminer
+                {t("reel.ui.end")}
               </button>
             </div>
           </section>

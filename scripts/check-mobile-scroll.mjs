@@ -44,10 +44,9 @@ try {
     throw new Error("Chromium DevTools endpoint did not become ready");
   }
 
-  const targetResponse = await fetch(
-    `http://127.0.0.1:${port}/json/new?${encodeURIComponent(baseUrl)}`,
-    { method: "PUT" },
-  );
+  const targetResponse = await fetch(`http://127.0.0.1:${port}/json/new?${baseUrl}`, {
+    method: "PUT",
+  });
   if (!targetResponse.ok) {
     throw new Error(`Could not create Chromium page target: ${targetResponse.status}`);
   }
@@ -76,11 +75,25 @@ try {
       socket.send(JSON.stringify({ id, method, params }));
     });
   const evaluate = async (expression) => {
-    const result = await send("Runtime.evaluate", {
-      expression,
-      returnByValue: true,
-      awaitPromise: true,
-    });
+    let result;
+    for (let attempt = 0; attempt < 30; attempt++) {
+      try {
+        result = await send("Runtime.evaluate", {
+          expression,
+          returnByValue: true,
+          awaitPromise: true,
+        });
+        break;
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        if (!message.includes("Cannot find default execution context") || attempt === 29) {
+          throw error;
+        }
+        // Page.navigate destroys the previous document context before the
+        // next one is created. Retry only this transient CDP navigation race.
+        await Bun.sleep(100);
+      }
+    }
     if (result.exceptionDetails) {
       throw new Error(
         result.exceptionDetails.exception?.description ||
@@ -96,17 +109,22 @@ try {
   await send("Emulation.setEmulatedMedia", {
     features: [{ name: "prefers-reduced-motion", value: "reduce" }],
   });
+  // Explicitly navigate away from the initial about:blank target before
+  // touching origin-scoped storage. A complete about:blank document has an
+  // opaque origin and Chromium correctly denies localStorage access.
+  await send("Page.navigate", { url: baseUrl });
+  const expectedOrigin = new URL(baseUrl).origin;
   let originReady = false;
   for (let attempt = 0; attempt < 80; attempt++) {
-    const state = await evaluate("document.readyState");
-    if (state === "complete") {
+    const state = await evaluate("({ ready: document.readyState, origin: location.origin })");
+    if (state?.ready === "complete" && state.origin === expectedOrigin) {
       originReady = true;
       break;
     }
     await Bun.sleep(250);
   }
   if (!originReady) {
-    throw new Error("Initial production page did not finish loading");
+    throw new Error(`Initial production page did not become ready at origin ${expectedOrigin}`);
   }
   await evaluate('localStorage.setItem("vitalis.onboarding.v2", "1")');
 

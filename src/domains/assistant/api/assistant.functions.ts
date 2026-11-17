@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { validateConversation } from "@/lib/ai/assistant-policy";
+import { hasSensitiveUserContent, validateConversation } from "@/lib/ai/assistant-policy";
 
 const messageSchema = z.object({
   role: z.enum(["user", "assistant"]),
@@ -18,6 +18,9 @@ const askSchema = z
   .superRefine((value, context) => {
     const error = validateConversation(value);
     if (error) context.addIssue({ code: z.ZodIssueCode.custom, message: error });
+    if (hasSensitiveUserContent(value.messages)) {
+      context.addIssue({ code: z.ZodIssueCode.custom, message: "unsafe_request" });
+    }
   });
 
 export const askAssistant = createServerFn({ method: "POST" })
