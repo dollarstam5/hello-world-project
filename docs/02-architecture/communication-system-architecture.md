@@ -159,11 +159,11 @@ Les modules suivants sont maintenant présents sur la branche :
 |---|---|---|
 | `src/lib/communication/gate.ts` | Trie les demandes par priorité, conserve l'ordre d'origine à priorité égale et supprime les doublons via identifiant d'événement ou clé de répétition fournis | Ne mémorise pas lui-même les messages déjà livrés ; l'appelant fournit cet état |
 | `src/lib/communication/dispatch.ts` | Applique le filtre de priorité/déduplication puis résout le texte avec le formateur et le catalogue i18n existants | Prépare un lot ; ne déclenche pas de notification et ne modifie aucun état métier |
-| `src/lib/communication/delivery-session.ts` | Conserve en mémoire les identifiants réellement présentés après accusé de présentation explicite ; déduplication des lots suivants pendant la session | Aucun stockage local persistant, aucun identifiant invité temporaire ; aucun producteur de notifications moteur raccordé |
+| `src/lib/communication/delivery-session.ts` | Conserve en mémoire les identifiants réellement présentés après accusé de présentation explicite ; déduplication des lots suivants pendant la session | Aucun stockage local persistant ; aucun producteur de notifications moteur raccordé |\n| `src/lib/communication/runtime.ts` | Façade de session qui compose dispatch, gate et accusé de présentation ; utilisée par `AssistantNoticeLayer` | Raccordement runtime limité aux notices facultatives de l'assistant ; aucun producteur métier partagé des moteurs |
 | `src/lib/communication/maturity.ts` | Sélectionne une posture conversationnelle selon le nombre agrégé de comptes inscrits : lancement, croissance, communauté établie, maturité | Fonction pure sans requête ; pas encore raccordée à une source de comptage ni aux composants de suggestions |
 | `tests/communication/gate.test.ts` | Vérifie priorités, doublons connus, déduplication dans un lot et limite d'affichage | Tests unitaires, pas tests d'intégration UI |
 | `tests/communication/dispatch.test.ts` | Vérifie la chaîne complète locale et l'interpolation des variables | Ne prouve pas encore le raccordement aux événements des moteurs |
-| `tests/communication/delivery-session.test.ts` | Vérifie l'accusé de présentation avant déduplication et l'isolation entre sessions | Tests unitaires du contrat de livraison |
+| `tests/communication/delivery-session.test.ts` | Vérifie l'accusé de présentation avant déduplication et l'isolation entre sessions | Tests unitaires du contrat de livraison |\n| `tests/communication/runtime.test.ts` | Vérifie la préparation, l'accusé explicite et l'isolation du runtime entre sessions | Ne couvre pas encore les producteurs métier Flash/Scan/Réel/Radar |
 
 Le contrat d'appelant exige un identifiant d'événement stable provenant du domaine lorsqu'une déduplication inter-lots est nécessaire. Ne jamais utiliser un identifiant invité temporaire, un identifiant de rendu React ou une valeur générée à chaque rendu. Sans identifiant stable, la fonction ne peut dédupliquer que ce que l'appelant identifie explicitement.
 
@@ -189,7 +189,7 @@ L'inspection du HEAD `a813f026` confirme des producteurs et rendus métier propr
 | Réel — membre | RPC Supabase dédiées pour présence, bips et relations ; abonnement privé `subscribeToReelMemberActivity` aux changements `reel_bips` / `reel_connections` et au broadcast `reel_activity` | `ReelActivityPanel` recharge les projections autorisées et affiche bips reçus, décisions et relations | Garder la propriété au moteur ; ne pas recopier automatiquement dans le centre global |
 | Réel — invité | Fonctions serveur de session invitée ; rafraîchissement périodique de 3 secondes dans le contrôleur lorsque les panneaux d'activité sont ouverts | Même panneau, avec projections et actions invitées séparées | Pas d'identifiant de session invité dans le pipeline partagé ; ne pas transformer le polling local au moteur en nouvelle infrastructure globale |
 | Radar V1 | `radarsRepository` via `useLocalQuery`, opérations créer/modifier/annuler et états conservés par le dépôt offline | `RadarManagement` affiche les intentions personnelles, leur statut, les erreurs et confirme en inline les sauvegardes/modifications/annulations réussies via le formateur commun | Aucun moteur de matching automatique ni producteur d'alerte confirmé dans ce raccordement ; ne pas annoncer de correspondance ou d'alerte |
-| Centre global | Aucun adaptateur Réel/Radar vers `dispatch.ts` ou producteur de notification partagé établi dans cet inventaire | Les moteurs conservent leurs panneaux et retours locaux | Toute future agrégation exige un contrat d'événement stable, une projection autorisée et des tests anti-doublon |
+| Runtime partagé | `createCommunicationRuntime()` compose préparation, priorité, déduplication et accusé de présentation en mémoire ; actuellement consommé par les notices Assistant uniquement | Présentation transitoire, sans stockage ni réseau | Les adaptateurs métier des moteurs et le centre global ne sont pas encore raccordés |\n| Centre global | Aucun adaptateur Réel/Radar vers le runtime ou producteur de notification partagé établi dans cet inventaire | Les moteurs conservent leurs panneaux et retours locaux | Toute future agrégation exige un contrat d'événement stable, une projection autorisée et des tests anti-doublon |
 
 Le panneau Réel expose des états métier réels et recharge les données après les actions. Son onglet « Alertes » compose localement des bips en attente et des relations actives ; il ne constitue pas à lui seul un flux de notifications global. Les états Réel ne doivent donc pas être dupliqués dans `CommunicationSheet` sans contrat explicite.
 
@@ -197,10 +197,10 @@ Radar conserve et gère des intentions privées offline-first. La présence de s
 
 ### Limites observées
 
-- Le canal `publishAssistantNotice` n'a pas d'appel métier externe à son propre module dans l'état inspecté ; le seul déclenchement observé est le message de bienvenue après activation volontaire dans les paramètres.
+- Le canal `publishAssistantNotice` reste facultatif et opt-in. `AssistantNoticeLayer` passe désormais ses notices par `createCommunicationRuntime`, puis accuse leur présentation après rendu ; le seul déclenchement métier observé reste le message de bienvenue après activation volontaire dans les paramètres.
 - Les onglets Notifications, Messages et En direct du centre présentent encore des états vides ; aucun flux de notifications métier ne doit être supposé opérationnel à partir de leur seule présence.
 - Le sélecteur temporel ajouté à Home est une première règle, pas encore un orchestrateur universel pour tous les textes de l'application.
-- Le formateur commun résout les variables de catalogue ; il ne décide pas des priorités, de la fréquence ou du déclenchement des messages.
+- Le formateur commun résout les variables du catalogue. Le nouveau runtime compose le gate, le dispatch et l'accusé de présentation pour les messages transitoires ; il ne décide toujours pas des événements métier ni des sources à notifier.
 - Flash utilise maintenant le formateur commun pour la confirmation de brouillon réellement enregistré et l'erreur de sauvegarde ; ces retours restent inline dans l'expérience Flash.
 - Scan utilise maintenant le formateur commun pour les erreurs de capacité navigateur, de permission/localisation et d'exécution de recherche ; ces retours restent inline dans le panneau Scan.
 - Radar utilise le formateur commun pour les erreurs d'action et confirme en inline, après retour réussi du dépôt offline-first, la création, la modification et l'annulation d'une veille. Ces confirmations ne signifient pas qu'un matching ou une alerte distante a eu lieu.
@@ -214,7 +214,7 @@ Radar conserve et gère des intentions privées offline-first. La présence de s
 ### Ordre d'intégration recommandé
 
 1. Stabiliser le contrat local commun et le catalogue i18n sans changer le rendu des domaines.
-2. Raccorder les notices ponctuelles existantes au contrat commun, en préservant l'opt-in de l'assistant.
+2. Notices Assistant : raccordement au runtime commun effectué ; conserver l'opt-in et vérifier le cycle de présentation.
 3. Étendre le raccordement du formateur commun aux autres erreurs et confirmations des moteurs après inventaire des sources fiables ; ne passer par le dispatch partagé que pour des communications multi-composants qui justifient réellement priorité et déduplication.
 4. Raccorder les notifications des moteurs uniquement à partir d'événements métier existants et dédupliqués.
 5. Remplir les panneaux du centre de communication seulement lorsque leurs données réelles sont disponibles.
