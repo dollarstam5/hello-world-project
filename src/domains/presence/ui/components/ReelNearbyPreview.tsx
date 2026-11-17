@@ -29,7 +29,7 @@ export function ReelNearbyPreview({ controller }: { controller: ReelController }
               className="reel-nearby-preview__person"
               key={person.id}
               onClick={() => openProfile(person)}
-              aria-label={"Voir le profil de " + person.name}
+              aria-label={t("reel.ui.profileOf").replace("{name}", person.name)}
             >
               <PersonAvatar person={person} size="small" />
               <span>
