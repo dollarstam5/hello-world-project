@@ -82,7 +82,7 @@ CREATE OR REPLACE FUNCTION public.claim_assistant_request(
 ) RETURNS JSONB
 LANGUAGE plpgsql
 SECURITY DEFINER
-SET search_path = pg_catalog, public
+SET search_path = ''
 AS $$
 DECLARE
   v_user UUID := auth.uid();
@@ -135,7 +135,7 @@ CREATE OR REPLACE FUNCTION public.complete_assistant_request(
 ) RETURNS BOOLEAN
 LANGUAGE plpgsql
 SECURITY DEFINER
-SET search_path = pg_catalog, public
+SET search_path = ''
 AS $$
 BEGIN
   IF auth.uid() IS NULL
@@ -166,7 +166,7 @@ CREATE OR REPLACE FUNCTION public.fail_assistant_request(p_request_id UUID)
 RETURNS BOOLEAN
 LANGUAGE plpgsql
 SECURITY DEFINER
-SET search_path = pg_catalog, public
+SET search_path = ''
 AS $$
 BEGIN
   IF auth.uid() IS NULL OR p_request_id IS NULL THEN
@@ -194,7 +194,7 @@ CREATE OR REPLACE FUNCTION public.record_ai_cache_candidate(
 ) RETURNS UUID
 LANGUAGE plpgsql
 SECURITY DEFINER
-SET search_path = pg_catalog, public
+SET search_path = ''
 AS $$
 DECLARE
   v_cache_id UUID;
