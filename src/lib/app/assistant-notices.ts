@@ -17,6 +17,7 @@ interface AssistantNoticeState {
 let nextNoticeId = 0;
 const WELCOME_SHOWN_KEY = "vitalis.assistant.welcome-shown";
 let welcomeShownInMemory = false;
+let welcomePresentedInMemory = false;
 
 /** Transient assistant messages are event-driven and never create a persistent control. */
 export const useAssistantNotices = create<AssistantNoticeState>((set) => ({
@@ -28,7 +29,9 @@ export const useAssistantNotices = create<AssistantNoticeState>((set) => ({
 /** Publish only when enabled; the welcome is shown once after the first opt-in. */
 export function dismissAssistantNotice() {
   const notice = useAssistantNotices.getState().notice;
-  if (notice?.kind === "welcome") welcomeShownInMemory = false;
+  if (notice?.kind === "welcome" && !welcomePresentedInMemory) {
+    welcomeShownInMemory = false;
+  }
   useAssistantNotices.getState().dismiss();
 }
 
@@ -38,7 +41,13 @@ export function publishAssistantNotice(message: MessageKey) {
 }
 
 export function publishAssistantWelcome() {
-  if (!useAssistantPreferences.getState().enabled || welcomeShownInMemory) return;
+  if (
+    !useAssistantPreferences.getState().enabled ||
+    welcomeShownInMemory ||
+    welcomePresentedInMemory
+  ) {
+    return;
+  }
   try {
     if (
       typeof window !== "undefined" &&
@@ -56,6 +65,7 @@ export function publishAssistantWelcome() {
 /** Persist the one-time welcome only after its notice has actually been presented. */
 export function markAssistantWelcomePresented() {
   welcomeShownInMemory = true;
+  welcomePresentedInMemory = true;
   try {
     if (typeof window !== "undefined") window.localStorage.setItem(WELCOME_SHOWN_KEY, "true");
   } catch {
