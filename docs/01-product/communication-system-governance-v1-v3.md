@@ -202,7 +202,7 @@ Toute exception exige décision produit/technique, estimation de coûts, quotas,
 ## 15. Feuille de route fonctionnelle
 
 ### V1 — fondation locale, gratuite et fiable
-Salutations locales ; catalogue FR/EN ; formatage typé ; messages prédéfinis ; règles déterministes ; priorité et anti-répétition ; conseils de découverte progressifs dès qu'une source et un point UI réels existent ; raccordement progressif des erreurs/confirmations ; centre alimenté seulement par producteurs vérifiés ; assistant facultatif désactivé par défaut ; invité sans historique persistant ; aucune IA distante pour communications standard.
+Salutations locales ; catalogue FR/EN ; formatage typé ; messages prédéfinis ; règles déterministes ; priorité et anti-répétition ; confirmation de brouillon et erreur de sauvegarde Flash ainsi que les erreurs de localisation/recherche Scan formatées par la couche commune tout en restant inline dans leurs moteurs ; conseils de découverte progressifs dès qu'une source et un point UI réels existent ; centre alimenté seulement par producteurs vérifiés ; assistant facultatif désactivé par défaut ; invité sans historique persistant ; aucune IA distante pour communications standard.
 
 ### V2 — adaptation contextuelle et dialogue guidé
 Capacités envisageables : préférences explicites de fréquence, moments de silence, ton et catégories ; onboarding adaptatif selon étapes réellement terminées ; dialogues courts avec réponses prédéfinies ; aide proactive à partir d'états fiables ; personnalisation consentie ; voix ciblée ; assistant intelligent facultatif si budget approuvé.
