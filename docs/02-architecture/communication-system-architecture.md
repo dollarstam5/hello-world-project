@@ -373,3 +373,10 @@ Le provider transmet ces valeurs au runtime. Les permissions Réel restent expli
 Le provider reçoit aussi une clé de comparaison de session d'identité éphémère, utilisée uniquement pour détecter un changement de compte et appeler `resetSession()`. Cette clé n'est jamais copiée dans le contexte, les demandes ou les messages. Le reset est déclenché lors d'un changement entre chargement, invité et compte, ainsi qu'entre deux comptes membres.
 
 **Point de vigilance :** ce raccordement utilise le hook Auth existant dans `AppShell`, sans refactoriser les consommateurs Auth existants. Il ajoute donc un observateur Auth applicatif ; une centralisation du flux Auth ne sera envisagée que si une mesure démontre un coût ou une duplication problématique.
+
+
+### Garde des demandes dépendantes du contexte
+
+`CommunicationRequest` accepte désormais `requiresContext`. Lorsqu'il vaut `true`, le runtime ne prépare pas la demande tant que le snapshot commun n'est pas `ready`; la demande est retournée dans `suppressed` plutôt que présentée avec un contexte incomplet. Les demandes inline indépendantes du contexte conservent leur fonctionnement, notamment les erreurs et confirmations locales qui ne doivent pas être bloquées par l'hydratation Auth ou des préférences.
+
+Cette garde ne remplace pas les contrôles métier : chaque adaptateur reste responsable de vérifier la source, les permissions, la disponibilité de la fonctionnalité et l'état réel avant de soumettre sa demande. Un contexte prêt n'est jamais une autorisation métier.
