@@ -26,17 +26,19 @@ Ne pas afficher un message de retour si la durée écoulée n'est pas connue. Ne
 
 | Clé | Période indicative | FR | EN |
 |---|---|---|---|
-| greeting.early_night | 00:00–03:00 | Bonsoir. Prenez votre temps. | Hello. Take your time. |
-| greeting.early_morning | 03:00–05:00 | Bonjour ! | Good morning! |
-| greeting.morning | 05:00–08:00 | Bonjour ! Belle journée à vous. | Good morning! Have a lovely day. |
-| greeting.late_morning | 08:00–11:00 | Bonjour ! Que souhaitez-vous faire ? | Good morning! What would you like to do? |
-| greeting.midday | 11:00–14:00 | Bonjour ! | Hello! |
-| greeting.afternoon | 14:00–17:00 | Bon après-midi ! | Good afternoon! |
-| greeting.evening | 17:00–19:00 | Bonne fin de journée ! | Enjoy the rest of your day! |
-| greeting.night | 19:00–22:00 | Bonsoir ! | Good evening! |
-| greeting.late | 22:00–00:00 | Bonsoir. | Good evening. |
+| home.greeting.veryLate | 00:00–03:00 | Bonsoir{name}. Prenez votre temps. | Good evening{name}. Take your time. |
+| home.greeting.earlyMorning | 03:00–05:00 | Bonjour{name} ! | Good morning{name}! |
+| home.greeting.morning | 05:00–08:00 | Bonjour{name} ! Belle journée à vous. | Good morning{name}! Have a lovely day. |
+| home.greeting.lateMorning | 08:00–11:00 | Bonjour{name} ! Que souhaitez-vous faire ? | Good morning{name}! What would you like to do? |
+| home.greeting.midday | 11:00–14:00 | Bonjour{name} ! | Hello{name}! |
+| home.greeting.afternoon | 14:00–17:00 | Bon après-midi{name} ! | Good afternoon{name}! |
+| home.greeting.evening | 17:00–19:00 | Bonne fin de journée{name} ! | Enjoy the rest of your day{name}! |
+| home.greeting.night | 19:00–22:00 | Bonsoir{name} ! | Good evening{name}! |
+| home.greeting.late | 22:00–00:00 | Bonsoir{name}. | Good evening{name}. |
 
-Ce sont des variantes possibles, pas des notifications automatiques. Le gestionnaire de fréquence peut choisir de ne rien afficher.
+Ce sont des variantes possibles, pas des notifications automatiques. Le gestionnaire de fréquence peut choisir de ne rien afficher. Le paramètre `{name}` est remplacé uniquement par un nom d'affichage déjà disponible et autorisé ; sinon il est remplacé par une chaîne vide.
+
+Les neuf clés `home.greeting.*` ci-dessus correspondent aux clés runtime ajoutées au catalogue i18n existant. Les autres clés de ce document restent des entrées éditoriales proposées à intégrer au fur et à mesure de l'adoption du système central.
 
 ## 4. Accompagnement et expressions simples
 
