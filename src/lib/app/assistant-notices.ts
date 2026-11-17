@@ -21,8 +21,7 @@ let welcomeShownInMemory = false;
 /** Transient assistant messages are event-driven and never create a persistent control. */
 export const useAssistantNotices = create<AssistantNoticeState>((set) => ({
   notice: null,
-  publish: (message, kind = "notice") =>
-    set({ notice: { id: ++nextNoticeId, message, kind } }),
+  publish: (message, kind = "notice") => set({ notice: { id: ++nextNoticeId, message, kind } }),
   dismiss: () => set({ notice: null }),
 }));
 
@@ -41,7 +40,10 @@ export function publishAssistantNotice(message: MessageKey) {
 export function publishAssistantWelcome() {
   if (!useAssistantPreferences.getState().enabled || welcomeShownInMemory) return;
   try {
-    if (typeof window !== "undefined" && window.localStorage.getItem(WELCOME_SHOWN_KEY) === "true") {
+    if (
+      typeof window !== "undefined" &&
+      window.localStorage.getItem(WELCOME_SHOWN_KEY) === "true"
+    ) {
       return;
     }
   } catch {
