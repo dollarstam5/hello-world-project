@@ -45,7 +45,7 @@ try {
   }
 
   const targetResponse = await fetch(
-    `http://127.0.0.1:${port}/json/new?${encodeURIComponent(baseUrl)}`,
+    `http://127.0.0.1:${port}/json/new?${baseUrl}`,
     { method: "PUT" },
   );
   if (!targetResponse.ok) {
