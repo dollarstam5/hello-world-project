@@ -643,6 +643,7 @@ Les règles suivantes sont validées dans leur principe, mais leurs paramètres 
 - sources de données autorisées, contrats, couverture et coûts ;
 - méthodes géographiques et précision réellement disponible ;
 - paramètres de notification, seuils de pertinence et mécanismes de livraison ;
+- décision de présentation et de déclenchement des alternatives lorsqu'aucune correspondance exacte n'est disponible ;
 - conditions de disponibilité des cartes et de la navigation intégrée.
 
 Ces points sont des paramètres à spécifier ou vérifier, pas des décisions de principe encore ouvertes. Leur présence dans la liste ne signifie pas qu'une implémentation existe.
