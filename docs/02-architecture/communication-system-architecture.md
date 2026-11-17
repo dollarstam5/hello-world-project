@@ -477,3 +477,19 @@ Le registre des événements de centre est intégré à l'instance existante de 
 - Confirmation inline visible sans incrémenter la cloche.
 - Effacement du registre au changement de session.
 - Rendu des événements dans Notifications et accès au moteur propriétaire.
+
+## Raccordement réel des événements entrants de Réel
+
+État vérifié sur la branche de communication :
+
+- `ReelCommunicationBridge` est monté une seule fois par `AppShell` dans le `CommunicationRuntimeProvider`. Il possède l'unique abonnement privé membre `reel-member:{memberId}` pour les événements entrants Réel.
+- Le canal existant transporte uniquement `kind`, un UUID de livraison généré par le serveur et un horodatage. Aucun ID de bip, ID de relation, ID de présence, nom, coordonnée ou ID de session invité n'est diffusé.
+- Les déclencheurs serveur couvrent les bips membre/membre et membre/invité : bip reçu pour le destinataire membre, acceptation/refus pour le membre expéditeur, clôture de relation pour les participants membres.
+- Les événements rejoignent le même registre en mémoire du `CommunicationRuntime`. Le centre affiche leur traduction et un lien vers En direct ; la cloche les compte comme non lus.
+- Les listes métier détaillées restent lues par les fonctions/RPC existantes. Le contrôleur ne possède plus d'abonnement Realtime. Il effectue une lecture initiale de l'onglet visible et réagit aux événements du runtime uniquement si le panneau Réel est ouvert.
+- Le mode invité conserve son rafraîchissement temporaire propre au moteur. Il ne reçoit pas de canal membre et ses identifiants temporaires ne rejoignent jamais le runtime partagé.
+- Les événements de bip reçu sont dédupliqués dans le compteur global avec la projection des bips en attente : un bip ne doit pas compter deux fois.
+
+Cette intégration réutilise le canal métier existant ; elle n'ajoute ni canal par onglet, ni abonnement Postgres Changes supplémentaire, ni polling membre, ni requête réseau déclenchée uniquement pour afficher le message. Les événements restent en mémoire de session ; aucune persistance durable n'est introduite.
+
+La CI et les tests automatisés doivent confirmer les contrats de déclenchement SQL, le payload privé, la validation du client, la déduplication runtime et le nombre d'abonnements. Les essais multi-comptes/appareils et mesures réseau en conditions réelles restent une validation séparée et ne sont pas réputés effectués par les tests unitaires.
