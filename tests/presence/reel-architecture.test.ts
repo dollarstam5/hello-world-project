@@ -58,6 +58,19 @@ describe("En direct architecture boundaries", () => {
     expect(communicationBridgeSource).not.toContain("guest_session_id");
   });
 
+  it("keeps guest activity refresh event-driven with a low-frequency visible-only fallback", () => {
+    expect(controllerSource).toContain("document.addEventListener(\"visibilitychange\", refreshWhenAvailable)");
+    expect(controllerSource).toContain('window.addEventListener("focus", refreshWhenAvailable)');
+    expect(controllerSource).toContain('window.addEventListener("online", refreshWhenAvailable)');
+    expect(controllerSource).toContain("document.visibilityState !== \"visible\"");
+    expect(controllerSource).toContain("guestActivityRefreshInFlight.current");
+    expect(controllerSource).toContain("}, 30_000)");
+    expect(controllerSource).not.toContain("}, 3000)");
+    expect(controllerSource).toContain("document.removeEventListener(\"visibilitychange\", refreshWhenAvailable)");
+    expect(controllerSource).toContain('window.removeEventListener("focus", refreshWhenAvailable)');
+    expect(controllerSource).toContain('window.removeEventListener("online", refreshWhenAvailable)');
+  });
+
   it("does not couple guest presence activation to nearby discovery consent", () => {
     const controller = controllerSource;
     const start = controller.indexOf("const activateGuestPresence = async");
