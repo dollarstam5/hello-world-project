@@ -402,3 +402,6 @@ Le contexte commun peut être prêt même si les préférences de l'assistant so
 Flash, Scan et Radar ne produisent actuellement que des confirmations/erreurs liées à une action locale de la personne pour les parcours examinés. Elles restent affichées dans leur moteur et ne sont pas copiées dans le centre global. Radar ne dispose pas de matching/alertes automatiques actifs.
 
 Réel dispose de bips et relations réellement issus de services/RPC/Realtime pour les membres et de services temporaires pour les invités. Les vues restent dans le moteur Réel tant qu'une projection partagée ne peut pas être extraite sans second abonnement, polling ou requête, et sans exposer des identifiants invités. La prochaine tranche doit d'abord concevoir ce read model partagé et son cycle de vie, puis seulement brancher le centre global.
+
+
+Les consommateurs du runtime sont réactifs aux changements du contexte : les messages préparés pendant une hydratation incomplète peuvent être réévalués lorsque les sources sont disponibles. Les notices Assistant déclarent explicitement leur dépendance à l'opt-in ; elles ne sont pas affichées avant confirmation de l'activation.
