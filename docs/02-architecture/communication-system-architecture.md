@@ -159,12 +159,14 @@ Les modules suivants sont maintenant présents sur la branche :
 |---|---|---|
 | `src/lib/communication/gate.ts` | Trie les demandes par priorité, conserve l'ordre d'origine à priorité égale et supprime les doublons via identifiant d'événement ou clé de répétition fournis | Ne mémorise pas lui-même les messages déjà livrés ; l'appelant fournit cet état |
 | `src/lib/communication/dispatch.ts` | Applique le filtre de priorité/déduplication puis résout le texte avec le formateur et le catalogue i18n existants | Prépare un lot ; ne déclenche pas de notification et ne modifie aucun état métier |
+| `src/lib/communication/delivery-session.ts` | Conserve en mémoire les identifiants réellement présentés après accusé de présentation explicite ; déduplication des lots suivants pendant la session | Aucun stockage local persistant, aucun identifiant invité temporaire, aucun producteur métier raccordé à ce stade |
 | `tests/communication/gate.test.ts` | Vérifie priorités, doublons connus, déduplication dans un lot et limite d'affichage | Tests unitaires, pas tests d'intégration UI |
 | `tests/communication/dispatch.test.ts` | Vérifie la chaîne complète locale et l'interpolation des variables | Ne prouve pas encore le raccordement aux événements des moteurs |
+| `tests/communication/delivery-session.test.ts` | Vérifie l'accusé de présentation avant déduplication et l'isolation entre sessions | Tests unitaires du contrat de livraison |
 
 Le contrat d'appelant exige un identifiant d'événement stable provenant du domaine lorsqu'une déduplication inter-lots est nécessaire. Ne jamais utiliser un identifiant invité temporaire, un identifiant de rendu React ou une valeur générée à chaque rendu. Sans identifiant stable, la fonction ne peut dédupliquer que ce que l'appelant identifie explicitement.
 
-Aucun délai de fréquence n'est imposé : la déduplication est déterministe et fondée sur les identifiants fournis. La conservation de l'état « déjà livré » reste sous la responsabilité de l'adaptateur de présentation qui sera validé ensuite. Aucun stockage serveur ni appel réseau n'est ajouté.
+Aucun délai de fréquence n'est imposé : la déduplication est déterministe et fondée sur les identifiants fournis. La conservation de l'état « déjà livré » est assurée par delivery-session.ts uniquement après que le composant appelant confirme la présentation. La mémoire est limitée à la session courante et disparaît à sa recréation ; aucun stockage serveur ni appel réseau n'est ajouté.
 
 ### Limites observées
 
@@ -202,3 +204,19 @@ Aucun délai de fréquence n'est imposé : la déduplication est déterministe e
 - [Architecture front-end et expérience](./frontend-experience.md)
 - [Architecture IA et intégrations](./ai-architecture-integrations.md)
 - [Centre de communication — règles produit V1](../01-product/communication-center-v1.md)
+
+
+### Règle de production — aucune notification fabriquée
+
+Le centre de communication ne doit afficher que les événements transmis par une source métier réelle et confirmée. En l'absence de source, les états vides localisés restent visibles ; aucun exemple, compteur, événement simulé ou notification de démonstration ne doit être injecté dans les onglets de production.
+
+Le pipeline est prêt à consommer un lot lorsque son domaine producteur sera disponible :
+1. le domaine fournit une clé i18n autorisée et un identifiant d'événement stable, jamais un identifiant temporaire invité ;
+2. prepareCommunicationMessages() valide les doublons et prépare le texte localisé ;
+3. l'interface présente le message ;
+4. seulement après présentation effective, l'appelant transmet le message à markDelivered() du delivery-session ;
+5. un nouvel arrivage portant le même identifiant dans la session est ignoré.
+
+Le système ne crée ni événement métier, ni notification, ni compteur, ni historique. Les événements En direct déjà exposés dans ReelActivityPanel restent affichés par leur composant métier tant qu'aucun flux partagé de notifications n'est fourni. Il ne faut pas recopier ou agréger ces données dans le centre par supposition.
+
+**État de préparation :** catalogue, formatage, priorité, déduplication et accusé de livraison en mémoire sont implémentés ; les producteurs de notifications du centre ne sont pas présents dans le dépôt inspecté. Le raccordement UI doit donc rester inactif jusqu'à la disponibilité de ces producteurs.
