@@ -151,6 +151,21 @@ L'inventaire ci-dessous a été vérifié dans le dépôt avant d'étendre l'int
 | `src/components/experience/CommunicationSheet.tsx` | Centre de communication avec onglets Notifications, Assistant facultatif, Messages et En direct | Conserver le centre ; ses panneaux vides ne sont pas des événements métier |
 | `src/components/app/AppShell.tsx` | Monte la couche de notices et le centre de communication | Point de montage global existant à réutiliser |
 
+### Implémentation locale ajoutée — contrat et préparation des messages
+
+Les modules suivants sont maintenant présents sur la branche :
+
+| Module | Responsabilité réellement implémentée | Limite actuelle |
+|---|---|---|
+| `src/lib/communication/gate.ts` | Trie les demandes par priorité, conserve l'ordre d'origine à priorité égale et supprime les doublons via identifiant d'événement ou clé de répétition fournis | Ne mémorise pas lui-même les messages déjà livrés ; l'appelant fournit cet état |
+| `src/lib/communication/dispatch.ts` | Applique le filtre de priorité/déduplication puis résout le texte avec le formateur et le catalogue i18n existants | Prépare un lot ; ne déclenche pas de notification et ne modifie aucun état métier |
+| `tests/communication/gate.test.ts` | Vérifie priorités, doublons connus, déduplication dans un lot et limite d'affichage | Tests unitaires, pas tests d'intégration UI |
+| `tests/communication/dispatch.test.ts` | Vérifie la chaîne complète locale et l'interpolation des variables | Ne prouve pas encore le raccordement aux événements des moteurs |
+
+Le contrat d'appelant exige un identifiant d'événement stable provenant du domaine lorsqu'une déduplication inter-lots est nécessaire. Ne jamais utiliser un identifiant invité temporaire, un identifiant de rendu React ou une valeur générée à chaque rendu. Sans identifiant stable, la fonction ne peut dédupliquer que ce que l'appelant identifie explicitement.
+
+Aucun délai de fréquence n'est imposé : la déduplication est déterministe et fondée sur les identifiants fournis. La conservation de l'état « déjà livré » reste sous la responsabilité de l'adaptateur de présentation qui sera validé ensuite. Aucun stockage serveur ni appel réseau n'est ajouté.
+
 ### Limites observées
 
 - Le canal `publishAssistantNotice` n'a pas d'appel métier externe à son propre module dans l'état inspecté ; le seul déclenchement observé est le message de bienvenue après activation volontaire dans les paramètres.
