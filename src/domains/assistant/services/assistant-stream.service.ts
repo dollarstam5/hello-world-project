@@ -1,10 +1,31 @@
 import type { AssistantFailure } from "@eco/core-contracts";
 
+export type StreamMessage = { role: "user" | "assistant"; content: string };
+
 export interface StreamRequest {
   requestId: string;
   locale: "fr" | "en";
   route?: string;
-  messages: { role: "user" | "assistant"; content: string }[];
+  messages: StreamMessage[];
+}
+
+export function buildAssistantRequestMessages(messages: readonly StreamMessage[]): StreamMessage[] {
+  const alternating: StreamMessage[] = [];
+  for (const message of messages) {
+    const previous = alternating.at(-1);
+    if (previous?.role === message.role) {
+      alternating[alternating.length - 1] = message;
+    } else {
+      alternating.push(message);
+    }
+  }
+
+  const bounded = alternating.slice(-8);
+  let totalChars = bounded.reduce((total, message) => total + message.content.length, 0);
+  while (bounded.length > 1 && totalChars > 4_000) {
+    totalChars -= bounded.shift()!.content.length;
+  }
+  return bounded;
 }
 
 export class AssistantStreamError extends Error {
