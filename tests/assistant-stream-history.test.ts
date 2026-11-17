@@ -83,7 +83,10 @@ describe("streaming de Vita", () => {
   });
 
   it("transmet le signal d’annulation à la requête réseau", async () => {
-    mockStream(['data: {"type":"response.output_text.delta","delta":"Bonjour"}', 'data: {"type":"response.completed"}']);
+    mockStream([
+      'data: {"type":"response.output_text.delta","delta":"Bonjour"}',
+      'data: {"type":"response.completed"}',
+    ]);
     const controller = new AbortController();
 
     await streamAssistant(
