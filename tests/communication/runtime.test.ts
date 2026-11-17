@@ -43,6 +43,34 @@ describe("communication runtime", () => {
     expect(runtime.getContext()).toBeNull();
   });
 
+  it("suppresses context-dependent requests until all required context is ready", () => {
+    const runtime = createCommunicationRuntime();
+    const request = [
+      {
+        key: "common.error",
+        source: "app" as const,
+        surface: "center" as const,
+        priority: "normal" as const,
+        requiresContext: true,
+      },
+    ];
+
+    const unavailable = runtime.prepare(translate, request);
+    expect(unavailable.messages).toHaveLength(0);
+    expect(unavailable.suppressed).toEqual(request);
+
+    runtime.updateContext({
+      identity: "guest",
+      pathname: "/",
+      locale: "fr",
+      assistantEnabled: false,
+    });
+
+    const available = runtime.prepare(translate, request);
+    expect(available.messages).toHaveLength(1);
+    expect(available.suppressed).toHaveLength(0);
+  });
+
   it("does not mark a request delivered until the presenter acknowledges it", () => {
     const runtime = createCommunicationRuntime();
     const request = [
