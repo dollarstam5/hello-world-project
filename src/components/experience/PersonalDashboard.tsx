@@ -51,7 +51,7 @@ export function PersonalDashboard() {
   const { user } = useAuth();
   const displayName = useIdentity((state) => state.displayName);
   const displayNameOwnerId = useIdentity((state) => state.displayNameOwnerId);
-  const visibleDisplayName = displayNameOwnerId === user?.id ? displayName : undefined;
+  const visibleDisplayName = user && displayNameOwnerId === user.id ? displayName : undefined;
 
   return (
     <div className="page-shell stack-8">
