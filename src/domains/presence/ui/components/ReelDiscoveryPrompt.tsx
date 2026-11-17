@@ -87,7 +87,7 @@ export function ReelDiscoveryPrompt({ controller }: { controller: ReelController
               className="reel-location-card__secondary"
               onClick={ignoreLocation}
             >
-              Pas maintenant
+              {t("reel.ui.notNow")}
             </button>
           )}
         </div>
