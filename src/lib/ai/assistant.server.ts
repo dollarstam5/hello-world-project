@@ -3,7 +3,7 @@ import type { AssistantRequest, AssistantResult } from "@eco/core-contracts";
 import { getServerConfig } from "@/lib/config.server";
 import {
   classifyAssistantQuestion,
-  containsSensitiveSecret,
+  hasSensitiveUserContent,
   isSharedCacheAnswerEligible,
   isSharedCacheEligible,
   MAX_ASSISTANT_OUTPUT_CHARS,
@@ -164,7 +164,7 @@ export async function runPaidAssistant(
   request: AssistantRequest,
 ): Promise<AssistantResult> {
   const question = request.messages.at(-1)!.content.trim();
-  if (containsSensitiveSecret(question)) {
+  if (hasSensitiveUserContent(request.messages)) {
     return { ok: false, reason: "unsafe_request", requestId: request.requestId };
   }
 
