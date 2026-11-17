@@ -339,7 +339,12 @@ export function useReelProximityController() {
     };
 
     void refreshVisibleActivity();
-    if (access.mode !== "guest") return;
+    if (access.mode !== "guest") {
+      window.addEventListener("vitalis:reel-activity-reconnected", refreshVisibleActivity);
+      return () => {
+        window.removeEventListener("vitalis:reel-activity-reconnected", refreshVisibleActivity);
+      };
+    }
 
     const refreshWhenAvailable = () => {
       if (document.visibilityState === "visible") void refreshVisibleActivity();
