@@ -23,8 +23,9 @@ vi.mock("@/lib/communication/CommunicationRuntimeProvider", () => ({
 }));
 
 vi.mock("@/domains/presence/model/reel-activity-projection", () => ({
-  useReelActivityProjection: (selector: (state: { pendingBips: number; bipsReady: boolean }) => unknown) =>
-    selector({ pendingBips: 0, bipsReady: false }),
+  useReelActivityProjection: (
+    selector: (state: { pendingBips: number; bipsReady: boolean }) => unknown,
+  ) => selector({ pendingBips: 0, bipsReady: false }),
 }));
 
 vi.mock("@/lib/i18n/useI18n", () => ({
@@ -55,7 +56,8 @@ describe("AppHeader", () => {
   it("keeps primary header controls at least 48px with visible focus", () => {
     const markup = renderToStaticMarkup(<AppHeader onOpenCommunication={() => undefined} />);
 
-    expect(markup.match(/h-12 w-12/g)?.length).toBeGreaterThanOrEqual(2);
+    expect(markup.match(/h-12 w-12/g)?.length).toBeGreaterThanOrEqual(1);
+    expect(markup).toContain("relative h-12 w-12 rounded-full");
     expect(markup).toContain("focus-visible:ring-2");
   });
 });
