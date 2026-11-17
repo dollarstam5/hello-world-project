@@ -6,7 +6,7 @@ import {
   failAssistantRequest,
 } from "@/lib/ai/assistant-rate-limit.server";
 import {
-  containsSensitiveSecret,
+  hasSensitiveUserContent,
   safeAssistantRoute,
   validateConversation,
 } from "@/lib/ai/assistant-policy";
@@ -159,11 +159,7 @@ export const Route = createFileRoute("/api/public/assistant")({
         if (validateConversation(assistantRequest)) {
           return Response.json({ error: "invalid_request" }, { status: 400 });
         }
-        if (
-          assistantRequest.messages.some(
-            (message) => message.role === "user" && containsSensitiveSecret(message.content),
-          )
-        ) {
+        if (hasSensitiveUserContent(assistantRequest.messages)) {
           return Response.json({ error: "unsafe_request" }, { status: 422 });
         }
 
