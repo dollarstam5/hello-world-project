@@ -21,6 +21,11 @@ describe("assistant welcome notice", () => {
     expect(useAssistantNotices.getState().notice?.kind).toBe("welcome");
     expect(window.localStorage.getItem("vitalis.assistant.welcome-shown")).toBeNull();
 
+    dismissAssistantNotice();
+    expect(useAssistantNotices.getState().notice).toBeNull();
+    publishAssistantWelcome();
+    expect(useAssistantNotices.getState().notice?.kind).toBe("welcome");
+
     markAssistantWelcomePresented();
     expect(window.localStorage.getItem("vitalis.assistant.welcome-shown")).toBe("true");
 
