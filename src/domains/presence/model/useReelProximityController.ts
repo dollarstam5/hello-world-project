@@ -471,7 +471,7 @@ export function useReelProximityController() {
           ? receivedGuestBips.length
           : receivedBips.length + receivedGuestBips.length,
       );
-  }, [access.mode, canUseMemberReel, receivedBips.length, receivedGuestBips.length]);
+  }, [access.mode, canUseMemberReel, receivedBips, receivedGuestBips]);
 
   useEffect(() => {
     const mode = access.mode === "guest" ? "guest" : canUseMemberReel ? "member" : null;
