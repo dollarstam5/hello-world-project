@@ -14,6 +14,7 @@ export interface ReelActivityBroadcast {
 export function subscribeToReelMemberActivity(
   memberId: string | null | undefined,
   onActivity: (event: ReelActivityBroadcast) => void,
+  onReconnect?: () => void,
 ): () => void {
   if (!memberId) return () => undefined;
 
@@ -44,7 +45,20 @@ export function subscribeToReelMemberActivity(
     onActivity(event);
   });
 
-  channel.subscribe();
+  let hasConnected = false;
+  let disconnectedAfterConnection = false;
+  channel.subscribe((status) => {
+    if (status === "SUBSCRIBED") {
+      if (hasConnected && disconnectedAfterConnection) onReconnect?.();
+      hasConnected = true;
+      disconnectedAfterConnection = false;
+    } else if (
+      hasConnected &&
+      (status === "CHANNEL_ERROR" || status === "TIMED_OUT" || status === "CLOSED")
+    ) {
+      disconnectedAfterConnection = true;
+    }
+  });
   return () => {
     void supabase.removeChannel(channel);
   };
