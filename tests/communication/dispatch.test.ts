@@ -13,7 +13,7 @@ describe("prepareCommunicationMessages", () => {
     ]);
 
     expect(result.messages.map(({ key }) => key)).toEqual(["common.error", "home.welcome.named"]);
-    expect(result.messages[1].text).toBe("Bonjour, Ada !");
+    expect(result.messages[1].text).toBe("Bonjour, Ada!");
     expect(result.suppressed).toHaveLength(1);
   });
 
