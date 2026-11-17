@@ -33,9 +33,7 @@ export function subscribeToReelMemberActivity(
     }
     const event = payload as ReelActivityBroadcast;
     if (
-      !["bip_received", "bip_accepted", "bip_declined", "connection_closed"].includes(
-        event.kind,
-      ) ||
+      !["bip_received", "bip_accepted", "bip_declined", "connection_closed"].includes(event.kind) ||
       typeof event.event_id !== "string" ||
       !/^[0-9a-f-]{36}$/i.test(event.event_id) ||
       typeof event.created_at !== "number" ||
