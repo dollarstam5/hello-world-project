@@ -61,7 +61,9 @@ export function RadarManagement() {
   const [busy, setBusy] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [actionError, setActionError] = useState(false);
-  const [actionNotice, setActionNotice] = useState<"radar.manage.saved" | "radar.manage.updated" | "radar.manage.cancelled" | null>(null);
+  const [actionNotice, setActionNotice] = useState<
+    "radar.manage.saved" | "radar.manage.updated" | "radar.manage.cancelled" | null
+  >(null);
   const [pendingCancel, setPendingCancel] = useState<RadarRecord | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const records = useMyRadars(authLoading ? undefined : userId);
