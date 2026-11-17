@@ -17,21 +17,21 @@ const SAFE_ROUTES = new Set([
 ]);
 
 const SENSITIVE_PATTERNS = [
-  /\b(?:mot de passe|password|code secret|code pin|cvv|otp)\b/i,
-  /\b(?:seed phrase|phrase de recuperation|private key|cle privee)\b/i,
-  /\b\d{13,19}\b/,
+  /\\b(?:mot de passe|password|code secret|code pin|cvv|otp)\\b/i,
+  /\\b(?:seed phrase|phrase de recuperation|private key|cle privee)\\b/i,
+  /\\b\\d{13,19}\\b/,
 ];
 
 const PERSONAL_PATTERNS = [
-  /\b[\w.+-]+@[\w.-]+\.[a-z]{2,}\b/i,
-  /(?:\+?237)?\s*[26]\d(?:[\s.-]*\d{2}){4}\b/,
-  /\b(?:mon|ma|mes|moi|my|mine)\b/i,
-  /\d{3,}/,
+  /\\b[\\w.+-]+@[\\w.-]+\\.[a-z]{2,}\\b/i,
+  /(?:\\+?237)?\\s*[26]\\d(?:[\\s.-]*\\d{2}){4}\\b/,
+  /\\b(?:mon|ma|mes|moi|my|mine)\\b/i,
+  /\\d{3,}/,
 ];
 
 export function safeAssistantRoute(route: string | undefined): string | undefined {
   if (!route) return undefined;
-  const normalized = route.split(/[?#]/, 1)[0]?.replace(/\/$/, "") || "/";
+  const normalized = route.split(/[?#]/, 1)[0]?.replace(/\\/$/, "") || "/";
   return SAFE_ROUTES.has(normalized) ? normalized : undefined;
 }
 
@@ -59,6 +59,15 @@ export function containsSensitiveSecret(content: string): boolean {
   return SENSITIVE_PATTERNS.some((pattern) => pattern.test(content));
 }
 
+/** Apply the same sensitive-input rule to every user turn on every server path. */
+export function hasSensitiveUserContent(
+  messages: readonly { role: string; content: string }[],
+): boolean {
+  return messages.some(
+    (message) => message.role === "user" && containsSensitiveSecret(message.content),
+  );
+}
+
 export function isSharedCacheAnswerEligible(answer: string): boolean {
   return (
     answer.length >= 3 &&
@@ -80,10 +89,10 @@ export function isSharedCacheEligible(question: string): boolean {
 export function classifyAssistantQuestion(
   question: string,
 ): "navigation" | "feature" | "account" | "safety" | "other" {
-  if (/\b(?:ou|où|ouvrir|trouver|aller|page|onglet)\b/i.test(question)) return "navigation";
-  if (/\b(?:compte|profil|inscri|connexion|identite)\b/i.test(question)) return "account";
-  if (/\b(?:secur|fraude|abus|signaler|danger|confident)\b/i.test(question)) return "safety";
-  if (/\b(?:flash|scan|radar|mission|notification|offline|hors ligne)\b/i.test(question))
+  if (/\\b(?:ou|où|ouvrir|trouver|aller|page|onglet)\\b/i.test(question)) return "navigation";
+  if (/\\b(?:compte|profil|inscri|connexion|identite)\\b/i.test(question)) return "account";
+  if (/\\b(?:secur|fraude|abus|signaler|danger|confident)\\b/i.test(question)) return "safety";
+  if (/\\b(?:flash|scan|radar|mission|notification|offline|hors ligne)\\b/i.test(question))
     return "feature";
   return "other";
 }
