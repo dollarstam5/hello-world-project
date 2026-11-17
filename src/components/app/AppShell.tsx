@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useMemo, useState, type ReactNode } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useRouterState } from "@tanstack/react-router";
 import { BottomNav } from "./BottomNav";
 import { useExperienceBoot } from "@/lib/experience/orchestrator";
@@ -70,9 +70,18 @@ export function AppShell({ children }: { children: ReactNode }) {
     [assistantEnabled, assistantPreferencesHydrated, authLoading, locale, pathname, user],
   );
 
+  const previousProjectionIdentity = useRef<string | undefined>(undefined);
+  const projectionIdentity = authLoading ? "loading" : (user?.id ?? "guest");
+
   useEffect(() => {
-    resetReelActivityProjection();
-  }, [authLoading, user?.id]);
+    if (
+      previousProjectionIdentity.current !== undefined &&
+      previousProjectionIdentity.current !== projectionIdentity
+    ) {
+      resetReelActivityProjection();
+    }
+    previousProjectionIdentity.current = projectionIdentity;
+  }, [projectionIdentity]);
 
   useExperienceBoot();
 
