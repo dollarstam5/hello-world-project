@@ -5,11 +5,12 @@ import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
 export interface AssistantNotice {
   id: number;
   message: MessageKey;
+  kind: "notice" | "welcome";
 }
 
 interface AssistantNoticeState {
   notice: AssistantNotice | null;
-  publish: (message: MessageKey) => void;
+  publish: (message: MessageKey, kind?: AssistantNotice["kind"]) => void;
   dismiss: () => void;
 }
 
@@ -20,12 +21,15 @@ let welcomeShownInMemory = false;
 /** Transient assistant messages are event-driven and never create a persistent control. */
 export const useAssistantNotices = create<AssistantNoticeState>((set) => ({
   notice: null,
-  publish: (message) => set({ notice: { id: ++nextNoticeId, message } }),
+  publish: (message, kind = "notice") =>
+    set({ notice: { id: ++nextNoticeId, message, kind } }),
   dismiss: () => set({ notice: null }),
 }));
 
 /** Publish only when enabled; the welcome is shown once after the first opt-in. */
 export function dismissAssistantNotice() {
+  const notice = useAssistantNotices.getState().notice;
+  if (notice?.kind === "welcome") welcomeShownInMemory = false;
   useAssistantNotices.getState().dismiss();
 }
 
@@ -37,13 +41,22 @@ export function publishAssistantNotice(message: MessageKey) {
 export function publishAssistantWelcome() {
   if (!useAssistantPreferences.getState().enabled || welcomeShownInMemory) return;
   try {
-    if (typeof window !== "undefined") {
-      if (window.localStorage.getItem(WELCOME_SHOWN_KEY) === "true") return;
-      window.localStorage.setItem(WELCOME_SHOWN_KEY, "true");
+    if (typeof window !== "undefined" && window.localStorage.getItem(WELCOME_SHOWN_KEY) === "true") {
+      return;
     }
   } catch {
     // The in-memory guard still prevents duplicate welcomes during this session.
   }
   welcomeShownInMemory = true;
-  publishAssistantNotice("assistant.notice.welcome");
+  useAssistantNotices.getState().publish("assistant.notice.welcome", "welcome");
+}
+
+/** Persist the one-time welcome only after its notice has actually been presented. */
+export function markAssistantWelcomePresented() {
+  welcomeShownInMemory = true;
+  try {
+    if (typeof window !== "undefined") window.localStorage.setItem(WELCOME_SHOWN_KEY, "true");
+  } catch {
+    // The in-memory guard still prevents duplicates during this session.
+  }
 }
