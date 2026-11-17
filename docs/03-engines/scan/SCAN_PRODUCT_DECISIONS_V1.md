@@ -107,40 +107,29 @@ Scan distingue trois niveaux de résultats :
 ### Portée de cette décision
 
 Cette règle fixe la qualification produit cible V1. Les seuils éventuels, les règles détaillées de passage d'un niveau à l'autre et les facteurs de départage doivent être spécifiés et testés avant implémentation. Aucun score numérique arbitraire ne doit être inventé.
-## 7. Pistes lorsque aucun résultat exact n'est disponible — règle V1 validée
+## 7. Pistes lorsque aucun résultat exact n'est disponible — décision de présentation à confirmer
 
-Lorsque Scan ne trouve aucune correspondance exacte, il peut proposer des pistes d'élargissement, mais ne doit jamais modifier la recherche automatiquement.
+La qualification des correspondances exactes, proches et alternatives est validée à la section 6. En revanche, le comportement de Scan lorsqu'aucune correspondance exacte n'est trouvée — notamment le fait de proposer automatiquement des alternatives ou des pistes d'élargissement — reste à confirmer.
 
-### Suggestions possibles
+En attendant cette décision :
+- expliquer honnêtement l'absence de correspondance dans les sources réellement consultées et le périmètre appliqué ;
+- ne pas élargir automatiquement le rayon, la période, la catégorie ou les filtres stricts ;
+- ne pas présenter une correspondance proche ou une alternative comme une correspondance exacte ;
+- ne pas déclencher automatiquement une nouvelle recherche ou une mission Radar ;
+- laisser l'utilisateur conserver, modifier ou abandonner sa recherche initiale.
 
-Selon les critères réellement présents dans la recherche, Scan peut proposer une ou plusieurs actions pertinentes :
-
-- élargir le rayon géographique ;
-- modifier la période ou le moment recherché ;
-- retirer ou assouplir une préférence facultative ;
-- consulter une catégorie voisine ;
-- transformer le besoin en mission Radar.
-
-### Contrôle laissé à l'utilisateur
-
-- Chaque piste est une proposition explicite, compréhensible et facultative.
-- L'utilisateur choisit s'il souhaite l'appliquer ; il peut aussi conserver sa recherche initiale ou l'abandonner.
-- Scan ne change jamais seul le rayon, la période, les critères, la catégorie ou le moteur utilisé.
-- Une exigence stricte ne peut pas être rétrogradée silencieusement en préférence. Si l'utilisateur souhaite l'assouplir, le changement doit être explicite et confirmé.
-- Le passage vers Radar nécessite une confirmation distincte, car il transforme une recherche ponctuelle en démarche suivie.
-- Les résultats obtenus après élargissement doivent indiquer clairement le critère modifié et conserver la qualification exacte/proche/alternative définie plus haut.
-- Les suggestions doivent être pertinentes au regard de la recherche et des données réellement disponibles ; ne pas proposer une source ou une catégorie comme consultable si elle n'est pas raccordée et validée.
+Les options possibles (élargir le rayon, modifier une période, assouplir une préférence, consulter une catégorie voisine ou préparer un passage vers Radar) ne sont pas des actions automatiques validées. Elles ne pourront être présentées comme parcours V1 qu'après décision explicite.
 
 ### Historique de validation
 
-- Validation utilisateur : en l'absence de résultat exact, Scan peut suggérer automatiquement des pistes d'élargissement, mais laisse toujours l'utilisateur décider avant toute modification de recherche ou conversion en mission Radar.
-
+- La distinction exacte/proche/alternative est validée.
+- Le choix de la présentation et du déclenchement des alternatives en l'absence de résultat exact reste ouvert.
 
 ## 8. États de disponibilité des sources — règle V1 validée
 
 Scan doit distinguer explicitement trois situations de recherche. Le statut décrit ce qui s'est réellement passé pendant l'exécution ; il ne doit jamais être déduit de l'absence de résultats seule.
 
-1. **Aucun résultat trouvé** — les sources prévues et disponibles pour cette recherche ont répondu correctement et ont été consultées, mais aucune ne retourne de résultat correspondant aux critères. Scan peut alors proposer les pistes d'élargissement de la section 7.
+1. **Aucun résultat trouvé** — les sources prévues et disponibles pour cette recherche ont répondu correctement et ont été consultées, mais aucune ne retourne de résultat correspondant aux critères. Scan ne propose des pistes d'élargissement que selon le comportement qui sera confirmé à la section 7 ; aucune suggestion automatique n'est présumée.
 2. **Recherche partielle** — au moins une source pertinente n'a pas pu être consultée, a échoué ou a retourné des données incomplètes, tandis qu'une ou plusieurs autres sources ont répondu. Scan présente les résultats disponibles comme partiels, identifie les sources effectivement consultées et signale les limites connues. Il ne prétend pas avoir tout vérifié.
 3. **Recherche impossible** — aucune source exploitable n'a fourni de réponse utilisable pour cette recherche. Scan explique simplement que la recherche n'a pas pu être effectuée et, si possible, indique la cause connue ainsi qu'une action réaliste (réessayer, vérifier la connexion ou revenir plus tard). Il ne présente pas cette situation comme une absence de résultats.
 
@@ -400,12 +389,13 @@ Les contrats d'événements de cycle de vie par source, la fréquence de revalid
 
 Scan et Radar sont deux moteurs distincts. Leur différence ne tient pas seulement à la taille du rayon : elle concerne aussi le point géographique utilisé et le caractère ponctuel ou suivi de la recherche.
 
-### Scan — explorer les environs de sa position actuelle
+### Scan — explorer ponctuellement autour d'un point de référence choisi
 
 - Scan effectue une exploration ponctuelle autour d'un point de référence explicitement choisi pour ce lancement : position GPS actuelle autorisée, zone approximative si elle est réellement prise en charge, ou lieu public sélectionné manuellement.
 - Son rayon est limité et plus restreint que les possibilités de recherche géographique prévues pour Radar.
 - Si l'utilisateur se déplace vers un autre quartier ou une autre ville, il peut lancer une nouvelle exploration depuis sa nouvelle position ou sélectionner un autre lieu public. Chaque exploration reste distincte et ses résultats ne sont pas mélangés.
-- Scan est une recherche ponctuelle déclenchée par l'utilisateur. Il ne surveille pas en continu les lieux déjà visités ou les zones précédemment scannées.
+- Scan est une recherche ponctuelle déclenchée par l'utilisateur. Il ne suit pas sa position en continu et ne surveille pas automatiquement les lieux déjà visités ou les zones précédemment scannées.
+- Après un Scan, l'utilisateur peut accorder séparément une autorisation temporaire de signalement de nouvelles informations correspondant à sa dernière recherche et à son dernier périmètre. Cette autorisation facultative, révocable et à expiration automatique n'actualise jamais sa position et ne constitue pas une mission Radar ; ses règles détaillées figurent à la section 24.
 - Un résultat géographique doit respecter les règles de précision, de calcul et d'incertitude de la section 13. Aucun rayon ni aucune distance ne peut être prétendu appliqué si le calcul correspondant n'est pas réellement effectué.
 
 ### Radar — surveiller une zone choisie, indépendante de sa position
@@ -436,8 +426,10 @@ Scan et Radar sont deux moteurs distincts. Leur différence ne tient pas seuleme
 
 ### Historique de validation
 
-- Validation utilisateur : Scan explore ponctuellement les environs de la position actuelle de l'utilisateur, avec un rayon plus limité ; après déplacement, un nouveau scan porte sur les environs de la nouvelle position.
-- Validation utilisateur : Radar peut surveiller une zone choisie différente de la position actuelle de l'utilisateur et recueillir des résultats ciblés dans cette zone.
+- Validation utilisateur initiale : Scan explore ponctuellement les environs de la position actuelle, avec un rayon plus limité ; après déplacement, un nouveau scan porte sur les environs de la nouvelle position.
+- Clarification produit ultérieure : chaque exploration Scan peut utiliser un point de référence explicitement choisi — GPS actuel, zone approximative réellement prise en charge ou lieu public sélectionné manuellement. Plusieurs zones peuvent être explorées dans une même session, avec des résultats séparés.
+- Validation utilisateur : Radar peut surveiller une ou plusieurs zones choisies indépendamment de la position actuelle, dans la durée.
+- La règle de référence initiale centrée uniquement sur la position actuelle est donc précisée par les décisions des sections 20 et 26 ; elle ne doit pas exclure la sélection manuelle d'un lieu public.
 
 
 ## 17. Scan comme scanner intelligent d'environnement — règle V1 validée
@@ -527,18 +519,15 @@ L'utilisateur peut explorer plusieurs zones de référence au cours d'une même 
 - Scan ne fusionne pas automatiquement les résultats de zones différentes.
 - L'utilisateur peut revenir aux résultats d'une zone déjà explorée pendant la session, dans les limites de conservation locale définies.
 - La V1 ne nécessite pas d'interface dédiée de comparaison côte à côte entre zones.
+- La sélection manuelle d'un lieu public est un point de référence possible si le service le prend effectivement en charge ; elle ne doit pas être confondue avec une position GPS actuelle.
 
 Les modes de référence autorisés (position GPS actuelle, zone approximative prise en charge ou sélection manuelle d'un lieu public) sont décrits dans les règles géographiques. Le choix d'une zone dans Scan reste une exploration ponctuelle ; la surveillance durable d'une zone relève de Radar.
 
-## 21. Correspondances exactes, proches et alternatives — règle V1 validée
+## 21. Présentation des correspondances et alternatives — distinction validée, comportement à confirmer
 
-La qualification détaillée des résultats est définie à la section 6. Cette règle est rappelée ici pour l'interface :
-- les correspondances exactes sont présentées comme telles uniquement lorsque les exigences strictes sont vérifiées ;
-- les correspondances proches indiquent clairement la différence ou l'information manquante ;
-- les alternatives sont séparées des correspondances et expliquent pourquoi elles peuvent être utiles ;
-- aucune alternative n'est présentée comme si elle répondait exactement à la demande.
+La qualification détaillée des résultats est définie à la section 6 : correspondance exacte, correspondance proche et alternative sont trois statuts distincts. L'interface ne doit jamais mélanger ces statuts ni présenter une alternative comme une réponse exacte.
 
-Lorsque aucune correspondance exacte n'est disponible, Scan peut proposer des résultats proches et des alternatives clairement identifiés, sans les mélanger aux correspondances exactes. L'utilisateur garde la possibilité de préciser ou d'élargir sa recherche selon la section 7.
+Le déclenchement et la forme des suggestions lorsque aucune correspondance exacte n'est disponible restent à confirmer (voir section 7). La classification des résultats ne vaut pas validation d'une suggestion automatique d'alternatives.
 
 ## 22. Personnalisation et préférences — règles V1 validées
 
