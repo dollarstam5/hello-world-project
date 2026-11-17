@@ -27,6 +27,14 @@ export function CommunicationSheet({
   const activeConnections = useReelActivityProjection((state) => state.activeConnections);
   const bipsReady = useReelActivityProjection((state) => state.bipsReady);
   const connectionsReady = useReelActivityProjection((state) => state.connectionsReady);
+  // Keep each tab's indicator tied to its owning source. Received bips belong
+  // to En direct, so they are excluded from the Notifications tab count.
+  const unreadNotifications = events.filter(
+    (event) =>
+      event.readAt === null && event.messageKey !== "communication.event.reel.bipReceived",
+  ).length;
+  const liveAttention = bipsReady ? pendingBips : 0;
+  const formatCount = (count: number) => (count > 99 ? "99+" : String(count));
   return (
     <Sheet
       open={open}
@@ -42,8 +50,21 @@ export function CommunicationSheet({
           <TabsTrigger
             className="min-w-0 whitespace-normal px-1 text-xs leading-tight sm:text-sm"
             value="notifications"
+            aria-label={
+              unreadNotifications > 0
+                ? `${t("communication.notifications")} (${unreadNotifications})`
+                : t("communication.notifications")
+            }
           >
             {t("communication.notifications")}
+            {unreadNotifications > 0 ? (
+              <span
+                aria-hidden="true"
+                className="ml-1 inline-flex min-h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-semibold leading-none text-primary-foreground"
+              >
+                {formatCount(unreadNotifications)}
+              </span>
+            ) : null}
           </TabsTrigger>
           {assistantEnabled && (
             <TabsTrigger
@@ -62,8 +83,21 @@ export function CommunicationSheet({
           <TabsTrigger
             className="min-w-0 whitespace-normal px-1 text-xs leading-tight sm:text-sm"
             value="reel"
+            aria-label={
+              liveAttention > 0
+                ? `${t("communication.reel")} (${liveAttention})`
+                : t("communication.reel")
+            }
           >
             {t("communication.reel")}
+            {liveAttention > 0 ? (
+              <span
+                aria-hidden="true"
+                className="ml-1 inline-flex min-h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-semibold leading-none text-primary-foreground"
+              >
+                {formatCount(liveAttention)}
+              </span>
+            ) : null}
           </TabsTrigger>
         </TabsList>
         <TabsContent value="notifications" className="space-y-3 py-4">
