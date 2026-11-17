@@ -39,6 +39,8 @@ export interface PublishCommunicationEvent {
   messageKey: MessageKey;
   href: CommunicationInboxEvent["href"];
   createdAt?: number;
+  /** False for a confirmation already shown inline; it must not raise the bell. */
+  attentionRequired?: boolean;
 }
 
 export function createCommunicationRuntime() {
@@ -88,10 +90,15 @@ export function createCommunicationRuntime() {
     // The first inbox tranche is account-only. Guest events must stay in their
     // owning engine and must never enter the shared application inbox.
     if (context?.identity !== "member" || inboxEvents.has(input.id)) return false;
+    const createdAt = input.createdAt ?? Date.now();
     inboxEvents.set(input.id, {
-      ...input,
-      createdAt: input.createdAt ?? Date.now(),
-      readAt: null,
+      id: input.id,
+      source: input.source,
+      titleKey: input.titleKey,
+      messageKey: input.messageKey,
+      href: input.href,
+      createdAt,
+      readAt: input.attentionRequired === false ? createdAt : null,
     });
     notifyContextChange();
     return true;
