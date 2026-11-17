@@ -3,6 +3,7 @@ import { Sheet } from "@/components/app/Sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
+import { useReelActivityProjection } from "@/domains/presence/model/reel-activity-projection";
 
 const AssistantTab = lazy(() =>
   import("@/domains/assistant/ui/AssistantTab").then((module) => ({
@@ -19,6 +20,10 @@ export function CommunicationSheet({
 }) {
   const { t } = useI18n();
   const assistantEnabled = useAssistantPreferences((state) => state.enabled);
+  const pendingBips = useReelActivityProjection((state) => state.pendingBips);
+  const activeConnections = useReelActivityProjection((state) => state.activeConnections);
+  const bipsReady = useReelActivityProjection((state) => state.bipsReady);
+  const connectionsReady = useReelActivityProjection((state) => state.connectionsReady);
   return (
     <Sheet
       open={open}
@@ -84,10 +89,23 @@ export function CommunicationSheet({
             {t("communication.messages.empty")}
           </p>
         </TabsContent>
-        <TabsContent value="reel" className="py-8 text-center text-sm text-muted-foreground">
-          <p role="status" aria-live="polite">
-            {t("communication.reel.empty")}
-          </p>
+        <TabsContent value="reel" className="space-y-3 py-6 text-sm text-muted-foreground">
+          {bipsReady || connectionsReady ? (
+            <div className="space-y-2" role="status" aria-live="polite">
+              {bipsReady && (
+                <p>
+                  {t("communication.reel.pendingBips")}: <strong>{pendingBips}</strong>
+                </p>
+              )}
+              {connectionsReady && (
+                <p>
+                  {t("communication.reel.activeConnections")}: <strong>{activeConnections}</strong>
+                </p>
+              )}
+            </div>
+          ) : (
+            <p className="text-center">{t("communication.reel.empty")}</p>
+          )}
         </TabsContent>
       </Tabs>
     </Sheet>
