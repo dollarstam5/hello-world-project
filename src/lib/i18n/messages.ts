@@ -124,7 +124,7 @@ export const messages = {
     "home.engine.flash.title": "Flash",
     "home.engine.exampleLabel": "Exemple",
     "home.engine.flash.desc":
-      "Partagez un besoin ou une proposition, puis découvrez les publications utiles.",
+      "Préparez un besoin ou une proposition, enregistrez votre brouillon et découvrez les Flashs publics disponibles.",
     "home.engine.flash.example": "Proposer de préparer un repas pour une réunion.",
     "home.engine.scan.title": "Scan",
     "home.engine.scan.desc":
@@ -132,24 +132,24 @@ export const messages = {
     "home.engine.scan.example": "Rechercher une aide pour un déménagement près de vous.",
     "home.engine.reel.title": "En direct",
     "home.engine.reel.desc":
-      "Cet espace se prépare. Il permettra de signaler volontairement votre présence et de découvrir les personnes réellement à proximité.",
+      "Activez volontairement votre présence pour découvrir les personnes à proximité et échanger des bips.",
     "home.engine.reel.example":
       "Signaler votre présence lors d’un événement pour voir qui est aussi présent.",
     "home.engine.radar.title": "Radar",
     "home.engine.radar.desc":
-      "Cet espace se prépare. Il permettra de suivre une recherche et de repérer les possibilités qui y correspondent.",
+      "Enregistrez une intention de recherche privée et retrouvez-la dans votre espace, même hors ligne.",
     "home.engine.radar.example": "Suivre une recherche de garde pour les prochains week-ends.",
     "home.engine.action": "Voir cet espace",
     "home.menuHint":
       "Les espaces complémentaires et les autres fonctionnalités de Vitalis sont accessibles depuis le menu 2×2 en bas de l’écran.",
     "home.journey.guest.title": "Commencez librement",
     "home.journey.guest.body":
-      "Vous pouvez découvrir En direct sans compte. Un compte vous permettra d’enregistrer vos Flashs et de retrouver votre profil.",
+      "Vous pouvez découvrir En direct sans compte. Un compte vous permettra d’enregistrer vos brouillons Flashs et de retrouver votre profil.",
     "home.journey.guest.live": "Découvrir En direct",
     "home.journey.guest.signup": "Créer mon compte",
     "home.journey.member.title": "Votre espace Vitalis",
     "home.journey.member.body":
-      "Votre compte vous permet d’enregistrer vos Flashs et de gérer votre profil. Vous pouvez avancer à votre rythme.",
+      "Votre compte vous permet d’enregistrer vos brouillons Flashs et de gérer votre profil. Vous pouvez avancer à votre rythme.",
     "home.journey.member.profile": "Voir mon profil",
     "onboarding.title": "Bienvenue dans Vitalis",
     "onboarding.desc": "Quelques repères pour découvrir l'essentiel, à votre rythme.",
@@ -159,20 +159,21 @@ export const messages = {
     "onboarding.back": "Retour",
     "onboarding.next": "Suivant",
     "onboarding.enter": "C'est parti !",
-    "onboarding.intro.title": "Vitalis, tout un monde à découvrir",
+    "onboarding.intro.title": "Vitalis, des liens utiles au quotidien",
     "onboarding.intro.body":
       "Vitalis vous aide à découvrir ce qui vous entoure, à repérer ce qui compte et à créer des liens utiles, simplement.",
     "onboarding.intro.moreTitle": "Une expérience qui vous ressemble",
     "onboarding.intro.moreBody":
-      "Avancez à votre rythme, découvrez ce qui vous est utile et gardez vos repères simplement.",
+      "Commencez par un besoin, une recherche ou la présence autour de vous. Vous choisissez ce que vous partagez.",
     "onboarding.discovery.title": "Découvrez et explorez",
     "onboarding.discovery.body":
       "Deux moteurs pour partager ce qui se passe et trouver ce que vous cherchez.",
     "onboarding.flash.title": "Flash",
     "onboarding.flash.body":
-      "Publiez un besoin ou une proposition, et découvrez les publications utiles autour de vous.",
+      "Préparez un besoin ou une proposition, enregistrez votre brouillon et découvrez les Flashs publics disponibles.",
     "onboarding.scan.title": "Scan",
-    "onboarding.scan.body": "Repérez les Flash actifs autour de vous sans révéler votre position.",
+    "onboarding.scan.body":
+      "Lancez une recherche volontaire de Flash publics dans une zone choisie. Votre GPS précis n’est pas affiché.",
     "onboarding.connection.title": "Rapprochez-vous de ce qui compte",
     "onboarding.connection.body":
       "Repérez les possibilités autour de vous et entrez en relation quand le moment s'y prête.",
@@ -181,16 +182,17 @@ export const messages = {
       "Le menu 2×2 vous ouvre les espaces et fonctionnalités complémentaires de Vitalis. Vous pouvez les découvrir quand vous en avez besoin.",
     "onboarding.reel.title": "En direct",
     "onboarding.reel.body":
-      "Signalez votre présence et découvrez les personnes à proximité, avec la liberté d'utiliser le mode invité.",
+      "Activez volontairement votre présence pour découvrir les personnes à proximité. Vous pouvez commencer en invité.",
     "onboarding.radar.title": "Radar",
-    "onboarding.radar.body": "Repérez les opportunités et les éléments pertinents autour de vous.",
+    "onboarding.radar.body":
+      "Enregistrez une recherche privée et retrouvez-la dans votre espace. Les correspondances automatiques ne sont pas encore disponibles.",
     "onboarding.ready.title": "Prêt à faire votre premier pas ?",
     "onboarding.ready.body":
-      "Installez-vous, explorez à votre rythme et commencez par l'espace qui vous attire. Toute l'expérience Vitalis vous attend.",
+      "Choisissez un premier espace et prenez vos marques. Vous pourrez revenir aux autres quand vous en aurez besoin.",
     "onboarding.ready.guest":
-      "Vous pouvez commencer sans créer de compte lorsque le moteur le permet. En direct est accessible en mode invité.",
+      "Vous pouvez découvrir Vitalis sans compte. En direct propose un accès invité ; certaines actions, comme enregistrer un brouillon Flash, demandent un compte.",
     "onboarding.ready.member":
-      "Votre compte est reconnu. Vous pouvez retrouver votre profil, enregistrer vos Flashs et découvrir les autres espaces à votre rythme.",
+      "Votre compte est reconnu. Vous pouvez gérer votre profil, enregistrer vos brouillons Flashs et découvrir les autres espaces à votre rythme.",
 
     "identity.guest": "Invité",
     "identity.member": "Membre",
@@ -1098,30 +1100,30 @@ export const messages = {
     "home.engines.desc": "Choose a space. You can move between them whenever you like.",
     "home.engine.flash.title": "Flash",
     "home.engine.exampleLabel": "Example",
-    "home.engine.flash.desc": "Share a need or an offer, then discover useful posts.",
+    "home.engine.flash.desc": "Prepare a need or an offer, save your draft and discover available public Flashes.",
     "home.engine.flash.example": "Offer to prepare a meal for a gathering.",
     "home.engine.scan.title": "Scan",
     "home.engine.scan.desc": "Find active Flash posts in the area you choose.",
     "home.engine.scan.example": "Look for help with a move near you.",
     "home.engine.reel.title": "Live",
     "home.engine.reel.desc":
-      "This space is taking shape. It will let you choose to share your presence and discover people who are genuinely nearby.",
+      "Choose to share your presence, discover people nearby and exchange quick signals.",
     "home.engine.reel.example": "Share your presence at an event to see who else is there.",
     "home.engine.radar.title": "Radar",
     "home.engine.radar.desc":
-      "This space is taking shape. It will let you follow a search and spot matching opportunities.",
+      "Save a private search intention and find it in your space, even offline.",
     "home.engine.radar.example": "Keep track of a search for weekend childcare.",
     "home.engine.action": "View this space",
     "home.menuHint":
       "Explore additional spaces and other Vitalis features from the 2x2 menu at the bottom of the screen.",
     "home.journey.guest.title": "Start at your own pace",
     "home.journey.guest.body":
-      "You can explore Live without an account. An account lets you save your Flashes and manage your profile.",
+      "You can explore Live without an account. An account lets you save Flash drafts and manage your profile.",
     "home.journey.guest.live": "Explore Live",
     "home.journey.guest.signup": "Create my account",
     "home.journey.member.title": "Your Vitalis space",
     "home.journey.member.body":
-      "Your account lets you save your Flashes and manage your profile. Take things at your own pace.",
+      "Your account lets you save Flash drafts and manage your profile. Take things at your own pace.",
     "home.journey.member.profile": "View my profile",
     "onboarding.title": "Welcome to Vitalis",
     "onboarding.desc": "A few quick landmarks to discover the essentials, at your own pace.",
@@ -1131,19 +1133,19 @@ export const messages = {
     "onboarding.back": "Back",
     "onboarding.next": "Next",
     "onboarding.enter": "Let's go!",
-    "onboarding.intro.title": "Vitalis, a world to discover",
+    "onboarding.intro.title": "Vitalis, useful connections for everyday life",
     "onboarding.intro.body":
       "Vitalis helps you discover what's around you, spot what matters and create useful connections, simply.",
     "onboarding.intro.moreTitle": "An experience that feels like yours",
     "onboarding.intro.moreBody":
-      "Explore at your own pace, find what is useful to you and keep things simple.",
+      "Start with a need, a search or nearby presence. You choose what you share.",
     "onboarding.discovery.title": "Discover and explore",
     "onboarding.discovery.body":
       "Two engines to share what's happening and find what you're looking for.",
     "onboarding.flash.title": "Flash",
-    "onboarding.flash.body": "Publish a need or an offer, and discover useful posts around you.",
+    "onboarding.flash.body": "Prepare a need or an offer, save your draft and discover available public Flashes.",
     "onboarding.scan.title": "Scan",
-    "onboarding.scan.body": "Spot active Flash around you without revealing your location.",
+    "onboarding.scan.body": "Choose when to search public Flashes in an area. Your precise GPS location is not displayed.",
     "onboarding.connection.title": "Get closer to what matters",
     "onboarding.connection.body":
       "Spot possibilities nearby and connect when the moment feels right.",
@@ -1152,16 +1154,16 @@ export const messages = {
       "The 2x2 menu opens Vitalis spaces and extra features. You can explore them whenever you need them.",
     "onboarding.reel.title": "Live",
     "onboarding.reel.body":
-      "Share your presence and discover people nearby, with the freedom to use guest mode.",
+      "Choose to share your presence and discover people nearby. You can start as a guest.",
     "onboarding.radar.title": "Radar",
-    "onboarding.radar.body": "Spot opportunities and relevant things around you.",
+    "onboarding.radar.body": "Save a private search and find it in your space. Automatic matching is not available yet.",
     "onboarding.ready.title": "Ready to take your first step?",
     "onboarding.ready.body":
-      "Make yourself at home, explore at your own pace and start wherever you like. Your Vitalis experience is waiting.",
+      "Choose a first space and get comfortable. You can explore the others whenever you need them.",
     "onboarding.ready.guest":
-      "You can get started without an account wherever the engine allows it. Live is available in guest mode.",
+      "You can explore Vitalis without an account. Live offers guest access; some actions, such as saving a Flash draft, require an account.",
     "onboarding.ready.member":
-      "Your account is recognized. You can manage your profile, save your Flashes and explore the other spaces at your own pace.",
+      "Your account is recognized. You can manage your profile, save Flash drafts and explore the other spaces at your own pace.",
 
     "identity.guest": "Guest",
     "identity.member": "Member",
