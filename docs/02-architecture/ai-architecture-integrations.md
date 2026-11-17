@@ -45,7 +45,7 @@ La recherche locale est un mécanisme de réponse déterministe à partir des en
 - refuse les demandes utilisateur contenant des secrets détectés par `containsSensitiveSecret` ;
 - réclame un quota avant l'appel fournisseur via `claim_assistant_request` ;
 - conserve le streaming Lovable avec `store: false` ;
-- suit la fin du flux pour marquer la requête terminée ou échouée via `complete_assistant_request` / `fail_assistant_request`.
+- suit la fin du flux pour marquer la requête terminée ou échouée via `complete_assistant_request` / `fail_assistant_request` ; le client n'accepte une réponse que si `response.completed` ou `[DONE]` est reçu, et rejette un flux coupé après des fragments partiels.
 
 Les demandes sensibles sont rejetées avant l'appel fournisseur. Les erreurs du fournisseur ne journalisent plus le corps de réponse. Le client normalise l'historique pour éviter que des messages restés sans réponse (hors ligne ou erreur) produisent des rôles consécutifs invalides.
 
@@ -58,7 +58,7 @@ Le nom `/api/public/assistant` ne signifie pas que l'usage est anonyme : une ses
 
 Cette voie n'est donc pas un second parcours de conversation à développer en parallèle. Elle doit être retirée ou réaffectée lors d'un lot de nettoyage dédié après validation du parcours canonique. Les tables et fonctions SQL existantes ne sont pas supprimées par ce lot.
 
-La migration correspondante est située dans `src/supabase/migrations/20260912003000_secure_hybrid_assistant.sql`, hors du chemin standard `supabase/migrations/`. Sa présence dans Git ne prouve pas son application sur la base hébergée. Voir TECH-001 : l'état distant, les grants/RLS et la présence effective des fonctions doivent être confirmés avant de déclarer les quotas opérationnels en production.
+La migration canonique versionnée est `supabase/migrations/20261113005000_secure_hybrid_assistant.sql`. L'ancien fichier `src/supabase/migrations/20260912003000_secure_hybrid_assistant.sql` est une trace historique hors du chemin standard et ne doit pas être traité comme la migration active. La présence d'une migration dans Git ne prouve pas son application sur la base hébergée. Lors du contrôle du 17 novembre 2026, le projet Supabase « Vitalis » connecté était actif mais ne présentait aucun historique de migration ni aucune table du schéma `public` ; les RPC et quotas n'y sont donc pas déployés. Confirmer qu'il s'agit bien de l'environnement cible avant tout déploiement. Voir TECH-001.
 
 
 ## 4. Fournisseurs et configuration
@@ -78,7 +78,7 @@ Les noms de fournisseurs et de modèles ci-dessus décrivent le code versionné,
 - **Données envoyées au fournisseur :** le chemin de streaming envoie les messages soumis et la langue, ainsi qu'un chemin d'écran nettoyé. Le chemin Cloudflare construit une instruction système et transmet les messages après validation. Les contrats de minimisation, rétention et traitement fournisseur doivent être revus avant toute extension de données contextuelles.
 - **Secrets :** les clés fournisseurs et clés Supabase privilégiées doivent rester côté serveur, jamais dans le bundle client ni dans les journaux.
 - **Sorties :** une réponse de modèle peut être erronée ou inventer une capacité. Le prompt interdit explicitement d'inventer des fonctionnalités et de demander des informations secrètes, mais cette consigne ne remplace pas les validations, les permissions ou la modération côté serveur.
-- **Cache :** seules les questions/réponses jugées admissibles par les fonctions de politique peuvent participer au cache partagé dans la voie Cloudflare. Le comportement de la base et les fonctions SQL restent à vérifier sur un environnement réel.
+- **Cache :** le cache et `record_ai_cache_candidate` appartiennent à la voie Cloudflare héritée. Le parcours canonique Lovable ne lit ni n'alimente actuellement ce cache ; ne pas le présenter comme une optimisation active de Vita.
 - **Usage et coûts :** le parcours Lovable appelle désormais les RPC de quotas avant chaque génération distante et enregistre le résultat du flux. La migration des RPC reste hors de la chaîne standard ; tant que sa présence sur la base distante n'est pas vérifiée, les quotas de production ne sont pas certifiés. En cas de RPC indisponible, l'appel est refusé (fail closed). Les limites définies par la migration sont de 6 demandes par minute et 40 par 24 heures et par membre.
 
 ## 6. Contrats et tests existants
@@ -87,7 +87,8 @@ Les tests présents comprennent notamment :
 
 - `tests/assistant-policy.test.ts` : validation de conversation, secrets, éligibilité au cache et normalisation de routes ;
 - `tests/assistant/privacy-isolation.test.ts` : séparation des clés de conversations locales par compte et du périmètre local ;
-- `tests/assistant-stream-history.test.ts` : normalisation des rôles, 8 messages maximum et 4 000 caractères cumulés ;
+- `tests/assistant-stream-history.test.ts` : normalisation des rôles, 8 messages maximum, 4 000 caractères cumulés, rejet d'un flux interrompu et acceptation des marqueurs de fin ;
+- `supabase/tests/database/139_assistant_security.test.sql` : RLS, privilèges des RPC, `search_path` vide et rejet des locales nulles ;
 - `tests/assistant-policy.test.ts` : limites de taille, alternance des rôles et détection des secrets.
 
 Ces tests prouvent les propriétés qu'ils exercent dans le code testé. Ils ne prouvent pas à eux seuls :
@@ -112,4 +113,4 @@ Aucune de ces décisions n'est implicitement approuvée par cette consolidation 
 
 Cette référence s'appuie notamment sur les règles historiques d'architecture IA, les consignes de développement IA, le modèle UDI et les documents de prompts. Les sources historiques sont conservées ; aucune suppression ni aucun déplacement n'est autorisé par ce lot.
 
-**État après consolidation du parcours canonique :** le handler Lovable actif applique maintenant la politique partagée et les RPC de quotas tout en conservant le streaming. Les tests CI doivent confirmer ce raccordement. La disponibilité des fonctions SQL sur la base distante reste non vérifiée ; aucune migration ni configuration de déploiement n'a été modifiée.
+**État après sécurisation du parcours canonique :** le handler Lovable applique la politique partagée et les RPC de quotas, et le client refuse désormais les réponses tronquées. Les fonctions `SECURITY DEFINER` utilisent un `search_path` vide et leurs droits d'exécution sont limités explicitement. La CI doit confirmer les derniers changements. Le projet Supabase connecté contrôlé ne contient toutefois pas encore les migrations ni tables IA ; aucun déploiement de migration n'a été effectué.
