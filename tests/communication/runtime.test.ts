@@ -23,6 +23,27 @@ describe("communication runtime", () => {
     expect(runtime.prepare(translate, request).messages).toHaveLength(0);
   });
 
+  it("can reset delivery state when the application identity session changes", () => {
+    const runtime = createCommunicationRuntime();
+    const request = [
+      {
+        key: "common.retry",
+        source: "assistant",
+        surface: "notice",
+        priority: "normal" as const,
+        repeatKey: "identity-session",
+      },
+    ];
+
+    const presented = runtime.prepare(translate, request).messages;
+    runtime.markPresented(presented);
+    expect(runtime.prepare(translate, request).messages).toHaveLength(0);
+
+    runtime.resetSession();
+
+    expect(runtime.prepare(translate, request).messages).toHaveLength(1);
+  });
+
   it("keeps delivery state isolated to the runtime session", () => {
     const first = createCommunicationRuntime();
     const second = createCommunicationRuntime();
