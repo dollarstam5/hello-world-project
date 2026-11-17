@@ -7,6 +7,7 @@ import {
 } from "@/lib/ai/assistant-rate-limit.server";
 import {
   hasSensitiveUserContent,
+  MAX_ASSISTANT_OUTPUT_CHARS,
   safeAssistantRoute,
   validateConversation,
 } from "@/lib/ai/assistant-policy";
@@ -196,6 +197,8 @@ export const Route = createFileRoute("/api/public/assistant")({
               input,
               stream: true,
               store: false,
+              // A hard provider-side ceiling limits variable generation cost.
+              max_output_tokens: 700,
               reasoning: { effort: "low", summary: "auto" },
             }),
           });
