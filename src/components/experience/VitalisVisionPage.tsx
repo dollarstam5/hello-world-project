@@ -29,10 +29,6 @@ export function VitalisVisionPage() {
   return (
     <main className="page-shell space-y-16 pb-12 sm:space-y-24">
       <header className="relative isolate overflow-hidden rounded-[2rem] border border-primary/15 bg-gradient-to-br from-primary/15 via-card to-card px-6 py-10 sm:px-10 sm:py-14">
-        <div
-          aria-hidden="true"
-          className="absolute -right-16 -top-24 size-72 rounded-full bg-primary/10 blur-3xl"
-        />
         <div className="relative max-w-3xl">
           <Link
             to="/"
