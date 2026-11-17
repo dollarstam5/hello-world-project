@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { LocateFixed, ScanLine } from "lucide-react";
+import { formatCommunicationMessage } from "@/lib/communication/format";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useScan } from "../hooks/useScan";
 import { PublicProfilePreview } from "@/components/app/PublicProfilePreview";
@@ -100,17 +101,17 @@ export function ScanPanel() {
 
       {unsupported && (
         <p className="text-sm text-destructive" role="alert">
-          {t("scan.unsupported")}
+          {formatCommunicationMessage(t, "scan.unsupported")}
         </p>
       )}
       {locationError && (
         <p className="text-sm text-destructive" role="alert">
-          {t(`scan.location.${locationError}`)}
+          {formatCommunicationMessage(t, `scan.location.${locationError}`)}
         </p>
       )}
       {failed && (
         <p className="text-sm text-destructive" role="alert">
-          {t("scan.error")}
+          {formatCommunicationMessage(t, "scan.error")}
         </p>
       )}
 
