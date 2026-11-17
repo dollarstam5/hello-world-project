@@ -100,7 +100,7 @@ describe("CommunicationSheet", () => {
 
     expect(markup.match(/role="tabpanel"/g)?.length).toBeGreaterThanOrEqual(1);
     expect(markup).toContain('data-state="active"');
-    expect(markup).toContain("communication.notifications.empty");
+    expect(markup).toContain("communication.events.empty");
     expect(markup).toContain("aria-controls=");
   });
 });
