@@ -1,6 +1,6 @@
 BEGIN;
 CREATE EXTENSION IF NOT EXISTS pgtap WITH SCHEMA extensions;
-SELECT plan(18);
+SELECT plan(19);
 
 SELECT has_table('public', 'ai_requests', 'assistant request ledger exists');
 SELECT has_table('public', 'ai_cache', 'assistant answer cache exists');
@@ -94,6 +94,16 @@ SELECT ok(
   AND has_function_privilege('service_role',
     'public.record_ai_cache_candidate(uuid,text,text,text,text,text,integer)', 'EXECUTE'),
   'authenticated and service roles receive only their intended RPC entry points'
+);
+
+SELECT ok(
+  (SELECT count(*) = 2
+   FROM pg_proc p
+   JOIN pg_namespace n ON n.oid = p.pronamespace
+   WHERE n.nspname = 'public'
+     AND p.proname IN ('claim_assistant_request', 'record_ai_cache_candidate')
+     AND pg_get_functiondef(p.oid) LIKE '%p_locale IS NULL%'),
+  'quota and cache RPCs explicitly reject null locales'
 );
 
 SELECT * FROM finish();
