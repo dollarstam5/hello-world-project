@@ -1,3 +1,8 @@
+import {
+  resolveCommunicationContext,
+  type CommunicationContext,
+  type CommunicationContextInput,
+} from "@/lib/communication/context";
 import { createCommunicationDeliverySession } from "@/lib/communication/delivery-session";
 import {
   prepareCommunicationMessages,
@@ -11,12 +16,22 @@ import {
  * One runtime instance belongs to one application session.
  *
  * Domain adapters submit only already-confirmed communication requests.
- * The runtime applies the shared priority/deduplication rules and resolves
- * localized copy; the presenter acknowledges only messages actually shown.
- * It has no network, persistence, timer, or business-state responsibilities.
+ * The runtime resolves an explicit, privacy-safe context snapshot, applies
+ * shared priority/deduplication rules and resolves localized copy. It has no
+ * network, persistence, timer, or business-state responsibilities.
  */
 export function createCommunicationRuntime() {
   const deliverySession = createCommunicationDeliverySession();
+  let context: CommunicationContext | null = null;
+
+  function updateContext(input: CommunicationContextInput): CommunicationContext {
+    context = resolveCommunicationContext(input);
+    return context;
+  }
+
+  function getContext(): CommunicationContext | null {
+    return context;
+  }
 
   function prepare(
     translate: CommunicationTranslate,
@@ -37,9 +52,10 @@ export function createCommunicationRuntime() {
 
   function resetSession() {
     deliverySession.reset();
+    context = null;
   }
 
-  return { prepare, markPresented, resetSession };
+  return { updateContext, getContext, prepare, markPresented, resetSession };
 }
 
 export type CommunicationRuntime = ReturnType<typeof createCommunicationRuntime>;
