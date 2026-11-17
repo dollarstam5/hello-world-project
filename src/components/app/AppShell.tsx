@@ -11,6 +11,7 @@ import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
 import { AssistantNoticeLayer } from "@/components/experience/AssistantNoticeLayer";
 import { useOnboarding } from "@/lib/experience/onboarding";
 import { SyncEngineLoader } from "./SyncEngineLoader";
+import { CommunicationRuntimeProvider } from "@/lib/communication/CommunicationRuntimeProvider";
 
 const ReelBottomNav = lazy(() =>
   import("@/domains/presence/ui/ReelBottomNav").then((module) => ({
@@ -74,17 +75,20 @@ export function AppShell({ children }: { children: ReactNode }) {
   const reduce = responsive.shouldReduceMotion;
   if (bareChrome) {
     return (
-      <>
-        <SyncEngineLoader />
-        <div className="relative min-h-dvh bg-background text-foreground antialiased">
-          {children}
-        </div>
-      </>
+      <CommunicationRuntimeProvider>
+        <>
+          <SyncEngineLoader />
+          <div className="relative min-h-dvh bg-background text-foreground antialiased">
+            {children}
+          </div>
+        </>
+      </CommunicationRuntimeProvider>
     );
   }
 
   return (
-    <div className="relative min-h-dvh bg-background text-foreground antialiased">
+    <CommunicationRuntimeProvider>
+      <div className="relative min-h-dvh bg-background text-foreground antialiased">
       <SyncEngineLoader />
       <AssistantNoticeLayer />
       <OfflineBanner />
@@ -126,6 +130,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           <OnboardingSheet />
         </Suspense>
       )}
-    </div>
+      </div>
+    </CommunicationRuntimeProvider>
   );
 }
