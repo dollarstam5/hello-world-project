@@ -53,18 +53,18 @@ describe("CommunicationSheet", () => {
 
     expect(markup.match(/role="tab"/g)).toHaveLength(3);
     expect(markup).not.toContain("communication.assistant</button>");
-    expect(markup).toContain("communication.notifications</button>");
-    expect(markup).toContain("communication.messages</button>");
-    expect(markup).toContain("communication.reel</button>");
+    expect(markup).toContain("communication.notifications");
+    expect(markup).toContain("communication.messages");
+    expect(markup).toContain("communication.reel");
   });
 
   it("exposes the four communication spaces in the approved order after opt-in", () => {
     assistantPreference.enabled = true;
     const markup = renderToStaticMarkup(<CommunicationSheet open onOpenChange={() => undefined} />);
-    const notifications = markup.indexOf("communication.notifications</button>");
-    const assistant = markup.indexOf("communication.assistant</button>");
-    const messages = markup.indexOf("communication.messages</button>");
-    const reel = markup.indexOf("communication.reel</button>");
+    const notifications = markup.indexOf("communication.notifications");
+    const assistant = markup.indexOf("communication.assistant");
+    const messages = markup.indexOf("communication.messages");
+    const reel = markup.indexOf("communication.reel");
 
     expect(markup).toContain('aria-label="communication.title"');
     expect(markup).toMatch(/role="tablist"[^>]*aria-label="communication\.title"/);
@@ -93,6 +93,35 @@ describe("CommunicationSheet", () => {
     expect(markup).toContain("communication.event.radar.saved");
     expect(markup).toContain('href="/radar"');
     expect(markup).toContain("communication.events.markRead");
+  });
+
+  it("shows separate attention indicators without counting received bips twice", () => {
+    communicationState.events = [
+      {
+        id: "flash:record-1:updated:100",
+        source: "flash",
+        titleKey: "communication.event.flash.title",
+        messageKey: "communication.event.flash.updated",
+        href: "/flash",
+        createdAt: 100,
+        readAt: null,
+      },
+      {
+        id: "reel:bip-1",
+        source: "reel",
+        titleKey: "communication.event.reel.title",
+        messageKey: "communication.event.reel.bipReceived",
+        href: "/reel",
+        createdAt: 200,
+        readAt: null,
+      },
+    ];
+    const markup = renderToStaticMarkup(<CommunicationSheet open onOpenChange={() => undefined} />);
+
+    expect(markup).toContain('aria-label="communication.notifications (1)"');
+    // The received bip is owned by En direct, not repeated in the Notifications badge.
+    expect(markup).toContain('aria-label="communication.reel"');
+    expect(markup).not.toContain('aria-label="communication.notifications (2)"');
   });
 
   it("routes server-originated Réel events back to the owning engine", () => {
