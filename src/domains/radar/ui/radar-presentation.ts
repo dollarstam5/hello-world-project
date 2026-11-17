@@ -11,7 +11,10 @@ export const statusKeys: Record<RadarStatus, MessageKey> = {
   cancelled: "radar.manage.status.cancelled",
 };
 
-export const statusTones: Record<RadarStatus, "neutral" | "primary" | "success" | "warning" | "info"> = {
+export const statusTones: Record<
+  RadarStatus,
+  "neutral" | "primary" | "success" | "warning" | "info"
+> = {
   draft: "neutral",
   active: "success",
   watching: "info",
