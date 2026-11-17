@@ -41,8 +41,8 @@ Appliquer les migrations Supabase dans l’ordre lexical. Les fondations P0 atte
 1. `20260912000000_protect_identity_trust_system_fields.sql`
 2. `20260912001000_secure_mission_transitions.sql`
 3. `20260912002000_harden_sync_protocol.sql`
-4. `20260912003000_secure_hybrid_assistant.sql`
-5. `20260912004000_operational_retention.sql`
+4. `20261113005000_secure_hybrid_assistant.sql` (quotas IA, journal minimal et cache historique)
+5. `20261117140000_operational_retention.sql` (purge des reçus et métadonnées IA)
 
 Exécuter les migrations sur une base de préproduction, tester les parcours d’authentification, de mission et de synchronisation, puis promouvoir exactement le même lot en production.
 
@@ -76,7 +76,7 @@ Le manifeste, le service worker et les icônes doivent être servis par HTTPS. V
 4. Publier progressivement et surveiller les taux HTTP 401, 409, 429 et 500 sans journaliser les corps de requête.
 5. Conserver l’artefact précédent pour un rollback immédiat.
 
-Planifier un appel `POST /api/cron/maintenance` avec `Authorization: Bearer <LOVABLE_CRON_SECRET>`. Une exécution quotidienne suffit ; la route est idempotente et les fenêtres acceptées sont bornées entre 7 et 365 jours.
+Planifier un appel `POST /api/cron/maintenance` avec `Authorization: Bearer <LOVABLE_CRON_SECRET>`. Une exécution quotidienne suffit ; la route purge les reçus de synchronisation, les traces de requêtes IA et les candidats de cache expirés. Les connaissances promues sont conservées. Les fenêtres acceptées sont bornées entre 7 et 365 jours (30 jours par défaut). `LOVABLE_CRON_SECRET` doit contenir au moins 32 caractères ; `LOVABLE_CRON_SECRET_PREVIOUS` permet une rotation temporaire.
 
 Après publication, vérifier `/api/health/live` puis `/api/health/ready`. Configurer les alertes et procédures selon [opérations](./operations.md).
 
