@@ -83,10 +83,7 @@ describe("streaming de Vita", () => {
   });
 
   it("accepte le marqueur terminal SSE [DONE]", async () => {
-    mockStream([
-      'data: {"type":"response.output_text.delta","delta":"Bonjour"}',
-      "data: [DONE]",
-    ]);
+    mockStream(['data: {"type":"response.output_text.delta","delta":"Bonjour"}', "data: [DONE]"]);
 
     await expect(
       streamAssistant(request("00000000-0000-4000-8000-000000000003"), vi.fn(), "token"),
