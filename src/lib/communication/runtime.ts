@@ -24,10 +24,10 @@ import {
 export interface CommunicationInboxEvent {
   /** Stable domain event key; never a temporary guest/session identifier. */
   id: string;
-  source: "flash" | "radar";
+  source: "flash" | "radar" | "reel";
   titleKey: MessageKey;
   messageKey: MessageKey;
-  href: "/flash" | "/radar";
+  href: "/flash" | "/radar" | "/reel";
   createdAt: number;
   readAt: number | null;
 }
