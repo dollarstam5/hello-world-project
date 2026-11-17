@@ -42,6 +42,8 @@ export function ReelCommunicationBridge() {
         createdAt: event.created_at,
         attentionRequired: true,
       });
+    }, () => {
+      window.dispatchEvent(new Event("vitalis:reel-activity-reconnected"));
     });
   }, [access.loading, access.mode, access.memberId, access.memberProfileState, communication]);
 
