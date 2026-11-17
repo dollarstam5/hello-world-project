@@ -160,6 +160,7 @@ Les modules suivants sont maintenant présents sur la branche :
 | `src/lib/communication/gate.ts` | Trie les demandes par priorité, conserve l'ordre d'origine à priorité égale et supprime les doublons via identifiant d'événement ou clé de répétition fournis | Ne mémorise pas lui-même les messages déjà livrés ; l'appelant fournit cet état |
 | `src/lib/communication/dispatch.ts` | Applique le filtre de priorité/déduplication puis résout le texte avec le formateur et le catalogue i18n existants | Prépare un lot ; ne déclenche pas de notification et ne modifie aucun état métier |
 | `src/lib/communication/delivery-session.ts` | Conserve en mémoire les identifiants réellement présentés après accusé de présentation explicite ; déduplication des lots suivants pendant la session | Aucun stockage local persistant, aucun identifiant invité temporaire, aucun producteur métier raccordé à ce stade |
+| `src/lib/communication/maturity.ts` | Sélectionne une posture conversationnelle selon le nombre agrégé de comptes inscrits : lancement, croissance, communauté établie, maturité | Fonction pure sans requête ; pas encore raccordée à une source de comptage ni aux composants de suggestions |
 | `tests/communication/gate.test.ts` | Vérifie priorités, doublons connus, déduplication dans un lot et limite d'affichage | Tests unitaires, pas tests d'intégration UI |
 | `tests/communication/dispatch.test.ts` | Vérifie la chaîne complète locale et l'interpolation des variables | Ne prouve pas encore le raccordement aux événements des moteurs |
 | `tests/communication/delivery-session.test.ts` | Vérifie l'accusé de présentation avant déduplication et l'isolation entre sessions | Tests unitaires du contrat de livraison |
@@ -220,3 +221,10 @@ Le pipeline est prêt à consommer un lot lorsque son domaine producteur sera di
 Le système ne crée ni événement métier, ni notification, ni compteur, ni historique. Les événements En direct déjà exposés dans ReelActivityPanel restent affichés par leur composant métier tant qu'aucun flux partagé de notifications n'est fourni. Il ne faut pas recopier ou agréger ces données dans le centre par supposition.
 
 **État de préparation :** catalogue, formatage, priorité, déduplication et accusé de livraison en mémoire sont implémentés ; les producteurs de notifications du centre ne sont pas présents dans le dépôt inspecté. Le raccordement UI doit donc rester inactif jusqu'à la disponibilité de ces producteurs.
+
+
+### Posture selon la taille de la communauté
+
+`getCommunicationMaturityProfile()` applique les seuils définis dans la spécification produit : 0–500, 501–5 000, 5 001–9 999 et 10 000+. Le compteur attendu est un agrégat fiable de comptes inscrits, hors invités et comptes de test. Le module n'effectue aucune lecture réseau et retombe sur la posture de lancement si le nombre est absent. Il ne faut pas brancher un compteur inventé ni déduire le volume depuis les sessions locales.
+
+Cette fonction est un sélecteur de posture, pas un générateur de suggestions. Les suggestions restent conditionnées à l'existence réelle des fonctionnalités et de leurs données. Tant que la source agrégée et les producteurs métier ne sont pas disponibles, le helper peut être testé mais ne doit pas être présenté comme une personnalisation déjà active en production.
