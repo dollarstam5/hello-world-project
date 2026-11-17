@@ -40,6 +40,7 @@ L'onboarding explique Vitalis ; il ne remplace pas le guide contextuel de la pag
 - La page d'accueil reconnaît le visiteur comme **Invité** tant qu'aucune session authentifiée n'est disponible.
 - Un repère court propose deux chemins réellement accessibles : découvrir En direct en mode invité ou créer un compte.
 - Aucun compte, profil, historique membre ou droit membre n'est attribué au mode invité.
+- Dans En direct, la permission de découvrir les personnes proches et l'activation de la présence visible sont deux choix distincts. L'un n'active jamais automatiquement l'autre.
 - Les cartes d'exemple restent explicitement marquées « Exemple » et ne sont jamais présentées comme de l'activité réelle.
 
 ### 2. Moment de l'inscription
