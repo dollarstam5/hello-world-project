@@ -126,7 +126,7 @@ export function getAiEnvironment(): AiEnvironment | null {
       : undefined,
     timeoutMs: 12_000,
     maxOutputTokens: 300,
-    promptVersion: 1,
+    promptVersion: 2,
   };
 }
 
