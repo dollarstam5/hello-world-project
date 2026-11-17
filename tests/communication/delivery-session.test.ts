@@ -8,7 +8,7 @@ describe("communication delivery session", () => {
 
   it("does not mark a message delivered until the presenter acknowledges it", () => {
     const session = createCommunicationDeliverySession();
-    const request = [{ key: "common.error", source: "app", surface: "inline", priority: "high" as const, eventId: "domain-event-1" }];
+    const request = [{ key: "common.error", source: "app" as const, surface: "inline" as const, priority: "high" as const, eventId: "domain-event-1" }];
 
     const first = prepareCommunicationMessages(translate, request, session.getGateState());
     expect(first.messages).toHaveLength(1);
@@ -34,7 +34,7 @@ describe("communication delivery session", () => {
     const session = createCommunicationDeliverySession();
     const message = prepareCommunicationMessages(
       translate,
-      [{ key: "common.retry", source: "app", surface: "inline", priority: "normal", repeatKey: "retry-action" }],
+      [{ key: "common.retry", source: "app" as const, surface: "inline" as const, priority: "normal", repeatKey: "retry-action" }],
     );
     session.markDelivered(message.messages);
 
