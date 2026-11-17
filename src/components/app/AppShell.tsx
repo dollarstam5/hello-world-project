@@ -89,47 +89,47 @@ export function AppShell({ children }: { children: ReactNode }) {
   return (
     <CommunicationRuntimeProvider>
       <div className="relative min-h-dvh bg-background text-foreground antialiased">
-      <SyncEngineLoader />
-      <AssistantNoticeLayer />
-      <OfflineBanner />
-      {!routeOwnsHeader && <AppHeader onOpenCommunication={() => setCommunicationOpen(true)} />}
-      <main
-        id="main"
-        className={`mx-auto w-full max-w-screen-md ${hasBottomNavigation ? "pb-28" : "pb-0"}`}
-        style={{
-          paddingBottom: hasBottomNavigation ? "calc(9rem + var(--safe-bottom))" : 0,
-        }}
-      >
-        <div key={pathname} className={reduce ? undefined : "motion-rise-in"}>
-          {children}
-        </div>
-      </main>
+        <SyncEngineLoader />
+        <AssistantNoticeLayer />
+        <OfflineBanner />
+        {!routeOwnsHeader && <AppHeader onOpenCommunication={() => setCommunicationOpen(true)} />}
+        <main
+          id="main"
+          className={`mx-auto w-full max-w-screen-md ${hasBottomNavigation ? "pb-28" : "pb-0"}`}
+          style={{
+            paddingBottom: hasBottomNavigation ? "calc(9rem + var(--safe-bottom))" : 0,
+          }}
+        >
+          <div key={pathname} className={reduce ? undefined : "motion-rise-in"}>
+            {children}
+          </div>
+        </main>
 
-      {hasBottomNavigation && (
-        <BottomNav onOpenMenu={() => setMenuOpen(true)} menuOpen={menuOpen} />
-      )}
-      {isReelRoute && (
-        <Suspense fallback={null}>
-          <ReelBottomNav onOpenMenu={() => setMenuOpen(true)} menuOpen={menuOpen} />
-        </Suspense>
-      )}
-      {menuOpen && (
-        <Suspense fallback={null}>
-          <MenuSheet open={menuOpen} onOpenChange={setMenuOpen} />
-        </Suspense>
-      )}
-      {communicationOpen && (
-        <Suspense fallback={null}>
-          <CommunicationSheet open={communicationOpen} onOpenChange={setCommunicationOpen} />
-        </Suspense>
-      )}
-      <InstallBanner />
-      <UpdateBanner />
-      {onboardingReady && (
-        <Suspense fallback={null}>
-          <OnboardingSheet />
-        </Suspense>
-      )}
+        {hasBottomNavigation && (
+          <BottomNav onOpenMenu={() => setMenuOpen(true)} menuOpen={menuOpen} />
+        )}
+        {isReelRoute && (
+          <Suspense fallback={null}>
+            <ReelBottomNav onOpenMenu={() => setMenuOpen(true)} menuOpen={menuOpen} />
+          </Suspense>
+        )}
+        {menuOpen && (
+          <Suspense fallback={null}>
+            <MenuSheet open={menuOpen} onOpenChange={setMenuOpen} />
+          </Suspense>
+        )}
+        {communicationOpen && (
+          <Suspense fallback={null}>
+            <CommunicationSheet open={communicationOpen} onOpenChange={setCommunicationOpen} />
+          </Suspense>
+        )}
+        <InstallBanner />
+        <UpdateBanner />
+        {onboardingReady && (
+          <Suspense fallback={null}>
+            <OnboardingSheet />
+          </Suspense>
+        )}
       </div>
     </CommunicationRuntimeProvider>
   );
