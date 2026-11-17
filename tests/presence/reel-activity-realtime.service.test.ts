@@ -6,7 +6,6 @@ const mocks = vi.hoisted(() => ({
   on: vi.fn(),
   subscribe: vi.fn((callback?: (status: string) => void) => {
     mocks.statusCallback = callback ?? null;
-    return channel;
   }),
   removeChannel: vi.fn(),
   channel: vi.fn(),
