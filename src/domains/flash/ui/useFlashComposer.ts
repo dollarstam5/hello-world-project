@@ -12,6 +12,7 @@ import { reverseGeocodeFlashLocation } from "../api/flash-geocoding.functions";
 import { createFlash } from "../data";
 import type { MessageKey } from "@/lib/i18n/messages";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
+import { publishFlashCommunicationEvent } from "../communication-events";
 
 type SpeechResultEvent = { results: ArrayLike<ArrayLike<{ transcript?: string }>> };
 type SpeechErrorEvent = { error?: string };
@@ -243,13 +244,7 @@ export function useFlashComposer({ user, locale, t, onSaved }: ComposerOptions) 
         areaLabel: areaLabel.trim() || undefined,
         expiresAt: expiryFor(timeSlot),
       });
-      communication.publishEvent({
-        id: `flash:${savedFlash.id}:draft-saved`,
-        source: "flash",
-        titleKey: "communication.event.flash.title",
-        messageKey: "communication.event.flash.draftSaved",
-        href: "/flash",
-      });
+      publishFlashCommunicationEvent(communication, savedFlash, "draft-saved");
       closeComposer();
       onSaved();
     } catch {
