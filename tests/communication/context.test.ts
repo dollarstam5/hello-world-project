@@ -16,6 +16,7 @@ describe("resolveCommunicationContext", () => {
       route: "/reel/activity",
       locale: "fr",
       assistantEnabled: false,
+      assistantPreferenceReady: true,
       permissions: { discover: "granted", presence: "denied" },
       ready: true,
     });
@@ -33,6 +34,18 @@ describe("resolveCommunicationContext", () => {
     expect(context.ready).toBe(false);
   });
 
+  it("keeps core context ready while optional assistant preference is still hydrating", () => {
+    const context = resolveCommunicationContext({
+      identity: "guest",
+      pathname: "/flash",
+      locale: "fr",
+      assistantEnabled: null,
+    });
+
+    expect(context.ready).toBe(true);
+    expect(context.assistantPreferenceReady).toBe(false);
+  });
+
   it("keeps incomplete or invalid context explicitly unready", () => {
     const context = resolveCommunicationContext({
       identity: "guest",
@@ -43,6 +56,7 @@ describe("resolveCommunicationContext", () => {
     });
 
     expect(context.ready).toBe(false);
+    expect(context.assistantPreferenceReady).toBe(false);
     expect(context.route).toBeNull();
     expect(context.locale).toBeNull();
     expect(context.permissions.discover).toBe("unknown");
