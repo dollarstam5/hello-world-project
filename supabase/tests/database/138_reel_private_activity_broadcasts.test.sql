@@ -53,8 +53,20 @@ SELECT ok(
   AND position(
     '''kind'''
     IN pg_get_functiondef('public.broadcast_reel_member_activity(uuid,text)'::regprocedure)
-  ) > 0,
-  'The broadcast payload is restricted to a generic event kind'
+  ) > 0
+  AND position(
+    '''event_id'''
+    IN pg_get_functiondef('public.broadcast_reel_member_activity(uuid,text)'::regprocedure)
+  ) > 0
+  AND position(
+    '''created_at'''
+    IN pg_get_functiondef('public.broadcast_reel_member_activity(uuid,text)'::regprocedure)
+  ) > 0
+  AND position(
+    'guest_session_id'
+    IN pg_get_functiondef('public.broadcast_reel_member_activity(uuid,text)'::regprocedure)
+  ) = 0,
+  'The payload contains only a coarse kind, a delivery UUID and a timestamp'
 );
 
 SELECT * FROM finish();
