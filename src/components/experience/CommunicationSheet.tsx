@@ -30,8 +30,7 @@ export function CommunicationSheet({
   // Keep each tab's indicator tied to its owning source. Received bips belong
   // to En direct, so they are excluded from the Notifications tab count.
   const unreadNotifications = events.filter(
-    (event) =>
-      event.readAt === null && event.messageKey !== "communication.event.reel.bipReceived",
+    (event) => event.readAt === null && event.messageKey !== "communication.event.reel.bipReceived",
   ).length;
   const liveAttention = bipsReady ? pendingBips : 0;
   const formatCount = (count: number) => (count > 99 ? "99+" : String(count));
