@@ -124,7 +124,7 @@ En V1 : pas de télémétrie contenant le contenu des salutations, pas d'appel s
 
 En V2/V3, si une génération distante est approuvée : quota par compte/session, budget maximal, limite de longueur et fréquence, cache si sûr, fallback local, coupe-circuit et suivi des coûts. Aucune activation par défaut sans décision explicite.
 
-## 12. Vérification technique avant codage
+## 12. Vérification technique et inventaire
 
 1. Identifier les catalogues i18n et conventions de messages existants.
 2. Identifier les composants globaux d'accueil, expérience, erreur et notification.
@@ -134,6 +134,37 @@ En V2/V3, si une génération distante est approuvée : quota par compte/session
 6. Définir un contrat compatible avec les couches architecturales existantes.
 7. Définir les tests sans ajouter de stockage serveur.
 8. Mesurer bundle et performance ; éviter une dépendance supplémentaire si les primitives existantes suffisent.
+
+## 12. État réel du dépôt — inventaire initial
+
+L'inventaire ci-dessous a été vérifié dans le dépôt avant d'étendre l'intégration. Il sert à réutiliser les points d'entrée existants et à éviter un second système parallèle.
+
+| Élément existant | Rôle observé | Décision d'intégration |
+|---|---|---|
+| `src/lib/i18n/messages.ts` et `src/lib/i18n/useI18n.ts` | Catalogue FR/EN et fonction de traduction typée | Conserver comme catalogue et moteur de localisation V1 |
+| `src/lib/communication/greeting.ts` | Sélection locale des neuf périodes et garde-fou du nom par session | Première règle contextuelle intégrée ; à étendre sans multiplier les sélecteurs isolés |
+| `src/components/experience/HomeFoundation.tsx` | Affiche l'accueil et consomme le sélecteur temporel | Premier écran raccordé |
+| `src/lib/app/assistant-notices.ts` | Canal Zustand de messages ponctuels, soumis à l'activation volontaire de l'assistant | Réutiliser comme adaptateur de présentation ; ne pas créer un second canal de notices |
+| `src/components/experience/AssistantNoticeLayer.tsx` | Affiche et ferme les notices temporaires, avec retrait après neuf secondes | Conserver la responsabilité d'affichage et d'accessibilité |
+| `src/lib/app/assistant-preferences.ts` | Préférence locale de l'assistant, désactivée par défaut | Respecter ce consentement ; la communication standard ne doit pas dépendre de l'activation de l'assistant |
+| `src/components/experience/CommunicationSheet.tsx` | Centre de communication avec onglets Notifications, Assistant facultatif, Messages et En direct | Conserver le centre ; ses panneaux vides ne sont pas des événements métier |
+| `src/components/app/AppShell.tsx` | Monte la couche de notices et le centre de communication | Point de montage global existant à réutiliser |
+
+### Limites observées
+
+- Le canal `publishAssistantNotice` n'a pas d'appel métier externe à son propre module dans l'état inspecté ; le seul déclenchement observé est le message de bienvenue après activation volontaire dans les paramètres.
+- Les onglets Notifications, Messages et En direct du centre présentent encore des états vides ; aucun flux de notifications métier ne doit être supposé opérationnel à partir de leur seule présence.
+- Le sélecteur temporel ajouté à Home est une première règle, pas encore un orchestrateur universel pour tous les textes de l'application.
+- Les erreurs et confirmations existantes restent localisées dans leurs domaines/composants. Elles ne doivent être migrées qu'après inventaire de leurs sources d'état et tests, pour ne pas perdre la précision métier.
+- Le canal de l'assistant reste facultatif et opt-in. Il ne doit pas être utilisé pour les confirmations essentielles, erreurs, permissions ou communications qui doivent fonctionner même si l'assistant est désactivé.
+
+### Ordre d'intégration recommandé
+
+1. Stabiliser le contrat local commun et le catalogue i18n sans changer le rendu des domaines.
+2. Raccorder les notices ponctuelles existantes au contrat commun, en préservant l'opt-in de l'assistant.
+3. Inventorier et raccorder les états d'erreur et de confirmation qui ont une source fiable.
+4. Raccorder les notifications des moteurs uniquement à partir d'événements métier existants et dédupliqués.
+5. Remplir les panneaux du centre de communication seulement lorsque leurs données réelles sont disponibles.
 
 ## 13. Tests d'acceptation
 
