@@ -315,10 +315,7 @@ export function useReelProximityController() {
   // This controller performs one initial read for the visible tab and keeps
   // guest-only polling local to the temporary guest session.
   useEffect(() => {
-    if (
-      panel !== "activity" ||
-      (!canUseMemberReel && access.mode !== "guest")
-    ) {
+    if (panel !== "activity" || (!canUseMemberReel && access.mode !== "guest")) {
       return;
     }
 
@@ -336,22 +333,12 @@ export function useReelProximityController() {
     if (access.mode !== "guest") return;
     const poll = window.setInterval(refreshVisibleActivity, 3000);
     return () => window.clearInterval(poll);
-  }, [
-    panel,
-    activityTab,
-    refreshBips,
-    refreshConnections,
-    canUseMemberReel,
-    access.mode,
-  ]);
+  }, [panel, activityTab, refreshBips, refreshConnections, canUseMemberReel, access.mode]);
 
   useEffect(() => {
     const incoming = communication
       .getEvents()
-      .filter(
-        (event) =>
-          event.source === "reel" && !processedReelEvents.current.has(event.id),
-      );
+      .filter((event) => event.source === "reel" && !processedReelEvents.current.has(event.id));
     if (incoming.length === 0) return;
     incoming.forEach((event) => processedReelEvents.current.add(event.id));
     if (panel !== "activity") return;
@@ -377,14 +364,7 @@ export function useReelProximityController() {
     ) {
       void refreshConnections();
     }
-  }, [
-    communicationRevision,
-    communication,
-    panel,
-    activityTab,
-    refreshBips,
-    refreshConnections,
-  ]);
+  }, [communicationRevision, communication, panel, activityTab, refreshBips, refreshConnections]);
 
   const endConnection = (connection: ReelConnection) => {
     if (connection.status === "active") {
