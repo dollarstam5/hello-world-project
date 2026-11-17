@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
 import { useReelActivityProjection } from "@/domains/presence/model/reel-activity-projection";
+import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
 
 const AssistantTab = lazy(() =>
   import("@/domains/assistant/ui/AssistantTab").then((module) => ({
@@ -18,7 +19,9 @@ export function CommunicationSheet({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
+  const communication = useCommunicationRuntime();
+  const events = communication.getEvents();
   const assistantEnabled = useAssistantPreferences((state) => state.enabled);
   const pendingBips = useReelActivityProjection((state) => state.pendingBips);
   const activeConnections = useReelActivityProjection((state) => state.activeConnections);
@@ -63,13 +66,54 @@ export function CommunicationSheet({
             {t("communication.reel")}
           </TabsTrigger>
         </TabsList>
-        <TabsContent
-          value="notifications"
-          className="py-8 text-center text-sm text-muted-foreground"
-        >
-          <p role="status" aria-live="polite">
-            {t("communication.notifications.empty")}
-          </p>
+        <TabsContent value="notifications" className="space-y-3 py-4">
+          {events.length === 0 ? (
+            <p className="py-8 text-center text-sm text-muted-foreground" role="status">
+              {t("communication.events.empty")}
+            </p>
+          ) : (
+            <ul className="space-y-2" aria-label={t("communication.notifications")}>
+              {events.map((event) => (
+                <li
+                  key={event.id}
+                  className="rounded-2xl border border-border bg-card p-4"
+                  data-read={event.readAt !== null}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+                        {t(event.titleKey)}
+                      </p>
+                      <p className="mt-1 text-sm leading-relaxed text-foreground">
+                        {t(event.messageKey)}
+                      </p>
+                      <p className="mt-2 text-xs text-muted-foreground">
+                        {new Intl.DateTimeFormat(locale, {
+                          dateStyle: "medium",
+                          timeStyle: "short",
+                        }).format(event.createdAt)}
+                      </p>
+                      <a
+                        href={event.href}
+                        className="mt-3 inline-flex min-h-10 items-center text-sm font-medium text-primary underline-offset-4 hover:underline"
+                      >
+                        {t(event.source === "flash" ? "communication.events.openFlash" : "communication.events.openRadar")}
+                      </a>
+                    </div>
+                    {event.readAt === null ? (
+                      <button
+                        type="button"
+                        onClick={() => communication.markEventRead(event.id)}
+                        className="min-h-10 shrink-0 rounded-full px-2 text-xs font-medium text-muted-foreground underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                      >
+                        {t("communication.events.markRead")}
+                      </button>
+                    ) : null}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
         </TabsContent>
         {assistantEnabled && (
           <TabsContent value="assistant">
@@ -106,6 +150,12 @@ export function CommunicationSheet({
           ) : (
             <p className="text-center">{t("communication.reel.empty")}</p>
           )}
+          <a
+            href="/reel"
+            className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-border bg-card px-4 text-sm font-medium text-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            {t("communication.reel.open")}
+          </a>
         </TabsContent>
       </Tabs>
     </Sheet>
