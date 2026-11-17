@@ -9,7 +9,7 @@ La cloche ouvre un centre unique de contrôle des communications et événements
 | Ordre | Espace        | Responsabilité V1                                                                                    |
 | ----- | ------------- | ---------------------------------------------------------------------------------------------------- |
 | 1     | Notifications | Informations système, alertes et changements d'état utiles à la personne.                            |
-| 2     | Assistant     | Accès à Vita, aide contextuelle et suivi des demandes d'assistance.                                  |
+| 2     | Assistant     | Accès facultatif à Vita, aide contextuelle et suivi des demandes d'assistance. L'espace n'est affiché que si la personne a activé l'assistant. |
 | 3     | Messages      | Conversations rattachées à une action ou à une mise en relation acceptée. Aucune messagerie libre.   |
 | 4     | En direct          | Demandes, invitations, acceptations et interactions En direct qui nécessitent une décision ou une action. |
 
@@ -55,7 +55,7 @@ Aucun compteur dynamique ne doit être simulé côté interface en l'absence de 
 
 ## Critères d'acceptation
 
-- Les quatre onglets sont présents dans l'ordre Notifications, Assistant, Messages, En direct.
+- Les quatre espaces fonctionnels sont définis dans l'ordre Notifications, Assistant, Messages, En direct. L'onglet Assistant est volontairement masqué lorsque l'assistant facultatif est désactivé ; lorsqu'il est activé, les quatre onglets sont présents dans cet ordre.
 - Les libellés sont disponibles en français et en anglais.
 - Les onglets restent utilisables sur petit écran sans débordement horizontal.
 - Les responsabilités et les règles de non-duplication sont respectées.
@@ -65,4 +65,4 @@ Aucun compteur dynamique ne doit être simulé côté interface en l'absence de 
 
 ## Statut d'implémentation
 
-Le composant V1 expose les quatre espaces et leurs états vides localisés. Les compteurs et indicateurs métier ne sont pas encore raccordés aux sources réelles ; ils ne sont donc pas présentés comme implémentés. Les critères ci-dessus restent le contrat de référence pour leur intégration.
+Le composant V1 expose Notifications, Messages et En direct par défaut, avec leurs états vides localisés. L'espace Assistant apparaît uniquement après activation explicite de l'assistant, conformément à son caractère facultatif et désactivé par défaut. Les compteurs et indicateurs métier ne sont pas encore raccordés aux sources réelles ; ils ne sont donc pas présentés comme implémentés. Les critères ci-dessus restent le contrat de référence pour leur intégration.
