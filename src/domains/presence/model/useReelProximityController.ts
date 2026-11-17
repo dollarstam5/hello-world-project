@@ -356,18 +356,16 @@ export function useReelProximityController() {
     incoming.forEach((event) => processedReelEvents.current.add(event.id));
     if (panel !== "activity") return;
 
-    const refreshBipsNeeded = incoming.some((event) =>
-      [
-        "communication.event.reel.bipReceived",
-        "communication.event.reel.bipAccepted",
-        "communication.event.reel.bipDeclined",
-      ].includes(event.messageKey),
+    const refreshBipsNeeded = incoming.some(
+      (event) =>
+        event.messageKey === "communication.event.reel.bipReceived" ||
+        event.messageKey === "communication.event.reel.bipAccepted" ||
+        event.messageKey === "communication.event.reel.bipDeclined",
     );
-    const refreshConnectionsNeeded = incoming.some((event) =>
-      [
-        "communication.event.reel.bipAccepted",
-        "communication.event.reel.connectionClosed",
-      ].includes(event.messageKey),
+    const refreshConnectionsNeeded = incoming.some(
+      (event) =>
+        event.messageKey === "communication.event.reel.bipAccepted" ||
+        event.messageKey === "communication.event.reel.connectionClosed",
     );
 
     if (refreshBipsNeeded && (activityTab === "bips" || activityTab === "notifications")) {
