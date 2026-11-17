@@ -63,6 +63,7 @@ describe("Réel member Realtime service", () => {
         kind: "bip_received",
         event_id: "00000000-0000-4000-8000-000000000001",
         created_at: 123,
+        guest_session_id: "must-not-cross-boundary",
       },
     });
     expect(onActivity).toHaveBeenCalledWith({
@@ -70,6 +71,7 @@ describe("Réel member Realtime service", () => {
       event_id: "00000000-0000-4000-8000-000000000001",
       created_at: 123,
     });
+    expect(onActivity.mock.calls[0]?.[0]).not.toHaveProperty("guest_session_id");
 
     mocks.callback?.({
       payload: {
