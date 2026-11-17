@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { Pencil, X } from "lucide-react";
-import type { RadarRadiusKm, RadarRecord, RadarStatus } from "@eco/core-contracts";
+import type { RadarRadiusKm, RadarRecord } from "@eco/core-contracts";
 import type { MessageKey } from "@/lib/i18n/messages";
 import {
   AlertDialog,
@@ -21,31 +21,12 @@ import { useI18n } from "@/lib/i18n/useI18n";
 import { formatCommunicationMessage } from "@/lib/communication/format";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
 import { publishRadarCommunicationEvent } from "../communication-events";
+import { statusKeys, statusTones } from "./radar-presentation";
 import { cancelRadar, createRadarDraft, editRadarDraft, useMyRadars } from "../data";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const RADII: RadarRadiusKm[] = [1, 3, 5, 10, 25, 50];
 const DURATIONS = [3, 7, 14, 30, 60, 90] as const;
-
-const statusKeys: Record<RadarStatus, MessageKey> = {
-  draft: "radar.manage.status.draft",
-  active: "radar.manage.status.active",
-  watching: "radar.manage.status.watching",
-  matched: "radar.manage.status.matched",
-  paused: "radar.manage.status.paused",
-  expired: "radar.manage.status.expired",
-  cancelled: "radar.manage.status.cancelled",
-};
-
-const statusTones: Record<RadarStatus, "neutral" | "primary" | "success" | "warning" | "info"> = {
-  draft: "neutral",
-  active: "success",
-  watching: "info",
-  matched: "primary",
-  paused: "warning",
-  expired: "neutral",
-  cancelled: "neutral",
-};
 
 /**
  * Radar V1: save and manage private search intentions offline-first.
