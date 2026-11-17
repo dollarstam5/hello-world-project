@@ -78,3 +78,11 @@ Les événements entrants réellement émis par les transitions serveur de Réel
 La cloche ne compte pas deux fois un bip reçu présent à la fois dans le flux d'événements et dans la projection des bips en attente. Le flux reste limité à la session applicative ; aucun historique durable n'est ajouté.
 
 L'abonnement privé membre est unique et monté au niveau de l'application. Le contrôleur Réel ne crée plus d'abonnement par onglet. Le mode invité conserve son parcours temporaire et n'est jamais abonné au canal membre. Les essais multi-appareils et les mesures réseau réelles restent à effectuer avant validation terrain.
+
+## Indicateurs réellement raccordés — étape 4
+
+- L'onglet Notifications affiche uniquement les événements de session non lus qui ne sont pas des bips reçus Réel.
+- L'onglet En direct affiche le nombre de bips en attente à partir de la projection métier Réel lorsqu'elle est prête.
+- Un bip reçu présent à la fois dans le flux d'événements et dans la projection Réel reste compté une seule fois dans la cloche globale ; il est attribué visuellement à En direct plutôt que dupliqué dans le compteur Notifications.
+- Les compteurs d'onglets sont masqués lorsqu'ils valent zéro. Ils sont accessibles dans le nom des onglets et plafonnés visuellement à « 99+ ».
+- Aucun indicateur n'est inventé pour Messages ou Assistant en l'absence de source métier d'éléments non lus.
