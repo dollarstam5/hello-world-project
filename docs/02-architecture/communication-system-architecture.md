@@ -358,3 +358,18 @@ Le champ `ready` reste faux tant que l'identité, la route, la langue ou la pré
 **Limite explicite :** ce premier raccordement établit le contrat et son cycle de vie, mais le fournisseur applicatif n'alimente pas encore automatiquement le contexte depuis Auth, i18n, route et préférences. Tant que ces sources ne sont pas reliées et testées ensemble, aucun composant ne doit traiter le contexte comme prêt par défaut.
 
 Tests ajoutés : normalisation route/langue, distinction invité/membre/en chargement, séparation des permissions Réel, refus des chemins protocol-relative, absence de données identifiantes et reset du contexte dans le runtime.
+
+
+### Mise à jour — alimentation applicative raccordée
+
+Le Context Resolver reçoit maintenant ses premières sources depuis `AppShell` :
+- `useAuth()` distingue chargement, membre authentifié et visiteur sans session ;
+- `useRouterState()` fournit le chemin courant ;
+- `useI18n()` fournit la langue active ;
+- `assistant-preferences` expose désormais un indicateur `hydrated`, afin de ne pas confondre la valeur initiale désactivée avec une préférence déjà lue.
+
+Le provider transmet ces valeurs au runtime. Les permissions Réel restent explicitement `unknown` tant qu'un état autorisé ne leur est pas fourni : le resolver ne demande ni ne déduit ces permissions.
+
+Le provider reçoit aussi une clé de comparaison de session d'identité éphémère, utilisée uniquement pour détecter un changement de compte et appeler `resetSession()`. Cette clé n'est jamais copiée dans le contexte, les demandes ou les messages. Le reset est déclenché lors d'un changement entre chargement, invité et compte, ainsi qu'entre deux comptes membres.
+
+**Point de vigilance :** ce raccordement utilise le hook Auth existant dans `AppShell`, sans refactoriser les consommateurs Auth existants. Il ajoute donc un observateur Auth applicatif ; une centralisation du flux Auth ne sera envisagée que si une mesure démontre un coût ou une duplication problématique.
