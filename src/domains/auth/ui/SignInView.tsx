@@ -18,7 +18,12 @@ export function SignInView() {
     (themeMode === "system" &&
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-color-scheme: dark)").matches);
-  const [mode, setAuthMode] = useState<Mode>("signIn");
+  const [mode, setAuthMode] = useState<Mode>(() =>
+    typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).get("mode") === "signUp"
+      ? "signUp"
+      : "signIn",
+  );
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
