@@ -391,3 +391,14 @@ Les permissions de découverte et de présence restent à `unknown` tant que leu
 
 
 Le runtime applique maintenant également une garde explicite aux demandes marquées `requiresContext` : elles restent supprimées tant que le contexte commun n'est pas prêt. Les erreurs et confirmations inline indépendantes du contexte ne sont pas bloquées par cette garde. Un contexte prêt ne remplace jamais les autorisations ni la validation métier.
+
+
+### Décision de gouvernance — opt-in Assistant indépendant
+
+Le contexte commun peut être prêt même si les préférences de l'assistant sont encore en cours d'hydratation. Cette préférence est un état séparé : les demandes Assistant doivent déclarer leur dépendance à l'opt-in et restent bloquées tant que l'activation explicite n'est pas confirmée. Une préférence Assistant désactivée ne doit pas empêcher les confirmations ou notifications métier non liées à l'assistant.
+
+### Résultat de l'audit des événements moteurs
+
+Flash, Scan et Radar ne produisent actuellement que des confirmations/erreurs liées à une action locale de la personne pour les parcours examinés. Elles restent affichées dans leur moteur et ne sont pas copiées dans le centre global. Radar ne dispose pas de matching/alertes automatiques actifs.
+
+Réel dispose de bips et relations réellement issus de services/RPC/Realtime pour les membres et de services temporaires pour les invités. Les vues restent dans le moteur Réel tant qu'une projection partagée ne peut pas être extraite sans second abonnement, polling ou requête, et sans exposer des identifiants invités. La prochaine tranche doit d'abord concevoir ce read model partagé et son cycle de vie, puis seulement brancher le centre global.
