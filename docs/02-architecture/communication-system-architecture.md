@@ -1,6 +1,6 @@
 # Architecture du système de communication Vitalis
 
-**Statut :** architecture cible V1 à confronter au code existant avant implémentation.  
+**Statut :** architecture de référence V1 ; l’état réellement implémenté est distingué dans les sections d’inventaire et de raccordement.  
 **Principe :** local-first, déterministe, sans coût variable par message en V1.  
 **Limite :** les responsabilités décrites ici ne prouvent pas que des modules équivalents existent déjà dans le dépôt.
 
