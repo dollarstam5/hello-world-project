@@ -165,6 +165,11 @@ export function useHybridAssistant(): HybridAssistantState {
           return c;
         });
       } catch (error) {
+        setMessages((current) => {
+          const next = current.filter((message) => message.id !== answerId);
+          persist(storageKey, next);
+          return next;
+        });
         setFailure(error instanceof AssistantStreamError ? error.reason : "provider_error");
       } finally {
         setPending(false);
