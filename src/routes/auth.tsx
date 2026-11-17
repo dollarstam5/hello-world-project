@@ -2,6 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SignInView } from "@/domains/auth/ui/SignInView";
 
 export const Route = createFileRoute("/auth")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    mode: search.mode === "signUp" ? "signUp" : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Connexion — Vitalis" },
