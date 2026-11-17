@@ -1,17 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
 import { useAssistantNotices } from "@/lib/app/assistant-notices";
 import { useI18n } from "@/lib/i18n/useI18n";
-import { formatCommunicationMessage } from "@/lib/communication/format";
+import { createCommunicationRuntime } from "@/lib/communication/runtime";
 
 /** Appears only while an explicitly published assistant message is available. */
 export function AssistantNoticeLayer() {
   const { t } = useI18n();
   const enabled = useAssistantPreferences((state) => state.enabled);
   const notice = useAssistantNotices((state) => state.notice);
-  const dismiss = useAssistantNotices((state) => state.dismiss);
+  const dismiss = useAssistantNotices((state) => state.dismiss);\n  const runtimeRef = useRef(createCommunicationRuntime());\n  const translateRef = useRef(t);\n  translateRef.current = t;\n  const runtime = runtimeRef.current;\n  const prepared = useMemo(() => {\n    if (!notice) return null;\n    return runtime.prepare(translateRef.current, [\n      { key: notice.message, priority: "normal", repeatKey: `assistant-notice:${notice.id}` },\n    ]);\n  }, [notice, runtime]);
 
   useEffect(() => {
     if (!notice) return;
@@ -32,7 +32,7 @@ export function AssistantNoticeLayer() {
         className="pointer-events-auto flex w-full max-w-md items-start gap-3 rounded-2xl border border-border bg-background/95 px-4 py-3 text-sm text-foreground shadow-xl backdrop-blur"
       >
         <p className="min-w-0 flex-1 leading-relaxed">
-          {formatCommunicationMessage(t, notice.message)}
+          {prepared?.messages[0]?.text ?? ""}
         </p>
         <Button
           type="button"
