@@ -1,4 +1,5 @@
-import { afterEach, describe, expect, it, vi } from "vitest";\nafterEach(() => vi.unstubAllGlobals());
+import { afterEach, describe, expect, it, vi } from "vitest";
+afterEach(() => vi.unstubAllGlobals());
 import {
   AssistantStreamError,
   buildAssistantRequestMessages,
@@ -39,7 +40,7 @@ describe("streaming de Vita", () => {
   function mockStream(events: string[]) {
     const body = new ReadableStream<Uint8Array>({
       start(controller) {
-        controller.enqueue(new TextEncoder().encode(events.join("\\n") + "\\n"));
+        controller.enqueue(new TextEncoder().encode(events.join("\n") + "\n"));
         controller.close();
       },
     });
