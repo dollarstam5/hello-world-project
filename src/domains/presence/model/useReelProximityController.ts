@@ -312,27 +312,55 @@ export function useReelProximityController() {
   }, [access.loading, access.mode, canUseMemberReel, access.memberId, activityIdentity, t]);
 
   // The app-scoped bridge owns the single member Realtime subscription.
-  // This controller performs one initial read for the visible tab and keeps
-  // guest-only polling local to the temporary guest session.
+  // Guests have no Realtime channel: refresh on app/network return and use a
+  // low-frequency safety check only while their activity panel is visible.
+  const guestActivityRefreshInFlight = useRef(false);
   useEffect(() => {
     if (panel !== "activity" || (!canUseMemberReel && access.mode !== "guest")) {
       return;
     }
 
-    const refreshVisibleActivity = () => {
-      if (activityTab === "bips") {
-        void refreshBips();
-      } else if (activityTab === "connections") {
-        void refreshConnections();
-      } else {
-        void Promise.all([refreshBips(), refreshConnections()]);
+    const refreshVisibleActivity = async () => {
+      if (access.mode === "guest" && document.visibilityState !== "visible") return;
+      if (access.mode === "guest" && guestActivityRefreshInFlight.current) return;
+
+      if (access.mode === "guest") guestActivityRefreshInFlight.current = true;
+      try {
+        if (activityTab === "bips") {
+          await refreshBips();
+        } else if (activityTab === "connections") {
+          await refreshConnections();
+        } else {
+          await Promise.all([refreshBips(), refreshConnections()]);
+        }
+      } finally {
+        if (access.mode === "guest") guestActivityRefreshInFlight.current = false;
       }
     };
 
-    refreshVisibleActivity();
+    void refreshVisibleActivity();
     if (access.mode !== "guest") return;
-    const poll = window.setInterval(refreshVisibleActivity, 3000);
-    return () => window.clearInterval(poll);
+
+    const refreshWhenAvailable = () => {
+      if (document.visibilityState === "visible") void refreshVisibleActivity();
+    };
+    document.addEventListener("visibilitychange", refreshWhenAvailable);
+    window.addEventListener("focus", refreshWhenAvailable);
+    window.addEventListener("online", refreshWhenAvailable);
+
+    // 30 s safety refresh (down from 3 s); event/lifecycle driven refreshes
+    // remain immediate and are coalesced while a read is already in flight.
+    const poll = window.setInterval(() => {
+      if (document.visibilityState === "visible") void refreshVisibleActivity();
+    }, 30_000);
+
+    return () => {
+      window.clearInterval(poll);
+      document.removeEventListener("visibilitychange", refreshWhenAvailable);
+      window.removeEventListener("focus", refreshWhenAvailable);
+      window.removeEventListener("online", refreshWhenAvailable);
+      guestActivityRefreshInFlight.current = false;
+    };
   }, [panel, activityTab, refreshBips, refreshConnections, canUseMemberReel, access.mode]);
 
   useEffect(() => {
