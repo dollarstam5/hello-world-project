@@ -22,10 +22,27 @@ import {
  */
 export function createCommunicationRuntime() {
   const deliverySession = createCommunicationDeliverySession();
+  const listeners = new Set<() => void>();
   let context: CommunicationContext | null = null;
+  let revision = 0;
+
+  function notifyContextChange() {
+    revision += 1;
+    listeners.forEach((listener) => listener());
+  }
+
+  function subscribe(listener: () => void) {
+    listeners.add(listener);
+    return () => listeners.delete(listener);
+  }
+
+  function getSnapshot() {
+    return revision;
+  }
 
   function updateContext(input: CommunicationContextInput): CommunicationContext {
     context = resolveCommunicationContext(input);
+    notifyContextChange();
     return context;
   }
 
@@ -68,9 +85,18 @@ export function createCommunicationRuntime() {
   function resetSession() {
     deliverySession.reset();
     context = null;
+    notifyContextChange();
   }
 
-  return { updateContext, getContext, prepare, markPresented, resetSession };
+  return {
+    updateContext,
+    getContext,
+    prepare,
+    markPresented,
+    resetSession,
+    subscribe,
+    getSnapshot,
+  };
 }
 
 export type CommunicationRuntime = ReturnType<typeof createCommunicationRuntime>;
