@@ -25,7 +25,7 @@ Copier `.env.example` vers un fichier local ignoré par Git, puis renseigner les
 | `CLOUDFLARE_AI_GATEWAY_ID`      | serveur    | non         | passerelle, valeur par défaut `vitala`                  |
 | `AI_PRIMARY_MODEL`              | serveur    | non         | modèle principal compatible avec la passerelle          |
 | `AI_FALLBACK_MODEL`             | serveur    | non         | modèle de secours                                       |
-| `LOVABLE_CRON_SECRET`           | serveur    | selon usage | authentification des tâches planifiées                  |
+| `LOVABLE_CRON_SECRET`           | serveur + GitHub Actions | selon usage | authentification des tâches planifiées (32 caractères minimum) |
 | `LOVABLE_CRON_SECRET_PREVIOUS`  | serveur    | non         | rotation sans interruption                              |
 | `SYNC_RECEIPT_RETENTION_DAYS`   | serveur    | non         | conservation des reçus, 30 jours par défaut             |
 | `AI_REQUEST_RETENTION_DAYS`     | serveur    | non         | conservation des métadonnées IA, 30 jours par défaut    |
@@ -76,7 +76,7 @@ Le manifeste, le service worker et les icônes doivent être servis par HTTPS. V
 4. Publier progressivement et surveiller les taux HTTP 401, 409, 429 et 500 sans journaliser les corps de requête.
 5. Conserver l’artefact précédent pour un rollback immédiat.
 
-Planifier un appel `POST /api/cron/maintenance` avec `Authorization: Bearer <LOVABLE_CRON_SECRET>`. Une exécution quotidienne suffit ; la route purge les reçus de synchronisation, les traces de requêtes IA et les candidats de cache expirés. Les connaissances promues sont conservées. Les fenêtres acceptées sont bornées entre 7 et 365 jours (30 jours par défaut). `LOVABLE_CRON_SECRET` doit contenir au moins 32 caractères ; `LOVABLE_CRON_SECRET_PREVIOUS` permet une rotation temporaire.
+Le workflow GitHub Actions `.github/workflows/operational-retention.yml` appelle automatiquement `POST /api/cron/maintenance` chaque jour à 03:17 UTC (et peut être lancé manuellement). Configurer les secrets du dépôt `VITALIS_APP_URL` (origine HTTPS de l'application) et `LOVABLE_CRON_SECRET` (32 caractères minimum). La route réutilise l'authentification cron commune et exécute le RPC réservé à `service_role`. Elle purge les reçus de synchronisation, les traces de requêtes IA, les événements de cache et les candidats expirés ; les connaissances promues sont conservées. Les fenêtres sont bornées entre 7 et 365 jours (30 jours par défaut). `LOVABLE_CRON_SECRET_PREVIOUS` permet une rotation temporaire côté hébergeur.
 
 Après publication, vérifier `/api/health/live` puis `/api/health/ready`. Configurer les alertes et procédures selon [opérations](./operations.md).
 
