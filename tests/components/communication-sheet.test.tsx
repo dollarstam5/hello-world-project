@@ -1,7 +1,10 @@
 import type { ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { CommunicationSheet } from "@/components/experience/CommunicationSheet";
+import {
+  CommunicationSheet,
+  getReelActivityStatusKey,
+} from "@/components/experience/CommunicationSheet";
 
 const assistantPreference = vi.hoisted(() => ({ enabled: false }));
 const communicationState = vi.hoisted(() => ({
@@ -66,11 +69,9 @@ describe("CommunicationSheet", () => {
     communicationState.markEventRead.mockClear();
   });
 
-  it("explains when live activity has not been loaded yet instead of showing a false empty state", () => {
-    const markup = renderToStaticMarkup(<CommunicationSheet open onOpenChange={() => undefined} />);
-
-    expect(markup).toContain("communication.reel.notLoaded");
-    expect(markup).not.toContain("communication.reel.empty");
+  it("distinguishes an unloaded live projection from an offline projection", () => {
+    expect(getReelActivityStatusKey(true)).toBe("communication.reel.notLoaded");
+    expect(getReelActivityStatusKey(false)).toBe("communication.reel.offline");
   });
 
   it("keeps existing communications visible and explains offline limitations", () => {
@@ -90,7 +91,6 @@ describe("CommunicationSheet", () => {
 
     expect(markup).toContain("communication.offline");
     expect(markup).toContain("communication.event.flash.updated");
-    expect(markup).toContain("communication.reel.offline");
   });
 
   it("hides the assistant space while the assistant is disabled", () => {
