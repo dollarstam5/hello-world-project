@@ -90,7 +90,7 @@ DECLARE
   v_minute_count INTEGER;
   v_day_count INTEGER;
 BEGIN
-  IF v_user IS NULL OR p_request_id IS NULL OR p_locale IS NULL OR p_locale IS NULL
+  IF v_user IS NULL OR p_request_id IS NULL OR p_locale IS NULL
      OR p_locale NOT IN ('fr', 'en') THEN
     RETURN jsonb_build_object('decision', 'denied');
   END IF;
@@ -207,6 +207,7 @@ BEGIN
   IF p_user_id IS NULL
      OR p_question_hash IS NULL
      OR p_question_hash !~ '^[0-9a-f]{64}$'
+     OR p_locale IS NULL
      OR p_locale NOT IN ('fr', 'en')
      OR p_category NOT IN ('navigation', 'feature', 'account', 'safety', 'other')
      OR p_normalized_question IS NULL
