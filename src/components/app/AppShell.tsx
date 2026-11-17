@@ -91,9 +91,9 @@ export function AppShell({ children }: { children: ReactNode }) {
   if (bareChrome) {
     return (
       <CommunicationRuntimeProvider
-      context={communicationContext}
-      sessionIdentityKey={authLoading ? "loading" : user?.id ?? "guest"}
-    >
+        context={communicationContext}
+        sessionIdentityKey={authLoading ? "loading" : user?.id ?? "guest"}
+      >
         <>
           <SyncEngineLoader />
           <div className="relative min-h-dvh bg-background text-foreground antialiased">
@@ -105,7 +105,10 @@ export function AppShell({ children }: { children: ReactNode }) {
   }
 
   return (
-    <CommunicationRuntimeProvider>
+    <CommunicationRuntimeProvider
+      context={communicationContext}
+      sessionIdentityKey={authLoading ? "loading" : user?.id ?? "guest"}
+    >
       <div className="relative min-h-dvh bg-background text-foreground antialiased">
         <SyncEngineLoader />
         <AssistantNoticeLayer />
