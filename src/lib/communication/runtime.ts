@@ -35,7 +35,11 @@ export function createCommunicationRuntime() {
     deliverySession.markDelivered(messages);
   }
 
-  return { prepare, markPresented };
+  function resetSession() {
+    deliverySession.reset();
+  }
+
+  return { prepare, markPresented, resetSession };
 }
 
 export type CommunicationRuntime = ReturnType<typeof createCommunicationRuntime>;
