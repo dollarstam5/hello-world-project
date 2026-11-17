@@ -19,3 +19,22 @@ export function getHomeGreetingKey(hour: number): MessageKey {
   if (hour < 22) return "home.greeting.night";
   return "home.greeting.late";
 }
+
+const NAME_GREETING_SESSION_KEY = "vitalis.communication.name-greeting-shown";
+
+/**
+ * Allows a personalized greeting once per browser tab session.
+ * No profile data or name is written to storage.
+ */
+export function claimNameGreetingForSession(): boolean {
+  if (typeof window === "undefined") return false;
+
+  try {
+    if (window.sessionStorage.getItem(NAME_GREETING_SESSION_KEY) === "1") return false;
+    window.sessionStorage.setItem(NAME_GREETING_SESSION_KEY, "1");
+    return true;
+  } catch {
+    // If session storage is unavailable, prefer a neutral greeting.
+    return false;
+  }
+}
