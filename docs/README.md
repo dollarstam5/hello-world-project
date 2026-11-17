@@ -20,6 +20,7 @@ Ce répertoire suit une structure canonique pour la documentation active.
 - [Vitalis Experience System](./01-product/experience-system.md)
 - [Navigation produit Vitalis](./01-product/navigation.md)
 - [Système de communication humaine V1 à V3](./01-product/communication-system-v1-v3.md)
+- [Gouvernance complète de la communication V1 à V3](./01-product/communication-system-governance-v1-v3.md) — exigences, limites, sécurité, maturité, IA future, tests et critères de livraison.
 - [Catalogue de communication V1](./01-product/communication-catalog-v1.md)
 - [Architecture du système de communication](./02-architecture/communication-system-architecture.md)
 - [Centre de communication — règles produit V1](./01-product/communication-center-v1.md)
