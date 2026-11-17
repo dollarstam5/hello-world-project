@@ -86,9 +86,8 @@ export function HomeFoundation() {
   const { t } = useI18n();
   const { user, loading: authLoading } = useAuth();
   const displayName = useIdentity((s) => s.displayName);
-  const setDisplayName = useIdentity((s) => s.setDisplayName);
+  const displayNameOwnerId = useIdentity((s) => s.displayNameOwnerId);
   const [localHour, setLocalHour] = useState<number | null>(null);
-  const [identityOwnerUserId, setIdentityOwnerUserId] = useState<string | null>(null);
   const [nameGreetingUserId, setNameGreetingUserId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -99,19 +98,14 @@ export function HomeFoundation() {
     if (authLoading) return;
     if (!user) {
       if (nameGreetingUserId !== null) setNameGreetingUserId(null);
-      if (identityOwnerUserId !== null || displayName) setDisplayName(undefined);
-      if (identityOwnerUserId !== null) setIdentityOwnerUserId(null);
       return;
     }
-    if (identityOwnerUserId !== user.id) {
-      // A name loaded for a previous account must never greet the next account.
-      setDisplayName(undefined);
-      setIdentityOwnerUserId(user.id);
+    // A cached name is usable only for the account that supplied it.
+    if (displayNameOwnerId !== user.id || !displayName?.trim() || nameGreetingUserId === user.id) {
       return;
     }
-    if (!displayName?.trim() || nameGreetingUserId === user.id) return;
     if (claimNameGreetingForSession()) setNameGreetingUserId(user.id);
-  }, [authLoading, user, displayName, nameGreetingUserId, identityOwnerUserId, setDisplayName]);
+  }, [authLoading, user, displayName, displayNameOwnerId, nameGreetingUserId]);
 
   // Authentication is the source of truth for member/guest recognition.
   // UDI trust levels are not inferred from the local identity placeholder.
@@ -120,7 +114,9 @@ export function HomeFoundation() {
   const greetingKey =
     localHour === null || authLoading ? "home.welcome" : getHomeGreetingKey(localHour);
   const greetingName =
-    user && nameGreetingUserId === user.id && displayName?.trim() ? `, ${displayName.trim()}` : "";
+    user && displayNameOwnerId === user.id && nameGreetingUserId === user.id && displayName?.trim()
+      ? `, ${displayName.trim()}`
+      : "";
   const greeting = formatCommunicationMessage(t, greetingKey, { name: greetingName });
 
   const demoFlashes = createDemoFlashes();
