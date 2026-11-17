@@ -61,6 +61,21 @@ describe("resolveCommunicationCandidates", () => {
     expect(result.suppressed.map(({ key }) => key)).toEqual(["home.welcome"]);
   });
 
+  it("never drops critical messages when the display limit is smaller than the critical batch", () => {
+    const result = resolveCommunicationCandidates(
+      [
+        { key: "common.error", priority: "critical", eventId: "critical-1" },
+        { key: "common.retry", priority: "critical", eventId: "critical-2" },
+        { key: "home.welcome", priority: "low" },
+      ],
+      {},
+      1,
+    );
+
+    expect(result.selected.map(({ key }) => key)).toEqual(["common.error", "common.retry"]);
+    expect(result.suppressed.map(({ key }) => key)).toEqual(["home.welcome"]);
+  });
+
   it("does not suppress candidates without stable deduplication keys", () => {
     const candidate = { key: "home.welcome", priority: "normal" } as const;
     const result = resolveCommunicationCandidates([candidate, candidate]);
