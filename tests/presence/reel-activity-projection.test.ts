@@ -81,7 +81,8 @@ describe("Réel shared activity projection", () => {
     useReelActivityProjection.getState().publishConnections("guest", 2);
 
     const serialized = JSON.stringify(useReelActivityProjection.getState());
-    expect(serialized).not.toMatch(/guestSessionId|guest_session_id|presenceId|presence_id|bipId|bip_id|connectionId|connection_id/i);
+    expect(serialized).not.toMatch(
+      /guestSessionId|guest_session_id|presenceId|presence_id|bipId|bip_id|connectionId|connection_id/i,
+    );
   });
-
 });
