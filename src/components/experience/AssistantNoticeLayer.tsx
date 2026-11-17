@@ -52,9 +52,7 @@ export function AssistantNoticeLayer() {
         aria-live="polite"
         className="pointer-events-auto flex w-full max-w-md items-start gap-3 rounded-2xl border border-border bg-background/95 px-4 py-3 text-sm text-foreground shadow-xl backdrop-blur"
       >
-        <p className="min-w-0 flex-1 leading-relaxed">
-          {prepared?.messages[0]?.text ?? ""}
-        </p>
+        <p className="min-w-0 flex-1 leading-relaxed">{prepared?.messages[0]?.text ?? ""}</p>
         <Button
           type="button"
           variant="ghost"
