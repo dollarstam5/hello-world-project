@@ -167,11 +167,7 @@ export const Route = createFileRoute("/api/public/assistant")({
           return Response.json({ error: "unsafe_request" }, { status: 422 });
         }
 
-        const claim = await claimAssistantRequest(
-          session.supabase,
-          body.requestId,
-          body.locale,
-        );
+        const claim = await claimAssistantRequest(session.supabase, body.requestId, body.locale);
         if (!claim.allowed) {
           const status =
             claim.reason === "rate_limited" ? 429 : claim.reason === "daily_limit" ? 402 : 503;
@@ -211,7 +207,9 @@ export const Route = createFileRoute("/api/public/assistant")({
             await failAssistantRequest(session.supabase, body.requestId);
             const status = upstream.status === 429 ? 429 : upstream.status === 402 ? 402 : 502;
             return Response.json(
-              { error: status === 429 ? "rate_limited" : status === 402 ? "daily_limit" : "gateway" },
+              {
+                error: status === 429 ? "rate_limited" : status === 402 ? "daily_limit" : "gateway",
+              },
               { status },
             );
           }
