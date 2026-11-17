@@ -461,12 +461,7 @@ export function useReelProximityController() {
   };
 
   useEffect(() => {
-    const mode =
-      access.mode === "guest"
-        ? "guest"
-        : canUseMemberReel
-          ? "member"
-          : null;
+    const mode = access.mode === "guest" ? "guest" : canUseMemberReel ? "member" : null;
     if (!mode) return;
     useReelActivityProjection
       .getState()
@@ -479,12 +474,7 @@ export function useReelProximityController() {
   }, [access.mode, canUseMemberReel, receivedBips.length, receivedGuestBips.length]);
 
   useEffect(() => {
-    const mode =
-      access.mode === "guest"
-        ? "guest"
-        : canUseMemberReel
-          ? "member"
-          : null;
+    const mode = access.mode === "guest" ? "guest" : canUseMemberReel ? "member" : null;
     if (!mode) return;
     useReelActivityProjection
       .getState()
