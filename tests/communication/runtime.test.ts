@@ -22,6 +22,7 @@ describe("communication runtime", () => {
       route: "/reel",
       locale: "fr",
       assistantEnabled: false,
+      assistantPreferenceReady: true,
       permissions: { discover: "granted", presence: "unknown" },
       ready: true,
     });
@@ -69,6 +70,41 @@ describe("communication runtime", () => {
     const available = runtime.prepare(translate, request);
     expect(available.messages).toHaveLength(1);
     expect(available.suppressed).toHaveLength(0);
+  });
+
+  it("suppresses assistant-only requests until explicit opt-in is confirmed", () => {
+    const runtime = createCommunicationRuntime();
+    const request = [
+      {
+        key: "common.error",
+        source: "assistant" as const,
+        surface: "notice" as const,
+        priority: "normal" as const,
+        requiresAssistant: true,
+      },
+    ];
+
+    runtime.updateContext({
+      identity: "member",
+      pathname: "/",
+      locale: "fr",
+      assistantEnabled: false,
+    });
+
+    const optedOut = runtime.prepare(translate, request);
+    expect(optedOut.messages).toHaveLength(0);
+    expect(optedOut.suppressed).toEqual(request);
+
+    runtime.updateContext({
+      identity: "member",
+      pathname: "/",
+      locale: "fr",
+      assistantEnabled: true,
+    });
+
+    const optedIn = runtime.prepare(translate, request);
+    expect(optedIn.messages).toHaveLength(1);
+    expect(optedIn.suppressed).toHaveLength(0);
   });
 
   it("does not mark a request delivered until the presenter acknowledges it", () => {
