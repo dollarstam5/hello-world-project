@@ -104,16 +104,31 @@ Les exemples ci-dessus sont des formulations de découverte à valider dans les 
 
 ## 8. Notifications métier
 
-Les notifications de bip, mise en relation, mission, Scan ou Flash proviennent des événements réels des domaines. Le catalogue fournit les formulations ; il ne crée pas les événements.
+Le catalogue fournit les formulations ; il ne crée jamais les événements. Les événements doivent provenir du domaine propriétaire et être confirmés avant publication.
 
-| Clé indicative | Événement à confirmer dans le domaine | FR | EN |
+### Événements réellement raccordés en V1
+
+| Domaine | Événement confirmé | Clé runtime | Comportement |
 |---|---|---|---|
-| event.bip_received | Bip reçu | Vous avez reçu un bip. | You received a ping. |
-| event.relation_established | Mise en relation confirmée | La mise en relation est établie. | The connection is established. |
-| event.mission_update | Changement de statut confirmé | Votre mission a été mise à jour. | Your mission has been updated. |
-| event.flash_available | Nouveau Flash accessible | Un nouveau Flash est disponible autour de vous. | A new Flash is available nearby. |
+| Flash | Brouillon enregistré, modification, archivage, suppression | `communication.event.flash.*` | Entrée de centre marquée lue ; confirmation inline déjà présentée, aucun badge |
+| Radar | Veille enregistrée, modifiée, annulée | `communication.event.radar.*` | Entrée de centre marquée lue ; confirmation locale, aucun badge |
+| Réel membre | Bip reçu, bip accepté/refusé côté expéditeur, relation clôturée | `communication.event.reel.*` | Événement de session provenant du canal privé serveur ; les actions restent dans Réel |
+| Scan | Résultat de recherche volontaire | — | Reste dans Scan, sans notification globale |
+| Réel invité | Bip ou relation dans la session temporaire | — | Reste dans le moteur invité ; aucun registre global ni historique persistant |
 
-Les clés indicatives de bip reçu, relation établie, mission et Flash disponible ne sont pas encore des événements runtime actifs : aucun producteur serveur correspondant n’est raccordé ici. Les événements de cycle de vie locaux Flash et Radar actuellement intégrés au centre utilisent les clés communication.event.flash.* et communication.event.radar.*. Les confirmations inline sont classées comme lues et ne déclenchent pas la cloche. Le domaine propriétaire fournit toujours la destination et l’état confirmé. Aucun identifiant temporaire invité n’apparaît dans le texte ou les métadonnées.
+Le registre global est en mémoire de session et disparaît au rechargement ou au changement d'identité. Le centre n'effectue aucune lecture métier supplémentaire. La projection Réel déjà chargée fournit les compteurs de bips en attente ; le même bip ne doit pas être compté deux fois entre projection et événement serveur.
+
+### Événements non raccordés
+
+Les clés indicatives ci-dessous ne sont pas des événements runtime actifs et ne doivent pas être présentées comme des notifications disponibles :
+
+| Événement futur | Condition nécessaire | FR | EN |
+|---|---|---|---|
+| event.mission_update | Changement de statut confirmé par le domaine Mission | Votre mission a été mise à jour. | Your mission has been updated. |
+| event.flash_available | Nouveau Flash réellement accessible selon les règles de découverte | Un nouveau Flash est disponible autour de vous. | A new Flash is available nearby. |
+| event.trust_update | Événement Trust confirmé et destiné à la personne | Une information concernant votre confiance est disponible. | An update about your trust status is available. |
+
+Aucun événement de suggestion, de recommandation ou de proximité ne doit être inventé pour remplir le centre. Les notifications persistantes, les push et l'historique multi-appareil restent hors du périmètre V1 actuellement implémenté.
 
 ## 9. Contrôle éditorial
 
