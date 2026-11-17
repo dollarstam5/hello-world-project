@@ -416,3 +416,27 @@ Les tableaux détaillés et leurs identifiants restent dans le contrôleur et se
 Les abonnements Realtime membres et le polling invité à trois secondes restent ceux du contrôleur, déclenchés uniquement lorsque son panneau d'activité est ouvert. La projection du centre représente donc le dernier état réellement chargé par le moteur ; elle n'initie pas de rafraîchissement autonome lorsque le moteur n'est pas actif. Cette limite est volontaire pour cette première tranche, afin de ne pas ajouter de trafic réseau. Une éventuelle centralisation du cycle de vie des abonnements nécessitera une étape distincte et des tests de propriété/ref-count avant toute modification.
 
 Les tests dédiés vérifient l'agrégation sans identifiants, la séparation des modes, la normalisation des compteurs et la remise à zéro. Cette extraction ne crée aucune notification métier : elle expose un résumé des données Réel existantes.
+
+## Matrice de vérification de la projection Réel
+
+La validation de la projection est menée en deux niveaux : tests automatisés du read model et vérification en session réelle. Une validation CI ne prouve pas à elle seule le fonctionnement multi-session avec Supabase Realtime.
+
+| Scénario | Contrôle attendu | Vérification automatisée actuelle | Vérification réelle requise |
+|---|---|---|---|
+| Membre connecté | Les bips reçus et relations actives proviennent des lectures autorisées du contrôleur Réel ; le centre affiche les mêmes agrégats. | Projection partagée et synchronisation des abonnés du store testées. | Ouvrir le panneau Réel, charger les deux listes, comparer les compteurs dans le centre. |
+| Invité | Les compteurs ne comprennent que les données de la session invitée active ; aucune clé de session ou ID métier n'entre dans la projection. | Absence d'identifiants dans l'état sérialisé testée ; changement de mode testé. | Créer une session invitée distincte, vérifier bips/relations et terminer la session. |
+| Changement de compte/session | L'ancienne projection est effacée ; une nouvelle lecture autorisée alimente les nouveaux compteurs. La clé d'identité reste locale à AppShell. | Reset du store testé ; AppShell compare désormais aussi l'horodatage local de session invitée. | Passer du membre A au membre B, du membre à l'invité et renouveler une session invitée. |
+| Réel + centre ouverts simultanément | Le centre s'abonne au store en mémoire ; il ne déclenche aucune lecture, aucun polling et aucun canal Realtime supplémentaire. | Deux abonnés observent la même projection ; inspection du code : le centre n'importe aucun client métier. | Relever les appels réseau et canaux actifs avant/après ouverture du centre. |
+| Actualisation des compteurs | Membre : actualisation à la réception d'un événement Realtime ; invité : polling existant uniquement lorsque le panneau d'activité Réel est ouvert. Les relations comptées doivent être actives. | Normalisation des compteurs et synchronisation locale testées. | Faire arriver un bip, accepter/refuser, activer/terminer une relation et vérifier chaque compteur. |
+
+### Garde-fous de trafic et de confidentialité
+
+- Le centre de communication ne déclenche aucun appel réseau : il lit uniquement le store partagé.
+- Le contrôleur Réel conserve les lectures, l'abonnement membre et le polling invité déjà existants.
+- Aucun deuxième abonnement Realtime ni intervalle supplémentaire n'est créé par l'ouverture du centre.
+- L'intervalle invité existant reste limité au panneau d'activité Réel ouvert ; il n'est pas déplacé vers AppShell.
+- La projection ne contient que le mode et des nombres agrégés. Les identifiants de session invitée, de présence, de bip et de relation restent hors de cette surface.
+- Le centre affiche le dernier état effectivement chargé par Réel. S'il n'y a pas eu de lecture dans la session courante, il ne fabrique pas de compteur et n'initie pas de rafraîchissement autonome.
+
+**État de validation :** les tests unitaires du read model et les contrôles CI sont exécutés sur la branche. Les scénarios multi-session avec deux comptes, l'invité réel et la mesure réseau dans un navigateur connecté restent à valider sur l'environnement applicatif ; ils ne sont pas déclarés réussis sur la seule base des tests de store.
+
