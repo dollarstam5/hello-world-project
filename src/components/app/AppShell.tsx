@@ -123,7 +123,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       >
         <>
           <SyncEngineLoader />
-          <ReelCommunicationBridge />
+        <ReelCommunicationBridge />
           <div className="relative min-h-dvh bg-background text-foreground antialiased">
             {children}
           </div>
