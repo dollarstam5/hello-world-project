@@ -21,7 +21,11 @@ describe("communication delivery session", () => {
     expect(secondBeforePresentation.messages).toHaveLength(1);
 
     session.markDelivered(first.messages);
-    const afterPresentation = prepareCommunicationMessages(translate, request, session.getGateState());
+    const afterPresentation = prepareCommunicationMessages(
+      translate,
+      request,
+      session.getGateState(),
+    );
     expect(afterPresentation.messages).toHaveLength(0);
     expect(afterPresentation.suppressed).toHaveLength(1);
   });
