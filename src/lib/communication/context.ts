@@ -69,9 +69,6 @@ export function resolveCommunicationContext(
       discover: normalizePermission(input.permissions?.discover),
       presence: normalizePermission(input.permissions?.presence),
     },
-    ready:
-      input.identity !== "loading" &&
-      route !== null &&
-      locale !== null,
+    ready: input.identity !== "loading" && route !== null && locale !== null,
   };
 }
