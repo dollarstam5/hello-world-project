@@ -46,7 +46,7 @@ export function VisionEngineArtwork({
 }) {
   const photo = PHOTOS[kind];
   return (
-    <figure className="relative mx-auto aspect-[4/3] w-full max-w-md overflow-hidden rounded-[2rem] border border-border/70 bg-muted shadow-sm">
+    <figure className="relative mx-auto aspect-[4/3] w-full min-w-0 max-w-md max-h-[22rem] overflow-hidden rounded-[2rem] border border-border/70 bg-muted shadow-sm">
       <img
         src={photo.src}
         alt={labels.alt}
@@ -54,10 +54,14 @@ export function VisionEngineArtwork({
         height={720}
         loading="lazy"
         decoding="async"
-        className="size-full object-cover"
+        className="absolute inset-0 z-0 block size-full object-cover"
         style={{ objectPosition: photo.position }}
       />
-      <span className="absolute bottom-4 left-4 rounded-full border border-border/70 bg-card/90 px-3 py-1.5 text-xs font-semibold text-foreground shadow-lg backdrop-blur">
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-background/45 via-transparent to-transparent"
+      />
+      <span className="absolute bottom-4 left-4 z-20 max-w-[calc(100%-2rem)] truncate rounded-full border border-border/70 bg-card/95 px-3 py-1.5 text-xs font-semibold text-foreground shadow-lg backdrop-blur">
         {chipLabel(kind, labels)}
       </span>
     </figure>

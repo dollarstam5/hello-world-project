@@ -3,10 +3,14 @@ import type { Locale } from "./messages";
 /** Long-form copy loaded only with the lazy /vision route. */
 export const visionMessages = {
   fr: {
-    "vision.photo.flash.alt": "Une femme souriante porte un bidon reçu lors d’une distribution, entourée de voisines.",
-    "vision.photo.scan.alt": "Un homme en tenue traditionnelle consulte son téléphone sur une terrasse.",
-    "vision.photo.reel.alt": "Un groupe de femmes réunies dans une cour se salue avec enthousiasme.",
-    "vision.photo.radar.alt": "Une femme concentrée regarde au loin devant son ordinateur portable.",
+    "vision.photo.flash.alt":
+      "Une femme souriante porte un bidon reçu lors d’une distribution, entourée de voisines.",
+    "vision.photo.scan.alt":
+      "Un homme en tenue traditionnelle consulte son téléphone sur une terrasse.",
+    "vision.photo.reel.alt":
+      "Un groupe de femmes réunies dans une cour se salue avec enthousiasme.",
+    "vision.photo.radar.alt":
+      "Une femme concentrée regarde au loin devant son ordinateur portable.",
     "vision.back": "Retour à l’accueil",
     "vision.eyebrow": "Au-delà des écrans",
     "vision.title": "Vitalis rapproche les personnes des possibilités utiles.",
@@ -144,7 +148,8 @@ export const visionMessages = {
     "vision.end.action": "Revenir à l’accueil",
   },
   en: {
-    "vision.photo.flash.alt": "A smiling woman carries a container received at a distribution, surrounded by neighbours.",
+    "vision.photo.flash.alt":
+      "A smiling woman carries a container received at a distribution, surrounded by neighbours.",
     "vision.photo.scan.alt": "A man in traditional attire checks his phone on a rooftop.",
     "vision.photo.reel.alt": "A group of women gathered in a courtyard greet each other warmly.",
     "vision.photo.radar.alt": "A focused woman looks into the distance in front of her laptop.",
