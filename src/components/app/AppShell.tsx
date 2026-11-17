@@ -15,6 +15,7 @@ import { CommunicationRuntimeProvider } from "@/lib/communication/CommunicationR
 import { useAuth } from "@/domains/auth/model/useAuth";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { resetReelActivityProjection } from "@/domains/presence/model/reel-activity-projection";
+import { ReelCommunicationBridge } from "@/domains/presence/model/ReelCommunicationBridge";
 import { useAccessMode } from "@/domains/access-mode";
 
 const ReelBottomNav = lazy(() =>
@@ -122,6 +123,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       >
         <>
           <SyncEngineLoader />
+          <ReelCommunicationBridge />
           <div className="relative min-h-dvh bg-background text-foreground antialiased">
             {children}
           </div>
@@ -137,6 +139,7 @@ export function AppShell({ children }: { children: ReactNode }) {
     >
       <div className="relative min-h-dvh bg-background text-foreground antialiased">
         <SyncEngineLoader />
+          <ReelCommunicationBridge />
         <AssistantNoticeLayer />
         <OfflineBanner />
         {!routeOwnsHeader && <AppHeader onOpenCommunication={() => setCommunicationOpen(true)} />}
