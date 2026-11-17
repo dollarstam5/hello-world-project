@@ -131,7 +131,9 @@ export function useReelProximityController() {
   const [presenceLoading, setPresenceLoading] = useState(false);
   const [presenceMessage, setPresenceMessage] = useState<string | null>(null);
   const [receivedBips, setReceivedBips] = useState<ReelBip[]>([]);
-  const [bipsLoadedForIdentity, setBipsLoadedForIdentity] = useState<string | null>(null);
+  const [bipsLoadedForIdentity, setBipsLoadedForIdentity] = useState<
+    string | null
+  >(null);
   const [receivedGuestBips, setReceivedGuestBips] = useState<ReelGuestBip[]>([]);
   const [bipsLoading, setBipsLoading] = useState(false);
   const [bipsMessage, setBipsMessage] = useState<string | null>(null);
@@ -496,7 +498,14 @@ export function useReelProximityController() {
           ? receivedGuestBips.length
           : receivedBips.length + receivedGuestBips.length,
       );
-  }, [access.mode, canUseMemberReel, activityIdentity, bipsLoadedForIdentity, receivedBips, receivedGuestBips]);
+  }, [
+    access.mode,
+    canUseMemberReel,
+    activityIdentity,
+    bipsLoadedForIdentity,
+    receivedBips,
+    receivedGuestBips,
+  ]);
 
   useEffect(() => {
     const mode = access.mode === "guest" ? "guest" : canUseMemberReel ? "member" : null;
@@ -510,7 +519,14 @@ export function useReelProximityController() {
           : connections.filter((connection) => connection.status === "active").length +
               guestConnections.filter((connection) => connection.status === "active").length,
       );
-  }, [access.mode, canUseMemberReel, activityIdentity, connectionsLoadedForIdentity, connections, guestConnections]);
+  }, [
+    access.mode,
+    canUseMemberReel,
+    activityIdentity,
+    connectionsLoadedForIdentity,
+    connections,
+    guestConnections,
+  ]);
 
   const cancelEndConnection = () => setPendingConnectionEnd(null);
 
