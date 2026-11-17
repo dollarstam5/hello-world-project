@@ -31,6 +31,21 @@ Le nom d'affichage disponible (qui peut être un prénom ou un nom choisi) est u
 
 Le nom d'affichage doit déjà être disponible dans un contexte autorisé ; ne pas extraire arbitrairement un prénom d'un nom complet. Aucune lecture réseau supplémentaire ne doit être déclenchée uniquement pour le récupérer.
 
+## 2 bis. Posture évolutive selon la maturité de la communauté
+
+La communication de Vitalis adapte son niveau d'accompagnement à la taille réelle de sa communauté. Le ton évolue, mais la personnalité reste humaine, respectueuse et utile. Le volume de suggestions n'autorise jamais à fabriquer des notifications ou à pousser artificiellement l'engagement.
+
+| Taille de communauté | Posture | Comportement attendu |
+|---|---|---|
+| 0 à 500 comptes inscrits | Conversationnelle et proche | Accueil chaleureux, explications courtes, nombreuses suggestions de découverte, accompagnement des premières actions et propositions concrètes pour apprendre les moteurs. |
+| 501 à 5 000 comptes inscrits | Accompagnement guidé | Suggestions encore présentes, mais mieux ciblées selon l'écran, l'action en cours et les capacités réellement disponibles ; réduire les explications déjà assimilées. |
+| 5 001 à 9 999 comptes inscrits | Discrète mais présente | Diminuer les interventions spontanées ; privilégier les conseils opportuns, les aides déclenchées par le contexte et les informations réellement utiles. |
+| À partir de 10 000 comptes inscrits | Professionnelle et intelligente | Suggestions plus précises et contextuelles, accompagnement concis, anticipation uniquement à partir de signaux autorisés et fiables ; priorité à la pertinence plutôt qu'à la quantité. |
+
+**Définition opérationnelle du seuil :** nombre agrégé de comptes Vitalis inscrits, hors sessions invitées et comptes de test. Ce nombre doit provenir d'une source agrégée fiable déjà disponible ; le système de communication ne lance aucune requête supplémentaire pour le calculer. Si le nombre n'est pas disponible, la posture de lancement est utilisée par défaut, sans prétendre connaître la taille réelle de la communauté.
+
+La transition est automatique et déterministe. Les seuils ne modifient ni les droits, ni les notifications métier, ni les préférences personnelles. Ils ne font qu'ajuster la fréquence, le degré d'explication et le style des suggestions. Une suggestion n'est affichée que si la fonctionnalité existe réellement, si ses conditions sont réunies et si elle apporte une aide concrète. L'utilisateur peut toujours ignorer ou désactiver les communications facultatives.
+
 ## 3. Contextes autorisés
 
 Le système peut exploiter uniquement les signaux nécessaires et déjà disponibles : heure locale et fuseau, langue active, nom d'affichage disponible, mode invité ou compte, écran/moteur actif, état réel d'une action et préférences explicitement enregistrées.
@@ -120,7 +135,7 @@ Distinguer strictement les états : proposé, en cours, enregistré localement, 
 | Salutations temporelles | Règles locales configurables | Préférences horaires facultatives | Adaptation plus fine et contrôlée |
 | Prénom | Occasionnel, déjà disponible | Préférences personnalisables | Usage conversationnel contrôlé |
 | Contexte | Heure, langue, mode, écran, état métier | Préférences et contexte autorisés plus riches | Contexte conversationnel autorisé |
-| Suggestions | Règles simples et données réelles | Plus personnalisées | Dialoguées et coordonnées |
+| Suggestions | Règles simples, données réelles et posture de lancement adaptée à la taille agrégée de la communauté | Plus personnalisées et moins fréquentes à mesure que la communauté grandit | Dialoguées, coordonnées et plus précises, selon autorisations |
 | Dialogue | Boîtes courtes à choix prédéfinis | Compréhension naturelle facultative | Conversation approfondie facultative |
 | Génération IA | Aucune pour les communications standard | Optionnelle, désactivable et budgétée | Assistant optionnel, gouvernance renforcée |
 | Voix | Aucune génération conversationnelle | Expérimentation ciblée si budget validé | Interaction vocale facultative |
@@ -134,6 +149,8 @@ Le passage à une version future n'autorise pas automatiquement l'activation d'u
 - [ ] Point d'entrée central pour les messages prédéfinis et expressions communes.
 - [ ] Textes visibles issus du catalogue i18n, pas de chaînes improvisées dans les composants.
 - [ ] Sélection déterministe, testable et indépendante d'un fournisseur IA.
+- [ ] Posture de communication adaptée aux seuils de communauté, avec repli sûr si le compteur agrégé est indisponible.
+- [ ] Les suggestions du lancement aident réellement à découvrir les fonctions existantes sans simuler d'activité.
 - [ ] Langue, heure locale, mode et contexte métier avec fallbacks.
 - [ ] Prénom occasionnel, sans lecture réseau supplémentaire.
 - [ ] Frontières invité/membre respectées.
