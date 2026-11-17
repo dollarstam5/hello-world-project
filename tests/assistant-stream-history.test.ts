@@ -82,6 +82,23 @@ describe("streaming de Vita", () => {
     ).rejects.toBeInstanceOf(AssistantStreamError);
   });
 
+  it("transmet le signal d’annulation à la requête réseau", async () => {
+    mockStream(['data: {"type":"response.output_text.delta","delta":"Bonjour"}', 'data: {"type":"response.completed"}']);
+    const controller = new AbortController();
+
+    await streamAssistant(
+      request("00000000-0000-4000-8000-000000000004"),
+      vi.fn(),
+      "token",
+      controller.signal,
+    );
+
+    expect(fetch).toHaveBeenCalledWith(
+      "/api/public/assistant",
+      expect.objectContaining({ signal: controller.signal }),
+    );
+  });
+
   it("accepte le marqueur terminal SSE [DONE]", async () => {
     mockStream(['data: {"type":"response.output_text.delta","delta":"Bonjour"}', "data: [DONE]"]);
 
