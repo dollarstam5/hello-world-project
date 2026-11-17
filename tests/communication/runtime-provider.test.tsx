@@ -16,12 +16,7 @@ describe("communication runtime provider", () => {
     }
 
     renderToString(
-      createElement(
-        CommunicationRuntimeProvider,
-        null,
-        createElement(Probe),
-        createElement(Probe),
-      ),
+      createElement(CommunicationRuntimeProvider, null, createElement(Probe), createElement(Probe)),
     );
 
     expect(runtimes).toHaveLength(2);
