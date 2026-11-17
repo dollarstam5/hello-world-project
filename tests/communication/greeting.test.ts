@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { getHomeGreetingKey } from "@/lib/communication/greeting";
+import {
+  claimNameGreetingForSession,
+  getHomeGreetingKey,
+} from "@/lib/communication/greeting";
 
 describe("getHomeGreetingKey", () => {
   it.each([
@@ -27,5 +30,11 @@ describe("getHomeGreetingKey", () => {
 
   it.each([-1, 24, 1.5, Number.NaN])("uses a neutral fallback for invalid hour %s", (hour) => {
     expect(getHomeGreetingKey(hour)).toBe("home.welcome");
+  });
+
+  it("uses a display name only once per browser tab session", () => {
+    window.sessionStorage.clear();
+    expect(claimNameGreetingForSession()).toBe(true);
+    expect(claimNameGreetingForSession()).toBe(false);
   });
 });
