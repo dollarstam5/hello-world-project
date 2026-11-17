@@ -43,13 +43,7 @@ export function ReelCommunicationBridge() {
         attentionRequired: true,
       });
     });
-  }, [
-    access.loading,
-    access.mode,
-    access.memberId,
-    access.memberProfileState,
-    communication,
-  ]);
+  }, [access.loading, access.mode, access.memberId, access.memberProfileState, communication]);
 
   return null;
 }
