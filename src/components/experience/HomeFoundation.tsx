@@ -89,16 +89,16 @@ export function HomeFoundation() {
   const tier = useIdentity((s) => s.tier);
   const displayName = useIdentity((s) => s.displayName);
   const [localHour, setLocalHour] = useState<number | null>(null);
-  const [useNameInGreeting, setUseNameInGreeting] = useState(false);
+  const [nameGreetingUserId, setNameGreetingUserId] = useState<string | null>(null);
 
   useEffect(() => {
     setLocalHour(new Date().getHours());
   }, []);
 
   useEffect(() => {
-    if (authLoading || !user || !displayName?.trim() || useNameInGreeting) return;
-    setUseNameInGreeting(claimNameGreetingForSession());
-  }, [authLoading, user, displayName, useNameInGreeting]);
+    if (authLoading || !user || !displayName?.trim() || nameGreetingUserId === user.id) return;
+    if (claimNameGreetingForSession()) setNameGreetingUserId(user.id);
+  }, [authLoading, user, displayName, nameGreetingUserId]);
 
   const identityLabel =
     tier === "trusted"
@@ -111,7 +111,9 @@ export function HomeFoundation() {
     ? "home.welcome"
     : getHomeGreetingKey(localHour);
   const greetingName =
-    useNameInGreeting && user && displayName?.trim() ? `, ${displayName.trim()}` : "";
+    user && nameGreetingUserId === user.id && displayName?.trim()
+      ? `, ${displayName.trim()}`
+      : "";
   const greeting = t(greetingKey).replace("{name}", greetingName);
 
   const demoFlashes = createDemoFlashes();
