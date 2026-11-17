@@ -28,13 +28,13 @@ La simplicité prime sur le vocabulaire technique, les effets de style et les fo
 
 ## 3. Usage du prénom
 
-Le prénom doit être utilisé de façon occasionnelle et naturelle, jamais systématiquement. Il peut rendre un accueil, un retour pertinent ou un accompagnement personnel plus chaleureux. Il est généralement inutile dans les libellés, les erreurs techniques et les notifications répétitives.
+Le prénom ou le nom d'affichage choisi doit être utilisé de façon occasionnelle et naturelle, jamais systématiquement. Il peut rendre un accueil, un retour pertinent ou un accompagnement personnel plus chaleureux. Il est généralement inutile dans les libellés, les erreurs techniques et les notifications répétitives.
 
-- Utiliser uniquement un prénom déjà disponible dans un contexte autorisé.
+- Utiliser uniquement le prénom ou le nom d'affichage déjà disponible dans un contexte autorisé, sans déduire un prénom à partir d'un nom complet.
 - Ne déclencher aucune lecture réseau supplémentaire uniquement pour récupérer le prénom.
 - Ne pas répéter le prénom dans plusieurs messages rapprochés.
 - Prévoir une formulation naturelle sans prénom si la donnée est absente.
-- Le prénom est une donnée de présentation, jamais une preuve d'identité ou une base d'autorisation.
+- Le nom utilisé est une donnée de présentation, jamais une preuve d'identité ou une base d'autorisation.
 
 ## 4. Noms des espaces
 
