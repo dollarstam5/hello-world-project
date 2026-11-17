@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import { Languages, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n/useI18n";
@@ -12,18 +12,14 @@ type Mode = "signIn" | "signUp" | "forgot";
 export function SignInView() {
   const { t, locale, setLocale } = useI18n();
   const navigate = useNavigate();
+  const search = useSearch({ from: "/auth" });
   const { mode: themeMode, setMode } = useThemeStore();
   const isDark =
     themeMode === "dark" ||
     (themeMode === "system" &&
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-color-scheme: dark)").matches);
-  const [mode, setAuthMode] = useState<Mode>(() =>
-    typeof window !== "undefined" &&
-    new URLSearchParams(window.location.search).get("mode") === "signUp"
-      ? "signUp"
-      : "signIn",
-  );
+  const [mode, setAuthMode] = useState<Mode>(search.mode === "signUp" ? "signUp" : "signIn");
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
