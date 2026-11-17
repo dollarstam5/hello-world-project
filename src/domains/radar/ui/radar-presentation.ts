@@ -23,4 +23,3 @@ export const statusTones: Record<
   expired: "neutral",
   cancelled: "neutral",
 };
-
