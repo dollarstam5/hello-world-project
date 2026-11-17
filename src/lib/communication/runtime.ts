@@ -38,12 +38,19 @@ export function createCommunicationRuntime() {
     requests: readonly CommunicationRequest[],
     maxItems = Number.POSITIVE_INFINITY,
   ): CommunicationDispatchResult {
-    return prepareCommunicationMessages(
+    const eligible = requests.filter((request) => !request.requiresContext || context?.ready === true);
+    const contextSuppressed = requests.filter((request) => request.requiresContext && context?.ready !== true);
+    const prepared = prepareCommunicationMessages(
       translate,
-      requests,
+      eligible,
       deliverySession.getGateState(),
       maxItems,
     );
+
+    return {
+      ...prepared,
+      suppressed: [...contextSuppressed, ...prepared.suppressed],
+    };
   }
 
   function markPresented(messages: readonly ResolvedCommunicationMessage[]) {
