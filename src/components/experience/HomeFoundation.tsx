@@ -111,14 +111,7 @@ export function HomeFoundation() {
     }
     if (!displayName?.trim() || nameGreetingUserId === user.id) return;
     if (claimNameGreetingForSession()) setNameGreetingUserId(user.id);
-  }, [
-    authLoading,
-    user,
-    displayName,
-    nameGreetingUserId,
-    identityOwnerUserId,
-    setDisplayName,
-  ]);
+  }, [authLoading, user, displayName, nameGreetingUserId, identityOwnerUserId, setDisplayName]);
 
   // Authentication is the source of truth for member/guest recognition.
   // UDI trust levels are not inferred from the local identity placeholder.
