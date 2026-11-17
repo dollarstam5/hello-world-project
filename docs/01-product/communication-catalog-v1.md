@@ -15,7 +15,7 @@ Une variable absente déclenche une variante sans variable, jamais un texte inco
 |---|---|---|---|
 | welcome.first | Première ouverture | Bonjour ! Bienvenue chez Vitalis. | Hello! Welcome to Vitalis. |
 | welcome.guest | Accueil invité | Bonjour ! Vous pouvez découvrir Vitalis tranquillement. | Hello! Take your time exploring Vitalis. |
-| welcome.member | Prénom déjà disponible | Bonjour, {displayName}. Heureux de vous retrouver. | Hello, {displayName}. Good to see you again. |
+| welcome.member | Nom d'affichage déjà disponible | Bonjour, {displayName}. Heureux de vous retrouver. | Hello, {displayName}. Good to see you again. |
 | welcome.neutral | Accueil sans prénom | Bonjour ! Que souhaitez-vous faire aujourd'hui ? | Hello! What would you like to do today? |
 | return.recent | Retour pertinent | Ravi de vous retrouver. On reprend quand vous voulez. | Good to see you again. Pick up whenever you're ready. |
 | return.long | Durée écoulée réellement connue | Heureux de vous retrouver. Voici où reprendre. | Good to see you again. Here's where you can pick up. |
