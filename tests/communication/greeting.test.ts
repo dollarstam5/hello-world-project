@@ -35,8 +35,7 @@ describe("getHomeGreetingKey", () => {
   });
 
   it("formats catalog variables and removes missing placeholders", () => {
-    const translate = (key: MessageKey) =>
-      key === "home.welcome" ? "Welcome{name}!" : key;
+    const translate = (key: MessageKey) => (key === "home.welcome" ? "Welcome{name}!" : key);
 
     expect(formatCommunicationMessage(translate, "home.welcome", { name: ", Ada" })).toBe(
       "Welcome, Ada!",
