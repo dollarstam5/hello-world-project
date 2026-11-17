@@ -4,6 +4,25 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { CommunicationSheet } from "@/components/experience/CommunicationSheet";
 
 const assistantPreference = vi.hoisted(() => ({ enabled: false }));
+const communicationState = vi.hoisted(() => ({
+  events: [] as Array<{
+    id: string;
+    source: "flash" | "radar";
+    titleKey: string;
+    messageKey: string;
+    href: "/flash" | "/radar";
+    createdAt: number;
+    readAt: number | null;
+  }>,
+  markEventRead: vi.fn(),
+}));
+
+vi.mock("@/lib/communication/CommunicationRuntimeProvider", () => ({
+  useCommunicationRuntime: () => ({
+    getEvents: () => communicationState.events,
+    markEventRead: communicationState.markEventRead,
+  }),
+}));
 
 vi.mock("@/lib/app/assistant-preferences", () => ({
   useAssistantPreferences: (selector: (state: { enabled: boolean }) => unknown) =>
@@ -25,6 +44,8 @@ vi.mock("@/lib/i18n/useI18n", () => ({
 describe("CommunicationSheet", () => {
   beforeEach(() => {
     assistantPreference.enabled = false;
+    communicationState.events = [];
+    communicationState.markEventRead.mockClear();
   });
 
   it("hides the assistant space while the assistant is disabled", () => {
@@ -52,6 +73,28 @@ describe("CommunicationSheet", () => {
     expect(notifications).toBeLessThan(assistant);
     expect(assistant).toBeLessThan(messages);
     expect(messages).toBeLessThan(reel);
+  });
+
+  it("renders only published business events in Notifications", () => {
+    communicationState.events = [
+      {
+        id: "radar:record-1:saved",
+        source: "radar",
+        titleKey: "communication.event.radar.title",
+        messageKey: "communication.event.radar.saved",
+        href: "/radar",
+        createdAt: 100,
+        readAt: null,
+      },
+    ];
+    const markup = renderToStaticMarkup(
+      <CommunicationSheet open onOpenChange={() => undefined} />,
+    );
+
+    expect(markup).toContain("communication.event.radar.title");
+    expect(markup).toContain("communication.event.radar.saved");
+    expect(markup).toContain('href="/radar"');
+    expect(markup).toContain("communication.events.markRead");
   });
 
   it("keeps communication spaces associated with tab panels", () => {
