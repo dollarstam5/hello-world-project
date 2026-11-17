@@ -405,3 +405,14 @@ Réel dispose de bips et relations réellement issus de services/RPC/Realtime po
 
 
 Les consommateurs du runtime sont réactifs aux changements du contexte : les messages préparés pendant une hydratation incomplète peuvent être réévalués lorsque les sources sont disponibles. Les notices Assistant déclarent explicitement leur dépendance à l'opt-in ; elles ne sont pas affichées avant confirmation de l'activation.
+
+
+### Mise à jour — première projection Réel partagée
+
+Une première projection agrégée est désormais partagée entre le moteur Réel et l'onglet En direct du centre de communication. Elle expose uniquement les nombres de bips en attente et de mises en relation actives, ainsi que leur état de chargement. Les détails et identifiants opérationnels restent dans le moteur.
+
+Cette tranche réutilise les lectures, abonnements Realtime membres et le polling invité déjà détenus par le contrôleur Réel. Le centre ne lance ni lecture RPC, ni abonnement, ni polling supplémentaire. Les données invitées ne transmettent aucun identifiant temporaire à la projection globale. Les agrégats sont effacés lors d'un changement de mode ou d'identité.
+
+**Limite connue et explicitement assumée :** le centre affiche le dernier résumé effectivement chargé par le moteur. Si le moteur n'a pas chargé l'activité dans la session courante, le centre conserve son état vide ; il ne déclenche pas une lecture autonome. Le déplacement futur de la propriété des abonnements vers un service applicatif partagé n'est pas inclus dans cette tranche et devra être évalué séparément, sans duplication de trafic.
+
+Cette projection est informative uniquement : elle ne crée pas de notifications, ne remplace pas les décisions métier Réel et ne rend pas les actions de bip ou de relation accessibles depuis le centre.
