@@ -95,7 +95,7 @@ export function useHybridAssistant(): HybridAssistantState {
 
   const send = useCallback(
     async (raw: string) => {
-      const question = raw.trim().slice(0, 1200);
+      const question = raw.trim().slice(0, 600);
       if (!question || busy.current) return;
       busy.current = true;
       setFailure(null);
@@ -139,9 +139,10 @@ export function useHybridAssistant(): HybridAssistantState {
       try {
         await streamAssistant(
           {
+            requestId: crypto.randomUUID(),
             locale: language,
             route,
-            messages: history.slice(-10).map(({ role, content }) => ({ role, content })),
+            messages: history.slice(-8).map(({ role, content }) => ({ role, content })),
           },
           (text) => {
             setPending(false);
