@@ -204,7 +204,9 @@ export function HomeFoundation() {
                   <Link to="/reel">{t("home.journey.guest.live")}</Link>
                 </Button>
                 <Button asChild variant="outline" className="min-h-11">
-                  <Link to="/auth">{t("home.journey.guest.signup")}</Link>
+                  <Link to="/auth" search={{ mode: "signUp" }}>
+                    {t("home.journey.guest.signup")}
+                  </Link>
                 </Button>
               </>
             )}
