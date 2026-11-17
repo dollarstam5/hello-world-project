@@ -41,6 +41,7 @@ import { useI18n } from "@/lib/i18n/useI18n";
 import { getMyProfileAvatarUrl } from "@/domains/profile/api/profile-avatar.client";
 import { evaluateReelAccess } from "@/domains/presence/policy/reel-access-policy";
 import { subscribeToReelMemberActivity } from "@/domains/presence/services/reel-activity-realtime.service";
+import { useReelActivityProjection } from "@/domains/presence/model/reel-activity-projection";
 
 export interface Person {
   id: string;
@@ -458,6 +459,29 @@ export function useReelProximityController() {
       );
     }
   };
+
+  useEffect(() => {
+    const mode =
+      access.mode === "guest" ? "guest" : canUseMemberReel ? "member" : null;
+    if (!mode) return;
+    useReelActivityProjection.getState().publishBips(
+      mode,
+      mode === "guest" ? receivedGuestBips.length : receivedBips.length + receivedGuestBips.length,
+    );
+  }, [access.mode, canUseMemberReel, receivedBips.length, receivedGuestBips.length]);
+
+  useEffect(() => {
+    const mode =
+      access.mode === "guest" ? "guest" : canUseMemberReel ? "member" : null;
+    if (!mode) return;
+    useReelActivityProjection.getState().publishConnections(
+      mode,
+      mode === "guest"
+        ? guestConnections.filter((connection) => connection.status === "active").length
+        : connections.filter((connection) => connection.status === "active").length +
+            guestConnections.filter((connection) => connection.status === "active").length,
+    );
+  }, [access.mode, canUseMemberReel, connections, guestConnections]);
 
   const cancelEndConnection = () => setPendingConnectionEnd(null);
 
