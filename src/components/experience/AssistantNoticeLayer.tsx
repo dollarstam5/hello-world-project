@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
 import { useAssistantNotices } from "@/lib/app/assistant-notices";
 import { useI18n } from "@/lib/i18n/useI18n";
+import { formatCommunicationMessage } from "@/lib/communication/format";
 
 /** Appears only while an explicitly published assistant message is available. */
 export function AssistantNoticeLayer() {
@@ -30,7 +31,7 @@ export function AssistantNoticeLayer() {
         aria-live="polite"
         className="pointer-events-auto flex w-full max-w-md items-start gap-3 rounded-2xl border border-border bg-background/95 px-4 py-3 text-sm text-foreground shadow-xl backdrop-blur"
       >
-        <p className="min-w-0 flex-1 leading-relaxed">{t(notice.message)}</p>
+        <p className="min-w-0 flex-1 leading-relaxed">{formatCommunicationMessage(t, notice.message)}</p>
         <Button
           type="button"
           variant="ghost"
