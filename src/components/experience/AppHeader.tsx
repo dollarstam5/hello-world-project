@@ -13,7 +13,7 @@ export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => 
   const { user } = useAuth();
   const displayName = useIdentity((state) => state.displayName);
   const displayNameOwnerId = useIdentity((state) => state.displayNameOwnerId);
-  const visibleDisplayName = displayNameOwnerId === user?.id ? displayName : undefined;
+  const visibleDisplayName = user && displayNameOwnerId === user.id ? displayName : undefined;
   const avatarInitials = visibleDisplayName
     ?.trim()
     .split(/\s+/)
