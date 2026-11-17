@@ -42,7 +42,13 @@ export function subscribeToReelMemberActivity(
     ) {
       return;
     }
-    onActivity(event);
+    // Rebuild a minimal envelope so unexpected provider fields (including any
+    // guest/session metadata) can never cross the application boundary.
+    onActivity({
+      kind: event.kind,
+      event_id: event.event_id,
+      created_at: event.created_at,
+    });
   });
 
   let hasConnected = false;
