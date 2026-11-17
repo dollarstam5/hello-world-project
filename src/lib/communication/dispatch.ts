@@ -18,6 +18,8 @@ export interface CommunicationRequest extends CommunicationCandidate {
   /** Intended presentation surface; this does not create or persist the event. */
   surface: CommunicationSurface;
   variables?: CommunicationVariables;
+  /** True only when the request must not be prepared without a ready context. */
+  requiresContext?: boolean;
 }
 
 export interface ResolvedCommunicationMessage {
