@@ -14,7 +14,7 @@ Chaque moteur possède son propre périmètre, son action centrale, ses commande
 | --- | --- | --- | --- |
 | **En direct** (anciennement En direct) | [reel/](./reel/) | `src/domains/presence/` | Profil et présence de l'utilisateur au centre de l'expérience |
 | **Flash** | [flash/](./flash/) | `src/domains/flash/` | Démarrer un Flash |
-| **Scan** | [scan/](./scan/) | `src/domains/scan/` | Démarrer le scanner des possibilités |
+| **Scan** | [scan/](./scan/) | `src/domains/scan/` | Explorer l'environnement et ses possibilités |
 | **Radar** | [radar/](./radar/) | `src/domains/radar/` | Démarrer une mission de recherche d'opportunités |
 
 ### Dossiers de cadrage
