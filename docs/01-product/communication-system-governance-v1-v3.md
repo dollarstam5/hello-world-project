@@ -337,3 +337,37 @@ Toute décision doit être ajoutée à la spécification, au catalogue et aux te
 - [Centre de communication](./communication-center-v1.md)
 - [Architecture du système](../02-architecture/communication-system-architecture.md)
 - [Architecture IA et intégrations](../02-architecture/ai-architecture-integrations.md)
+
+## 24. Ligne directrice obligatoire : rapide, pertinente et fluide
+
+La rapidité, l'intelligence contextuelle et la fluidité sont trois critères obligatoires d'acceptation pour **chaque évolution** du système de communication Vitalis, quelle que soit la version (V1, V2 ou V3) ou le point de contact concerné.
+
+### 1. Rapide
+- Répondre sans délai perceptible aux gestes de l'utilisateur lorsque l'application connaît déjà le résultat local.
+- Ne pas faire attendre l'affichage ou la navigation pour préparer un message non essentiel.
+- Réutiliser le contexte déjà chargé et privilégier les règles locales ; aucun appel réseau dédié à une salutation ou à une suggestion de routine.
+- Tester mobile/PWA et réseau faible. Définir des objectifs de latence mesurables avant chaque évolution et joindre les résultats des tests.
+
+### 2. Intelligent et contextuel
+- S'adresser à la bonne personne (invité ou membre), au bon endroit, au bon moment et à propos d'une action ou d'une fonctionnalité réellement disponible.
+- Utiliser uniquement des informations dont la source est connue, actuelle et autorisée.
+- Adapter l'explication au contexte sans inférer de données sensibles ni attribuer un niveau de confiance non établi.
+- Si une information manque ou si une fonctionnalité n'est pas raccordée, rester neutre ou ne rien afficher.
+- Ne jamais fabriquer une notification, un compteur, un résultat, une progression, une disponibilité, une relation ou une promesse.
+
+### 3. Fluide
+- Garder des messages courts, naturels, cohérents avec le ton humain de Vitalis et adaptés à l'étape du parcours.
+- Éviter répétitions, sollicitations simultanées, fenêtres intrusives et changements de contexte inutiles.
+- Ne pas interrompre une action ni masquer les commandes essentielles.
+- Préserver la continuité entre accueil, onboarding, Flash, Scan, En direct, Radar et centre de communication.
+- Réutiliser les catalogues, règles, composants et canaux existants ; aucun système parallèle ne doit être créé pour contourner une limite du système commun.
+
+### Validation avant livraison
+Pour chaque évolution, la revue doit apporter des preuves distinctes :
+- **Rapidité :** mesures de latence/réactivité et tests sur les parcours et appareils ciblés, avec au moins un scénario réseau dégradé pertinent.
+- **Pertinence contextuelle :** tests invité/membre, permissions, états métier réels, contexte absent ou périmé et fonctionnalité indisponible.
+- **Fluidité :** vérification du parcours de bout en bout, de l'espacement et de la déduplication, des interruptions, de l'accessibilité et de la cohérence avec les composants existants.
+
+La documentation de livraison doit préciser les scénarios exécutés, les résultats, les limites et le statut de chaque axe. « Non testé » ou « non mesuré » signifie **non vérifié**, et non « validé ». L'échec d'un seul axe bloque l'acceptation de l'évolution jusqu'à correction ou désactivation explicite.
+
+Cette règle est une exigence de gouvernance à appliquer à la suite du chantier. Elle ne certifie pas rétroactivement le code existant : chaque capacité actuelle devra être évaluée à partir de preuves réelles, sans confondre règle documentée et fonctionnalité implémentée.
