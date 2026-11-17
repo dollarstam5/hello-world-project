@@ -14,7 +14,7 @@ import { useI18n } from "@/lib/i18n/useI18n";
 import { useNetworkStatus } from "@/lib/platform/useNetworkStatus";
 import { useAuth } from "@/domains/auth";
 import { searchLocalKnowledge } from "../services/localSearch.service";
-import { AssistantStreamError, streamAssistant } from "../services/assistant-stream.service";
+import { AssistantStreamError, buildAssistantRequestMessages, streamAssistant } from "../services/assistant-stream.service";
 
 const LEGACY_STORAGE_KEY = "eco.assistant.conversation.v1";
 const STORAGE_KEY_PREFIX = "eco.assistant.conversation.v2";
@@ -142,7 +142,7 @@ export function useHybridAssistant(): HybridAssistantState {
             requestId: crypto.randomUUID(),
             locale: language,
             route,
-            messages: history.slice(-8).map(({ role, content }) => ({ role, content })),
+            messages: buildAssistantRequestMessages(history),
           },
           (text) => {
             setPending(false);
