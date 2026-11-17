@@ -1100,7 +1100,8 @@ export const messages = {
     "home.engines.desc": "Choose a space. You can move between them whenever you like.",
     "home.engine.flash.title": "Flash",
     "home.engine.exampleLabel": "Example",
-    "home.engine.flash.desc": "Prepare a need or an offer, save your draft and discover available public Flashes.",
+    "home.engine.flash.desc":
+      "Prepare a need or an offer, save your draft and discover available public Flashes.",
     "home.engine.flash.example": "Offer to prepare a meal for a gathering.",
     "home.engine.scan.title": "Scan",
     "home.engine.scan.desc": "Find active Flash posts in the area you choose.",
@@ -1143,9 +1144,11 @@ export const messages = {
     "onboarding.discovery.body":
       "Two engines to share what's happening and find what you're looking for.",
     "onboarding.flash.title": "Flash",
-    "onboarding.flash.body": "Prepare a need or an offer, save your draft and discover available public Flashes.",
+    "onboarding.flash.body":
+      "Prepare a need or an offer, save your draft and discover available public Flashes.",
     "onboarding.scan.title": "Scan",
-    "onboarding.scan.body": "Choose when to search public Flashes in an area. Your precise GPS location is not displayed.",
+    "onboarding.scan.body":
+      "Choose when to search public Flashes in an area. Your precise GPS location is not displayed.",
     "onboarding.connection.title": "Get closer to what matters",
     "onboarding.connection.body":
       "Spot possibilities nearby and connect when the moment feels right.",
@@ -1156,7 +1159,8 @@ export const messages = {
     "onboarding.reel.body":
       "Choose to share your presence and discover people nearby. You can start as a guest.",
     "onboarding.radar.title": "Radar",
-    "onboarding.radar.body": "Save a private search and find it in your space. Automatic matching is not available yet.",
+    "onboarding.radar.body":
+      "Save a private search and find it in your space. Automatic matching is not available yet.",
     "onboarding.ready.title": "Ready to take your first step?",
     "onboarding.ready.body":
       "Choose a first space and get comfortable. You can explore the others whenever you need them.",
