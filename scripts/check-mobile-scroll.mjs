@@ -109,17 +109,22 @@ try {
   await send("Emulation.setEmulatedMedia", {
     features: [{ name: "prefers-reduced-motion", value: "reduce" }],
   });
+  // Explicitly navigate away from the initial about:blank target before
+  // touching origin-scoped storage. A complete about:blank document has an
+  // opaque origin and Chromium correctly denies localStorage access.
+  await send("Page.navigate", { url: baseUrl });
+  const expectedOrigin = new URL(baseUrl).origin;
   let originReady = false;
   for (let attempt = 0; attempt < 80; attempt++) {
-    const state = await evaluate("document.readyState");
-    if (state === "complete") {
+    const state = await evaluate("({ ready: document.readyState, origin: location.origin })");
+    if (state?.ready === "complete" && state.origin === expectedOrigin) {
       originReady = true;
       break;
     }
     await Bun.sleep(250);
   }
   if (!originReady) {
-    throw new Error("Initial production page did not finish loading");
+    throw new Error(`Initial production page did not become ready at origin ${expectedOrigin}`);
   }
   await evaluate('localStorage.setItem("vitalis.onboarding.v2", "1")');
 
