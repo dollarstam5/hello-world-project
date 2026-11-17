@@ -75,7 +75,7 @@ SELECT ok(
        'fail_assistant_request',
        'record_ai_cache_candidate'
      )
-     AND COALESCE(array_to_string(p.proconfig, ','), '') LIKE '%search_path=pg_catalog, public%'),
+     AND COALESCE(array_to_string(p.proconfig, ','), '') LIKE '%search_path=""%'),
   'all assistant RPCs pin a safe search_path'
 );
 SELECT ok(
