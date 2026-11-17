@@ -338,3 +338,23 @@ Une évolution n'est acceptée que si les trois axes sont vérifiés séparémen
 3. **Fluidité :** contrôle du parcours complet, de la fréquence, des doublons, de l'accessibilité et de la réutilisation des composants existants.
 
 Le dossier de chaque évolution doit indiquer les scénarios testés, les résultats observés, les limites restantes et le statut réel de chaque critère. Un critère non mesuré ou non testé est **non vérifié**, jamais réputé satisfait. Si l'un des trois axes échoue, l'évolution n'est pas terminée et doit être corrigée ou explicitement désactivée. Ces critères ne signifient pas que toutes les parties du système actuel les satisfont déjà.
+
+
+## 24. Context Resolver — première tranche implémentée
+
+Le module `src/lib/communication/context.ts` expose `resolveCommunicationContext()`. Il construit un instantané minimal à partir d'informations que l'application lui transmet explicitement ; il ne lit pas Auth, ne demande aucune permission, ne consulte aucun profil et n'effectue aucune requête.
+
+Le contexte typé contient uniquement :
+- l'état d'identité `loading`, `guest` ou `member` fourni par une source Auth déjà résolue ;
+- le chemin de route, nettoyé des paramètres et fragments ;
+- la langue active ;
+- l'état d'activation de l'assistant, ou `null` si les préférences ne sont pas hydratées ;
+- les états distincts des permissions de découverte et de présence (`unknown`, `granted`, `denied`, `not-required`).
+
+Le champ `ready` reste faux tant que l'identité, la route, la langue ou la préférence assistant ne sont pas disponibles. Une session Auth en chargement n'est jamais requalifiée en invité. Une permission inconnue n'est jamais interprétée comme accordée. Les paramètres d'URL, identifiants de compte/session, coordonnées et contenus personnels ne font pas partie du contrat.
+
+`createCommunicationRuntime()` expose maintenant `updateContext()` et `getContext()`. Le runtime conserve uniquement le dernier instantané en mémoire et `resetSession()` efface à la fois cet instantané et l'état de déduplication de livraison. Le contexte ne déclenche pas encore de suggestion et ne modifie pas automatiquement les demandes : les futurs adaptateurs devront le consulter et vérifier leurs préconditions avant de soumettre un message.
+
+**Limite explicite :** ce premier raccordement établit le contrat et son cycle de vie, mais le fournisseur applicatif n'alimente pas encore automatiquement le contexte depuis Auth, i18n, route et préférences. Tant que ces sources ne sont pas reliées et testées ensemble, aucun composant ne doit traiter le contexte comme prêt par défaut.
+
+Tests ajoutés : normalisation route/langue, distinction invité/membre/en chargement, séparation des permissions Réel, refus des chemins protocol-relative, absence de données identifiantes et reset du contexte dans le runtime.
