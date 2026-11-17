@@ -98,3 +98,10 @@ Le ton est humain, accueillant, direct et sans jargon. Chaque moteur et chaque e
 - [ ] Parcours utilisable en français et en anglais.
 - [ ] Navigation, progression et persistance testées.
 - [ ] Aucun écran ne force la création d'un compte.
+- [ ] La dernière étape adapte son explication à une session invitée ou membre réellement reconnue.
+- [ ] La page d'accueil distingue l'invité du membre à partir de la session Auth.
+- [ ] L'invité voit le chemin En direct sans compte et une proposition facultative de création de compte.
+- [ ] Le membre voit un accès à son profil sans recevoir de relance d'inscription.
+- [ ] L'inscription demande un nom affiché, un e-mail et un mot de passe ; le nom est transmis au profil par les métadonnées Auth.
+- [ ] Une inscription en attente de confirmation e-mail n'est jamais présentée comme une session membre active.
+- [ ] Les textes d'accueil et de découverte décrivent uniquement les capacités V1 réellement disponibles.
