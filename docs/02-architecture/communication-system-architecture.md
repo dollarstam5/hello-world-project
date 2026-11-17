@@ -169,6 +169,16 @@ Le contrat d'appelant exige un identifiant d'événement stable provenant du dom
 
 Aucun délai de fréquence n'est imposé : la déduplication est déterministe et fondée sur les identifiants fournis. La conservation de l'état « déjà livré » est assurée par delivery-session.ts uniquement après que le composant appelant confirme la présentation. La mémoire est limitée à la session courante et disparaît à sa recréation ; aucun stockage serveur ni appel réseau n'est ajouté.
 
+### Parcours d'accueil et reconnaissance de l'identité
+
+- `HomeFoundation` reçoit la session depuis `useAuth`. L'état Auth est la source de vérité pour le libellé Invité/Membre ; le store local `useIdentity` ne doit pas, à lui seul, attribuer un statut de compte ou de confiance.
+- La page d'accueil propose au visiteur un accès au mode invité En direct et un accès à la création de compte. Le membre reconnu reçoit un accès à son profil et une explication courte de ce que son compte lui permet de gérer.
+- `OnboardingSheet` adapte sa dernière explication au statut de session, sans devenir un formulaire d'inscription.
+- L'inscription courte transmet le nom affiché dans les métadonnées Auth. Le déclencheur `handle_new_user` existant crée le profil avec cette valeur. Ce nom reste déclaratif et ne change pas le niveau UDI.
+- L'inscription sans session (par exemple en attente de confirmation e-mail) doit rester présentée comme une confirmation en attente, pas comme une connexion réussie.
+- Les niveaux UDI supérieurs ne sont pas inférés du fait d'être connecté. Ils exigent une lecture fiable de la source UDI ; le présent raccordement ne prétend pas encore fournir cette lecture.
+- Les suggestions d'accueil n'utilisent aucun compteur de progression non disponible. Les événements de première utilisation et les signaux de maturité ne doivent être raccordés qu'à partir de sources métier réelles.
+
 ### État réel des moteurs Réel et Radar — inventaire complémentaire
 
 L'inspection du HEAD `a813f026` confirme des producteurs et rendus métier propres aux moteurs, mais pas leur raccordement au pipeline partagé de communication ni au centre global.
