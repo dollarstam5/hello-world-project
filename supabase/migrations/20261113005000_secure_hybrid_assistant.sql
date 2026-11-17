@@ -90,7 +90,8 @@ DECLARE
   v_minute_count INTEGER;
   v_day_count INTEGER;
 BEGIN
-  IF v_user IS NULL OR p_request_id IS NULL OR p_locale NOT IN ('fr', 'en') THEN
+  IF v_user IS NULL OR p_request_id IS NULL OR p_locale IS NULL OR p_locale IS NULL
+     OR p_locale NOT IN ('fr', 'en') THEN
     RETURN jsonb_build_object('decision', 'denied');
   END IF;
 
