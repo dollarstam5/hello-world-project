@@ -50,7 +50,7 @@ describe("En direct architecture boundaries", () => {
   });
 
   it("mounts one app-scoped bridge and forwards only server-authored member events", () => {
-    expect(appShellSource.match(/<ReelCommunicationBridge \/>/g)?.length).toBe(2);
+    expect(appShellSource.match(/<ReelCommunicationBridge \/>/g)?.length).toBe(1);
     expect(communicationBridgeSource).toContain("subscribeToReelMemberActivity");
     expect(communicationBridgeSource).toContain("communication.publishEvent");
     expect(communicationBridgeSource).toContain('source: "reel"');
