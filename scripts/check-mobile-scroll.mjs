@@ -44,10 +44,7 @@ try {
     throw new Error("Chromium DevTools endpoint did not become ready");
   }
 
-  const targetResponse = await fetch(
-    `http://127.0.0.1:${port}/json/new?${baseUrl}`,
-    { method: "PUT" },
-  );
+  const targetResponse = await fetch(`http://127.0.0.1:${port}/json/new?${baseUrl}`, { method: "PUT" });
   if (!targetResponse.ok) {
     throw new Error(`Could not create Chromium page target: ${targetResponse.status}`);
   }
