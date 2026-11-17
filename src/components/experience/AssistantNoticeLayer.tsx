@@ -20,7 +20,13 @@ export function AssistantNoticeLayer() {
   const prepared = useMemo(() => {
     if (!enabled || !notice) return null;
     return runtime.prepare(translateRef.current, [
-      { key: notice.message, priority: "normal", repeatKey: `assistant-notice:${notice.id}` },
+      {
+        key: notice.message,
+        source: "assistant",
+        surface: "notice",
+        priority: "normal",
+        repeatKey: `assistant-notice:${notice.id}`,
+      },
     ]);
   }, [enabled, notice, runtime]);
 
