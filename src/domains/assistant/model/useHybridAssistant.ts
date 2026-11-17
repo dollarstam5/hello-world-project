@@ -63,8 +63,14 @@ export function useHybridAssistant(): HybridAssistantState {
   const [streaming, setStreaming] = useState(false);
   const [failure, setFailure] = useState<AssistantFailure | "offline" | null>(null);
   const busy = useRef(false);
+  const activeRequest = useRef<AbortController | null>(null);
 
   useEffect(() => {
+    activeRequest.current?.abort();
+    activeRequest.current = null;
+    busy.current = false;
+    setPending(false);
+    setStreaming(false);
     setMessages([]);
     try {
       localStorage.removeItem(LEGACY_STORAGE_KEY);
@@ -74,6 +80,10 @@ export function useHybridAssistant(): HybridAssistantState {
     } catch {
       /* ignore corrupt storage */
     }
+    return () => {
+      activeRequest.current?.abort();
+      activeRequest.current = null;
+    };
   }, [storageKey]);
 
   useEffect(() => {
@@ -140,6 +150,8 @@ export function useHybridAssistant(): HybridAssistantState {
 
       setPending(true);
       const answerId = crypto.randomUUID();
+      const controller = new AbortController();
+      activeRequest.current = controller;
       try {
         await streamAssistant(
           {
@@ -159,6 +171,7 @@ export function useHybridAssistant(): HybridAssistantState {
             });
           },
           token,
+          controller.signal,
         );
         setMessages((c) => {
           persist(storageKey, c);
@@ -170,10 +183,13 @@ export function useHybridAssistant(): HybridAssistantState {
           persist(storageKey, next);
           return next;
         });
-        setFailure(error instanceof AssistantStreamError ? error.reason : "provider_error");
+        if (!controller.signal.aborted) {
+          setFailure(error instanceof AssistantStreamError ? error.reason : "provider_error");
+        }
       } finally {
         setPending(false);
         setStreaming(false);
+        if (activeRequest.current === controller) activeRequest.current = null;
         busy.current = false;
       }
     },
@@ -181,6 +197,11 @@ export function useHybridAssistant(): HybridAssistantState {
   );
 
   const reset = useCallback(() => {
+    activeRequest.current?.abort();
+    activeRequest.current = null;
+    busy.current = false;
+    setPending(false);
+    setStreaming(false);
     update(() => []);
     setFailure(null);
   }, [update]);
