@@ -24,6 +24,7 @@ export function AssistantNoticeLayer() {
         surface: "notice",
         priority: "normal",
         repeatKey: `assistant-notice:${notice.id}`,
+        requiresAssistant: true,
       },
     ]);
   }, [enabled, notice, runtime]);
