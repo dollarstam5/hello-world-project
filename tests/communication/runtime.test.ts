@@ -10,8 +10,8 @@ describe("communication runtime", () => {
     const request = [
       {
         key: "common.error",
-        source: "assistant",
-        surface: "notice",
+        source: "assistant" as const,
+        surface: "notice" as const,
         priority: "high" as const,
         repeatKey: "flash-save-error",
       },
@@ -28,8 +28,8 @@ describe("communication runtime", () => {
     const request = [
       {
         key: "common.retry",
-        source: "assistant",
-        surface: "notice",
+        source: "assistant" as const,
+        surface: "notice" as const,
         priority: "normal" as const,
         repeatKey: "identity-session",
       },
@@ -50,8 +50,8 @@ describe("communication runtime", () => {
     const request = [
       {
         key: "common.retry",
-        source: "assistant",
-        surface: "notice",
+        source: "assistant" as const,
+        surface: "notice" as const,
         priority: "normal" as const,
         repeatKey: "retry-action",
       },
