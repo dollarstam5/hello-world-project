@@ -183,6 +183,7 @@ Les textes définitifs, les plages horaires, la fréquence exacte, les événeme
 
 ## Références
 
+- [Gouvernance complète V1 à V3 — règles, limites, exigences et processus de développement](./communication-system-governance-v1-v3.md)
 - [Langage humain et communication Vitalis](./communication-language.md)
 - [Centre de communication — règles produit V1](./communication-center-v1.md)
 - [Catalogue de communication V1](./communication-catalog-v1.md)
