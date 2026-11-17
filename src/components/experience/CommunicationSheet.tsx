@@ -44,7 +44,11 @@ export function CommunicationSheet({
       className="max-h-[92dvh]"
     >
       {!online ? (
-        <p className="mb-3 rounded-xl border border-border bg-muted/50 px-3 py-2 text-sm text-muted-foreground" role="status" aria-live="polite">
+        <p
+          className="mb-3 rounded-xl border border-border bg-muted/50 px-3 py-2 text-sm text-muted-foreground"
+          role="status"
+          aria-live="polite"
+        >
           {t("communication.offline")}
         </p>
       ) : null}
