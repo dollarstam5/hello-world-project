@@ -489,6 +489,7 @@ export function useReelProximityController() {
   };
 
   useEffect(() => {
+    processedReelEvents.current.clear();
     setReceivedBips([]);
     setReceivedGuestBips([]);
     setConnections([]);
