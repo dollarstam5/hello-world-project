@@ -64,6 +64,8 @@ export function useHybridAssistant(): HybridAssistantState {
   const [failure, setFailure] = useState<AssistantFailure | "offline" | null>(null);
   const busy = useRef(false);
   const activeRequest = useRef<AbortController | null>(null);
+  const currentStorageKey = useRef(storageKey);
+  currentStorageKey.current = storageKey;
 
   useEffect(() => {
     activeRequest.current?.abort();
@@ -161,6 +163,7 @@ export function useHybridAssistant(): HybridAssistantState {
             messages: buildAssistantRequestMessages(history),
           },
           (text) => {
+            if (controller.signal.aborted || currentStorageKey.current !== storageKey) return;
             setPending(false);
             setStreaming(true);
             setMessages((c) => {
@@ -173,24 +176,30 @@ export function useHybridAssistant(): HybridAssistantState {
           token,
           controller.signal,
         );
-        setMessages((c) => {
-          persist(storageKey, c);
-          return c;
-        });
+        if (!controller.signal.aborted && currentStorageKey.current === storageKey) {
+          setMessages((c) => {
+            persist(storageKey, c);
+            return c;
+          });
+        }
       } catch (error) {
-        setMessages((current) => {
-          const next = current.filter((message) => message.id !== answerId);
-          persist(storageKey, next);
-          return next;
-        });
-        if (!controller.signal.aborted) {
+        if (currentStorageKey.current === storageKey) {
+          setMessages((current) => {
+            const next = current.filter((message) => message.id !== answerId);
+            persist(storageKey, next);
+            return next;
+          });
+        }
+        if (!controller.signal.aborted && currentStorageKey.current === storageKey) {
           setFailure(error instanceof AssistantStreamError ? error.reason : "provider_error");
         }
       } finally {
-        setPending(false);
-        setStreaming(false);
-        if (activeRequest.current === controller) activeRequest.current = null;
-        busy.current = false;
+        if (activeRequest.current === controller) {
+          activeRequest.current = null;
+          setPending(false);
+          setStreaming(false);
+          busy.current = false;
+        }
       }
     },
     [language, messages, online, promoted, route, storageKey, token, update],
