@@ -381,3 +381,10 @@ La première tranche du Context Resolver est implémentée dans `src/lib/communi
 Le contexte reste explicitement incomplet lorsque l'une des sources obligatoires manque. « Inconnu » n'est jamais équivalent à « autorisé » et « Auth en chargement » n'est jamais équivalent à « invité ». Le runtime expose `updateContext()`, `getContext()` et efface le contexte lors de `resetSession()`.
 
 **Ce qui n'est pas encore fait :** alimentation automatique par le fournisseur applicatif, raccordement des adaptateurs des moteurs, sélection de suggestions et alimentation du centre global. La présence du resolver ne signifie donc pas que les suggestions contextuelles ou les notifications globales sont activées. Les prochains raccordements devront apporter leurs propres preuves de source, de permission, de destination, de fréquence et de tests de bout en bout.
+
+
+### Mise à jour — contexte applicatif alimenté
+
+Le provider partagé reçoit maintenant les sources disponibles depuis `AppShell` : état Auth, route courante, langue i18n et préférence Assistant après hydratation. Le runtime est réinitialisé quand la session d'identité change ; la clé de comparaison n'est pas conservée dans le contexte de communication.
+
+Les permissions de découverte et de présence restent à `unknown` tant que leurs sources autorisées ne sont pas raccordées. Le Context Resolver est donc utilisable pour distinguer les contextes déjà connus, mais ne doit pas encore autoriser des communications Réel qui exigent une permission confirmée. Le raccordement des sources de permissions et des événements métier reste une étape distincte.
