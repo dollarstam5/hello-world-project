@@ -442,3 +442,38 @@ La validation de la projection est menée en deux niveaux : tests automatisés d
 
 **État de validation :** les tests unitaires du read model et les contrôles CI sont exécutés sur la branche. Les scénarios multi-session avec deux comptes, l'invité réel et la mesure réseau dans un navigateur connecté restent à valider sur l'environnement applicatif ; ils ne sont pas déclarés réussis sur la seule base des tests de store.
 
+
+
+## Raccordement des événements métier au runtime commun — première tranche
+
+Le registre des événements de centre est intégré à l'instance existante de CommunicationRuntime (src/lib/communication/runtime.ts). Il ne s'agit pas d'un second store ou d'un service réseau. Il utilise le même abonnement de révision déjà fourni par CommunicationRuntimeProvider.
+
+### Événements actuellement raccordés
+
+| Domaine | Source confirmée | Événement visible dans le centre | Lecture / attention |
+|---|---|---|---|
+| Flash | Création locale réussie d'un brouillon, modification locale réussie, archivage confirmé par la commande serveur, suppression locale réussie | Résumé localisé avec lien vers /flash | Déjà lu, car la confirmation apparaît dans le moteur ; aucun badge supplémentaire |
+| Radar | Création, modification ou annulation locale réussie d'une veille | Résumé localisé avec lien vers /radar | Déjà lu, car la confirmation apparaît dans le moteur ; aucun badge supplémentaire |
+| Scan | Résultat de recherche volontaire et synchrone, historique limité au terminal | Aucun événement de centre | Les résultats sont immédiatement visibles dans Scan ; pas de notification redondante |
+| En direct | Projection agrégée des bips en attente et relations actives issue du contrôleur existant | Compteurs dans l'onglet En direct, accès à /reel ; les bips en attente contribuent à la cloche | Le moteur reste propriétaire des listes et des actions ; aucune copie d'identifiant |
+| Messages | Aucun flux de conversation V1 raccordé | État vide explicite | Ne pas fabriquer de conversation ni de compteur |
+
+### Contrat technique et limites
+
+- Les producteurs publient uniquement après le succès de leur opération métier ; les erreurs et clics seuls ne créent pas d'événement.
+- Les identifiants d'événements sont construits à partir des identifiants stables des enregistrements membre et, pour les modifications répétées, de leur updatedAt. Ils ne contiennent aucune identité invitée.
+- publishEvent refuse toute publication si le contexte du runtime n'est pas celui d'un membre connecté. Les événements d'invités restent dans le moteur Réel et ne sont jamais ajoutés au registre global.
+- Les confirmations Flash/Radar déjà présentées inline sont enregistrées comme lues : elles sont consultables dans le centre mais ne gonflent pas le compteur de la cloche.
+- Le compteur de la cloche agrège les événements non lus du runtime et les bips réellement en attente de la projection Réel existante. Les relations actives ne sont pas comptées comme des demandes à traiter.
+- L'ouverture du centre ne déclenche aucune requête, souscription Realtime ou boucle de polling. Les liens renvoient vers les écrans propriétaires pour les actions.
+- Le registre reste en mémoire dans le runtime de la session et disparaît au reset d'identité ou au rechargement. Il ne prétend pas fournir l'historique durable des notifications.
+- La table locale notifications existe déjà, mais la politique client interdit sa création directe. Cette tranche ne contourne pas cette règle et n'ajoute aucune mutation locale ou API. Les notifications distantes persistantes devront provenir d'un événement serveur autorisé et d'un contrat de lecture dédié, pas d'une écriture client opportuniste.
+
+### Contrôles automatisés ajoutés
+
+- Déduplication d'un événement par identifiant stable.
+- Refus de publication en contexte invité.
+- Lecture explicite et calcul du nombre non lu.
+- Confirmation inline visible sans incrémenter la cloche.
+- Effacement du registre au changement de session.
+- Rendu des événements dans Notifications et accès au moteur propriétaire.
