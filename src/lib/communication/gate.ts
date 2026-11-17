@@ -72,8 +72,16 @@ export function resolveCommunicationCandidates(
 
   const safeLimit = Number.isFinite(maxItems) ? Math.max(0, Math.floor(maxItems)) : ordered.length;
 
+  // Critical messages are never discarded by a presentation quota intended
+  // to keep routine communication concise.
+  const critical = ordered.filter((candidate) => candidate.priority === "critical");
+  const remaining = ordered.filter((candidate) => candidate.priority !== "critical");
+  const remainingLimit = Math.max(0, safeLimit - critical.length);
+  const selected = [...critical, ...remaining.slice(0, remainingLimit)];
+  const selectedSet = new Set(selected);
+
   return {
-    selected: ordered.slice(0, safeLimit),
-    suppressed: [...suppressed, ...ordered.slice(safeLimit)],
+    selected,
+    suppressed: [...suppressed, ...ordered.filter((candidate) => !selectedSet.has(candidate))],
   };
 }
