@@ -1,11 +1,8 @@
-import { createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import type { CommunicationContextInput } from "@/lib/communication/context";
 import { createCommunicationRuntime, type CommunicationRuntime } from "@/lib/communication/runtime";
 
-const CommunicationRuntimeContext = createContext<{
-  runtime: CommunicationRuntime;
-  revision: number;
-} | null>(null);
+const CommunicationRuntimeContext = createContext<CommunicationRuntime | null>(null);
 
 /** Shares one in-memory communication runtime across the mounted Vitalis app. */
 export function CommunicationRuntimeProvider({
@@ -19,7 +16,6 @@ export function CommunicationRuntimeProvider({
   sessionIdentityKey?: string;
 }) {
   const [runtime] = useState(createCommunicationRuntime);
-  const [revision, setRevision] = useState(0);
   const previousIdentityKey = useRef<string | undefined>(undefined);
 
   useEffect(() => {
@@ -30,18 +26,14 @@ export function CommunicationRuntimeProvider({
       runtime.resetSession();
     }
     previousIdentityKey.current = sessionIdentityKey;
-    setRevision((value) => value + 1);
   }, [runtime, sessionIdentityKey]);
 
   useEffect(() => {
     if (context) runtime.updateContext(context);
-    setRevision((value) => value + 1);
   }, [runtime, context]);
 
-  const value = useMemo(() => ({ runtime, revision }), [runtime, revision]);
-
   return (
-    <CommunicationRuntimeContext.Provider value={value}>
+    <CommunicationRuntimeContext.Provider value={runtime}>
       {children}
     </CommunicationRuntimeContext.Provider>
   );
@@ -49,9 +41,10 @@ export function CommunicationRuntimeProvider({
 
 /** Access the app-scoped runtime from domain adapters and presentation layers. */
 export function useCommunicationRuntime() {
-  const value = useContext(CommunicationRuntimeContext);
-  if (!value) {
+  const runtime = useContext(CommunicationRuntimeContext);
+  if (!runtime) {
     throw new Error("useCommunicationRuntime must be used inside CommunicationRuntimeProvider");
   }
-  return value.runtime;
+  useSyncExternalStore(runtime.subscribe, runtime.getSnapshot, runtime.getSnapshot);
+  return runtime;
 }
