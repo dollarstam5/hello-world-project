@@ -8,7 +8,7 @@ import type {
 import { mapAssistantVocabulary, normalizeAssistantText } from "./mapping.service";
 
 const MIN_FUZZY_CONFIDENCE = 0.72;
-export const CURRENT_ASSISTANT_CACHE_VERSION = 1;
+export const CURRENT_ASSISTANT_CACHE_VERSION = 2;
 export const PROMOTED_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 const entries = knowledge.entries as AssistantKnowledgeEntry[];
 
