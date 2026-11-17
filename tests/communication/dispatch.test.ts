@@ -22,7 +22,7 @@ describe("prepareCommunicationMessages", () => {
       { key: "home.welcome.named", priority: "normal" },
     ]);
 
-    expect(result.messages[0].text).toBe("Bonjour,  !");
+    expect(result.messages[0].text).toBe("Bonjour!");
   });
 
   it("does not call a network service or persist dispatch state", () => {
