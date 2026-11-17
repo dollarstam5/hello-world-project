@@ -87,6 +87,19 @@ Le texte doit correspondre à la permission réellement demandée. Ne jamais aff
 | suggestion.nearby | Données de proximité réelles et permission accordée | Voici ce qui se passe autour de vous. | Here's what's happening around you. |
 | suggestion.none | Aucun résultat réel | Rien à afficher pour le moment. | Nothing to show here yet. |
 
+## 7 bis. Suggestions de découverte réellement disponibles en V1
+
+Ces suggestions sont des conseils d'exploration affichables dans l'accueil ou au moment opportun. Elles ne sont pas des notifications d'activité et ne doivent pas être comptées comme des événements non lus.
+
+| Moteur | Capacité vérifiée dans le dépôt | Suggestion de découverte possible | Condition et limite à respecter |
+|---|---|---|---|
+| Flash | Composer et enregistrer un Flash avec texte, type, catégorie, durée, portée et urgence ; saisie vocale si le navigateur la prend en charge ; localisation facultative. | « Vous pouvez publier un besoin ou une proposition pour une durée limitée. Je peux vous montrer comment préparer votre premier Flash. » | L'enregistrement exige un compte connecté et les champs requis. Ne pas annoncer une publication avant confirmation de `createFlash`. |
+| Scan | Lancer volontairement une recherche de proximité avec position temporaire, rayon sélectionnable (1, 5, 10 ou 20 km), résultats publics et historique local consultable/effaçable. | « Vous pouvez lancer un Scan quand vous souhaitez voir les possibilités publiques autour de vous. » | Demander la position au moment du Scan. Ne pas lancer de recherche en arrière-plan ni annoncer de résultat avant réponse réelle. |
+| En direct | Consulter les bips reçus et les mises en relation ; accepter/refuser un bip et terminer une relation, avec parcours invité et membre distincts. | « En direct sert à voir les personnes présentes à proximité et à échanger un signal si votre présence est activée. » | N'afficher que si le mode d'accès et les permissions permettent réellement l'action. Aucun bip, présence ou contact ne doit être simulé. |
+| Radar | Créer, modifier et annuler une intention de recherche privée enregistrée hors ligne en priorité. | « Vous pouvez noter ce que vous recherchez et la zone qui vous intéresse pour le retrouver facilement. » | La mise en correspondance automatique et les alertes Radar ne sont pas raccordées ; ne jamais promettre qu'une personne ou une offre sera trouvée ou signalée. |
+
+Les exemples ci-dessus sont des formulations de découverte à valider dans les écrans. Ils ne deviennent pas des messages runtime tant que leur point d'affichage, leur disponibilité et leur anti-répétition ne sont pas raccordés. En phase de lancement (0–500 comptes inscrits), proposer ces aides progressivement et généreusement, mais une à la fois et seulement dans le moteur concerné. Ne pas empiler plusieurs conseils sur un même écran. Après 500 utilisateurs, réduire graduellement la fréquence selon la posture définie dans la spécification.
+
 ## 8. Notifications métier
 
 Les notifications de bip, mise en relation, mission, Scan ou Flash proviennent des événements réels des domaines. Le catalogue fournit les formulations ; il ne crée pas les événements.
