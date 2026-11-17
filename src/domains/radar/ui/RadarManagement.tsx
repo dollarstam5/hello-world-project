@@ -99,6 +99,7 @@ export function RadarManagement() {
           titleKey: "communication.event.radar.title",
           messageKey: "communication.event.radar.updated",
           href: "/radar",
+          attentionRequired: false,
         });
         setActionNotice("radar.manage.updated");
       } else {
