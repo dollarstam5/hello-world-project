@@ -159,7 +159,7 @@ Les modules suivants sont maintenant présents sur la branche :
 |---|---|---|
 | `src/lib/communication/gate.ts` | Trie les demandes par priorité, conserve l'ordre d'origine à priorité égale et supprime les doublons via identifiant d'événement ou clé de répétition fournis | Ne mémorise pas lui-même les messages déjà livrés ; l'appelant fournit cet état |
 | `src/lib/communication/dispatch.ts` | Applique le filtre de priorité/déduplication puis résout le texte avec le formateur et le catalogue i18n existants | Prépare un lot ; ne déclenche pas de notification et ne modifie aucun état métier |
-| `src/lib/communication/delivery-session.ts` | Conserve en mémoire les identifiants réellement présentés après accusé de présentation explicite ; déduplication des lots suivants pendant la session | Aucun stockage local persistant, aucun identifiant invité temporaire, aucun producteur métier raccordé à ce stade |
+| `src/lib/communication/delivery-session.ts` | Conserve en mémoire les identifiants réellement présentés après accusé de présentation explicite ; déduplication des lots suivants pendant la session | Aucun stockage local persistant, aucun identifiant invité temporaire ; aucun producteur de notifications moteur raccordé |
 | `src/lib/communication/maturity.ts` | Sélectionne une posture conversationnelle selon le nombre agrégé de comptes inscrits : lancement, croissance, communauté établie, maturité | Fonction pure sans requête ; pas encore raccordée à une source de comptage ni aux composants de suggestions |
 | `tests/communication/gate.test.ts` | Vérifie priorités, doublons connus, déduplication dans un lot et limite d'affichage | Tests unitaires, pas tests d'intégration UI |
 | `tests/communication/dispatch.test.ts` | Vérifie la chaîne complète locale et l'interpolation des variables | Ne prouve pas encore le raccordement aux événements des moteurs |
@@ -174,15 +174,17 @@ Aucun délai de fréquence n'est imposé : la déduplication est déterministe e
 - Le canal `publishAssistantNotice` n'a pas d'appel métier externe à son propre module dans l'état inspecté ; le seul déclenchement observé est le message de bienvenue après activation volontaire dans les paramètres.
 - Les onglets Notifications, Messages et En direct du centre présentent encore des états vides ; aucun flux de notifications métier ne doit être supposé opérationnel à partir de leur seule présence.
 - Le sélecteur temporel ajouté à Home est une première règle, pas encore un orchestrateur universel pour tous les textes de l'application.
-- Le formateur commun résout les variables de catalogue ; il ne décide pas encore des priorités, de la fréquence ou du déclenchement des messages.
-- Les erreurs et confirmations existantes restent localisées dans leurs domaines/composants. Elles ne doivent être migrées qu'après inventaire de leurs sources d'état et tests, pour ne pas perdre la précision métier.
+- Le formateur commun résout les variables de catalogue ; il ne décide pas des priorités, de la fréquence ou du déclenchement des messages.
+- Flash utilise maintenant le formateur commun pour la confirmation de brouillon réellement enregistré et l'erreur de sauvegarde ; ces retours restent inline dans l'expérience Flash.
+- Scan utilise maintenant le formateur commun pour les erreurs de capacité navigateur, de permission/localisation et d'exécution de recherche ; ces retours restent inline dans le panneau Scan.
+- Ces premiers raccordements ne passent volontairement ni par `dispatch.ts`, ni par `delivery-session.ts`, ni par le canal Assistant : il s'agit de confirmations/erreurs locales appartenant aux moteurs, pas de notifications d'événements partagés. Les autres erreurs et confirmations restent à inventorier avant migration.
 - Le canal de l'assistant reste facultatif et opt-in. Il ne doit pas être utilisé pour les confirmations essentielles, erreurs, permissions ou communications qui doivent fonctionner même si l'assistant est désactivé.
 
 ### Ordre d'intégration recommandé
 
 1. Stabiliser le contrat local commun et le catalogue i18n sans changer le rendu des domaines.
 2. Raccorder les notices ponctuelles existantes au contrat commun, en préservant l'opt-in de l'assistant.
-3. Inventorier et raccorder les états d'erreur et de confirmation qui ont une source fiable.
+3. Étendre le raccordement du formateur commun aux autres erreurs et confirmations des moteurs après inventaire des sources fiables ; ne passer par le dispatch partagé que pour des communications multi-composants qui justifient réellement priorité et déduplication.
 4. Raccorder les notifications des moteurs uniquement à partir d'événements métier existants et dédupliqués.
 5. Remplir les panneaux du centre de communication seulement lorsque leurs données réelles sont disponibles.
 
