@@ -4,7 +4,10 @@ import { Button } from "@/components/ui/button";
 import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
 import { markAssistantWelcomePresented, useAssistantNotices } from "@/lib/app/assistant-notices";
 import { useI18n } from "@/lib/i18n/useI18n";
-import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
+import {
+  useCommunicationContextVersion,
+  useCommunicationRuntime,
+} from "@/lib/communication/CommunicationRuntimeProvider";
 
 /** Appears only while an explicitly published assistant message is available. */
 export function AssistantNoticeLayer() {
@@ -13,6 +16,7 @@ export function AssistantNoticeLayer() {
   const notice = useAssistantNotices((state) => state.notice);
   const dismiss = useAssistantNotices((state) => state.dismiss);
   const runtime = useCommunicationRuntime();
+  const contextVersion = useCommunicationContextVersion();
   const translateRef = useRef(t);
   translateRef.current = t;
   const prepared = useMemo(() => {
@@ -27,7 +31,7 @@ export function AssistantNoticeLayer() {
         requiresAssistant: true,
       },
     ]);
-  }, [enabled, notice, runtime]);
+  }, [contextVersion, enabled, notice, runtime]);
 
   useEffect(() => {
     if (enabled && prepared?.messages.length) {
