@@ -142,6 +142,15 @@ export const messages = {
     "home.engine.action": "Voir cet espace",
     "home.menuHint":
       "Les espaces complémentaires et les autres fonctionnalités de Vitalis sont accessibles depuis le menu 2×2 en bas de l’écran.",
+    "home.journey.guest.title": "Commencez librement",
+    "home.journey.guest.body":
+      "Vous pouvez découvrir En direct sans compte. Un compte vous permettra d’enregistrer vos Flashs et de retrouver votre profil.",
+    "home.journey.guest.live": "Découvrir En direct",
+    "home.journey.guest.signup": "Créer mon compte",
+    "home.journey.member.title": "Votre espace Vitalis",
+    "home.journey.member.body":
+      "Votre compte vous permet d’enregistrer vos Flashs et de gérer votre profil. Vous pouvez avancer à votre rythme.",
+    "home.journey.member.profile": "Voir mon profil",
     "onboarding.title": "Bienvenue dans Vitalis",
     "onboarding.desc": "Quelques repères pour découvrir l'essentiel, à votre rythme.",
     "onboarding.stepLabel": "Découverte",
@@ -180,6 +189,8 @@ export const messages = {
       "Installez-vous, explorez à votre rythme et commencez par l'espace qui vous attire. Toute l'expérience Vitalis vous attend.",
     "onboarding.ready.guest":
       "Vous pouvez commencer sans créer de compte lorsque le moteur le permet. En direct est accessible en mode invité.",
+    "onboarding.ready.member":
+      "Votre compte est reconnu. Vous pouvez retrouver votre profil, enregistrer vos Flashs et découvrir les autres espaces à votre rythme.",
 
     "identity.guest": "Invité",
     "identity.member": "Membre",
@@ -864,6 +875,7 @@ export const messages = {
     "admin.kpi.roles": "Droits",
     "auth.title": "Connexion",
     "auth.subtitle": "Retrouvez votre espace Vitalis en toute sécurité.",
+    "auth.displayName": "Nom affiché",
     "auth.email": "Adresse e-mail",
     "auth.password": "Mot de passe",
     "auth.signIn": "Se connecter",
@@ -1102,6 +1114,15 @@ export const messages = {
     "home.engine.action": "View this space",
     "home.menuHint":
       "Explore additional spaces and other Vitalis features from the 2x2 menu at the bottom of the screen.",
+    "home.journey.guest.title": "Start at your own pace",
+    "home.journey.guest.body":
+      "You can explore Live without an account. An account lets you save your Flashes and manage your profile.",
+    "home.journey.guest.live": "Explore Live",
+    "home.journey.guest.signup": "Create my account",
+    "home.journey.member.title": "Your Vitalis space",
+    "home.journey.member.body":
+      "Your account lets you save your Flashes and manage your profile. Take things at your own pace.",
+    "home.journey.member.profile": "View my profile",
     "onboarding.title": "Welcome to Vitalis",
     "onboarding.desc": "A few quick landmarks to discover the essentials, at your own pace.",
     "onboarding.stepLabel": "Discover",
@@ -1139,6 +1160,8 @@ export const messages = {
       "Make yourself at home, explore at your own pace and start wherever you like. Your Vitalis experience is waiting.",
     "onboarding.ready.guest":
       "You can get started without an account wherever the engine allows it. Live is available in guest mode.",
+    "onboarding.ready.member":
+      "Your account is recognized. You can manage your profile, save your Flashes and explore the other spaces at your own pace.",
 
     "identity.guest": "Guest",
     "identity.member": "Member",
@@ -1801,6 +1824,7 @@ export const messages = {
     "admin.kpi.roles": "Roles",
     "auth.title": "Sign in",
     "auth.subtitle": "Access your Vitalis space securely.",
+    "auth.displayName": "Display name",
     "auth.email": "Email address",
     "auth.password": "Password",
     "auth.signIn": "Sign in",
