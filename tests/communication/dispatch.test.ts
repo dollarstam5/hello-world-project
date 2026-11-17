@@ -7,19 +7,19 @@ describe("prepareCommunicationMessages", () => {
 
   it("prioritizes, deduplicates and formats messages through the existing catalog", () => {
     const result = prepareCommunicationMessages(translate, [
-      { key: "home.welcome.named", priority: "low", variables: { name: "Ada" } },
-      { key: "common.error", priority: "critical", eventId: "error-1" },
-      { key: "common.retry", priority: "high", eventId: "error-1" },
+      { key: "home.welcome.named", source: "home", surface: "inline", priority: "low", variables: { name: "Ada" } },
+      { key: "common.error", source: "app", surface: "inline", priority: "critical", eventId: "error-1" },
+      { key: "common.retry", source: "app", surface: "inline", priority: "high", eventId: "error-1" },
     ]);
 
     expect(result.messages.map(({ key }) => key)).toEqual(["common.error", "home.welcome.named"]);
-    expect(result.messages[1].text).toBe("Bonjour, Ada!");
+    expect(result.messages[1].text).toBe("Bonjour, Ada!");\n    expect(result.messages[1].source).toBe("home");\n    expect(result.messages[1].surface).toBe("inline");
     expect(result.suppressed).toHaveLength(1);
   });
 
   it("uses neutral text when optional variables are absent", () => {
     const result = prepareCommunicationMessages(translate, [
-      { key: "home.welcome.named", priority: "normal" },
+      { key: "home.welcome.named", source: "home", surface: "inline", priority: "normal" },
     ]);
 
     expect(result.messages[0].text).toBe("Bonjour!");
@@ -27,7 +27,7 @@ describe("prepareCommunicationMessages", () => {
 
   it("does not call a network service or persist dispatch state", () => {
     const result = prepareCommunicationMessages(translate, [
-      { key: "common.retry", priority: "normal", repeatKey: "retry-button" },
+      { key: "common.retry", source: "app", surface: "inline", priority: "normal", repeatKey: "retry-button" },
     ]);
 
     expect(result.messages).toHaveLength(1);
