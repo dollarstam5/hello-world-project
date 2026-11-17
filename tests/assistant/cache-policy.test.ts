@@ -42,7 +42,8 @@ describe("règles du cache local de Vita", () => {
     ).toBe(false);
   });
 
-  it("refuse une réponse promue d'une version obsolète", () => {
+  it("invalide les réponses produites avant la personnalité Vita version 2", () => {
+    expect(CURRENT_ASSISTANT_CACHE_VERSION).toBe(2);
     expect(
       isPromotedAssistantAnswerFresh(
         promoted({ version: CURRENT_ASSISTANT_CACHE_VERSION - 1 }),
