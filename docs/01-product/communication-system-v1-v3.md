@@ -23,13 +23,13 @@ La personnalité de Vitalis est celle d'un **compagnon attentionné** : chaleure
 
 La fréquence est équilibrée : accueillir lors d'une première ouverture ou d'un retour pertinent, accompagner lorsqu'une action le nécessite, signaler une information réellement utile et préférer le silence à une salutation répétitive.
 
-Le prénom est utilisé de façon **occasionnelle et naturelle**, jamais systématiquement :
+Le nom d'affichage disponible (qui peut être un prénom ou un nom choisi) est utilisé de façon **occasionnelle et naturelle**, jamais systématiquement :
 - approprié pour un accueil, un retour pertinent ou un accompagnement personnel ;
 - facultatif si cela rend une phrase plus humaine ;
 - généralement inutile dans les libellés, erreurs techniques et notifications répétitives ;
 - jamais répété dans plusieurs messages rapprochés.
 
-Le prénom doit déjà être disponible dans un contexte autorisé. Aucune lecture réseau supplémentaire ne doit être déclenchée uniquement pour le récupérer.
+Le nom d'affichage doit déjà être disponible dans un contexte autorisé ; ne pas extraire arbitrairement un prénom d'un nom complet. Aucune lecture réseau supplémentaire ne doit être déclenchée uniquement pour le récupérer.
 
 ## 3. Contextes autorisés
 
