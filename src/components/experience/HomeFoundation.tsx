@@ -109,11 +109,7 @@ export function HomeFoundation() {
 
   // Authentication is the source of truth for member/guest recognition.
   // UDI trust levels are not inferred from the local identity placeholder.
-  const identityLabel = authLoading
-    ? null
-    : user
-      ? t("identity.member")
-      : t("identity.guest");
+  const identityLabel = authLoading ? null : user ? t("identity.member") : t("identity.guest");
 
   const greetingKey =
     localHour === null || authLoading ? "home.welcome" : getHomeGreetingKey(localHour);
