@@ -126,16 +126,17 @@ SECURITY DEFINER
 SET search_path = pg_catalog, public
 AS $$
 BEGIN
-  IF TG_OP = 'UPDATE' AND NEW.status IS DISTINCT FROM OLD.status
-     AND NEW.status = 'closed' THEN
-    PERFORM public.broadcast_reel_member_activity(
-      NEW.participant_low,
-      'connection_closed'
-    );
-    PERFORM public.broadcast_reel_member_activity(
-      NEW.participant_high,
-      'connection_closed'
-    );
+  IF TG_OP = 'UPDATE' THEN
+    IF NEW.status IS DISTINCT FROM OLD.status AND NEW.status = 'closed' THEN
+      PERFORM public.broadcast_reel_member_activity(
+        NEW.participant_low,
+        'connection_closed'
+      );
+      PERFORM public.broadcast_reel_member_activity(
+        NEW.participant_high,
+        'connection_closed'
+      );
+    END IF;
   END IF;
   RETURN NEW;
 END;
