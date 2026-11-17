@@ -87,9 +87,7 @@ describe("CommunicationSheet", () => {
         readAt: null,
       },
     ];
-    const markup = renderToStaticMarkup(
-      <CommunicationSheet open onOpenChange={() => undefined} />,
-    );
+    const markup = renderToStaticMarkup(<CommunicationSheet open onOpenChange={() => undefined} />);
 
     expect(markup).toContain("communication.event.radar.title");
     expect(markup).toContain("communication.event.radar.saved");
