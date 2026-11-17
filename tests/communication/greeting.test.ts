@@ -1,8 +1,5 @@
 import { afterEach, describe, expect, it } from "vitest";
-import {
-  claimNameGreetingForSession,
-  getHomeGreetingKey,
-} from "@/lib/communication/greeting";
+import { claimNameGreetingForSession, getHomeGreetingKey } from "@/lib/communication/greeting";
 
 describe("getHomeGreetingKey", () => {
   afterEach(() => {
