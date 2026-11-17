@@ -67,6 +67,7 @@ function trackUsage(
     buffer += chunk ? decoder.decode(chunk, { stream: !final }) : decoder.decode();
     const lines = buffer.split("\n");
     buffer = lines.pop() ?? "";
+    if (final && buffer.trim()) lines.push(buffer);
     for (const rawLine of lines) {
       const line = rawLine.trim();
       if (!line.startsWith("data:")) continue;
