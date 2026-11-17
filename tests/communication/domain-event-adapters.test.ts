@@ -18,11 +18,7 @@ describe("domain communication event adapters", () => {
   it("maps confirmed Flash lifecycle changes to localized center events", () => {
     const runtime = memberRuntime();
 
-    publishFlashCommunicationEvent(
-      runtime,
-      { id: "flash-1" as never, updatedAt: 120 },
-      "updated",
-    );
+    publishFlashCommunicationEvent(runtime, { id: "flash-1" as never, updatedAt: 120 }, "updated");
 
     expect(runtime.getEvents()).toMatchObject([
       {
