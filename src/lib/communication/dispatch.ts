@@ -9,15 +9,7 @@ import type { MessageKey } from "@/lib/i18n/messages";
 export type CommunicationTranslate = (key: MessageKey) => string;
 export type CommunicationVariables = Readonly<Record<string, string | number | null | undefined>>;
 export type CommunicationSource =
-  | "app"
-  | "auth"
-  | "home"
-  | "onboarding"
-  | "flash"
-  | "scan"
-  | "reel"
-  | "radar"
-  | "assistant";
+  | "app" | "auth" | "home" | "onboarding" | "flash" | "scan" | "reel" | "radar" | "assistant";
 export type CommunicationSurface = "inline" | "notice" | "center";
 
 export interface CommunicationRequest extends CommunicationCandidate {
