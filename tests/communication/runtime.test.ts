@@ -171,6 +171,64 @@ describe("communication runtime", () => {
     expect(runtime.prepare(translate, request).messages).toHaveLength(1);
   });
 
+  it("accepts confirmed account events, deduplicates them and tracks explicit reads", () => {
+    const runtime = createCommunicationRuntime();
+    runtime.updateContext({
+      identity: "member",
+      pathname: "/",
+      locale: "fr",
+      assistantEnabled: false,
+    });
+    const event = {
+      id: "radar:record-1:saved",
+      source: "radar" as const,
+      titleKey: "communication.event.radar.title" as const,
+      messageKey: "communication.event.radar.saved" as const,
+      href: "/radar" as const,
+      createdAt: 100,
+    };
+
+    expect(runtime.publishEvent(event)).toBe(true);
+    expect(runtime.publishEvent(event)).toBe(false);
+    expect(runtime.getEvents()).toHaveLength(1);
+    expect(runtime.getUnreadEventCount()).toBe(1);
+    expect(runtime.markEventRead(event.id)).toBe(true);
+    expect(runtime.markEventRead(event.id)).toBe(false);
+    expect(runtime.getUnreadEventCount()).toBe(0);
+    expect(runtime.getEvents()[0]?.readAt).not.toBeNull();
+  });
+
+  it("never adds guest events to the shared inbox and clears inbox events on session reset", () => {
+    const runtime = createCommunicationRuntime();
+    const event = {
+      id: "flash:record-1:draft-saved",
+      source: "flash" as const,
+      titleKey: "communication.event.flash.title" as const,
+      messageKey: "communication.event.flash.draftSaved" as const,
+      href: "/flash" as const,
+    };
+
+    runtime.updateContext({
+      identity: "guest",
+      pathname: "/",
+      locale: "fr",
+      assistantEnabled: false,
+    });
+    expect(runtime.publishEvent(event)).toBe(false);
+    expect(runtime.getEvents()).toHaveLength(0);
+
+    runtime.updateContext({
+      identity: "member",
+      pathname: "/",
+      locale: "fr",
+      assistantEnabled: false,
+    });
+    expect(runtime.publishEvent(event)).toBe(true);
+    runtime.resetSession();
+    expect(runtime.getEvents()).toHaveLength(0);
+    expect(runtime.getUnreadEventCount()).toBe(0);
+  });
+
   it("keeps delivery state isolated to the runtime session", () => {
     const first = createCommunicationRuntime();
     const second = createCommunicationRuntime();
