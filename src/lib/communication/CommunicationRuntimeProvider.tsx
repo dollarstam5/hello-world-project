@@ -1,7 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
-import {
-  type CommunicationContextInput,
-} from "@/lib/communication/context";
+import type { CommunicationContextInput } from "@/lib/communication/context";
 import { createCommunicationRuntime, type CommunicationRuntime } from "@/lib/communication/runtime";
 
 const CommunicationRuntimeContext = createContext<CommunicationRuntime | null>(null);
@@ -21,7 +19,10 @@ export function CommunicationRuntimeProvider({
   const previousIdentityKey = useRef<string | undefined>(undefined);
 
   useEffect(() => {
-    if (previousIdentityKey.current !== undefined && previousIdentityKey.current !== sessionIdentityKey) {
+    if (
+      previousIdentityKey.current !== undefined &&
+      previousIdentityKey.current !== sessionIdentityKey
+    ) {
       runtime.resetSession();
     }
     previousIdentityKey.current = sessionIdentityKey;
@@ -29,15 +30,7 @@ export function CommunicationRuntimeProvider({
 
   useEffect(() => {
     if (context) runtime.updateContext(context);
-  }, [
-    runtime,
-    context?.identity,
-    context?.pathname,
-    context?.locale,
-    context?.assistantEnabled,
-    context?.permissions?.discover,
-    context?.permissions?.presence,
-  ]);
+  }, [runtime, context]);
 
   return (
     <CommunicationRuntimeContext.Provider value={runtime}>
