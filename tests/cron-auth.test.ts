@@ -13,7 +13,9 @@ describe("authentification des tâches planifiées", () => {
     vi.stubEnv("LOVABLE_CRON_SECRET", "");
     vi.stubEnv("LOVABLE_CRON_SECRET_PREVIOUS", "");
 
-    const response = await authenticateCronRequest(new Request("https://vitalis.test/api/cron/maintenance"));
+    const response = await authenticateCronRequest(
+      new Request("https://vitalis.test/api/cron/maintenance"),
+    );
 
     expect(response?.status).toBe(500);
   });
