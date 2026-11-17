@@ -15,6 +15,7 @@ import { CommunicationRuntimeProvider } from "@/lib/communication/CommunicationR
 import { useAuth } from "@/domains/auth/model/useAuth";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { resetReelActivityProjection } from "@/domains/presence/model/reel-activity-projection";
+import { useAccessMode } from "@/domains/access-mode";
 
 const ReelBottomNav = lazy(() =>
   import("@/domains/presence/ui/ReelBottomNav").then((module) => ({
@@ -53,6 +54,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const responsive = useResponsive();
   const onboardingReady = useOnboarding((state) => state.hydrated && state.shouldShow);
   const { user, loading: authLoading } = useAuth();
+  const access = useAccessMode();
   const { locale } = useI18n();
   const assistantEnabled = useAssistantPreferences((state) => state.enabled);
   const assistantPreferencesHydrated = useAssistantPreferences((state) => state.hydrated);
@@ -71,7 +73,13 @@ export function AppShell({ children }: { children: ReactNode }) {
   );
 
   const previousProjectionIdentity = useRef<string | undefined>(undefined);
-  const projectionIdentity = authLoading ? "loading" : (user?.id ?? "guest");
+  const projectionIdentity = access.loading
+    ? "loading"
+    : access.mode === "member"
+      ? `member:${access.memberId ?? "unavailable"}`
+      : access.mode === "guest"
+        ? `guest:${access.guest?.startedAt ?? "pending"}`
+        : "visitor";
 
   useEffect(() => {
     if (
