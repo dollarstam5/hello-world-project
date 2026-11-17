@@ -131,9 +131,7 @@ export function useReelProximityController() {
   const [presenceLoading, setPresenceLoading] = useState(false);
   const [presenceMessage, setPresenceMessage] = useState<string | null>(null);
   const [receivedBips, setReceivedBips] = useState<ReelBip[]>([]);
-  const [bipsLoadedForIdentity, setBipsLoadedForIdentity] = useState<string | null>(
-    null,
-  );
+  const [bipsLoadedForIdentity, setBipsLoadedForIdentity] = useState<string | null>(null);
   const [receivedGuestBips, setReceivedGuestBips] = useState<ReelGuestBip[]>([]);
   const [bipsLoading, setBipsLoading] = useState(false);
   const [bipsMessage, setBipsMessage] = useState<string | null>(null);
