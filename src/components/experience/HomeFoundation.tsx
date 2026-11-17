@@ -96,7 +96,12 @@ export function HomeFoundation() {
   }, []);
 
   useEffect(() => {
-    if (authLoading || !user || !displayName?.trim() || nameGreetingUserId === user.id) return;
+    if (authLoading) return;
+    if (!user) {
+      if (nameGreetingUserId !== null) setNameGreetingUserId(null);
+      return;
+    }
+    if (!displayName?.trim() || nameGreetingUserId === user.id) return;
     if (claimNameGreetingForSession()) setNameGreetingUserId(user.id);
   }, [authLoading, user, displayName, nameGreetingUserId]);
 
@@ -107,9 +112,8 @@ export function HomeFoundation() {
         ? t("identity.identified")
         : t("identity.guest");
 
-  const greetingKey = localHour === null || authLoading
-    ? "home.welcome"
-    : getHomeGreetingKey(localHour);
+  const greetingKey =
+    localHour === null || authLoading ? "home.welcome" : getHomeGreetingKey(localHour);
   const greetingName =
     user && nameGreetingUserId === user.id && displayName?.trim()
       ? `, ${displayName.trim()}`
