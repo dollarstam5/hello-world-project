@@ -11,8 +11,9 @@ describe("communication runtime", () => {
       { key: "common.error", priority: "high" as const, repeatKey: "flash-save-error" },
     ];
 
-    expect(runtime.prepare(translate, request).messages).toHaveLength(1);
-    runtime.markPresented(runtime.prepare(translate, request).messages);
+    const firstPresentation = runtime.prepare(translate, request);
+    expect(firstPresentation.messages).toHaveLength(1);
+    runtime.markPresented(firstPresentation.messages);
     expect(runtime.prepare(translate, request).messages).toHaveLength(0);
   });
 
