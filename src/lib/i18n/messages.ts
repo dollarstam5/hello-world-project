@@ -87,9 +87,9 @@ export const messages = {
     "communication.reel.open": "Voir En direct",
     "communication.offline":
       "Vous êtes hors ligne. Les informations déjà reçues restent disponibles ; les nouvelles reprendront au retour du réseau.",
-    "communication.reel.notLoaded":
-      "Ouvrez En direct pour charger vos dernières activités.",
-    "communication.reel.offline": "Les activités En direct ne peuvent pas être actualisées hors ligne. Revenez en ligne pour les consulter.",
+    "communication.reel.notLoaded": "Ouvrez En direct pour charger vos dernières activités.",
+    "communication.reel.offline":
+      "Les activités En direct ne peuvent pas être actualisées hors ligne. Revenez en ligne pour les consulter.",
     "communication.events.markRead": "Marquer comme lu",
     "communication.events.empty": "Aucune nouvelle pour le moment.",
     "communication.events.openFlash": "Ouvrir Flash",
