@@ -7,10 +7,14 @@ import { useIdentity } from "@/lib/experience/identity";
 import { useAuth } from "@/domains/auth/model/useAuth";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
+import { useReelActivityProjection } from "@/domains/presence/model/reel-activity-projection";
 
 export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => void }) {
   const { t } = useI18n();
   const unreadEvents = useCommunicationRuntime().getUnreadEventCount();
+  const pendingBips = useReelActivityProjection((state) => state.pendingBips);
+  const bipsReady = useReelActivityProjection((state) => state.bipsReady);
+  const attentionCount = unreadEvents + (bipsReady ? pendingBips : 0);
   const [profileOpen, setProfileOpen] = useState(false);
   const { user } = useAuth();
   const displayName = useIdentity((state) => state.displayName);
@@ -56,9 +60,9 @@ export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => 
               className="relative h-12 w-12 rounded-full"
             >
               <Bell aria-hidden className="!size-6" />
-              {unreadEvents > 0 ? (
+              {attentionCount > 0 ? (
                 <span className="absolute right-1 top-1 grid min-h-5 min-w-5 place-items-center rounded-full bg-primary px-1 text-[10px] font-bold leading-none text-primary-foreground" aria-hidden="true">
-                  {unreadEvents > 99 ? "99+" : unreadEvents}
+                  {attentionCount > 99 ? "99+" : attentionCount}
                 </span>
               ) : null}
             </Button>
