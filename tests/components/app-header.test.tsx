@@ -18,6 +18,15 @@ vi.mock("@tanstack/react-router", () => ({
   ),
 }));
 
+vi.mock("@/lib/communication/CommunicationRuntimeProvider", () => ({
+  useCommunicationRuntime: () => ({ getUnreadEventCount: () => 0 }),
+}));
+
+vi.mock("@/domains/presence/model/reel-activity-projection", () => ({
+  useReelActivityProjection: (selector: (state: { pendingBips: number; bipsReady: boolean }) => unknown) =>
+    selector({ pendingBips: 0, bipsReady: false }),
+}));
+
 vi.mock("@/lib/i18n/useI18n", () => ({
   useI18n: () => ({
     t: (key: string) =>
