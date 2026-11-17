@@ -462,25 +462,39 @@ export function useReelProximityController() {
 
   useEffect(() => {
     const mode =
-      access.mode === "guest" ? "guest" : canUseMemberReel ? "member" : null;
+      access.mode === "guest"
+        ? "guest"
+        : canUseMemberReel
+          ? "member"
+          : null;
     if (!mode) return;
-    useReelActivityProjection.getState().publishBips(
-      mode,
-      mode === "guest" ? receivedGuestBips.length : receivedBips.length + receivedGuestBips.length,
-    );
+    useReelActivityProjection
+      .getState()
+      .publishBips(
+        mode,
+        mode === "guest"
+          ? receivedGuestBips.length
+          : receivedBips.length + receivedGuestBips.length,
+      );
   }, [access.mode, canUseMemberReel, receivedBips.length, receivedGuestBips.length]);
 
   useEffect(() => {
     const mode =
-      access.mode === "guest" ? "guest" : canUseMemberReel ? "member" : null;
+      access.mode === "guest"
+        ? "guest"
+        : canUseMemberReel
+          ? "member"
+          : null;
     if (!mode) return;
-    useReelActivityProjection.getState().publishConnections(
-      mode,
-      mode === "guest"
-        ? guestConnections.filter((connection) => connection.status === "active").length
-        : connections.filter((connection) => connection.status === "active").length +
-            guestConnections.filter((connection) => connection.status === "active").length,
-    );
+    useReelActivityProjection
+      .getState()
+      .publishConnections(
+        mode,
+        mode === "guest"
+          ? guestConnections.filter((connection) => connection.status === "active").length
+          : connections.filter((connection) => connection.status === "active").length +
+              guestConnections.filter((connection) => connection.status === "active").length,
+      );
   }, [access.mode, canUseMemberReel, connections, guestConnections]);
 
   const cancelEndConnection = () => setPendingConnectionEnd(null);
