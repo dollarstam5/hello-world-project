@@ -36,4 +36,32 @@ describe("politique de sécurité Vita", () => {
       }),
     ).toBe("invalid_role_order");
   });
+
+  it("applique les plafonds de conversation communs", () => {
+    const base = {
+      requestId: "00000000-0000-4000-8000-000000000001",
+      locale: "fr" as const,
+    };
+    expect(
+      validateConversation({
+        ...base,
+        messages: [{ role: "user", content: "x".repeat(600) }],
+      }),
+    ).toBeNull();
+    expect(
+      validateConversation({
+        ...base,
+        messages: [{ role: "user", content: "x".repeat(601) }],
+      }),
+    ).toBe("invalid_message");
+    expect(
+      validateConversation({
+        ...base,
+        messages: Array.from({ length: 9 }, (_, index) => ({
+          role: index % 2 === 0 ? ("user" as const) : ("assistant" as const),
+          content: "message",
+        })),
+      }),
+    ).toBe("invalid_message_count");
+  });
 });
