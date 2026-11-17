@@ -5,6 +5,7 @@ import { useI18n } from "@/lib/i18n/useI18n";
 import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
 import { useReelActivityProjection } from "@/domains/presence/model/reel-activity-projection";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
+import { useNetworkStatus } from "@/lib/platform/useNetworkStatus";
 
 const AssistantTab = lazy(() =>
   import("@/domains/assistant/ui/AssistantTab").then((module) => ({
@@ -20,6 +21,7 @@ export function CommunicationSheet({
   onOpenChange: (open: boolean) => void;
 }) {
   const { t, locale } = useI18n();
+  const { online } = useNetworkStatus();
   const communication = useCommunicationRuntime();
   const events = communication.getEvents();
   const assistantEnabled = useAssistantPreferences((state) => state.enabled);
@@ -41,6 +43,11 @@ export function CommunicationSheet({
       title={t("communication.title")}
       className="max-h-[92dvh]"
     >
+      {!online ? (
+        <p className="mb-3 rounded-xl border border-border bg-muted/50 px-3 py-2 text-sm text-muted-foreground" role="status" aria-live="polite">
+          {t("communication.offline")}
+        </p>
+      ) : null}
       <Tabs defaultValue="notifications">
         <TabsList
           aria-label={t("communication.title")}
@@ -187,7 +194,9 @@ export function CommunicationSheet({
               )}
             </div>
           ) : (
-            <p className="text-center">{t("communication.reel.empty")}</p>
+            <p className="text-center" role="status" aria-live="polite">
+              {t(online ? "communication.reel.notLoaded" : "communication.reel.offline")}
+            </p>
           )}
           <a
             href="/reel"
