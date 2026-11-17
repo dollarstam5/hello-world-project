@@ -37,10 +37,12 @@ La recherche locale est un mécanisme de réponse déterministe à partir des en
 
 ### 2.3 Endpoint canonique de streaming
 
-`src/domains/assistant/services/assistant-stream.service.ts` appelle `POST /api/public/assistant` avec un jeton Bearer, un identifiant de requête et un historique borné. Le handler de `src/routes/api/public/assistant.ts` :
+`src/domains/assistant/services/assistant-stream.service.ts` appelle `POST /api/public/assistant` avec un jeton Bearer, un identifiant de requête et un historique borné. Le handler de `src/routes/api/public/assistant.ts` et `src/lib/ai/assistant-personality.ts` :
 
 - authentifie l'appelant avec `readSyncSession` ;
 - applique `validateConversation` et les limites partagées : 8 messages maximum, 600 caractères par message et 4 000 caractères cumulés ;
+- utilise `buildAssistantSystemPrompt` comme source unique de personnalité FR/EN, partagée avec la voie serveur héritée ; le prompt répond d'abord à la demande, adapte la profondeur, pose au plus une question de clarification, n'infère pas l'état émotionnel et ne prétend jamais effectuer une action non exécutée ;
+- limite le contexte transmis à la langue et au chemin d'écran autorisé ; le chemin ne permet pas de déduire l'état réel des composants ni des données privées ;
 - n'accepte que les routes de contexte explicitement autorisées via `safeAssistantRoute` ;
 - refuse les demandes utilisateur contenant des secrets détectés par `containsSensitiveSecret` ;
 - réclame un quota avant l'appel fournisseur via `claim_assistant_request` ;
@@ -88,6 +90,7 @@ Les tests présents comprennent notamment :
 - `tests/assistant-policy.test.ts` : validation de conversation, secrets, éligibilité au cache et normalisation de routes ;
 - `tests/assistant/privacy-isolation.test.ts` : séparation des clés de conversations locales par compte et du périmètre local ;
 - `tests/assistant-stream-history.test.ts` : normalisation des rôles, 8 messages maximum, 4 000 caractères cumulés, rejet d'un flux interrompu et acceptation des marqueurs de fin ;
+- `tests/assistant-personality.test.ts` : cohérence FR/EN, contextualisation limitée, honnêteté sur les capacités et absence d'inférence personnelle ;
 - `supabase/tests/database/139_assistant_security.test.sql` : RLS, privilèges des RPC, `search_path` vide et rejet des locales nulles ;
 - `tests/assistant-policy.test.ts` : limites de taille, alternance des rôles et détection des secrets.
 
