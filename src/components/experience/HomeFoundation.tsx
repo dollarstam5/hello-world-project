@@ -9,6 +9,7 @@ import { useI18n } from "@/lib/i18n/useI18n";
 import { useIdentity } from "@/lib/experience/identity";
 import { useAuth } from "@/domains/auth/model/useAuth";
 import { claimNameGreetingForSession, getHomeGreetingKey } from "@/lib/communication/greeting";
+import { formatCommunicationMessage } from "@/lib/communication/format";
 import { createDemoFlashes } from "@/domains/flash/model/demo-flashes";
 import { VitalisVisionCard } from "@/components/experience/VitalisVisionCard";
 import heroPhoto from "@/assets/images/experience/home-neighbours-1600.webp";
@@ -115,7 +116,7 @@ export function HomeFoundation() {
     localHour === null || authLoading ? "home.welcome" : getHomeGreetingKey(localHour);
   const greetingName =
     user && nameGreetingUserId === user.id && displayName?.trim() ? `, ${displayName.trim()}` : "";
-  const greeting = t(greetingKey).replace("{name}", greetingName);
+  const greeting = formatCommunicationMessage(t, greetingKey, { name: greetingName });
 
   const demoFlashes = createDemoFlashes();
   const demoTitles: Record<string, string> = {
