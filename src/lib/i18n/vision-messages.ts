@@ -152,8 +152,7 @@ export const visionMessages = {
       "A smiling woman carries a container received at a distribution, surrounded by neighbours.",
     "vision.photo.scan.alt": "A man in traditional attire checks his phone on a rooftop.",
     "vision.photo.reel.alt": "A group of women gathered in a courtyard greet each other warmly.",
-    "vision.photo.radar.alt":
-      "A focused woman looks into the distance in front of her laptop.",
+    "vision.photo.radar.alt": "A focused woman looks into the distance in front of her laptop.",
     "vision.back": "Back to home",
     "vision.eyebrow": "Beyond the screens",
     "vision.title": "Vitalis brings people closer to useful possibilities.",
