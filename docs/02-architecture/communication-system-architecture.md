@@ -143,9 +143,10 @@ L'inventaire ci-dessous a été vérifié dans le dépôt avant d'étendre l'int
 |---|---|---|
 | `src/lib/i18n/messages.ts` et `src/lib/i18n/useI18n.ts` | Catalogue FR/EN et fonction de traduction typée | Conserver comme catalogue et moteur de localisation V1 |
 | `src/lib/communication/greeting.ts` | Sélection locale des neuf périodes et garde-fou du nom par session | Première règle contextuelle intégrée ; à étendre sans multiplier les sélecteurs isolés |
+| `src/lib/communication/format.ts` | Résolution d'une clé i18n et remplacement contrôlé des variables | Formateur commun utilisé par l'accueil et les notices assistant ; les clés et traductions restent dans i18n |
 | `src/components/experience/HomeFoundation.tsx` | Affiche l'accueil et consomme le sélecteur temporel | Premier écran raccordé |
 | `src/lib/app/assistant-notices.ts` | Canal Zustand de messages ponctuels, soumis à l'activation volontaire de l'assistant | Réutiliser comme adaptateur de présentation ; ne pas créer un second canal de notices |
-| `src/components/experience/AssistantNoticeLayer.tsx` | Affiche et ferme les notices temporaires, avec retrait après neuf secondes | Conserver la responsabilité d'affichage et d'accessibilité |
+| `src/components/experience/AssistantNoticeLayer.tsx` | Affiche et ferme les notices temporaires, avec retrait après neuf secondes | Conserver la responsabilité d'affichage et d'accessibilité ; utiliser le formateur commun |
 | `src/lib/app/assistant-preferences.ts` | Préférence locale de l'assistant, désactivée par défaut | Respecter ce consentement ; la communication standard ne doit pas dépendre de l'activation de l'assistant |
 | `src/components/experience/CommunicationSheet.tsx` | Centre de communication avec onglets Notifications, Assistant facultatif, Messages et En direct | Conserver le centre ; ses panneaux vides ne sont pas des événements métier |
 | `src/components/app/AppShell.tsx` | Monte la couche de notices et le centre de communication | Point de montage global existant à réutiliser |
@@ -155,6 +156,7 @@ L'inventaire ci-dessous a été vérifié dans le dépôt avant d'étendre l'int
 - Le canal `publishAssistantNotice` n'a pas d'appel métier externe à son propre module dans l'état inspecté ; le seul déclenchement observé est le message de bienvenue après activation volontaire dans les paramètres.
 - Les onglets Notifications, Messages et En direct du centre présentent encore des états vides ; aucun flux de notifications métier ne doit être supposé opérationnel à partir de leur seule présence.
 - Le sélecteur temporel ajouté à Home est une première règle, pas encore un orchestrateur universel pour tous les textes de l'application.
+- Le formateur commun résout les variables de catalogue ; il ne décide pas encore des priorités, de la fréquence ou du déclenchement des messages.
 - Les erreurs et confirmations existantes restent localisées dans leurs domaines/composants. Elles ne doivent être migrées qu'après inventaire de leurs sources d'état et tests, pour ne pas perdre la précision métier.
 - Le canal de l'assistant reste facultatif et opt-in. Il ne doit pas être utilisé pour les confirmations essentielles, erreurs, permissions ou communications qui doivent fonctionner même si l'assistant est désactivé.
 
