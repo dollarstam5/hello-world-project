@@ -30,6 +30,25 @@ describe("communication delivery session", () => {
     expect(afterPresentation.suppressed).toHaveLength(1);
   });
 
+  it("clears delivered identifiers when the session ends", () => {
+    const session = createCommunicationDeliverySession();
+    const message = prepareCommunicationMessages(
+      translate,
+      [{ key: "common.retry", priority: "normal", repeatKey: "retry-action" }],
+    );
+    session.markDelivered(message.messages);
+
+    session.reset();
+
+    expect(
+      prepareCommunicationMessages(
+        translate,
+        [{ key: "common.retry", priority: "normal", repeatKey: "retry-action" }],
+        session.getGateState(),
+      ).messages,
+    ).toHaveLength(1);
+  });
+
   it("deduplicates repeat keys only within this in-memory session", () => {
     const session = createCommunicationDeliverySession();
     const message = prepareCommunicationMessages(
