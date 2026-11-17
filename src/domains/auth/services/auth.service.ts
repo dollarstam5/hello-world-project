@@ -6,11 +6,14 @@ export const authService = {
     return supabase.auth.signInWithPassword({ email, password });
   },
 
-  signUp(email: string, password: string) {
+  signUp(email: string, password: string, displayName: string) {
     return supabase.auth.signUp({
       email,
       password,
-      options: { emailRedirectTo: window.location.origin },
+      options: {
+        emailRedirectTo: window.location.origin,
+        data: { display_name: displayName.trim() },
+      },
     });
   },
 
