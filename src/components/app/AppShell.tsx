@@ -57,7 +57,11 @@ export function AppShell({ children }: { children: ReactNode }) {
   const assistantPreferencesHydrated = useAssistantPreferences((state) => state.hydrated);
   const communicationContext = useMemo(
     () => ({
-      identity: authLoading ? ("loading" as const) : user ? ("member" as const) : ("guest" as const),
+      identity: authLoading
+        ? ("loading" as const)
+        : user
+          ? ("member" as const)
+          : ("guest" as const),
       pathname,
       locale,
       assistantEnabled: assistantPreferencesHydrated ? assistantEnabled : null,
@@ -92,7 +96,7 @@ export function AppShell({ children }: { children: ReactNode }) {
     return (
       <CommunicationRuntimeProvider
         context={communicationContext}
-        sessionIdentityKey={authLoading ? "loading" : user?.id ?? "guest"}
+        sessionIdentityKey={authLoading ? "loading" : (user?.id ?? "guest")}
       >
         <>
           <SyncEngineLoader />
@@ -107,7 +111,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   return (
     <CommunicationRuntimeProvider
       context={communicationContext}
-      sessionIdentityKey={authLoading ? "loading" : user?.id ?? "guest"}
+      sessionIdentityKey={authLoading ? "loading" : (user?.id ?? "guest")}
     >
       <div className="relative min-h-dvh bg-background text-foreground antialiased">
         <SyncEngineLoader />
