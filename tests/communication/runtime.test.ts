@@ -186,6 +186,7 @@ describe("communication runtime", () => {
       messageKey: "communication.event.radar.saved" as const,
       href: "/radar" as const,
       createdAt: 100,
+      attentionRequired: true,
     };
 
     expect(runtime.publishEvent(event)).toBe(true);
