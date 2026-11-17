@@ -172,6 +172,7 @@ Aucun délai de fréquence n'est imposé : la déduplication est déterministe e
 ### Parcours d'accueil et reconnaissance de l'identité
 
 - `HomeFoundation` reçoit la session depuis `useAuth`. L'état Auth est la source de vérité pour le libellé Invité/Membre ; le store local `useIdentity` ne doit pas, à lui seul, attribuer un statut de compte ou de confiance.
+- Le nom affiché conservé dans `useIdentity` est associé à l'ID du compte qui l'a fourni. L'accueil et l'aperçu du profil ne réutilisent jamais le nom mis en cache d'un autre compte sur un appareil partagé.
 - La page d'accueil propose au visiteur un accès au mode invité En direct et un accès à la création de compte. Le membre reconnu reçoit un accès à son profil et une explication courte de ce que son compte lui permet de gérer.
 - `OnboardingSheet` adapte sa dernière explication au statut de session, sans devenir un formulaire d'inscription.
 - L'inscription courte transmet le nom affiché dans les métadonnées Auth. Le déclencheur `handle_new_user` existant crée le profil avec cette valeur. Ce nom reste déclaratif et ne change pas le niveau UDI.
