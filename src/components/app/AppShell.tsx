@@ -14,6 +14,7 @@ import { SyncEngineLoader } from "./SyncEngineLoader";
 import { CommunicationRuntimeProvider } from "@/lib/communication/CommunicationRuntimeProvider";
 import { useAuth } from "@/domains/auth/model/useAuth";
 import { useI18n } from "@/lib/i18n/useI18n";
+import { resetReelActivityProjection } from "@/domains/presence/model/reel-activity-projection";
 
 const ReelBottomNav = lazy(() =>
   import("@/domains/presence/ui/ReelBottomNav").then((module) => ({
@@ -68,6 +69,10 @@ export function AppShell({ children }: { children: ReactNode }) {
     }),
     [assistantEnabled, assistantPreferencesHydrated, authLoading, locale, pathname, user],
   );
+
+  useEffect(() => {
+    resetReelActivityProjection();
+  }, [authLoading, user?.id]);
 
   useExperienceBoot();
 
