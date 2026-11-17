@@ -90,7 +90,8 @@ export const messages = {
     "communication.events.openFlash": "Ouvrir Flash",
     "communication.events.openRadar": "Ouvrir Radar",
     "communication.event.flash.title": "Flash",
-    "communication.event.flash.draftSaved": "Votre brouillon est enregistré sur cet appareil. Il sera synchronisé dès que possible.",
+    "communication.event.flash.draftSaved":
+      "Votre brouillon est enregistré sur cet appareil. Il sera synchronisé dès que possible.",
     "communication.event.flash.updated": "Votre Flash a bien été modifié sur cet appareil.",
     "communication.event.flash.archived": "Votre Flash a bien été archivé.",
     "communication.event.flash.deleted": "Votre Flash a bien été supprimé de cet appareil.",
@@ -1091,7 +1092,8 @@ export const messages = {
     "communication.events.openFlash": "Open Flash",
     "communication.events.openRadar": "Open Radar",
     "communication.event.flash.title": "Flash",
-    "communication.event.flash.draftSaved": "Your draft is saved on this device. It will sync as soon as possible.",
+    "communication.event.flash.draftSaved":
+      "Your draft is saved on this device. It will sync as soon as possible.",
     "communication.event.flash.updated": "Your Flash has been updated on this device.",
     "communication.event.flash.archived": "Your Flash has been archived.",
     "communication.event.flash.deleted": "Your Flash has been removed from this device.",
