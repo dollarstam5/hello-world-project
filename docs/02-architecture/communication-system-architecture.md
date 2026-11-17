@@ -160,12 +160,12 @@ Les modules suivants sont maintenant présents sur la branche :
 | `src/lib/communication/gate.ts` | Trie les demandes par priorité, conserve l'ordre d'origine à priorité égale et supprime les doublons via identifiant d'événement ou clé de répétition fournis | Ne mémorise pas lui-même les messages déjà livrés ; l'appelant fournit cet état |
 | `src/lib/communication/dispatch.ts` | Applique le filtre de priorité/déduplication puis résout le texte avec le formateur et le catalogue i18n existants | Prépare un lot ; ne déclenche pas de notification et ne modifie aucun état métier |
 | `src/lib/communication/delivery-session.ts` | Conserve en mémoire les identifiants réellement présentés après accusé de présentation explicite ; déduplication des lots suivants pendant la session | Aucun stockage local persistant ; aucun producteur de notifications moteur raccordé |
-| `src/lib/communication/runtime.ts` | Façade de session qui compose dispatch, gate et accusé de présentation ; expose aussi `resetSession()` | Utilisée par `AssistantNoticeLayer` ; les producteurs métier partagés des moteurs restent à raccorder |
+| `src/lib/communication/runtime.ts` | Façade de session qui compose dispatch, gate et accusé de présentation ; expose aussi `resetSession()` | Utilisée via le provider applicatif ; les producteurs métier partagés des moteurs restent à raccorder |\n| `src/lib/communication/CommunicationRuntimeProvider.tsx` | Monte une instance unique du runtime dans `AppShell` et expose `useCommunicationRuntime()` aux domaines | Le hook est disponible aux futurs adaptateurs ; aucun adaptateur métier partagé n'est encore activé |
 | `src/lib/communication/maturity.ts` | Sélectionne une posture conversationnelle selon le nombre agrégé de comptes inscrits : lancement, croissance, communauté établie, maturité | Fonction pure sans requête ; pas encore raccordée à une source de comptage ni aux composants de suggestions |
 | `tests/communication/gate.test.ts` | Vérifie priorités, doublons connus, déduplication dans un lot et limite d'affichage | Tests unitaires, pas tests d'intégration UI |
 | `tests/communication/dispatch.test.ts` | Vérifie la chaîne complète locale et l'interpolation des variables | Ne prouve pas encore le raccordement aux événements des moteurs |
 | `tests/communication/delivery-session.test.ts` | Vérifie l'accusé de présentation avant déduplication et l'isolation entre sessions | Tests unitaires du contrat de livraison |
-| `tests/communication/runtime.test.ts` | Vérifie la préparation, l'accusé explicite et l'isolation du runtime entre sessions | Ne couvre pas encore les producteurs métier Flash/Scan/Réel/Radar |
+| `tests/communication/runtime.test.ts` | Vérifie la préparation, l'accusé explicite, le reset et l'isolation du runtime entre sessions | Ne couvre pas encore les producteurs métier Flash/Scan/Réel/Radar |\n| `tests/communication/runtime-provider.test.tsx` | Vérifie que les composants d'une même application partagent une seule instance runtime | Ne prouve pas encore le raccordement des domaines |
 
 Le contrat d'appelant exige un identifiant d'événement stable provenant du domaine lorsqu'une déduplication inter-lots est nécessaire. Ne jamais utiliser un identifiant invité temporaire, un identifiant de rendu React ou une valeur générée à chaque rendu. Sans identifiant stable, la fonction ne peut dédupliquer que ce que l'appelant identifie explicitement.
 
@@ -298,7 +298,7 @@ Le pipeline est prêt à consommer un lot lorsque son domaine producteur sera di
 
 Le système ne crée ni événement métier, ni notification, ni compteur, ni historique. Les événements En direct déjà exposés dans ReelActivityPanel restent affichés par leur composant métier tant qu'aucun flux partagé de notifications n'est fourni. Il ne faut pas recopier ou agréger ces données dans le centre par supposition.
 
-**État de préparation :** catalogue, formatage, sources/surfaces typées, priorité, déduplication, runtime de session et accusé de présentation en mémoire sont implémentés. Le runtime est utilisé par les notices facultatives de l'assistant ; les producteurs de notifications du centre ne sont pas présents dans le dépôt inspecté. Le centre reste donc en état vide tant que ces producteurs ne sont pas raccordés.
+**État de préparation :** catalogue, formatage, sources/surfaces typées, priorité, déduplication, runtime de session et accusé de présentation en mémoire sont implémentés. Le runtime partagé est monté par `AppShell` et utilisé par les notices facultatives de l'assistant ; les producteurs de notifications du centre ne sont pas présents dans le dépôt inspecté. Le centre reste donc en état vide tant que ces producteurs ne sont pas raccordés.
 
 
 ### Posture selon la taille de la communauté
