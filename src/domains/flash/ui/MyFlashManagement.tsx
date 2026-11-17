@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
+import { publishFlashCommunicationEvent } from "../communication-events";
 import { flashesRepository, useLocalQuery } from "@/platform/offline";
 import { archiveFlash, deleteFlash, updateFlash } from "../data";
 
@@ -78,13 +79,7 @@ export function MyFlashManagement() {
 
     try {
       await archiveFlash(record.id);
-      communication.publishEvent({
-        id: `flash:${record.id}:archived`,
-        source: "flash",
-        titleKey: "communication.event.flash.title",
-        messageKey: "communication.event.flash.archived",
-        href: "/flash",
-      });
+      publishFlashCommunicationEvent(communication, record, "archived");
     } catch {
       setActionError(true);
     } finally {
@@ -97,13 +92,7 @@ export function MyFlashManagement() {
     setActionError(false);
     try {
       const updated = await updateFlash(record.id, editDraft);
-      communication.publishEvent({
-        id: `flash:${updated.id}:updated:${updated.updatedAt}`,
-        source: "flash",
-        titleKey: "communication.event.flash.title",
-        messageKey: "communication.event.flash.updated",
-        href: "/flash",
-      });
+      publishFlashCommunicationEvent(communication, updated, "updated");
       setEditingId(null);
       setEditDraft("");
     } catch {
@@ -119,13 +108,7 @@ export function MyFlashManagement() {
 
     try {
       await deleteFlash(record.id);
-      communication.publishEvent({
-        id: `flash:${record.id}:deleted`,
-        source: "flash",
-        titleKey: "communication.event.flash.title",
-        messageKey: "communication.event.flash.deleted",
-        href: "/flash",
-      });
+      publishFlashCommunicationEvent(communication, record, "deleted");
       setPendingDelete(null);
     } catch {
       setActionError(true);
