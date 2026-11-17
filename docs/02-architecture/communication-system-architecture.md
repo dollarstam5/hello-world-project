@@ -380,3 +380,19 @@ Le provider reçoit aussi une clé de comparaison de session d'identité éphém
 `CommunicationRequest` accepte désormais `requiresContext`. Lorsqu'il vaut `true`, le runtime ne prépare pas la demande tant que le snapshot commun n'est pas `ready`; la demande est retournée dans `suppressed` plutôt que présentée avec un contexte incomplet. Les demandes inline indépendantes du contexte conservent leur fonctionnement, notamment les erreurs et confirmations locales qui ne doivent pas être bloquées par l'hydratation Auth ou des préférences.
 
 Cette garde ne remplace pas les contrôles métier : chaque adaptateur reste responsable de vérifier la source, les permissions, la disponibilité de la fonctionnalité et l'état réel avant de soumettre sa demande. Un contexte prêt n'est jamais une autorisation métier.
+
+
+### Découplage de l'opt-in Assistant et du contexte général
+
+La disponibilité du contexte commun (`ready`) dépend maintenant uniquement de l'identité résolue, de la route et de la langue. L'état de préférence Assistant est exposé séparément via `assistantPreferenceReady` et `assistantEnabled`. Ainsi, une préférence Assistant encore en hydratation ne bloque pas une communication métier qui n'en dépend pas.
+
+Les demandes peuvent déclarer `requiresAssistant`. Le runtime ne prépare ces demandes que si le contexte confirme explicitement `assistantEnabled === true`. Une valeur inconnue, une préférence désactivée ou un contexte absent les maintient dans `suppressed`. L'opt-in Assistant ne devient donc jamais une condition cachée pour les notifications métier, et les messages Assistant ne peuvent pas contourner le choix de la personne.
+
+### Décision d'intégration des moteurs après audit
+
+- **Flash** : l'enregistrement d'un brouillon est une confirmation locale d'une action demandée par la personne. Ce n'est pas une notification globale.
+- **Scan** : le résultat, l'état vide et les erreurs appartiennent à la session de scan déclenchée par la personne. Aucun événement asynchrone global n'est produit par ce parcours.
+- **Radar** : enregistrer, modifier ou annuler une intention privée sont des confirmations locales. Le matching automatique et les alertes ne sont pas établis ; aucun statut `matched` ne doit être transformé en notification sans preuve d'un traitement métier réel.
+- **Réel** : bips reçus et relations proviennent de projections métier autorisées. Le contrôleur recharge les projections depuis ses API/RPC après événements Realtime pour les membres ; les sessions invitées utilisent leurs services temporaires et un rafraîchissement local. Le panneau Réel reste propriétaire de ces données aujourd'hui.
+
+**Conséquence :** aucun adaptateur global Flash/Scan/Radar n'est ajouté pour les confirmations déjà affichées localement. Le premier candidat à une projection partagée est une lecture dérivée des bips/relations Réel, mais elle doit être extraite du contrôleur sans créer un second abonnement Realtime, un polling supplémentaire, une deuxième requête RPC, ni exposer les identifiants temporaires invités. Le centre global ne doit pas lancer ses propres lectures tant qu'un contrat de projection partagé et son cycle de vie ne sont pas définis.
