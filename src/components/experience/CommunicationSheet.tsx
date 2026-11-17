@@ -97,7 +97,11 @@ export function CommunicationSheet({
                         href={event.href}
                         className="mt-3 inline-flex min-h-10 items-center text-sm font-medium text-primary underline-offset-4 hover:underline"
                       >
-                        {t(event.source === "flash" ? "communication.events.openFlash" : "communication.events.openRadar")}
+                        {t(
+                          event.source === "flash"
+                            ? "communication.events.openFlash"
+                            : "communication.events.openRadar",
+                        )}
                       </a>
                     </div>
                     {event.readAt === null ? (
