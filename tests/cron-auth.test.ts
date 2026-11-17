@@ -23,7 +23,9 @@ describe("authentification des tâches planifiées", () => {
   it("refuse une requête sans bearer token", async () => {
     vi.stubEnv("LOVABLE_CRON_SECRET", currentSecret);
 
-    const response = await authenticateCronRequest(new Request("https://vitalis.test/api/cron/maintenance"));
+    const response = await authenticateCronRequest(
+      new Request("https://vitalis.test/api/cron/maintenance"),
+    );
 
     expect(response?.status).toBe(401);
   });
