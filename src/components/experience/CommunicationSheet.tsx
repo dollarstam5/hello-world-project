@@ -7,6 +7,12 @@ import { useReelActivityProjection } from "@/domains/presence/model/reel-activit
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
 import { useNetworkStatus } from "@/lib/platform/useNetworkStatus";
 
+export function getReelActivityStatusKey(online: boolean):
+  | "communication.reel.notLoaded"
+  | "communication.reel.offline" {
+  return online ? "communication.reel.notLoaded" : "communication.reel.offline";
+}
+
 const AssistantTab = lazy(() =>
   import("@/domains/assistant/ui/AssistantTab").then((module) => ({
     default: module.AssistantTab,
@@ -199,7 +205,7 @@ export function CommunicationSheet({
             </div>
           ) : (
             <p className="text-center" role="status" aria-live="polite">
-              {t(online ? "communication.reel.notLoaded" : "communication.reel.offline")}
+              {t(getReelActivityStatusKey(online))}
             </p>
           )}
           <a
