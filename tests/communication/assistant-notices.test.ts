@@ -8,7 +8,9 @@ import {
 } from "@/lib/app/assistant-notices";
 
 describe("assistant welcome notice", () => {
-  it("persists the one-time welcome only after it is presented", () => {
+  it(
+    "persists the one-time welcome only after it is presented",
+    () => {
     window.localStorage.removeItem("vitalis.assistant.welcome-shown");
     useAssistantPreferences.setState({ enabled: false });
     useAssistantNotices.setState({ notice: null });
@@ -26,6 +28,7 @@ describe("assistant welcome notice", () => {
 
     dismissAssistantNotice();
     publishAssistantWelcome();
-    expect(useAssistantNotices.getState().notice).toBeNull();
-  });
+      expect(useAssistantNotices.getState().notice).toBeNull();
+    },
+  );
 });
