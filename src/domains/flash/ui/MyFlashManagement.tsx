@@ -84,7 +84,6 @@ export function MyFlashManagement() {
         titleKey: "communication.event.flash.title",
         messageKey: "communication.event.flash.archived",
         href: "/flash",
-        attentionRequired: false,
       });
     } catch {
       setActionError(true);
@@ -104,7 +103,6 @@ export function MyFlashManagement() {
         titleKey: "communication.event.flash.title",
         messageKey: "communication.event.flash.updated",
         href: "/flash",
-        attentionRequired: false,
       });
       setEditingId(null);
       setEditDraft("");
@@ -127,7 +125,6 @@ export function MyFlashManagement() {
         titleKey: "communication.event.flash.title",
         messageKey: "communication.event.flash.deleted",
         href: "/flash",
-        attentionRequired: false,
       });
       setPendingDelete(null);
     } catch {
