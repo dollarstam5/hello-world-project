@@ -7,7 +7,6 @@ import {
 } from "@/lib/ai/assistant-rate-limit.server";
 import {
   hasSensitiveUserContent,
-  MAX_ASSISTANT_OUTPUT_CHARS,
   safeAssistantRoute,
   validateConversation,
 } from "@/lib/ai/assistant-policy";
