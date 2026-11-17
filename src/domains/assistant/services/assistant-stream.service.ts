@@ -1,6 +1,7 @@
 import type { AssistantFailure } from "@eco/core-contracts";
 
 export interface StreamRequest {
+  requestId: string;
   locale: "fr" | "en";
   route?: string;
   messages: { role: "user" | "assistant"; content: string }[];
@@ -17,6 +18,7 @@ function reasonFor(status: number): AssistantFailure {
   if (status === 429) return "rate_limited";
   if (status === 402 || status === 403) return "daily_limit";
   if (status === 400) return "invalid_request";
+  if (status === 422) return "unsafe_request";
   return "provider_error";
 }
 
@@ -61,6 +63,23 @@ export async function streamAssistant(
         onDelta(full);
       } else if (event.type === "response.failed" || event.type === "error") {
         throw new AssistantStreamError("provider_error");
+      }
+    }
+  }
+  buffer += decoder.decode();
+  if (buffer.startsWith("data:")) {
+    const payload = buffer.slice(5).trim();
+    if (payload && payload !== "[DONE]") {
+      try {
+        const event = JSON.parse(payload) as { type?: string; delta?: string };
+        if (event.type === "response.output_text.delta" && event.delta) {
+          full += event.delta;
+          onDelta(full);
+        } else if (event.type === "response.failed" || event.type === "error") {
+          throw new AssistantStreamError("provider_error");
+        }
+      } catch (error) {
+        if (error instanceof AssistantStreamError) throw error;
       }
     }
   }
