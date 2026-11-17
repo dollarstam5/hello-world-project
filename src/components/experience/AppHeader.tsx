@@ -4,13 +4,17 @@ import { Bell, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProfileQuickPreview } from "./ProfileQuickPreview";
 import { useIdentity } from "@/lib/experience/identity";
+import { useAuth } from "@/domains/auth/model/useAuth";
 import { useI18n } from "@/lib/i18n/useI18n";
 
 export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => void }) {
   const { t } = useI18n();
   const [profileOpen, setProfileOpen] = useState(false);
+  const { user } = useAuth();
   const displayName = useIdentity((state) => state.displayName);
-  const avatarInitials = displayName
+  const displayNameOwnerId = useIdentity((state) => state.displayNameOwnerId);
+  const visibleDisplayName = displayNameOwnerId === user?.id ? displayName : undefined;
+  const avatarInitials = visibleDisplayName
     ?.trim()
     .split(/\s+/)
     .slice(0, 2)
