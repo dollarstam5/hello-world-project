@@ -1,6 +1,4 @@
-import {
-  createCommunicationDeliverySession,
-} from "@/lib/communication/delivery-session";
+import { createCommunicationDeliverySession } from "@/lib/communication/delivery-session";
 import {
   prepareCommunicationMessages,
   type CommunicationDispatchResult,
