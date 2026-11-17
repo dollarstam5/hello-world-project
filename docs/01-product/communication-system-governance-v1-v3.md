@@ -372,3 +372,12 @@ Pour chaque évolution, la revue doit apporter des preuves distinctes :
 La documentation de livraison doit préciser les scénarios exécutés, les résultats, les limites et le statut de chaque axe. « Non testé » ou « non mesuré » signifie **non vérifié**, et non « validé ». L'échec d'un seul axe bloque l'acceptation de l'évolution jusqu'à correction ou désactivation explicite.
 
 Cette règle est une exigence de gouvernance à appliquer à la suite du chantier. Elle ne certifie pas rétroactivement le code existant : chaque capacité actuelle devra être évaluée à partir de preuves réelles, sans confondre règle documentée et fonctionnalité implémentée.
+
+
+## Mise en œuvre du Context Resolver — statut contrôlé
+
+La première tranche du Context Resolver est implémentée dans `src/lib/communication/context.ts` et intégrée au runtime partagé. Elle normalise uniquement les faits déjà fournis par l'application : état Auth (chargement/invité/membre), route sans query/fragment, langue active, préférence assistant hydratée et états séparés des permissions découverte/présence.
+
+Le contexte reste explicitement incomplet lorsque l'une des sources obligatoires manque. « Inconnu » n'est jamais équivalent à « autorisé » et « Auth en chargement » n'est jamais équivalent à « invité ». Le runtime expose `updateContext()`, `getContext()` et efface le contexte lors de `resetSession()`.
+
+**Ce qui n'est pas encore fait :** alimentation automatique par le fournisseur applicatif, raccordement des adaptateurs des moteurs, sélection de suggestions et alimentation du centre global. La présence du resolver ne signifie donc pas que les suggestions contextuelles ou les notifications globales sont activées. Les prochains raccordements devront apporter leurs propres preuves de source, de permission, de destination, de fréquence et de tests de bout en bout.
