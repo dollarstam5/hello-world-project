@@ -416,3 +416,7 @@ Cette tranche réutilise les lectures, abonnements Realtime membres et le pollin
 **Limite connue et explicitement assumée :** le centre affiche le dernier résumé effectivement chargé par le moteur. Si le moteur n'a pas chargé l'activité dans la session courante, le centre conserve son état vide ; il ne déclenche pas une lecture autonome. Le déplacement futur de la propriété des abonnements vers un service applicatif partagé n'est pas inclus dans cette tranche et devra être évalué séparément, sans duplication de trafic.
 
 Cette projection est informative uniquement : elle ne crée pas de notifications, ne remplace pas les décisions métier Réel et ne rend pas les actions de bip ou de relation accessibles depuis le centre.
+
+### Exception contrôlée — événements métier temps réel déjà existants
+
+Le principe « pas d'abonnement temps réel ajouté pour faire vivre artificiellement le centre » n'interdit pas de réutiliser un canal privé déjà nécessaire au moteur. Pour Réel, le canal membre existant est désormais possédé par un pont unique monté au niveau de l'application ; il transmet des événements serveur minimaux au runtime commun. Il ne crée pas de canal par onglet, ne remplace pas les lectures métier et n'ajoute pas de polling membre. Le mode invité reste hors de ce canal. Toute extension à un autre moteur doit démontrer qu'elle réutilise une source serveur et un abonnement déjà justifiés par le métier, ou faire l'objet d'une décision technique distincte.
