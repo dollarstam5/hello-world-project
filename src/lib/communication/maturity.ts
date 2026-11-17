@@ -1,8 +1,4 @@
-export type CommunicationMaturityStage =
-  | "launch"
-  | "growth"
-  | "established"
-  | "mature";
+export type CommunicationMaturityStage = "launch" | "growth" | "established" | "mature";
 
 export interface CommunicationMaturityProfile {
   stage: CommunicationMaturityStage;
