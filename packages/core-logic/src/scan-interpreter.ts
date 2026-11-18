@@ -33,7 +33,7 @@ const INTENT_RULES: readonly IntentRule[] = [
   { intent: "place", category: null, need: "lieu", pattern: /\b(endroit|lieu|espace|ou aller|adresse)\b/ },
   { intent: "social", category: "personal", need: "rencontre ou compagnie", pattern: /\b(rencontr|ami|compagnie|discut|partager)\b/ },
   { intent: "help", category: "personal", need: "aide", pattern: /\b(aide|aider|assistance|coup de main|besoin de quelqu un)\b/ },
-  { intent: "service", category: null, need: "service", pattern: /\b(service|quelqu un|personne|prestataire)\b/ },
+  { intent: "service", category: null, need: "service", pattern: /\b(service|prestataire)\b/ },
 ];
 
 const REQUIRED_PATTERNS: readonly RegExp[] = [
