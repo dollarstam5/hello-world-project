@@ -90,6 +90,18 @@ const IMMEDIATE_PATTERN =
 const SOON_PATTERN =
   /\b(dans (?:[0-9]+|un|une|deux|trois|quatre|cinq|six|sept|huit|neuf|dix) (?:minutes?|heures?|jours?)|dans [0-9]+ ?h|aujourd hui|ce soir|cet apres midi|demain)\b/;
 
+
+const TASK_PATTERN =
+  /\\b(demenager|deplacement|deplacer|reparer|depanner|transporter|emmener|conduire|acheter|trouver|livrer|installer|nettoyer|cuisiner|apprendre|chercher|porter)\\b/g;
+const OBJECT_PATTERN =
+  /\\b(moto|voiture|scooter|velo|telephone|ordinateur|meubles?|cartons?|maison|appartement|chambre|repas|medicaments?|document|colis|bagages?|eau|nourriture)\\b/g;
+const DISTANCE_PATTERN =
+  /\\b(?:dans un rayon de|a moins de|moins de|dans|a) [0-9]+(?:[.,][0-9]+)? ?(?:km|kilometres?|m|metres?)\\b/;
+const QUANTITY_PATTERN =
+  /\\b[0-9]+ (?:personnes?|meubles?|cartons?|chambres?|pieces?|kilos?|kg|litres?|articles?|colis|bagages?)\\b/;
+const LOCATION_PATTERN =
+  /\\b(?:pres de|a cote de|autour de|dans le quartier de|dans la zone de|a l adresse de|a) ([a-z0-9]+(?: [a-z0-9]+){0,3})\\b/;
+
 function extractMatches(text: string, patterns: readonly RegExp[]): string[] {
   const matches = new Set<string>();
   for (const pattern of patterns) {
@@ -127,6 +139,11 @@ export function interpretScanRequest(text: string): ScanInterpretation {
       : null;
   const requiredCriteria = extractMatches(normalizedText, REQUIRED_PATTERNS);
   const preferences = extractMatches(normalizedText, PREFERENCE_PATTERNS);
+  const taskContext = extractMatches(normalizedText, [TASK_PATTERN]);
+  const objectContext = extractMatches(normalizedText, [OBJECT_PATTERN]);
+  const locationContext = normalizedText.match(LOCATION_PATTERN)?.[1] ?? null;
+  const distanceContext = normalizedText.match(DISTANCE_PATTERN)?.[0] ?? null;
+  const quantityContext = normalizedText.match(QUANTITY_PATTERN)?.[0] ?? null;
   const confidence: ScanConfidence = !normalizedText
     ? "low"
     : rule && normalizedText.length >= 8
@@ -141,7 +158,12 @@ export function interpretScanRequest(text: string): ScanInterpretation {
     primaryNeed,
     intent: rule?.intent ?? "unknown",
     category: null,
-    entities: [],
+    entities: [...new Set([...taskContext, ...objectContext])],
+    taskContext,
+    objectContext,
+    locationContext,
+    distanceContext,
+    quantityContext,
     requiredCriteria,
     preferences,
     timeContext,
