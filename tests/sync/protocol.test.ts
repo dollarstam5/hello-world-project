@@ -168,7 +168,7 @@ describe("sync protocol validation", () => {
           areaLabel: null,
           radiusKm: 10,
           startsAt: 1_700_000_000_000,
-          expiresAt: 1_700_864_000_000,
+          expiresAt: 1_700_000_000_000 + 10 * 24 * 60 * 60 * 1000,
           status: "draft",
         },
       }],
