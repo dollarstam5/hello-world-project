@@ -1,11 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import type { ScanQuery, ScanResult } from "@eco/core-contracts";
-import {
-  buildScanSourceEvidence,
-  interpretScanRequest,
-  selectScanResults,
-} from "@eco/core-logic";
+import { buildScanSourceEvidence, interpretScanRequest, selectScanResults } from "@eco/core-logic";
 import { scanNearby } from "../api/scan.functions";
 import { subscribeToFlashChanges } from "../services/scan-realtime.service";
 import {
