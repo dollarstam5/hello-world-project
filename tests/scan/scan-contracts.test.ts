@@ -47,7 +47,6 @@ describe("Scan paged-search contracts", () => {
         latitude: 4.0511,
         longitude: 9.7679,
         radiusKm: 5,
-        limit: 50,
       },
       pageSize: 20,
       cursor: "opaque-server-cursor",
@@ -55,7 +54,6 @@ describe("Scan paged-search contracts", () => {
 
     expect(request.pageSize).toBe(20);
     expect(request.cursor).toBe("opaque-server-cursor");
-    expect(request.query.limit).toBe(50);
   });
 
   it("can report a partial result when the candidate budget is reached", () => {
