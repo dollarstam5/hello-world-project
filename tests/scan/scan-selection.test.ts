@@ -3,6 +3,7 @@ import type { ScanResult } from "../../packages/core-contracts/src/scan";
 import {
   assessScanCandidate,
   rankScanAssessments,
+  selectScanResults,
 } from "../../packages/core-logic/src/scan";
 import { interpretScanRequest } from "../../packages/core-logic/src/scan-interpreter";
 
@@ -69,6 +70,25 @@ describe("Scan candidate qualification", () => {
     });
 
     expect(assessment.level).toBe("alternative");
+  });
+
+  it("uses evidence attached to source results through the selection entry point", () => {
+    const interpretation = interpretScanRequest("Je cherche un mécanicien");
+    const sourceResult: ScanResult = {
+      ...result("source-confirmed"),
+      evidence: {
+        needMatch: "match",
+        confirmedRequiredCriteria: [],
+        refutedRequiredCriteria: [],
+        unknownRequiredCriteria: [],
+        matchedPreferences: [],
+      },
+    };
+
+    const selected = selectScanResults([sourceResult], interpretation);
+
+    expect(selected).toHaveLength(1);
+    expect(selected[0].level).toBe("exact");
   });
 
   it("orders qualification groups before proximity and freshness", () => {
