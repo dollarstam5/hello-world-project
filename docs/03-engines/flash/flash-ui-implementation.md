@@ -75,6 +75,16 @@ Les règles de visibilité par publication, l'affichage sélectif des champs du 
 
 La reconnaissance vocale dépend du navigateur et de ses permissions ; elle ne constitue pas une promesse de traitement vocal universel hors ligne.
 
+## Conformité au principe fondamental P0 — écart identifié
+
+Référence : [principe fondamental de traitement des demandes partielles](../../00-foundation/vitalis-core-principles.md).
+
+L'inspection du parcours actuel montre que `saveFlashDraft` refuse l'enregistrement si `scope` ou `urgency` est absent ; le bouton de sauvegarde applique les mêmes deux conditions. Le texte et les autres propositions sont donc bloqués par deux choix qui doivent être évalués comme compléments facultatifs pour un brouillon.
+
+**Écart P0 à corriger avant de considérer le parcours conforme :** permettre d'enregistrer un brouillon avec le texte exploitable et le compte autorisé, sans imposer une portée ni une urgence. Les valeurs absentes doivent rester explicitement non renseignées et ne pas être inventées. Les exigences de publication distante restent distinctes et pourront demander les informations strictement nécessaires au moment de publier.
+
+Cette correction concerne le parcours de brouillon local ; elle n'active pas la publication distante et ne modifie aucun droit d'accès.
+
 ## Vérifications restantes avant clôture de la phase A
 
 - [ ] Tests de parcours d'interface : saisie, correction des propositions, validation, sauvegarde et affichage dans « Mes Flashs ».
