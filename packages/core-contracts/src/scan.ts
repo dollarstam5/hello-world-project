@@ -25,3 +25,30 @@ export interface ScanResult {
   /** Optional, consent-gated public author summary. */
   authorPreview?: PublicProfilePreview | null;
 }
+
+/** Evidence supplied by a real source; absent evidence must remain unknown. */
+export type ScanEvidenceStatus = "confirmed" | "refuted" | "unknown";
+export type ScanNeedMatch = "match" | "partial" | "no_match" | "unknown";
+
+export interface ScanCandidateEvidence {
+  /** Whether source data supports the user's primary need. */
+  needMatch: ScanNeedMatch;
+  /** Exact normalized criteria confirmed by source data. */
+  confirmedRequiredCriteria: string[];
+  /** Exact normalized criteria contradicted by source data. */
+  refutedRequiredCriteria: string[];
+  /** Criteria the source cannot verify. */
+  unknownRequiredCriteria: string[];
+  /** Preferences confirmed by source data. */
+  matchedPreferences: string[];
+}
+
+/** A result's qualification is separate from its relevance score. */
+export type ScanMatchLevel = "exact" | "close" | "alternative" | "unverified";
+
+export interface ScanCandidateAssessment {
+  result: ScanResult;
+  level: ScanMatchLevel;
+  evidence: ScanCandidateEvidence;
+  explanationCodes: string[];
+}
