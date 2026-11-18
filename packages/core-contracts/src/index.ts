@@ -17,4 +17,5 @@ export * from "./assistant";
 export * from "./flash";
 export * from "./profile-preview";
 export * from "./scan";
+export * from "./scan-interpretation";
 export * from "./radar";
