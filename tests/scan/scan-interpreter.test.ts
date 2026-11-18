@@ -78,6 +78,23 @@ describe("Scan interpreter — human need first", () => {
     expect(parsed.normalizedText).toContain("moto");
   });
 
+  it("recognizes place-finding requests without forcing a category", () => {
+    const requests = [
+      "Où puis-je trouver un endroit pour sortir ce soir ?",
+      "Où trouver un lieu tranquille ?",
+    ];
+    const parsed = requests.map(interpretScanRequest);
+    expect(parsed.map((item) => item.intent)).toEqual(["activity", "place"]);
+    expect(parsed.every((item) => item.category === null)).toBe(true);
+  });
+
+  it("recognizes repair needs phrased as a direct request for someone", () => {
+    const parsed = interpretScanRequest("Où trouver quelqu'un pour réparer mon téléphone ?");
+    expect(parsed.intent).toBe("repair");
+    expect(parsed.category).toBeNull();
+    expect(parsed.primaryNeed).toContain("reparer mon telephone");
+  });
+
   it("returns a safe empty interpretation for empty input", () => {
     const parsed = interpretScanRequest("");
     expect(parsed.primaryNeed).toBeNull();
