@@ -14,14 +14,14 @@ Chaque moteur possède son propre périmètre, son action centrale, ses commande
 | --- | --- | --- | --- |
 | **En direct** (anciennement En direct) | [reel/](./reel/) | `src/domains/presence/` | Profil et présence de l'utilisateur au centre de l'expérience |
 | **Flash** | [flash/](./flash/) | `src/domains/flash/` | Démarrer un Flash |
-| **Scan** | [scan/](./scan/) | `src/domains/scan/` | Démarrer le scanner des possibilités |
+| **Scan** | [scan/](./scan/) | `src/domains/scan/` | Explorer l'environnement et ses possibilités |
 | **Radar** | [radar/](./radar/) | `src/domains/radar/` | Démarrer une mission de recherche d'opportunités |
 
 ### Dossiers de cadrage
 
 - **En direct** : [architecture UI](./reel/reel-ui-architecture.md), [visibilité du profil](./reel/instant-profile-visibility.md), [politique d'accès](./reel/reel-access-policy.md), [sessions invitées](./reel/reel-guest-session-architecture.md), [traçabilité](./reel/reel-traceability-matrix.md), [état d'implémentation V1](./reel/reel-v1-implementation-status.md).
 - **Flash** : [fiche de cadrage](./flash/engine-charter.md).
-- **Scan** : [fiche de cadrage](./scan/engine-charter.md).
+- **Scan** : [décisions produit V1 validées](./scan/SCAN_PRODUCT_DECISIONS_V1.md) ; [référence produit, UI/UX et technique V1](./scan/SCAN_ENGINE_REFERENCE_V1.md) — consolidation de la vision historique, des règles actuelles, des sources, de la sécurité et des preuves de validation ; [fiche de cadrage](./scan/engine-charter.md) ; [état technique](./scan/SCAN_MODULE.md) ; [vision historique](./scan/12-VITALA-UJ-09-SCAN-ENGINE.md).
 - **Radar** : [fiche de cadrage](./radar/engine-charter.md), [module Radar existant](./radar/RADAR_MODULE.md), [état d'implémentation V1](./radar/radar-v1-implementation-status.md).
 
 Les fiches de cadrage distinguent les décisions produit, les sujets encore ouverts et les fonctions effectivement vérifiées dans le runtime.

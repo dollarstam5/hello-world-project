@@ -1,8 +1,11 @@
 # Moteur Scan
 
-Scan découvre les Flash actifs dans un rayon borné. Les coordonnées précises des Flash sont stockées côté serveur et ne sont accessibles que selon les règles de sécurité prévues ; la position du scanner est transmise temporairement au RPC et n'est pas persistée par ce contrat.
+**Cible produit :** Scan est un scanner intelligent de besoins humains et d'environnement. Il comprend la demande, tient compte de la position ou zone de l'utilisateur lorsque pertinent et autorisé, puis présente en priorité les résultats selon les critères reçus. Propositions, suggestions et similaires restent complémentaires et distincts ; une diversité intelligente n'intervient qu'entre options de pertinence comparable. Ce périmètre produit n'est pas limité aux restaurants, commerces ou lieux.
 
-Le résultat expose une distance et un libellé de zone, jamais la latitude ou la longitude précises. Les recherches sont limitées à 50 résultats et exclues du cache PWA. Le hook utilise un abonnement Supabase nettoyé au démontage, conserve la dernière requête dans une référence stable et bloque les exécutions concurrentes afin qu'un événement Realtime ne crée ni abonnement en boucle ni rafale de scans. Le refus GPS conserve le mode de recherche par zone lorsque celui-ci est disponible.
+
+**Runtime actuellement observé :** le parcours raccordé décrit ci-dessous découvre les Flash actifs dans un rayon borné. Les coordonnées précises des Flash sont stockées côté serveur et ne sont accessibles que selon les règles de sécurité prévues ; la position du scanner est transmise temporairement au RPC et n'est pas persistée par ce contrat.
+
+Le résultat expose une distance et un libellé de zone, jamais la latitude ou la longitude précises. Le serveur limite actuellement la réponse à 50 résultats ; l'écran examiné présente au maximum 20 résultats. Les recherches sont exclues du cache PWA. Le hook utilise un abonnement Supabase nettoyé au démontage, conserve la dernière requête dans une référence stable et bloque les exécutions concurrentes afin qu'un événement Realtime ne crée ni abonnement en boucle ni rafale de scans. Dans l'écran examiné lors de l'audit, le refus GPS affiche une erreur ; aucun parcours de sélection manuelle de lieu ou de zone de repli n'a été vérifié. La sélection manuelle d'un lieu public fait partie de la cible produit, mais ne doit pas être considérée comme déjà raccordée.
 
 ## Limites actuellement vérifiées
 
@@ -10,6 +13,9 @@ Le résultat expose une distance et un libellé de zone, jamais la latitude ou l
 - Le RPC `scan_public_flashes` calcule la distance et applique le filtre `distance_km <= p_radius_km` lorsqu'un rayon est fourni.
 - Le plafond technique actuellement vérifié est donc de **50 km**, et non 25 km.
 - Ces limites techniques ne définissent pas les choix qui doivent être proposés dans l'interface : les valeurs de rayon V1 restent une décision produit ouverte.
-- La limite de 50 résultats est appliquée par le validateur et par le RPC.
+- Le plafond serveur de 50 résultats est appliqué par le validateur et par le RPC ; l'interface examinée limite l'affichage à 20 résultats.
 
 Le flux public utilise `list_public_flashes`, une projection SQL bornée accessible aux visiteurs. Cette projection ne retourne ni corps détaillé, ni auteur, ni coordonnées. En cas de perte réseau, l'interface peut revenir aux Flash actifs déjà présents dans IndexedDB et retenter le flux public lorsque la connexion revient.
+
+## Cible produit V1 validée — 2026-11-18
+Les règles de Scan V1 sont consolidées dans [SCAN_PRODUCT_DECISIONS_V1.md](./SCAN_PRODUCT_DECISIONS_V1.md), sections 31 et 32. Paramètres clés : rayon maximum produit 2 km (runtime actuellement observé différent et à réconcilier) ; rayon initial adaptatif ; choix manuel d'un lieu public si GPS refusé ; historique membre 3 jours ; cache local 24 h / 5 Mo ; sélection par catégories adaptative et chargement progressif ; besoin humain, critères prioritaires et diversité intelligente à pertinence comparable. Ces paramètres sont des décisions produit, **pas des fonctionnalités runtime confirmées**. Les tests doivent prouver les limites server-side, la purge, les quotas, les permissions et le parcours mobile avant toute déclaration de conformité.

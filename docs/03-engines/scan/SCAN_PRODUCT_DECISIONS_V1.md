@@ -107,40 +107,31 @@ Scan distingue trois niveaux de résultats :
 ### Portée de cette décision
 
 Cette règle fixe la qualification produit cible V1. Les seuils éventuels, les règles détaillées de passage d'un niveau à l'autre et les facteurs de départage doivent être spécifiés et testés avant implémentation. Aucun score numérique arbitraire ne doit être inventé.
-## 7. Pistes lorsque aucun résultat exact n'est disponible — règle V1 validée
+## 7. Pistes lorsque aucun résultat exact n'est disponible — présentation hybride validée
 
-Lorsque Scan ne trouve aucune correspondance exacte, il peut proposer des pistes d'élargissement, mais ne doit jamais modifier la recherche automatiquement.
+Lorsque Scan ne trouve aucun résultat exact, il ne doit ni s'arrêter sur un écran vide ni présenter des pistes moins pertinentes comme si elles répondaient à la demande.
 
-### Suggestions possibles
+### Présentation hybride V1
 
-Selon les critères réellement présents dans la recherche, Scan peut proposer une ou plusieurs actions pertinentes :
-
-- élargir le rayon géographique ;
-- modifier la période ou le moment recherché ;
-- retirer ou assouplir une préférence facultative ;
-- consulter une catégorie voisine ;
-- transformer le besoin en mission Radar.
-
-### Contrôle laissé à l'utilisateur
-
-- Chaque piste est une proposition explicite, compréhensible et facultative.
-- L'utilisateur choisit s'il souhaite l'appliquer ; il peut aussi conserver sa recherche initiale ou l'abandonner.
-- Scan ne change jamais seul le rayon, la période, les critères, la catégorie ou le moteur utilisé.
-- Une exigence stricte ne peut pas être rétrogradée silencieusement en préférence. Si l'utilisateur souhaite l'assouplir, le changement doit être explicite et confirmé.
-- Le passage vers Radar nécessite une confirmation distincte, car il transforme une recherche ponctuelle en démarche suivie.
-- Les résultats obtenus après élargissement doivent indiquer clairement le critère modifié et conserver la qualification exacte/proche/alternative définie plus haut.
-- Les suggestions doivent être pertinentes au regard de la recherche et des données réellement disponibles ; ne pas proposer une source ou une catégorie comme consultable si elle n'est pas raccordée et validée.
+- Afficher les correspondances exactes en premier, lorsqu'elles existent.
+- Présenter les correspondances proches dans une section distincte, avec la différence constatée clairement expliquée.
+- Garder les alternatives moins proches dans une section séparée, secondaire et consultable sans surcharger l'écran.
+- Si aucun résultat exact n'existe, l'indiquer clairement et présenter les pistes pertinentes déjà obtenues, sans prétendre qu'elles satisfont la demande initiale.
+- Scan ne modifie pas silencieusement les critères stricts, le rayon, la période, la catégorie ou les filtres.
+- Toute nouvelle recherche avec des critères assouplis exige l'accord de l'utilisateur.
+- Ne déclencher automatiquement ni une recherche élargie, ni une mission Radar, ni un suivi.
 
 ### Historique de validation
 
-- Validation utilisateur : en l'absence de résultat exact, Scan peut suggérer automatiquement des pistes d'élargissement, mais laisse toujours l'utilisateur décider avant toute modification de recherche ou conversion en mission Radar.
+- La distinction exact/proche/alternative est validée.
+- Validation utilisateur : présentation hybride (C) — correspondances proches directement visibles, alternatives moins proches séparées et secondaires, avec indication honnête lorsqu'aucune correspondance exacte n'a été trouvée. Aucun critère strict ou périmètre n'est assoupli sans confirmation.
 
 
 ## 8. États de disponibilité des sources — règle V1 validée
 
 Scan doit distinguer explicitement trois situations de recherche. Le statut décrit ce qui s'est réellement passé pendant l'exécution ; il ne doit jamais être déduit de l'absence de résultats seule.
 
-1. **Aucun résultat trouvé** — les sources prévues et disponibles pour cette recherche ont répondu correctement et ont été consultées, mais aucune ne retourne de résultat correspondant aux critères. Scan peut alors proposer les pistes d'élargissement de la section 7.
+1. **Aucun résultat trouvé** — les sources prévues et disponibles pour cette recherche ont répondu correctement et ont été consultées, mais aucune ne retourne de résultat correspondant aux critères. Scan ne propose des pistes d'élargissement que selon le comportement qui sera confirmé à la section 7 ; aucune suggestion automatique n'est présumée.
 2. **Recherche partielle** — au moins une source pertinente n'a pas pu être consultée, a échoué ou a retourné des données incomplètes, tandis qu'une ou plusieurs autres sources ont répondu. Scan présente les résultats disponibles comme partiels, identifie les sources effectivement consultées et signale les limites connues. Il ne prétend pas avoir tout vérifié.
 3. **Recherche impossible** — aucune source exploitable n'a fourni de réponse utilisable pour cette recherche. Scan explique simplement que la recherche n'a pas pu être effectuée et, si possible, indique la cause connue ainsi qu'une action réaliste (réessayer, vérifier la connexion ou revenir plus tard). Il ne présente pas cette situation comme une absence de résultats.
 
@@ -400,12 +391,13 @@ Les contrats d'événements de cycle de vie par source, la fréquence de revalid
 
 Scan et Radar sont deux moteurs distincts. Leur différence ne tient pas seulement à la taille du rayon : elle concerne aussi le point géographique utilisé et le caractère ponctuel ou suivi de la recherche.
 
-### Scan — explorer les environs de sa position actuelle
+### Scan — explorer ponctuellement autour d'un point de référence choisi
 
 - Scan effectue une exploration ponctuelle autour d'un point de référence explicitement choisi pour ce lancement : position GPS actuelle autorisée, zone approximative si elle est réellement prise en charge, ou lieu public sélectionné manuellement.
 - Son rayon est limité et plus restreint que les possibilités de recherche géographique prévues pour Radar.
 - Si l'utilisateur se déplace vers un autre quartier ou une autre ville, il peut lancer une nouvelle exploration depuis sa nouvelle position ou sélectionner un autre lieu public. Chaque exploration reste distincte et ses résultats ne sont pas mélangés.
-- Scan est une recherche ponctuelle déclenchée par l'utilisateur. Il ne surveille pas en continu les lieux déjà visités ou les zones précédemment scannées.
+- Scan est une recherche ponctuelle déclenchée par l'utilisateur. Il ne suit pas sa position en continu et ne surveille pas automatiquement les lieux déjà visités ou les zones précédemment scannées.
+- Après un Scan, l'utilisateur peut accorder séparément une autorisation temporaire de signalement de nouvelles informations correspondant à sa dernière recherche et à son dernier périmètre. Cette autorisation facultative, révocable et à expiration automatique n'actualise jamais sa position et ne constitue pas une mission Radar ; ses règles détaillées figurent à la section 24.
 - Un résultat géographique doit respecter les règles de précision, de calcul et d'incertitude de la section 13. Aucun rayon ni aucune distance ne peut être prétendu appliqué si le calcul correspondant n'est pas réellement effectué.
 
 ### Radar — surveiller une zone choisie, indépendante de sa position
@@ -436,8 +428,10 @@ Scan et Radar sont deux moteurs distincts. Leur différence ne tient pas seuleme
 
 ### Historique de validation
 
-- Validation utilisateur : Scan explore ponctuellement les environs de la position actuelle de l'utilisateur, avec un rayon plus limité ; après déplacement, un nouveau scan porte sur les environs de la nouvelle position.
-- Validation utilisateur : Radar peut surveiller une zone choisie différente de la position actuelle de l'utilisateur et recueillir des résultats ciblés dans cette zone.
+- Validation utilisateur initiale : Scan explore ponctuellement les environs de la position actuelle, avec un rayon plus limité ; après déplacement, un nouveau scan porte sur les environs de la nouvelle position.
+- Clarification produit ultérieure : chaque exploration Scan peut utiliser un point de référence explicitement choisi — GPS actuel, zone approximative réellement prise en charge ou lieu public sélectionné manuellement. Plusieurs zones peuvent être explorées dans une même session, avec des résultats séparés.
+- Validation utilisateur : Radar peut surveiller une ou plusieurs zones choisies indépendamment de la position actuelle, dans la durée.
+- La règle de référence initiale centrée uniquement sur la position actuelle est donc précisée par les décisions des sections 20 et 26 ; elle ne doit pas exclure la sélection manuelle d'un lieu public.
 
 
 ## 17. Scan comme scanner intelligent d'environnement — règle V1 validée
@@ -527,18 +521,15 @@ L'utilisateur peut explorer plusieurs zones de référence au cours d'une même 
 - Scan ne fusionne pas automatiquement les résultats de zones différentes.
 - L'utilisateur peut revenir aux résultats d'une zone déjà explorée pendant la session, dans les limites de conservation locale définies.
 - La V1 ne nécessite pas d'interface dédiée de comparaison côte à côte entre zones.
+- La sélection manuelle d'un lieu public est un point de référence possible si le service le prend effectivement en charge ; elle ne doit pas être confondue avec une position GPS actuelle.
 
 Les modes de référence autorisés (position GPS actuelle, zone approximative prise en charge ou sélection manuelle d'un lieu public) sont décrits dans les règles géographiques. Le choix d'une zone dans Scan reste une exploration ponctuelle ; la surveillance durable d'une zone relève de Radar.
 
-## 21. Correspondances exactes, proches et alternatives — règle V1 validée
+## 21. Présentation des correspondances et alternatives — présentation hybride validée
 
-La qualification détaillée des résultats est définie à la section 6. Cette règle est rappelée ici pour l'interface :
-- les correspondances exactes sont présentées comme telles uniquement lorsque les exigences strictes sont vérifiées ;
-- les correspondances proches indiquent clairement la différence ou l'information manquante ;
-- les alternatives sont séparées des correspondances et expliquent pourquoi elles peuvent être utiles ;
-- aucune alternative n'est présentée comme si elle répondait exactement à la demande.
+La qualification détaillée des résultats est définie à la section 6 : correspondance exacte, correspondance proche et alternative sont trois statuts distincts. L'interface ne doit jamais mélanger ces statuts ni présenter une alternative comme une réponse exacte.
 
-Lorsque aucune correspondance exacte n'est disponible, Scan peut proposer des résultats proches et des alternatives clairement identifiés, sans les mélanger aux correspondances exactes. L'utilisateur garde la possibilité de préciser ou d'élargir sa recherche selon la section 7.
+La présentation hybride validée à la section 7 s'applique : résultats exacts en premier lorsqu'ils existent, correspondances proches dans une section distincte, alternatives moins proches dans une section secondaire. Lorsque aucun exact n'est trouvé, Scan l'indique clairement et présente uniquement les pistes pertinentes déjà obtenues. Toute modification des critères stricts, du rayon, de la période, de la catégorie ou des filtres nécessite l'accord de l'utilisateur.
 
 ## 22. Personnalisation et préférences — règles V1 validées
 
@@ -654,6 +645,7 @@ Les règles suivantes sont validées dans leur principe, mais leurs paramètres 
 - sources de données autorisées, contrats, couverture et coûts ;
 - méthodes géographiques et précision réellement disponible ;
 - paramètres de notification, seuils de pertinence et mécanismes de livraison ;
+- décision de présentation et de déclenchement des alternatives lorsqu'aucune correspondance exacte n'est disponible ;
 - conditions de disponibilité des cartes et de la navigation intégrée.
 
 Ces points sont des paramètres à spécifier ou vérifier, pas des décisions de principe encore ouvertes. Leur présence dans la liste ne signifie pas qu'une implémentation existe.
@@ -663,3 +655,65 @@ Ces points sont des paramètres à spécifier ou vérifier, pas des décisions d
 - Validation utilisateur : Scan est un scanner intelligent d'environnement, avec classification évolutive, sélection contextuelle des catégories, recherche libre, compréhension non bloquante des demandes imprécises, résultats mixtes et approfondissement progressif.
 - Validation utilisateur : filtres généraux et filtres adaptés à chaque catégorie ; plusieurs zones explorables dans une session avec résultats séparés ; correspondances exactes, proches et alternatives clairement distinguées.
 - Validation utilisateur : personnalisation contrôlable, historique membre/invité, signalement temporaire facultatif après Scan, contributions avec vérification, protection des lieux, modes géographiques explicites, consultation hors ligne et mise à jour contrôlée après reconnexion.
+
+## 31. Consolidation des règles Scan V1 — décisions validées (2026-11-18)
+
+Cette section regroupe les décisions prises pendant la finalisation produit. Elle prévaut sur les paramètres précédemment indiqués comme ouverts dans la section 30. La portée reste documentaire : aucun code, schéma, migration, configuration, secret ou déploiement n'est autorisé par cette validation.
+
+### Période et suivi après Scan
+- La fenêtre temporelle des résultats est **intelligente et adaptée à la demande** (maintenant, aujourd'hui, prochaines heures ou jours, selon la demande et la nature de l'information). Les dates ne sont pas inventées.
+- Le signalement temporaire après Scan propose une **durée intelligente**, suggérée selon le besoin et modifiable par l'utilisateur ; il expire automatiquement, est révocable et ne se renouvelle pas silencieusement. Il reste distinct de Radar et n'implique pas de GPS continu.
+- **3 suivis simultanés maximum** en V1, chacun avec ses critères, son périmètre et son expiration. Arrêt individuel, expiration libérant une place ; aucun dépassement payant en V1.
+- Notifications intelligentes : pertinence très élevée = push si autorisé ; pertinence moyenne = signal discret dans Vitalis ; faible pertinence = filtrée. Préférences, permissions et quotas sont respectés.
+- Historique membre : **3 jours maximum**. Relance possible avec critères, période, rayon et filtres utiles ; suppression individuelle et purge automatique. Invité : historique de session uniquement, non persistant après session.
+- Cache local : **24 heures maximum et 5 Mo maximum**. Purge des données les plus anciennes en cas de dépassement ; priorité aux résultats utiles de la session active ; médias lourds exclus. Cache toujours présenté comme potentiellement périmé, avec dernière actualisation.
+
+### Correspondances, catégories et volume
+- La présentation des correspondances et alternatives reste hybride : exact en premier, proches séparées et différences expliquées, alternatives dans une section secondaire. Aucun critère explicite, rayon, période, catégorie ou filtre n'est assoupli sans accord.
+- Évaluation intelligente des critères : Scan distingue exigences essentielles et préférences secondaires, sans modifier silencieusement les contraintes explicites.
+- Les grandes zones et volumes élevés sont traités par **sélection intelligente par catégories**, avec quantité disponible lorsque connue et approfondissement indépendant.
+- Le nombre de résultats au premier affichage est **adaptatif**, selon richesse, pertinence, diversité et lisibilité ; pas de résultats artificiels pour remplir une section.
+- Chargement **progressif intelligent à la demande**, en lots bornés et adaptés à la densité/connexion, sans récupération massive initiale. Déduplication, classement cohérent et quotas serveur stricts.
+
+### Contributions et fiabilité
+- Quota : **5 contributions maximum par jour**, membres et invités ; protections renforcées pour invités (session temporaire, contrôles et anti-abus). Aucun quota payant/dépassement en V1.
+- Confiance progressive. Un signalement isolé reste en attente ; deux signalements indépendants renforcent la confiance mais ne déclenchent pas de correction sensible automatique ; **trois signalements concordants et indépendants** peuvent permettre une correction ordinaire.
+- Les informations sensibles ou à risque nécessitent une vérification renforcée, quel que soit le nombre de signalements. Comptes liés, sessions suspectes ou sources identiques ne sont pas comptés comme indépendants.
+- En cas de contradiction, Scan privilégie la **fiabilité et la fraîcheur documentées**, pas une simple majorité. Il signale les versions contradictoires, conserve l'incertitude tant qu'elle n'est pas résolue et ne présente pas une disponibilité comme certaine sans preuve suffisante.
+- Les contributions ne deviennent pas automatiquement fiables en raison du quota ou du nombre de signalements ; les contrôles anti-abus restent nécessaires.
+
+### Validité et transparence des informations
+- Expiration adaptée au type : événements terminés retirés ; offres/opportunités retirées à expiration ou indisponibilité ; commerces/services conservés tant qu'ils sont considérés actifs et réévalués ; informations incertaines signalées ; données obsolètes exclues des priorités.
+- Origine et fiabilité sont **discrètement visibles** : source identifiable, état (vérifié/récent/déclaré/à confirmer selon preuves) et date accessible. Les détails sont consultables sur la fiche. Ne jamais afficher une vérification ou fraîcheur non prouvée.
+
+### Localisation et rayon
+- Scan reste utilisable sans GPS : en cas de refus, l'utilisateur peut choisir manuellement un **lieu public**. Position GPS, zone approximative prise en charge et lieu manuel sont clairement distingués ; le rayon part du point choisi. Aucun positionnement faux ou présenté comme exact.
+- Rayon maximal V1 : **2 km**. Scan ne dépasse pas ce plafond.
+- Rayon initial : **adaptatif/intelligent**, selon la demande, la catégorie, la densité et les résultats estimés, sans dépasser 2 km.
+- Un rayon explicitement choisi est strictement respecté ; aucun élargissement automatique. En cas de résultats insuffisants, Scan explique la limite et demande l'accord pour une autre recherche.
+- Explication du rayon : **courte et contextuelle**, uniquement lorsqu'elle aide à comprendre le choix ; elle doit refléter le rayon réellement appliqué.
+
+### Paramètres encore à définir ou à prouver
+Ces décisions de principe sont fermées. Les détails techniques restent à spécifier ou mesurer, notamment les valeurs exactes des durées intelligentes et des fenêtres par type de source, seuils de pertinence/notifications, règles d'indépendance et anti-abus, tailles des lots et quotas serveur, sources réelles et contrats, précision géographique réellement supportée, et tests de conformité. Ces points ne rouvrent pas les choix validés ci-dessus.
+
+### Historique de validation
+- Validation utilisateur : fenêtre temporelle intelligente ; durée intelligente du suivi ; 3 suivis simultanés ; notifications intelligentes ; historique 3 jours ; cache 24 h / 5 Mo ; distinction critères essentiels/secondaires ; présentation par catégories ; sélection initiale adaptative ; provenance/fiabilité discrètes ; expiration selon type ; confiance progressive et quota 5 contributions/jour ; seuil de 3 signalements indépendants pour correction ordinaire ; traitement des contradictions par fiabilité/fraîcheur ; GPS facultatif avec lieu public manuel ; chargement progressif ; rayon maximum 2 km, rayon initial adaptatif et explication contextuelle.
+
+
+## 32. Besoin humain, critères et diversité intelligente — règle V1 validée (2026-11-18)
+
+Scan n'est pas limité à la recherche de restaurants, de commerces ou de lieux. Il traite des besoins humains de toute nature en tenant compte de la demande exprimée et de la position ou zone de l'utilisateur, selon les informations et sources réellement disponibles.
+
+- **Le besoin humain exprimé** détermine ce que Scan recherche.
+- **La position ou zone de l'utilisateur** fournit le contexte géographique lorsque pertinent et autorisé.
+- **Les critères reçus** gouvernent les résultats principaux ; les contraintes explicites ne sont jamais ignorées ni assouplies silencieusement.
+- Les résultats qui répondent aux critères sont prioritaires et classés selon la pertinence du besoin, puis les autres facteurs validés et disponibles (proximité, fraîcheur, fiabilité).
+- Les **propositions, suggestions et éléments similaires** sont complémentaires, clairement distingués des résultats qui correspondent aux critères, et ne les remplacent pas.
+- À pertinence comparable, Scan peut diversifier intelligemment les sous-types, zones, services, expériences ou sources, sans quotas rigides, sans répétitions inutiles et sans promouvoir artificiellement une option moins pertinente.
+- Si les résultats sont naturellement similaires, Scan ne fabrique pas de diversité. La diversité ne change jamais la catégorie, les critères, le rayon, la période ni les filtres validés.
+- L'exploration reste progressive et à la demande, selon la pertinence, le volume, la lisibilité et les limites d'exécution.
+
+### Historique de validation
+
+- Validation utilisateur : Scan gère le besoin humain et la position de l'utilisateur ; il présente d'abord les résultats selon les critères reçus. Le reste relève de propositions, suggestions et similaires.
+- Validation utilisateur : pertinence prioritaire avec diversité intelligente uniquement entre options de pertinence comparable, sans quotas artificiels ni assouplissement des critères.
