@@ -22,8 +22,9 @@ type IntentRule = {
 };
 
 const INTENT_RULES: readonly IntentRule[] = [
-  { intent: "work", category: "professional", need: "opportunite professionnelle", pattern: /\b(travail|emploi|job|recrut|poste|mission|freelance)\b/ },
+
   { intent: "repair", category: "home", need: "reparation", pattern: /\b(repar|depann|panne|crevaison|mecanicien|plombier|electricien)\b/ },
+  { intent: "work", category: "professional", need: "opportunite professionnelle", pattern: /\b(travail|emploi|job|recrut|poste|mission|freelance)\b/ },
   { intent: "transport", category: "transport", need: "transport", pattern: /\b(transport|taxi|chauffeur|voiture|moto|trajet|deplac|aeroport)\b/ },
   { intent: "buy", category: "commercial", need: "achat de produit", pattern: /\b(acheter|achat|cherche.*acheter|vendre|prix|trouver.*(materiel|produit))\b/ },
   { intent: "food", category: "food", need: "nourriture ou restauration", pattern: /\b(manger|repas|nourriture|restaurant|cuisin|livraison|faim)\b/ },
