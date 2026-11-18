@@ -2,6 +2,10 @@
 
 Ce répertoire regroupe les contrats produit, UI/UX, architecture et références historiques des moteurs Vitalis. Une documentation présente ne certifie pas à elle seule que la fonctionnalité correspondante est implémentée dans le runtime.
 
+## Principe transversal prioritaire — demandes partielles
+
+Tous les moteurs doivent appliquer les [principes fondamentaux de Vitalis](../00-foundation/vitalis-core-principles.md) : exécuter toute demande exploitable avec les informations disponibles, puis proposer les compléments facultatifs. Une information réellement indispensable, un consentement ou une autorisation manquante peut empêcher l'action concernée, mais ne justifie pas de rejeter les éléments déjà exploitables.
+
 ## Règle transversale de visibilité
 
 - [Visibilité et confidentialité propres à chaque moteur](./visibility-and-profile-policy.md) : chaque moteur et, lorsque pertinent, chaque publication possède ses propres autorisations ; aucune permission n'est héritée automatiquement d'un autre moteur.
