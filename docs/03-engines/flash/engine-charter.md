@@ -6,6 +6,16 @@ Dossier de cadrage initial. Les éléments ci-dessous réservent le périmètre 
 ## Rôle du moteur
 Flash est le moteur de publication d'une information courte, locale et limitée dans le temps. Son action principale est de **démarrer/créer un Flash**. Il ne doit pas devenir un flux social généraliste ni reprendre l'action centrale d'un autre moteur.
 
+## Application du principe Vitalis aux Flash partiels
+
+Référence obligatoire : [principe fondamental de traitement des demandes partielles](../../00-foundation/vitalis-core-principles.md).
+
+- Un texte exploitable doit pouvoir être conservé comme brouillon sans exiger des détails qui servent seulement à améliorer sa présentation ou sa découverte.
+- Les compléments (catégorie plus précise, moment, portée, urgence, zone ou informations de profil) doivent être classés selon leur nécessité réelle pour l'action concernée ; ils ne deviennent pas tous obligatoires par défaut.
+- La création d'un brouillon et sa publication sont deux actions différentes. Une publication reste soumise à ses propres contrôles de compte, de visibilité, de zone, de consentement, de modération et d'autorisation serveur.
+- Si une donnée est indispensable à la publication mais absente, conserver le brouillon et demander uniquement cette donnée au moment où elle devient nécessaire.
+- **Point de conformité à auditer dans le parcours V1 actuel :** l'interface exige aujourd'hui une portée et une urgence pour enregistrer un brouillon. Cette exigence doit être justifiée par une nécessité réelle ou assouplie ; elle ne doit pas être considérée conforme par défaut au principe P0.
+
 ## Repères d'interface déjà établis
 - En-tête propre à Flash : icône et nom du moteur à gauche, commandes propres à Flash à droite.
 - Aucun titre, icône ou décor au centre de l'en-tête.
