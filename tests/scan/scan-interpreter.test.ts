@@ -126,8 +126,47 @@ describe("Scan interpreter — human need first", () => {
     expect(parsed.intent).toBe("repair");
     expect(parsed.timeContext).toBe("demain");
     expect(parsed.preferences).toContain("si possible");
-    expect(parsed.requiredCriteria).toContain("demain");
+    expect(parsed.requiredCriteria).not.toContain("demain");
     expect(parsed.normalizedText).toContain("moto");
+  });
+
+  it("keeps ordinary timing as context unless the user makes it mandatory", () => {
+    const flexible = interpretScanRequest("Je cherche un mécanicien demain");
+    const mandatory = interpretScanRequest(
+      "Je veux impérativement un mécanicien disponible demain",
+    );
+
+    expect(flexible.timeContext).toBe("demain");
+    expect(flexible.requiredCriteria).not.toContain("demain");
+    expect(mandatory.timeContext).toBe("demain");
+    expect(mandatory.requiredCriteria).toContain("demain");
+  });
+
+  it("distinguishes preferred location from a mandatory radius", () => {
+    const preferred = interpretScanRequest(
+      "Je cherche un mécanicien, de préférence près de Bonapriso",
+    );
+    const mandatory = interpretScanRequest(
+      "Je veux obligatoirement un mécanicien dans un rayon de 2 km",
+    );
+
+    expect(preferred.preferences).toContain("de preference");
+    expect(preferred.preferences.some((value) => value.includes("bonapriso"))).toBe(true);
+    expect(preferred.requiredCriteria).not.toContain("dans un rayon de 2 km");
+    expect(mandatory.requiredCriteria).toContain("dans un rayon de 2 km");
+  });
+
+  it("keeps quantity as context unless the user makes it a requirement", () => {
+    const contextual = interpretScanRequest(
+      "Je cherche quelqu'un pour transporter 3 cartons",
+    );
+    const mandatory = interpretScanRequest(
+      "Je veux absolument transporter 3 cartons avant 18 h",
+    );
+
+    expect(contextual.quantityContext).toBe("3 cartons");
+    expect(contextual.requiredCriteria).toHaveLength(0);
+    expect(mandatory.requiredCriteria).toContain("3 cartons");
   });
 
   it("recognizes place-finding requests without forcing a category", () => {
