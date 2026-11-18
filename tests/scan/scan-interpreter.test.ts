@@ -1,15 +1,24 @@
 import { describe, expect, it } from "vitest";
-import { interpretScanRequest, normalizeScanText } from "../../packages/core-logic/src/scan-interpreter";
+import {
+  interpretScanRequest,
+  normalizeScanText,
+} from "../../packages/core-logic/src/scan-interpreter";
 
 describe("Scan interpreter — human need first", () => {
   it("normalizes accents and whitespace", () => {
-    expect(normalizeScanText("  MÉCANICIEN   près de moi  ")).toBe("mecanicien pres de moi");
+    expect(normalizeScanText("  MÉCANICIEN   près de moi  ")).toBe(
+      "mecanicien pres de moi",
+    );
   });
 
   it("recognizes urgent repair goals without assigning a listing category", () => {
-    const parsed = interpretScanRequest("Je cherche un mécanicien urgent pour une crevaison maintenant");
+    const parsed = interpretScanRequest(
+      "Je cherche un mécanicien urgent pour une crevaison maintenant",
+    );
     expect(parsed.intent).toBe("repair");
-    expect(parsed.primaryNeed).toBe("je cherche un mecanicien urgent pour une crevaison maintenant");
+    expect(parsed.primaryNeed).toBe(
+      "je cherche un mecanicien urgent pour une crevaison maintenant",
+    );
     expect(parsed.category).toBeNull();
     expect(parsed.urgency).toBe("immediate");
     expect(parsed.confidence).toBe("high");
@@ -23,7 +32,9 @@ describe("Scan interpreter — human need first", () => {
   });
 
   it("recognizes transport goals from everyday phrasing", () => {
-    const parsed = interpretScanRequest("Je cherche un taxi pour l'aéroport demain matin");
+    const parsed = interpretScanRequest(
+      "Je cherche un taxi pour l'aéroport demain matin",
+    );
     expect(parsed.intent).toBe("transport");
     expect(parsed.category).toBeNull();
     expect(parsed.timeContext).toBe("demain matin");
@@ -31,7 +42,9 @@ describe("Scan interpreter — human need first", () => {
   });
 
   it("does not require the user to name a category to express a human need", () => {
-    const parsed = interpretScanRequest("J'ai besoin de quelqu'un pour m'aider à déménager dans deux heures");
+    const parsed = interpretScanRequest(
+      "J'ai besoin de quelqu'un pour m'aider à déménager dans deux heures",
+    );
     expect(parsed.intent).toBe("help");
     expect(parsed.category).toBeNull();
     expect(parsed.primaryNeed).toContain("demenager");
@@ -52,7 +65,11 @@ describe("Scan interpreter — human need first", () => {
       "Quelqu'un peut dépanner mon scooter ?",
     ];
     const parsed = requests.map(interpretScanRequest);
-    expect(parsed.map((item) => item.intent)).toEqual(["repair", "repair", "repair"]);
+    expect(parsed.map((item) => item.intent)).toEqual([
+      "repair",
+      "repair",
+      "repair",
+    ]);
     expect(parsed.every((item) => item.category === null)).toBe(true);
   });
 
@@ -63,14 +80,20 @@ describe("Scan interpreter — human need first", () => {
       "J'ai besoin d'un chauffeur pour aller à l'aéroport",
     ];
     const parsed = requests.map(interpretScanRequest);
-    expect(parsed.map((item) => item.intent)).toEqual(["transport", "transport", "transport"]);
+    expect(parsed.map((item) => item.intent)).toEqual([
+      "transport",
+      "transport",
+      "transport",
+    ]);
     expect(parsed.every((item) => item.category === null)).toBe(true);
     expect(parsed[0].timeContext).toBe("demain");
     expect(parsed[1].timeContext).toBe("demain");
   });
 
   it("keeps important timing and preferences from the request", () => {
-    const parsed = interpretScanRequest("Je cherche un mécanicien, si possible proche, pour réparer ma moto demain");
+    const parsed = interpretScanRequest(
+      "Je cherche un mécanicien, si possible proche, pour réparer ma moto demain",
+    );
     expect(parsed.intent).toBe("repair");
     expect(parsed.timeContext).toBe("demain");
     expect(parsed.preferences).toContain("si possible");
@@ -89,7 +112,9 @@ describe("Scan interpreter — human need first", () => {
   });
 
   it("recognizes repair needs phrased as a direct request for someone", () => {
-    const parsed = interpretScanRequest("Où trouver quelqu'un pour réparer mon téléphone ?");
+    const parsed = interpretScanRequest(
+      "Où trouver quelqu'un pour réparer mon téléphone ?",
+    );
     expect(parsed.intent).toBe("repair");
     expect(parsed.category).toBeNull();
     expect(parsed.primaryNeed).toContain("reparer mon telephone");
