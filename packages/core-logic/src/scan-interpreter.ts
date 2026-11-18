@@ -22,24 +22,16 @@ type IntentRule = {
 const INTENT_RULES: readonly IntentRule[] = [
   {
     intent: "repair",
-    pattern:
-      /\b(repar\w*|depann\w*|panne\w*|crevaison|mecanicien|plombier|electricien|faire reparer|remettre en etat)\b/,
-  },
+    pattern: /\\b(repar\\w*|depann\\w*|panne\\w*|crevaison|mecanicien|plombier|electricien|faire reparer|remettre en etat)\\b/,\n  },
   {
     intent: "transport",
-    pattern:
-      /\b(transport|taxi|chauffeur|voiture|moto|trajet|deplac\w*|aeroport|aller a|emmener|conduire)\b/,
-  },
+    pattern: /\\b(transport|taxi|chauffeur|voiture|moto|trajet|deplac\\w*|aeroport|aller a|emmener|conduire)\\b/,\n  },
   {
     intent: "work",
-    pattern:
-      /\b(travail|emploi|job|recrut\w*|poste|mission|freelance|gagner de l argent|petit boulot)\b/,
-  },
+    pattern: /\\b(travail|emploi|job|recrut\\w*|poste|mission|freelance|gagner de l argent|petit boulot)\\b/,\n  },
   {
     intent: "buy",
-    pattern:
-      /\b(acheter|achat|prix|combien coute|trouver.*(materiel|produit|ordinateur|telephone)|je veux un|je voudrais un)\b/,
-  },
+    pattern: /\\b(acheter|achat|prix|combien coute|trouver.*(materiel|produit|ordinateur|telephone)|je veux un|je voudrais un)\\b/,\n  },
   {
     intent: "food",
     pattern: /\b(manger|repas|nourriture|restaurant|cuisin\w*|livraison|faim|a boire)\b/,
