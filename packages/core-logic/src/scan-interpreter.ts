@@ -24,11 +24,11 @@ type IntentRule = {
  * Order matters: specific intentions precede broad help/service patterns.
  */
 const INTENT_RULES: readonly IntentRule[] = [
-  { intent: "repair", pattern: /\b(repar|depann|panne|crevaison|mecanicien|plombier|electricien|faire reparer|remettre en etat)\b/ },
-  { intent: "transport", pattern: /\b(transport|taxi|chauffeur|voiture|moto|trajet|deplac|aeroport|aller a|emmener|conduire)\b/ },
-  { intent: "work", pattern: /\b(travail|emploi|job|recrut|poste|mission|freelance|gagner de l argent|petit boulot)\b/ },
+  { intent: "repair", pattern: /\\b(repar\\w*|depann\\w*|panne\\w*|crevaison|mecanicien|plombier|electricien|faire reparer|remettre en etat)\\b/ },
+  { intent: "transport", pattern: /\\b(transport|taxi|chauffeur|voiture|moto|trajet|deplac\\w*|aeroport|aller a|emmener|conduire)\\b/ },
+  { intent: "work", pattern: /\\b(travail|emploi|job|recrut\\w*|poste|mission|freelance|gagner de l argent|petit boulot)\\b/ },
   { intent: "buy", pattern: /\b(acheter|achat|prix|combien coute|trouver.*(materiel|produit|ordinateur|telephone)|je veux un|je voudrais un)\b/ },
-  { intent: "food", pattern: /\b(manger|repas|nourriture|restaurant|cuisin|livraison|faim|a boire)\b/ },
+  { intent: "food", pattern: /\\b(manger|repas|nourriture|restaurant|cuisin\\w*|livraison|faim|a boire)\\b/ },
   { intent: "learning", pattern: /\b(apprendre|cours|formation|professeur|tuteur|soutien scolaire|enseigner)\b/ },
   { intent: "health", pattern: /\b(sante|medecin|docteur|pharmacie|soin|hopital|me soigner)\b/ },
   { intent: "activity", pattern: /\b(sortir|activite|evenement|concert|soiree|fete|match|visiter|me divertir)\b/ },
