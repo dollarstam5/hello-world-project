@@ -10,6 +10,16 @@ Scan est le **scanner intelligent d'environnement** de Vitalis. Il explore ponct
 
 Scan n'est ni un flux de publication, ni une présence en temps réel, ni une mission de recherche continue.
 
+## Application du principe Vitalis aux demandes Scan partielles
+
+Référence obligatoire : [principe fondamental de traitement des demandes partielles](../../00-foundation/vitalis-core-principles.md).
+
+- Une demande en langage naturel suffisamment exploitable déclenche une recherche avec les critères compris, même si des préférences ou des détails restent inconnus.
+- Une demande large ou ambiguë reçoit une première exploration utile lorsque celle-ci reste honnête ; Scan explique les limites et propose une clarification courte sans imposer un long questionnaire.
+- Une exigence stricte inconnue ne doit jamais être présentée comme confirmée. Les résultats sont qualifiés selon les preuves disponibles ; les informations manquantes restent « inconnues ».
+- Si le point de référence ou une autorisation est indispensable à la recherche de proximité, demander uniquement ce minimum ou proposer un lieu choisi manuellement lorsque cette option est réellement disponible.
+- Les critères facultatifs peuvent améliorer le classement, mais ne doivent pas devenir des conditions bloquantes artificielles.
+
 ## Repères d'interface déjà établis
 - En-tête propre à Scan : icône et nom du moteur à gauche, commandes propres à Scan à droite.
 - Aucun titre, icône ou décor au centre de l'en-tête.
