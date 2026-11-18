@@ -28,7 +28,7 @@ const INTENT_RULES: readonly IntentRule[] = [
   {
     intent: "transport",
     pattern:
-      /\b(transport|taxi|chauffeur|voiture|moto|trajet|deplac\w*|aeroport|aller a|emmener|conduire)\b/,
+      /\b(transport|taxi|chauffeur|voiture|moto|trajet|deplacement|se deplacer|aeroport|aller a|emmener|conduire)\b/,
   },
   {
     intent: "work",
@@ -68,7 +68,7 @@ const INTENT_RULES: readonly IntentRule[] = [
   {
     intent: "help",
     pattern:
-      /\b(aide|aider|assistance|coup de main|besoin de quelqu|j ai besoin|j ai besoin d|aidez moi)\b/,
+      /\b(aide|aider|assistance|coup de main|besoin de quelqu|j ai besoin|j ai besoin d|aidez moi|demenag\w*|deplacer mes meubles|deplacer des meubles|porter des meubles|aide pour demenager)\b/,
   },
   {
     intent: "service",
@@ -83,10 +83,12 @@ const REQUIRED_PATTERNS: readonly RegExp[] = [
 const PREFERENCE_PATTERNS: readonly RegExp[] = [
   /\b(de preference|prefer|si possible|idealement|pas trop loin|proche)\b/g,
 ];
-const TIME_PATTERN = /\b(maintenant|tout de suite|aujourd hui|ce soir|cet apres midi|demain matin|demain|cette semaine|ce week end)\b/;
+const TIME_PATTERN =
+  /\b(dans (?:[0-9]+|un|une|deux|trois|quatre|cinq|six|sept|huit|neuf|dix) (?:minutes?|heures?|jours?)|dans [0-9]+ ?h|maintenant|tout de suite|aujourd hui|ce soir|cet apres midi|demain matin|demain|cette semaine|ce week end)\b/;
 const IMMEDIATE_PATTERN =
   /\b(urgent|maintenant|tout de suite|immediatement|asap)\b/;
-const SOON_PATTERN = /\b(aujourd hui|ce soir|cet apres midi|demain)\b/;
+const SOON_PATTERN =
+  /\b(dans (?:[0-9]+|un|une|deux|trois|quatre|cinq|six|sept|huit|neuf|dix) (?:minutes?|heures?|jours?)|dans [0-9]+ ?h|aujourd hui|ce soir|cet apres midi|demain)\b/;
 
 function extractMatches(text: string, patterns: readonly RegExp[]): string[] {
   const matches = new Set<string>();
