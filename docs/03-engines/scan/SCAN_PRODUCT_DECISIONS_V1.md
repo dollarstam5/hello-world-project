@@ -708,7 +708,7 @@ Scan n'est pas limité à la recherche de restaurants, de commerces ou de lieux.
 - **La position ou zone de l'utilisateur** fournit le contexte géographique lorsque pertinent et autorisé.
 - **Les critères reçus** gouvernent les résultats principaux ; les contraintes explicites ne sont jamais ignorées ni assouplies silencieusement.
 - Les résultats qui répondent aux critères sont prioritaires et classés selon la pertinence du besoin, puis les autres facteurs validés et disponibles (proximité, fraîcheur, fiabilité).
-- Les **propositions, suggestions et éléments similaires** sont complémentaires, clairement distingués des résultats qui correspondent aux critères, et ne les remplacacent pas.
+- Les **propositions, suggestions et éléments similaires** sont complémentaires, clairement distingués des résultats qui correspondent aux critères, et ne les remplacent pas.
 - À pertinence comparable, Scan peut diversifier intelligemment les sous-types, zones, services, expériences ou sources, sans quotas rigides, sans répétitions inutiles et sans promouvoir artificiellement une option moins pertinente.
 - Si les résultats sont naturellement similaires, Scan ne fabrique pas de diversité. La diversité ne change jamais la catégorie, les critères, le rayon, la période ni les filtres validés.
 - L'exploration reste progressive et à la demande, selon la pertinence, le volume, la lisibilité et les limites d'exécution.
