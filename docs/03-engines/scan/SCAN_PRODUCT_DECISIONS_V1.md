@@ -107,23 +107,25 @@ Scan distingue trois niveaux de résultats :
 ### Portée de cette décision
 
 Cette règle fixe la qualification produit cible V1. Les seuils éventuels, les règles détaillées de passage d'un niveau à l'autre et les facteurs de départage doivent être spécifiés et testés avant implémentation. Aucun score numérique arbitraire ne doit être inventé.
-## 7. Pistes lorsque aucun résultat exact n'est disponible — décision de présentation à confirmer
+## 7. Pistes lorsque aucun résultat exact n'est disponible — présentation hybride validée
 
-La qualification des correspondances exactes, proches et alternatives est validée à la section 6. En revanche, le comportement de Scan lorsqu'aucune correspondance exacte n'est trouvée — notamment le fait de proposer automatiquement des alternatives ou des pistes d'élargissement — reste à confirmer.
+Lorsque Scan ne trouve aucun résultat exact, il ne doit ni s'arrêter sur un écran vide ni présenter des pistes moins pertinentes comme si elles répondaient à la demande.
 
-En attendant cette décision :
-- expliquer honnêtement l'absence de correspondance dans les sources réellement consultées et le périmètre appliqué ;
-- ne pas élargir automatiquement le rayon, la période, la catégorie ou les filtres stricts ;
-- ne pas présenter une correspondance proche ou une alternative comme une correspondance exacte ;
-- ne pas déclencher automatiquement une nouvelle recherche ou une mission Radar ;
-- laisser l'utilisateur conserver, modifier ou abandonner sa recherche initiale.
+### Présentation hybride V1
 
-Les options possibles (élargir le rayon, modifier une période, assouplir une préférence, consulter une catégorie voisine ou préparer un passage vers Radar) ne sont pas des actions automatiques validées. Elles ne pourront être présentées comme parcours V1 qu'après décision explicite.
+- Afficher les correspondances exactes en premier, lorsqu'elles existent.
+- Présenter les correspondances proches dans une section distincte, avec la différence constatée clairement expliquée.
+- Garder les alternatives moins proches dans une section séparée, secondaire et consultable sans surcharger l'écran.
+- Si aucun résultat exact n'existe, l'indiquer clairement et présenter les pistes pertinentes déjà obtenues, sans prétendre qu'elles satisfont la demande initiale.
+- Scan ne modifie pas silencieusement les critères stricts, le rayon, la période, la catégorie ou les filtres.
+- Toute nouvelle recherche avec des critères assouplis exige l'accord de l'utilisateur.
+- Ne déclencher automatiquement ni une recherche élargie, ni une mission Radar, ni un suivi.
 
 ### Historique de validation
 
-- La distinction exacte/proche/alternative est validée.
-- Le choix de la présentation et du déclenchement des alternatives en l'absence de résultat exact reste ouvert.
+- La distinction exact/proche/alternative est validée.
+- Validation utilisateur : présentation hybride (C) — correspondances proches directement visibles, alternatives moins proches séparées et secondaires, avec indication honnête lorsqu'aucune correspondance exacte n'a été trouvée. Aucun critère strict ou périmètre n'est assoupli sans confirmation.
+
 
 ## 8. États de disponibilité des sources — règle V1 validée
 
