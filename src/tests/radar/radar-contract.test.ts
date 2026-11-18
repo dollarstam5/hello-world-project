@@ -37,6 +37,11 @@ describe("Radar contract", () => {
     expect(radarDraftSchema.parse(valid)).toEqual(valid);
   });
 
+  it("accepts a draft without a specified area", () => {
+    const withoutArea = { ...valid, areaLabel: null };
+    expect(radarDraftSchema.parse(withoutArea)).toEqual(withoutArea);
+  });
+
   it("rejects durations outside three to ninety days", () => {
     expect(() =>
       radarDraftSchema.parse({
