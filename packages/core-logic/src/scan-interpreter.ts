@@ -118,7 +118,9 @@ export function interpretScanRequest(text: string): ScanInterpretation {
   const rule = INTENT_RULES.find((candidate) => candidate.pattern.test(normalizedText));
   const primaryNeed = normalizedText || null;
   const timeContext = normalizedText.match(TIME_PATTERN)?.[0] ?? null;
-  const urgency: ScanInterpretation["urgency"] = IMMEDIATE_PATTERN.test(normalizedText)
+  const urgency: ScanInterpretation["urgency"] = IMMEDIATE_PATTERN.test(
+    normalizedText,
+  )
     ? "immediate"
     : SOON_PATTERN.test(normalizedText)
       ? "soon"
