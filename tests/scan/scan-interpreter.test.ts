@@ -167,6 +167,7 @@ describe("Scan interpreter — human need first", () => {
     expect(contextual.quantityContext).toBe("3 cartons");
     expect(contextual.requiredCriteria).toHaveLength(0);
     expect(mandatory.requiredCriteria).toContain("3 cartons");
+    expect(mandatory.requiredCriteria).toContain("avant 18 h");
   });
 
   it("recognizes place-finding requests without forcing a category", () => {
