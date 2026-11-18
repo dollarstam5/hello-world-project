@@ -26,6 +26,16 @@ export interface ScanInterpretation {
   intent: ScanNeedIntent;
   category: FlashCategory | null;
   entities: string[];
+  /** Explicit task/action phrases detected in the request. */
+  taskContext: string[];
+  /** Concrete objects or subjects mentioned by the user. */
+  objectContext: string[];
+  /** Place explicitly named or described by the user, when detectable. */
+  locationContext: string | null;
+  /** Explicit distance or radius constraint; never inferred from GPS. */
+  distanceContext: string | null;
+  /** Explicit quantity or count requested by the user. */
+  quantityContext: string | null;
   requiredCriteria: string[];
   preferences: string[];
   timeContext: string | null;
