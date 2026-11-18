@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import type { ScanQuery, ScanResult } from "@eco/core-contracts";
-import { rankScanResults } from "@eco/core-logic";
+import {
+  buildScanSourceEvidence,
+  interpretScanRequest,
+  selectScanResults,
+} from "@eco/core-logic";
 import { scanNearby } from "../api/scan.functions";
 import { subscribeToFlashChanges } from "../services/scan-realtime.service";
 import {
@@ -37,7 +41,15 @@ export function useScan() {
       setBusy(true);
       setFailed(false);
       try {
-        const nextRows = rankScanResults(await runRef.current({ data: query }));
+        const sourceRows = await runRef.current({ data: query });
+        const interpretation = interpretScanRequest(query.text);
+        const evidencedRows = sourceRows.map((row) => ({
+          ...row,
+          evidence: buildScanSourceEvidence(row, interpretation),
+        }));
+        const nextRows = selectScanResults(evidencedRows, interpretation).map(
+          (assessment) => assessment.result,
+        );
         setRows(nextRows);
         if (options.recordHistory !== false) {
           setHistory(recordScanHistory(nextRows.length));
