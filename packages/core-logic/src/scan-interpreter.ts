@@ -42,23 +42,19 @@ const INTENT_RULES: readonly IntentRule[] = [
   },
   {
     intent: "food",
-    pattern:
-      /\b(manger|repas|nourriture|restaurant|cuisin\w*|livraison|faim|a boire)\b/,
+    pattern: /\b(manger|repas|nourriture|restaurant|cuisin\w*|livraison|faim|a boire)\b/,
   },
   {
     intent: "learning",
-    pattern:
-      /\b(apprendre|cours|formation|professeur|tuteur|soutien scolaire|enseigner)\b/,
+    pattern: /\b(apprendre|cours|formation|professeur|tuteur|soutien scolaire|enseigner)\b/,
   },
   {
     intent: "health",
-    pattern:
-      /\b(sante|medecin|docteur|pharmacie|soin|hopital|me soigner)\b/,
+    pattern: /\b(sante|medecin|docteur|pharmacie|soin|hopital|me soigner)\b/,
   },
   {
     intent: "activity",
-    pattern:
-      /\b(sortir|activite|evenement|concert|soiree|fete|match|visiter|me divertir)\b/,
+    pattern: /\b(sortir|activite|evenement|concert|soiree|fete|match|visiter|me divertir)\b/,
   },
   {
     intent: "place",
@@ -71,7 +67,8 @@ const INTENT_RULES: readonly IntentRule[] = [
   },
   {
     intent: "help",
-    pattern: /\b(aide|aider|assistance|coup de main|besoin de quelqu|j ai besoin|j ai besoin d|aidez moi)\b/,
+    pattern:
+      /\b(aide|aider|assistance|coup de main|besoin de quelqu|j ai besoin|j ai besoin d|aidez moi)\b/,
   },
   {
     intent: "service",
@@ -86,8 +83,7 @@ const REQUIRED_PATTERNS: readonly RegExp[] = [
 const PREFERENCE_PATTERNS: readonly RegExp[] = [
   /\b(de preference|prefer|si possible|idealement|pas trop loin|proche)\b/g,
 ];
-const TIME_PATTERN =
-  /\b(maintenant|tout de suite|aujourd hui|ce soir|cet apres midi|demain matin|demain|cette semaine|ce week end)\b/;
+const TIME_PATTERN = /\b(maintenant|tout de suite|aujourd hui|ce soir|cet apres midi|demain matin|demain|cette semaine|ce week end)\b/;
 const IMMEDIATE_PATTERN =
   /\b(urgent|maintenant|tout de suite|immediatement|asap)\b/;
 const SOON_PATTERN = /\b(aujourd hui|ce soir|cet apres midi|demain)\b/;
