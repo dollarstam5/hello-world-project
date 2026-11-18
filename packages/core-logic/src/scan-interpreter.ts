@@ -76,13 +76,15 @@ const INTENT_RULES: readonly IntentRule[] = [
   },
 ];
 
-const REQUIRED_PATTERNS: readonly RegExp[] = [
-  /\b(urgent|imperativement|obligatoirement|absolument|doit|uniquement|exclusivement)\b/g,
-  /\b(ouvert maintenant|disponible maintenant|ce soir|demain|cet apres midi|aujourd hui)\b/g,
-];
+const IMPERATIVE_PATTERN =
+  /\b(urgent|imperativement|obligatoirement|absolument|doit|uniquement|exclusivement)\b/;
 const PREFERENCE_PATTERNS: readonly RegExp[] = [
   /\b(de preference|prefer|si possible|idealement|pas trop loin|proche)\b/g,
 ];
+const PREFERENCE_CONTEXT_PATTERN =
+  /\b(?:de preference|si possible|idealement)\b.{0,45}\b(?:pres de|a cote de|autour de) [a-z0-9]+(?: [a-z0-9]+){0,3}\b/;
+const AVAILABLE_NOW_PATTERN =
+  /\b(?:ouvert|disponible) maintenant\b/g;
 const TIME_PATTERN =
   /\b(dans (?:[0-9]+|un|une|deux|trois|quatre|cinq|six|sept|huit|neuf|dix) (?:minutes?|heures?|jours?)|dans [0-9]+ ?h|maintenant|tout de suite|aujourd hui|ce soir|cet apres midi|demain matin|demain|cette semaine|ce week end)\b/;
 const IMMEDIATE_PATTERN =
@@ -137,8 +139,22 @@ export function interpretScanRequest(text: string): ScanInterpretation {
     : SOON_PATTERN.test(normalizedText)
       ? "soon"
       : null;
-  const requiredCriteria = extractMatches(normalizedText, REQUIRED_PATTERNS);
-  const preferences = extractMatches(normalizedText, PREFERENCE_PATTERNS);
+  const requiredCriteria = extractMatches(normalizedText, [AVAILABLE_NOW_PATTERN]);
+  const preferences = [
+    ...extractMatches(normalizedText, PREFERENCE_PATTERNS),
+    ...extractMatches(normalizedText, [PREFERENCE_CONTEXT_PATTERN]),
+  ];
+  const hasImperative = IMPERATIVE_PATTERN.test(normalizedText);
+  if (hasImperative) {
+    const imperativeIndex = normalizedText.search(IMPERATIVE_PATTERN);
+    const imperativeContext = normalizedText.slice(imperativeIndex);
+    const explicitDistance = imperativeContext.match(DISTANCE_PATTERN)?.[0];
+    const explicitQuantity = imperativeContext.match(QUANTITY_PATTERN)?.[0];
+    const explicitTime = imperativeContext.match(TIME_PATTERN)?.[0];
+    if (explicitDistance) requiredCriteria.push(explicitDistance);
+    if (explicitQuantity) requiredCriteria.push(explicitQuantity);
+    if (explicitTime) requiredCriteria.push(explicitTime);
+  }
   const taskContext = extractMatches(normalizedText, [TASK_PATTERN]);
   const objectContext = extractMatches(normalizedText, [OBJECT_PATTERN]);
   const locationContext = normalizedText.match(LOCATION_PATTERN)?.[1] ?? null;
