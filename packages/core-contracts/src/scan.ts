@@ -54,3 +54,46 @@ export interface ScanCandidateAssessment {
   evidence: ScanCandidateEvidence;
   explanationCodes: string[];
 }
+
+
+/**
+ * A candidate is a public Scan result that may be evaluated against the
+ * interpreted need. It does not imply that the candidate is a confirmed match.
+ */
+export type ScanCandidate = ScanResult;
+
+/**
+ * Opaque continuation token. Its internal representation belongs to the
+ * server and must never contain private coordinates or profile data.
+ */
+export type ScanSearchCursor = string;
+
+/** Parameters for a future paged Scan request; not yet wired to the RPC. */
+export interface ScanSearchPageRequest {
+  query: ScanQuery;
+  pageSize: number;
+  cursor?: ScanSearchCursor | null;
+}
+
+/**
+ * Why a search page can or cannot continue. A cursor is only returned when
+ * the server can safely resume from a stable position.
+ */
+export type ScanSearchContinuation =
+  | { status: "available"; cursor: ScanSearchCursor }
+  | { status: "exhausted" }
+  | { status: "budget_reached"; cursor?: ScanSearchCursor }
+  | { status: "source_unavailable" };
+
+/**
+ * One bounded page of candidates. "partial" means the search did not
+ * establish that all eligible candidates were examined; it is not a claim
+ * that no further matches exist.
+ */
+export interface ScanSearchPage<TCandidate = ScanCandidate> {
+  items: TCandidate[];
+  /** Number of source candidates examined, not the number returned. */
+  examinedCount: number;
+  completeness: "complete" | "partial";
+  continuation: ScanSearchContinuation;
+}
