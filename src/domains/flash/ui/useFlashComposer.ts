@@ -173,10 +173,12 @@ export function useFlashComposer({ user, locale, t, onSaved }: ComposerOptions) 
   }
 
   function continueToReview() {
-    if (!parsedIntent || !text.trim()) return;
-    setKind(parsedIntent.kind);
-    setCategory(parsedIntent.category);
-    setTimeSlot(parsedIntent.timeSlot);
+    if (!text.trim()) return;
+    if (parsedIntent) {
+      setKind(parsedIntent.kind);
+      setCategory(parsedIntent.category);
+      setTimeSlot(parsedIntent.timeSlot);
+    }
     setStep("review");
   }
 
@@ -227,7 +229,7 @@ export function useFlashComposer({ user, locale, t, onSaved }: ComposerOptions) 
   }
 
   async function saveFlashDraft() {
-    if (!user || !scope || !urgency || !text.trim()) return;
+    if (!user || !text.trim()) return;
     setPublishing(true);
     setPublishError(false);
     try {
@@ -239,8 +241,8 @@ export function useFlashComposer({ user, locale, t, onSaved }: ComposerOptions) 
         kind,
         category,
         timeSlot,
-        scope,
-        urgency,
+        scope: scope ?? undefined,
+        urgency: urgency ?? undefined,
         areaLabel: areaLabel.trim() || undefined,
         expiresAt: expiryFor(timeSlot),
       });
