@@ -525,11 +525,11 @@ L'utilisateur peut explorer plusieurs zones de référence au cours d'une même 
 
 Les modes de référence autorisés (position GPS actuelle, zone approximative prise en charge ou sélection manuelle d'un lieu public) sont décrits dans les règles géographiques. Le choix d'une zone dans Scan reste une exploration ponctuelle ; la surveillance durable d'une zone relève de Radar.
 
-## 21. Présentation des correspondances et alternatives — distinction validée, comportement à confirmer
+## 21. Présentation des correspondances et alternatives — présentation hybride validée
 
 La qualification détaillée des résultats est définie à la section 6 : correspondance exacte, correspondance proche et alternative sont trois statuts distincts. L'interface ne doit jamais mélanger ces statuts ni présenter une alternative comme une réponse exacte.
 
-Le déclenchement et la forme des suggestions lorsque aucune correspondance exacte n'est disponible restent à confirmer (voir section 7). La classification des résultats ne vaut pas validation d'une suggestion automatique d'alternatives.
+La présentation hybride validée à la section 7 s'applique : résultats exacts en premier lorsqu'ils existent, correspondances proches dans une section distincte, alternatives moins proches dans une section secondaire. Lorsque aucun exact n'est trouvé, Scan l'indique clairement et présente uniquement les pistes pertinentes déjà obtenues. Toute modification des critères stricts, du rayon, de la période, de la catégorie ou des filtres nécessite l'accord de l'utilisateur.
 
 ## 22. Personnalisation et préférences — règles V1 validées
 
