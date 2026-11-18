@@ -1,6 +1,9 @@
 # Moteur Scan
 
-Scan découvre les Flash actifs dans un rayon borné. Les coordonnées précises des Flash sont stockées côté serveur et ne sont accessibles que selon les règles de sécurité prévues ; la position du scanner est transmise temporairement au RPC et n'est pas persistée par ce contrat.
+**Cible produit :** Scan est un scanner intelligent de besoins humains et d'environnement. Il comprend la demande, tient compte de la position ou zone de l'utilisateur lorsque pertinent et autorisé, puis présente en priorité les résultats selon les critères reçus. Propositions, suggestions et similaires restent complémentaires et distincts ; une diversité intelligente n'intervient qu'entre options de pertinence comparable. Ce périmètre produit n'est pas limité aux restaurants, commerces ou lieux.
+
+
+**Runtime actuellement observé :** le parcours raccordé décrit ci-dessous découvre les Flash actifs dans un rayon borné. Les coordonnées précises des Flash sont stockées côté serveur et ne sont accessibles que selon les règles de sécurité prévues ; la position du scanner est transmise temporairement au RPC et n'est pas persistée par ce contrat.
 
 Le résultat expose une distance et un libellé de zone, jamais la latitude ou la longitude précises. Le serveur limite actuellement la réponse à 50 résultats ; l'écran examiné présente au maximum 20 résultats. Les recherches sont exclues du cache PWA. Le hook utilise un abonnement Supabase nettoyé au démontage, conserve la dernière requête dans une référence stable et bloque les exécutions concurrentes afin qu'un événement Realtime ne crée ni abonnement en boucle ni rafale de scans. Dans l'écran examiné lors de l'audit, le refus GPS affiche une erreur ; aucun parcours de sélection manuelle de lieu ou de zone de repli n'a été vérifié. La sélection manuelle d'un lieu public fait partie de la cible produit, mais ne doit pas être considérée comme déjà raccordée.
 
