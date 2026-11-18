@@ -24,6 +24,8 @@ export interface ScanResult {
   expiresAt: number;
   /** Optional, consent-gated public author summary. */
   authorPreview?: PublicProfilePreview | null;
+  /** Source-backed matching evidence; absent means unknown, never a positive match. */
+  evidence?: ScanCandidateEvidence | null;
 }
 
 /** Evidence supplied by a real source; absent evidence must remain unknown. */
