@@ -35,7 +35,7 @@ export function assessScanCandidate(
   interpretation: ScanInterpretation,
   evidence?: ScanCandidateEvidence,
 ): ScanCandidateAssessment {
-  const safeEvidence: ScanCandidateEvidence = evidence ?? {
+  const safeEvidence: ScanCandidateEvidence = evidence ?? result.evidence ?? {
     needMatch: "unknown",
     confirmedRequiredCriteria: [],
     refutedRequiredCriteria: [],
@@ -103,4 +103,17 @@ export function rankScanAssessments(
       scanRelevance(b.result, now) - scanRelevance(a.result, now);
     return relevanceDifference || a.result.id.localeCompare(b.result.id);
   });
+}
+
+
+/** Source evidence flows into qualification before the established relevance ranking. */
+export function selectScanResults(
+  results: ScanResult[],
+  interpretation: ScanInterpretation,
+  now = Date.now(),
+): ScanCandidateAssessment[] {
+  return rankScanAssessments(
+    results.map((result) => assessScanCandidate(result, interpretation)),
+    now,
+  );
 }
