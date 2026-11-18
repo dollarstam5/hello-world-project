@@ -698,3 +698,22 @@ Ces décisions de principe sont fermées. Les détails techniques restent à sp�
 
 ### Historique de validation
 - Validation utilisateur : fenêtre temporelle intelligente ; durée intelligente du suivi ; 3 suivis simultanés ; notifications intelligentes ; historique 3 jours ; cache 24 h / 5 Mo ; distinction critères essentiels/secondaires ; présentation par catégories ; sélection initiale adaptative ; provenance/fiabilité discrètes ; expiration selon type ; confiance progressive et quota 5 contributions/jour ; seuil de 3 signalements indépendants pour correction ordinaire ; traitement des contradictions par fiabilité/fraîcheur ; GPS facultatif avec lieu public manuel ; chargement progressif ; rayon maximum 2 km, rayon initial adaptatif et explication contextuelle.
+
+
+## 32. Besoin humain, critères et diversité intelligente — règle V1 validée (2026-11-18)
+
+Scan n'est pas limité à la recherche de restaurants, de commerces ou de lieux. Il traite des besoins humains de toute nature en tenant compte de la demande exprimée et de la position ou zone de l'utilisateur, selon les informations et sources réellement disponibles.
+
+- **Le besoin humain exprimé** détermine ce que Scan recherche.
+- **La position ou zone de l'utilisateur** fournit le contexte géographique lorsque pertinent et autorisé.
+- **Les critères reçus** gouvernent les résultats principaux ; les contraintes explicites ne sont jamais ignorées ni assouplies silencieusement.
+- Les résultats qui répondent aux critères sont prioritaires et classés selon la pertinence du besoin, puis les autres facteurs validés et disponibles (proximité, fraîcheur, fiabilité).
+- Les **propositions, suggestions et éléments similaires** sont complémentaires, clairement distingués des résultats qui correspondent aux critères, et ne les remplacacent pas.
+- À pertinence comparable, Scan peut diversifier intelligemment les sous-types, zones, services, expériences ou sources, sans quotas rigides, sans répétitions inutiles et sans promouvoir artificiellement une option moins pertinente.
+- Si les résultats sont naturellement similaires, Scan ne fabrique pas de diversité. La diversité ne change jamais la catégorie, les critères, le rayon, la période ni les filtres validés.
+- L'exploration reste progressive et à la demande, selon la pertinence, le volume, la lisibilité et les limites d'exécution.
+
+### Historique de validation
+
+- Validation utilisateur : Scan gère le besoin humain et la position de l'utilisateur ; il présente d'abord les résultats selon les critères reçus. Le reste relève de propositions, suggestions et similaires.
+- Validation utilisateur : pertinence prioritaire avec diversité intelligente uniquement entre options de pertinence comparable, sans quotas artificiels ni assouplissement des critères.
