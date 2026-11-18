@@ -246,7 +246,7 @@ function validateField(table: SyncedTable, field: string, value: unknown): unkno
             label,
           );
     case "radars.areaLabel":
-      return string(value, label, { min: 2, max: 80 });
+      return value === null ? null : string(value, label, { min: 2, max: 80 });
     case "radars.radiusKm":
       return numberEnum(value, [1, 3, 5, 10, 25, 50], label);
     case "radars.startsAt":
