@@ -70,7 +70,9 @@ export type ScanSearchCursor = string;
 
 /** Parameters for a future paged Scan request; not yet wired to the RPC. */
 export interface ScanSearchPageRequest {
-  query: ScanQuery;
+  /** Search criteria without the legacy one-shot result limit. */
+  query: Omit<ScanQuery, "limit">;
+  /** Maximum number of candidates requested in this page. */
   pageSize: number;
   cursor?: ScanSearchCursor | null;
 }
@@ -90,10 +92,18 @@ export type ScanSearchContinuation =
  * establish that all eligible candidates were examined; it is not a claim
  * that no further matches exist.
  */
-export interface ScanSearchPage<TCandidate = ScanCandidate> {
-  items: TCandidate[];
-  /** Number of source candidates examined, not the number returned. */
-  examinedCount: number;
-  completeness: "complete" | "partial";
-  continuation: ScanSearchContinuation;
-}
+export type ScanSearchPage<TCandidate = ScanCandidate> =
+  | {
+      items: TCandidate[];
+      /** Number of source candidates examined, not the number returned. */
+      examinedCount: number;
+      completeness: "complete";
+      continuation: { status: "exhausted" };
+    }
+  | {
+      items: TCandidate[];
+      /** Number of source candidates examined, not the number returned. */
+      examinedCount: number;
+      completeness: "partial";
+      continuation: Exclude<ScanSearchContinuation, { status: "exhausted" }>;
+    };
