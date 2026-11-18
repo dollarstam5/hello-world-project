@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { ScanResult } from "../../packages/core-contracts/src/scan";
 import {
   assessScanCandidate,
+  buildScanSourceEvidence,
   rankScanAssessments,
   selectScanResults,
 } from "../../packages/core-logic/src/scan";
@@ -70,6 +71,32 @@ describe("Scan candidate qualification", () => {
     });
 
     expect(assessment.level).toBe("alternative");
+  });
+
+  it("confirms only an explicitly requested current-time slot from Flash data", () => {
+    const interpretation = interpretScanRequest("Je cherche un mécanicien disponible maintenant");
+    const nowResult = { ...result("now"), timeSlot: "now" as const };
+    const laterResult = { ...result("later"), timeSlot: "today" as const };
+
+    expect(buildScanSourceEvidence(nowResult, interpretation)).toMatchObject({
+      needMatch: "unknown",
+      confirmedRequiredCriteria: ["disponible maintenant"],
+      refutedRequiredCriteria: [],
+      unknownRequiredCriteria: [],
+    });
+    expect(buildScanSourceEvidence(laterResult, interpretation)).toMatchObject({
+      needMatch: "unknown",
+      confirmedRequiredCriteria: [],
+      refutedRequiredCriteria: ["disponible maintenant"],
+    });
+  });
+
+  it("keeps semantic need matching unknown when Flash exposes only title and taxonomy", () => {
+    const interpretation = interpretScanRequest("Je cherche un mécanicien");
+    const evidence = buildScanSourceEvidence(result("mechanic"), interpretation);
+
+    expect(evidence.needMatch).toBe("unknown");
+    expect(evidence.matchedPreferences).toEqual([]);
   });
 
   it("uses evidence attached to source results through the selection entry point", () => {
