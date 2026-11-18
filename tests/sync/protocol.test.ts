@@ -133,6 +133,49 @@ describe("sync protocol validation", () => {
     }
   });
 
+  it("accepts Flash draft creation without optional scope and urgency", () => {
+    const created = validatePushRequest({
+      protocolVersion: SYNC_PROTOCOL_VERSION,
+      entries: [{
+        ...mutation,
+        kind: "create",
+        patch: {
+          title: "Besoin de transport",
+          body: "Un trajet local",
+          expiresAt: 1_900_000_000_000,
+          mediaIds: [],
+          kind: "need",
+          category: "transport",
+          timeSlot: "today",
+        },
+      }],
+    });
+    expect(created.entries[0].patch).not.toHaveProperty("scope");
+    expect(created.entries[0].patch).not.toHaveProperty("urgency");
+  });
+
+  it("accepts Radar draft creation without an area label", () => {
+    const created = validatePushRequest({
+      protocolVersion: SYNC_PROTOCOL_VERSION,
+      entries: [{
+        ...mutation,
+        table: "radars",
+        kind: "create",
+        patch: {
+          title: "Trouver un répétiteur",
+          query: "Je cherche un répétiteur de mathématiques",
+          category: "education",
+          areaLabel: null,
+          radiusKm: 10,
+          startsAt: 1_700_000_000_000,
+          expiresAt: 1_700_864_000_000,
+          status: "draft",
+        },
+      }],
+    });
+    expect(created.entries[0].patch.areaLabel).toBeNull();
+  });
+
   it("rejects obsolete time-slot values and unknown Flash scope or urgency values", () => {
     for (const patch of [
       { timeSlot: "morning" },
