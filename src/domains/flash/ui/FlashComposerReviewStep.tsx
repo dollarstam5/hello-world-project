@@ -132,7 +132,8 @@ export function FlashComposerReviewStep({ state, user, authLoading }: Props) {
 
         <fieldset className="grid gap-2 sm:col-span-2">
           <legend className="text-sm font-semibold">
-            {t("flash.composer.scope")} <span className="font-normal text-muted-foreground">(facultatif)</span>
+            {t("flash.composer.scope")}{" "}
+            <span className="font-normal text-muted-foreground">(facultatif)</span>
           </legend>
           <p className="text-xs leading-relaxed text-muted-foreground">
             {t("flash.composer.scopeHint")}
@@ -154,7 +155,8 @@ export function FlashComposerReviewStep({ state, user, authLoading }: Props) {
 
         <fieldset className="grid gap-2 sm:col-span-2">
           <legend className="text-sm font-semibold">
-            {t("flash.composer.urgency")} <span className="font-normal text-muted-foreground">(facultatif)</span>
+            {t("flash.composer.urgency")}{" "}
+            <span className="font-normal text-muted-foreground">(facultatif)</span>
           </legend>
           <div className="flex flex-wrap gap-2">
             {FLASH_URGENCIES.map((value) => (
@@ -205,12 +207,7 @@ export function FlashComposerReviewStep({ state, user, authLoading }: Props) {
           type="button"
           className="min-h-12 rounded-full"
           onClick={() => void state.saveFlashDraft()}
-          disabled={
-            !user ||
-            authLoading ||
-            state.publishing ||
-            !state.text.trim()
-          }
+          disabled={!user || authLoading || state.publishing || !state.text.trim()}
         >
           {state.publishing ? t("app.loading") : t("flash.location.saveDraft")}
         </Button>
