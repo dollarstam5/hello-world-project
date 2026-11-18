@@ -106,6 +106,39 @@ export function rankScanAssessments(
 }
 
 
+/**
+ * Builds only evidence that the public Flash projection can prove.
+ * The current projection exposes a time slot, but not enough semantic detail
+ * to certify that a Flash fulfils the user's primary need.
+ */
+export function buildScanSourceEvidence(
+  result: ScanResult,
+  interpretation: ScanInterpretation,
+): ScanCandidateEvidence {
+  const confirmedRequiredCriteria: string[] = [];
+  const refutedRequiredCriteria: string[] = [];
+  const unknownRequiredCriteria: string[] = [];
+
+  for (const criterion of interpretation.requiredCriteria) {
+    if (/^(?:ouvert|disponible) maintenant$/.test(criterion)) {
+      (result.timeSlot === "now" ? confirmedRequiredCriteria : refutedRequiredCriteria)
+        .push(criterion);
+    } else {
+      unknownRequiredCriteria.push(criterion);
+    }
+  }
+
+  return {
+    // A title/category match is not sufficient proof of the underlying human need.
+    needMatch: "unknown",
+    confirmedRequiredCriteria,
+    refutedRequiredCriteria,
+    unknownRequiredCriteria,
+    // Preferences are not certified by the current public Flash projection.
+    matchedPreferences: [],
+  };
+}
+
 /** Source evidence flows into qualification before the established relevance ranking. */
 export function selectScanResults(
   results: ScanResult[],
