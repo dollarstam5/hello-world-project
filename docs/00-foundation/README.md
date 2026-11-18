@@ -11,6 +11,10 @@ Cette section contient les fondations canoniques du projet : architecture, séqu
 - [Standards UX et accessibilité — Phase 2](./phase-2-ux-standards.md)
 - [Adaptation PWA et capacités des plateformes](./pwa-platform-adaptation.md)
 
+## Principe produit prioritaire
+
+- [Principes fondamentaux de Vitalis](./vitalis-core-principles.md) — règle P0 obligatoire pour tous les moteurs : traiter les demandes exploitables avec les informations disponibles, puis proposer les compléments facultatifs. Les contrôles de sécurité, de consentement et de droits restent impératifs.
+
 ## Core principle
 
 Le projet se construit dans un ordre stable et guidé par les dépendances. Toute évolution doit respecter les frontières d'architecture et les références canoniques.
