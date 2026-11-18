@@ -13,3 +13,6 @@ Le résultat expose une distance et un libellé de zone, jamais la latitude ou l
 - Le plafond serveur de 50 résultats est appliqué par le validateur et par le RPC ; l'interface examinée limite l'affichage à 20 résultats.
 
 Le flux public utilise `list_public_flashes`, une projection SQL bornée accessible aux visiteurs. Cette projection ne retourne ni corps détaillé, ni auteur, ni coordonnées. En cas de perte réseau, l'interface peut revenir aux Flash actifs déjà présents dans IndexedDB et retenter le flux public lorsque la connexion revient.
+
+## Cible produit V1 validée — 2026-11-18
+Les règles de Scan V1 ont été consolidées dans [SCAN_PRODUCT_DECISIONS_V1.md](./SCAN_PRODUCT_DECISIONS_V1.md), section 31. Paramètres clés : rayon maximum produit 2 km (runtime actuellement observé différent et à réconcilier) ; rayon initial adaptatif ; choix manuel d'un lieu public si GPS refusé ; historique membre 3 jours ; cache local 24 h / 5 Mo ; sélection par catégories adaptative et chargement progressif. Ces paramètres sont des décisions produit, **pas des fonctionnalités runtime confirmées**. Les tests doivent prouver les limites server-side, la purge, les quotas, les permissions et le parcours mobile avant toute déclaration de conformité.
