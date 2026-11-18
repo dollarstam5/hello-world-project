@@ -92,15 +92,15 @@ const SOON_PATTERN =
 
 
 const TASK_PATTERN =
-  /\\b(demenager|deplacement|deplacer|reparer|depanner|transporter|emmener|conduire|acheter|trouver|livrer|installer|nettoyer|cuisiner|apprendre|chercher|porter)\\b/g;
+  /\b(demenager|deplacement|deplacer|reparer|depanner|transporter|emmener|conduire|acheter|trouver|livrer|installer|nettoyer|cuisiner|apprendre|chercher|porter)\b/g;
 const OBJECT_PATTERN =
-  /\\b(moto|voiture|scooter|velo|telephone|ordinateur|meubles?|cartons?|maison|appartement|chambre|repas|medicaments?|document|colis|bagages?|eau|nourriture)\\b/g;
+  /\b(moto|voiture|scooter|velo|telephone|ordinateur|meubles?|cartons?|maison|appartement|chambre|repas|medicaments?|document|colis|bagages?|eau|nourriture)\b/g;
 const DISTANCE_PATTERN =
-  /\\b(?:dans un rayon de|a moins de|moins de|dans|a) [0-9]+(?:[.,][0-9]+)? ?(?:km|kilometres?|m|metres?)\\b/;
+  /\b(?:dans un rayon de|a moins de|moins de|dans|a) [0-9]+(?:[.,][0-9]+)? ?(?:km|kilometres?|m|metres?)\b/;
 const QUANTITY_PATTERN =
-  /\\b[0-9]+ (?:personnes?|meubles?|cartons?|chambres?|pieces?|kilos?|kg|litres?|articles?|colis|bagages?)\\b/;
+  /\b[0-9]+ (?:personnes?|meubles?|cartons?|chambres?|pieces?|kilos?|kg|litres?|articles?|colis|bagages?)\b/;
 const LOCATION_PATTERN =
-  /\\b(?:pres de|a cote de|autour de|dans le quartier de|dans la zone de|a l adresse de|a) ([a-z0-9]+(?: [a-z0-9]+){0,3})\\b/;
+  /\b(?:pres de|a cote de|autour de|dans le quartier de|dans la zone de|a l adresse de|a) ([a-z0-9]+(?: [a-z0-9]+){0,3})\b/;
 
 function extractMatches(text: string, patterns: readonly RegExp[]): string[] {
   const matches = new Set<string>();
