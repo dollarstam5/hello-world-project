@@ -32,7 +32,7 @@ const INTENT_RULES: readonly IntentRule[] = [
   { intent: "learning", pattern: /\b(apprendre|cours|formation|professeur|tuteur|soutien scolaire|enseigner)\b/ },
   { intent: "health", pattern: /\b(sante|medecin|docteur|pharmacie|soin|hopital|me soigner)\b/ },
   { intent: "activity", pattern: /\b(sortir|activite|evenement|concert|soiree|fete|match|visiter|me divertir)\b/ },
-  { intent: "place", pattern: /\b(endroit|lieu|espace|ou aller|adresse|ou se trouve|localiser)\b/ },
+  { intent: "place", pattern: /\b(endroit|lieu|espace|ou aller|ou puis je trouver|ou trouver|adresse|ou se trouve|localiser)\b/ },
   { intent: "social", pattern: /\b(rencontr|ami|compagnie|discut|partager|faire connaissance)\b/ },
   { intent: "help", pattern: /\b(aide|aider|assistance|coup de main|besoin de quelqu|j ai besoin|j ai besoin d|aidez moi)\b/ },
   { intent: "service", pattern: /\b(service|prestataire|quelqu un pour|personne pour)\b/ },
