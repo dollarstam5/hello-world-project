@@ -71,7 +71,8 @@ export function RadarDraftForm({
           />
         </label>
         <label className="stack-1 text-sm font-medium" htmlFor="radar-area">
-          {t("radar.manage.area.label")} <span className="font-normal text-muted-foreground">(facultatif)</span>
+          {t("radar.manage.area.label")}{" "}
+          <span className="font-normal text-muted-foreground">(facultatif)</span>
           <Input
             id="radar-area"
             value={areaLabel}
@@ -123,7 +124,7 @@ export function RadarDraftForm({
           ) : null}
           <Button
             type="submit"
-            disabled={busy || query.trim().length < 3 || areaLabel.trim().length < 2}
+            disabled={busy || query.trim().length < 3}
           >
             {busy
               ? t("app.loading")
