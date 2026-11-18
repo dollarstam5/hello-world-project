@@ -71,7 +71,7 @@ export function RadarDraftForm({
           />
         </label>
         <label className="stack-1 text-sm font-medium" htmlFor="radar-area">
-          {t("radar.manage.area.label")}
+          {t("radar.manage.area.label")} <span className="font-normal text-muted-foreground">(facultatif)</span>
           <Input
             id="radar-area"
             value={areaLabel}
