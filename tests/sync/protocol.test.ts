@@ -38,7 +38,12 @@ const cursors = [
 
 describe("sync protocol validation", () => {
   it("keeps the stable Flash scope identifiers mapped to the approved meter radii", () => {
-    expect(FLASH_SCOPES).toEqual(["current_area", "expanded_area", "half_city", "whole_city"]);
+    expect(FLASH_SCOPES).toEqual([
+      "current_area",
+      "expanded_area",
+      "half_city",
+      "whole_city",
+    ]);
     expect(FLASH_SCOPE_RADIUS_METERS).toEqual({
       current_area: 500,
       expanded_area: 2_000,
