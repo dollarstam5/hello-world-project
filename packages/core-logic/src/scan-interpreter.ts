@@ -7,11 +7,11 @@ import type {
 const normalize = (text: string): string =>
   text
     .normalize("NFD")
-    .replace(/[\\u0300-\\u036f]/g, "")
+    .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .replace(/[’']/g, " ")
-    .replace(/[^a-z0-9\\s-]/g, " ")
-    .replace(/\\s+/g, " ")
+    .replace(/[^a-z0-9\s-]/g, " ")
+    .replace(/\s+/g, " ")
     .trim();
 
 type IntentRule = {
@@ -22,36 +22,35 @@ type IntentRule = {
 };
 
 const INTENT_RULES: readonly IntentRule[] = [
-  { intent: "work", category: "professional", need: "opportunite professionnelle", pattern: /\\b(travail|emploi|job|recrut|poste|mission|freelance)\\b/ },
-  { intent: "repair", category: "home", need: "reparation", pattern: /\\b(repar|depann|panne|crevaison|mecanicien|plombier|electricien)\\b/ },
-  { intent: "transport", category: "transport", need: "transport", pattern: /\\b(transport|taxi|chauffeur|voiture|moto|trajet|deplac|aeroport)\\b/ },
-  { intent: "buy", category: "commercial", need: "achat de produit", pattern: /\\b(acheter|achat|cherche.*acheter|vendre|prix|trouver.*(materiel|produit))\\b/ },
-  { intent: "food", category: "food", need: "nourriture ou restauration", pattern: /\\b(manger|repas|nourriture|restaurant|cuisin|livraison|faim)\\b/ },
-  { intent: "learning", category: "education", need: "apprentissage ou formation", pattern: /\\b(apprendre|cours|formation|professeur|tuteur|soutien scolaire)\\b/ },
-  { intent: "health", category: "health", need: "sante ou soins", pattern: /\\b(sante|medecin|docteur|pharmacie|soin|hopital)\\b/ },
-  { intent: "activity", category: "events", need: "activite ou evenement", pattern: /\\b(sortir|activite|evenement|concert|soiree|fete|match|visiter)\\b/ },
-  { intent: "place", category: null, need: "lieu", pattern: /\\b(endroit|lieu|espace|ou aller|adresse)\\b/ },
-  { intent: "social", category: "personal", need: "rencontre ou compagnie", pattern: /\\b(rencontr|ami|compagnie|discut|partager)\\b/ },
-  { intent: "help", category: "personal", need: "aide", pattern: /\\b(aide|aider|assistance|coup de main|besoin de quelqu un)\\b/ },
-  { intent: "service", category: null, need: "service", pattern: /\\b(service|quelqu un|personne|prestataire)\\b/ },
+  { intent: "work", category: "professional", need: "opportunite professionnelle", pattern: /\b(travail|emploi|job|recrut|poste|mission|freelance)\b/ },
+  { intent: "repair", category: "home", need: "reparation", pattern: /\b(repar|depann|panne|crevaison|mecanicien|plombier|electricien)\b/ },
+  { intent: "transport", category: "transport", need: "transport", pattern: /\b(transport|taxi|chauffeur|voiture|moto|trajet|deplac|aeroport)\b/ },
+  { intent: "buy", category: "commercial", need: "achat de produit", pattern: /\b(acheter|achat|cherche.*acheter|vendre|prix|trouver.*(materiel|produit))\b/ },
+  { intent: "food", category: "food", need: "nourriture ou restauration", pattern: /\b(manger|repas|nourriture|restaurant|cuisin|livraison|faim)\b/ },
+  { intent: "learning", category: "education", need: "apprentissage ou formation", pattern: /\b(apprendre|cours|formation|professeur|tuteur|soutien scolaire)\b/ },
+  { intent: "health", category: "health", need: "sante ou soins", pattern: /\b(sante|medecin|docteur|pharmacie|soin|hopital)\b/ },
+  { intent: "activity", category: "events", need: "activite ou evenement", pattern: /\b(sortir|activite|evenement|concert|soiree|fete|match|visiter)\b/ },
+  { intent: "place", category: null, need: "lieu", pattern: /\b(endroit|lieu|espace|ou aller|adresse)\b/ },
+  { intent: "social", category: "personal", need: "rencontre ou compagnie", pattern: /\b(rencontr|ami|compagnie|discut|partager)\b/ },
+  { intent: "help", category: "personal", need: "aide", pattern: /\b(aide|aider|assistance|coup de main|besoin de quelqu un)\b/ },
+  { intent: "service", category: null, need: "service", pattern: /\b(service|quelqu un|personne|prestataire)\b/ },
 ];
 
 const REQUIRED_PATTERNS: readonly RegExp[] = [
-  /\\b(urgent|imperativement|obligatoirement|absolument|doit|uniquement|exclusivement)\\b/g,
-  /\\b(ouvert maintenant|disponible maintenant|ce soir|demain|cet apres midi|aujourd hui)\\b/g,
+  /\b(urgent|imperativement|obligatoirement|absolument|doit|uniquement|exclusivement)\b/g,
+  /\b(ouvert maintenant|disponible maintenant|ce soir|demain|cet apres midi|aujourd hui)\b/g,
 ];
 const PREFERENCE_PATTERNS: readonly RegExp[] = [
-  /\\b(de preference|prefer|si possible|idealement|pas trop loin|proche)\\b/g,
+  /\b(de preference|prefer|si possible|idealement|pas trop loin|proche)\b/g,
 ];
-const TIME_PATTERN = /\\b(maintenant|tout de suite|aujourd hui|ce soir|cet apres midi|demain matin|demain|cette semaine|ce week end)\\b/;
-const IMMEDIATE_PATTERN = /\\b(urgent|maintenant|tout de suite|immediatement|asap)\\b/;
-const SOON_PATTERN = /\\b(aujourd hui|ce soir|cet apres midi|demain)\\b/;
+const TIME_PATTERN = /\b(maintenant|tout de suite|aujourd hui|ce soir|cet apres midi|demain matin|demain|cette semaine|ce week end)\b/;
+const IMMEDIATE_PATTERN = /\b(urgent|maintenant|tout de suite|immediatement|asap)\b/;
+const SOON_PATTERN = /\b(aujourd hui|ce soir|cet apres midi|demain)\b/;
 
 function extractMatches(text: string, patterns: readonly RegExp[]): string[] {
   const matches = new Set<string>();
   for (const pattern of patterns) {
-    const flags = pattern.flags.includes("g") ? pattern.flags : pattern.flags + "g";
-    const matcher = new RegExp(pattern.source, flags);
+    const matcher = new RegExp(pattern.source, pattern.flags);
     for (const match of text.matchAll(matcher)) {
       const value = match[0].trim();
       if (value) matches.add(value);
