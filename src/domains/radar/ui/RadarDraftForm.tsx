@@ -78,8 +78,6 @@ export function RadarDraftForm({
             onChange={(event) => onAreaChange(event.target.value)}
             placeholder={t("radar.manage.area.placeholder")}
             maxLength={80}
-            minLength={2}
-            required
             disabled={busy}
           />
         </label>
