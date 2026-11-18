@@ -330,7 +330,6 @@ export function validateMutationPatch(
         "title",
         "query",
         "category",
-        "areaLabel",
         "radiusKm",
         "startsAt",
         "expiresAt",
