@@ -1,8 +1,4 @@
-import type {
-  ScanConfidence,
-  ScanInterpretation,
-  ScanNeedIntent,
-} from "@eco/core-contracts";
+import type { ScanConfidence, ScanInterpretation, ScanNeedIntent } from "@eco/core-contracts";
 
 const normalize = (text: string): string =>
   text
@@ -24,18 +20,63 @@ type IntentRule = {
  * Order matters: specific intentions precede broad help/service patterns.
  */
 const INTENT_RULES: readonly IntentRule[] = [
-  { intent: "repair", pattern: /\b(repar\w*|depann\w*|panne\w*|crevaison|mecanicien|plombier|electricien|faire reparer|remettre en etat)\b/ },
-  { intent: "transport", pattern: /\b(transport|taxi|chauffeur|voiture|moto|trajet|deplac\w*|aeroport|aller a|emmener|conduire)\b/ },
-  { intent: "work", pattern: /\b(travail|emploi|job|recrut\w*|poste|mission|freelance|gagner de l argent|petit boulot)\b/ },
-  { intent: "buy", pattern: /\b(acheter|achat|prix|combien coute|trouver.*(materiel|produit|ordinateur|telephone)|je veux un|je voudrais un)\b/ },
-  { intent: "food", pattern: /\b(manger|repas|nourriture|restaurant|cuisin\w*|livraison|faim|a boire)\b/ },
-  { intent: "learning", pattern: /\b(apprendre|cours|formation|professeur|tuteur|soutien scolaire|enseigner)\b/ },
-  { intent: "health", pattern: /\b(sante|medecin|docteur|pharmacie|soin|hopital|me soigner)\b/ },
-  { intent: "activity", pattern: /\b(sortir|activite|evenement|concert|soiree|fete|match|visiter|me divertir)\b/ },
-  { intent: "place", pattern: /\b(endroit|lieu|espace|ou aller|ou puis je trouver|ou trouver|adresse|ou se trouve|localiser)\b/ },
-  { intent: "social", pattern: /\b(rencontr|ami|compagnie|discut|partager|faire connaissance)\b/ },
-  { intent: "help", pattern: /\b(aide|aider|assistance|coup de main|besoin de quelqu|j ai besoin|j ai besoin d|aidez moi)\b/ },
-  { intent: "service", pattern: /\b(service|prestataire|quelqu un pour|personne pour)\b/ },
+  {
+    intent: "repair",
+    pattern:
+      /\b(repar\w*|depann\w*|panne\w*|crevaison|mecanicien|plombier|electricien|faire reparer|remettre en etat)\b/,
+  },
+  {
+    intent: "transport",
+    pattern:
+      /\b(transport|taxi|chauffeur|voiture|moto|trajet|deplac\w*|aeroport|aller a|emmener|conduire)\b/,
+  },
+  {
+    intent: "work",
+    pattern:
+      /\b(travail|emploi|job|recrut\w*|poste|mission|freelance|gagner de l argent|petit boulot)\b/,
+  },
+  {
+    intent: "buy",
+    pattern:
+      /\b(acheter|achat|prix|combien coute|trouver.*(materiel|produit|ordinateur|telephone)|je veux un|je voudrais un)\b/,
+  },
+  {
+    intent: "food",
+    pattern: /\b(manger|repas|nourriture|restaurant|cuisin\w*|livraison|faim|a boire)\b/,
+  },
+  {
+    intent: "learning",
+    pattern:
+      /\b(apprendre|cours|formation|professeur|tuteur|soutien scolaire|enseigner)\b/,
+  },
+  {
+    intent: "health",
+    pattern:
+      /\b(sante|medecin|docteur|pharmacie|soin|hopital|me soigner)\b/,
+  },
+  {
+    intent: "activity",
+    pattern:
+      /\b(sortir|activite|evenement|concert|soiree|fete|match|visiter|me divertir)\b/,
+  },
+  {
+    intent: "place",
+    pattern:
+      /\b(endroit|lieu|espace|ou aller|ou puis je trouver|ou trouver|adresse|ou se trouve|localiser)\b/,
+  },
+  {
+    intent: "social",
+    pattern: /\b(rencontr|ami|compagnie|discut|partager|faire connaissance)\b/,
+  },
+  {
+    intent: "help",
+    pattern:
+      /\b(aide|aider|assistance|coup de main|besoin de quelqu|j ai besoin|j ai besoin d|aidez moi)\b/,
+  },
+  {
+    intent: "service",
+    pattern: /\b(service|prestataire|quelqu un pour|personne pour)\b/,
+  },
 ];
 
 const REQUIRED_PATTERNS: readonly RegExp[] = [
@@ -45,8 +86,10 @@ const REQUIRED_PATTERNS: readonly RegExp[] = [
 const PREFERENCE_PATTERNS: readonly RegExp[] = [
   /\b(de preference|prefer|si possible|idealement|pas trop loin|proche)\b/g,
 ];
-const TIME_PATTERN = /\b(maintenant|tout de suite|aujourd hui|ce soir|cet apres midi|demain matin|demain|cette semaine|ce week end)\b/;
-const IMMEDIATE_PATTERN = /\b(urgent|maintenant|tout de suite|immediatement|asap)\b/;
+const TIME_PATTERN =
+  /\b(maintenant|tout de suite|aujourd hui|ce soir|cet apres midi|demain matin|demain|cette semaine|ce week end)\b/;
+const IMMEDIATE_PATTERN =
+  /\b(urgent|maintenant|tout de suite|immediatement|asap)\b/;
 const SOON_PATTERN = /\b(aujourd hui|ce soir|cet apres midi|demain)\b/;
 
 function extractMatches(text: string, patterns: readonly RegExp[]): string[] {
