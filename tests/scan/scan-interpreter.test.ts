@@ -46,6 +46,24 @@ describe("Scan interpreter — human need first", () => {
     expect(parsed.primaryNeed).toContain("demenager");
   });
 
+  it("treats equivalent moving-help requests as the same human need and preserves relative timing", () => {
+    const requests = [
+      "Je cherche quelqu'un pour m'aider à déménager dans deux heures",
+      "J'ai besoin d'un coup de main pour mon déménagement dans 2 h",
+      "Quelqu'un peut-il m'aider à déplacer mes meubles aujourd'hui ?",
+    ];
+    const parsed = requests.map(interpretScanRequest);
+
+    expect(parsed.map((item) => item.intent)).toEqual(["help", "help", "help"]);
+    expect(parsed.map((item) => item.category)).toEqual([null, null, null]);
+    expect(parsed[0].timeContext).toBe("dans deux heures");
+    expect(parsed[1].timeContext).toBe("dans 2 h");
+    expect(parsed[2].timeContext).toBe("aujourd hui");
+    expect(parsed[0].urgency).toBe("soon");
+    expect(parsed[1].urgency).toBe("soon");
+    expect(parsed.every((item) => item.primaryNeed?.length)).toBe(true);
+  });
+
   it("keeps vague requests open instead of forcing a taxonomy", () => {
     const parsed = interpretScanRequest("Je cherche quelqu'un");
     expect(parsed.intent).toBe("unknown");
