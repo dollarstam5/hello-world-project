@@ -44,7 +44,7 @@ Un résultat Scan ne vaut ni validation de confiance, ni réservation, ni engage
 7. **V1 reste déterministe et économique.** La recherche libre en langage naturel est prévue en V1, avec une interprétation structurée et explicable ; pas de dépendance obligatoire à un LLM, à une recherche vectorielle coûteuse ou à un fournisseur externe pour le parcours central.
 8. **L'expérience reste humaine.** Textes courts, chaleureux, directs ; éviter le jargon technique et les longs formulaires.
 9. **Aucune fausse capacité.** Un état d'interface, un abonnement Realtime ou une entrée en base ne prouve pas à lui seul que le parcours complet fonctionne.
-10. **Les alternatives sont proposées, jamais imposées.** L'élargissement d'une zone, d'une période ou d'un critère requiert une action de l'utilisateur.
+10. **Présentation hybride des résultats.** Exact d'abord, proches dans une section distincte et alternatives moins proches dans une section secondaire. L'absence d'exact est signalée. Aucun critère strict, rayon ou période n'est assoupli sans confirmation.
 
 ## 4. Modèle fonctionnel cible
 
@@ -220,7 +220,7 @@ Ne jamais générer une explication qui affirme un critère absent des données 
 
 Un résultat vide doit être accompagné d'une explication honnête : aucun résultat correspondant aux critères dans les sources consultées et dans le périmètre appliqué.
 
-Les statuts « correspondance exacte », « correspondance proche » et « alternative » restent distincts. La manière de suggérer automatiquement des alternatives lorsqu'aucune correspondance exacte n'est disponible n'est pas encore validée (voir section 7 des décisions produit). Ne pas traiter les exemples ci-dessous comme des suggestions automatiques déjà autorisées.
+Les statuts « correspondance exacte », « correspondance proche » et « alternative » restent distincts. La présentation hybride est validée : les résultats proches sont présentés dans une section distincte, les alternatives moins proches dans une section secondaire, et l'absence d'exact est signalée. Ces pistes proviennent uniquement des résultats déjà obtenus ; aucun critère strict ou périmètre n'est assoupli sans confirmation.
 
 Toute modification du rayon, de la période ou d'un filtre strict doit être présentée à l'utilisateur et confirmée avant une nouvelle recherche. Un déplacement conduit à une nouvelle exploration autour du nouveau point de référence ; les résultats des deux zones restent séparés.
 
@@ -471,7 +471,7 @@ Le Scan V1 peut être considéré prêt lorsque :
 
 ## 19. Paramètres et contrats restant à spécifier
 
-Les décisions de principe relatives au rôle de scanner d'environnement, à la recherche libre, à la classification évolutive, à la présentation des résultats, aux filtres contextuels, à l'exploration de plusieurs zones et à la distinction exact/proche/alternative sont validées et consignées dans [les décisions produit V1](./SCAN_PRODUCT_DECISIONS_V1.md). La manière de proposer automatiquement des alternatives lorsqu'aucune correspondance exacte n'existe reste toutefois à confirmer (section 7 des décisions produit).
+Les décisions de principe relatives au rôle de scanner d'environnement, à la recherche libre, à la classification évolutive, à la présentation des résultats, aux filtres contextuels, à l'exploration de plusieurs zones et à la distinction exact/proche/alternative sont validées et consignées dans [les décisions produit V1](./SCAN_PRODUCT_DECISIONS_V1.md). La présentation hybride des résultats lorsqu'aucune correspondance exacte n'existe est validée (section 7 des décisions produit).
 
 Restent à spécifier ou vérifier avant implémentation :
 - la taxonomie détaillée, les libellés définitifs et la correspondance entre catégories et sources ;
@@ -483,7 +483,7 @@ Restent à spécifier ou vérifier avant implémentation :
 - les méthodes de localisation, le comportement GPS refusé/imprécis et la précision réellement disponible ;
 - les champs publics, les actions autorisées et les règles membre/invité ;
 - les durées, quotas et mécanismes du signalement temporaire après Scan ;
-- la décision de présentation et de déclenchement des alternatives lorsqu'aucune correspondance exacte n'est disponible ;
+- les seuils et règles détaillés de qualification exact/proche/alternative (la présentation hybride est validée) ;
 - les quotas de contributions et les contrôles anti-abus ;
 - les durées, volumes et champs de l'historique et du cache local ;
 - les seuils de notification et les mécanismes de livraison ;
