@@ -64,6 +64,29 @@ describe("Scan interpreter — human need first", () => {
     expect(parsed.every((item) => item.primaryNeed?.length)).toBe(true);
   });
 
+  it("extracts explicit task, object, place, distance and quantity without inventing them", () => {
+    const parsed = interpretScanRequest(
+      "Je cherche quelqu'un pour transporter 3 cartons près de Bonapriso, dans un rayon de 5 km",
+    );
+
+    expect(parsed.taskContext).toContain("transporter");
+    expect(parsed.objectContext).toContain("cartons");
+    expect(parsed.locationContext).toBe("bonapriso");
+    expect(parsed.distanceContext).toBe("dans un rayon de 5 km");
+    expect(parsed.quantityContext).toBe("3 cartons");
+    expect(parsed.category).toBeNull();
+  });
+
+  it("leaves location, distance and quantity empty when the user did not specify them", () => {
+    const parsed = interpretScanRequest("Je cherche un mécanicien pour réparer ma moto demain");
+
+    expect(parsed.locationContext).toBeNull();
+    expect(parsed.distanceContext).toBeNull();
+    expect(parsed.quantityContext).toBeNull();
+    expect(parsed.taskContext).toContain("reparer");
+    expect(parsed.objectContext).toContain("moto");
+  });
+
   it("keeps vague requests open instead of forcing a taxonomy", () => {
     const parsed = interpretScanRequest("Je cherche quelqu'un");
     expect(parsed.intent).toBe("unknown");
