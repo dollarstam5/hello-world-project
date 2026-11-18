@@ -18,6 +18,16 @@ Cette continuité est le comportement cible de Radar ; elle ne signifie pas que 
 
 L'utilisateur peut démarrer une mission Radar directement, sans devoir effectuer un Scan préalable.
 
+## Application du principe Vitalis aux intentions Radar partielles
+
+Référence obligatoire : [principe fondamental de traitement des demandes partielles](../../00-foundation/vitalis-core-principles.md).
+
+- Une intention exploitable doit pouvoir être enregistrée comme brouillon privé même si certains critères de recherche restent inconnus ou à préciser.
+- Radar distingue les éléments nécessaires pour sauvegarder l'intention de ceux qui seront nécessaires pour qualifier, activer ou exécuter une mission réelle.
+- Les critères facultatifs sont proposés comme améliorations de pertinence ; ils ne doivent pas empêcher la sauvegarde du brouillon.
+- Radar ne doit jamais prétendre qu'une recherche ou une surveillance est active si les paramètres indispensables, les sources et le traitement planifié ne sont pas réellement disponibles et validés.
+- Si une information indispensable à l'activation manque, le brouillon est conservé et Radar demande uniquement le complément requis avant cette activation.
+
 ## Repères d'interface déjà établis
 - En-tête propre à Radar : icône et nom du moteur à gauche, commandes propres à Radar à droite.
 - Aucun titre, icône ou décor au centre de l'en-tête.
