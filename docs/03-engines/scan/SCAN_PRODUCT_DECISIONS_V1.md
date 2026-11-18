@@ -655,3 +655,46 @@ Ces points sont des paramètres à spécifier ou vérifier, pas des décisions d
 - Validation utilisateur : Scan est un scanner intelligent d'environnement, avec classification évolutive, sélection contextuelle des catégories, recherche libre, compréhension non bloquante des demandes imprécises, résultats mixtes et approfondissement progressif.
 - Validation utilisateur : filtres généraux et filtres adaptés à chaque catégorie ; plusieurs zones explorables dans une session avec résultats séparés ; correspondances exactes, proches et alternatives clairement distinguées.
 - Validation utilisateur : personnalisation contrôlable, historique membre/invité, signalement temporaire facultatif après Scan, contributions avec vérification, protection des lieux, modes géographiques explicites, consultation hors ligne et mise à jour contrôlée après reconnexion.
+
+## 31. Consolidation des règles Scan V1 — décisions validées (2026-11-18)
+
+Cette section regroupe les décisions prises pendant la finalisation produit. Elle prévaut sur les paramètres précédemment indiqués comme ouverts dans la section 30. La portée reste documentaire : aucun code, schéma, migration, configuration, secret ou déploiement n'est autorisé par cette validation.
+
+### Période et suivi après Scan
+- La fenêtre temporelle des résultats est **intelligente et adaptée à la demande** (maintenant, aujourd'hui, prochaines heures ou jours, selon la demande et la nature de l'information). Les dates ne sont pas inventées.
+- Le signalement temporaire après Scan propose une **durée intelligente**, suggérée selon le besoin et modifiable par l'utilisateur ; il expire automatiquement, est révocable et ne se renouvelle pas silencieusement. Il reste distinct de Radar et n'implique pas de GPS continu.
+- **3 suivis simultanés maximum** en V1, chacun avec ses critères, son périmètre et son expiration. Arrêt individuel, expiration libérant une place ; aucun dépassement payant en V1.
+- Notifications intelligentes : pertinence très élevée = push si autorisé ; pertinence moyenne = signal discret dans Vitalis ; faible pertinence = filtrée. Préférences, permissions et quotas sont respectés.
+- Historique membre : **3 jours maximum**. Relance possible avec critères, période, rayon et filtres utiles ; suppression individuelle et purge automatique. Invité : historique de session uniquement, non persistant après session.
+- Cache local : **24 heures maximum et 5 Mo maximum**. Purge des données les plus anciennes en cas de dépassement ; priorité aux résultats utiles de la session active ; médias lourds exclus. Cache toujours présenté comme potentiellement périmé, avec dernière actualisation.
+
+### Correspondances, catégories et volume
+- La présentation des correspondances et alternatives reste hybride : exact en premier, proches séparées et différences expliquées, alternatives dans une section secondaire. Aucun critère explicite, rayon, période, catégorie ou filtre n'est assoupli sans accord.
+- Évaluation intelligente des critères : Scan distingue exigences essentielles et préférences secondaires, sans modifier silencieusement les contraintes explicites.
+- Les grandes zones et volumes élevés sont traités par **sélection intelligente par catégories**, avec quantité disponible lorsque connue et approfondissement indépendant.
+- Le nombre de résultats au premier affichage est **adaptatif**, selon richesse, pertinence, diversité et lisibilité ; pas de résultats artificiels pour remplir une section.
+- Chargement **progressif intelligent à la demande**, en lots bornés et adaptés à la densité/connexion, sans récupération massive initiale. Déduplication, classement cohérent et quotas serveur stricts.
+
+### Contributions et fiabilité
+- Quota : **5 contributions maximum par jour**, membres et invités ; protections renforcées pour invités (session temporaire, contrôles et anti-abus). Aucun quota payant/dépassement en V1.
+- Confiance progressive. Un signalement isolé reste en attente ; deux signalements indépendants renforcent la confiance mais ne déclenchent pas de correction sensible automatique ; **trois signalements concordants et indépendants** peuvent permettre une correction ordinaire.
+- Les informations sensibles ou à risque nécessitent une vérification renforcée, quel que soit le nombre de signalements. Comptes liés, sessions suspectes ou sources identiques ne sont pas comptés comme indépendants.
+- En cas de contradiction, Scan privilégie la **fiabilité et la fraîcheur documentées**, pas une simple majorité. Il signale les versions contradictoires, conserve l'incertitude tant qu'elle n'est pas résolue et ne présente pas une disponibilité comme certaine sans preuve suffisante.
+- Les contributions ne deviennent pas automatiquement fiables en raison du quota ou du nombre de signalements ; les contrôles anti-abus restent nécessaires.
+
+### Validité et transparence des informations
+- Expiration adaptée au type : événements terminés retirés ; offres/opportunités retirées à expiration ou indisponibilité ; commerces/services conservés tant qu'ils sont considérés actifs et réévalués ; informations incertaines signalées ; données obsolètes exclues des priorités.
+- Origine et fiabilité sont **discrètement visibles** : source identifiable, état (vérifié/récent/déclaré/à confirmer selon preuves) et date accessible. Les détails sont consultables sur la fiche. Ne jamais afficher une vérification ou fraîcheur non prouvée.
+
+### Localisation et rayon
+- Scan reste utilisable sans GPS : en cas de refus, l'utilisateur peut choisir manuellement un **lieu public**. Position GPS, zone approximative prise en charge et lieu manuel sont clairement distingués ; le rayon part du point choisi. Aucun positionnement faux ou présenté comme exact.
+- Rayon maximal V1 : **2 km**. Scan ne dépasse pas ce plafond.
+- Rayon initial : **adaptatif/intelligent**, selon la demande, la catégorie, la densité et les résultats estimés, sans dépasser 2 km.
+- Un rayon explicitement choisi est strictement respecté ; aucun élargissement automatique. En cas de résultats insuffisants, Scan explique la limite et demande l'accord pour une autre recherche.
+- Explication du rayon : **courte et contextuelle**, uniquement lorsqu'elle aide à comprendre le choix ; elle doit refléter le rayon réellement appliqué.
+
+### Paramètres encore à définir ou à prouver
+Ces décisions de principe sont fermées. Les détails techniques restent à spécifier ou mesurer, notamment les valeurs exactes des durées intelligentes et des fenêtres par type de source, seuils de pertinence/notifications, règles d'indépendance et anti-abus, tailles des lots et quotas serveur, sources réelles et contrats, précision géographique réellement supportée, et tests de conformité. Ces points ne rouvrent pas les choix validés ci-dessus.
+
+### Historique de validation
+- Validation utilisateur : fenêtre temporelle intelligente ; durée intelligente du suivi ; 3 suivis simultanés ; notifications intelligentes ; historique 3 jours ; cache 24 h / 5 Mo ; distinction critères essentiels/secondaires ; présentation par catégories ; sélection initiale adaptative ; provenance/fiabilité discrètes ; expiration selon type ; confiance progressive et quota 5 contributions/jour ; seuil de 3 signalements indépendants pour correction ordinaire ; traitement des contradictions par fiabilité/fraîcheur ; GPS facultatif avec lieu public manuel ; chargement progressif ; rayon maximum 2 km, rayon initial adaptatif et explication contextuelle.
