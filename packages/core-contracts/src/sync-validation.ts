@@ -314,8 +314,6 @@ export function validateMutationPatch(
         "kind",
         "category",
         "timeSlot",
-        "scope",
-        "urgency",
         "expiresAt",
         "mediaIds",
       ],
