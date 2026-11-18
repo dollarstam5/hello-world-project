@@ -35,8 +35,8 @@ export interface NewFlashInput {
   kind: FlashKind;
   category: FlashCategory;
   timeSlot: FlashTimeSlot;
-  scope: FlashScope;
-  urgency: FlashUrgency;
+  scope?: FlashScope;
+  urgency?: FlashUrgency;
   areaLabel?: string;
   expiresAt: number | null;
 }
