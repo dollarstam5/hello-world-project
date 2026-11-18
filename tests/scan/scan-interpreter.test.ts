@@ -45,6 +45,39 @@ describe("Scan interpreter — human need first", () => {
     expect(parsed.confidence).toBe("low");
   });
 
+  it("understands different wordings of the same repair need consistently", () => {
+    const requests = [
+      "Ma moto est en panne, il me faut un mécanicien",
+      "Je dois faire réparer ma moto aujourd'hui",
+      "Quelqu'un peut dépanner mon scooter ?",
+    ];
+    const parsed = requests.map(interpretScanRequest);
+    expect(parsed.map((item) => item.intent)).toEqual(["repair", "repair", "repair"]);
+    expect(parsed.every((item) => item.category === null)).toBe(true);
+  });
+
+  it("understands different wordings of the same transport need consistently", () => {
+    const requests = [
+      "Je cherche un taxi pour l'aéroport demain",
+      "Quelqu'un peut m'emmener à l'aéroport demain ?",
+      "J'ai besoin d'un chauffeur pour aller à l'aéroport",
+    ];
+    const parsed = requests.map(interpretScanRequest);
+    expect(parsed.map((item) => item.intent)).toEqual(["transport", "transport", "transport"]);
+    expect(parsed.every((item) => item.category === null)).toBe(true);
+    expect(parsed[0].timeContext).toBe("demain");
+    expect(parsed[1].timeContext).toBe("demain");
+  });
+
+  it("keeps important timing and preferences from the request", () => {
+    const parsed = interpretScanRequest("Je cherche un mécanicien, si possible proche, pour réparer ma moto demain");
+    expect(parsed.intent).toBe("repair");
+    expect(parsed.timeContext).toBe("demain");
+    expect(parsed.preferences).toContain("si possible");
+    expect(parsed.requiredCriteria).toContain("demain");
+    expect(parsed.normalizedText).toContain("moto");
+  });
+
   it("returns a safe empty interpretation for empty input", () => {
     const parsed = interpretScanRequest("");
     expect(parsed.primaryNeed).toBeNull();
