@@ -86,7 +86,7 @@ const PREFERENCE_CONTEXT_PATTERN =
 const AVAILABLE_NOW_PATTERN =
   /\b(?:ouvert|disponible) maintenant\b/g;
 const TIME_PATTERN =
-  /\b(dans (?:[0-9]+|un|une|deux|trois|quatre|cinq|six|sept|huit|neuf|dix) (?:minutes?|heures?|jours?)|dans [0-9]+ ?h|maintenant|tout de suite|aujourd hui|ce soir|cet apres midi|demain matin|demain|cette semaine|ce week end)\b/;
+  /\b(dans (?:[0-9]+|un|une|deux|trois|quatre|cinq|six|sept|huit|neuf|dix) (?:minutes?|heures?|jours?)|dans [0-9]+ ?h|maintenant|tout de suite|aujourd hui|ce soir|cet apres midi|demain matin|demain|cette semaine|ce week end|avant [0-9]+ ?h|avant [0-9]+ heures?)\b/;
 const IMMEDIATE_PATTERN =
   /\b(urgent|maintenant|tout de suite|immediatement|asap)\b/;
 const SOON_PATTERN =
