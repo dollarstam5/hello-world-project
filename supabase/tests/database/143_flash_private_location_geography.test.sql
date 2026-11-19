@@ -121,7 +121,7 @@ SELECT ok(
 SELECT throws_ok(
   $$UPDATE public.flash_private_locations
     SET latitude = 91
-    WHERE flash_id = 'f6500000-0000-4000-8000-000000000001$$,
+    WHERE flash_id = 'f6500000-0000-4000-8000-000000000001'$$,
   '22023', 'invalid_flash_private_location',
   'invalid latitude is rejected by the trigger'
 );
@@ -129,7 +129,7 @@ SELECT throws_ok(
 SELECT throws_ok(
   $$UPDATE public.flash_private_locations
     SET longitude = 181
-    WHERE flash_id = 'f6500000-0000-4000-8000-000000000001$$,
+    WHERE flash_id = 'f6500000-0000-4000-8000-000000000001'$$,
   '22023', 'invalid_flash_private_location',
   'invalid longitude is rejected by the trigger'
 );
