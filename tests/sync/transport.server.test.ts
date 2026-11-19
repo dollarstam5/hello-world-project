@@ -119,6 +119,12 @@ class FakeQuery {
         };
       }
       const receipt = this.payload ?? {};
+      if (this.database.concurrentReceiptWinner) {
+        const winner = this.database.concurrentReceiptWinner;
+        this.database.concurrentReceiptWinner = null;
+        this.database.receipts.push({ ...winner });
+        return { data: null, error: { code: "23505", message: "concurrent receipt insert" } };
+      }
       if (
         this.database.receipts.some(
           (row) => row.mutation_id === receipt.mutation_id && row.owner_id === receipt.owner_id,
@@ -158,6 +164,7 @@ class FakeDatabase {
   tables: Record<string, Row[]> = { radars: [] };
   receipts: Row[] = [];
   receiptWriteFailures = 0;
+  concurrentReceiptWinner: Row | null = null;
   successfulBusinessWrites = 0;
 
   from(table: string): FakeQuery {
@@ -351,6 +358,36 @@ describe("runPush transport — Radar mutation receipts", () => {
       { id: mutationId, code: "record_not_found", retryable: false },
     ]);
     expect(db.receipts).toHaveLength(0);
+  });
+
+  it("verifies and replays a receipt won by a concurrent request instead of accepting the local response blindly", async () => {
+    const db = new FakeDatabase();
+    const entry = radarEntry("create", {
+      title: "Radar course",
+      query: "transport local",
+      category: "services",
+      radiusKm: 2,
+    });
+    db.concurrentReceiptWinner = {
+      mutation_id: mutationId,
+      owner_id: ownerId,
+      logical_table: "radars",
+      record_id: recordId,
+      response: {
+        table: "radars",
+        revision: 1,
+        deleted: false,
+        data: { id: recordId, owner_id: ownerId, title: "Radar course", revision: 1 },
+      },
+    };
+
+    const result = await runPush(db.client(), request(entry), ownerId);
+
+    expect(result.accepted).toEqual([mutationId]);
+    expect(result.rejected).toEqual([]);
+    expect(result.records).toEqual([db.concurrentReceiptWinner?.response]);
+    expect(db.receipts).toHaveLength(1);
+    expect(db.successfulBusinessWrites).toBe(1);
   });
 
   it("replays the same mutation id from its receipt without a second business write", async () => {
