@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Compass, LocateFixed, ScanLine, SlidersHorizontal, Sparkles } from "lucide-react";
+import { Compass, ScanLine, SlidersHorizontal, Sparkles } from "lucide-react";
 import { formatCommunicationMessage } from "@/lib/communication/format";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useScan } from "../hooks/useScan";
