@@ -8,6 +8,7 @@ import { ScanNeedInterpretation } from "./ScanNeedInterpretation";
 import { ScanPreferences } from "./ScanPreferences";
 import { ScanHistory } from "./ScanHistory";
 import { useScanPreferences } from "../hooks/useScanPreferences";
+import { useScanLocation } from "../hooks/useScanLocation";
 
 const SCAN_LIMIT = 20;
 
@@ -18,52 +19,23 @@ const SCAN_LIMIT = 20;
 export function ScanPanel() {
   const { t } = useI18n();
   const { rows, assessments, busy, failed, execute, history, clearHistory } = useScan();
-  const [locationError, setLocationError] = useState<
-    "permission" | "unavailable" | "timeout" | "unknown" | null
-  >(null);
   const [started, setStarted] = useState(false);
-  const [locating, setLocating] = useState(false);
-  const [unsupported, setUnsupported] = useState(false);
+  const { locate, locating, locationError, unsupported } = useScanLocation();
   const { radiusKm, setRadiusKm, availableRadii } = useScanPreferences();
   const [needText, setNeedText] = useState("");
 
   const start = () => {
-    setLocationError(null);
-    setUnsupported(false);
     setStarted(true);
-
-    if (!navigator.geolocation?.getCurrentPosition) {
-      setUnsupported(true);
-      return;
-    }
-
-    setLocating(true);
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setLocating(false);
-        void execute({
-          text: needText.trim(),
-          category: null,
-          latitude: pos.coords.latitude,
-          longitude: pos.coords.longitude,
-          radiusKm,
-          limit: SCAN_LIMIT,
-        });
-      },
-      (error) => {
-        setLocating(false);
-        const code =
-          error.code === 1
-            ? "permission"
-            : error.code === 2
-              ? "unavailable"
-              : error.code === 3
-                ? "timeout"
-                : "unknown";
-        setLocationError(code);
-      },
-      { enableHighAccuracy: false, timeout: 8000 },
-    );
+    void locate().then((coordinates) => {
+      if (!coordinates) return;
+      void execute({
+        text: needText.trim(),
+        category: null,
+        ...coordinates,
+        radiusKm,
+        limit: SCAN_LIMIT,
+      });
+    });
   };
 
   return (
