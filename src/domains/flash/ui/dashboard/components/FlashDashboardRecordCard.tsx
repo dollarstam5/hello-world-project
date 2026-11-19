@@ -3,7 +3,13 @@ import { Archive, Eye, Pencil, Trash2 } from "lucide-react";
 import type { FlashRecord } from "@eco/core-contracts";
 import { resolveFlashStatus } from "@eco/core-logic";
 import { Surface } from "@/components/app/Surface";
-import {\n  Dialog,\n  DialogContent,\n  DialogDescription,\n  DialogHeader,\n  DialogTitle,\n} from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useI18n } from "@/lib/i18n/useI18n";
