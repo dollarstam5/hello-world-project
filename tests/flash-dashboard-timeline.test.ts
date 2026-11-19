@@ -57,7 +57,7 @@ describe("Flash dashboard timeline grouping", () => {
 
     expect(groups.map((group) => [group.key, group.items.map((item) => item.id)])).toEqual([
       ["today", ["monday"]],
-      ["lastWeek", ["sunday"]],
+      ["yesterday", ["sunday"]],
       ["older", ["older-date"]],
     ]);
   });
