@@ -79,7 +79,10 @@ export function ScanPanel() {
           </div>
 
           <label className="stack-2" htmlFor="scan-need">
-            <span className="text-sm font-medium">{t("scan.need.label")}</span>
+            <span className="flex items-center justify-between gap-3 text-sm font-medium">
+              <span>{t("scan.need.label")}</span>
+              <span className="text-xs font-normal tabular-nums text-muted-foreground">{needText.length}/160</span>
+            </span>
             <textarea
               id="scan-need"
               value={needText}
@@ -88,7 +91,7 @@ export function ScanPanel() {
               placeholder={t("scan.need.placeholder")}
               disabled={busy || locating}
               rows={4}
-              className="min-h-32 w-full resize-y rounded-2xl border border-border bg-background/70 p-4 text-base leading-relaxed text-foreground placeholder:text-muted-foreground/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
+              className="min-h-32 w-full resize-none rounded-2xl border border-border bg-background/70 p-4 text-base leading-relaxed text-foreground placeholder:text-muted-foreground/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
             />
           </label>
 
@@ -100,7 +103,7 @@ export function ScanPanel() {
               onClick={start}
               disabled={busy || locating || !needText.trim()}
               aria-busy={busy || locating}
-              className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-primary px-5 py-3 text-base font-semibold text-primary-foreground transition-transform hover:scale-[1.01] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-55 disabled:hover:scale-100"
+              className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-primary px-5 py-3 text-base font-semibold text-primary-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-55"
             >
               {busy || locating ? (
                 <ScanLine className="h-5 w-5 animate-pulse" aria-hidden />
