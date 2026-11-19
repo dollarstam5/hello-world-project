@@ -7,6 +7,7 @@ import { useI18n } from "@/lib/i18n/useI18n";
 import { useFlashDashboardActions } from "./hooks/useFlashDashboardActions";
 import { useFlashDashboardData } from "./hooks/useFlashDashboardData";
 import { useFlashDashboardTimeline } from "./hooks/useFlashDashboardTimeline";
+import { useFlashDashboardPendingDelete } from "./hooks/useFlashDashboardPendingDelete";
 
 type PendingDelete = FlashRecord | null;
 
@@ -18,12 +19,12 @@ export function FlashDashboard({
   onAccessAvailable?: (available: boolean) => void;
 }) {
   const { t, locale } = useI18n();
-  const { records } = useFlashDashboardData();
+  const { records, userId } = useFlashDashboardData();
   const { groups, collapsedGroups, toggleGroup } = useFlashDashboardTimeline(records ?? []);
   const { busyId, actionError, archive, saveEdit, remove } = useFlashDashboardActions();
   const [pendingDelete, setPendingDelete] = useFlashDashboardPendingDelete();
 
-  if (records === undefined) {
+  if (userId === undefined || records === undefined) {
     return (
       <p className="text-sm text-muted-foreground" role="status">
         {t("app.loading")}
