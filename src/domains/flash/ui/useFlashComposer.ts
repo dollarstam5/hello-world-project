@@ -249,7 +249,16 @@ export function useFlashComposer({ user, locale, t, onSaved }: ComposerOptions) 
         areaLabel: areaLabel.trim() || undefined,
         expiresAt: expiryFor(timeSlot),
       });
-      try {\n        const savedMedia = [];\n        for (const file of attachments) savedMedia.push(await storeLocalFlashAttachment(file, savedFlash.id));\n        if (savedMedia.length) await flashesRepository.update(savedFlash.id, { mediaIds: savedMedia.map((media) => media.id) as never });\n      } catch (attachmentSaveError) {\n        await deleteLocalFlashAttachments(savedFlash.id);\n        await flashesRepository.remove(savedFlash.id);\n        throw attachmentSaveError;\n      }\n      publishFlashCommunicationEvent(communication, savedFlash, "draft-saved");
+      try {
+        const savedMediaIds: string[] = [];
+        for (const file of attachments) savedMediaIds.push((await storeLocalFlashAttachment(file, savedFlash.id)).id);
+        if (savedMediaIds.length) await flashesRepository.update(savedFlash.id, { mediaIds: savedMediaIds as never });
+      } catch (attachmentSaveError) {
+        await deleteLocalFlashAttachments(savedFlash.id);
+        await flashesRepository.remove(savedFlash.id);
+        throw attachmentSaveError;
+      }
+      publishFlashCommunicationEvent(communication, savedFlash, "draft-saved");
       closeComposer();
       onSaved();
     } catch {
