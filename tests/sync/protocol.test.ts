@@ -7,6 +7,7 @@ import {
   validatePullRequest,
   validatePullResult,
   validatePushRequest,
+  filterClientWritablePatch,
 } from "@eco/core-contracts";
 
 const uuid = (n: number) => `00000000-0000-4000-8000-${n.toString().padStart(12, "0")}`;
@@ -76,6 +77,37 @@ describe("sync protocol validation", () => {
       scope: "half_city",
       urgency: "very_urgent",
     });
+  });
+
+  it("omits undefined optional fields from Flash create patches while retaining null values", () => {
+    const patch = filterClientWritablePatch("flashes", {
+      title: "Besoin local",
+      body: "Un trajet",
+      kind: "need",
+      category: "transport",
+      timeSlot: "today",
+      expiresAt: null,
+      mediaIds: [],
+      scope: undefined,
+      urgency: undefined,
+      areaLabel: undefined,
+    });
+
+    expect(patch).toEqual({
+      title: "Besoin local",
+      body: "Un trajet",
+      kind: "need",
+      category: "transport",
+      timeSlot: "today",
+      expiresAt: null,
+      mediaIds: [],
+    });
+    expect(() =>
+      validatePushRequest({
+        protocolVersion: SYNC_PROTOCOL_VERSION,
+        entries: [{ ...mutation, kind: "create", patch }],
+      }),
+    ).not.toThrow();
   });
 
   it("creates Flash records without accepting a client-supplied status", () => {
