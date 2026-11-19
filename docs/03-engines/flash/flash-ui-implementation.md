@@ -144,3 +144,15 @@ La sauvegarde d'un brouillon débloque l'espace de gestion mais ne le rend pas v
 ### Écart d'implémentation à suivre
 
 Le verrou d'accès au dashboard est maintenant appliqué dans le code : « Mes Flashs » reste caché avant le premier Flash sauvegardé, le dashboard est détecté à partir des Flashs persistés appartenant au compte, et un premier brouillon sauvegardé ouvre l'espace. Le regroupement chronologique utilise les semaines civiles et évite les doublons entre les sections relatives et les sections de semaines. La vérification complète reste en attente : Quality s'arrête à « Verify foundation and secrets » avant les tests/build globaux; Scan Validation et Dependency Review sont vérifiés séparément. La publication distante est toujours non disponible.
+## Organisation du Dashboard de gestion
+
+Le Dashboard est regroupé dans `src/domains/flash/ui/dashboard/` pour séparer la gestion des Flashs du parcours de création :
+
+- `FlashDashboard.tsx` : accès, lecture des Flashs du compte, actions de gestion et regroupement chronologique.
+- `components/FlashDashboardEmptyState.tsx` : premier état vide après accès débloqué.
+- `components/FlashDashboardRecordCard.tsx` : fiche/carte d'un Flash et actions disponibles.
+- `components/FlashDashboardDeleteDialog.tsx` : confirmation de suppression.
+- `../flash-composer-helpers.ts` : helpers de saisie/voix du composer, partagés uniquement avec le parcours d'expression.
+
+
+Flash V1 reste centré sur l'expression naturelle par texte ou voix. Aucun ajout de fichiers, pièce jointe, média ou transfert n'est prévu dans ce périmètre.
