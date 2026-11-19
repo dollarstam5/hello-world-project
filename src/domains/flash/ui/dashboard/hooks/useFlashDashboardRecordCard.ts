@@ -13,7 +13,7 @@ export function useFlashDashboardRecordCard(
   const [draft, setDraft] = useState(record.body);
   const status = resolveFlashStatus(record);
   const presentation = FLASH_STATUS_PRESENTATION[status];
-  const busy = busyId === record.id;
+  const busy = busyId !== null;
   const canEdit = status !== "archived" && status !== "expired";
   const canArchive = status === "live";
 
