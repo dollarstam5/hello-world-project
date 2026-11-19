@@ -2,7 +2,9 @@ import { describe, expect, it } from "vitest";
 import { mergeRecords } from "@eco/core-logic";
 import type { BaseRecord } from "@eco/core-contracts";
 
-function record(\n  overrides: Partial<BaseRecord> & Record<string, unknown> = {},\n): BaseRecord & Record<string, unknown> {
+function record(
+  overrides: Partial<BaseRecord> & Record<string, unknown> = {},
+): BaseRecord & Record<string, unknown> {
   return {
     id: "flash-1",
     createdAt: 100,
