@@ -77,7 +77,6 @@ export interface FlashRecord extends BaseRecord {
 
   /** Epoch ms after which the flash stops being visible. */
   expiresAt: number | null;
-
 }
 
 export type MissionStatus =
