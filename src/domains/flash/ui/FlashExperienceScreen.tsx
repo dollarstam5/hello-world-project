@@ -7,7 +7,7 @@ import { formatCommunicationMessage } from "@/lib/communication/format";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { FlashFeed } from "./FlashFeed";
 import { FlashComposerDialog } from "./FlashComposerDialog";
-import { MyFlashManagement } from "./MyFlashManagement";
+import { FlashDashboard } from "./dashboard/FlashDashboard";
 import { useFlashComposer } from "./useFlashComposer";
 
 type FlashTab = "discover" | "mine";
@@ -143,7 +143,7 @@ export function FlashExperienceScreen() {
           </div>
         ) : null}
         <div hidden={tab !== "mine" || !dashboardUnlocked}>
-          <MyFlashManagement
+          <FlashDashboard
             onCreateFlash={composer.openComposer}
             onAccessAvailable={setDashboardUnlocked}
           />
