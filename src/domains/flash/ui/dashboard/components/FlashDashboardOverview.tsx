@@ -23,16 +23,23 @@ export function FlashDashboardOverview({ records }: Props) {
   const { t } = useI18n();
 
   return (
-    <section aria-label={t("flash.mine.title")} className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
+    <section
+      aria-label={t("flash.mine.title")}
+      className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3"
+    >
       {STATUS_CARDS.map(({ key, icon: Icon, style }) => {
         const count = records.filter((record) => resolveFlashStatus(record) === key).length;
         return (
           <Surface key={key} variant="elevated" padding="sm" bordered className="min-w-0">
             <div className="flex items-center gap-2">
-              <span className={`flex size-8 shrink-0 items-center justify-center rounded-lg ${style}`}>
+              <span
+                className={`flex size-8 shrink-0 items-center justify-center rounded-lg ${style}`}
+              >
                 <Icon className="size-4" aria-hidden="true" />
               </span>
-              <span className="truncate text-xs font-medium text-muted-foreground">{t(`flash.mine.status.${key}`)}</span>
+              <span className="truncate text-xs font-medium text-muted-foreground">
+                {t(`flash.mine.status.${key}`)}
+              </span>
             </div>
             <p className="mt-3 text-2xl font-semibold tabular-nums tracking-tight">{count}</p>
           </Surface>

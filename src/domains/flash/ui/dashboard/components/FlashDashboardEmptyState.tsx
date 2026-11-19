@@ -3,7 +3,6 @@ import { EmptyState } from "@/components/app/EmptyState";
 import { Surface } from "@/components/app/Surface";
 import { useI18n } from "@/lib/i18n/useI18n";
 
-
 const STEPS = [
   {
     key: "step1",

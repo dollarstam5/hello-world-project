@@ -48,7 +48,11 @@ export function FlashDashboard({
       <FlashDashboardOverview records={records} />
       {records.length > 0 ? <FlashDashboardFilters {...filters} /> : null}
       {records.length === 0 ? <FlashDashboardEmptyState /> : null}
-      {records.length > 0 && filters.filteredRecords.length === 0 ? <Surface variant="sunken" padding="md" bordered><p className="text-sm text-muted-foreground">{t("flash.mine.filters.noResults")}</p></Surface> : null}
+      {records.length > 0 && filters.filteredRecords.length === 0 ? (
+        <Surface variant="sunken" padding="md" bordered>
+          <p className="text-sm text-muted-foreground">{t("flash.mine.filters.noResults")}</p>
+        </Surface>
+      ) : null}
       {records.length > 0 ? (
         <p className="rounded-lg bg-muted/40 px-3 py-2 text-xs text-muted-foreground">
           {t("flash.mine.localHint")}
