@@ -3,7 +3,7 @@ import { LocateFixed, ScanLine } from "lucide-react";
 import { formatCommunicationMessage } from "@/lib/communication/format";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useScan } from "../hooks/useScan";
-import { PublicProfilePreview } from "@/components/app/PublicProfilePreview";
+import { ScanResults } from "./ScanResults";
 import { ScanNeedInterpretation } from "./ScanNeedInterpretation";
 
 const SCAN_RADII_KM = [1, 5, 10, 20] as const;
@@ -16,7 +16,7 @@ const SCAN_LIMIT = 20;
  */
 export function ScanPanel() {
   const { t, locale } = useI18n();
-  const { rows, busy, failed, execute, history, clearHistory } = useScan();
+  const { rows, assessments, busy, failed, execute, history, clearHistory } = useScan();
   const [locationError, setLocationError] = useState<
     "permission" | "unavailable" | "timeout" | "unknown" | null
   >(null);
@@ -144,34 +144,7 @@ export function ScanPanel() {
           </p>
         )}
 
-      {rows.length > 0 && (
-        <ul className="stack-3">
-          {rows.map((r) => (
-            <li key={r.id} className="rounded-3xl border border-border-soft bg-surface p-4">
-              <div className="flex items-center justify-between gap-3">
-                <span className="text-base font-medium">{r.title}</span>
-                <span className="shrink-0 rounded-full bg-primary-soft px-2.5 py-1 text-xs font-medium text-primary">
-                  {r.distanceKm.toFixed(1)} km
-                </span>
-              </div>
-              <p className="mt-1 text-xs text-muted-foreground">
-                {t(`flash.kind.${r.kind}`)}
-                {" · "}
-                {t(`flash.category.${r.category}`)}
-                {" · "}
-                {t(`flash.slot.${r.timeSlot}`)}
-                {" · "}
-                {r.areaLabel}
-              </p>
-              {r.authorPreview ? (
-                <div className="mt-3 border-t border-border-soft pt-2">
-                  <PublicProfilePreview profile={r.authorPreview} origin="real" />
-                </div>
-              ) : null}
-            </li>
-          ))}
-        </ul>
-      )}
+      {rows.length > 0 ? <ScanResults assessments={assessments} /> : null}
 
       <section className="stack-3" aria-labelledby="scan-history-heading">
         <div className="flex items-center justify-between gap-3">
