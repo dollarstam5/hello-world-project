@@ -72,7 +72,6 @@ export function FlashDashboardDetailDialog({
 
         {(record.expiresAt || record.areaLabel) ? (
           <section className="stack-2 border-t border-border-soft pt-3">
-            <h3 className="text-sm font-medium">{t("flash.mine.detailMetadata")}</h3>
             <div className="stack-2 text-sm text-muted-foreground">
               {record.expiresAt ? (
                 <p>
