@@ -16,6 +16,7 @@ export function FlashExperienceScreen() {
   const { t, locale } = useI18n();
   const { user, loading: authLoading } = useAuth();
   const [tab, setTab] = useState<FlashTab>("discover");
+  const [dashboardUnlocked, setDashboardUnlocked] = useState(false);
   const [success, setSuccess] = useState(false);
   const composer = useFlashComposer({
     user,
@@ -23,6 +24,7 @@ export function FlashExperienceScreen() {
     t,
     onSaved: () => {
       setSuccess(true);
+      setDashboardUnlocked(true);
       setTab("mine");
     },
   });
@@ -76,6 +78,7 @@ export function FlashExperienceScreen() {
             {t("flash.hero.action")}
           </Button>
           <p className="mt-2 text-xs text-muted-foreground">{t("flash.hero.voiceHint")}</p>
+          <p className="mt-2 max-w-xs text-xs leading-relaxed text-muted-foreground">{t("flash.hero.dashboardHint")}</p>
         </div>
       </div>
 
@@ -111,6 +114,7 @@ export function FlashExperienceScreen() {
         >
           {t("flash.tabs.discover")}
         </button>
+        {dashboardUnlocked ? (
         <button
           type="button"
           role="tab"
@@ -120,10 +124,11 @@ export function FlashExperienceScreen() {
         >
           {t("flash.tabs.mine")}
         </button>
+        ) : null}
       </div>
 
       <div role="tabpanel" className="min-w-0">
-        {tab === "discover" ? (
+        {tab === "discover" || !dashboardUnlocked ? (
           <div className="stack-3">
             <div className="mb-3 flex items-center justify-between gap-3">
               <div>
@@ -134,15 +139,10 @@ export function FlashExperienceScreen() {
             </div>
             <FlashFeed />
           </div>
-        ) : (
-          <div className="stack-3">
-            <div className="mb-3">
-              <h2 className="text-lg font-bold">{t("flash.mine.title")}</h2>
-              <p className="text-sm text-muted-foreground">{t("flash.mine.desc")}</p>
-            </div>
-            <MyFlashManagement onCreateFlash={composer.openComposer} />
-          </div>
-        )}
+        ) : null}
+        <div hidden={tab !== "mine" || !dashboardUnlocked}>
+          {dashboardUnlocked ? <MyFlashManagement onCreateFlash={composer.openComposer} onAccessAvailable={setDashboardUnlocked} /> : null}
+        </div>
       </div>
 
       <FlashComposerDialog state={composer} user={user} authLoading={authLoading} />
