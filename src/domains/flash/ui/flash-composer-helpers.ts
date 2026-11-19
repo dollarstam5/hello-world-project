@@ -55,4 +55,3 @@ export function expiryFor(timeSlot: FlashTimeSlot) {
   };
   return parseFlashIntent(phrases[timeSlot]).expiresAt;
 }
-
