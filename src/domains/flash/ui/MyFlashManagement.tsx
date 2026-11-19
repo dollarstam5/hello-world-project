@@ -159,6 +159,11 @@ export function MyFlashManagement({ onCreateFlash, onAccessAvailable }: { onCrea
 
     try {
       await deleteFlash(record.id);
+      try {
+        await deleteLocalFlashAttachments(record.id);
+      } catch {
+        // Flash deletion is already complete; failed local cleanup can be retried later.
+      }
       publishFlashCommunicationEvent(communication, record, "deleted");
       setPendingDelete(null);
     } catch {
