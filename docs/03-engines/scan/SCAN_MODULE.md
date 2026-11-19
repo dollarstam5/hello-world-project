@@ -34,3 +34,11 @@ Les règles de Scan V1 sont consolidées dans [SCAN_PRODUCT_DECISIONS_V1.md](./S
 - `ScanPanel` reste sous le seuil architectural de 300 lignes (à confirmer par contrôle CI/mesure locale ; aucune mesure locale disponible dans cette session).
 - Les classifications exact/proche/alternative/non vérifié ne sont pas encore exposées dans les cartes : la source publique actuelle ne possède pas de preuve sémantique fiable pour l'intention principale. Ne pas les afficher comme confirmées avant d'avoir un contrat d'évidence source fiable.
 - Le contrôle Scan Validation sur run #65 est passé (lint Scan et tests ciblés). Quality du run #2143 a été annulé lors de la progression des commits, donc le résultat global du formatage/build sur le dernier état reste à confirmer par un run complet.
+
+## Qualification des résultats — évolution du Lot 1 (2026-11-19)
+
+- Les cartes de résultat sont désormais rendues par `ScanResults`, séparées de `ScanPanel` (le panneau est resté sous 300 lignes dans la dernière version observée, 220 lignes avant l'extraction).
+- Le hook `useScan` expose les assessments issus de la sélection pure. Il calcule les qualifications une seule fois par exécution et conserve la liste des candidats pour l'affichage.
+- La présentation sépare les quatre niveaux : `exact`, `close`, `alternative`, `unverified`. Les résultats `unverified` indiquent explicitement que la publication ne confirme pas le besoin.
+- **Limite de preuve toujours présente :** la projection Flash publique ne fournit pas le contenu sémantique nécessaire. L'évidence construite pour cette source garde `needMatch: unknown`; une correspondance exacte ne peut donc pas être affichée par ce flux sans evidence source valide.
+- **Validation après commits de qualification :** en attente des workflows GitHub sur les derniers commits ; aucun succès global ne doit être revendiqué avant lecture des jobs.
