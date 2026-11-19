@@ -95,7 +95,6 @@ export async function deleteLocalFlashAttachment(id: string): Promise<void> {
   const record = await db.mediaBlobs.get(id);
   if (record?.ownerId === ownerId) await db.mediaBlobs.delete(id);
 }
-
 export async function deleteLocalFlashAttachments(flashId: string): Promise<void> {
   const ownerId = requireLocalDataOwnerId();
   const db = getDb();
