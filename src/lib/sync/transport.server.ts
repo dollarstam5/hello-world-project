@@ -290,9 +290,9 @@ export async function runPush(
           // follow-up read confirms the tombstone already exists.
           const recovered = await recoverAppliedMutation(db, entry, table, row);
           if (recovered) {
-            await storeReceipt(db, entry, userId, recovered);
+            const receiptResponse = await storeReceipt(db, entry, userId, recovered);
             accepted.push(entry.id);
-            records.push(recovered);
+            if (receiptResponse) records.push(receiptResponse);
             continue;
           }
         }
