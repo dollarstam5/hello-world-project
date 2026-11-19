@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Archive, Eye, Pencil, Sparkles, Trash2 } from "lucide-react";
 import type { FlashRecord } from "@eco/core-contracts";
+import { mediaRepository } from "@/platform/offline";
 import { resolveFlashStatus } from "@eco/core-logic";
 import { EmptyState } from "@/components/app/EmptyState";
 import { Surface } from "@/components/app/Surface";
@@ -63,6 +64,13 @@ export function MyFlashManagement({ onCreateFlash, onAccessAvailable }: { onCrea
       subscription.unsubscribe();
     };
   }, []);
+
+  const mediaRecords = useLocalQuery(async () => {
+    if (!userId) return null;
+    return await mediaRepository.list();
+  }, [userId]);
+
+  const mediaById = new Map((mediaRecords ?? []).map((media) => [media.id, media]));
 
   const records = useLocalQuery(async () => {
     if (userId === undefined || !userId) return null;
@@ -329,7 +337,16 @@ export function MyFlashManagement({ onCreateFlash, onAccessAvailable }: { onCrea
                       {record.areaLabel ? <p>{t("flash.mine.detailArea")}: {record.areaLabel}</p> : null}
                       <div className="stack-1">
                         <p className="font-medium">{t("flash.mine.detailMedia")}</p>
-                        {record.mediaIds.length ? <ul className="list-disc pl-5">{record.mediaIds.map((mediaId) => <li key={mediaId} className="break-all">{mediaId}</li>)}</ul> : <p className="text-muted-foreground">{t("flash.mine.detailNoMedia")}</p>}
+                        {record.mediaIds.length ? <ul className="list-disc pl-5">{record.mediaIds.map((mediaId) => {
+                          const media = mediaById.get(mediaId);
+                          return (
+                            <li key={mediaId} className="break-all">
+                              <span className="font-medium">{media ? t(`flash.mine.media.kind.${media.kind}`) : t("flash.mine.media.unknown")}</span>
+                              <span className="ml-1 text-muted-foreground">({media ? t(`flash.mine.media.state.${media.state}`) : t("flash.mine.media.unavailable")})</span>
+                              <p className="text-xs text-muted-foreground">{media?.mimeType ?? mediaId}</p>
+                            </li>
+                          );
+                        })}</ul> : <p className="text-muted-foreground">{t("flash.mine.detailNoMedia")}</p>}
                         <p className="text-xs text-muted-foreground">{t("flash.mine.detailMediaPending")}</p>
                       </div>
                       <p className="text-xs text-muted-foreground">{t("flash.mine.detailInteractionsPending")}</p>
