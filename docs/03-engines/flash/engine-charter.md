@@ -63,7 +63,7 @@ Cette livraison d'interface ne valide pas encore la visibilité par publication 
 ## Sections à compléter pendant la conception
 - Création et durée de vie d'un Flash.
 - Zone géographique et portée de diffusion.
-- Catégories, pièces jointes et limites V1.
+- Catégories, durée et cycle de vie.
 - Expiration, suppression et modération.
 - États vides, erreurs, confirmations et notifications.
 - Données et permissions membre/invité.
