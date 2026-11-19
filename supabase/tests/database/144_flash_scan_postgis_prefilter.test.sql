@@ -1,6 +1,6 @@
 BEGIN;
 CREATE EXTENSION IF NOT EXISTS pgtap WITH SCHEMA extensions;
-SELECT plan(8);
+SELECT plan(7);
 
 SELECT ok(
   position('ST_DWithin' IN pg_get_functiondef(
@@ -25,7 +25,7 @@ SELECT ok(
     'public.scan_public_flashes(text,text,double precision,double precision,double precision,integer)'::regprocedure
   )) = 0
   AND position('longitude' IN pg_get_function_result(
-    'public.scan_public_flashes(text,text,double precision,double precision,double integer)'::regprocedure
+    'public.scan_public_flashes(text,text,double precision,double precision,double precision,integer)'::regprocedure
   )) = 0,
   'Scan public return schema does not expose private latitude or longitude'
 );
