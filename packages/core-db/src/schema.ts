@@ -22,17 +22,6 @@ import type {
  * Nothing in this file talks to the network: the sync worker is the sole
  * bridge between this database and the Cloud.
  */
-export interface LocalMediaBlob {
-  id: string;
-  ownerId: string;
-  flashId: string | null;
-  blob: Blob;
-  fileName: string;
-  mimeType: string;
-  byteSize: number;
-  createdAt: number;
-}
-
 export class EcosystemDatabase extends Dexie {
   users!: Table<UserRecord, string>;
   udi!: Table<UdiRecord, string>;
@@ -41,7 +30,6 @@ export class EcosystemDatabase extends Dexie {
   radars!: Table<RadarRecord, string>;
   posts!: Table<PostRecord, string>;
   media!: Table<MediaRecord, string>;
-  mediaBlobs!: Table<LocalMediaBlob, string>;
   notifications!: Table<NotificationRecord, string>;
   audit!: Table<AuditEntryRecord, string>;
 
@@ -85,6 +73,9 @@ export class EcosystemDatabase extends Dexie {
     this.version(5).stores({
       mediaBlobs: "id, ownerId, flashId, createdAt",
     });
+
+    // Remove the experimental Flash attachments table introduced in DB version 5.
+    this.version(6).stores({ mediaBlobs: null });
   }
 }
 
