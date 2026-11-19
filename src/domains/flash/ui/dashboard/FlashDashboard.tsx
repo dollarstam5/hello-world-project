@@ -4,9 +4,11 @@ import { FlashDashboardEmptyState } from "./components/FlashDashboardEmptyState"
 import { FlashDashboardDateGroup } from "./components/FlashDashboardDateGroup";
 import { FlashDashboardHeader } from "./components/FlashDashboardHeader";
 import { FlashDashboardOverview } from "./components/FlashDashboardOverview";
+import { FlashDashboardFilters } from "./components/FlashDashboardFilters";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useFlashDashboardActions } from "./hooks/useFlashDashboardActions";
 import { useFlashDashboardData } from "./hooks/useFlashDashboardData";
+import { useFlashDashboardFilters } from "./hooks/useFlashDashboardFilters";
 import { useFlashDashboardTimeline } from "./hooks/useFlashDashboardTimeline";
 import { useFlashDashboardDeletion } from "./hooks/useFlashDashboardDeletion";
 
@@ -19,7 +21,8 @@ export function FlashDashboard({
 }) {
   const { t, locale } = useI18n();
   const { records, userId } = useFlashDashboardData();
-  const { groups, collapsedGroups, toggleGroup } = useFlashDashboardTimeline(records ?? []);
+  const filters = useFlashDashboardFilters(records ?? []);
+  const { groups, collapsedGroups, toggleGroup } = useFlashDashboardTimeline(filters.filteredRecords);
   const { busyId, actionError, archive, saveEdit, remove } = useFlashDashboardActions();
   const deletion = useFlashDashboardDeletion(remove, busyId);
 
@@ -43,7 +46,9 @@ export function FlashDashboard({
     <div className="stack-4">
       <FlashDashboardHeader onCreateFlash={onCreateFlash} />
       <FlashDashboardOverview records={records} />
+      {records.length > 0 ? <FlashDashboardFilters {...filters} /> : null}
       {records.length === 0 ? <FlashDashboardEmptyState /> : null}
+      {records.length > 0 && filters.filteredRecords.length === 0 ? <Surface variant="sunken" padding="md" bordered><p className="text-sm text-muted-foreground">{t("flash.mine.filters.noResults")}</p></Surface> : null}
       {records.length > 0 ? (
         <p className="rounded-lg bg-muted/40 px-3 py-2 text-xs text-muted-foreground">
           {t("flash.mine.localHint")}
