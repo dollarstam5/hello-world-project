@@ -1,0 +1,44 @@
+name: Flash Attachment Validation
+
+on:
+  push:
+    branches:
+      - scan-phase-a-interpreter
+    paths:
+      - "src/domains/flash/**"
+      - "packages/core-db/**"
+      - "packages/core-contracts/**"
+      - "src/platform/offline/**"
+      - "tests/flash-attachment-validation.test.ts"
+      - ".github/workflows/flash-attachment-validation.yml"
+  pull_request:
+    paths:
+      - "src/domains/flash/**"
+      - "packages/core-db/**"
+      - "packages/core-contracts/**"
+      - "src/platform/offline/**"
+      - "tests/flash-attachment-validation.test.ts"
+      - ".github/workflows/flash-attachment-validation.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  flash-attachment-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout without persisted credentials
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
+      - name: Install locked dependencies
+        run: bun install --frozen-lockfile
+      - name: Lint repository
+        run: bun run lint
+      - name: Run attachment validation tests
+        run: bun run test:run -- tests/flash-attachment-validation.test.ts
+      - name: Build production bundle
+        run: bun run build
