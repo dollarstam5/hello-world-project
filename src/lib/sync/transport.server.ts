@@ -124,7 +124,7 @@ async function storeReceipt(
   entry: OutboxEntry,
   userId: string,
   response: SyncRecordEnvelope | null,
-): Promise<void> {
+): Promise<SyncRecordEnvelope | null> {
   const { error } = await db.from("sync_mutation_receipts").insert({
     mutation_id: entry.id,
     owner_id: userId,
@@ -132,7 +132,15 @@ async function storeReceipt(
     record_id: entry.recordId,
     response,
   });
-  if (error && error.code !== "23505") throw new Error("sync_receipt_write_failed");
+  if (!error) return response;
+  if (error.code !== "23505") throw new Error("sync_receipt_write_failed");
+
+  // A concurrent request may have persisted this mutation's receipt first.
+  // Never treat a unique-key collision as acceptance until the winning receipt
+  // is read back and its owner/table/record binding is verified.
+  const racedReceipt = await replayReceipt(db, entry, userId);
+  if (racedReceipt === undefined) throw new Error("sync_receipt_conflict_unverified");
+  return racedReceipt;
 }
 
 function sameDatabaseValue(actual: unknown, expected: unknown): boolean {
@@ -198,9 +206,9 @@ export async function runPush(
       if (entry.kind === "update") {
         const recoveredUpdate = await recoverAppliedMutation(db, entry, table, row);
         if (recoveredUpdate) {
-          await storeReceipt(db, entry, userId, recoveredUpdate);
+          const receiptResponse = await storeReceipt(db, entry, userId, recoveredUpdate);
           accepted.push(entry.id);
-          records.push(recoveredUpdate);
+          if (receiptResponse) records.push(receiptResponse);
           continue;
         }
       }
@@ -267,9 +275,9 @@ export async function runPush(
       if (result.error) {
         const recovered = await recoverAppliedMutation(db, entry, table, row);
         if (recovered) {
-          await storeReceipt(db, entry, userId, recovered);
+          const receiptResponse = await storeReceipt(db, entry, userId, recovered);
           accepted.push(entry.id);
-          records.push(recovered);
+          if (receiptResponse) records.push(receiptResponse);
           continue;
         }
         rejected.push({ id: entry.id, ...classifyDatabaseError(result.error) });
@@ -293,9 +301,9 @@ export async function runPush(
       }
 
       const saved = envelope(entry.table, result.data as Record<string, unknown>);
-      await storeReceipt(db, entry, userId, saved);
+      const receiptResponse = await storeReceipt(db, entry, userId, saved);
       accepted.push(entry.id);
-      records.push(saved);
+      if (receiptResponse) records.push(receiptResponse);
     } catch {
       rejected.push({ id: entry.id, code: "server_error", retryable: true });
     }
