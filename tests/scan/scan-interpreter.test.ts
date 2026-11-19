@@ -157,12 +157,8 @@ describe("Scan interpreter — human need first", () => {
   });
 
   it("keeps quantity as context unless the user makes it a requirement", () => {
-    const contextual = interpretScanRequest(
-      "Je cherche quelqu'un pour transporter 3 cartons",
-    );
-    const mandatory = interpretScanRequest(
-      "Je veux absolument transporter 3 cartons avant 18 h",
-    );
+    const contextual = interpretScanRequest("Je cherche quelqu'un pour transporter 3 cartons");
+    const mandatory = interpretScanRequest("Je veux absolument transporter 3 cartons avant 18 h");
 
     expect(contextual.quantityContext).toBe("3 cartons");
     expect(contextual.requiredCriteria).toHaveLength(0);
