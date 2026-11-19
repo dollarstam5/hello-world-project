@@ -196,8 +196,8 @@ export function useFlashComposer({ user, locale, t, onSaved }: ComposerOptions) 
         setAttachmentError("too_many_files");
         break;
       }
-      const total = [...attachments, ...valid].reduce((sum, item) => sum + item.size, 0) +
-        file.size;
+      const total =
+        [...attachments, ...valid].reduce((sum, item) => sum + item.size, 0) + file.size;
       if (total > FLASH_MEDIA_LIMITS.maxTotalBytes) {
         setAttachmentError("total_too_large");
         break;
