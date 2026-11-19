@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { Compass, ScanLine, SlidersHorizontal, Sparkles } from "lucide-react";
+import { Compass, ScanLine, Sparkles } from "lucide-react";
 import { formatCommunicationMessage } from "@/lib/communication/format";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useScan } from "../hooks/useScan";
 import { ScanResults } from "./ScanResults";
 import { ScanNeedInterpretation } from "./ScanNeedInterpretation";
+import { ScanPreferences } from "./ScanPreferences";
+import { useScanPreferences } from "../hooks/useScanPreferences";
 
-const SCAN_RADII_KM = [1, 2] as const;
 const SCAN_LIMIT = 20;
 
 /**
@@ -22,7 +23,7 @@ export function ScanPanel() {
   const [started, setStarted] = useState(false);
   const [locating, setLocating] = useState(false);
   const [unsupported, setUnsupported] = useState(false);
-  const [radiusKm, setRadiusKm] = useState<number>(1);
+  const { radiusKm, setRadiusKm, availableRadii } = useScanPreferences();
   const [needText, setNeedText] = useState("");
 
   const start = () => {
@@ -117,34 +118,13 @@ export function ScanPanel() {
         </div>
       </div>
 
-      <details className="group rounded-2xl border border-border-soft bg-surface px-4 py-3">
-        <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [&::-webkit-details-marker]:hidden">
-          <span className="inline-flex items-center gap-2 text-sm font-medium">
-            <SlidersHorizontal className="h-4 w-4 text-muted-foreground" aria-hidden />
-            {t("scan.preferences.title")}
-          </span>
-          <span className="text-xs text-muted-foreground">{t("scan.preferences.optional")}</span>
-        </summary>
-        <div className="stack-2 pt-3">
-          <label className="stack-1 text-sm font-medium" htmlFor="scan-radius">
-            <span>{t("scan.radius")}</span>
-            <select
-              id="scan-radius"
-              value={radiusKm}
-              onChange={(event) => setRadiusKm(Number(event.target.value))}
-              disabled={busy || locating}
-              className="min-h-12 w-full rounded-xl border border-border bg-background px-3 text-sm font-normal text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
-            >
-              {SCAN_RADII_KM.map((radius) => (
-                <option key={radius} value={radius}>
-                  {radius} {t("scan.radius.unit")}
-                </option>
-              ))}
-            </select>
-          </label>
-          <p className="text-xs leading-relaxed text-muted-foreground">{t("scan.preferences.radiusNote")}</p>
-        </div>
-      </details>
+      <ScanPreferences
+        radiusKm={radiusKm}
+        availableRadii={availableRadii}
+        disabled={busy || locating}
+        onRadiusChange={setRadiusKm}
+        t={t}
+      />
 
       {unsupported && <p className="text-sm text-destructive" role="alert">{formatCommunicationMessage(t, "scan.unsupported")}</p>}
       {locationError && <p className="text-sm text-destructive" role="alert">{formatCommunicationMessage(t, `scan.location.${locationError}`)}</p>}
