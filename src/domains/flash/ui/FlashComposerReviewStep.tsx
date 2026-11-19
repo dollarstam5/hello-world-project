@@ -1,4 +1,4 @@
-import { Info, Paperclip, X } from "lucide-react"
+import { Info, Paperclip, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { FLASH_SCOPES, FLASH_URGENCIES } from "@eco/core-contracts";
