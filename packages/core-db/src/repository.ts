@@ -77,6 +77,9 @@ export function createRepository<T extends BaseRecord>(name: SyncedTable): Repos
       if (!current) {
         throw new Error(`No local record ${name}/${id}.`);
       }
+      if (current.deletedAt !== null) {
+        throw new Error(`Cannot update deleted record ${name}/${id}.`);
+      }
       const next = stampUpdate({
         ...current,
         ...patch,
@@ -105,7 +108,7 @@ export function createRepository<T extends BaseRecord>(name: SyncedTable): Repos
       }
       const db = getDb();
       const current = await dexieTable().get(id);
-      if (!current) return;
+      if (!current || current.deletedAt !== null) return;
       const next = stampDelete(current);
       await db.transaction("rw", dexieTable(), db.outbox, async () => {
         await dexieTable().put(next);
