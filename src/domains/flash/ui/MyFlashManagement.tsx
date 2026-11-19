@@ -294,9 +294,17 @@ export function MyFlashManagement({ onCreateFlash, onAccessAvailable }: { onCrea
                   </div>
 
                   <div className="mt-3 flex flex-wrap justify-end gap-2">
-                    <Button\n        type="button"\n        size="sm"\n        variant="outline"\n        disabled={editingId !== null || busyId !== null}\n        onClick={() => setExpandedId(expandedId === record.id ? null : record.id)}\n      >
+                    <Button
+        type="button"
+        size="sm"
+        variant="outline"
+        disabled={editingId !== null || busyId !== null}
+        onClick={() => setExpandedId(expandedId === record.id ? null : record.id)}
+      >
                       <Eye className="mr-2 h-4 w-4" aria-hidden />
-                      {expandedId === record.id\n            ? t("flash.mine.hideDetails")\n            : t("flash.mine.viewDetails")}
+                      {expandedId === record.id
+            ? t("flash.mine.hideDetails")
+            : t("flash.mine.viewDetails")}
                     </Button>
                     {editingId !== record.id ? (
                       <Button
@@ -332,13 +340,33 @@ export function MyFlashManagement({ onCreateFlash, onAccessAvailable }: { onCrea
                   {expandedId === record.id ? (
                     <div className="mt-3 rounded-lg border bg-muted/30 p-3 stack-2 text-sm">
                       <p className="whitespace-pre-wrap break-words">{record.body}</p>
-                      <p>\n                        {t("flash.mine.detailCreated")}:{" "}\n                        {new Intl.DateTimeFormat(locale, {\n                          dateStyle: "medium",\n                          timeStyle: "short",\n                        }).format(record.createdAt)}\n                      </p>
-                      {record.expiresAt ? (\n                        <p>\n                          {t("flash.mine.detailExpires")}:{" "}\n                          {new Intl.DateTimeFormat(locale, {\n                            dateStyle: "medium",\n                            timeStyle: "short",\n                          }).format(record.expiresAt)}\n                        </p>\n                      ) : null}
-                      {record.areaLabel ? (\n                        <p>\n                          {t("flash.mine.detailArea")}: {record.areaLabel}\n                        </p>\n                      ) : null}
+                      <p>
+                        {t("flash.mine.detailCreated")}:{" "}
+                        {new Intl.DateTimeFormat(locale, {
+                          dateStyle: "medium",
+                          timeStyle: "short",
+                        }).format(record.createdAt)}
+                      </p>
+                      {record.expiresAt ? (
+                        <p>
+                          {t("flash.mine.detailExpires")}:{" "}
+                          {new Intl.DateTimeFormat(locale, {
+                            dateStyle: "medium",
+                            timeStyle: "short",
+                          }).format(record.expiresAt)}
+                        </p>
+                      ) : null}
+                      {record.areaLabel ? (
+                        <p>
+                          {t("flash.mine.detailArea")}: {record.areaLabel}
+                        </p>
+                      ) : null}
                       <div className="stack-1">
                         <p className="font-medium">{t("flash.mine.detailMedia")}</p>
                         <FlashAttachmentPreview flashId={record.id} mediaIds={record.mediaIds} />
-                        <p className="text-xs text-muted-foreground">\n                          {t("flash.mine.detailInteractionsPending")}\n                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {t("flash.mine.detailInteractionsPending")}
+                        </p>
                       </div>
                     </div>
                   ) : null}
