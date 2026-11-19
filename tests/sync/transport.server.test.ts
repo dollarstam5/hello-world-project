@@ -24,6 +24,21 @@ function radarEntry(kind: OutboxEntry["kind"], patch: Row, id = mutationId): Out
   };
 }
 
+function flashEntry(kind: OutboxEntry["kind"], patch: Row, id = mutationId): OutboxEntry {
+  return {
+    id,
+    ownerId,
+    table: "flashes",
+    recordId,
+    kind,
+    patch,
+    mutatedAt: 1,
+    attempts: 0,
+    lastAttemptAt: null,
+    lastError: null,
+  };
+}
+
 function request(entry: OutboxEntry): PushRequest {
   return { protocolVersion: 2, entries: [entry] };
 }
@@ -140,6 +155,48 @@ class FakeDatabase {
     return this as unknown as SyncClient;
   }
 }
+
+describe("runPush transport — Flash creation and convergence", () => {
+  it("creates a Flash with server-owned identity and replays without duplicating it", async () => {
+    const db = new FakeDatabase();
+    const entry = flashEntry("create", {
+      title: "Besoin de transport",
+      body: "Un trajet local",
+      kind: "need",
+      category: "transport",
+      timeSlot: "today",
+      expiresAt: 1_900_000_000_000,
+      mediaIds: [],
+    });
+
+    const first = await runPush(db.client(), request(entry), ownerId);
+    const writesAfterFirstPush = db.successfulBusinessWrites;
+    const second = await runPush(db.client(), request(entry), ownerId);
+
+    expect(first.accepted).toEqual([mutationId]);
+    expect(first.rejected).toEqual([]);
+    expect(first.records[0]).toMatchObject({
+      table: "flashes",
+      data: {
+        id: recordId,
+        authorId: ownerId,
+        title: "Besoin de transport",
+      },
+    });
+    expect(first.records[0].data).not.toHaveProperty("status");
+    expect(second.accepted).toEqual([mutationId]);
+    expect(db.tables.flashes).toHaveLength(1);
+    expect(db.tables.flashes[0]).toMatchObject({
+      id: recordId,
+      author_id: ownerId,
+      title: "Besoin de transport",
+      body: "Un trajet local",
+    });
+    expect(db.tables.flashes[0]).not.toHaveProperty("status");
+    expect(db.successfulBusinessWrites).toBe(writesAfterFirstPush);
+    expect(db.receipts).toHaveLength(1);
+  });
+});
 
 describe("runPush transport — Radar mutation receipts", () => {
   it("creates a Radar and stores its authoritative receipt", async () => {
