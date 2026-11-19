@@ -125,6 +125,15 @@ export function MyFlashManagement({ onCreateFlash, onAccessAvailable }: { onCrea
   };
   const today = startOfDay(Date.now());
   const day = 86_400_000;
+  const startOfWeek = (value: number) => {
+    const date = new Date(value);
+    const mondayOffset = (date.getDay() + 6) % 7;
+    date.setDate(date.getDate() - mondayOffset);
+    date.setHours(0, 0, 0, 0);
+    return date.getTime();
+  };
+  const thisWeekStart = startOfWeek(today);
+  const lastWeekStart = thisWeekStart - 7 * day;
   useEffect(() => {
     if (records && records.length > 0) onAccessAvailable?.(true);
   }, [records, onAccessAvailable]);
@@ -133,8 +142,9 @@ export function MyFlashManagement({ onCreateFlash, onAccessAvailable }: { onCrea
     { key: "today", label: "flash.mine.period.today", predicate: (r: FlashRecord) => startOfDay(r.createdAt) === today },
     { key: "yesterday", label: "flash.mine.period.yesterday", predicate: (r: FlashRecord) => startOfDay(r.createdAt) === today - day },
     { key: "twoDays", label: "flash.mine.period.twoDays", predicate: (r: FlashRecord) => startOfDay(r.createdAt) === today - 2 * day },
-    { key: "week", label: "flash.mine.period.week", predicate: (r: FlashRecord) => startOfDay(r.createdAt) >= today - 6 * day && startOfDay(r.createdAt) < today - 2 * day },
-    { key: "older", label: "flash.mine.period.older", predicate: (r: FlashRecord) => startOfDay(r.createdAt) < today - 6 * day },
+    { key: "week", label: "flash.mine.period.week", predicate: (r: FlashRecord) => startOfDay(r.createdAt) >= thisWeekStart && startOfDay(r.createdAt) < today - 2 * day },
+    { key: "lastWeek", label: "flash.mine.period.lastWeek", predicate: (r: FlashRecord) => startOfDay(r.createdAt) >= lastWeekStart && startOfDay(r.createdAt) < thisWeekStart },
+    { key: "older", label: "flash.mine.period.older", predicate: (r: FlashRecord) => startOfDay(r.createdAt) < lastWeekStart },
   ].map((group) => ({ ...group, items: records?.filter(group.predicate).sort((a, b) => b.createdAt - a.createdAt) ?? [] }))
     .filter((group) => group.items.length > 0);
 
