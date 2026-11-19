@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useScan } from "./useScan";
 import { useScanLocation } from "./useScanLocation";
 import { useScanPreferences } from "./useScanPreferences";
-import { useScanStatus } from "./useScanStatus";
+import { getScanStatus } from "../utils/scanStatus";
 
 const SCAN_LIMIT = 20;
 
@@ -13,7 +13,7 @@ export function useScanFlow() {
   const [started, setStarted] = useState(false);
   const [needText, setNeedText] = useState("");
 
-  const status = useScanStatus({
+  const status = getScanStatus({
     started,
     locating: location.locating,
     busy: scan.busy,
