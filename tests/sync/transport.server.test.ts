@@ -227,7 +227,8 @@ describe("runPush transport — stale Flash updates", () => {
     expect(db.receipts).toHaveLength(0);
   });
 });
-\ndescribe("runPush transport — Radar mutation receipts", () => {
+
+describe("runPush transport — Radar mutation receipts", () => {
   it("creates a Radar and stores its authoritative receipt", async () => {
     const db = new FakeDatabase();
     const entry = radarEntry("create", {
@@ -283,7 +284,8 @@ describe("runPush transport — stale Flash updates", () => {
     expect(db.successfulBusinessWrites).toBe(0);
     expect(db.tables.radars).toHaveLength(0);
   });
-\n  it("updates an existing Radar and stores the resulting record in its receipt", async () => {
+
+  it("updates an existing Radar and stores the resulting record in its receipt", async () => {
     const db = new FakeDatabase();
     db.tables.radars.push({
       id: recordId,
@@ -340,7 +342,8 @@ describe("runPush transport — stale Flash updates", () => {
     ]);
     expect(db.receipts).toHaveLength(0);
   });
-\n  it("replays the same mutation id from its receipt without a second business write", async () => {
+
+  it("replays the same mutation id from its receipt without a second business write", async () => {
     const db = new FakeDatabase();
     const entry = radarEntry("create", {
       title: "Radar idempotent",
