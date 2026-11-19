@@ -107,7 +107,8 @@ const LOCATION_PATTERN =
 function extractMatches(text: string, patterns: readonly RegExp[]): string[] {
   const matches = new Set<string>();
   for (const pattern of patterns) {
-    const matcher = new RegExp(pattern.source, pattern.flags);
+    const flags = pattern.flags.includes("g") ? pattern.flags : `${pattern.flags}g`;
+    const matcher = new RegExp(pattern.source, flags);
     for (const match of text.matchAll(matcher)) {
       const value = match[0].trim();
       if (value) matches.add(value);
