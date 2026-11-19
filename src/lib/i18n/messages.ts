@@ -1417,7 +1417,7 @@ export const messages = {
     "flash.category.events": "Event",
     "flash.category.other": "Other",
     "scan.title": "Scan Flash",
-        "scan.need.label": "What do you need?",
+    "scan.need.label": "What do you need?",
     "scan.need.placeholder": "Describe what you are looking for…",
     "scan.privacy":
       "Your position helps find nearby Flash posts. It is never shown to other people.",
