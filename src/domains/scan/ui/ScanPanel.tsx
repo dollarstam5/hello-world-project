@@ -9,6 +9,7 @@ import { ScanPreferences } from "./ScanPreferences";
 import { ScanHistory } from "./ScanHistory";
 import { useScanPreferences } from "../hooks/useScanPreferences";
 import { useScanLocation } from "../hooks/useScanLocation";
+import { useScanStatus } from "../hooks/useScanStatus";
 
 const SCAN_LIMIT = 20;
 
@@ -23,6 +24,7 @@ export function ScanPanel() {
   const { locate, locating, locationError, unsupported } = useScanLocation();
   const { radiusKm, setRadiusKm, availableRadii } = useScanPreferences();
   const [needText, setNeedText] = useState("");
+  const status = useScanStatus({ started, locating, busy, unsupported, locationError, failed, resultCount: rows.length });
 
   const start = () => {
     setStarted(true);
@@ -99,13 +101,10 @@ export function ScanPanel() {
         t={t}
       />
 
-      {unsupported && <p className="text-sm text-destructive" role="alert">{formatCommunicationMessage(t, "scan.unsupported")}</p>}
-      {locationError && <p className="text-sm text-destructive" role="alert">{formatCommunicationMessage(t, `scan.location.${locationError}`)}</p>}
-      {failed && <p className="text-sm text-destructive" role="alert">{formatCommunicationMessage(t, "scan.error")}</p>}
-
-      {started && !busy && !locating && !locationError && !failed && !unsupported && rows.length === 0 ? (
-        <p className="text-sm text-muted-foreground" role="status">{t("scan.empty")}</p>
-      ) : null}
+      {status === "unsupported" && <p className="text-sm text-destructive" role="alert">{formatCommunicationMessage(t, "scan.unsupported")}</p>}
+      {status === "location-error" && locationError && <p className="text-sm text-destructive" role="alert">{formatCommunicationMessage(t, `scan.location.${locationError}`)}</p>}
+      {status === "scan-error" && <p className="text-sm text-destructive" role="alert">{formatCommunicationMessage(t, "scan.error")}</p>}
+      {status === "empty" ? <p className="text-sm text-muted-foreground" role="status">{t("scan.empty")}</p> : null}
 
       {rows.length > 0 ? <ScanResults assessments={assessments} /> : null}
 
