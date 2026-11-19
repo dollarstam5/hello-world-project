@@ -78,9 +78,12 @@ export class EcosystemDatabase extends Dexie {
     this.version(6)
       .stores({ mediaBlobs: null })
       .upgrade(async (transaction) => {
-        await transaction.table("flashes").toCollection().modify((flash) => {
-          delete (flash as FlashRecord & { mediaIds?: string[] }).mediaIds;
-        });
+        await transaction
+          .table("flashes")
+          .toCollection()
+          .modify((flash) => {
+            delete (flash as FlashRecord & { mediaIds?: string[] }).mediaIds;
+          });
       });
   }
 }
