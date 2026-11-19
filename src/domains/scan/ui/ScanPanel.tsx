@@ -13,7 +13,7 @@ import { ScanHistory } from "./ScanHistory";
 export function ScanPanel() {
   const { t } = useI18n();
   const {
-    rows, assessments, busy, failed, history, clearHistory,
+    rows, assessments, busy, history, clearHistory,
     locating, locationError, unsupported, radiusKm, setRadiusKm, availableRadii,
     needText, setNeedText, status, start,
   } = useScanFlow();
