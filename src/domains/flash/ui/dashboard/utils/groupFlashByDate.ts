@@ -61,7 +61,7 @@ export function groupFlashByDate(records: FlashRecord[], now = Date.now()): Flas
       predicate: (r) =>
         startOfDay(r.createdAt) >= lastWeekStart &&
         startOfDay(r.createdAt) < thisWeekStart &&
-        startOfDay(r.createdAt) < today - 2 * DAY_MS,
+        startOfDay(r.createdAt) < twoDaysAgoStart,
     },
     {
       key: "older",
