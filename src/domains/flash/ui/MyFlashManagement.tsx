@@ -31,7 +31,8 @@ function FlashAttachmentPreview({ flashId, mediaIds }: FlashAttachmentPreviewPro
   }, [files]);
 
   if (!mediaIds.length) return <p className="text-muted-foreground">{t("flash.mine.detailNoMedia")}</p>;
-  if (!files?.length) return <p className="text-xs text-muted-foreground">{t("flash.mine.localMediaMissing")}</p>;
+  if (files === undefined) return <p className="text-xs text-muted-foreground">{t("flash.mine.localMediaLoading")}</p>;
+  if (!files.length) return <p className="text-xs text-muted-foreground">{t("flash.mine.localMediaMissing")}</p>;
 
   return (
     <ul className="grid gap-3">
