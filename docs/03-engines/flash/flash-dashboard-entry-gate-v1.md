@@ -15,7 +15,7 @@ Un nouvel utilisateur, utilisateur non reconnu ou utilisateur non inscrit ne doi
 4. Deux choix de fin de parcours sont prévus :
    - **Publier** : seulement si les validations nécessaires sont remplies et si le serveur accepte et confirme la publication. Le dashboard s'ouvre sur ce Flash avec statut actif confirmé.
    - **Enregistrer dans mon espace** : enregistrer le brouillon de manière persistante. Le dashboard s'ouvre sur ce Flash avec statut brouillon/non publié.
-5. Les deux résultats confirmés débloquent le dashboard. Il gère ensuite l'ensemble des Flashs de l'utilisateur : tri chronologique, états, détails, médias/fichiers, interactions, événements et actions — uniquement lorsqu'ils sont réellement disponibles et connectés.
+5. Les deux résultats confirmés débloquent le dashboard. Il gère ensuite l'ensemble des Flashs de l'utilisateur : tri chronologique, états, détails, interactions, événements et actions — uniquement lorsqu'ils sont réellement disponibles et connectés.
 
 ## Conditions de sécurité et d'expérience
 
