@@ -234,6 +234,8 @@ export async function runPush(
           .from(table)
           .update(row)
           .eq("id", entry.recordId)
+          // A delayed offline update must not mutate a server tombstone.
+          .is("deleted_at", null)
           .select("*")
           .maybeSingle();
       }
