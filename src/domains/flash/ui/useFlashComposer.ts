@@ -129,6 +129,8 @@ export function useFlashComposer({ user, locale, t, onSaved }: ComposerOptions) 
     recognitionRef.current?.stop();
     recognitionRef.current = null;
     setRecording(false);
+    setAttachments([]);
+    setAttachmentError(null);
     setComposerOpen(false);
   }
 
