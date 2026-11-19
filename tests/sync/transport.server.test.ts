@@ -64,6 +64,11 @@ class FakeQuery {
     return this;
   }
 
+  is(column: string, value: unknown): this {
+    this.filters.push([column, value]);
+    return this;
+  }
+
   insert(row: Row): this {
     this.operation = "insert";
     this.payload = row;
@@ -198,7 +203,31 @@ describe("runPush transport — Flash creation and convergence", () => {
   });
 });
 
-describe("runPush transport — Radar mutation receipts", () => {
+
+describe("runPush transport — stale Flash updates", () => {
+  it("rejects an offline update when the server record is already deleted", async () => {
+    const db = new FakeDatabase();
+    db.tables.flashes = [{
+      id: recordId,
+      author_id: ownerId,
+      title: "Flash supprimé",
+      deleted_at: 1234,
+      revision: 4,
+    }];
+    const entry = flashEntry("update", { title: "Modification hors ligne tardive" });
+
+    const result = await runPush(db.client(), request(entry), ownerId);
+
+    expect(result.accepted).toEqual([]);
+    expect(result.rejected).toEqual([
+      { id: mutationId, code: "record_not_found", retryable: false },
+    ]);
+    expect(db.tables.flashes[0].title).toBe("Flash supprimé");
+    expect(db.tables.flashes[0].deleted_at).toBe(1234);
+    expect(db.receipts).toHaveLength(0);
+  });
+});
+\ndescribe("runPush transport — Radar mutation receipts", () => {
   it("creates a Radar and stores its authoritative receipt", async () => {
     const db = new FakeDatabase();
     const entry = radarEntry("create", {
