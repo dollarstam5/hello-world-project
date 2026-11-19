@@ -1,0 +1,35 @@
+# Flash — Circuit des pièces jointes V1 (local-first)
+
+**Branche :** `scan-phase-a-interpreter`  
+**Date :** 2026-11-19  
+**Statut :** Phase de construction locale — transfert cloud non validé
+
+## But
+Permettre à un membre de joindre des fichiers à son Flash, de les conserver réellement sur l'appareil et de les ouvrir depuis le composer et le dashboard. Ne pas afficher de fausse disponibilité réseau.
+
+## Décisions et limites V1
+- Les fichiers sélectionnés sont conservés dans IndexedDB dans une table dédiée aux blobs locaux, distincte de la table synchronisée des métadonnées.
+- Les blobs ne passent jamais dans l'outbox de sync (pas de transfert binaire Sync actuel).
+- Le circuit local doit fonctionner hors ligne, et expliciter que les pièces jointes restent sur cet appareil tant que le service cloud n'est pas implémenté.
+- Le pipeline cloud (bucket, upload, politiques Storage, URL signées, téléchargement, reprises) est une phase distincte et bloquée jusqu'à son audit/validation.
+- Aucun preview/open button ne doit être affiché si le Blob n'existe pas localement ou si le type n'est pas autorisé.
+
+## Types et limites initiales à valider par les tests
+- Types autorisés : image, vidéo, audio, document.
+- Limites initiales : maximum 3 fichiers et 20 MiB au total par Flash; maximum 10 MiB par fichier.
+- MIME est contrôlé côté client et revalidé côté ouverture; noms de fichiers neutralisés pour l'affichage.
+- Pas de fichiers exécutables, HTML, SVG actif, archive ou format non identifié.
+- Les images sont affichées dans un aperçu sécurisé; les vidéos/audio via contrôles natifs; les documents sont ouverts seulement dans les formats explicitement pris en charge. Éviter les URL persistantes et révoquer les object URLs.
+- L'ajout, retrait et suppression du Flash doivent nettoyer les blobs orphelins lorsque la relation n'existe plus; cette opération doit être transactionnelle et testée.
+
+## Étapes
+1. Schema Dexie version suivante + table locale `mediaBlobs` (non synchronisée).
+2. Service local de blobs : validation, stockage, récupération, suppression, nettoyage.
+3. UI de sélection et affichage des pièces jointes dans le composer, avec limites et erreurs accessibles.
+4. Persister les blobs lors de l'enregistrement d'un Flash et attacher les références `mediaIds`.
+5. Dashboard : aperçus/open locaux et suppression; indiquer clairement « sur cet appareil ».
+6. Tests migration DB, quota, types, limites, hors-ligne, attachement, ouverture, suppression, nettoyage et changements de compte.
+7. Pipeline distant : stockage privé, RLS/permissions, signed URLs à courte durée, upload reprenable, validation serveur, suppression et tests.
+
+## Critère de fin de phase locale
+Les fichiers doivent être effectivement persistés et récupérés après rechargement; aucune preview ne doit dépendre de fichiers factices. La sync cloud ne sera pas déclarée faite.
