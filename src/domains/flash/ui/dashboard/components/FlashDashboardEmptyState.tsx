@@ -1,10 +1,8 @@
 import { Sparkles } from "lucide-react";
 import { EmptyState } from "@/components/app/EmptyState";
 import { Surface } from "@/components/app/Surface";
-import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n/useI18n";
 
-type Props = { onCreateFlash: () => void };
 
 const STEPS = [
   {
@@ -24,7 +22,7 @@ const STEPS = [
   },
 ] as const;
 
-export function FlashDashboardEmptyState({ onCreateFlash }: Props) {
+export function FlashDashboardEmptyState() {
   const { t } = useI18n();
 
   return (
@@ -35,16 +33,6 @@ export function FlashDashboardEmptyState({ onCreateFlash }: Props) {
           icon={<Sparkles className="size-6" aria-hidden="true" />}
           title={t("flash.mine.empty.title")}
           description={t("flash.mine.empty.desc")}
-          action={
-            <Button
-              type="button"
-              size="lg"
-              className="min-h-11 rounded-full"
-              onClick={onCreateFlash}
-            >
-              {t("flash.mine.empty.action")}
-            </Button>
-          }
           className="max-w-none px-2 py-7"
         />
         <div className="grid gap-3 border-t border-border pt-4 sm:grid-cols-3">
