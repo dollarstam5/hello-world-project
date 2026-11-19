@@ -211,7 +211,10 @@ export function FlashDashboard({
       </p>
 
       {actionError ? (
-        <p role="alert" className="rounded-lg border border-destructive/20 bg-destructive/5 px-3 py-2 text-sm text-destructive">
+        <p
+          role="alert"
+          className="rounded-lg border border-destructive/20 bg-destructive/5 px-3 py-2 text-sm text-destructive"
+        >
           {t("flash.mine.actionError")}
         </p>
       ) : null}
