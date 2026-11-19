@@ -29,7 +29,13 @@ export function FlashDashboardDeleteDialog({ open, busy, onOpenChange, onConfirm
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={busy}>{t("common.cancel")}</AlertDialogCancel>
-          <AlertDialogAction disabled={busy} onClick={onConfirm}>
+          <AlertDialogAction
+            disabled={busy}
+            onClick={(event) => {
+              event.preventDefault();
+              onConfirm();
+            }}
+          >
             {t("flash.mine.delete")}
           </AlertDialogAction>
         </AlertDialogFooter>
