@@ -100,13 +100,23 @@ async function replayReceipt(
 ): Promise<SyncRecordEnvelope | null | undefined> {
   const { data, error } = await db
     .from("sync_mutation_receipts")
-    .select("response")
+    .select("logical_table,record_id,response")
     .eq("mutation_id", entry.id)
     .eq("owner_id", userId)
     .maybeSingle();
   if (error) throw new Error("sync_receipt_read_failed");
   if (!data) return undefined;
-  return (data as { response: SyncRecordEnvelope | null }).response;
+  const receipt = data as {
+    logical_table?: string;
+    record_id?: string;
+    response: SyncRecordEnvelope | null;
+  };
+  // Idempotency keys are owner-scoped, but must also bind to the original
+  // table and record. Reusing a key for another target is a protocol conflict.
+  if (receipt.logical_table !== entry.table || receipt.record_id !== entry.recordId) {
+    throw new Error("sync_receipt_target_mismatch");
+  }
+  return receipt.response;
 }
 
 async function storeReceipt(
