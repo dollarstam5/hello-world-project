@@ -13,13 +13,7 @@ import { createFlash } from "../data";
 import type { MessageKey } from "@/lib/i18n/messages";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
 import { publishFlashCommunicationEvent } from "../communication-events";
-import {
-  FLASH_MEDIA_LIMITS,
-  validateFlashAttachment,
-  storeLocalFlashAttachment,
-  deleteLocalFlashAttachments,
-  flashesRepository,
-} from "@/platform/offline";
+
 
 type SpeechResultEvent = { results: ArrayLike<ArrayLike<{ transcript?: string }>> };
 type SpeechErrorEvent = { error?: string };
@@ -97,8 +91,6 @@ export function useFlashComposer({ user, locale, t, onSaved }: ComposerOptions) 
   const [areaLabel, setAreaLabel] = useState("");
   const [locating, setLocating] = useState(false);
   const [locationError, setLocationError] = useState("");
-  const [attachments, setAttachments] = useState<File[]>([]);
-  const [attachmentError, setAttachmentError] = useState<string | null>(null);
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
 
   const parsedIntent = useMemo(
@@ -135,8 +127,6 @@ export function useFlashComposer({ user, locale, t, onSaved }: ComposerOptions) 
     recognitionRef.current?.stop();
     recognitionRef.current = null;
     setRecording(false);
-    setAttachments([]);
-    setAttachmentError(null);
     setComposerOpen(false);
   }
 
@@ -181,35 +171,6 @@ export function useFlashComposer({ user, locale, t, onSaved }: ComposerOptions) 
       recognitionRef.current = null;
       setVoiceMessage(t("flash.voice.error"));
     }
-  }
-
-  function addAttachments(files: File[]) {
-    setAttachmentError(null);
-    const valid: File[] = [];
-    for (const file of files) {
-      const error = validateFlashAttachment(file);
-      if (error) {
-        setAttachmentError(error);
-        continue;
-      }
-      if (attachments.length + valid.length >= FLASH_MEDIA_LIMITS.maxFiles) {
-        setAttachmentError("too_many_files");
-        break;
-      }
-      const total =
-        [...attachments, ...valid].reduce((sum, item) => sum + item.size, 0) + file.size;
-      if (total > FLASH_MEDIA_LIMITS.maxTotalBytes) {
-        setAttachmentError("total_too_large");
-        break;
-      }
-      valid.push(file);
-    }
-    if (valid.length) setAttachments((current) => [...current, ...valid]);
-  }
-
-  function removeAttachment(index: number) {
-    setAttachments((current) => current.filter((_, i) => i !== index));
-    setAttachmentError(null);
   }
 
   function continueToReview() {
@@ -286,19 +247,6 @@ export function useFlashComposer({ user, locale, t, onSaved }: ComposerOptions) 
         areaLabel: areaLabel.trim() || undefined,
         expiresAt: expiryFor(timeSlot),
       });
-      try {
-        const savedMediaIds: string[] = [];
-        for (const file of attachments) {
-          savedMediaIds.push((await storeLocalFlashAttachment(file, savedFlash.id)).id);
-        }
-        if (savedMediaIds.length) {
-          await flashesRepository.update(savedFlash.id, { mediaIds: savedMediaIds as never });
-        }
-      } catch (attachmentSaveError) {
-        await deleteLocalFlashAttachments(savedFlash.id);
-        await flashesRepository.remove(savedFlash.id);
-        throw attachmentSaveError;
-      }
       publishFlashCommunicationEvent(communication, savedFlash, "draft-saved");
       closeComposer();
       onSaved();
@@ -333,10 +281,6 @@ export function useFlashComposer({ user, locale, t, onSaved }: ComposerOptions) 
     publishing,
     publishError,
     setPublishError,
-    attachments,
-    attachmentError,
-    addAttachments,
-    removeAttachment,
     location,
     setLocation,
     areaLabel,
