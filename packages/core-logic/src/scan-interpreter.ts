@@ -46,7 +46,8 @@ const INTENT_RULES: readonly IntentRule[] = [
   },
   {
     intent: "learning",
-    pattern: /\b(apprendre|cours|formation|professeur|tuteur|soutien scolaire|enseigner)\b/,
+    pattern:
+      /\b(apprendre|cours|formation|professeur|tuteur|soutien scolaire|enseigner)\b/,
   },
   {
     intent: "health",
@@ -54,7 +55,8 @@ const INTENT_RULES: readonly IntentRule[] = [
   },
   {
     intent: "activity",
-    pattern: /\b(sortir|activite|evenement|concert|soiree|fete|match|visiter|me divertir)\b/,
+    pattern:
+      /\b(sortir|activite|evenement|concert|soiree|fete|match|visiter|me divertir)\b/,
   },
   {
     intent: "place",
@@ -72,7 +74,8 @@ const INTENT_RULES: readonly IntentRule[] = [
   },
   {
     intent: "service",
-    pattern: /\b(service|prestataire|quelqu un pour|personne pour)\b/,
+    pattern:
+      /\b(service|prestataire|quelqu un pour|personne pour)\b/,
   },
 ];
 
@@ -87,7 +90,8 @@ const AVAILABLE_NOW_PATTERN = /\b(?:ouvert|disponible) maintenant\b/g;
 const TIME_PATTERN =
   /\b(dans (?:[0-9]+|un|une|deux|trois|quatre|cinq|six|sept|huit|neuf|dix) (?:minutes?|heures?|jours?)|dans [0-9]+ ?h|maintenant|tout de suite|aujourd hui|ce soir|cet apres midi|demain matin|demain|cette semaine|ce week end|avant [0-9]+ ?h|avant [0-9]+ heures?)\b/;
 const IMMEDIATE_PATTERN = /\b(urgent|maintenant|tout de suite|immediatement|asap)\b/;
-const SOON_PATTERN = /\b(dans (?:[0-9]+|un|une|deux|trois|quatre|cinq|six|sept|huit|neuf|dix) (?:minutes?|heures?|jours?)|dans [0-9]+ ?h|aujourd hui|ce soir|cet apres midi|demain)\b/;
+const SOON_PATTERN =
+  /\b(dans (?:[0-9]+|un|une|deux|trois|quatre|cinq|six|sept|huit|neuf|dix) (?:minutes?|heures?|jours?)|dans [0-9]+ ?h|aujourd hui|ce soir|cet apres midi|demain)\b/;
 
 const TASK_PATTERN =
   /\b(demenager|deplacement|deplacer|reparer|depanner|transporter|emmener|conduire|acheter|trouver|livrer|installer|nettoyer|cuisiner|apprendre|chercher|porter)\b/g;
