@@ -143,4 +143,4 @@ La sauvegarde d'un brouillon débloque l'espace de gestion mais ne le rend pas v
 
 ### Écart d'implémentation à suivre
 
-L'interface actuelle expose les onglets « Découvrir » et « Mes Flashs » même avant la première sauvegarde, et son flux de sauvegarde mène au dashboard. Le verrou d'accès explicite (incluant la restauration de l'accès pour un compte ayant déjà des Flashs persistés) reste à implémenter et tester. La publication distante est toujours non disponible.
+Le verrou d'accès au dashboard est maintenant appliqué dans le code : « Mes Flashs » reste caché avant le premier Flash sauvegardé, le dashboard est détecté à partir des Flashs persistés appartenant au compte, et un premier brouillon sauvegardé ouvre l'espace. Le regroupement chronologique utilise les semaines civiles et évite les doublons entre les sections relatives et les sections de semaines. La vérification complète reste en attente : Quality s'arrête à « Verify foundation and secrets » avant les tests/build globaux; Scan Validation et Dependency Review sont vérifiés séparément. La publication distante est toujours non disponible.
