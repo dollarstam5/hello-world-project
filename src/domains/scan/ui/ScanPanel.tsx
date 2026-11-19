@@ -23,6 +23,7 @@ export function ScanPanel() {
   const [locating, setLocating] = useState(false);
   const [unsupported, setUnsupported] = useState(false);
   const [radiusKm, setRadiusKm] = useState<number>(5);
+  const [needText, setNeedText] = useState("");
 
   const start = () => {
     setLocationError(null);
@@ -39,7 +40,7 @@ export function ScanPanel() {
       (pos) => {
         setLocating(false);
         void execute({
-          text: "",
+          text: needText.trim(),
           category: null,
           latitude: pos.coords.latitude,
           longitude: pos.coords.longitude,
@@ -67,6 +68,19 @@ export function ScanPanel() {
     <div className="stack-4">
       <p className="text-sm text-muted-foreground">{t("scan.privacy")}</p>
 
+      <label className="stack-1 text-sm font-medium" htmlFor="scan-need">
+        <span>{t("scan.need.label")}</span>
+        <input
+          id="scan-need"
+          value={needText}
+          onChange={(event) => setNeedText(event.target.value.slice(0, 160))}
+          maxLength={160}
+          placeholder={t("scan.need.placeholder")}
+          disabled={busy || locating}
+          className="min-h-12 w-full rounded-xl border border-border bg-surface px-3 text-sm font-normal text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
+        />
+      </label>
+
       <label className="stack-1 max-w-xs text-sm font-medium" htmlFor="scan-radius">
         <span>{t("scan.radius")}</span>
         <select
@@ -87,7 +101,7 @@ export function ScanPanel() {
       <button
         type="button"
         onClick={start}
-        disabled={busy || locating}
+        disabled={busy || locating || !needText.trim()}
         aria-busy={busy || locating}
         className="inline-flex min-h-12 items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
       >
