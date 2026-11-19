@@ -1,7 +1,6 @@
 import type { FlashRecord } from "@eco/core-contracts";
 import type { FlashTimelineGroup, FlashTimelineGroupKey } from "../types/flashDashboard.types";
 
-
 function startOfDay(value: number): number {
   const date = new Date(value);
   date.setHours(0, 0, 0, 0);
