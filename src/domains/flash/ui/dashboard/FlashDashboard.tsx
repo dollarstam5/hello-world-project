@@ -200,19 +200,24 @@ export function FlashDashboard({
   if (records.length === 0) return <FlashDashboardEmptyState onCreateFlash={onCreateFlash} />;
 
   return (
-    <div className="stack-3">
-      <p className="text-xs text-muted-foreground">{t("flash.mine.localHint")}</p>
+    <div className="stack-4">
+      <p className="rounded-lg bg-muted/40 px-3 py-2 text-xs text-muted-foreground">
+        {t("flash.mine.localHint")}
+      </p>
 
       {actionError ? (
-        <p role="alert" className="text-sm text-destructive">
+        <p role="alert" className="rounded-lg border border-destructive/20 bg-destructive/5 px-3 py-2 text-sm text-destructive">
           {t("flash.mine.actionError")}
         </p>
       ) : null}
 
       {groups.map((group) => (
-        <section key={group.key}>
-          <h3 className="mb-2 text-sm font-semibold text-muted-foreground">
-            {t(group.label)} ({group.items.length})
+        <section key={group.key} className="stack-3">
+          <h3 className="flex items-center justify-between gap-3 border-b border-border-soft pb-2 text-sm font-semibold">
+            <span>{t(group.label)}</span>
+            <span className="rounded-full bg-muted px-2 py-0.5 text-xs tabular-nums text-muted-foreground">
+              {group.items.length}
+            </span>
           </h3>
           <div className="stack-3">
             {statusGroups.map((statusGroup) => {
@@ -223,10 +228,13 @@ export function FlashDashboard({
 
               return (
                 <div key={statusGroup.key} className="stack-2">
-                  <h4 className="text-xs font-medium text-foreground/80">
-                    {t(statusGroup.label)} ({statusItems.length})
+                  <h4 className="flex items-center justify-between gap-2 text-xs font-medium text-foreground/80">
+                    <span>{t(statusGroup.label)}</span>
+                    <span className="text-[11px] tabular-nums text-muted-foreground">
+                      {statusItems.length}
+                    </span>
                   </h4>
-                  <div className="stack-3">
+                  <div className="stack-2">
                     {statusItems.map((record) => (
                       <FlashDashboardRecordCard
                         key={record.id}
