@@ -108,7 +108,7 @@ export function MyFlashManagement({ onCreateFlash, onAccessAvailable }: { onCrea
     };
   }, []);
 
-const records = useLocalQuery(async () => {
+  const records = useLocalQuery(async () => {
     if (userId === undefined || !userId) return null;
 
     const all = await flashesRepository.list();
@@ -380,6 +380,7 @@ const records = useLocalQuery(async () => {
                         <p className="font-medium">{t("flash.mine.detailMedia")}</p>
                         <FlashAttachmentPreview flashId={record.id} mediaIds={record.mediaIds} />
                         <p className="text-xs text-muted-foreground">{t("flash.mine.detailInteractionsPending")}</p>
+                      </div>
                     </div>
                   ) : null}
                 </Surface>
