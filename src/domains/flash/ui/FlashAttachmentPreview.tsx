@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { useI18n } from "@/lib/i18n/useI18n";
-import { listLocalFlashAttachments } from "@/platform/offline";
-import { useLocalQuery } from "@/platform/offline";
+import { listLocalFlashAttachments, useLocalQuery } from "@/platform/offline";
 
 type FlashAttachmentPreviewProps = { flashId: string; mediaIds: string[] };
 
-function FlashAttachmentPreview({ flashId, mediaIds }: FlashAttachmentPreviewProps) {
+export function FlashAttachmentPreview({ flashId, mediaIds }: FlashAttachmentPreviewProps) {
   const { t } = useI18n();
   const files = useLocalQuery(() => listLocalFlashAttachments(flashId), [flashId]);
   const [urls, setUrls] = useState<Record<string, string>>({});
