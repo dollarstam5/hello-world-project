@@ -19,7 +19,6 @@ export function useScanFlow() {
     busy: scan.busy,
     unsupported: location.unsupported,
     locationError: location.locationError,
-    failed: scan.failed,
     resultCount: scan.rows.length,
   });
 
