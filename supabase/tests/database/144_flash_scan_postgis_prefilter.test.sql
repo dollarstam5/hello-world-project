@@ -1,6 +1,6 @@
 BEGIN;
 CREATE EXTENSION IF NOT EXISTS pgtap WITH SCHEMA extensions;
-SELECT plan(7);
+SELECT plan(8);
 
 SELECT ok(
   position('ST_DWithin' IN pg_get_functiondef(
@@ -19,6 +19,15 @@ SELECT ok(
     'public.scan_public_flashes(text,text,double precision,double precision,double precision,integer)'::regprocedure
   )) > 0,
   'Scan computes final distance with PostGIS ST_Distance'
+);
+SELECT ok(
+  EXISTS (
+    SELECT 1 FROM pg_indexes
+    WHERE schemaname = 'public'
+      AND tablename = 'flash_private_locations'
+      AND indexname = 'flash_private_locations_geography_gist'
+  ),
+  'the geography prefilter has the expected GiST index available'
 );
 SELECT ok(
   position('latitude' IN pg_get_function_result(
