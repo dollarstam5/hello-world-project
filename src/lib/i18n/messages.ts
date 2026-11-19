@@ -537,7 +537,18 @@ export const messages = {
     "flash.mine.signIn": "Connectez-vous pour retrouver les Flash associés à votre compte.",
     "flash.mine.empty.title": "Aucun Flash disponible ici",
     "flash.mine.empty.desc":
-      "Les Flash associés à votre compte apparaîtront ici lorsqu’ils seront disponibles sur cet appareil.",
+      "Cet espace est votre carnet de Flash. Dès que vous en créez un, il apparaît ici, rangé par date et avec son état. Vous pourrez l’ouvrir pour retrouver son contenu et gérer ce qui est disponible.",
+    "flash.mine.empty.action": "Créer mon premier Flash",
+    "flash.mine.empty.step1Title": "1. Écrivez simplement",
+    "flash.mine.empty.step1Body": "Expliquez votre besoin ou ce que vous proposez avec vos propres mots.",
+    "flash.mine.empty.step2Title": "2. Vérifiez avant d’enregistrer",
+    "flash.mine.empty.step2Body": "Relisez votre Flash et ajustez les informations. Vous pouvez garder un brouillon.",
+    "flash.mine.empty.step3Title": "3. Retrouvez-le ici",
+    "flash.mine.empty.step3Body": "Vos Flash seront classés par date. Vous pourrez ouvrir chaque fiche et gérer ses actions.",
+    "flash.mine.empty.statusGuideTitle": "Comprendre les états",
+    "flash.mine.empty.statusGuideBody": "Un brouillon est en préparation ; un Flash actif est publié ; un Flash expiré a dépassé sa durée ; un Flash archivé a été rangé ou retiré de la publication.",
+    "flash.mine.empty.timelineHint": "Vos Flashs seront regroupés : Aujourd’hui · Hier · Il y a 2 jours · Cette semaine · Plus anciens",
+
     "flash.mine.localHint":
       "Cette liste reprend les Flash de votre compte disponibles sur cet appareil. Les changements en attente seront synchronisés au retour du réseau.",
     "flash.mine.period.today": "Aujourd’hui",
@@ -1572,7 +1583,18 @@ export const messages = {
     "flash.mine.signIn": "Sign in to find the Flash posts linked to your account.",
     "flash.mine.empty.title": "No Flash available here",
     "flash.mine.empty.desc":
-      "Flash posts linked to your account will appear here when they are available on this device.",
+      "This is your Flash space. When you create one, it appears here, grouped by date and status. Open it to review its content and manage the actions that are available.",
+    "flash.mine.empty.action": "Create my first Flash",
+    "flash.mine.empty.step1Title": "1. Write naturally",
+    "flash.mine.empty.step1Body": "Describe what you need or what you can offer in your own words.",
+    "flash.mine.empty.step2Title": "2. Review before saving",
+    "flash.mine.empty.step2Body": "Check your Flash and adjust the details. You can keep a draft.",
+    "flash.mine.empty.step3Title": "3. Find it here",
+    "flash.mine.empty.step3Body": "Your Flash posts will be grouped by date. Open each one to view details and manage available actions.",
+    "flash.mine.empty.statusGuideTitle": "Understand the statuses",
+    "flash.mine.empty.statusGuideBody": "A draft is being prepared; an active Flash is published; an expired Flash has passed its validity period; an archived Flash has been put away or removed from publication.",
+    "flash.mine.empty.timelineHint": "Your Flash posts will be grouped: Today · Yesterday · 2 days ago · This week · Older",
+
     "flash.mine.localHint":
       "This list shows your account Flash posts available on this device. Pending changes will sync when the connection returns.",
     "flash.mine.period.today": "Today",
