@@ -64,7 +64,7 @@ BEGIN
       f.category,
       f.title,
       f.time_slot,
-      f.area_label,
+      coalesce(nullif(btrim(f.area_label), ''), 'Zone non précisée') AS area_label,
       f.created_at,
       f.expires_at,
       CASE f.scope
@@ -88,7 +88,6 @@ BEGIN
         'food', 'education', 'health', 'events', 'other'
       )
       AND f.time_slot IN ('now', 'today', 'tomorrow', 'this_week')
-      AND nullif(btrim(f.area_label), '') IS NOT NULL
       AND f.scope IN ('current_area', 'expanded_area', 'half_city', 'whole_city')
       AND (p_category IS NULL OR f.category = p_category)
       AND (
