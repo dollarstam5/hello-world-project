@@ -1,6 +1,11 @@
 import type { Table } from "dexie";
 import type { BaseRecord, SyncedTable } from "@eco/core-contracts";
-import {\n  CLIENT_WRITE_POLICY,\n  filterClientWritablePatch,\n  newId,\n  protectedClientFields,\n} from "@eco/core-contracts";
+import {
+  CLIENT_WRITE_POLICY,
+  filterClientWritablePatch,
+  newId,
+  protectedClientFields,
+} from "@eco/core-contracts";
 import { changedFields, stampCreate, stampDelete, stampUpdate } from "@eco/core-logic";
 import { enqueueMutation } from "./outbox";
 import { getDb, type EcosystemDatabase } from "./schema";
