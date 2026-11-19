@@ -144,3 +144,7 @@ La sauvegarde d'un brouillon débloque l'espace de gestion mais ne le rend pas v
 ### Écart d'implémentation à suivre
 
 Le verrou d'accès au dashboard est maintenant appliqué dans le code : « Mes Flashs » reste caché avant le premier Flash sauvegardé, le dashboard est détecté à partir des Flashs persistés appartenant au compte, et un premier brouillon sauvegardé ouvre l'espace. Le regroupement chronologique utilise les semaines civiles et évite les doublons entre les sections relatives et les sections de semaines. La vérification complète reste en attente : Quality s'arrête à « Verify foundation and secrets » avant les tests/build globaux; Scan Validation et Dependency Review sont vérifiés séparément. La publication distante est toujours non disponible.
+
+## Audit des médias associés (2026-11-19)
+
+Le dashboard affiche maintenant, pour les `mediaIds` attachés au Flash et retrouvés dans le repository local, le type, le MIME et l'état local/upload/remote/failed; les références non retrouvées restent signalées. Les fichiers ne sont pas encore ouvrables : aucun bucket Storage ni upload/download/preview intégré au domaine Flash n'a été trouvé dans la configuration/migrations Supabase et le worker Sync audités. Ne pas ajouter de lien ou bouton d'ouverture tant que les permissions et la vraie voie de transfert ne sont pas implémentées.
