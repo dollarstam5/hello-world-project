@@ -29,7 +29,7 @@ Un nouvel utilisateur, utilisateur non reconnu ou utilisateur non inscrit ne doi
 
 ## État technique actuel / limitation
 
-La création et la sauvegarde locale de brouillons existent. Le composer ne réalise pas encore la publication distante : ne pas ajouter de faux bouton « Publier » ni faire croire à un Flash actif. L'accès du Dashboard avant le premier Flash et la restauration du déverrouillage à partir de données persistées restent à implémenter. Cette règle ne doit pas être considérée comme terminée avant tests.
+La création et la sauvegarde locale de brouillons existent. Le composer ne réalise pas encore la publication distante : ne pas ajouter de faux bouton « Publier » ni faire croire à un Flash actif. Le verrou d'accès et la restauration depuis les Flashs persistés sont désormais implémentés sur la branche. La validation complète reste en attente des tests du workflow Quality et des tests de parcours. La publication distante reste non disponible.
 
 ## Tests d'acceptation
 
