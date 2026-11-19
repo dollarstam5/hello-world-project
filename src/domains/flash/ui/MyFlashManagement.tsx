@@ -143,7 +143,7 @@ export function MyFlashManagement({ onCreateFlash, onAccessAvailable }: { onCrea
     { key: "yesterday", label: "flash.mine.period.yesterday", predicate: (r: FlashRecord) => startOfDay(r.createdAt) === today - day },
     { key: "twoDays", label: "flash.mine.period.twoDays", predicate: (r: FlashRecord) => startOfDay(r.createdAt) === today - 2 * day },
     { key: "week", label: "flash.mine.period.week", predicate: (r: FlashRecord) => startOfDay(r.createdAt) >= thisWeekStart && startOfDay(r.createdAt) < today - 2 * day },
-    { key: "lastWeek", label: "flash.mine.period.lastWeek", predicate: (r: FlashRecord) => startOfDay(r.createdAt) >= lastWeekStart && startOfDay(r.createdAt) < thisWeekStart },
+    { key: "lastWeek", label: "flash.mine.period.lastWeek", predicate: (r: FlashRecord) => startOfDay(r.createdAt) >= lastWeekStart && startOfDay(r.createdAt) < thisWeekStart && startOfDay(r.createdAt) < today - 2 * day },
     { key: "older", label: "flash.mine.period.older", predicate: (r: FlashRecord) => startOfDay(r.createdAt) < lastWeekStart },
   ].map((group) => ({ ...group, items: records?.filter(group.predicate).sort((a, b) => b.createdAt - a.createdAt) ?? [] }))
     .filter((group) => group.items.length > 0);
