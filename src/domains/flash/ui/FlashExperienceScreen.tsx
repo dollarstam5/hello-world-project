@@ -78,7 +78,9 @@ export function FlashExperienceScreen() {
             {t("flash.hero.action")}
           </Button>
           <p className="mt-2 text-xs text-muted-foreground">{t("flash.hero.voiceHint")}</p>
-          <p className="mt-2 max-w-xs text-xs leading-relaxed text-muted-foreground">{t("flash.hero.dashboardHint")}</p>
+          <p className="mt-2 max-w-xs text-xs leading-relaxed text-muted-foreground">
+            {t("flash.hero.dashboardHint")}
+          </p>
         </div>
       </div>
 
@@ -115,15 +117,15 @@ export function FlashExperienceScreen() {
           {t("flash.tabs.discover")}
         </button>
         {dashboardUnlocked ? (
-        <button
-          type="button"
-          role="tab"
-          aria-selected={tab === "mine"}
-          className={`min-h-11 flex-1 rounded-full px-4 text-sm font-semibold transition ${tab === "mine" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
-          onClick={() => setTab("mine")}
-        >
-          {t("flash.tabs.mine")}
-        </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={tab === "mine"}
+            className={`min-h-11 flex-1 rounded-full px-4 text-sm font-semibold transition ${tab === "mine" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+            onClick={() => setTab("mine")}
+          >
+            {t("flash.tabs.mine")}
+          </button>
         ) : null}
       </div>
 
@@ -141,7 +143,10 @@ export function FlashExperienceScreen() {
           </div>
         ) : null}
         <div hidden={tab !== "mine" || !dashboardUnlocked}>
-          <MyFlashManagement onCreateFlash={composer.openComposer} onAccessAvailable={setDashboardUnlocked} />
+          <MyFlashManagement
+            onCreateFlash={composer.openComposer}
+            onAccessAvailable={setDashboardUnlocked}
+          />
         </div>
       </div>
 
