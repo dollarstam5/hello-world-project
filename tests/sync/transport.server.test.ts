@@ -368,24 +368,25 @@ describe("runPush transport — Radar mutation receipts", () => {
       category: "services",
       radiusKm: 2,
     });
+    const expectedReceiptResponse = {
+      table: "radars",
+      revision: 1,
+      deleted: false,
+      data: { id: recordId, owner_id: ownerId, title: "Radar course", revision: 1 },
+    };
     db.concurrentReceiptWinner = {
       mutation_id: mutationId,
       owner_id: ownerId,
       logical_table: "radars",
       record_id: recordId,
-      response: {
-        table: "radars",
-        revision: 1,
-        deleted: false,
-        data: { id: recordId, owner_id: ownerId, title: "Radar course", revision: 1 },
-      },
+      response: expectedReceiptResponse,
     };
 
     const result = await runPush(db.client(), request(entry), ownerId);
 
     expect(result.accepted).toEqual([mutationId]);
     expect(result.rejected).toEqual([]);
-    expect(result.records).toEqual([db.concurrentReceiptWinner?.response]);
+    expect(result.records).toEqual([expectedReceiptResponse]);
     expect(db.receipts).toHaveLength(1);
     expect(db.successfulBusinessWrites).toBe(1);
   });
