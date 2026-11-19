@@ -27,6 +27,7 @@ export function groupFlashByDate(records: FlashRecord[], now = Date.now()): Flas
   const today = startOfDay(now);
   const thisWeekStart = startOfWeek(today);
   const lastWeekStart = shiftCalendarDays(thisWeekStart, -7);
+  const twoDaysAgoStart = shiftCalendarDays(today, -2);
 
   const definitions: Array<{
     key: FlashTimelineGroupKey;
@@ -52,7 +53,7 @@ export function groupFlashByDate(records: FlashRecord[], now = Date.now()): Flas
       key: "week",
       label: "flash.mine.period.week",
       predicate: (r) =>
-        startOfDay(r.createdAt) >= thisWeekStart && startOfDay(r.createdAt) < today - 2 * DAY_MS,
+        startOfDay(r.createdAt) >= thisWeekStart && startOfDay(r.createdAt) < twoDaysAgoStart,
     },
     {
       key: "lastWeek",
