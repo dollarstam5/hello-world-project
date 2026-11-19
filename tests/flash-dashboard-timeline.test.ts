@@ -50,7 +50,7 @@ describe("Flash dashboard timeline grouping", () => {
     const rows = [
       record("monday", now),
       record("sunday", localDay(2026, 10, 22)),
-      record("previous-monday", localDay(2026, 10, 9)),
+      record("previous-monday", localDay(2026, 10, 2)),
     ];
 
     const groups = groupFlashByDate(rows, now);

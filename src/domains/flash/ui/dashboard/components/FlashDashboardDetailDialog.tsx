@@ -70,7 +70,7 @@ export function FlashDashboardDetailDialog({
           </div>
         </section>
 
-        {(record.expiresAt || record.areaLabel) ? (
+        {record.expiresAt || record.areaLabel ? (
           <section className="stack-2 border-t border-border-soft pt-3">
             <div className="stack-2 text-sm text-muted-foreground">
               {record.expiresAt ? (
