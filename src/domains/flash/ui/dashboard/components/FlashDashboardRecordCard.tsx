@@ -177,16 +177,18 @@ export function FlashDashboardRecordCard({
             <div className="stack-2 text-muted-foreground">
               <p>
                 {t("flash.mine.detailCreated")}:{" "}
-                {new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" }).format(
-                  record.createdAt,
-                )}
+                {new Intl.DateTimeFormat(locale, {
+                  dateStyle: "medium",
+                  timeStyle: "short",
+                }).format(record.createdAt)}
               </p>
               {record.expiresAt ? (
                 <p>
                   {t("flash.mine.detailExpires")}:{" "}
-                  {new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" }).format(
-                    record.expiresAt,
-                  )}
+                  {new Intl.DateTimeFormat(locale, {
+                    dateStyle: "medium",
+                    timeStyle: "short",
+                  }).format(record.expiresAt)}
                 </p>
               ) : null}
               {record.areaLabel ? (
