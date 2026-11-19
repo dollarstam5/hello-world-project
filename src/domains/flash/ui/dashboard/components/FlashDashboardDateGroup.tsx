@@ -2,7 +2,7 @@ import type { FlashRecord } from "@eco/core-contracts";
 import { resolveFlashStatus } from "@eco/core-logic";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { FlashDashboardRecordCard } from "./FlashDashboardRecordCard";
-import type { FlashTimelineGroup } from "../utils/groupFlashByDate";
+import type { FlashTimelineGroup } from "../types/flashDashboard.types";
 
 type Props = {
   group: FlashTimelineGroup;
