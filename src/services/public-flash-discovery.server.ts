@@ -44,7 +44,7 @@ export async function discoverPublicFlashes(query: ScanQuery): Promise<ScanResul
     kind: row.kind as ScanResult["kind"],
     category: row.category as ScanResult["category"],
     title: row.title,
-    timeSlot: row.time_slot as ScanResult["timeSlot],
+    timeSlot: row.time_slot as ScanResult["timeSlot"],
     areaLabel: row.area_label,
     distanceKm: row.distance_km,
     createdAt: row.created_at,
