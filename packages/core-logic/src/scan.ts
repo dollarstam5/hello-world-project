@@ -22,7 +22,9 @@ export function scanRelevance(result: ScanResult, now = Date.now()): number {
 
 /** Most relevant results first; never mutates the input. */
 export function rankScanResults(results: ScanResult[], now = Date.now()): ScanResult[] {
-  return [...results].sort((a, b) => scanRelevance(b, now) - scanRelevance(a, now));
+  return [...results].sort((a, b) =>
+    scanRelevance(b, now) - scanRelevance(a, now),
+  );
 }
 
 /**
