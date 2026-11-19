@@ -9,8 +9,7 @@ import type {
 } from "@eco/core-contracts";
 import { newId } from "@eco/core-contracts";
 import { isFlashVisible } from "@eco/core-logic";
-import { flashesRepository, requestSyncNow, useLocalQuery } from "@/platform/offline";
-import { supabase } from "@/integrations/supabase/client";
+import { flashesRepository, flashesLifecycleRepository, requestSyncNow, useLocalQuery } from "@/platform/offline";
 
 /**
  * Flash data access. The interface calls these functions; they only touch the
@@ -68,13 +67,9 @@ export function updateFlash(id: string, body: string) {
 }
 
 export async function archiveFlash(id: string) {
-  const { data, error } = await supabase.rpc("transition_flash", {
-    p_flash_id: id,
-    p_status: "archived",
-  });
-  if (error) throw error;
-  if (data !== true) throw new Error("flash_archive_not_applied");
+  const archived = await flashesLifecycleRepository.archive(id);
   requestSyncNow();
+  return archived;
 }
 
 export function deleteFlash(id: string) {

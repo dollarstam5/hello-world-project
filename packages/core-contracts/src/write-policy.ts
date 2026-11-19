@@ -45,7 +45,7 @@ export const CLIENT_WRITE_POLICY = {
       "scope",
       "urgency",
     ],
-    command: [],
+    command: ["status"],
     delete: true,
   },
 

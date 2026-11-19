@@ -255,6 +255,24 @@ export async function runPush(
           p_radar_id: entry.recordId,
           p_action: action,
         });
+      } else if (entry.table === "flashes" && entry.kind === "update" && typeof row["status"] === "string") {
+        if (Object.keys(row).some((field) => field !== "status") || row["status"] !== "archived") {
+          rejected.push({ id: entry.id, code: "invalid_mutation", retryable: false });
+          continue;
+        }
+        result = await db.rpc("transition_flash", { p_flash_id: entry.recordId, p_status: "archived" });
+        if (!result.error && result.data === true) {
+          const archived = await recoverAppliedMutation(db, entry, table, row);
+          if (archived) {
+            const receiptResponse = await storeReceipt(db, entry, userId, archived);
+            accepted.push(entry.id);
+            if (receiptResponse) records.push(receiptResponse);
+            continue;
+          }
+          rejected.push({ id: entry.id, code: "server_error", retryable: true });
+          continue;
+        }
+        if (!result.error) result.error = { code: "P0001", message: "flash_archive_not_applied" };
       } else if (entry.kind === "create") {
         row["id"] = entry.recordId;
         if (owner) row[owner] = userId;
