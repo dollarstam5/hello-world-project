@@ -191,6 +191,20 @@ export async function runPush(
       const owner = ownerColumn(entry.table);
       const row = toRow(entry.table, entry.patch);
 
+      // A previous attempt may have committed the business update but failed to
+      // persist its receipt. Before repeating an update, recover the already
+      // applied patch from the authoritative row to avoid a duplicate revision
+      // or side effect on retry.
+      if (entry.kind === "update") {
+        const recoveredUpdate = await recoverAppliedMutation(db, entry, table, row);
+        if (recoveredUpdate) {
+          await storeReceipt(db, entry, userId, recoveredUpdate);
+          accepted.push(entry.id);
+          records.push(recoveredUpdate);
+          continue;
+        }
+      }
+
       if (entry.kind === "delete") row["deleted_at"] = Date.now();
 
       let result: {
