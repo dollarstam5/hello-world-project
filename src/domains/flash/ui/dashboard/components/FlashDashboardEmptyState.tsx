@@ -6,6 +6,12 @@ import { useI18n } from "@/lib/i18n/useI18n";
 
 type Props = { onCreateFlash: () => void };
 
+const STEPS = [
+  { key: "step1", title: "flash.mine.empty.step1Title", body: "flash.mine.empty.step1Body" },
+  { key: "step2", title: "flash.mine.empty.step2Title", body: "flash.mine.empty.step2Body" },
+  { key: "step3", title: "flash.mine.empty.step3Title", body: "flash.mine.empty.step3Body" },
+] as const;
+
 export function FlashDashboardEmptyState({ onCreateFlash }: Props) {
   const { t } = useI18n();
   return (
@@ -20,10 +26,10 @@ export function FlashDashboardEmptyState({ onCreateFlash }: Props) {
           className="max-w-none px-2 py-7"
         />
         <div className="grid gap-3 border-t border-border pt-4 sm:grid-cols-3">
-          {(["step1", "step2", "step3"] as const).map((step) => (
-            <div key={step} className="rounded-xl bg-card/70 p-3">
-              <p className="text-sm font-semibold">{t(`flash.mine.empty.${step}Title`)}</p>
-              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{t(`flash.mine.empty.${step}Body`)}</p>
+          {STEPS.map((step) => (
+            <div key={step.key} className="rounded-xl bg-card/70 p-3">
+              <p className="text-sm font-semibold">{t(step.title)}</p>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{t(step.body)}</p>
             </div>
           ))}
         </div>
