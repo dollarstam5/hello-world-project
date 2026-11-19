@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useFlashDashboardRecordCard } from "../hooks/useFlashDashboardRecordCard";
-import { FLASH_STATUS_PRESENTATION } from "../utils/flashDashboardStatus";
 import { FlashDashboardDetailDialog } from "./FlashDashboardDetailDialog";
 
 type Props = {
@@ -27,7 +26,6 @@ export function FlashDashboardRecordCard({
 }: Props) {
   const { t } = useI18n();
   const card = useFlashDashboardRecordCard(record, busyId, onSave);
-  const presentation = FLASH_STATUS_PRESENTATION[card.status];
 
   return (
     <Surface variant="elevated" padding="sm" bordered className="stack-2">
@@ -72,9 +70,9 @@ export function FlashDashboardRecordCard({
           </p>
         </div>
         <span
-          className={`shrink-0 rounded-full border px-2 py-1 text-[11px] font-medium ${presentation.className}`}
+          className={`shrink-0 rounded-full border px-2 py-1 text-[11px] font-medium ${card.presentation.className}`}
         >
-          {t(presentation.label)}
+          {t(card.presentation.label)}
         </span>
       </div>
 
@@ -99,14 +97,14 @@ export function FlashDashboardRecordCard({
               className="min-h-9 h-9 px-2 [&_svg]:size-4"
               aria-label={t("flash.mine.edit")}
               title={t("flash.mine.edit")}
-              disabled={card.busy || card.status === "archived" || card.status === "expired"}
+              disabled={card.busy || !card.canEdit}
               onClick={card.startEdit}
             >
               <Pencil aria-hidden />
               <span className="hidden sm:inline text-xs">{t("flash.mine.edit")}</span>
             </Button>
           ) : null}
-          {card.status === "live" ? (
+          {card.canArchive ? (
             <Button
               type="button"
               size="sm"
