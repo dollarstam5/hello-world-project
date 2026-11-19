@@ -13,7 +13,13 @@ import { createFlash } from "../data";
 import type { MessageKey } from "@/lib/i18n/messages";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
 import { publishFlashCommunicationEvent } from "../communication-events";
-import { FLASH_MEDIA_LIMITS, validateFlashAttachment, storeLocalFlashAttachment, deleteLocalFlashAttachments, flashesRepository } from "@/platform/offline";
+import {
+  FLASH_MEDIA_LIMITS,
+  validateFlashAttachment,
+  storeLocalFlashAttachment,
+  deleteLocalFlashAttachments,
+  flashesRepository,
+} from "@/platform/offline";
 
 type SpeechResultEvent = { results: ArrayLike<ArrayLike<{ transcript?: string }>> };
 type SpeechErrorEvent = { error?: string };
@@ -182,10 +188,20 @@ export function useFlashComposer({ user, locale, t, onSaved }: ComposerOptions) 
     const valid: File[] = [];
     for (const file of files) {
       const error = validateFlashAttachment(file);
-      if (error) { setAttachmentError(error); continue; }
-      if (attachments.length + valid.length >= FLASH_MEDIA_LIMITS.maxFiles) { setAttachmentError("too_many_files"); break; }
-      const total = [...attachments, ...valid].reduce((sum, item) => sum + item.size, 0) + file.size;
-      if (total > FLASH_MEDIA_LIMITS.maxTotalBytes) { setAttachmentError("total_too_large"); break; }
+      if (error) {
+        setAttachmentError(error);
+        continue;
+      }
+      if (attachments.length + valid.length >= FLASH_MEDIA_LIMITS.maxFiles) {
+        setAttachmentError("too_many_files");
+        break;
+      }
+      const total = [...attachments, ...valid].reduce((sum, item) => sum + item.size, 0) +
+        file.size;
+      if (total > FLASH_MEDIA_LIMITS.maxTotalBytes) {
+        setAttachmentError("total_too_large");
+        break;
+      }
       valid.push(file);
     }
     if (valid.length) setAttachments((current) => [...current, ...valid]);
@@ -272,8 +288,12 @@ export function useFlashComposer({ user, locale, t, onSaved }: ComposerOptions) 
       });
       try {
         const savedMediaIds: string[] = [];
-        for (const file of attachments) savedMediaIds.push((await storeLocalFlashAttachment(file, savedFlash.id)).id);
-        if (savedMediaIds.length) await flashesRepository.update(savedFlash.id, { mediaIds: savedMediaIds as never });
+        for (const file of attachments) {
+          savedMediaIds.push((await storeLocalFlashAttachment(file, savedFlash.id)).id);
+        }
+        if (savedMediaIds.length) {
+          await flashesRepository.update(savedFlash.id, { mediaIds: savedMediaIds as never });
+        }
       } catch (attachmentSaveError) {
         await deleteLocalFlashAttachments(savedFlash.id);
         await flashesRepository.remove(savedFlash.id);
