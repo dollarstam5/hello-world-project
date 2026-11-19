@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Archive, Eye, Pencil, Sparkles, Trash2 } from "lucide-react";
 
 import type { FlashRecord } from "@eco/core-contracts";
-import { mediaRepository, listLocalFlashAttachments, deleteLocalFlashAttachments } from "@/platform/offline";
+import { listLocalFlashAttachments, deleteLocalFlashAttachments } from "@/platform/offline";
 import { resolveFlashStatus } from "@eco/core-logic";
 import { EmptyState } from "@/components/app/EmptyState";
 import { Surface } from "@/components/app/Surface";
@@ -107,14 +107,7 @@ export function MyFlashManagement({ onCreateFlash, onAccessAvailable }: { onCrea
     };
   }, []);
 
-  const mediaRecords = useLocalQuery(async () => {
-    if (!userId) return null;
-    return await mediaRepository.list();
-  }, [userId]);
-
-  const mediaById = new Map((mediaRecords ?? []).map((media) => [media.id, media]));
-
-  const records = useLocalQuery(async () => {
+const records = useLocalQuery(async () => {
     if (userId === undefined || !userId) return null;
 
     const all = await flashesRepository.list();
