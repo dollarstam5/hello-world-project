@@ -418,7 +418,8 @@ export const messages = {
     "scan.need.placeholder": "Décrivez ce que vous cherchez…",
     "scan.interpretation.title": "Scan a compris",
     "scan.results.unverified": "Correspondance non vérifiée",
-    "scan.results.unverified.description":\n      "La publication est proche ou pertinente par son contexte, mais son contenu ne confirme pas votre besoin.",
+    "scan.results.unverified.description":
+      "La publication est proche ou pertinente par son contexte, mais son contenu ne confirme pas votre besoin.",
     "scan.results.group.unverified": "Résultats à vérifier",
     "scan.results.group.close": "Résultats proches",
     "scan.results.group.alternative": "Autres pistes",
@@ -1442,7 +1443,8 @@ export const messages = {
     "scan.need.placeholder": "Describe what you are looking for…",
     "scan.interpretation.title": "Scan understood",
     "scan.results.unverified": "Unverified result",
-    "scan.results.unverified.description":\n      "The post may be nearby or contextually relevant, but its content does not confirm your need.",
+    "scan.results.unverified.description":
+      "The post may be nearby or contextually relevant, but its content does not confirm your need.",
     "scan.results.group.unverified": "Results to verify",
     "scan.results.group.close": "Close matches",
     "scan.results.group.alternative": "Other options",
