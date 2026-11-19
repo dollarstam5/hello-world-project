@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Archive, Eye, Pencil, Sparkles, Trash2 } from "lucide-react";\nimport { useEffect as usePreviewEffect, useState as usePreviewState } from "react";
+import { Archive, Eye, Pencil, Sparkles, Trash2 } from "lucide-react";
+
 import type { FlashRecord } from "@eco/core-contracts";
 import { mediaRepository, listLocalFlashAttachments, deleteLocalFlashAttachments } from "@/platform/offline";
 import { resolveFlashStatus } from "@eco/core-logic";
@@ -15,13 +16,15 @@ import { publishFlashCommunicationEvent } from "../communication-events";
 import { flashesRepository, useLocalQuery } from "@/platform/offline";
 import { archiveFlash, deleteFlash, updateFlash } from "../data";
 
-type PendingDelete = FlashRecord | null;\n\ntype FlashAttachmentPreviewProps = { flashId: string; mediaIds: string[] };
+type PendingDelete = FlashRecord | null;
+
+type FlashAttachmentPreviewProps = { flashId: string; mediaIds: string[] };
 
 function FlashAttachmentPreview({ flashId, mediaIds }: FlashAttachmentPreviewProps) {
   const { t } = useI18n();
   const files = useLocalQuery(() => listLocalFlashAttachments(flashId), [flashId]);
-  const [urls, setUrls] = usePreviewState<Record<string, string>>({});
-  usePreviewEffect(() => {
+  const [urls, setUrls] = useState<Record<string, string>>({});
+  useEffect(() => {
     const created = Object.fromEntries((files ?? []).map((file) => [file.id, URL.createObjectURL(file.blob)]));
     setUrls(created);
     return () => Object.values(created).forEach((url) => URL.revokeObjectURL(url));
