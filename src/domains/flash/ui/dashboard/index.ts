@@ -13,3 +13,4 @@ export {
   FLASH_STATUS_GROUPS,
   FLASH_STATUS_PRESENTATION,
 } from "./utils/flashDashboardStatus";
+export { useFlashDashboardDeletion } from "./hooks/useFlashDashboardDeletion";

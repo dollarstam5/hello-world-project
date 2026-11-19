@@ -1,4 +1,3 @@
-import type { FlashRecord } from "@eco/core-contracts";
 import { Surface } from "@/components/app/Surface";
 import { FlashDashboardDeleteDialog } from "./components/FlashDashboardDeleteDialog";
 import { FlashDashboardEmptyState } from "./components/FlashDashboardEmptyState";
@@ -7,9 +6,7 @@ import { useI18n } from "@/lib/i18n/useI18n";
 import { useFlashDashboardActions } from "./hooks/useFlashDashboardActions";
 import { useFlashDashboardData } from "./hooks/useFlashDashboardData";
 import { useFlashDashboardTimeline } from "./hooks/useFlashDashboardTimeline";
-import { useFlashDashboardPendingDelete } from "./hooks/useFlashDashboardPendingDelete";
-
-type PendingDelete = FlashRecord | null;
+import { useFlashDashboardDeletion } from "./hooks/useFlashDashboardDeletion";
 
 export function FlashDashboard({
   onCreateFlash,
@@ -22,7 +19,7 @@ export function FlashDashboard({
   const { records, userId } = useFlashDashboardData();
   const { groups, collapsedGroups, toggleGroup } = useFlashDashboardTimeline(records ?? []);
   const { busyId, actionError, archive, saveEdit, remove } = useFlashDashboardActions();
-  const [pendingDelete, setPendingDelete] = useFlashDashboardPendingDelete();
+  const deletion = useFlashDashboardDeletion(remove, busyId);
 
   if (userId === undefined || records === undefined) {
     return (
@@ -65,22 +62,14 @@ export function FlashDashboard({
           busyId={busyId}
           onArchive={archive}
           onSave={saveEdit}
-          onDelete={setPendingDelete}
+          onDelete={deletion.requestDelete}
         />
       ))}
       <FlashDashboardDeleteDialog
-        open={pendingDelete !== null}
+        open={deletion.pending !== null}
         busy={busyId !== null}
-        onOpenChange={(open) => {
-          if (!open && !busyId) setPendingDelete(null);
-        }}
-        onConfirm={() => {
-          if (pendingDelete) {
-            void remove(pendingDelete).then((success) => {
-              if (success) setPendingDelete(null);
-            });
-          }
-        }}
+        onOpenChange={deletion.onOpenChange}
+        onConfirm={deletion.confirm}
       />
     </div>
   );
