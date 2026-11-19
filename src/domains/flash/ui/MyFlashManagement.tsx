@@ -27,7 +27,13 @@ const statusKeys = {
 } as const;
 
 /** Shows only records owned by the signed-in person and present in their local database. */
-export function MyFlashManagement({ onCreateFlash, onAccessAvailable }: { onCreateFlash: () => void; onAccessAvailable?: (available: boolean) => void }) {
+export function MyFlashManagement({
+  onCreateFlash,
+  onAccessAvailable,
+}: {
+  onCreateFlash: () => void;
+  onAccessAvailable?: (available: boolean) => void;
+}) {
   const { t, locale } = useI18n();
   const communication = useCommunicationRuntime();
   const [pendingDelete, setPendingDelete] = useState<PendingDelete>(null);
@@ -147,13 +153,45 @@ export function MyFlashManagement({ onCreateFlash, onAccessAvailable }: { onCrea
   }, [records, onAccessAvailable]);
 
   const groups = [
-    { key: "today", label: "flash.mine.period.today", predicate: (r: FlashRecord) => startOfDay(r.createdAt) === today },
-    { key: "yesterday", label: "flash.mine.period.yesterday", predicate: (r: FlashRecord) => startOfDay(r.createdAt) === today - day },
-    { key: "twoDays", label: "flash.mine.period.twoDays", predicate: (r: FlashRecord) => startOfDay(r.createdAt) === today - 2 * day },
-    { key: "week", label: "flash.mine.period.week", predicate: (r: FlashRecord) => startOfDay(r.createdAt) >= thisWeekStart && startOfDay(r.createdAt) < today - 2 * day },
-    { key: "lastWeek", label: "flash.mine.period.lastWeek", predicate: (r: FlashRecord) => startOfDay(r.createdAt) >= lastWeekStart && startOfDay(r.createdAt) < thisWeekStart && startOfDay(r.createdAt) < today - 2 * day },
-    { key: "older", label: "flash.mine.period.older", predicate: (r: FlashRecord) => startOfDay(r.createdAt) < lastWeekStart },
-  ].map((group) => ({ ...group, items: records?.filter(group.predicate).sort((a, b) => b.createdAt - a.createdAt) ?? [] }))
+    {
+      key: "today",
+      label: "flash.mine.period.today",
+      predicate: (r: FlashRecord) => startOfDay(r.createdAt) === today,
+    },
+    {
+      key: "yesterday",
+      label: "flash.mine.period.yesterday",
+      predicate: (r: FlashRecord) => startOfDay(r.createdAt) === today - day,
+    },
+    {
+      key: "twoDays",
+      label: "flash.mine.period.twoDays",
+      predicate: (r: FlashRecord) => startOfDay(r.createdAt) === today - 2 * day,
+    },
+    {
+      key: "week",
+      label: "flash.mine.period.week",
+      predicate: (r: FlashRecord) =>
+        startOfDay(r.createdAt) >= thisWeekStart && startOfDay(r.createdAt) < today - 2 * day,
+    },
+    {
+      key: "lastWeek",
+      label: "flash.mine.period.lastWeek",
+      predicate: (r: FlashRecord) =>
+        startOfDay(r.createdAt) >= lastWeekStart &&
+        startOfDay(r.createdAt) < thisWeekStart &&
+        startOfDay(r.createdAt) < today - 2 * day,
+    },
+    {
+      key: "older",
+      label: "flash.mine.period.older",
+      predicate: (r: FlashRecord) => startOfDay(r.createdAt) < lastWeekStart,
+    },
+  ]
+    .map((group) => ({
+      ...group,
+      items: records?.filter(group.predicate).sort((a, b) => b.createdAt - a.createdAt) ?? [],
+    }))
     .filter((group) => group.items.length > 0);
 
   if (userId === undefined || records === undefined) {
@@ -182,7 +220,12 @@ export function MyFlashManagement({ onCreateFlash, onAccessAvailable }: { onCrea
             title={t("flash.mine.empty.title")}
             description={t("flash.mine.empty.desc")}
             action={
-              <Button type="button" size="lg" className="min-h-11 rounded-full" onClick={onCreateFlash}>
+              <Button
+                type="button"
+                size="lg"
+                className="min-h-11 rounded-full"
+                onClick={onCreateFlash}
+              >
                 {t("flash.mine.empty.action")}
               </Button>
             }
@@ -191,22 +234,32 @@ export function MyFlashManagement({ onCreateFlash, onAccessAvailable }: { onCrea
           <div className="grid gap-3 border-t border-border pt-4 sm:grid-cols-3">
             <div className="rounded-xl bg-card/70 p-3">
               <p className="text-sm font-semibold">{t("flash.mine.empty.step1Title")}</p>
-              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{t("flash.mine.empty.step1Body")}</p>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground>
+                {t("flash.mine.empty.step1Body")}
+              </p>
             </div>
             <div className="rounded-xl bg-card/70 p-3">
               <p className="text-sm font-semibold">{t("flash.mine.empty.step2Title")}</p>
-              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{t("flash.mine.empty.step2Body")}</p>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground>
+                {t("flash.mine.empty.step2Body")}
+              </p>
             </div>
             <div className="rounded-xl bg-card/70 p-3">
               <p className="text-sm font-semibold">{t("flash.mine.empty.step3Title")}</p>
-              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{t("flash.mine.empty.step3Body")}</p>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground>
+                {t("flash.mine.empty.step3Body")}
+              </p>
             </div>
           </div>
           <div className="mt-3 rounded-xl border border-dashed border-border p-3">
             <p className="text-sm font-medium">{t("flash.mine.empty.statusGuideTitle")}</p>
-            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{t("flash.mine.empty.statusGuideBody")}</p>
+            <p className="mt-1 text-xs leading-relaxed text-muted-foreground>
+              {t("flash.mine.empty.statusGuideBody")}
+            </p>
           </div>
-          <p className="mt-3 text-center text-xs text-muted-foreground">{t("flash.mine.empty.timelineHint")}</p>
+          <p className="mt-3 text-center text-xs text-muted-foreground>
+            {t("flash.mine.empty.timelineHint")}
+          </p>
         </Surface>
       </div>
     );
