@@ -1,10 +1,16 @@
 import type { FlashRecord } from "@eco/core-contracts";
 import type { FlashTimelineGroup, FlashTimelineGroupKey } from "../types/flashDashboard.types";
 
-const DAY_MS = 86_400_000;
 
 function startOfDay(value: number): number {
   const date = new Date(value);
+  date.setHours(0, 0, 0, 0);
+  return date.getTime();
+}
+
+function shiftCalendarDays(value: number, days: number): number {
+  const date = new Date(value);
+  date.setDate(date.getDate() + days);
   date.setHours(0, 0, 0, 0);
   return date.getTime();
 }
@@ -21,7 +27,7 @@ function startOfWeek(value: number): number {
 export function groupFlashByDate(records: FlashRecord[], now = Date.now()): FlashTimelineGroup[] {
   const today = startOfDay(now);
   const thisWeekStart = startOfWeek(today);
-  const lastWeekStart = thisWeekStart - 7 * DAY_MS;
+  const lastWeekStart = shiftCalendarDays(thisWeekStart, -7);
 
   const definitions: Array<{
     key: FlashTimelineGroupKey;
@@ -36,12 +42,12 @@ export function groupFlashByDate(records: FlashRecord[], now = Date.now()): Flas
     {
       key: "yesterday",
       label: "flash.mine.period.yesterday",
-      predicate: (r) => startOfDay(r.createdAt) === today - DAY_MS,
+      predicate: (r) => startOfDay(r.createdAt) === shiftCalendarDays(today, -1),
     },
     {
       key: "twoDays",
       label: "flash.mine.period.twoDays",
-      predicate: (r) => startOfDay(r.createdAt) === today - 2 * DAY_MS,
+      predicate: (r) => startOfDay(r.createdAt) === shiftCalendarDays(today, -2),
     },
     {
       key: "week",

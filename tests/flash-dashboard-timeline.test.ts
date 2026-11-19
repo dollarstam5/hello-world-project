@@ -50,7 +50,7 @@ describe("Flash dashboard timeline grouping", () => {
     const rows = [
       record("monday", now),
       record("sunday", localDay(2026, 10, 22)),
-      record("previous-monday", localDay(2026, 10, 2)),
+      record("older-date", localDay(2026, 10, 2)),
     ];
 
     const groups = groupFlashByDate(rows, now);
@@ -58,7 +58,7 @@ describe("Flash dashboard timeline grouping", () => {
     expect(groups.map((group) => [group.key, group.items.map((item) => item.id)])).toEqual([
       ["today", ["monday"]],
       ["lastWeek", ["sunday"]],
-      ["older", ["previous-monday"]],
+      ["older", ["older-date"]],
     ]);
   });
 
