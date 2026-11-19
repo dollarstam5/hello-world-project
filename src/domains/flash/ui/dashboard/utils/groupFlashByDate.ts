@@ -1,12 +1,6 @@
 import type { FlashRecord } from "@eco/core-contracts";
 
-export type FlashTimelineGroupKey = "today" | "yesterday" | "twoDays" | "week" | "lastWeek" | "older";
-
-export type FlashTimelineGroup = {
-  key: FlashTimelineGroupKey;
-  label: string;
-  items: FlashRecord[];
-};
+import type { FlashTimelineGroup, FlashTimelineGroupKey } from "../types/flashDashboard.types";
 
 const DAY_MS = 86_400_000;
 
