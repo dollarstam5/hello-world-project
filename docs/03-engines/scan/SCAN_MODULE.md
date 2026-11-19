@@ -19,3 +19,12 @@ Le flux public utilise `list_public_flashes`, une projection SQL bornée accessi
 
 ## Cible produit V1 validée — 2026-11-18
 Les règles de Scan V1 sont consolidées dans [SCAN_PRODUCT_DECISIONS_V1.md](./SCAN_PRODUCT_DECISIONS_V1.md), sections 31 et 32. Paramètres clés : rayon maximum produit 2 km (runtime actuellement observé différent et à réconcilier) ; rayon initial adaptatif ; choix manuel d'un lieu public si GPS refusé ; historique membre 3 jours ; cache local 24 h / 5 Mo ; sélection par catégories adaptative et chargement progressif ; besoin humain, critères prioritaires et diversité intelligente à pertinence comparable. Ces paramètres sont des décisions produit, **pas des fonctionnalités runtime confirmées**. Les tests doivent prouver les limites server-side, la purge, les quotas, les permissions et le parcours mobile avant toute déclaration de conformité.
+
+## Avancement du Lot 1 — audit et corrections P0 (2026-11-19)
+
+- **Correction P0 en cours : champ de besoin libre.** L'écran Scan collecte désormais le texte du besoin (160 caractères maximum), le transmet à la requête, bloque le lancement si le texte est vide et désactive la saisie pendant l'exécution ou la localisation.
+- **Interprétation : non encore raccordée visuellement.** Le parseur déterministe existe dans `packages/core-logic/src/scan-interpreter.ts`, mais l'utilisateur ne voit pas encore de résumé explicite de l'intention/critères interprétés dans l'écran.
+- **Qualification des résultats : non fiable en production à ce stade.** Les classifications exact/proche/alternative/non vérifié existent dans la logique, mais le flux Scan fabrique une evidence à partir de Flash sans preuve sémantique de la source ; une qualification positive ne doit donc pas être présentée comme une confirmation métier.
+- **Tests :** le commit initial du champ a déclenché Quality en échec à cause d'un formatage Prettier dans le catalogue i18n (pas d'échec fonctionnel Scan démontré dans ce log). Le formatage a été corrigé séparément ; les contrôles du commit correctif sont actuellement en cours.
+- **Architecture :** conserver ScanPanel sous la limite de 300 lignes. Si le résumé d'interprétation ou les sections de qualification alourdissent l'écran, extraire des composants UI dédiés et garder les règles dans core-logic, sans déplacer les responsabilités.
+
