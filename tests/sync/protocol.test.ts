@@ -99,7 +99,6 @@ describe("sync protocol validation", () => {
       category: "transport",
       timeSlot: "today",
       expiresAt: null,
-      mediaIds: [],
     });
     expect(() =>
       validatePushRequest({
@@ -146,7 +145,6 @@ describe("sync protocol validation", () => {
                       title: "Publication directe",
                       body: "Ne doit pas être visible",
                       expiresAt: 1_900_000_000_000,
-                      mediaIds: [],
                       kind: "need",
                       category: "transport",
                       timeSlot: "today",
@@ -174,7 +172,6 @@ describe("sync protocol validation", () => {
             title: "Besoin de transport",
             body: "Un trajet local",
             expiresAt: 1_900_000_000_000,
-            mediaIds: [],
             kind: "need",
             category: "transport",
             timeSlot: "today",
