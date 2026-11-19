@@ -13,6 +13,7 @@ import { createFlash } from "../data";
 import type { MessageKey } from "@/lib/i18n/messages";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
 import { publishFlashCommunicationEvent } from "../communication-events";
+import { FLASH_MEDIA_LIMITS, validateFlashAttachment, storeLocalFlashAttachment, deleteLocalFlashAttachments, flashesRepository } from "@/platform/offline";
 
 type SpeechResultEvent = { results: ArrayLike<ArrayLike<{ transcript?: string }>> };
 type SpeechErrorEvent = { error?: string };
@@ -90,6 +91,8 @@ export function useFlashComposer({ user, locale, t, onSaved }: ComposerOptions) 
   const [areaLabel, setAreaLabel] = useState("");
   const [locating, setLocating] = useState(false);
   const [locationError, setLocationError] = useState("");
+  const [attachments, setAttachments] = useState<File[]>([]);
+  const [attachmentError, setAttachmentError] = useState<string | null>(null);
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
 
   const parsedIntent = useMemo(
@@ -172,7 +175,7 @@ export function useFlashComposer({ user, locale, t, onSaved }: ComposerOptions) 
     }
   }
 
-  function continueToReview() {
+  function addAttachments(files: File[]) {\n    setAttachmentError(null);\n    const valid: File[] = [];\n    for (const file of files) {\n      const error = validateFlashAttachment(file);\n      if (error) { setAttachmentError(error); continue; }\n      if (attachments.length + valid.length >= FLASH_MEDIA_LIMITS.maxFiles) { setAttachmentError("too_many_files"); break; }\n      const total = [...attachments, ...valid].reduce((sum, item) => sum + item.size, 0) + file.size;\n      if (total > FLASH_MEDIA_LIMITS.maxTotalBytes) { setAttachmentError("total_too_large"); break; }\n      valid.push(file);\n    }\n    if (valid.length) setAttachments((current) => [...current, ...valid]);\n  }\n\n  function removeAttachment(index: number) {\n    setAttachments((current) => current.filter((_, i) => i !== index));\n    setAttachmentError(null);\n  }\n\n  function continueToReview() {
     if (!text.trim()) return;
     if (parsedIntent) {
       setKind(parsedIntent.kind);
@@ -246,7 +249,7 @@ export function useFlashComposer({ user, locale, t, onSaved }: ComposerOptions) 
         areaLabel: areaLabel.trim() || undefined,
         expiresAt: expiryFor(timeSlot),
       });
-      publishFlashCommunicationEvent(communication, savedFlash, "draft-saved");
+      try {\n        const savedMedia = [];\n        for (const file of attachments) savedMedia.push(await storeLocalFlashAttachment(file, savedFlash.id));\n        if (savedMedia.length) await flashesRepository.update(savedFlash.id, { mediaIds: savedMedia.map((media) => media.id) as never });\n      } catch (attachmentSaveError) {\n        await deleteLocalFlashAttachments(savedFlash.id);\n        await flashesRepository.remove(savedFlash.id);\n        throw attachmentSaveError;\n      }\n      publishFlashCommunicationEvent(communication, savedFlash, "draft-saved");
       closeComposer();
       onSaved();
     } catch {
