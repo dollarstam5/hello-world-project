@@ -118,7 +118,6 @@ describe("Scan candidate qualification", () => {
     expect(selected[0].level).toBe("exact");
   });
 
-
   it("keeps current public Flash projection results unverified, even when title looks relevant", () => {
     const interpretation = interpretScanRequest("Je cherche un mécanicien");
     const flashLike = result("Mécanicien disponible");
