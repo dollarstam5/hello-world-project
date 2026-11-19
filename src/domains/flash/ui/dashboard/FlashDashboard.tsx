@@ -81,18 +81,21 @@ export function FlashDashboard({
     }
   }
 
-  async function saveEdit(record: FlashRecord, body: string) {
+  async function saveEdit(record: FlashRecord, body: string): Promise<boolean> {
     setBusyId(record.id);
     setActionError(false);
     try {
       const updated = await updateFlash(record.id, body);
       publishFlashCommunicationEvent(communication, updated, "updated");
+      return true;
     } catch {
       setActionError(true);
+      return false;
     } finally {
       setBusyId(null);
     }
   }
+
 
   async function remove(record: FlashRecord) {
     setBusyId(record.id);
