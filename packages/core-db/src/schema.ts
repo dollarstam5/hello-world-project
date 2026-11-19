@@ -88,7 +88,6 @@ export class EcosystemDatabase extends Dexie {
   }
 }
 
-
 let instance: EcosystemDatabase | null = null;
 let activeScope: LocalDataScope | null = null;
 
