@@ -37,14 +37,16 @@ export function useFlashDashboardActions() {
     }
   }
 
-  async function remove(record: FlashRecord) {
+  async function remove(record: FlashRecord): Promise<boolean> {
     setBusyId(record.id);
     setActionError(false);
     try {
       await deleteFlash(record.id);
       publishFlashCommunicationEvent(communication, record, "deleted");
+      return true;
     } catch {
       setActionError(true);
+      return false;
     } finally {
       setBusyId(null);
     }
