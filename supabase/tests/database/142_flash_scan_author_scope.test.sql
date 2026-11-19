@@ -70,6 +70,50 @@ FROM (VALUES
   ('f5500000-0000-4000-8000-000000000011'::uuid, 200.0)
 ) AS v(id, distance_m);
 
+-- Temporary CI diagnostics: inspect fixture persistence and each Scan predicate before filtering.
+SELECT diag(
+  'SCAN142_DIAGNOSTICS=' || coalesce((
+    SELECT jsonb_agg(jsonb_build_object(
+      'id', f.id,
+      'status', f.status,
+      'kind', f.kind,
+      'category', f.category,
+      'time_slot', f.time_slot,
+      'area_label', f.area_label,
+      'scope', f.scope,
+      'deleted_at', f.deleted_at,
+      'expires_at', f.expires_at,
+      'location_exists', loc.flash_id IS NOT NULL,
+      'distance_m', CASE WHEN loc.location IS NOT NULL THEN round(extensions.ST_Distance(
+        loc.location,
+        extensions.ST_SetSRID(extensions.ST_MakePoint(0, 0), 4326)::extensions.geography
+      )::numeric, 3) END,
+      'scope_limit_m', CASE f.scope
+        WHEN 'current_area' THEN 500.0 WHEN 'expanded_area' THEN 2000.0
+        WHEN 'half_city' THEN 5000.0 WHEN 'whole_city' THEN 15000.0 END,
+      'eligible_status', f.status = 'live' AND f.deleted_at IS NULL
+        AND f.expires_at > (extract(epoch FROM now()) * 1000)::bigint,
+      'eligible_kind', f.kind IN ('need', 'offer'),
+      'eligible_category', f.category IN ('personal','professional','commercial','home','transport','food','education','health','events','other'),
+      'eligible_time', f.time_slot IN ('now','today','tomorrow','this_week'),
+      'eligible_area', nullif(btrim(f.area_label), '') IS NOT NULL,
+      'eligible_scope', f.scope IN ('current_area','expanded_area','half_city','whole_city'),
+      'eligible_personal', f.category = 'personal',
+      'eligible_author_distance', loc.location IS NOT NULL AND extensions.ST_Distance(
+        loc.location, extensions.ST_SetSRID(extensions.ST_MakePoint(0, 0), 4326)::extensions.geography
+      ) <= CASE f.scope WHEN 'current_area' THEN 500.0 WHEN 'expanded_area' THEN 2000.0 WHEN 'half_city' THEN 5000.0 WHEN 'whole_city' THEN 15000.0 END
+    ) ORDER BY f.id)
+    FROM public.flashes f
+    LEFT JOIN public.flash_private_locations loc ON loc.flash_id=f.id AND loc.author_id=f.author_id
+    WHERE f.id BETWEEN 'f5500000-0000-4000-8000-000000000001'::uuid AND 'f5500000-0000-4000-8000-000000000011'::uuid
+  ), '[]'::jsonb)::text
+);
+
+SELECT diag('SCAN142_FIXTURE_COUNT=' || (
+  SELECT count(*)::text FROM public.flashes
+  WHERE id BETWEEN 'f5500000-0000-4000-8000-000000000001'::uuid AND 'f5500000-0000-4000-8000-000000000011'::uuid
+));
+
 SELECT is(
   (SELECT count(*)::integer FROM public.scan_public_flashes(NULL,'personal',0,0,50,50)),
   4,
