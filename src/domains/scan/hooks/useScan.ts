@@ -6,7 +6,6 @@ import { scanNearby } from "../api/scan.functions";
 import { subscribeToFlashChanges } from "../services/scan-realtime.service";
 import { useScanHistory } from "./useScanHistory";
 
-
 export function useScan() {
   const run = useServerFn(scanNearby);
   const runRef = useRef(run);
@@ -29,6 +28,10 @@ export function useScan() {
       queryRef.current = query;
       setBusy(true);
       setFailed(false);
+      if (options.recordHistory !== false) {
+        setRows([]);
+        setAssessments([]);
+      }
       try {
         const sourceRows = await runRef.current({ data: query });
         const interpretation = interpretScanRequest(query.text);
