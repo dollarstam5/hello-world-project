@@ -42,3 +42,11 @@ Les règles de Scan V1 sont consolidées dans [SCAN_PRODUCT_DECISIONS_V1.md](./S
 - La présentation sépare les quatre niveaux : `exact`, `close`, `alternative`, `unverified`. Les résultats `unverified` indiquent explicitement que la publication ne confirme pas le besoin.
 - **Limite de preuve toujours présente :** la projection Flash publique ne fournit pas le contenu sémantique nécessaire. L'évidence construite pour cette source garde `needMatch: unknown`; une correspondance exacte ne peut donc pas être affichée par ce flux sans evidence source valide.
 - **Validation après commits de qualification :** en attente des workflows GitHub sur les derniers commits ; aucun succès global ne doit être revendiqué avant lecture des jobs.
+
+### Résultats qualifiés et limites de la projection (complément)
+
+- `ScanResults` présente les quatre niveaux séparément et n'inclut aucun résultat dans un groupe vide. Le niveau `unverified` affiche un avertissement explicite.
+- La projection Flash publique contient titre, catégorie, type, créneau, zone et distance, mais pas assez de détails sémantiques pour confirmer le besoin. Les candidats provenant de cette projection sont donc `unverified`, même si leur titre paraît correspondre.
+- Le groupe `exact` n'est pas alimenté par le flux actuel sans preuves source sémantiques valides. Le groupe `alternative` non plus ne peut être produit de façon fiable tant que le source ne permet pas d'établir `no_match`. Les intitulés existent, mais ne signifient pas que les groupes sont actuellement alimentés.
+- Un test de régression est ajouté pour empêcher une correspondance exacte fondée uniquement sur un titre suggestif.
+- Le dernier commit de test est `d315cf6`. Les workflows pour ce SHA n'étaient pas encore visibles au moment du relevé ; validation CI à confirmer.
