@@ -155,4 +155,4 @@ Le Dashboard est regroupé dans `src/domains/flash/ui/dashboard/` pour séparer 
 - `../flash-composer-helpers.ts` : helpers de saisie/voix du composer, partagés uniquement avec le parcours d'expression.
 
 
-Flash V1 reste centré sur l'expression naturelle par texte ou voix. Aucun ajout de fichiers, pièce jointe, média ou transfert n'est prévu dans ce périmètre.
+Flash V1 reste centré sur l'expression naturelle par texte ou voix. Aucun ajout de fichiers, pièce jointe, média ou transfert n'est prévu dans ce périmètre. La migration locale Dexie v6 retire la table expérimentale de blobs et les références `mediaIds` obsolètes des Flashs locaux.
