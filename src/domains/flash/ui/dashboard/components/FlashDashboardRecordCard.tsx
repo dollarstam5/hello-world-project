@@ -147,7 +147,22 @@ export function FlashDashboardRecordCard({
         locale={locale}
         statusLabel={t(card.presentation.label)}
         open={card.detailsOpen}
+        busy={card.busy}
+        canEdit={card.canEdit}
+        canArchive={card.canArchive}
         onOpenChange={card.setDetailsOpen}
+        onEdit={() => {
+          card.setDetailsOpen(false);
+          card.startEdit();
+        }}
+        onArchive={() => {
+          card.setDetailsOpen(false);
+          onArchive(record);
+        }}
+        onDelete={() => {
+          card.setDetailsOpen(false);
+          onDelete(record);
+        }}
       />
     </Surface>
   );
