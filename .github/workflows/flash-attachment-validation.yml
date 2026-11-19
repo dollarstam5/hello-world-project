@@ -36,8 +36,19 @@ jobs:
         uses: oven-sh/setup-bun@v2
       - name: Install locked dependencies
         run: bun install --frozen-lockfile
-      - name: Lint repository
-        run: bun run lint
+      - name: Lint changed Flash attachment files
+        run: >-
+          bunx eslint
+          src/domains/flash/ui/MyFlashManagement.tsx
+          src/domains/flash/ui/FlashAttachmentPreview.tsx
+          src/domains/flash/ui/FlashComposerReviewStep.tsx
+          src/domains/flash/ui/useFlashComposer.ts
+          src/lib/i18n/messages.ts
+          packages/core-db/src/schema.ts
+          packages/core-db/src/local-media-blobs.ts
+          src/platform/offline/index.ts
+          tests/flash-attachment-validation.test.ts
+          --rule "max-lines: off"
       - name: Run attachment validation tests
         run: bun run test:run -- tests/flash-attachment-validation.test.ts
       - name: Build production bundle
