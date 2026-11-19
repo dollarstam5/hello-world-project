@@ -304,7 +304,8 @@ export const messages = {
     "flash.hero.description": "Dites simplement ce qu’il vous faut ou ce que vous pouvez proposer.",
     "flash.hero.action": "Démarrer un Flash",
     "flash.hero.voiceHint": "Écrivez ou dictez votre message.",
-    "flash.hero.dashboardHint": "Après avoir enregistré votre premier Flash, votre espace de gestion s’ouvrira pour le retrouver et le suivre.",
+    "flash.hero.dashboardHint":
+      "Après avoir enregistré votre premier Flash, votre espace de gestion s’ouvrira pour le retrouver et le suivre.",
     "flash.tabs.label": "Votre espace Flash",
     "flash.tabs.discover": "Découvrir",
     "flash.tabs.mine": "Mes Flashs",
@@ -321,10 +322,12 @@ export const messages = {
       "Expliquez-le avec vos mots. Flash vous aide à organiser votre message.",
     "flash.composer.reviewTitle": "Vérifiez votre Flash",
     "flash.attachments.title": "Pièces jointes",
-    "flash.attachments.description": "Ajoutez des fichiers à votre Flash. Ils seront conservés sur cet appareil pour le moment.",
+    "flash.attachments.description":
+      "Ajoutez des fichiers à votre Flash. Ils seront conservés sur cet appareil pour le moment.",
     "flash.attachments.add": "Ajouter des fichiers",
     "flash.attachments.remove": "Retirer ce fichier",
-    "flash.attachments.limitHint": "3 fichiers maximum · 10 Mo chacun · 20 Mo au total. Stockage local uniquement pour le moment.",
+    "flash.attachments.limitHint":
+      "3 fichiers maximum · 10 Mo chacun · 20 Mo au total. Stockage local uniquement pour le moment.",
     "flash.attachments.error.unsupported_type": "Ce format de fichier n'est pas accepté.",
     "flash.attachments.error.empty_file": "Ce fichier est vide.",
     "flash.attachments.error.file_too_large": "Ce fichier dépasse 10 Mo.",
@@ -554,12 +557,16 @@ export const messages = {
     "flash.mine.empty.step1Title": "1. Écrivez simplement",
     "flash.mine.empty.step1Body": "Expliquez votre besoin ou ce que vous proposez avec vos propres mots.",
     "flash.mine.empty.step2Title": "2. Vérifiez avant d’enregistrer",
-    "flash.mine.empty.step2Body": "Relisez votre Flash et ajustez les informations. Vous pouvez garder un brouillon.",
+    "flash.mine.empty.step2Body":
+      "Relisez votre Flash et ajustez les informations. Vous pouvez garder un brouillon.",
     "flash.mine.empty.step3Title": "3. Retrouvez-le ici",
-    "flash.mine.empty.step3Body": "Vos Flash seront classés par date. Vous pourrez ouvrir chaque fiche et gérer ses actions.",
+    "flash.mine.empty.step3Body":
+      "Vos Flash seront classés par date. Vous pourrez ouvrir chaque fiche et gérer ses actions.",
     "flash.mine.empty.statusGuideTitle": "Comprendre les états",
-    "flash.mine.empty.statusGuideBody": "Un brouillon est en préparation ; un Flash actif est publié ; un Flash expiré a dépassé sa durée ; un Flash archivé a été rangé ou retiré de la publication.",
-    "flash.mine.empty.timelineHint": "Vos Flashs seront regroupés : Aujourd’hui · Hier · Il y a 2 jours · Cette semaine · Plus anciens",
+    "flash.mine.empty.statusGuideBody":
+      "Un brouillon est en préparation ; un Flash actif est publié ; un Flash expiré a dépassé sa durée ; un Flash archivé a été rangé ou retiré de la publication.",
+    "flash.mine.empty.timelineHint":
+      "Vos Flashs seront regroupés : Aujourd’hui · Hier · Il y a 2 jours · Cette semaine · Plus anciens",
 
     "flash.mine.localHint":
       "Cette liste reprend les Flash de votre compte disponibles sur cet appareil. Les changements en attente seront synchronisés au retour du réseau.",
@@ -575,7 +582,8 @@ export const messages = {
     "flash.mine.detailArea": "Zone",
     "flash.mine.detailMedia": "Fichiers associés",
     "flash.mine.localMediaLoading": "Chargement des fichiers enregistrés sur cet appareil…",
-    "flash.mine.localMediaMissing": "Les fichiers associés ne sont pas présents sur cet appareil. Le transfert distant n'est pas encore disponible.",
+    "flash.mine.localMediaMissing":
+      "Les fichiers associés ne sont pas présents sur cet appareil. Le transfert distant n'est pas encore disponible.",
     "flash.mine.localOnly": "Sur cet appareil",
     "flash.mine.openLocalFile": "Ouvrir le fichier",
 
@@ -1387,7 +1395,8 @@ export const messages = {
     "flash.hero.description": "Tell people what you need or what you can offer.",
     "flash.hero.action": "Start a Flash",
     "flash.hero.voiceHint": "Write or dictate your message.",
-    "flash.hero.dashboardHint": "Save your first Flash to unlock your management space and keep track of it.",
+    "flash.hero.dashboardHint":
+      "Save your first Flash to unlock your management space and keep track of it.",
     "flash.tabs.label": "Your Flash space",
     "flash.tabs.discover": "Discover",
     "flash.tabs.mine": "My Flash",
@@ -1630,10 +1639,13 @@ export const messages = {
     "flash.mine.empty.step2Title": "2. Review before saving",
     "flash.mine.empty.step2Body": "Check your Flash and adjust the details. You can keep a draft.",
     "flash.mine.empty.step3Title": "3. Find it here",
-    "flash.mine.empty.step3Body": "Your Flash posts will be grouped by date. Open each one to view details and manage available actions.",
+    "flash.mine.empty.step3Body":
+      "Your Flash posts will be grouped by date. Open each one to view details and manage available actions.",
     "flash.mine.empty.statusGuideTitle": "Understand the statuses",
-    "flash.mine.empty.statusGuideBody": "A draft is being prepared; an active Flash is published; an expired Flash has passed its validity period; an archived Flash has been put away or removed from publication.",
-    "flash.mine.empty.timelineHint": "Your Flash posts will be grouped: Today · Yesterday · 2 days ago · This week · Older",
+    "flash.mine.empty.statusGuideBody":
+      "A draft is being prepared; an active Flash is published; an expired Flash has passed its validity period; an archived Flash has been put away or removed from publication.",
+    "flash.mine.empty.timelineHint":
+      "Your Flash posts will be grouped: Today · Yesterday · 2 days ago · This week · Older",
 
     "flash.mine.localHint":
       "This list shows your account Flash posts available on this device. Pending changes will sync when the connection returns.",
@@ -1649,7 +1661,8 @@ export const messages = {
     "flash.mine.detailArea": "Area",
     "flash.mine.detailMedia": "Attached files",
     "flash.mine.localMediaLoading": "Loading files saved on this device…",
-    "flash.mine.localMediaMissing": "The linked files are not available on this device. Remote transfer is not available yet.",
+    "flash.mine.localMediaMissing":
+      "The linked files are not available on this device. Remote transfer is not available yet.",
     "flash.mine.localOnly": "On this device",
     "flash.mine.openLocalFile": "Open file",
 
