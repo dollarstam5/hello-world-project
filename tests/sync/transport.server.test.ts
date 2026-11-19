@@ -375,6 +375,40 @@ describe("runPush transport — Radar mutation receipts", () => {
     expect(db.receipts).toHaveLength(1);
   });
 
+  it("recovers an applied update after receipt failure without repeating the server update", async () => {
+    const db = new FakeDatabase();
+    db.tables.radars.push({
+      id: recordId,
+      owner_id: ownerId,
+      title: "Titre avant",
+      query: "recherche initiale",
+      category: "services",
+      radius_km: 4,
+      revision: 2,
+    });
+    db.receiptWriteFailures = 1;
+    const entry = radarEntry("update", { title: "Titre modifié" });
+
+    const first = await runPush(db.client(), request(entry), ownerId);
+
+    expect(first.accepted).toEqual([]);
+    expect(first.rejected).toEqual([
+      { id: mutationId, code: "server_error", retryable: true },
+    ]);
+    expect(db.tables.radars[0].title).toBe("Titre modifié");
+    expect(db.successfulBusinessWrites).toBe(1);
+    expect(db.receipts).toHaveLength(0);
+
+    const retry = await runPush(db.client(), request(entry), ownerId);
+
+    expect(retry.accepted).toEqual([mutationId]);
+    expect(retry.rejected).toEqual([]);
+    expect(retry.records[0]?.data.title).toBe("Titre modifié");
+    expect(db.tables.radars[0].title).toBe("Titre modifié");
+    expect(db.successfulBusinessWrites).toBe(1);
+    expect(db.receipts).toHaveLength(1);
+  });
+
   it("recovers an applied write when receipt storage fails, then accepts the retry without duplicating the record", async () => {
     const db = new FakeDatabase();
     db.receiptWriteFailures = 1;
