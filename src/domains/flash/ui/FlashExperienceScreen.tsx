@@ -140,7 +140,7 @@ export function FlashExperienceScreen() {
               <h2 className="text-lg font-bold">{t("flash.mine.title")}</h2>
               <p className="text-sm text-muted-foreground">{t("flash.mine.desc")}</p>
             </div>
-            <MyFlashManagement />
+            <MyFlashManagement onCreateFlash={composer.openComposer} />
           </div>
         )}
       </div>
