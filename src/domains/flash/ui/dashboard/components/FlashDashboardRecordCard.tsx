@@ -28,7 +28,7 @@ export function FlashDashboardRecordCard({
   const card = useFlashDashboardRecordCard(record, busyId, onSave);
 
   return (
-    <Surface variant="elevated" padding="sm" bordered className="stack-2">
+    <Surface variant="elevated" padding="sm" bordered className="stack-3">
       <div className="flex min-w-0 items-start justify-between gap-2">
         <div className="min-w-0 flex-1">
           {card.editing ? (
@@ -63,10 +63,11 @@ export function FlashDashboardRecordCard({
               </div>
             </div>
           ) : (
-            <p className="line-clamp-2 break-words font-medium leading-snug">{record.title}</p>
+            <p className="line-clamp-2 break-words font-semibold leading-snug">{record.title}</p>
+            <p className="mt-1 line-clamp-2 break-words text-sm leading-relaxed text-muted-foreground">{record.body}</p>
           )}
           <p className="mt-1 text-xs text-muted-foreground">
-            {new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(record.createdAt)}
+            {new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" }).format(record.createdAt)}
           </p>
         </div>
         <span
