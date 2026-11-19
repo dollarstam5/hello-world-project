@@ -2,6 +2,8 @@ import { Surface } from "@/components/app/Surface";
 import { FlashDashboardDeleteDialog } from "./components/FlashDashboardDeleteDialog";
 import { FlashDashboardEmptyState } from "./components/FlashDashboardEmptyState";
 import { FlashDashboardDateGroup } from "./components/FlashDashboardDateGroup";
+import { FlashDashboardHeader } from "./components/FlashDashboardHeader";
+import { FlashDashboardOverview } from "./components/FlashDashboardOverview";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useFlashDashboardActions } from "./hooks/useFlashDashboardActions";
 import { useFlashDashboardData } from "./hooks/useFlashDashboardData";
@@ -37,13 +39,16 @@ export function FlashDashboard({
     );
   }
 
-  if (records.length === 0) return <FlashDashboardEmptyState onCreateFlash={onCreateFlash} />;
-
   return (
     <div className="stack-4">
-      <p className="rounded-lg bg-muted/40 px-3 py-2 text-xs text-muted-foreground">
-        {t("flash.mine.localHint")}
-      </p>
+      <FlashDashboardHeader onCreateFlash={onCreateFlash} />
+      <FlashDashboardOverview records={records} />
+      {records.length === 0 ? <FlashDashboardEmptyState onCreateFlash={onCreateFlash} /> : null}
+      {records.length > 0 ? (
+        <p className="rounded-lg bg-muted/40 px-3 py-2 text-xs text-muted-foreground">
+          {t("flash.mine.localHint")}
+        </p>
+      ) : null}
       {actionError ? (
         <p
           role="alert"
