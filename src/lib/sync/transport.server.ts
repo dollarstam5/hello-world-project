@@ -251,9 +251,16 @@ export async function runPush(
       }
       if (!result.data) {
         if (entry.kind === "delete") {
-          await storeReceipt(db, entry, userId, null);
-          accepted.push(entry.id);
-          continue;
+          // A no-row response is not proof that a deletion succeeded. It may
+          // mean the record is missing or hidden by RLS. Accept only when a
+          // follow-up read confirms the tombstone already exists.
+          const recovered = await recoverAppliedMutation(db, entry, table, row);
+          if (recovered) {
+            await storeReceipt(db, entry, userId, recovered);
+            accepted.push(entry.id);
+            records.push(recovered);
+            continue;
+          }
         }
         rejected.push({ id: entry.id, code: "record_not_found", retryable: false });
         continue;
