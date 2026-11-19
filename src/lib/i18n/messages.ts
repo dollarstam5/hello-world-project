@@ -1684,7 +1684,8 @@ export const messages = {
     "flash.mine.media.unavailable": "Metadata unavailable",
     "flash.mine.detailNoMedia": "No files attached to this Flash.",
     "flash.mine.detailMediaPending": "Opening and previewing files is not connected yet.",
-    "flash.mine.detailInteractionsPending": "Interactions for this Flash are not shown in this details panel yet.",
+    "flash.mine.detailInteractionsPending":
+      "Interactions for this Flash are not shown in this details panel yet.",
     "flash.mine.period.older": "Older",
     "flash.mine.actionError": "That action could not be completed. Please try again.",
     "flash.mine.archive": "Archive",
