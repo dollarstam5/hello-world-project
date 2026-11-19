@@ -38,12 +38,20 @@ export function useScanFlow() {
   };
 
   return {
-    ...scan,
-    ...location,
-    ...preferences,
+    rows: scan.rows,
+    assessments: scan.assessments,
+    busy: scan.busy,
+    failed: scan.failed,
+    history: scan.history,
+    clearHistory: scan.clearHistory,
+    locating: location.locating,
+    locationError: location.locationError,
+    unsupported: location.unsupported,
+    radiusKm: preferences.radiusKm,
+    setRadiusKm: preferences.setRadiusKm,
+    availableRadii: preferences.availableRadii,
     needText,
     setNeedText,
-    started,
     status,
     start,
   };
