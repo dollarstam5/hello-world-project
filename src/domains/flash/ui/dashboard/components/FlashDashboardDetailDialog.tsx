@@ -70,22 +70,23 @@ export function FlashDashboardDetailDialog({
           </div>
         </section>
 
-        <section className="stack-2 border-t border-border-soft pt-3">
-          <h3 className="text-sm font-medium">{t("flash.mine.detailCreated")}</h3>
-          <div className="stack-2 text-sm text-muted-foreground">
-            <p>{dateTimeFormat.format(record.createdAt)}</p>
-            {record.expiresAt ? (
-              <p>
-                {t("flash.mine.detailExpires")}: {dateTimeFormat.format(record.expiresAt)}
-              </p>
-            ) : null}
-            {record.areaLabel ? (
-              <p>
-                {t("flash.mine.detailArea")}: {record.areaLabel}
-              </p>
-            ) : null}
-          </div>
-        </section>
+        {(record.expiresAt || record.areaLabel) ? (
+          <section className="stack-2 border-t border-border-soft pt-3">
+            <h3 className="text-sm font-medium">{t("flash.mine.detailMetadata")}</h3>
+            <div className="stack-2 text-sm text-muted-foreground">
+              {record.expiresAt ? (
+                <p>
+                  {t("flash.mine.detailExpires")}: {dateTimeFormat.format(record.expiresAt)}
+                </p>
+              ) : null}
+              {record.areaLabel ? (
+                <p>
+                  {t("flash.mine.detailArea")}: {record.areaLabel}
+                </p>
+              ) : null}
+            </div>
+          </section>
+        ) : null}
 
         <section className="stack-2 border-t border-border-soft pt-3">
           <h3 className="text-sm font-medium">{t("flash.mine.detailActions")}</h3>
