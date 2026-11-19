@@ -42,23 +42,19 @@ const INTENT_RULES: readonly IntentRule[] = [
   },
   {
     intent: "food",
-    pattern:
-      /\b(manger|repas|nourriture|restaurant|cuisin\w*|livraison|faim|a boire)\b/,
+    pattern: /\b(manger|repas|nourriture|restaurant|cuisin\w*|livraison|faim|a boire)\b/,
   },
   {
     intent: "learning",
-    pattern:
-      /\b(apprendre|cours|formation|professeur|tuteur|soutien scolaire|enseigner)\b/,
+    pattern: /\b(apprendre|cours|formation|professeur|tuteur|soutien scolaire|enseigner)\b/,
   },
   {
     intent: "health",
-    pattern:
-      /\b(sante|medecin|docteur|pharmacie|soin|hopital|me soigner)\b/,
+    pattern: /\b(sante|medecin|docteur|pharmacie|soin|hopital|me soigner)\b/,
   },
   {
     intent: "activity",
-    pattern:
-      /\b(sortir|activite|evenement|concert|soiree|fete|match|visiter|me divertir)\b/,
+    pattern: /\b(sortir|activite|evenement|concert|soiree|fete|match|visiter|me divertir)\b/,
   },
   {
     intent: "place",
@@ -67,8 +63,7 @@ const INTENT_RULES: readonly IntentRule[] = [
   },
   {
     intent: "social",
-    pattern:
-      /\b(rencontr|ami|compagnie|discut|partager|faire connaissance)\b/,
+    pattern: /\b(rencontr|ami|compagnie|discut|partager|faire connaissance)\b/,
   },
   {
     intent: "help",
@@ -77,8 +72,7 @@ const INTENT_RULES: readonly IntentRule[] = [
   },
   {
     intent: "service",
-    pattern:
-      /\b(service|prestataire|quelqu un pour|personne pour)\b/,
+    pattern: /\b(service|prestataire|quelqu un pour|personne pour)\b/,
   },
 ];
 
