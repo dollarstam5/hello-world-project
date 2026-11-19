@@ -4,12 +4,8 @@ import type { ScanCandidateAssessment, ScanQuery, ScanResult } from "@eco/core-c
 import { buildScanSourceEvidence, interpretScanRequest, selectScanResults } from "@eco/core-logic";
 import { scanNearby } from "../api/scan.functions";
 import { subscribeToFlashChanges } from "../services/scan-realtime.service";
-import {
-  clearScanHistory,
-  readScanHistory,
-  recordScanHistory,
-  type ScanHistoryEntry,
-} from "../services/scan-history.service";
+import { useScanHistory } from "./useScanHistory";
+
 
 export function useScan() {
   const run = useServerFn(scanNearby);
@@ -20,11 +16,7 @@ export function useScan() {
   const [assessments, setAssessments] = useState<ScanCandidateAssessment[]>([]);
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);
-  const [history, setHistory] = useState<ScanHistoryEntry[]>([]);
-
-  useEffect(() => {
-    setHistory(readScanHistory());
-  }, []);
+  const { history, addEntry, clearHistory } = useScanHistory();
 
   useEffect(() => {
     runRef.current = run;
@@ -49,7 +41,7 @@ export function useScan() {
         setRows(nextRows);
         setAssessments(nextAssessments);
         if (options.recordHistory !== false) {
-          setHistory(recordScanHistory(nextRows.length));
+          addEntry(nextRows.length);
         }
       } catch {
         setFailed(true);
@@ -58,7 +50,7 @@ export function useScan() {
         setBusy(false);
       }
     },
-    [],
+    [addEntry],
   );
 
   useEffect(
@@ -69,11 +61,6 @@ export function useScan() {
       }),
     [execute],
   );
-
-  const clearHistory = useCallback(() => {
-    clearScanHistory();
-    setHistory([]);
-  }, []);
 
   return { rows, assessments, busy, failed, execute, history, clearHistory };
 }
