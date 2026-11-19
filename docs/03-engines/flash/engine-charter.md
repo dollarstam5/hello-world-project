@@ -74,3 +74,6 @@ Cette livraison d'interface ne valide pas encore la visibilité par publication 
 - V1 privilégie une création simple, peu coûteuse et sans média obligatoire.
 - Les règles de confidentialité et de visibilité doivent être vérifiées côté serveur.
 - Les choix d'En direct ne s'appliquent pas à Flash sans décision explicite.
+
+
+L'expérience après publication et le Dashboard de gestion sont cadrés dans [Flash — Blueprint du Dashboard de gestion V1](./flash-dashboard-blueprint-v1.md). Ce blueprint est une proposition UX/produit; il ne certifie pas les fonctions runtime.
