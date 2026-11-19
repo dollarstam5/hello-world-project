@@ -1,9 +1,9 @@
 # Flash — Blueprint du Dashboard de gestion V1
 
-**Statut :** Blueprint produit / UX proposé — à valider avant implémentation
+**Statut :** Décision produit validée — règles d'entrée à implémenter et vérifier
 **Version :** V1
 **Branche de travail :** `scan-phase-a-interpreter`
-**Périmètre :** expérience de gestion des Flashs de l'utilisateur après enregistrement et après publication réelle
+**Périmètre :** parcours obligatoire de première création, déverrouillage du dashboard après sauvegarde ou publication confirmée, puis gestion des Flashs
 **Aucune implémentation runtime n'est autorisée par ce document.**
 
 ## 1. Objectif et mission
