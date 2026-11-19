@@ -36,7 +36,7 @@ export function createRepository<T extends BaseRecord>(name: SyncedTable): Repos
     },
     async list() {
       const rows = await dexieTable().toArray();
-      return rows.filter((row) => row.deletedAt === null).sort((a, b) => b.updatedAt - a.updatedAt);
+      return rows\n        .filter((row) => row.deletedAt === null)\n        .sort((a, b) => b.updatedAt - a.updatedAt);
     },
     async create(data) {
       if (!CLIENT_WRITE_POLICY[name].create) {
