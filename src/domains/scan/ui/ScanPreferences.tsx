@@ -27,22 +27,23 @@ export function ScanPreferences({
         <span className="text-xs text-muted-foreground">{t("scan.preferences.optional")}</span>
       </summary>
       <div className="stack-2 pt-3">
-        <label className="stack-1 text-sm font-medium" htmlFor="scan-radius">
-          <span>{t("scan.radius")}</span>
-          <select
-            id="scan-radius"
-            value={radiusKm}
-            onChange={(event) => onRadiusChange(Number(event.target.value) as ScanRadiusKm)}
-            disabled={disabled}
-            className="min-h-12 w-full rounded-xl border border-border bg-background px-3 text-sm font-normal text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
-          >
+        <fieldset className="stack-2">
+          <legend className="text-sm font-medium">{t("scan.radius")}</legend>
+          <div className="grid grid-cols-2 gap-2">
             {availableRadii.map((radius) => (
-              <option key={radius} value={radius}>
+              <button
+                key={radius}
+                type="button"
+                aria-pressed={radiusKm === radius}
+                disabled={disabled}
+                onClick={() => onRadiusChange(radius)}
+                className={`min-h-12 rounded-xl border px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60 ${radiusKm === radius ? "border-primary/40 bg-primary/10 text-primary" : "border-border bg-background text-foreground hover:bg-muted"}`}
+              >
                 {radius} {t("scan.radius.unit")}
-              </option>
+              </button>
             ))}
-          </select>
-        </label>
+          </div>
+        </fieldset>
         <p className="text-xs leading-relaxed text-muted-foreground">{t("scan.preferences.radiusNote")}</p>
       </div>
     </details>
