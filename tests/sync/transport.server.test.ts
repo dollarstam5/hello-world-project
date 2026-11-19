@@ -346,7 +346,6 @@ describe("runPush transport — Radar mutation receipts", () => {
     });
   });
 
-
   it("does not accept a delete when the server returns no row and no tombstone exists", async () => {
     const db = new FakeDatabase();
     const entry = radarEntry("delete", {});
@@ -456,9 +455,7 @@ describe("runPush transport — Radar mutation receipts", () => {
     const first = await runPush(db.client(), request(entry), ownerId);
 
     expect(first.accepted).toEqual([]);
-    expect(first.rejected).toEqual([
-      { id: mutationId, code: "server_error", retryable: true },
-    ]);
+    expect(first.rejected).toEqual([{ id: mutationId, code: "server_error", retryable: true }]);
     expect(db.tables.radars).toHaveLength(1);
     expect(db.receipts).toHaveLength(0);
 
