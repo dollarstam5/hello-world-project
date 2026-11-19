@@ -41,3 +41,9 @@ La création et la sauvegarde locale de brouillons existent. Le composer ne réa
 - [ ] Publication : aucun déverrouillage ou statut actif avant confirmation serveur; lorsqu'elle sera activée, ouvre dashboard sur Flash actif.
 - [ ] Accès direct à la route/onglet Dashboard avant première création : bloqué ou redirigé vers la création.
 - [ ] Pas de données d'exemple présentées comme Flashs réels ni de droits invités assimilés à des membres.
+
+## Statuts et regroupement chronologique à ne pas confondre
+
+Le contrat Flash actuel définit les états `draft`, `live`, `expired` et `archived`. Il n'existe pas de statut canonique `disabled` distinct. Le dashboard ne doit donc pas inventer un badge « désactivé » ni assimiler « archivé » à « désactivé »; un véritable état désactivé nécessitera une décision de cycle de vie et des contrats métier.
+
+Le regroupement temporel utilise les jours locaux (aujourd'hui, hier, il y a deux jours), puis la semaine civile en cours, la semaine civile précédente et les plus anciens. Les limites de semaines sont lundi–dimanche; ne pas étiqueter un intervalle roulant de 3 à 6 jours comme « semaine dernière ».
