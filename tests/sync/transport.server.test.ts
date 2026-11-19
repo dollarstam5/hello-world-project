@@ -100,11 +100,11 @@ class FakeQuery {
     if (this.table === "sync_mutation_receipts") {
       if (this.operation === "select") {
         const receipt = this.database.receipts.find((row) => this.matches(row));
-        return { data: receipt ? { logical_table: receipt.logical_table, record_id: receipt.record_id, response: receipt.response } : null, error: null };
+        return {\n          data: receipt\n            ? {\n                logical_table: receipt.logical_table,\n                record_id: receipt.record_id,\n                response: receipt.response,\n              }\n            : null,\n          error: null,\n        };
       }
       if (this.database.receiptWriteFailures > 0) {
         this.database.receiptWriteFailures -= 1;
-        return { data: null, error: { code: "08006", message: "simulated receipt write failure" } };
+        return {\n          data: null,\n          error: { code: "08006", message: "simulated receipt write failure" },\n        };
       }
       const receipt = this.payload ?? {};
       if (
@@ -376,7 +376,7 @@ describe("runPush transport — Radar mutation receipts", () => {
     const first = await runPush(db.client(), request(entry), ownerId);
 
     expect(first.accepted).toEqual([]);
-    expect(first.rejected).toEqual([{ id: mutationId, code: "server_error", retryable: true }]);
+    expect(first.rejected).toEqual([\n      { id: mutationId, code: "server_error", retryable: true },\n    ]);
     expect(db.tables.radars).toHaveLength(1);
     expect(db.receipts).toHaveLength(0);
 
