@@ -4,14 +4,16 @@ import type { ScanResult } from "@eco/core-contracts";
 import { FLASH_CATEGORIES } from "@eco/core-contracts";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-const nearbyFeedSchema = z.object({
-  text: z.string().trim().min(0).max(120),
-  category: z.enum(FLASH_CATEGORIES).nullable(),
-  latitude: z.number().finite().min(-90).max(90),
-  longitude: z.number().finite().min(-180).max(180),
-  radiusKm: z.number().finite().min(1).max(50),
-  limit: z.number().int().min(1).max(50),
-}).strict();
+const nearbyFeedSchema = z
+  .object({
+    text: z.string().trim().min(0).max(120),
+    category: z.enum(FLASH_CATEGORIES).nullable(),
+    latitude: z.number().finite().min(-90).max(90),
+    longitude: z.number().finite().min(-180).max(180),
+    radiusKm: z.number().finite().min(1).max(50),
+    limit: z.number().int().min(1).max(50),
+  })
+  .strict();
 
 /** Flash-owned endpoint for its own feed; no Scan API dependency. */
 export const nearbyFlashFeed = createServerFn({ method: "POST" })
