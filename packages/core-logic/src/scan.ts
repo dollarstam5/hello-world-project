@@ -22,9 +22,7 @@ export function scanRelevance(result: ScanResult, now = Date.now()): number {
 
 /** Most relevant results first; never mutates the input. */
 export function rankScanResults(results: ScanResult[], now = Date.now()): ScanResult[] {
-  return [...results].sort((a, b) =>
-    scanRelevance(b, now) - scanRelevance(a, now),
-  );
+  return [...results].sort((a, b) => scanRelevance(b, now) - scanRelevance(a, now));
 }
 
 /**
@@ -97,8 +95,7 @@ export function rankScanAssessments(
   return [...assessments].sort((a, b) => {
     const levelDifference = priority[a.level] - priority[b.level];
     if (levelDifference !== 0) return levelDifference;
-    const relevanceDifference =
-      scanRelevance(b.result, now) - scanRelevance(a.result, now);
+    const relevanceDifference = scanRelevance(b.result, now) - scanRelevance(a.result, now);
     return relevanceDifference || a.result.id.localeCompare(b.result.id);
   });
 }
