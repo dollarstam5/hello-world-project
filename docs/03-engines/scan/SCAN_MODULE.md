@@ -28,3 +28,9 @@ Les règles de Scan V1 sont consolidées dans [SCAN_PRODUCT_DECISIONS_V1.md](./S
 - **Tests :** le commit initial du champ a déclenché Quality en échec à cause d'un formatage Prettier dans le catalogue i18n (pas d'échec fonctionnel Scan démontré dans ce log). Le formatage a été corrigé séparément ; les contrôles du commit correctif sont actuellement en cours.
 - **Architecture :** conserver ScanPanel sous la limite de 300 lignes. Si le résumé d'interprétation ou les sections de qualification alourdissent l'écran, extraire des composants UI dédiés et garder les règles dans core-logic, sans déplacer les responsabilités.
 
+### Mise à jour après raccordement du parseur UI
+
+- Un composant séparé `ScanNeedInterpretation` affiche un aperçu local de l'intention déterministe détectée (libellés traduits FR/EN) lorsque la saisie n'est pas vide. Il n'affiche pas les extraits normalisés non accentués pour éviter une présentation brute peu naturelle.
+- `ScanPanel` reste sous le seuil architectural de 300 lignes (à confirmer par contrôle CI/mesure locale ; aucune mesure locale disponible dans cette session).
+- Les classifications exact/proche/alternative/non vérifié ne sont pas encore exposées dans les cartes : la source publique actuelle ne possède pas de preuve sémantique fiable pour l'intention principale. Ne pas les afficher comme confirmées avant d'avoir un contrat d'évidence source fiable.
+- Le contrôle Scan Validation sur run #65 est passé (lint Scan et tests ciblés). Quality du run #2143 a été annulé lors de la progression des commits, donc le résultat global du formatage/build sur le dernier état reste à confirmer par un run complet.
