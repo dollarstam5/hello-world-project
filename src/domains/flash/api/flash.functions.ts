@@ -28,7 +28,8 @@ export const commandFlash = createServerFn({ method: "POST" })
     z
       .object({
         id: z.string().uuid(),
-        status: z.enum(["live", "archived"]),
+        // Publication is deliberately unavailable; only the archive command is supported.
+        status: z.literal("archived"),
       })
       .strict(),
   )
