@@ -1,8 +1,8 @@
 import type { FlashRecord } from "@eco/core-contracts";
-import { resolveFlashStatus } from "@eco/core-logic";
 import { useI18n } from "@/lib/i18n/useI18n";
-import { FlashDashboardRecordCard } from "./FlashDashboardRecordCard";
+import { groupFlashRecordsByStatus } from "../utils/flashDashboardStatus";
 import type { FlashTimelineGroup } from "../types/flashDashboard.types";
+import { FlashDashboardRecordCard } from "./FlashDashboardRecordCard";
 
 type Props = {
   group: FlashTimelineGroup;
@@ -15,13 +15,6 @@ type Props = {
   onDelete: (record: FlashRecord) => void;
 };
 
-const STATUS_GROUPS = [
-  { key: "live", label: "flash.mine.status.live" },
-  { key: "draft", label: "flash.mine.status.draft" },
-  { key: "expired", label: "flash.mine.status.expired" },
-  { key: "archived", label: "flash.mine.status.archived" },
-] as const;
-
 export function FlashDashboardDateGroup({
   group,
   collapsed,
@@ -33,6 +26,7 @@ export function FlashDashboardDateGroup({
   onDelete,
 }: Props) {
   const { t } = useI18n();
+  const statusGroups = groupFlashRecordsByStatus(group.items);
 
   return (
     <section className="stack-3">
@@ -59,36 +53,29 @@ export function FlashDashboardDateGroup({
         </button>
       </h3>
       <div id={`flash-timeline-${group.key}`} hidden={collapsed} className="stack-3">
-        {STATUS_GROUPS.map((statusGroup) => {
-          const statusItems = group.items.filter(
-            (record) => resolveFlashStatus(record) === statusGroup.key,
-          );
-          if (statusItems.length === 0) return null;
-
-          return (
-            <div key={statusGroup.key} className="stack-2">
-              <h4 className="flex items-center justify-between gap-2 text-xs font-medium text-foreground/80">
-                <span>{t(statusGroup.label)}</span>
-                <span className="text-[11px] tabular-nums text-muted-foreground">
-                  {statusItems.length}
-                </span>
-              </h4>
-              <div className="stack-2">
-                {statusItems.map((record) => (
-                  <FlashDashboardRecordCard
-                    key={record.id}
-                    record={record}
-                    locale={locale}
-                    busyId={busyId}
-                    onArchive={onArchive}
-                    onSave={onSave}
-                    onDelete={onDelete}
-                  />
-                ))}
-              </div>
+        {statusGroups.map((statusGroup) => (
+          <div key={statusGroup.key} className="stack-2">
+            <h4 className="flex items-center justify-between gap-2 text-xs font-medium text-foreground/80">
+              <span>{t(statusGroup.label)}</span>
+              <span className="text-[11px] tabular-nums text-muted-foreground">
+                {statusGroup.items.length}
+              </span>
+            </h4>
+            <div className="stack-2">
+              {statusGroup.items.map((record) => (
+                <FlashDashboardRecordCard
+                  key={record.id}
+                  record={record}
+                  locale={locale}
+                  busyId={busyId}
+                  onArchive={onArchive}
+                  onSave={onSave}
+                  onDelete={onDelete}
+                />
+              ))}
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
     </section>
   );
