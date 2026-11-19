@@ -71,7 +71,7 @@ Cette livraison d'interface ne valide pas encore la visibilité par publication 
 
 ## Garde-fous
 - Pas de fonctionnalité simulée présentée comme opérationnelle.
-- V1 privilégie une création simple, peu coûteuse et sans média obligatoire.
+- V1 privilégie une création simple, peu coûteuse, fondée sur l'expression naturelle par texte ou voix.
 - Les règles de confidentialité et de visibilité doivent être vérifiées côté serveur.
 - Les choix d'En direct ne s'appliquent pas à Flash sans décision explicite.
 
