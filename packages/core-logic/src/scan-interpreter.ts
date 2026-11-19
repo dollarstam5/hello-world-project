@@ -102,7 +102,7 @@ const DISTANCE_PATTERN =
 const QUANTITY_PATTERN =
   /\b[0-9]+ (?:personnes?|meubles?|cartons?|chambres?|pieces?|kilos?|kg|litres?|articles?|colis|bagages?)\b/;
 const LOCATION_PATTERN =
-  /\b(?:pres de|a cote de|autour de|dans le quartier de|dans la zone de|a l adresse de|a) ([a-z0-9]+(?: [a-z0-9]+){0,3})\b/;
+  /\b(?:pres de|a cote de|autour de|dans le quartier de|dans la zone de|a l adresse de|a) ([a-z0-9]+(?: (?!dans|de|du|la|le|les|un|une|au|aux|avec|pour)[a-z0-9]+){0,3})\b/;
 
 function extractMatches(text: string, patterns: readonly RegExp[]): string[] {
   const matches = new Set<string>();
