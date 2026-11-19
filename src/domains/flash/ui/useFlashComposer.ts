@@ -175,7 +175,26 @@ export function useFlashComposer({ user, locale, t, onSaved }: ComposerOptions) 
     }
   }
 
-  function addAttachments(files: File[]) {\n    setAttachmentError(null);\n    const valid: File[] = [];\n    for (const file of files) {\n      const error = validateFlashAttachment(file);\n      if (error) { setAttachmentError(error); continue; }\n      if (attachments.length + valid.length >= FLASH_MEDIA_LIMITS.maxFiles) { setAttachmentError("too_many_files"); break; }\n      const total = [...attachments, ...valid].reduce((sum, item) => sum + item.size, 0) + file.size;\n      if (total > FLASH_MEDIA_LIMITS.maxTotalBytes) { setAttachmentError("total_too_large"); break; }\n      valid.push(file);\n    }\n    if (valid.length) setAttachments((current) => [...current, ...valid]);\n  }\n\n  function removeAttachment(index: number) {\n    setAttachments((current) => current.filter((_, i) => i !== index));\n    setAttachmentError(null);\n  }\n\n  function continueToReview() {
+  function addAttachments(files: File[]) {
+    setAttachmentError(null);
+    const valid: File[] = [];
+    for (const file of files) {
+      const error = validateFlashAttachment(file);
+      if (error) { setAttachmentError(error); continue; }
+      if (attachments.length + valid.length >= FLASH_MEDIA_LIMITS.maxFiles) { setAttachmentError("too_many_files"); break; }
+      const total = [...attachments, ...valid].reduce((sum, item) => sum + item.size, 0) + file.size;
+      if (total > FLASH_MEDIA_LIMITS.maxTotalBytes) { setAttachmentError("total_too_large"); break; }
+      valid.push(file);
+    }
+    if (valid.length) setAttachments((current) => [...current, ...valid]);
+  }
+
+  function removeAttachment(index: number) {
+    setAttachments((current) => current.filter((_, i) => i !== index));
+    setAttachmentError(null);
+  }
+
+  function continueToReview() {
     if (!text.trim()) return;
     if (parsedIntent) {
       setKind(parsedIntent.kind);
