@@ -69,8 +69,13 @@ export class EcosystemDatabase extends Dexie {
     this.version(4).stores({
       radars: "id, ownerId, status, nextReviewAt, expiresAt, updatedAt, deletedAt",
     });
+
+    this.version(5).stores({
+      mediaBlobs: "id, ownerId, flashId, createdAt",
+    });
   }
 }
+
 
 let instance: EcosystemDatabase | null = null;
 let activeScope: LocalDataScope | null = null;
