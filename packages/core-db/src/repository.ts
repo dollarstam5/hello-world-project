@@ -36,17 +36,14 @@ export function createRepository<T extends BaseRecord>(name: SyncedTable): Repos
     },
     async list() {
       const rows = await dexieTable().toArray();
-      return rows
-        .filter((row) => row.deletedAt === null)
-        .sort((a, b) => b.updatedAt - a.updatedAt);
+      return rows.filter((row) => row.deletedAt === null).sort((a, b) => b.updatedAt - a.updatedAt);
     },
     async create(data) {
       if (!CLIENT_WRITE_POLICY[name].create) {
         throw new Error(`Local creation is not allowed for ${name}.`);
       }
       const db = getDb();
-      const id =
-        (data as { id?: string }).id ?? newId<"Record">();
+      const id = (data as { id?: string }).id ?? newId<"Record">();
       const record = stampCreate(
         {
           ...(data as object),
@@ -56,10 +53,7 @@ export function createRepository<T extends BaseRecord>(name: SyncedTable): Repos
       // Local records contain metadata and protected state (e.g. Flash status=draft).
       // Only client-writable fields travel in the generic create mutation; server
       // defaults/ownership and protected lifecycle state must not be client-supplied.
-      const patch = filterClientWritablePatch(
-        name,
-        record as unknown as Record<string, unknown>,
-      );
+      const patch = filterClientWritablePatch(name, record as unknown as Record<string, unknown>);
       await db.transaction("rw", dexieTable(), db.outbox, async () => {
         await dexieTable().put(record);
         await enqueueMutation({
