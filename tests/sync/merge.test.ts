@@ -47,7 +47,8 @@ describe("offline record merging", () => {
     expect(merged.deletedAt).toBe(400);
     expect(merged.revision).toBe(10);
   });
-\n  it("uses remote fields when there are no pending local mutations", () => {
+
+  it("uses remote fields when there are no pending local mutations", () => {
     const local = record({ updatedAt: 400, title: "old local" });
     const remote = record({ updatedAt: 300, revision: 8, title: "remote confirmed" });
 
