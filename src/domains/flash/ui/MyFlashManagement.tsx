@@ -257,7 +257,7 @@ export function MyFlashManagement({
               {t("flash.mine.empty.statusGuideBody")}
             </p>
           </div>
-          <p className="mt-3 text-center text-xs text-muted-foreground>
+          <p className="mt-3 text-center text-xs text-muted-foreground">
             {t("flash.mine.empty.timelineHint")}
           </p>
         </Surface>
