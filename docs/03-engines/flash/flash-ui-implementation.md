@@ -126,7 +126,7 @@ Le Dashboard « Mes Flashs » n'est pas un écran d'entrée accessible à un uti
 3. À l'étape de décision, les options attendues sont **Publier** ou **Enregistrer dans mon espace**. Les exigences de publication doivent être vérifiées avant d'autoriser la publication.
 4. **Publication réussie et confirmée** : ouvrir le Dashboard sur le Flash publié, avec statut actif uniquement si le backend confirme réellement la publication.
 5. **Enregistrement réussi** : ouvrir le Dashboard sur le Flash enregistré, avec statut brouillon/non publié. L'enregistrement ne doit jamais être présenté comme une publication.
-6. Les deux voies déverrouillent ensuite l'accès au Dashboard. Celui-ci devient l'espace de gestion central pour tous les Flashs, leurs dates, statuts, détails, fichiers, interactions et actions disponibles, selon leurs connexions réelles.
+6. Les deux voies déverrouillent ensuite l'accès au Dashboard. Celui-ci devient l'espace de gestion central pour tous les Flashs, leurs dates, statuts, détails, interactions et actions disponibles, selon leurs connexions réelles.
 
 ### Restrictions d'accès et états
 
@@ -144,7 +144,3 @@ La sauvegarde d'un brouillon débloque l'espace de gestion mais ne le rend pas v
 ### Écart d'implémentation à suivre
 
 Le verrou d'accès au dashboard est maintenant appliqué dans le code : « Mes Flashs » reste caché avant le premier Flash sauvegardé, le dashboard est détecté à partir des Flashs persistés appartenant au compte, et un premier brouillon sauvegardé ouvre l'espace. Le regroupement chronologique utilise les semaines civiles et évite les doublons entre les sections relatives et les sections de semaines. La vérification complète reste en attente : Quality s'arrête à « Verify foundation and secrets » avant les tests/build globaux; Scan Validation et Dependency Review sont vérifiés séparément. La publication distante est toujours non disponible.
-
-## Audit des médias associés (2026-11-19)
-
-Le dashboard affiche maintenant, pour les `mediaIds` attachés au Flash et retrouvés dans le repository local, le type, le MIME et l'état local/upload/remote/failed; les références non retrouvées restent signalées. Les fichiers ne sont pas encore ouvrables : aucun bucket Storage ni upload/download/preview intégré au domaine Flash n'a été trouvé dans la configuration/migrations Supabase et le worker Sync audités. Ne pas ajouter de lien ou bouton d'ouverture tant que les permissions et la vraie voie de transfert ne sont pas implémentées.
