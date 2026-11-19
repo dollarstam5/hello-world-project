@@ -36,7 +36,18 @@ describe("offline record merging", () => {
     expect(merged.revision).toBe(9);
   });
 
-  it("uses remote fields when there are no pending local mutations", () => {
+
+  it("does not resurrect a remote tombstone while preserving a pending local edit", () => {
+    const local = record({ title: "title edited offline", deletedAt: null, updatedAt: 450 });
+    const remote = record({ title: "title remote", deletedAt: 400, updatedAt: 400, revision: 10 });
+
+    const merged = mergeRecords(local, remote, ["title"]);
+
+    expect(merged.title).toBe("title edited offline");
+    expect(merged.deletedAt).toBe(400);
+    expect(merged.revision).toBe(10);
+  });
+\n  it("uses remote fields when there are no pending local mutations", () => {
     const local = record({ updatedAt: 400, title: "old local" });
     const remote = record({ updatedAt: 300, revision: 8, title: "remote confirmed" });
 
