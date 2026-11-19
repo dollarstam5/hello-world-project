@@ -7,9 +7,21 @@ import { useI18n } from "@/lib/i18n/useI18n";
 type Props = { onCreateFlash: () => void };
 
 const STEPS = [
-  { key: "step1", title: "flash.mine.empty.step1Title", body: "flash.mine.empty.step1Body" },
-  { key: "step2", title: "flash.mine.empty.step2Title", body: "flash.mine.empty.step2Body" },
-  { key: "step3", title: "flash.mine.empty.step3Title", body: "flash.mine.empty.step3Body" },
+  {
+    key: "step1",
+    title: "flash.mine.empty.step1Title",
+    body: "flash.mine.empty.step1Body",
+  },
+  {
+    key: "step2",
+    title: "flash.mine.empty.step2Title",
+    body: "flash.mine.empty.step2Body",
+  },
+  {
+    key: "step3",
+    title: "flash.mine.empty.step3Title",
+    body: "flash.mine.empty.step3Body",
+  },
 ] as const;
 
 export function FlashDashboardEmptyState({ onCreateFlash }: Props) {
