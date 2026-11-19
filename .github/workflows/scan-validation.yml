@@ -1,0 +1,76 @@
+name: Scan Validation
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - scan-phase-a-interpreter
+    paths:
+      - "packages/core-contracts/src/scan.ts"
+      - "packages/core-contracts/src/scan-interpretation.ts"
+      - "packages/core-logic/src/scan.ts"
+      - "packages/core-logic/src/scan-interpreter.ts"
+      - "tests/scan/**"
+      - "package.json"
+      - "bun.lock"
+      - "bun.lockb"
+      - "eslint.config.js"
+      - "tests/vitest.config.ts"
+      - ".github/workflows/scan-validation.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "packages/core-contracts/src/scan.ts"
+      - "packages/core-contracts/src/scan-interpretation.ts"
+      - "packages/core-logic/src/scan.ts"
+      - "packages/core-logic/src/scan-interpreter.ts"
+      - "tests/scan/**"
+      - "package.json"
+      - "bun.lock"
+      - "bun.lockb"
+      - "eslint.config.js"
+      - "tests/vitest.config.ts"
+      - ".github/workflows/scan-validation.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: scan-validation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  scan-unit:
+    name: Scan lint and targeted tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout without persisted credentials
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.2.23"
+
+      - name: Install locked dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Lint Scan files
+        run: |
+          bunx eslint \
+            packages/core-contracts/src/scan.ts \
+            packages/core-contracts/src/scan-interpretation.ts \
+            packages/core-logic/src/scan.ts \
+            packages/core-logic/src/scan-interpreter.ts \
+            tests/scan/
+
+      - name: Run targeted Scan tests
+        run: |
+          bun run test:run -- \
+            tests/scan/scan-interpreter.test.ts \
+            tests/scan/scan-selection.test.ts \
+            tests/scan/scan-contracts.test.ts
