@@ -22,23 +22,19 @@ type IntentRule = {
 const INTENT_RULES: readonly IntentRule[] = [
   {
     intent: "repair",
-    pattern:
-      /\b(repar\w*|depann\w*|panne\w*|crevaison|mecanicien|plombier|electricien|faire reparer|remettre en etat)\b/,
+    pattern: /\b(repar\w*|depann\w*|panne\w*|crevaison|mecanicien|plombier|electricien|faire reparer|remettre en etat)\b/,
   },
   {
     intent: "transport",
-    pattern:
-      /\b(transport|taxi|chauffeur|voiture|moto|trajet|deplacement|se deplacer|aeroport|aller a|emmener|conduire)\b/,
+    pattern: /\b(transport|taxi|chauffeur|voiture|moto|trajet|deplacement|se deplacer|aeroport|aller a|emmener|conduire)\b/,
   },
   {
     intent: "work",
-    pattern:
-      /\b(travail|emploi|job|recrut\w*|poste|mission|freelance|gagner de l argent|petit boulot)\b/,
+    pattern: /\b(travail|emploi|job|recrut\w*|poste|mission|freelance|gagner de l argent|petit boulot)\b/,
   },
   {
     intent: "buy",
-    pattern:
-      /\b(acheter|achat|prix|combien coute|trouver.*(materiel|produit|ordinateur|telephone)|je veux un|je voudrais un)\b/,
+    pattern: /\b(acheter|achat|prix|combien coute|trouver.*(materiel|produit|ordinateur|telephone)|je veux un|je voudrais un)\b/,
   },
   {
     intent: "food",
@@ -46,8 +42,7 @@ const INTENT_RULES: readonly IntentRule[] = [
   },
   {
     intent: "learning",
-    pattern:
-      /\b(apprendre|cours|formation|professeur|tuteur|soutien scolaire|enseigner)\b/,
+    pattern: /\b(apprendre|cours|formation|professeur|tuteur|soutien scolaire|enseigner)\b/,
   },
   {
     intent: "health",
@@ -55,13 +50,11 @@ const INTENT_RULES: readonly IntentRule[] = [
   },
   {
     intent: "activity",
-    pattern:
-      /\b(sortir|activite|evenement|concert|soiree|fete|match|visiter|me divertir)\b/,
+    pattern: /\b(sortir|activite|evenement|concert|soiree|fete|match|visiter|me divertir)\b/,
   },
   {
     intent: "place",
-    pattern:
-      /\b(endroit|lieu|espace|ou aller|ou puis je trouver|ou trouver|adresse|ou se trouve|localiser)\b/,
+    pattern: /\b(endroit|lieu|espace|ou aller|ou puis je trouver|ou trouver|adresse|ou se trouve|localiser)\b/,
   },
   {
     intent: "social",
@@ -69,13 +62,11 @@ const INTENT_RULES: readonly IntentRule[] = [
   },
   {
     intent: "help",
-    pattern:
-      /\b(aide|aider|assistance|coup de main|besoin de quelqu|j ai besoin|j ai besoin d|aidez moi|demenag\w*|deplacer mes meubles|deplacer des meubles|porter des meubles|aide pour demenager)\b/,
+    pattern: /\b(aide|aider|assistance|coup de main|besoin de quelqu|j ai besoin|j ai besoin d|aidez moi|demenag\w*|deplacer mes meubles|deplacer des meubles|porter des meubles|aide pour demenager)\b/,
   },
   {
     intent: "service",
-    pattern:
-      /\b(service|prestataire|quelqu un pour|personne pour)\b/,
+    pattern: /\b(service|prestataire|quelqu un pour|personne pour)\b/,
   },
 ];
 
