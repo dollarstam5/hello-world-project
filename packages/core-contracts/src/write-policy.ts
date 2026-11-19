@@ -42,7 +42,6 @@ export const CLIENT_WRITE_POLICY = {
       "areaLabel",
       "responseLimit",
       "expiresAt",
-      "mediaIds",
       "scope",
       "urgency",
     ],
