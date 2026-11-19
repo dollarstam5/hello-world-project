@@ -51,9 +51,7 @@ export function FlashDashboardEmptyState({ onCreateFlash }: Props) {
           {STEPS.map((step) => (
             <div key={step.key} className="rounded-xl bg-card/70 p-3">
               <p className="text-sm font-semibold">{t(step.title)}</p>
-              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                {t(step.body)}
-              </p>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{t(step.body)}</p>
             </div>
           ))}
         </div>
