@@ -24,7 +24,7 @@ const statusKeys = {
 } as const;
 
 /** Shows only records owned by the signed-in person and present in their local database. */
-export function MyFlashManagement({ onCreateFlash }: { onCreateFlash: () => void }) {
+export function MyFlashManagement({ onCreateFlash, onAccessAvailable }: { onCreateFlash: () => void; onAccessAvailable?: (available: boolean) => void }) {
   const { t, locale } = useI18n();
   const communication = useCommunicationRuntime();
   const [pendingDelete, setPendingDelete] = useState<PendingDelete>(null);
@@ -125,6 +125,10 @@ export function MyFlashManagement({ onCreateFlash }: { onCreateFlash: () => void
   };
   const today = startOfDay(Date.now());
   const day = 86_400_000;
+  useEffect(() => {
+    if (records && records.length > 0) onAccessAvailable?.(true);
+  }, [records, onAccessAvailable]);
+
   const groups = [
     { key: "today", label: "flash.mine.period.today", predicate: (r: FlashRecord) => startOfDay(r.createdAt) === today },
     { key: "yesterday", label: "flash.mine.period.yesterday", predicate: (r: FlashRecord) => startOfDay(r.createdAt) === today - day },
