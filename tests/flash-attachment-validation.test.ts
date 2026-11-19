@@ -39,13 +39,17 @@ describe("Flash local attachment validation", () => {
   it("rejects empty files and files over the size cap", () => {
     expect(validateFlashAttachment(file("empty.pdf", 0, "application/pdf"))).toBe("empty_file");
     expect(
-      validateFlashAttachment(file("large.pdf", FLASH_MEDIA_LIMITS.maxFileBytes + 1, "application/pdf")),
+      validateFlashAttachment(
+        file("large.pdf", FLASH_MEDIA_LIMITS.maxFileBytes + 1, "application/pdf"),
+      ),
     ).toBe("file_too_large");
   });
 
   it("accepts a file at the exact per-file limit", () => {
     expect(
-      validateFlashAttachment(file("limit.pdf", FLASH_MEDIA_LIMITS.maxFileBytes, "application/pdf")),
+      validateFlashAttachment(
+        file("limit.pdf", FLASH_MEDIA_LIMITS.maxFileBytes, "application/pdf"),
+      ),
     ).toBeNull();
   });
 });
