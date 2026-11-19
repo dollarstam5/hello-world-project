@@ -321,19 +321,6 @@ export const messages = {
     "flash.composer.description":
       "Expliquez-le avec vos mots. Flash vous aide à organiser votre message.",
     "flash.composer.reviewTitle": "Vérifiez votre Flash",
-    "flash.attachments.title": "Pièces jointes",
-    "flash.attachments.description":
-      "Ajoutez des fichiers à votre Flash. Ils seront conservés sur cet appareil pour le moment.",
-    "flash.attachments.add": "Ajouter des fichiers",
-    "flash.attachments.remove": "Retirer ce fichier",
-    "flash.attachments.limitHint":
-      "3 fichiers maximum · 10 Mo chacun · 20 Mo au total. Stockage local uniquement pour le moment.",
-    "flash.attachments.error.unsupported_type": "Ce format de fichier n'est pas accepté.",
-    "flash.attachments.error.empty_file": "Ce fichier est vide.",
-    "flash.attachments.error.file_too_large": "Ce fichier dépasse 10 Mo.",
-    "flash.attachments.error.too_many_files": "Vous pouvez joindre jusqu'à 3 fichiers.",
-    "flash.attachments.error.total_too_large":
-      "Les fichiers dépassent ensemble la limite de 20 Mo.",
 
     "flash.composer.reviewDescription":
       "Vérifiez les informations proposées. Vous pouvez tout ajuster avant d’enregistrer le brouillon.",
@@ -582,12 +569,6 @@ export const messages = {
     "flash.mine.detailCreated": "Créé le",
     "flash.mine.detailExpires": "Expire le",
     "flash.mine.detailArea": "Zone",
-    "flash.mine.detailMedia": "Fichiers associés",
-    "flash.mine.localMediaLoading": "Chargement des fichiers enregistrés sur cet appareil…",
-    "flash.mine.localMediaMissing":
-      "Les fichiers associés ne sont pas présents sur cet appareil. Le transfert distant n'est pas encore disponible.",
-    "flash.mine.localOnly": "Sur cet appareil",
-    "flash.mine.openLocalFile": "Ouvrir le fichier",
 
     "flash.mine.media.kind.image": "Image",
     "flash.mine.media.kind.video": "Vidéo",
@@ -599,11 +580,6 @@ export const messages = {
     "flash.mine.media.state.failed": "Échec de l'envoi",
     "flash.mine.media.unknown": "Fichier non identifié",
     "flash.mine.media.unavailable": "Métadonnées indisponibles",
-    "flash.mine.detailNoMedia": "Aucun fichier associé à ce Flash.",
-    "flash.mine.detailMediaPending":
-      "L'ouverture et l'aperçu des fichiers ne sont pas encore connectés.",
-    "flash.mine.detailInteractionsPending":
-      "Les interactions liées à ce Flash ne sont pas encore affichées dans cette fiche.",
     "flash.mine.period.older": "Plus anciens",
     "flash.mine.actionError": "Cette action n'a pas pu être effectuée. Réessayez.",
     "flash.mine.archive": "Archiver",
@@ -1416,18 +1392,6 @@ export const messages = {
     "flash.composer.description":
       "Say it in your own words. Flash will help organize your message.",
     "flash.composer.reviewTitle": "Review your Flash",
-    "flash.attachments.title": "Attachments",
-    "flash.attachments.description":
-      "Add files to your Flash. They will be kept on this device for now.",
-    "flash.attachments.add": "Add files",
-    "flash.attachments.remove": "Remove this file",
-    "flash.attachments.limitHint":
-      "Up to 3 files · 10 MB each · 20 MB total. Local storage only for now.",
-    "flash.attachments.error.unsupported_type": "This file type is not supported.",
-    "flash.attachments.error.empty_file": "This file is empty.",
-    "flash.attachments.error.file_too_large": "This file is larger than 10 MB.",
-    "flash.attachments.error.too_many_files": "You can attach up to 3 files.",
-    "flash.attachments.error.total_too_large": "The files exceed the 20 MB combined limit.",
 
     "flash.composer.reviewDescription":
       "Review the suggested details. You can adjust everything before saving your draft.",
@@ -1665,12 +1629,6 @@ export const messages = {
     "flash.mine.detailCreated": "Created",
     "flash.mine.detailExpires": "Expires",
     "flash.mine.detailArea": "Area",
-    "flash.mine.detailMedia": "Attached files",
-    "flash.mine.localMediaLoading": "Loading files saved on this device…",
-    "flash.mine.localMediaMissing":
-      "The linked files are not available on this device. Remote transfer is not available yet.",
-    "flash.mine.localOnly": "On this device",
-    "flash.mine.openLocalFile": "Open file",
 
     "flash.mine.media.kind.image": "Image",
     "flash.mine.media.kind.video": "Video",
@@ -1682,10 +1640,6 @@ export const messages = {
     "flash.mine.media.state.failed": "Upload failed",
     "flash.mine.media.unknown": "Unidentified file",
     "flash.mine.media.unavailable": "Metadata unavailable",
-    "flash.mine.detailNoMedia": "No files attached to this Flash.",
-    "flash.mine.detailMediaPending": "Opening and previewing files is not connected yet.",
-    "flash.mine.detailInteractionsPending":
-      "Interactions for this Flash are not shown in this details panel yet.",
     "flash.mine.period.older": "Older",
     "flash.mine.actionError": "That action could not be completed. Please try again.",
     "flash.mine.archive": "Archive",
