@@ -6,11 +6,9 @@ import { FlashDashboardEmptyState } from "./components/FlashDashboardEmptyState"
 import { FlashDashboardDateGroup } from "./components/FlashDashboardDateGroup";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n/useI18n";
-import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
-import { publishFlashCommunicationEvent } from "../../communication-events";
 import { flashesRepository, useLocalQuery } from "@/platform/offline";
-import { archiveFlash, deleteFlash, updateFlash } from "../../data";
 import { groupFlashByDate } from "./utils/groupFlashByDate";
+import { useFlashDashboardActions } from "./hooks/useFlashDashboardActions";
 
 type PendingDelete = FlashRecord | null;
 
@@ -23,15 +21,13 @@ export function FlashDashboard({
   onAccessAvailable?: (available: boolean) => void;
 }) {
   const { t, locale } = useI18n();
-  const communication = useCommunicationRuntime();
   const [pendingDelete, setPendingDelete] = useState<PendingDelete>(null);
   const [collapsedGroups, setCollapsedGroups] = useState<Record<string, boolean>>({
     week: true,
     lastWeek: true,
     older: true,
   });
-  const [busyId, setBusyId] = useState<string | null>(null);
-  const [actionError, setActionError] = useState(false);
+  const { busyId, actionError, archive, saveEdit, remove } = useFlashDashboardActions();
   const [userId, setUserId] = useState<string | null | undefined>(undefined);
 
   useEffect(() => {
@@ -72,50 +68,6 @@ export function FlashDashboard({
       .filter((flash) => flash.authorId === userId && !flash.deletedAt)
       .sort((a, b) => b.createdAt - a.createdAt);
   }, [userId]);
-
-  async function archive(record: FlashRecord) {
-    setBusyId(record.id);
-    setActionError(false);
-
-    try {
-      await archiveFlash(record.id);
-      publishFlashCommunicationEvent(communication, record, "archived");
-    } catch {
-      setActionError(true);
-    } finally {
-      setBusyId(null);
-    }
-  }
-
-  async function saveEdit(record: FlashRecord, body: string): Promise<boolean> {
-    setBusyId(record.id);
-    setActionError(false);
-    try {
-      const updated = await updateFlash(record.id, body);
-      publishFlashCommunicationEvent(communication, updated, "updated");
-      return true;
-    } catch {
-      setActionError(true);
-      return false;
-    } finally {
-      setBusyId(null);
-    }
-  }
-
-  async function remove(record: FlashRecord) {
-    setBusyId(record.id);
-    setActionError(false);
-
-    try {
-      await deleteFlash(record.id);
-      publishFlashCommunicationEvent(communication, record, "deleted");
-      setPendingDelete(null);
-    } catch {
-      setActionError(true);
-    } finally {
-      setBusyId(null);
-    }
-  }
 
   const groups = groupFlashByDate(records ?? []);
 
@@ -174,7 +126,11 @@ export function FlashDashboard({
           if (!open && !busyId) setPendingDelete(null);
         }}
         onConfirm={() => {
-          if (pendingDelete) void remove(pendingDelete);
+          if (pendingDelete) {
+            void remove(pendingDelete).then((success) => {
+              if (success) setPendingDelete(null);
+            });
+          }
         }}
       />
     </div>
