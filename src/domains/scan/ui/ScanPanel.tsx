@@ -6,7 +6,6 @@ import { ScanResults } from "./ScanResults";
 import { ScanNeedInterpretation } from "./ScanNeedInterpretation";
 import { ScanPreferences } from "./ScanPreferences";
 import { ScanHistory } from "./ScanHistory";
-
 /**
  * Scan entry UI. Flow coordination and state derivation live in useScanFlow.
  */
@@ -19,14 +18,18 @@ export function ScanPanel() {
   } = useScanFlow();
 
   return (
-    <div className="stack-5">
-      <div className="relative overflow-hidden rounded-[2rem] border border-border-soft bg-surface p-4 sm:p-6">
+    <div className="stack-4">
+      <section className="relative overflow-hidden rounded-[2rem] border border-border-soft bg-gradient-to-br from-surface via-surface to-primary/5 p-5 sm:p-7">
         <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-primary/10 blur-3xl" aria-hidden />
+        <div className="pointer-events-none absolute -bottom-16 -left-12 h-36 w-36 rounded-full bg-primary/5 blur-3xl" aria-hidden />
         <div className="relative stack-4">
-          <div className="flex items-center gap-2 text-sm font-medium text-primary">
-            <Compass className="h-4 w-4" aria-hidden />
-            <span>{t("scan.door.eyebrow")}</span>
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-primary/15 bg-primary/10 text-primary">
+              <Compass className="h-5 w-5" aria-hidden />
+            </div>
+            <span className="text-sm font-medium text-primary">{t("scan.door.eyebrow")}</span>
           </div>
+
           <div className="stack-1">
             <h2 className="text-fluid-display-sm font-semibold tracking-tight">{t("scan.door.title")}</h2>
             <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">{t("scan.door.desc")}</p>
@@ -44,8 +47,8 @@ export function ScanPanel() {
               maxLength={160}
               placeholder={t("scan.need.placeholder")}
               disabled={busy || locating}
-              rows={4}
-              className="min-h-32 w-full resize-none rounded-2xl border border-border bg-background/70 p-4 text-base leading-relaxed text-foreground placeholder:text-muted-foreground/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
+              rows={3}
+              className="min-h-28 w-full resize-none rounded-2xl border border-border bg-background/70 p-4 text-base leading-relaxed text-foreground placeholder:text-muted-foreground/80 transition-colors focus-visible:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
             />
           </label>
 
@@ -57,7 +60,7 @@ export function ScanPanel() {
               onClick={start}
               disabled={busy || locating || !needText.trim()}
               aria-busy={busy || locating}
-              className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-primary px-5 py-3 text-base font-semibold text-primary-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-55"
+              className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-primary px-5 py-3 text-base font-semibold text-primary-foreground shadow-sm shadow-primary/20 transition-all hover:shadow-md hover:shadow-primary/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-55 disabled:shadow-none"
             >
               {busy || locating ? (
                 <ScanLine className="h-5 w-5 animate-pulse" aria-hidden />
@@ -69,7 +72,7 @@ export function ScanPanel() {
             <p className="text-center text-xs leading-relaxed text-muted-foreground">{t("scan.door.privacy")}</p>
           </div>
         </div>
-      </div>
+      </section>
 
       <ScanPreferences
         radiusKm={radiusKm}
