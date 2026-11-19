@@ -34,13 +34,14 @@ export function assessScanCandidate(
   interpretation: ScanInterpretation,
   evidence?: ScanCandidateEvidence,
 ): ScanCandidateAssessment {
-  const safeEvidence: ScanCandidateEvidence = evidence ?? result.evidence ?? {
-    needMatch: "unknown",
-    confirmedRequiredCriteria: [],
-    refutedRequiredCriteria: [],
-    unknownRequiredCriteria: [...interpretation.requiredCriteria],
-    matchedPreferences: [],
-  };
+  const safeEvidence: ScanCandidateEvidence = evidence ?? result.evidence ??
+    {
+      needMatch: "unknown",
+      confirmedRequiredCriteria: [],
+      refutedRequiredCriteria: [],
+      unknownRequiredCriteria: [...interpretation.requiredCriteria],
+      matchedPreferences: [],
+    };
   const required = new Set(interpretation.requiredCriteria);
   const confirmed = new Set(safeEvidence.confirmedRequiredCriteria);
   const refuted = new Set(safeEvidence.refutedRequiredCriteria);
