@@ -1,4 +1,4 @@
-import type { ScanLocationError } from "./useScanLocation";
+import type { ScanLocationError } from "../hooks/useScanLocation";
 
 export type ScanStatus =
   | "idle"
