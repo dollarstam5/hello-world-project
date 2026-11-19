@@ -83,15 +83,11 @@ const PREFERENCE_PATTERNS: readonly RegExp[] = [
 ];
 const PREFERENCE_CONTEXT_PATTERN =
   /\b(?:de preference|si possible|idealement)\b.{0,45}\b(?:pres de|a cote de|autour de) [a-z0-9]+(?: [a-z0-9]+){0,3}\b/;
-const AVAILABLE_NOW_PATTERN =
-  /\b(?:ouvert|disponible) maintenant\b/g;
+const AVAILABLE_NOW_PATTERN = /\b(?:ouvert|disponible) maintenant\b/g;
 const TIME_PATTERN =
   /\b(dans (?:[0-9]+|un|une|deux|trois|quatre|cinq|six|sept|huit|neuf|dix) (?:minutes?|heures?|jours?)|dans [0-9]+ ?h|maintenant|tout de suite|aujourd hui|ce soir|cet apres midi|demain matin|demain|cette semaine|ce week end|avant [0-9]+ ?h|avant [0-9]+ heures?)\b/;
-const IMMEDIATE_PATTERN =
-  /\b(urgent|maintenant|tout de suite|immediatement|asap)\b/;
-const SOON_PATTERN =
-  /\b(dans (?:[0-9]+|un|une|deux|trois|quatre|cinq|six|sept|huit|neuf|dix) (?:minutes?|heures?|jours?)|dans [0-9]+ ?h|aujourd hui|ce soir|cet apres midi|demain)\b/;
-
+const IMMEDIATE_PATTERN = /\b(urgent|maintenant|tout de suite|immediatement|asap)\b/;
+const SOON_PATTERN = /\b(dans (?:[0-9]+|un|une|deux|trois|quatre|cinq|six|sept|huit|neuf|dix) (?:minutes?|heures?|jours?)|dans [0-9]+ ?h|aujourd hui|ce soir|cet apres midi|demain)\b/;
 
 const TASK_PATTERN =
   /\b(demenager|deplacement|deplacer|reparer|depanner|transporter|emmener|conduire|acheter|trouver|livrer|installer|nettoyer|cuisiner|apprendre|chercher|porter)\b/g;
