@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { FlashRecord } from "@eco/core-contracts";
+import { resolveFlashStatus } from "@eco/core-logic";
 import { Surface } from "@/components/app/Surface";
 import { FlashDashboardDeleteDialog } from "./components/FlashDashboardDeleteDialog";
 import { FlashDashboardEmptyState } from "./components/FlashDashboardEmptyState";
@@ -173,6 +174,13 @@ export function FlashDashboard({
     }))
     .filter((group) => group.items.length > 0);
 
+  const statusGroups = [
+    { key: "live", label: "flash.mine.status.live" },
+    { key: "draft", label: "flash.mine.status.draft" },
+    { key: "expired", label: "flash.mine.status.expired" },
+    { key: "archived", label: "flash.mine.status.archived" },
+  ] as const;
+
   if (userId === undefined || records === undefined) {
     return (
       <p className="text-sm text-muted-foreground" role="status">
@@ -207,17 +215,33 @@ export function FlashDashboard({
             {t(group.label)} ({group.items.length})
           </h3>
           <div className="stack-3">
-            {group.items.map((record) => (
-              <FlashDashboardRecordCard
-                key={record.id}
-                record={record}
-                locale={locale}
-                busyId={busyId}
-                onArchive={archive}
-                onSave={saveEdit}
-                onDelete={setPendingDelete}
-              />
-            ))}
+            {statusGroups.map((statusGroup) => {
+              const statusItems = group.items.filter(
+                (record) => resolveFlashStatus(record) === statusGroup.key,
+              );
+              if (statusItems.length === 0) return null;
+
+              return (
+                <div key={statusGroup.key} className="stack-2">
+                  <h4 className="text-xs font-medium text-foreground/80">
+                    {t(statusGroup.label)} ({statusItems.length})
+                  </h4>
+                  <div className="stack-3">
+                    {statusItems.map((record) => (
+                      <FlashDashboardRecordCard
+                        key={record.id}
+                        record={record}
+                        locale={locale}
+                        busyId={busyId}
+                        onArchive={archive}
+                        onSave={saveEdit}
+                        onDelete={setPendingDelete}
+                      />
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </section>
       ))}
