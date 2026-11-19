@@ -40,6 +40,7 @@ jobs:
         run: >-
           bunx eslint
           src/domains/flash/ui/MyFlashManagement.tsx
+          src/domains/flash/ui/FlashExperienceScreen.tsx
           src/domains/flash/ui/FlashAttachmentPreview.tsx
           src/domains/flash/ui/FlashComposerReviewStep.tsx
           src/domains/flash/ui/useFlashComposer.ts
