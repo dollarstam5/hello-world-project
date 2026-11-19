@@ -122,10 +122,7 @@ export function RadarDraftForm({
               {t("common.cancel")}
             </Button>
           ) : null}
-          <Button
-            type="submit"
-            disabled={busy || query.trim().length < 3}
-          >
+          <Button type="submit" disabled={busy || query.trim().length < 3}>
             {busy
               ? t("app.loading")
               : t(editingId ? "radar.manage.edit.action" : "radar.manage.create.action")}
