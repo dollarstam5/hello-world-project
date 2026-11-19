@@ -12,7 +12,7 @@ type Props = {
   locale: string;
   busyId: string | null;
   onArchive: (record: FlashRecord) => void;
-  onSave: (record: FlashRecord, body: string) => void;
+  onSave: (record: FlashRecord, body: string) => Promise<boolean>;
   onDelete: (record: FlashRecord) => void;
 };
 
@@ -68,7 +68,9 @@ export function FlashDashboardRecordCard({
                   type="button"
                   size="sm"
                   disabled={busy || !draft.trim()}
-                  onClick={() => onSave(record, draft)}
+                  onClick={async () => {
+                    if (await onSave(record, draft)) setEditing(false);
+                  }}
                 >
                   {t("common.save")}
                 </Button>
