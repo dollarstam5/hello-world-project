@@ -34,7 +34,10 @@ function safeFileName(name: string): string {
   return name.replace(/[\\/\\0-\\x1f\\x7f]/g, "_").slice(0, 180) || "attachment";
 }
 
-export async function storeLocalFlashAttachment(file: File, flashId: string | null = null): Promise<LocalMediaBlob> {
+export async function storeLocalFlashAttachment(
+  file: File,
+  flashId: string | null = null,
+): Promise<LocalMediaBlob> {
   const error = validateFlashAttachment(file);
   if (error) throw new Error(error);
   const ownerId = requireLocalDataOwnerId();
@@ -61,12 +64,18 @@ export async function storeLocalFlashAttachment(file: File, flashId: string | nu
 
 export async function getLocalFlashAttachment(id: string): Promise<LocalMediaBlob | undefined> {
   const ownerId = requireLocalDataOwnerId();
-  return await getDb().mediaBlobs.get(id).then((row) => row?.ownerId === ownerId ? row : undefined);
+  return await getDb()
+    .mediaBlobs.get(id)
+    .then((row) => (row?.ownerId === ownerId ? row : undefined));
 }
 
 export async function listLocalFlashAttachments(flashId: string): Promise<LocalMediaBlob[]> {
   const ownerId = requireLocalDataOwnerId();
-  return await getDb().mediaBlobs.where("flashId").equals(flashId).filter((row) => row.ownerId === ownerId).toArray();
+  return await getDb()
+    .mediaBlobs.where("flashId")
+    .equals(flashId)
+    .filter((row) => row.ownerId === ownerId)
+    .toArray();
 }
 
 export async function attachLocalFlashMedia(ids: string[], flashId: string): Promise<void> {
@@ -90,6 +99,10 @@ export async function deleteLocalFlashAttachment(id: string): Promise<void> {
 export async function deleteLocalFlashAttachments(flashId: string): Promise<void> {
   const ownerId = requireLocalDataOwnerId();
   const db = getDb();
-  const rows = await db.mediaBlobs.where("flashId").equals(flashId).filter((row) => row.ownerId === ownerId).toArray();
+  const rows = await db.mediaBlobs
+    .where("flashId")
+    .equals(flashId)
+    .filter((row) => row.ownerId === ownerId)
+    .toArray();
   await db.mediaBlobs.bulkDelete(rows.map((row) => row.id));
 }
