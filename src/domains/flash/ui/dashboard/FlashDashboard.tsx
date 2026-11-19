@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import type { FlashRecord } from "@eco/core-contracts";
-import { resolveFlashStatus } from "@eco/core-logic";
 import { Surface } from "@/components/app/Surface";
 import { FlashDashboardDeleteDialog } from "./components/FlashDashboardDeleteDialog";
 import { FlashDashboardEmptyState } from "./components/FlashDashboardEmptyState";
-import { FlashDashboardRecordCard } from "./components/FlashDashboardRecordCard";
+import { FlashDashboardDateGroup } from "./components/FlashDashboardDateGroup";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
@@ -120,13 +119,6 @@ export function FlashDashboard({
 
   const groups = groupFlashByDate(records ?? []);
 
-  const statusGroups = [
-    { key: "live", label: "flash.mine.status.live" },
-    { key: "draft", label: "flash.mine.status.draft" },
-    { key: "expired", label: "flash.mine.status.expired" },
-    { key: "archived", label: "flash.mine.status.archived" },
-  ] as const;
-
   if (userId === undefined || records === undefined) {
     return (
       <p className="text-sm text-muted-foreground" role="status">
@@ -160,72 +152,21 @@ export function FlashDashboard({
         </p>
       ) : null}
 
-      {groups.map((group) => {
-        const collapsed = Boolean(collapsedGroups[group.key]);
-        return (
-          <section key={group.key} className="stack-3">
-            <h3 className="border-b border-border-soft pb-2">
-              <button
-                type="button"
-                aria-expanded={!collapsed}
-                aria-controls={`flash-timeline-${group.key}`}
-                onClick={() =>
-                  setCollapsedGroups((previous) => ({
-                    ...previous,
-                    [group.key]: !previous[group.key],
-                  }))
-                }
-                className="flex w-full items-center justify-between gap-3 text-left text-sm font-semibold"
-              >
-                <span className="flex min-w-0 items-center gap-2">
-                  <span>{t(group.label)}</span>
-                  <span className="rounded-full bg-muted px-2 py-0.5 text-xs tabular-nums text-muted-foreground">
-                    {group.items.length}
-                  </span>
-                </span>
-                <span
-                  aria-hidden="true"
-                  className={`shrink-0 text-muted-foreground transition-transform ${collapsed ? "" : "rotate-180"}`}
-                >
-                  ▾
-                </span>
-              </button>
-            </h3>
-            <div id={`flash-timeline-${group.key}`} hidden={collapsed} className="stack-3">
-              {statusGroups.map((statusGroup) => {
-                const statusItems = group.items.filter(
-                  (record) => resolveFlashStatus(record) === statusGroup.key,
-                );
-                if (statusItems.length === 0) return null;
-
-                return (
-                  <div key={statusGroup.key} className="stack-2">
-                    <h4 className="flex items-center justify-between gap-2 text-xs font-medium text-foreground/80">
-                      <span>{t(statusGroup.label)}</span>
-                      <span className="text-[11px] tabular-nums text-muted-foreground">
-                        {statusItems.length}
-                      </span>
-                    </h4>
-                    <div className="stack-2">
-                      {statusItems.map((record) => (
-                        <FlashDashboardRecordCard
-                          key={record.id}
-                          record={record}
-                          locale={locale}
-                          busyId={busyId}
-                          onArchive={archive}
-                          onSave={saveEdit}
-                          onDelete={setPendingDelete}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-        );
-      })}
+      {groups.map((group) => (
+        <FlashDashboardDateGroup
+          key={group.key}
+          group={group}
+          collapsed={Boolean(collapsedGroups[group.key])}
+          onToggle={(key) =>
+            setCollapsedGroups((previous) => ({ ...previous, [key]: !previous[key] }))
+          }
+          locale={locale}
+          busyId={busyId}
+          onArchive={archive}
+          onSave={saveEdit}
+          onDelete={setPendingDelete}
+        />
+      ))}
       <FlashDashboardDeleteDialog
         open={pendingDelete !== null}
         busy={busyId !== null}
