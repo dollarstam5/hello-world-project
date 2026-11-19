@@ -18,8 +18,8 @@ describe("Flash dashboard timeline grouping", () => {
       record("yesterday", localDay(2026, 10, 21)),
       record("twoDays", localDay(2026, 10, 20)),
       record("thisWeek", localDay(2026, 10, 21 - 3)),
-      record("lastWeek", localDay(2026, 10, 16)),
-      record("older", localDay(2026, 10, 9)),
+      record("lastWeek", localDay(2026, 10, 9)),
+      record("older", localDay(2026, 10, 2)),
     ];
 
     const groups = groupFlashByDate(rows, now);
@@ -50,7 +50,7 @@ describe("Flash dashboard timeline grouping", () => {
     const rows = [
       record("monday", now),
       record("sunday", localDay(2026, 10, 22)),
-      record("previous-monday", localDay(2026, 10, 16)),
+      record("previous-monday", localDay(2026, 10, 9)),
     ];
 
     const groups = groupFlashByDate(rows, now);
@@ -65,8 +65,8 @@ describe("Flash dashboard timeline grouping", () => {
   it("handles month/year rollover and sorts items newest-first inside a bucket", () => {
     const now = localDay(2026, 0, 1);
     const rows = [
-      record("later", localDay(2025, 11, 31, 18)),
-      record("earlier", localDay(2025, 11, 31, 8)),
+      record("later", localDay(2025, 11, 28, 18)),
+      record("earlier", localDay(2025, 11, 28, 8)),
       record("old", localDay(2025, 11, 20)),
     ];
 
