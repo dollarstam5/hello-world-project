@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import type { ScanQuery, ScanResult } from "@eco/core-contracts";
+import type { ScanCandidateAssessment, ScanQuery, ScanResult } from "@eco/core-contracts";
 import { buildScanSourceEvidence, interpretScanRequest, selectScanResults } from "@eco/core-logic";
 import { scanNearby } from "../api/scan.functions";
 import { subscribeToFlashChanges } from "../services/scan-realtime.service";
@@ -17,6 +17,7 @@ export function useScan() {
   const queryRef = useRef<ScanQuery | undefined>(undefined);
   const inFlightRef = useRef(false);
   const [rows, setRows] = useState<ScanResult[]>([]);
+  const [assessments, setAssessments] = useState<ScanCandidateAssessment[]>([]);
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);
   const [history, setHistory] = useState<ScanHistoryEntry[]>([]);
@@ -47,6 +48,7 @@ export function useScan() {
           (assessment) => assessment.result,
         );
         setRows(nextRows);
+        setAssessments(selectScanResults(evidencedRows, interpretation));
         if (options.recordHistory !== false) {
           setHistory(recordScanHistory(nextRows.length));
         }
@@ -74,5 +76,5 @@ export function useScan() {
     setHistory([]);
   }, []);
 
-  return { rows, busy, failed, execute, history, clearHistory };
+  return { rows, assessments, busy, failed, execute, history, clearHistory };
 }
