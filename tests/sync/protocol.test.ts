@@ -38,12 +38,7 @@ const cursors = [
 
 describe("sync protocol validation", () => {
   it("keeps the stable Flash scope identifiers mapped to the approved meter radii", () => {
-    expect(FLASH_SCOPES).toEqual([
-      "current_area",
-      "expanded_area",
-      "half_city",
-      "whole_city",
-    ]);
+    expect(FLASH_SCOPES).toEqual(["current_area", "expanded_area", "half_city", "whole_city"]);
     expect(FLASH_SCOPE_RADIUS_METERS).toEqual({
       current_area: 500,
       expanded_area: 2_000,
@@ -141,19 +136,21 @@ describe("sync protocol validation", () => {
   it("accepts Flash draft creation without optional scope and urgency", () => {
     const created = validatePushRequest({
       protocolVersion: SYNC_PROTOCOL_VERSION,
-      entries: [{
-        ...mutation,
-        kind: "create",
-        patch: {
+      entries: [
+        {
+          ...mutation,
+          kind: "create",
+          patch: {
           title: "Besoin de transport",
           body: "Un trajet local",
           expiresAt: 1_900_000_000_000,
           mediaIds: [],
           kind: "need",
           category: "transport",
-          timeSlot: "today",
+            timeSlot: "today",
+          },
         },
-      }],
+      ],
     });
     expect(created.entries[0].patch).not.toHaveProperty("scope");
     expect(created.entries[0].patch).not.toHaveProperty("urgency");
@@ -162,11 +159,12 @@ describe("sync protocol validation", () => {
   it("accepts Radar draft creation without an area label", () => {
     const created = validatePushRequest({
       protocolVersion: SYNC_PROTOCOL_VERSION,
-      entries: [{
-        ...mutation,
-        table: "radars",
-        kind: "create",
-        patch: {
+      entries: [
+        {
+          ...mutation,
+          table: "radars",
+          kind: "create",
+          patch: {
           title: "Trouver un répétiteur",
           query: "Je cherche un répétiteur de mathématiques",
           category: "education",
@@ -174,9 +172,10 @@ describe("sync protocol validation", () => {
           radiusKm: 10,
           startsAt: 1_700_000_000_000,
           expiresAt: 1_700_000_000_000 + 10 * 24 * 60 * 60 * 1000,
-          status: "draft",
+            status: "draft",
+          },
         },
-      }],
+      ],
     });
     expect(created.entries[0].patch.areaLabel).toBeNull();
   });
