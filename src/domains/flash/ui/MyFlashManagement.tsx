@@ -234,26 +234,26 @@ export function MyFlashManagement({
           <div className="grid gap-3 border-t border-border pt-4 sm:grid-cols-3">
             <div className="rounded-xl bg-card/70 p-3">
               <p className="text-sm font-semibold">{t("flash.mine.empty.step1Title")}</p>
-              <p className="mt-1 text-xs leading-relaxed text-muted-foreground>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
                 {t("flash.mine.empty.step1Body")}
               </p>
             </div>
             <div className="rounded-xl bg-card/70 p-3">
               <p className="text-sm font-semibold">{t("flash.mine.empty.step2Title")}</p>
-              <p className="mt-1 text-xs leading-relaxed text-muted-foreground>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
                 {t("flash.mine.empty.step2Body")}
               </p>
             </div>
             <div className="rounded-xl bg-card/70 p-3">
               <p className="text-sm font-semibold">{t("flash.mine.empty.step3Title")}</p>
-              <p className="mt-1 text-xs leading-relaxed text-muted-foreground>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
                 {t("flash.mine.empty.step3Body")}
               </p>
             </div>
           </div>
           <div className="mt-3 rounded-xl border border-dashed border-border p-3">
             <p className="text-sm font-medium">{t("flash.mine.empty.statusGuideTitle")}</p>
-            <p className="mt-1 text-xs leading-relaxed text-muted-foreground>
+            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
               {t("flash.mine.empty.statusGuideBody")}
             </p>
           </div>
