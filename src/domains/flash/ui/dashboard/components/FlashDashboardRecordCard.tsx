@@ -168,7 +168,6 @@ export function FlashDashboardRecordCard({
         open={detailsOpen}
         onOpenChange={setDetailsOpen}
       />
-
     </Surface>
   );
 }
