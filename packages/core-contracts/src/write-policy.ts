@@ -144,5 +144,7 @@ export function filterClientWritablePatch(
 ): Record<string, unknown> {
   const allowed = new Set<string>(clientWritableFields(table));
 
-  return Object.fromEntries(Object.entries(patch).filter(([field]) => allowed.has(field)));
+  return Object.fromEntries(
+    Object.entries(patch).filter(([field, value]) => allowed.has(field) && value !== undefined),
+  );
 }
