@@ -320,6 +320,17 @@ export const messages = {
     "flash.composer.description":
       "Expliquez-le avec vos mots. Flash vous aide à organiser votre message.",
     "flash.composer.reviewTitle": "Vérifiez votre Flash",
+    "flash.attachments.title": "Pièces jointes",
+    "flash.attachments.description": "Ajoutez des fichiers à votre Flash. Ils seront conservés sur cet appareil pour le moment.",
+    "flash.attachments.add": "Ajouter des fichiers",
+    "flash.attachments.remove": "Retirer ce fichier",
+    "flash.attachments.limitHint": "3 fichiers maximum · 10 Mo chacun · 20 Mo au total. Stockage local uniquement pour le moment.",
+    "flash.attachments.error.unsupported_type": "Ce format de fichier n'est pas accepté.",
+    "flash.attachments.error.empty_file": "Ce fichier est vide.",
+    "flash.attachments.error.file_too_large": "Ce fichier dépasse 10 Mo.",
+    "flash.attachments.error.too_many_files": "Vous pouvez joindre jusqu'à 3 fichiers.",
+    "flash.attachments.error.total_too_large": "Les fichiers dépassent ensemble la limite de 20 Mo.",
+
     "flash.composer.reviewDescription":
       "Vérifiez les informations proposées. Vous pouvez tout ajuster avant d’enregistrer le brouillon.",
     "flash.composer.yourMessage": "Votre message",
@@ -1387,6 +1398,17 @@ export const messages = {
     "flash.composer.description":
       "Say it in your own words. Flash will help organize your message.",
     "flash.composer.reviewTitle": "Review your Flash",
+    "flash.attachments.title": "Attachments",
+    "flash.attachments.description": "Add files to your Flash. They will be kept on this device for now.",
+    "flash.attachments.add": "Add files",
+    "flash.attachments.remove": "Remove this file",
+    "flash.attachments.limitHint": "Up to 3 files · 10 MB each · 20 MB total. Local storage only for now.",
+    "flash.attachments.error.unsupported_type": "This file type is not supported.",
+    "flash.attachments.error.empty_file": "This file is empty.",
+    "flash.attachments.error.file_too_large": "This file is larger than 10 MB.",
+    "flash.attachments.error.too_many_files": "You can attach up to 3 files.",
+    "flash.attachments.error.total_too_large": "The files exceed the 20 MB combined limit.",
+
     "flash.composer.reviewDescription":
       "Review the suggested details. You can adjust everything before saving your draft.",
     "flash.composer.yourMessage": "Your message",
