@@ -51,3 +51,13 @@ Les fichiers doivent être effectivement persistés et récupérés après recha
 - La suppression d'un Flash tente de supprimer les blobs locaux associés; si le nettoyage échoue, la suppression du Flash reste réussie et les blobs orphelins nécessiteront un nettoyage ultérieur.
 - Le message UI précise que les fichiers sont conservés sur l'appareil. Aucun transfert cloud n'est encore implémenté.
 - Les tests CI doivent être observés avant de déclarer le lot stable. Les contrôles client MIME ne garantissent pas l'authenticité du contenu; le serveur devra revalider type réel et permissions avant upload.
+
+## Validation du lot local
+
+**Validation dédiée réussie sur le commit `a1db6dec9e1eaa32dcab3a0bc33d6f4b46e94da` (2026-11-19) :
+- ESLint ciblé des fichiers Flash/media : réussi.
+- Tests de validation MIME et limites : réussis.
+- Build production : réussi.
+- Scan Validation : réussi.
+- Dependency Review : réussi.
+- Quality global : échoue encore avant les tests globaux, à l'étape `Verify foundation and secrets`. Cela n'annule pas les résultats du workflow dédié, mais ne valide pas l'ensemble du dépôt.
