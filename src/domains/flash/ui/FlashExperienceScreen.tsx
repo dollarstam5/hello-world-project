@@ -141,7 +141,7 @@ export function FlashExperienceScreen() {
           </div>
         ) : null}
         <div hidden={tab !== "mine" || !dashboardUnlocked}>
-          {dashboardUnlocked ? <MyFlashManagement onCreateFlash={composer.openComposer} onAccessAvailable={setDashboardUnlocked} /> : null}
+          <MyFlashManagement onCreateFlash={composer.openComposer} onAccessAvailable={setDashboardUnlocked} />
         </div>
       </div>
 
