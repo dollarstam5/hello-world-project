@@ -89,7 +89,7 @@ export function FlashDashboardRecordCard({
           type="button"
           size="sm"
           variant="ghost"
-          className="min-h-9 h-9 px-2 text-xs [&_svg]:size-4"
+          className="min-h-11 h-11 px-2 text-xs [&_svg]:size-4"
           disabled={card.busy}
           onClick={() => card.setDetailsOpen(true)}
         >
@@ -102,7 +102,7 @@ export function FlashDashboardRecordCard({
               type="button"
               size="sm"
               variant="ghost"
-              className="min-h-9 h-9 px-2 [&_svg]:size-4"
+              className="min-h-11 h-11 px-2 [&_svg]:size-4"
               aria-label={t("flash.mine.edit")}
               title={t("flash.mine.edit")}
               disabled={card.busy || !card.canEdit}
@@ -131,7 +131,7 @@ export function FlashDashboardRecordCard({
             type="button"
             size="sm"
             variant="ghost"
-            className="min-h-9 h-9 px-2 text-muted-foreground [&_svg]:size-4"
+            className="min-h-11 h-11 px-2 text-muted-foreground [&_svg]:size-4"
             aria-label={t("flash.mine.delete")}
             title={t("flash.mine.delete")}
             disabled={card.busy || card.editing}
