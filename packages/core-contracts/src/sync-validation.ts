@@ -194,8 +194,6 @@ function validateField(table: SyncedTable, field: string, value: unknown): unkno
       return enumValue(value, ["draft", "live", "expired", "archived"], label);
     case "flashes.expiresAt":
       return nullableInteger(value, label);
-    case "flashes.mediaIds":
-      return stringArray(value, label, true);
     case "missions.title":
       return string(value, label, { min: 1, max: 160 });
     case "missions.brief":
@@ -308,7 +306,7 @@ export function validateMutationPatch(
   if (kind === "create") {
     if (!CLIENT_WRITE_POLICY[table].create) fail(`Creation is not allowed for ${table}.`);
     const required: Partial<Record<SyncedTable, readonly string[]>> = {
-      flashes: ["title", "body", "kind", "category", "timeSlot", "expiresAt", "mediaIds"],
+      flashes: ["title", "body", "kind", "category", "timeSlot", "expiresAt"],
       missions: [
         "title",
         "brief",
