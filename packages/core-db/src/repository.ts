@@ -1,6 +1,6 @@
 import type { Table } from "dexie";
 import type { BaseRecord, SyncedTable } from "@eco/core-contracts";
-import { CLIENT_WRITE_POLICY, clientWritableFields, newId, protectedClientFields } from "@eco/core-contracts";
+import { CLIENT_WRITE_POLICY, filterClientWritablePatch, newId, protectedClientFields } from "@eco/core-contracts";
 import { changedFields, stampCreate, stampDelete, stampUpdate } from "@eco/core-logic";
 import { enqueueMutation } from "./outbox";
 import { getDb, type EcosystemDatabase } from "./schema";
@@ -49,10 +49,9 @@ export function createRepository<T extends BaseRecord>(name: SyncedTable): Repos
       // Local records contain metadata and protected state (e.g. Flash status=draft).
       // Only client-writable fields travel in the generic create mutation; server
       // defaults/ownership and protected lifecycle state must not be client-supplied.
-      const writableFields = new Set(clientWritableFields(name));
-      const patch = Object.fromEntries(
-        Object.entries(record as unknown as Record<string, unknown>)
-          .filter(([field]) => writableFields.has(field)),
+      const patch = filterClientWritablePatch(
+        name,
+        record as unknown as Record<string, unknown>,
       );
       await db.transaction("rw", dexieTable(), db.outbox, async () => {
         await dexieTable().put(record);
