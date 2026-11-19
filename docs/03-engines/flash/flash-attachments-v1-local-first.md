@@ -41,3 +41,13 @@ Les fichiers doivent être effectivement persistés et récupérés après recha
 - Les limites actuelles du service : 3 fichiers, 10 MiB par fichier, 20 MiB par Flash; MIME autorisés explicitement, SVG/HTML/archive/octet-stream refusés.
 - Les tests ciblés couvrent la validation MIME, fichiers vides, taille maximale et types non supportés.
 - **À ce stade, la sélection dans le composer, l'association transactionnelle avec la création Flash, l'aperçu dans le dashboard et le nettoyage de blobs ne sont pas encore connectés.** Ce service seul ne constitue pas encore un circuit fonctionnel utilisateur.
+
+## Avancement — circuit composer/dashboard connecté (validation en attente)
+
+- La sélection des fichiers est intégrée à l'étape de revue du composer.
+- Les fichiers sont contrôlés par MIME déclaré et taille (contrôle client, non substitut à une validation serveur), avec limite 3 fichiers, 10 MiB chacun, 20 MiB cumulés.
+- Le composer persiste les blobs après création du brouillon, associe leurs IDs au Flash, et tente de supprimer le brouillon et ses blobs en cas d'échec de cette séquence.
+- Le dashboard récupère les blobs locaux par Flash et affiche un aperçu image, contrôles vidéo/audio ou lien d'ouverture/téléchargement local. Les URLs d'objet sont révoquées au démontage/actualisation.
+- La suppression d'un Flash tente de supprimer les blobs locaux associés; si le nettoyage échoue, la suppression du Flash reste réussie et les blobs orphelins nécessiteront un nettoyage ultérieur.
+- Le message UI précise que les fichiers sont conservés sur l'appareil. Aucun transfert cloud n'est encore implémenté.
+- Les tests CI doivent être observés avant de déclarer le lot stable. Les contrôles client MIME ne garantissent pas l'authenticité du contenu; le serveur devra revalider type réel et permissions avant upload.
