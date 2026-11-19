@@ -332,7 +332,8 @@ export const messages = {
     "flash.attachments.error.empty_file": "Ce fichier est vide.",
     "flash.attachments.error.file_too_large": "Ce fichier dépasse 10 Mo.",
     "flash.attachments.error.too_many_files": "Vous pouvez joindre jusqu'à 3 fichiers.",
-    "flash.attachments.error.total_too_large": "Les fichiers dépassent ensemble la limite de 20 Mo.",
+    "flash.attachments.error.total_too_large":
+      "Les fichiers dépassent ensemble la limite de 20 Mo.",
 
     "flash.composer.reviewDescription":
       "Vérifiez les informations proposées. Vous pouvez tout ajuster avant d’enregistrer le brouillon.",
@@ -555,7 +556,8 @@ export const messages = {
       "Cet espace est votre carnet de Flash. Dès que vous en créez un, il apparaît ici, rangé par date et avec son état. Vous pourrez l’ouvrir pour retrouver son contenu et gérer ce qui est disponible.",
     "flash.mine.empty.action": "Créer mon premier Flash",
     "flash.mine.empty.step1Title": "1. Écrivez simplement",
-    "flash.mine.empty.step1Body": "Expliquez votre besoin ou ce que vous proposez avec vos propres mots.",
+    "flash.mine.empty.step1Body":
+      "Expliquez votre besoin ou ce que vous proposez avec vos propres mots.",
     "flash.mine.empty.step2Title": "2. Vérifiez avant d’enregistrer",
     "flash.mine.empty.step2Body":
       "Relisez votre Flash et ajustez les informations. Vous pouvez garder un brouillon.",
@@ -598,8 +600,10 @@ export const messages = {
     "flash.mine.media.unknown": "Fichier non identifié",
     "flash.mine.media.unavailable": "Métadonnées indisponibles",
     "flash.mine.detailNoMedia": "Aucun fichier associé à ce Flash.",
-    "flash.mine.detailMediaPending": "L'ouverture et l'aperçu des fichiers ne sont pas encore connectés.",
-    "flash.mine.detailInteractionsPending": "Les interactions liées à ce Flash ne sont pas encore affichées dans cette fiche.",
+    "flash.mine.detailMediaPending":
+      "L'ouverture et l'aperçu des fichiers ne sont pas encore connectés.",
+    "flash.mine.detailInteractionsPending":
+      "Les interactions liées à ce Flash ne sont pas encore affichées dans cette fiche.",
     "flash.mine.period.older": "Plus anciens",
     "flash.mine.actionError": "Cette action n'a pas pu être effectuée. Réessayez.",
     "flash.mine.archive": "Archiver",
@@ -1421,7 +1425,8 @@ export const messages = {
     "flash.attachments.error.empty_file": "This file is empty.",
     "flash.attachments.error.file_too_large": "This file is larger than 10 MB.",
     "flash.attachments.error.too_many_files": "You can attach up to 3 files.",
-    "flash.attachments.error.total_too_large": "The files exceed the 20 MB combined limit.",
+    "flash.attachments.error.total_too_large":
+      "The files exceed the 20 MB combined limit.",
 
     "flash.composer.reviewDescription":
       "Review the suggested details. You can adjust everything before saving your draft.",
@@ -1635,9 +1640,11 @@ export const messages = {
       "This is your Flash space. When you create one, it appears here, grouped by date and status. Open it to review its content and manage the actions that are available.",
     "flash.mine.empty.action": "Create my first Flash",
     "flash.mine.empty.step1Title": "1. Write naturally",
-    "flash.mine.empty.step1Body": "Describe what you need or what you can offer in your own words.",
+    "flash.mine.empty.step1Body":
+      "Describe what you need or what you can offer in your own words.",
     "flash.mine.empty.step2Title": "2. Review before saving",
-    "flash.mine.empty.step2Body": "Check your Flash and adjust the details. You can keep a draft.",
+    "flash.mine.empty.step2Body":
+      "Check your Flash and adjust the details. You can keep a draft.",
     "flash.mine.empty.step3Title": "3. Find it here",
     "flash.mine.empty.step3Body":
       "Your Flash posts will be grouped by date. Open each one to view details and manage available actions.",
@@ -1677,8 +1684,10 @@ export const messages = {
     "flash.mine.media.unknown": "Unidentified file",
     "flash.mine.media.unavailable": "Metadata unavailable",
     "flash.mine.detailNoMedia": "No files attached to this Flash.",
-    "flash.mine.detailMediaPending": "Opening and previewing files is not connected yet.",
-    "flash.mine.detailInteractionsPending": "Interactions for this Flash are not shown in this details panel yet.",
+    "flash.mine.detailMediaPending":
+      "Opening and previewing files is not connected yet.",
+    "flash.mine.detailInteractionsPending":
+      "Interactions for this Flash are not shown in this details panel yet.",
     "flash.mine.period.older": "Older",
     "flash.mine.actionError": "That action could not be completed. Please try again.",
     "flash.mine.archive": "Archive",
