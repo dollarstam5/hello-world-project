@@ -540,6 +540,11 @@ export const messages = {
       "Les Flash associés à votre compte apparaîtront ici lorsqu’ils seront disponibles sur cet appareil.",
     "flash.mine.localHint":
       "Cette liste reprend les Flash de votre compte disponibles sur cet appareil. Les changements en attente seront synchronisés au retour du réseau.",
+    "flash.mine.period.today": "Aujourd’hui",
+    "flash.mine.period.yesterday": "Hier",
+    "flash.mine.period.twoDays": "Il y a 2 jours",
+    "flash.mine.period.week": "Cette semaine",
+    "flash.mine.period.older": "Plus anciens",
     "flash.mine.actionError": "Cette action n'a pas pu être effectuée. Réessayez.",
     "flash.mine.archive": "Archiver",
     "flash.mine.edit": "Modifier",
@@ -1561,6 +1566,11 @@ export const messages = {
       "Flash posts linked to your account will appear here when they are available on this device.",
     "flash.mine.localHint":
       "This list shows your account Flash posts available on this device. Pending changes will sync when the connection returns.",
+    "flash.mine.period.today": "Today",
+    "flash.mine.period.yesterday": "Yesterday",
+    "flash.mine.period.twoDays": "2 days ago",
+    "flash.mine.period.week": "This week",
+    "flash.mine.period.older": "Older",
     "flash.mine.actionError": "That action could not be completed. Please try again.",
     "flash.mine.archive": "Archive",
     "flash.mine.edit": "Edit",
