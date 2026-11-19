@@ -1,12 +1,13 @@
 import { SlidersHorizontal } from "lucide-react";
 import type { ScanRadiusKm } from "../hooks/useScanPreferences";
+import type { MessageKey } from "@/lib/i18n/messages";
 
 type ScanPreferencesProps = {
   radiusKm: ScanRadiusKm;
   availableRadii: readonly ScanRadiusKm[];
   disabled: boolean;
   onRadiusChange: (radius: ScanRadiusKm) => void;
-  t: (key: string) => string;
+  t: (key: MessageKey) => string;
 };
 
 export function ScanPreferences({
