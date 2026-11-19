@@ -25,7 +25,6 @@ export function rankScanResults(results: ScanResult[], now = Date.now()): ScanRe
   return [...results].sort((a, b) => scanRelevance(b, now) - scanRelevance(a, now));
 }
 
-
 /**
  * Qualifies a candidate only from explicit source evidence.
  * Missing evidence is kept as unknown and can never produce an exact match.
@@ -57,10 +56,7 @@ export function assessScanCandidate(
   let level: ScanCandidateAssessment["level"] = "unverified";
   if (safeEvidence.needMatch === "no_match") {
     level = "alternative";
-  } else if (
-    safeEvidence.needMatch === "partial" ||
-    hasRefutedRequired
-  ) {
+  } else if (safeEvidence.needMatch === "partial" || hasRefutedRequired) {
     level = "close";
   } else if (
     safeEvidence.needMatch === "match" &&
