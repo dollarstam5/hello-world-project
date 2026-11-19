@@ -60,3 +60,31 @@ The primary key is owner-scoped `(owner_id, mutation_id)`. Every receipt lookup 
 ## Current interim behavior
 
 The HTTP/TypeScript transport still has a multi-request write/receipt gap. Receipt-conflict verification and update recovery are defensive interim measures, **not** a substitute for the atomic RPC. C1 remains open until the implementation and concurrency tests demonstrate the contract above.
+
+## Table-specific mutation inventory (current contract)
+
+The current `CLIENT_WRITE_POLICY` was inspected on this branch. It is the starting source of truth, but a SQL RPC cannot import TypeScript; its SQL allowlist must be reviewed against this table and the database schema before release.
+
+
+| Logical table | Create | Direct update fields | Command fields | Delete | Owner column |
+|---|---:|---|---|---|
+| users | no | displayName, handle, avatarMediaId, locale | none | id |
+| udi | no | none | none | user_id |
+| flashes | yes | title, body, kind, category, timeSlot, areaLabel, responseLimit, expiresAt, mediaIds, scope, urgency | none | author_id |
+| missions | yes | title, brief, rewardAmount, rewardCurrency, dueAt | status, assigneeId | author_id |
+| radars | yes | title, query, category, areaLabel, radiusKm, startsAt, expiresAt | status | owner_id |
+| posts | yes | body, visibility, mediaIds | none | author_id |
+| media | yes | kind, state, remotePath, mimeType, byteSize, width, height | none | owner_id |
+| notifications | no | readAt | none | recipient_id |
+| audit | no | none | none | read-only/server-owned |
+
+### Critical compatibility findings
+
+- Flash creation is allowed, but its publication state must remain governed by Flash backend rules; do not assume a generic insert is equivalent to a valid draft or publish flow.
+- Mission `status` and `assigneeId` are command fields, not ordinary patch fields. They require their existing server-side transition authority.
+- Radar `status` is a command field and already uses `command_radar`; the generic RPC must preserve this.
+- Notifications are limited to `readAt`; they are recipient-owned and must not allow arbitrary content changes.
+- Audit and UDI are currently read-only to client Sync.
+- Owner columns differ by table. The RPC must never accept an owner value from the mutation patch.
+
+**Implementation gate:** no dynamic SQL/RPC is to be introduced until each writable table's existing triggers, grants, RLS policies, required columns, domain RPCs, and revision behavior have been audited. The initial production implementation may intentionally support a narrower subset (e.g. ordinary updates only) while other mutation types continue through legacy paths, but that subset must be explicit and cannot be described as full Sync atomicity.
