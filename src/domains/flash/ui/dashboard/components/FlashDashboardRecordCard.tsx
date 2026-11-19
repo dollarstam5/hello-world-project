@@ -63,11 +63,18 @@ export function FlashDashboardRecordCard({
               </div>
             </div>
           ) : (
-            <p className="line-clamp-2 break-words font-semibold leading-snug">{record.title}</p>
-            <p className="mt-1 line-clamp-2 break-words text-sm leading-relaxed text-muted-foreground">{record.body}</p>
+            <>
+              <p className="line-clamp-2 break-words font-semibold leading-snug">{record.title}</p>
+              <p className="mt-1 line-clamp-2 break-words text-sm leading-relaxed text-muted-foreground">
+                {record.body}
+              </p>
+            </>
           )}
           <p className="mt-1 text-xs text-muted-foreground">
-            {new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" }).format(record.createdAt)}
+            {new Intl.DateTimeFormat(locale, {
+              dateStyle: "medium",
+              timeStyle: "short",
+            }).format(record.createdAt)}
           </p>
         </div>
         <span

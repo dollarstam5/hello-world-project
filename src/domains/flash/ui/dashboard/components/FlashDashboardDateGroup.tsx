@@ -56,10 +56,7 @@ export function FlashDashboardDateGroup({
             ▾
           </span>
         </button>
-        <div
-          className="flex flex-wrap gap-1.5"
-          aria-label={t("flash.mine.timeline.statusSummary")}
-        >
+        <div className="flex flex-wrap gap-1.5" aria-label={t("flash.mine.timeline.statusSummary")}>
           {statusGroups.map((statusGroup) => (
             <span
               key={statusGroup.key}
@@ -71,11 +68,7 @@ export function FlashDashboardDateGroup({
           ))}
         </div>
       </div>
-      <div
-        id={`flash-timeline-${group.key}`}
-        hidden={collapsed}
-        className="stack-3"
-      >
+      <div id={`flash-timeline-${group.key}`} hidden={collapsed} className="stack-3">
         {statusGroups.map((statusGroup) => (
           <div key={statusGroup.key} className="stack-2">
             <h4 className="flex items-center justify-between gap-2 text-xs font-medium text-foreground/80">

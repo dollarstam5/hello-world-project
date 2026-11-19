@@ -13,10 +13,11 @@ export function useFlashDashboardFilters(records: FlashRecord[]) {
   const [period, setPeriod] = useState<FlashDashboardPeriodFilter>("all");
   const filteredRecords = useMemo(
     () =>
-      filterFlashDashboardRecords(
-        records,
-        { query, status, period } satisfies FlashDashboardFilters,
-      ),
+      filterFlashDashboardRecords(records, {
+        query,
+        status,
+        period,
+      } satisfies FlashDashboardFilters),
     [records, query, status, period],
   );
   const hasActiveFilters = query.trim().length > 0 || status !== "all" || period !== "all";

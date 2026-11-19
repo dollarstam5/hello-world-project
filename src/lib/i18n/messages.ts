@@ -1651,8 +1651,7 @@ export const messages = {
     "flash.mine.filters.statusLabel": "Filter by status",
     "flash.mine.filters.periodLabel": "Period",
     "flash.mine.filters.reset": "Clear all",
-    "flash.mine.filters.noResults":
-      "No Flash matches these filters. Try broadening your search.",
+    "flash.mine.filters.noResults": "No Flash matches these filters. Try broadening your search.",
     "flash.mine.filters.status.all": "All",
     "flash.mine.filters.status.live": "Active",
     "flash.mine.filters.status.draft": "Drafts",
