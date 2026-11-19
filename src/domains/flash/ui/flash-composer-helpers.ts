@@ -1,9 +1,10 @@
 import type { FlashCategory, FlashTimeSlot } from "@eco/core-contracts";
 import { parseFlashIntent } from "@eco/core-logic";
+import type { MessageKey } from "@/lib/i18n/messages";
 
 type SpeechResultEvent = { results: ArrayLike<ArrayLike<{ transcript?: string }>> };
 type SpeechErrorEvent = { error?: string };
-type SpeechRecognitionLike = {
+export type SpeechRecognitionLike = {
   lang: string;
   interimResults: boolean;
   maxAlternatives: number;
@@ -18,7 +19,7 @@ type SpeechWindow = Window & {
   webkitSpeechRecognition?: new () => SpeechRecognitionLike;
 };
 type ComposerUser = { id: string } | null;
-type ComposerOptions = {
+export type ComposerOptions = {
   user: ComposerUser;
   locale: string;
   t: (key: MessageKey) => string;
