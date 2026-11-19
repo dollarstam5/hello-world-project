@@ -5,7 +5,7 @@ import { FLASH_SCOPE_RADIUS_METERS } from "@eco/core-contracts";
 import { defaultLocale, messages } from "@/lib/i18n/messages";
 import { useI18nStore } from "@/lib/i18n/useI18n";
 import { useLiveFlashes } from "../data";
-import { scanNearby } from "@/domains/scan/api/scan.functions";
+import { nearbyFlashFeed } from "../api/flash.functions";
 import { selectFlashFeedItems } from "../model/demo-flashes";
 
 export type FlashFeedSource = "remote" | "offline";
@@ -28,7 +28,7 @@ function toPublicFlash(row: ScanResult): PublicFlash {
 
 export function useFlashFeed() {
   const localRows = useLiveFlashes();
-  const loadNearby = useServerFn(scanNearby);
+  const loadNearby = useServerFn(nearbyFlashFeed);
   const [coordinates, setCoordinates] = useState<Coordinates | null>(null);
   const [remoteRows, setRemoteRows] = useState<PublicFlash[] | null>(null);
   const [loading, setLoading] = useState(false);
