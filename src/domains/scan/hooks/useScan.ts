@@ -44,11 +44,10 @@ export function useScan() {
           ...row,
           evidence: buildScanSourceEvidence(row, interpretation),
         }));
-        const nextRows = selectScanResults(evidencedRows, interpretation).map(
-          (assessment) => assessment.result,
-        );
+        const nextAssessments = selectScanResults(evidencedRows, interpretation);
+        const nextRows = nextAssessments.map((assessment) => assessment.result);
         setRows(nextRows);
-        setAssessments(selectScanResults(evidencedRows, interpretation));
+        setAssessments(nextAssessments);
         if (options.recordHistory !== false) {
           setHistory(recordScanHistory(nextRows.length));
         }
