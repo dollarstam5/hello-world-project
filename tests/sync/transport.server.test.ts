@@ -100,7 +100,7 @@ class FakeQuery {
     if (this.table === "sync_mutation_receipts") {
       if (this.operation === "select") {
         const receipt = this.database.receipts.find((row) => this.matches(row));
-        return { data: receipt ? { response: receipt.response } : null, error: null };
+        return { data: receipt ? { logical_table: receipt.logical_table, record_id: receipt.record_id, response: receipt.response } : null, error: null };
       }
       if (this.database.receiptWriteFailures > 0) {
         this.database.receiptWriteFailures -= 1;
@@ -257,7 +257,33 @@ describe("runPush transport — stale Flash updates", () => {
     });
   });
 
-  it("updates an existing Radar and stores the resulting record in its receipt", async () => {
+
+  it("does not replay a receipt whose mutation id is bound to another record", async () => {
+    const db = new FakeDatabase();
+    db.receipts.push({
+      mutation_id: mutationId,
+      owner_id: ownerId,
+      logical_table: "flashes",
+      record_id: "00000000-0000-4000-8000-000000000099",
+      response: null,
+    });
+    const entry = radarEntry("create", {
+      title: "Radar cible différente",
+      query: "besoin local",
+      category: "services",
+      radiusKm: 3,
+    });
+
+    const result = await runPush(db.client(), request(entry), ownerId);
+
+    expect(result.accepted).toEqual([]);
+    expect(result.rejected).toEqual([
+      { id: mutationId, code: "server_error", retryable: true },
+    ]);
+    expect(db.successfulBusinessWrites).toBe(0);
+    expect(db.tables.radars).toHaveLength(0);
+  });
+\n  it("updates an existing Radar and stores the resulting record in its receipt", async () => {
     const db = new FakeDatabase();
     db.tables.radars.push({
       id: recordId,
