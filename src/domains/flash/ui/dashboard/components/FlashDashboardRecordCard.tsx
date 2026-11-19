@@ -137,7 +137,7 @@ export function FlashDashboardRecordCard({
       <FlashDashboardDetailDialog
         record={record}
         locale={locale}
-        statusLabel={t(presentation.label)}
+        statusLabel={t(card.presentation.label)}
         open={card.detailsOpen}
         onOpenChange={card.setDetailsOpen}
       />
