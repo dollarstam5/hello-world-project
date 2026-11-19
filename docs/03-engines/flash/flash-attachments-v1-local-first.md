@@ -33,3 +33,11 @@ Permettre à un membre de joindre des fichiers à son Flash, de les conserver r�
 
 ## Critère de fin de phase locale
 Les fichiers doivent être effectivement persistés et récupérés après rechargement; aucune preview ne doit dépendre de fichiers factices. La sync cloud ne sera pas déclarée faite.
+
+## Implémentation — fondation en cours
+
+- La table Dexie locale non synchronisée `mediaBlobs` est ajoutée (version DB 5) avec Blob, ownerId, flashId, nom, MIME, taille et date.
+- Un service local expose validation MIME, limites par fichier, stockage/relecture, association au Flash, suppression et liste filtrée par propriétaire.
+- Les limites actuelles du service : 3 fichiers, 10 MiB par fichier, 20 MiB par Flash; MIME autorisés explicitement, SVG/HTML/archive/octet-stream refusés.
+- Les tests ciblés couvrent la validation MIME, fichiers vides, taille maximale et types non supportés.
+- **À ce stade, la sélection dans le composer, l'association transactionnelle avec la création Flash, l'aperçu dans le dashboard et le nettoyage de blobs ne sont pas encore connectés.** Ce service seul ne constitue pas encore un circuit fonctionnel utilisateur.
