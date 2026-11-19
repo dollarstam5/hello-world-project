@@ -1,4 +1,5 @@
-import { Info, Paperclip, X } from "lucide-react";\nimport { useEffect, useState } from "react";
+import { Info, Paperclip, X } from "lucide-react"
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { FLASH_SCOPES, FLASH_URGENCIES } from "@eco/core-contracts";
 import type { FlashCategory, FlashKind, FlashTimeSlot } from "@eco/core-contracts";
@@ -17,6 +18,12 @@ type Props = {
 
 export function FlashComposerReviewStep({ state, user, authLoading }: Props) {
   const { t } = useI18n();
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+  useEffect(() => {
+    const urls = state.attachments.map((file) => URL.createObjectURL(file));
+    setPreviewUrls(urls);
+    return () => urls.forEach((url) => URL.revokeObjectURL(url));
+  }, [state.attachments]);
 
   return (
     <>
