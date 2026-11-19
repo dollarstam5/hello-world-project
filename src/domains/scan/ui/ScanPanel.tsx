@@ -1,17 +1,16 @@
 import { useState } from "react";
-import { LocateFixed, ScanLine } from "lucide-react";
+import { Compass, LocateFixed, ScanLine, SlidersHorizontal, Sparkles } from "lucide-react";
 import { formatCommunicationMessage } from "@/lib/communication/format";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useScan } from "../hooks/useScan";
 import { ScanResults } from "./ScanResults";
 import { ScanNeedInterpretation } from "./ScanNeedInterpretation";
 
-const SCAN_RADII_KM = [1, 5, 10, 20] as const;
+const SCAN_RADII_KM = [1, 2] as const;
 const SCAN_LIMIT = 20;
 
 /**
- * Scan surface: asks for a temporary position, runs one proximity scan,
- * and lists public matches (distance only — never a precise location).
+ * Scan entry: a discovery doorway. Keep the need central and settings secondary.
  * Presentation only; scanning logic lives in useScan.
  */
 export function ScanPanel() {
@@ -23,7 +22,7 @@ export function ScanPanel() {
   const [started, setStarted] = useState(false);
   const [locating, setLocating] = useState(false);
   const [unsupported, setUnsupported] = useState(false);
-  const [radiusKm, setRadiusKm] = useState<number>(5);
+  const [radiusKm, setRadiusKm] = useState<number>(1);
   const [needText, setNeedText] = useState("");
 
   const start = () => {
@@ -66,127 +65,128 @@ export function ScanPanel() {
   };
 
   return (
-    <div className="stack-4">
-      <p className="text-sm text-muted-foreground">{t("scan.privacy")}</p>
+    <div className="stack-5">
+      <div className="relative overflow-hidden rounded-[2rem] border border-border-soft bg-surface p-4 sm:p-6">
+        <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-primary/10 blur-3xl" aria-hidden />
+        <div className="relative stack-4">
+          <div className="flex items-center gap-2 text-sm font-medium text-primary">
+            <Compass className="h-4 w-4" aria-hidden />
+            <span>{t("scan.door.eyebrow")}</span>
+          </div>
+          <div className="stack-1">
+            <h2 className="text-fluid-display-sm font-semibold tracking-tight">{t("scan.door.title")}</h2>
+            <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">{t("scan.door.desc")}</p>
+          </div>
 
-      <label className="stack-1 text-sm font-medium" htmlFor="scan-need">
-        <span>{t("scan.need.label")}</span>
-        <input
-          id="scan-need"
-          value={needText}
-          onChange={(event) => setNeedText(event.target.value.slice(0, 160))}
-          maxLength={160}
-          placeholder={t("scan.need.placeholder")}
-          disabled={busy || locating}
-          className="min-h-12 w-full rounded-xl border border-border bg-surface px-3 text-sm font-normal text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
-        />
-      </label>
+          <label className="stack-2" htmlFor="scan-need">
+            <span className="text-sm font-medium">{t("scan.need.label")}</span>
+            <textarea
+              id="scan-need"
+              value={needText}
+              onChange={(event) => setNeedText(event.target.value.slice(0, 160))}
+              maxLength={160}
+              placeholder={t("scan.need.placeholder")}
+              disabled={busy || locating}
+              rows={4}
+              className="min-h-32 w-full resize-y rounded-2xl border border-border bg-background/70 p-4 text-base leading-relaxed text-foreground placeholder:text-muted-foreground/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
+            />
+          </label>
 
-      {needText.trim() ? <ScanNeedInterpretation text={needText} /> : null}
+          {needText.trim() ? <ScanNeedInterpretation text={needText} /> : null}
 
-      <label className="stack-1 max-w-xs text-sm font-medium" htmlFor="scan-radius">
-        <span>{t("scan.radius")}</span>
-        <select
-          id="scan-radius"
-          value={radiusKm}
-          onChange={(event) => setRadiusKm(Number(event.target.value))}
-          disabled={busy || locating}
-          className="min-h-12 w-full rounded-xl border border-border bg-surface px-3 text-sm font-normal text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
-        >
-          {SCAN_RADII_KM.map((radius) => (
-            <option key={radius} value={radius}>
-              {radius} {t("scan.radius.unit")}
-            </option>
-          ))}
-        </select>
-      </label>
+          <div className="stack-2">
+            <button
+              type="button"
+              onClick={start}
+              disabled={busy || locating || !needText.trim()}
+              aria-busy={busy || locating}
+              className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-primary px-5 py-3 text-base font-semibold text-primary-foreground transition-transform hover:scale-[1.01] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-55 disabled:hover:scale-100"
+            >
+              {busy || locating ? (
+                <ScanLine className="h-5 w-5 animate-pulse" aria-hidden />
+              ) : (
+                <Sparkles className="h-5 w-5" aria-hidden />
+              )}
+              {busy || locating ? t("scan.busy") : t("scan.start")}
+            </button>
+            <p className="text-center text-xs leading-relaxed text-muted-foreground">{t("scan.door.privacy")}</p>
+          </div>
+        </div>
+      </div>
 
-      <button
-        type="button"
-        onClick={start}
-        disabled={busy || locating || !needText.trim()}
-        aria-busy={busy || locating}
-        className="inline-flex min-h-12 items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
-      >
-        {busy || locating ? (
-          <ScanLine className="h-6 w-6 animate-pulse" aria-hidden />
-        ) : (
-          <LocateFixed className="h-6 w-6" aria-hidden />
-        )}
-        {busy || locating ? t("scan.busy") : t("scan.start")}
-      </button>
+      <details className="group rounded-2xl border border-border-soft bg-surface px-4 py-3">
+        <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [&::-webkit-details-marker]:hidden">
+          <span className="inline-flex items-center gap-2 text-sm font-medium">
+            <SlidersHorizontal className="h-4 w-4 text-muted-foreground" aria-hidden />
+            {t("scan.preferences.title")}
+          </span>
+          <span className="text-xs text-muted-foreground">{t("scan.preferences.optional")}</span>
+        </summary>
+        <div className="stack-2 pt-3">
+          <label className="stack-1 text-sm font-medium" htmlFor="scan-radius">
+            <span>{t("scan.radius")}</span>
+            <select
+              id="scan-radius"
+              value={radiusKm}
+              onChange={(event) => setRadiusKm(Number(event.target.value))}
+              disabled={busy || locating}
+              className="min-h-12 w-full rounded-xl border border-border bg-background px-3 text-sm font-normal text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
+            >
+              {SCAN_RADII_KM.map((radius) => (
+                <option key={radius} value={radius}>
+                  {radius} {t("scan.radius.unit")}
+                </option>
+              ))}
+            </select>
+          </label>
+          <p className="text-xs leading-relaxed text-muted-foreground">{t("scan.preferences.radiusNote")}</p>
+        </div>
+      </details>
 
-      {unsupported && (
-        <p className="text-sm text-destructive" role="alert">
-          {formatCommunicationMessage(t, "scan.unsupported")}
-        </p>
-      )}
-      {locationError && (
-        <p className="text-sm text-destructive" role="alert">
-          {formatCommunicationMessage(t, `scan.location.${locationError}`)}
-        </p>
-      )}
-      {failed && (
-        <p className="text-sm text-destructive" role="alert">
-          {formatCommunicationMessage(t, "scan.error")}
-        </p>
-      )}
+      {unsupported && <p className="text-sm text-destructive" role="alert">{formatCommunicationMessage(t, "scan.unsupported")}</p>}
+      {locationError && <p className="text-sm text-destructive" role="alert">{formatCommunicationMessage(t, `scan.location.${locationError}`)}</p>}
+      {failed && <p className="text-sm text-destructive" role="alert">{formatCommunicationMessage(t, "scan.error")}</p>}
 
-      {started &&
-        !busy &&
-        !locating &&
-        !locationError &&
-        !failed &&
-        !unsupported &&
-        rows.length === 0 && (
-          <p className="text-sm text-muted-foreground" role="status">
-            {t("scan.empty")}
-          </p>
-        )}
+      {started && !busy && !locating && !locationError && !failed && !unsupported && rows.length === 0 ? (
+        <p className="text-sm text-muted-foreground" role="status">{t("scan.empty")}</p>
+      ) : null}
 
       {rows.length > 0 ? <ScanResults assessments={assessments} /> : null}
 
-      <section className="stack-3" aria-labelledby="scan-history-heading">
-        <div className="flex items-center justify-between gap-3">
-          <h3 id="scan-history-heading" className="text-sm font-semibold">
-            {t("scan.history.title")}
-          </h3>
+      <details className="group rounded-2xl border border-border-soft px-4 py-3" aria-labelledby="scan-history-heading">
+        <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
+          <h3 id="scan-history-heading" className="text-sm font-semibold">{t("scan.history.title")}</h3>
+          {history.length > 0 ? <span className="text-xs text-muted-foreground">{history.length}</span> : null}
+        </summary>
+        <div className="stack-3 pt-3">
           {history.length > 0 ? (
             <button
               type="button"
               onClick={clearHistory}
-              className="min-h-11 rounded-full px-3 text-xs font-medium text-muted-foreground underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="min-h-11 self-start rounded-full px-3 text-xs font-medium text-muted-foreground underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               {t("scan.history.clear")}
             </button>
           ) : null}
+          <p className="text-xs leading-relaxed text-muted-foreground">{t("scan.history.privacy")}</p>
+          {history.length === 0 ? (
+            <p className="text-sm text-muted-foreground" role="status">{t("scan.history.empty")}</p>
+          ) : (
+            <ul className="stack-2">
+              {history.map((entry, index) => (
+                <li key={`${entry.searchedAt}-${index}`} className="flex items-center justify-between gap-3 rounded-2xl border border-border-soft bg-surface px-4 py-3">
+                  <span className="text-sm">
+                    {new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" }).format(entry.searchedAt)}
+                  </span>
+                  <span className="shrink-0 text-xs text-muted-foreground">
+                    {t("scan.history.results").replace("{count}", String(entry.resultCount))}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
-        <p className="text-xs leading-relaxed text-muted-foreground">{t("scan.history.privacy")}</p>
-        {history.length === 0 ? (
-          <p className="text-sm text-muted-foreground" role="status">
-            {t("scan.history.empty")}
-          </p>
-        ) : (
-          <ul className="stack-2">
-            {history.map((entry, index) => (
-              <li
-                key={`${entry.searchedAt}-${index}`}
-                className="flex items-center justify-between gap-3 rounded-2xl border border-border-soft bg-surface px-4 py-3"
-              >
-                <span className="text-sm">
-                  {new Intl.DateTimeFormat(locale, {
-                    dateStyle: "medium",
-                    timeStyle: "short",
-                  }).format(entry.searchedAt)}
-                </span>
-                <span className="shrink-0 text-xs text-muted-foreground">
-                  {t("scan.history.results").replace("{count}", String(entry.resultCount))}
-                </span>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+      </details>
     </div>
   );
 }
