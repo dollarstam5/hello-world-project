@@ -1,6 +1,6 @@
 BEGIN;
 CREATE EXTENSION IF NOT EXISTS pgtap WITH SCHEMA extensions;
-SELECT plan(8);
+SELECT plan(9);
 
 SELECT ok(
   position('ST_DWithin' IN pg_get_functiondef(
@@ -71,6 +71,34 @@ FROM (VALUES
   ('f7500000-0000-4000-8000-000000000003'::uuid, 501.0),
   ('f7500000-0000-4000-8000-000000000004'::uuid, 3000.0)
 ) AS v(id, distance_m);
+
+
+INSERT INTO public.flashes (
+  id, author_id, title, body, status, expires_at,
+  kind, category, time_slot, area_label, scope, urgency
+) VALUES (
+  'f7500000-0000-4000-8000-000000000005',
+  'f7400000-0000-4000-8000-000000000001',
+  'B4 unlabeled nearby', 'Optional area label test', 'live',
+  (extract(epoch FROM now()) * 1000)::bigint + 3600000,
+  'need', 'personal', 'today', NULL, 'current_area', 'today'
+);
+
+INSERT INTO public.flash_private_locations (
+  flash_id, author_id, latitude, longitude, accuracy_meters
+) VALUES (
+  'f7500000-0000-4000-8000-000000000005',
+  'f7400000-0000-4000-8000-000000000001',
+  0.0, degrees(400.0 / 6371000.0), 8
+);
+
+SELECT is(
+  (SELECT s.area_label
+   FROM public.scan_public_flashes('B4 unlabeled',NULL,0,0,2,50) AS s
+   WHERE s.id = 'f7500000-0000-4000-8000-000000000005'),
+  'Zone non précisée',
+  'a Flash with private coordinates but no optional area label remains discoverable'
+);
 
 SELECT is(
   (SELECT count(*)::integer
