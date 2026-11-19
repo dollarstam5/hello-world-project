@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Archive, Pencil, Trash2 } from "lucide-react";
+import { Archive, Eye, Pencil, Trash2 } from "lucide-react";
 import type { FlashRecord } from "@eco/core-contracts";
 import { resolveFlashStatus } from "@eco/core-logic";
 import { EmptyState } from "@/components/app/EmptyState";
@@ -32,6 +32,7 @@ export function MyFlashManagement() {
   const [actionError, setActionError] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editDraft, setEditDraft] = useState("");
+  const [expandedId, setExpandedId] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null | undefined>(undefined);
 
   useEffect(() => {
@@ -245,6 +246,10 @@ export function MyFlashManagement() {
                   </div>
 
                   <div className="mt-3 flex flex-wrap justify-end gap-2">
+                    <Button type="button" size="sm" variant="outline" disabled={editingId !== null || busyId !== null} onClick={() => setExpandedId(expandedId === record.id ? null : record.id)}>
+                      <Eye className="mr-2 h-4 w-4" aria-hidden />
+                      {expandedId === record.id ? t("flash.mine.hideDetails") : t("flash.mine.viewDetails")}
+                    </Button>
                     {editingId !== record.id ? (
                       <Button
                         type="button"
@@ -276,6 +281,20 @@ export function MyFlashManagement() {
                       {t("flash.mine.delete")}
                     </Button>
                   </div>
+                  {expandedId === record.id ? (
+                    <div className="mt-3 rounded-lg border bg-muted/30 p-3 stack-2 text-sm">
+                      <p className="whitespace-pre-wrap break-words">{record.body}</p>
+                      <p>{t("flash.mine.detailCreated")}: {new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" }).format(record.createdAt)}</p>
+                      {record.expiresAt ? <p>{t("flash.mine.detailExpires")}: {new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" }).format(record.expiresAt)}</p> : null}
+                      {record.areaLabel ? <p>{t("flash.mine.detailArea")}: {record.areaLabel}</p> : null}
+                      <div className="stack-1">
+                        <p className="font-medium">{t("flash.mine.detailMedia")}</p>
+                        {record.mediaIds.length ? <ul className="list-disc pl-5">{record.mediaIds.map((mediaId) => <li key={mediaId} className="break-all">{mediaId}</li>)}</ul> : <p className="text-muted-foreground">{t("flash.mine.detailNoMedia")}</p>}
+                        <p className="text-xs text-muted-foreground">{t("flash.mine.detailMediaPending")}</p>
+                      </div>
+                      <p className="text-xs text-muted-foreground">{t("flash.mine.detailInteractionsPending")}</p>
+                    </div>
+                  ) : null}
                 </Surface>
               );
             })}
