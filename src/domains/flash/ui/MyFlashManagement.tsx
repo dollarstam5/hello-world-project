@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Archive, Eye, Pencil, Sparkles, Trash2 } from "lucide-react";
+import { Archive, Eye, Pencil, Sparkles, Trash2 } from "lucide-react";\nimport { useEffect as usePreviewEffect, useState as usePreviewState } from "react";
 import type { FlashRecord } from "@eco/core-contracts";
-import { mediaRepository } from "@/platform/offline";
+import { mediaRepository, listLocalFlashAttachments, deleteLocalFlashAttachments } from "@/platform/offline";
 import { resolveFlashStatus } from "@eco/core-logic";
 import { EmptyState } from "@/components/app/EmptyState";
 import { Surface } from "@/components/app/Surface";
@@ -15,7 +15,46 @@ import { publishFlashCommunicationEvent } from "../communication-events";
 import { flashesRepository, useLocalQuery } from "@/platform/offline";
 import { archiveFlash, deleteFlash, updateFlash } from "../data";
 
-type PendingDelete = FlashRecord | null;
+type PendingDelete = FlashRecord | null;\n\ntype FlashAttachmentPreviewProps = { flashId: string; mediaIds: string[] };
+
+function FlashAttachmentPreview({ flashId, mediaIds }: FlashAttachmentPreviewProps) {
+  const { t } = useI18n();
+  const files = useLocalQuery(() => listLocalFlashAttachments(flashId), [flashId]);
+  const [urls, setUrls] = usePreviewState<Record<string, string>>({});
+  usePreviewEffect(() => {
+    const created = Object.fromEntries((files ?? []).map((file) => [file.id, URL.createObjectURL(file.blob)]));
+    setUrls(created);
+    return () => Object.values(created).forEach((url) => URL.revokeObjectURL(url));
+  }, [files]);
+
+  if (!mediaIds.length) return <p className="text-muted-foreground">{t("flash.mine.detailNoMedia")}</p>;
+  if (!files?.length) return <p className="text-xs text-muted-foreground">{t("flash.mine.localMediaMissing")}</p>;
+
+  return (
+    <ul className="grid gap-3">
+      {files.map((file) => (
+        <li key={file.id} className="rounded-xl border border-border p-3">
+          <p className="truncate text-sm font-medium">{file.fileName}</p>
+          <p className="text-xs text-muted-foreground">{file.mimeType} · {(file.byteSize / 1024 / 1024).toFixed(2)} Mo · {t("flash.mine.localOnly")}</p>
+          {file.mimeType.startsWith("image/") && urls[file.id] ? (
+            <img src={urls[file.id]} alt={file.fileName} className="mt-2 max-h-64 w-full rounded-lg object-contain" />
+          ) : file.mimeType.startsWith("video/") && urls[file.id] ? (
+            <video src={urls[file.id]} controls preload="metadata" className="mt-2 max-h-64 w-full rounded-lg" />
+          ) : file.mimeType.startsWith("audio/") && urls[file.id] ? (
+            <audio src={urls[file.id]} controls preload="metadata" className="mt-2 w-full" />
+          ) : null}
+          {urls[file.id] ? (
+            <a href={urls[file.id]} target="_blank" rel="noopener noreferrer" download={file.fileName} className="mt-2 inline-flex min-h-10 items-center rounded-full border border-border px-3 text-sm font-semibold text-primary">
+              {t("flash.mine.openLocalFile")}
+            </a>
+          ) : null}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+
 
 const statusKeys = {
   draft: "flash.mine.status.draft",
@@ -337,19 +376,8 @@ export function MyFlashManagement({ onCreateFlash, onAccessAvailable }: { onCrea
                       {record.areaLabel ? <p>{t("flash.mine.detailArea")}: {record.areaLabel}</p> : null}
                       <div className="stack-1">
                         <p className="font-medium">{t("flash.mine.detailMedia")}</p>
-                        {record.mediaIds.length ? <ul className="list-disc pl-5">{record.mediaIds.map((mediaId) => {
-                          const media = mediaById.get(mediaId);
-                          return (
-                            <li key={mediaId} className="break-all">
-                              <span className="font-medium">{media ? t(`flash.mine.media.kind.${media.kind}`) : t("flash.mine.media.unknown")}</span>
-                              <span className="ml-1 text-muted-foreground">({media ? t(`flash.mine.media.state.${media.state}`) : t("flash.mine.media.unavailable")})</span>
-                              <p className="text-xs text-muted-foreground">{media?.mimeType ?? mediaId}</p>
-                            </li>
-                          );
-                        })}</ul> : <p className="text-muted-foreground">{t("flash.mine.detailNoMedia")}</p>}
-                        <p className="text-xs text-muted-foreground">{t("flash.mine.detailMediaPending")}</p>
-                      </div>
-                      <p className="text-xs text-muted-foreground">{t("flash.mine.detailInteractionsPending")}</p>
+                        <FlashAttachmentPreview flashId={record.id} mediaIds={record.mediaIds} />
+                        <p className="text-xs text-muted-foreground">{t("flash.mine.detailInteractionsPending")}</p>
                     </div>
                   ) : null}
                 </Surface>
