@@ -1,44 +1,22 @@
-import { useState } from "react";
 import { Compass, ScanLine, Sparkles } from "lucide-react";
 import { formatCommunicationMessage } from "@/lib/communication/format";
 import { useI18n } from "@/lib/i18n/useI18n";
-import { useScan } from "../hooks/useScan";
+import { useScanFlow } from "../hooks/useScanFlow";
 import { ScanResults } from "./ScanResults";
 import { ScanNeedInterpretation } from "./ScanNeedInterpretation";
 import { ScanPreferences } from "./ScanPreferences";
 import { ScanHistory } from "./ScanHistory";
-import { useScanPreferences } from "../hooks/useScanPreferences";
-import { useScanLocation } from "../hooks/useScanLocation";
-import { useScanStatus } from "../hooks/useScanStatus";
-
-const SCAN_LIMIT = 20;
 
 /**
- * Scan entry: a discovery doorway. Keep the need central and settings secondary.
- * Presentation only; scanning logic lives in useScan.
+ * Scan entry UI. Flow coordination and state derivation live in useScanFlow.
  */
 export function ScanPanel() {
   const { t } = useI18n();
-  const { rows, assessments, busy, failed, execute, history, clearHistory } = useScan();
-  const [started, setStarted] = useState(false);
-  const { locate, locating, locationError, unsupported } = useScanLocation();
-  const { radiusKm, setRadiusKm, availableRadii } = useScanPreferences();
-  const [needText, setNeedText] = useState("");
-  const status = useScanStatus({ started, locating, busy, unsupported, locationError, failed, resultCount: rows.length });
-
-  const start = () => {
-    setStarted(true);
-    void locate().then((coordinates) => {
-      if (!coordinates) return;
-      void execute({
-        text: needText.trim(),
-        category: null,
-        ...coordinates,
-        radiusKm,
-        limit: SCAN_LIMIT,
-      });
-    });
-  };
+  const {
+    rows, assessments, busy, failed, history, clearHistory,
+    locating, locationError, unsupported, radiusKm, setRadiusKm, availableRadii,
+    needText, setNeedText, status, start,
+  } = useScanFlow();
 
   return (
     <div className="stack-5">
@@ -107,7 +85,6 @@ export function ScanPanel() {
       {status === "empty" ? <p className="text-sm text-muted-foreground" role="status">{t("scan.empty")}</p> : null}
 
       {rows.length > 0 ? <ScanResults assessments={assessments} /> : null}
-
       <ScanHistory entries={history} onClear={clearHistory} />
     </div>
   );
