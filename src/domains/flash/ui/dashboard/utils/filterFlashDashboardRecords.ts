@@ -3,7 +3,11 @@ import { resolveFlashStatus } from "@eco/core-logic";
 
 export type FlashDashboardStatusFilter = "all" | FlashStatus;
 export type FlashDashboardPeriodFilter = "all" | "today" | "week" | "month";
-export type FlashDashboardFilters = { query: string; status: FlashDashboardStatusFilter; period: FlashDashboardPeriodFilter };
+export type FlashDashboardFilters = {
+  query: string;
+  status: FlashDashboardStatusFilter;
+  period: FlashDashboardPeriodFilter;
+};
 
 function getPeriodStart(period: FlashDashboardPeriodFilter, now: Date): number | null {
   if (period === "all") return null;
@@ -14,13 +18,20 @@ function getPeriodStart(period: FlashDashboardPeriodFilter, now: Date): number |
   return start.getTime();
 }
 
-export function filterFlashDashboardRecords(records: FlashRecord[], filters: FlashDashboardFilters, now = new Date()): FlashRecord[] {
+export function filterFlashDashboardRecords(
+  records: FlashRecord[],
+  filters: FlashDashboardFilters,
+  now = new Date(),
+): FlashRecord[] {
   const query = filters.query.trim().toLocaleLowerCase();
   const periodStart = getPeriodStart(filters.period, now);
   return records.filter((record) => {
     if (filters.status !== "all" && resolveFlashStatus(record) !== filters.status) return false;
     if (periodStart !== null && record.createdAt < periodStart) return false;
     if (!query) return true;
-    return record.title.toLocaleLowerCase().includes(query) || record.body.toLocaleLowerCase().includes(query);
+    return (
+      record.title.toLocaleLowerCase().includes(query) ||
+      record.body.toLocaleLowerCase().includes(query)
+    );
   });
 }

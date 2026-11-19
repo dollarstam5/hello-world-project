@@ -12,7 +12,11 @@ export function useFlashDashboardFilters(records: FlashRecord[]) {
   const [status, setStatus] = useState<FlashDashboardStatusFilter>("all");
   const [period, setPeriod] = useState<FlashDashboardPeriodFilter>("all");
   const filteredRecords = useMemo(
-    () => filterFlashDashboardRecords(records, { query, status, period } satisfies FlashDashboardFilters),
+    () =>
+      filterFlashDashboardRecords(
+        records,
+        { query, status, period } satisfies FlashDashboardFilters,
+      ),
     [records, query, status, period],
   );
   const hasActiveFilters = query.trim().length > 0 || status !== "all" || period !== "all";
@@ -21,5 +25,15 @@ export function useFlashDashboardFilters(records: FlashRecord[]) {
     setStatus("all");
     setPeriod("all");
   }
-  return { query, setQuery, status, setStatus, period, setPeriod, filteredRecords, hasActiveFilters, resetFilters };
+  return {
+    query,
+    setQuery,
+    status,
+    setStatus,
+    period,
+    setPeriod,
+    filteredRecords,
+    hasActiveFilters,
+    resetFilters,
+  };
 }

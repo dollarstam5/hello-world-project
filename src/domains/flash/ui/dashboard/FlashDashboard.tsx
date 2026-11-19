@@ -22,7 +22,9 @@ export function FlashDashboard({
   const { t, locale } = useI18n();
   const { records, userId } = useFlashDashboardData();
   const filters = useFlashDashboardFilters(records ?? []);
-  const { groups, collapsedGroups, toggleGroup } = useFlashDashboardTimeline(filters.filteredRecords);
+  const { groups, collapsedGroups, toggleGroup } = useFlashDashboardTimeline(
+    filters.filteredRecords,
+  );
   const { busyId, actionError, archive, saveEdit, remove } = useFlashDashboardActions();
   const deletion = useFlashDashboardDeletion(remove, busyId);
 

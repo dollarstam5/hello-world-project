@@ -1,16 +1,29 @@
 import { CalendarDays, Search, X } from "lucide-react";
-import type { FlashDashboardPeriodFilter, FlashDashboardStatusFilter } from "../utils/filterFlashDashboardRecords";
+import type {
+  FlashDashboardPeriodFilter,
+  FlashDashboardStatusFilter,
+} from "../utils/filterFlashDashboardRecords";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 type Props = {
-  query: string; onQueryChange: (value: string) => void;
-  status: FlashDashboardStatusFilter; onStatusChange: (value: FlashDashboardStatusFilter) => void;
-  period: FlashDashboardPeriodFilter; onPeriodChange: (value: FlashDashboardPeriodFilter) => void;
-  hasActiveFilters: boolean; onReset: () => void;
+  query: string;
+  onQueryChange: (value: string) => void;
+  status: FlashDashboardStatusFilter;
+  onStatusChange: (value: FlashDashboardStatusFilter) => void;
+  period: FlashDashboardPeriodFilter;
+  onPeriodChange: (value: FlashDashboardPeriodFilter) => void;
+  hasActiveFilters: boolean;
+  onReset: () => void;
 };
-const STATUS_OPTIONS: FlashDashboardStatusFilter[] = ["all", "live", "draft", "expired", "archived"];
+const STATUS_OPTIONS: FlashDashboardStatusFilter[] = [
+  "all",
+  "live",
+  "draft",
+  "expired",
+  "archived",
+];
 const PERIOD_OPTIONS: FlashDashboardPeriodFilter[] = ["all", "today", "week", "month"];
 
 export function FlashDashboardFilters(props: Props) {
