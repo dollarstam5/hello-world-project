@@ -49,3 +49,10 @@ Le contrat Flash actuel définit les états `draft`, `live`, `expired` et `archi
 Le regroupement temporel utilise les jours locaux (aujourd'hui, hier, il y a deux jours), puis la semaine civile en cours, la semaine civile précédente et les plus anciens. Les limites de semaines sont lundi–dimanche; ne pas étiqueter un intervalle roulant de 3 à 6 jours comme « semaine dernière ».
 
 Les catégories temporelles sont exclusives : les groupes relatifs « aujourd'hui », « hier » et « il y a deux jours » priment, et les Flashs de ces dates sont exclus des groupes de semaines même lorsque ces dates tombent sur la semaine précédente. Un Flash ne doit apparaître que dans une seule section.
+
+## Audit des pièces jointes — état de l'accès réel
+
+- Le Flash conserve `mediaIds` et le contrat `MediaRecord` contient `kind`, `state`, `remotePath`, `mimeType`, `byteSize`, `width` et `height`.
+- Le dashboard lit les métadonnées locales du repository média et présente le type, le MIME et l'état (`local`, `uploading`, `remote`, `failed`) des références associées à un Flash. Les métadonnées manquantes sont signalées sans inventer de fichier.
+- L'audit du code Sync (engine, transport, worker), de la configuration Supabase et des migrations ne révèle pas de pipeline de transfert de médias, de bucket Storage configuré, ni de mécanisme de téléchargement/URL de preview relié au Flash. Le `remotePath` contractuel seul ne prouve pas qu'un fichier a été envoyé ni que l'utilisateur peut le consulter.
+- **L'ouverture réelle des médias n'est donc pas activée.** Aucun bouton Preview/Open factice n'est ajouté. Pour rendre cette fonction complète, une prochaine phase doit établir le pipeline upload sécurisé, la validation MIME/taille, les règles de propriété/accès, et un flux de téléchargement/preview autorisé, puis couvrir ces parcours avec tests.
