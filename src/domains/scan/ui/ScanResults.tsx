@@ -18,7 +18,7 @@ export function ScanResults({ assessments }: { assessments: ScanCandidateAssessm
             </h3>
             <ul className="stack-2">
               {items.map(({ result }) => (
-                <li key={result.id} className="rounded-3xl border border-border-soft bg-surface p-4">
+                <li\n                  key={result.id}\n                  className="rounded-3xl border border-border-soft bg-surface p-4"\n                >
                   <div className="flex items-center justify-between gap-3">
                     <span className="text-base font-medium">{result.title}</span>
                     <span className="shrink-0 rounded-full bg-primary-soft px-2.5 py-1 text-xs font-medium text-primary">
