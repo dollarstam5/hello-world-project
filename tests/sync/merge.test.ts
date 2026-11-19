@@ -38,7 +38,6 @@ describe("offline record merging", () => {
     expect(merged.revision).toBe(9);
   });
 
-
   it("does not resurrect a remote tombstone while preserving a pending local edit", () => {
     const local = record({ title: "title edited offline", deletedAt: null, updatedAt: 450 });
     const remote = record({ title: "title remote", deletedAt: 400, updatedAt: 400, revision: 10 });
