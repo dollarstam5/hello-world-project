@@ -55,7 +55,6 @@ export interface ScanCandidateAssessment {
   explanationCodes: string[];
 }
 
-
 /**
  * A candidate is a public Scan result that may be evaluated against the
  * interpreted need. It does not imply that the candidate is a confirmed match.
