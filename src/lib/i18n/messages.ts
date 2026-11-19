@@ -1417,16 +1417,17 @@ export const messages = {
       "Say it in your own words. Flash will help organize your message.",
     "flash.composer.reviewTitle": "Review your Flash",
     "flash.attachments.title": "Attachments",
-    "flash.attachments.description": "Add files to your Flash. They will be kept on this device for now.",
+    "flash.attachments.description":
+      "Add files to your Flash. They will be kept on this device for now.",
     "flash.attachments.add": "Add files",
     "flash.attachments.remove": "Remove this file",
-    "flash.attachments.limitHint": "Up to 3 files · 10 MB each · 20 MB total. Local storage only for now.",
+    "flash.attachments.limitHint":
+      "Up to 3 files · 10 MB each · 20 MB total. Local storage only for now.",
     "flash.attachments.error.unsupported_type": "This file type is not supported.",
     "flash.attachments.error.empty_file": "This file is empty.",
     "flash.attachments.error.file_too_large": "This file is larger than 10 MB.",
     "flash.attachments.error.too_many_files": "You can attach up to 3 files.",
-    "flash.attachments.error.total_too_large":
-      "The files exceed the 20 MB combined limit.",
+    "flash.attachments.error.total_too_large": "The files exceed the 20 MB combined limit.",
 
     "flash.composer.reviewDescription":
       "Review the suggested details. You can adjust everything before saving your draft.",
@@ -1640,11 +1641,9 @@ export const messages = {
       "This is your Flash space. When you create one, it appears here, grouped by date and status. Open it to review its content and manage the actions that are available.",
     "flash.mine.empty.action": "Create my first Flash",
     "flash.mine.empty.step1Title": "1. Write naturally",
-    "flash.mine.empty.step1Body":
-      "Describe what you need or what you can offer in your own words.",
+    "flash.mine.empty.step1Body": "Describe what you need or what you can offer in your own words.",
     "flash.mine.empty.step2Title": "2. Review before saving",
-    "flash.mine.empty.step2Body":
-      "Check your Flash and adjust the details. You can keep a draft.",
+    "flash.mine.empty.step2Body": "Check your Flash and adjust the details. You can keep a draft.",
     "flash.mine.empty.step3Title": "3. Find it here",
     "flash.mine.empty.step3Body":
       "Your Flash posts will be grouped by date. Open each one to view details and manage available actions.",
@@ -1684,10 +1683,8 @@ export const messages = {
     "flash.mine.media.unknown": "Unidentified file",
     "flash.mine.media.unavailable": "Metadata unavailable",
     "flash.mine.detailNoMedia": "No files attached to this Flash.",
-    "flash.mine.detailMediaPending":
-      "Opening and previewing files is not connected yet.",
-    "flash.mine.detailInteractionsPending":
-      "Interactions for this Flash are not shown in this details panel yet.",
+    "flash.mine.detailMediaPending": "Opening and previewing files is not connected yet.",
+    "flash.mine.detailInteractionsPending": "Interactions for this Flash are not shown in this details panel yet.",
     "flash.mine.period.older": "Older",
     "flash.mine.actionError": "That action could not be completed. Please try again.",
     "flash.mine.archive": "Archive",
