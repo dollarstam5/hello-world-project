@@ -1,5 +1,4 @@
-import { Info, Paperclip, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Info } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { FLASH_SCOPES, FLASH_URGENCIES } from "@eco/core-contracts";
 import type { FlashCategory, FlashKind, FlashTimeSlot } from "@eco/core-contracts";
@@ -18,12 +17,6 @@ type Props = {
 
 export function FlashComposerReviewStep({ state, user, authLoading }: Props) {
   const { t } = useI18n();
-  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
-  useEffect(() => {
-    const urls = state.attachments.map((file) => URL.createObjectURL(file));
-    setPreviewUrls(urls);
-    return () => urls.forEach((url) => URL.revokeObjectURL(url));
-  }, [state.attachments]);
 
   return (
     <>
@@ -185,77 +178,6 @@ export function FlashComposerReviewStep({ state, user, authLoading }: Props) {
         <Info className="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
         <p>{t("flash.location.privateNotice")}</p>
       </div>
-
-      <section
-        className="mt-4 rounded-2xl border border-border p-4"
-        aria-label={t("flash.attachments.title")}
-      >
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <h3 className="text-sm font-semibold">{t("flash.attachments.title")}</h3>
-            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-              {t("flash.attachments.description")}
-            </p>
-          </div>
-          <Paperclip className="size-5 shrink-0 text-primary" aria-hidden="true" />
-        </div>
-        <label className="mt-3 flex min-h-11 cursor-pointer items-center justify-center rounded-full border border-border bg-card px-4 text-sm font-semibold hover:bg-muted/60">
-          {t("flash.attachments.add")}
-          <input
-            type="file"
-            multiple
-            accept="image/jpeg,image/png,image/webp,video/mp4,video/webm,audio/mpeg,audio/mp4,audio/ogg,audio/wav,application/pdf,text/plain"
-            className="sr-only"
-            onChange={(event) => {
-              state.addAttachments(Array.from(event.target.files ?? []));
-              event.target.value = "";
-            }}
-          />
-        </label>
-        {state.attachments.length ? (
-          <ul className="mt-3 grid gap-2">
-            {state.attachments.map((file, index) => (
-              <li
-                key={`${file.name}-${file.lastModified}-${index}`}
-                className="flex min-w-0 items-center gap-3 rounded-xl bg-muted/40 p-2.5"
-              >
-                {file.type.startsWith("image/") && previewUrls[index] ? (
-                  <img
-                    src={previewUrls[index]}
-                    alt=""
-                    className="size-12 shrink-0 rounded-lg object-cover"
-                  />
-                ) : (
-                  <span className="grid size-12 shrink-0 place-items-center rounded-lg bg-card text-xs font-bold uppercase">
-                    {file.type.split("/")[1]?.slice(0, 4) || "FILE"}
-                  </span>
-                )}
-                <span className="min-w-0 flex-1">
-                  <span className="block truncate text-sm font-medium">{file.name}</span>
-                  <span className="text-xs text-muted-foreground">
-                    {(file.size / 1024 / 1024).toFixed(2)} Mo
-                  </span>
-                </span>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  aria-label={t("flash.attachments.remove")}
-                  onClick={() => state.removeAttachment(index)}
-                >
-                  <X className="size-4" aria-hidden="true" />
-                </Button>
-              </li>
-            ))}
-          </ul>
-        ) : null}
-        {state.attachmentError ? (
-          <p className="mt-2 text-sm text-destructive" role="alert">
-            {t(`flash.attachments.error.${state.attachmentError}`)}
-          </p>
-        ) : null}
-        <p className="mt-2 text-xs text-muted-foreground">{t("flash.attachments.limitHint")}</p>
-      </section>
 
       {!user && !authLoading ? (
         <div className="mt-4 rounded-xl border border-border p-3">
