@@ -117,11 +117,20 @@ export function MyFlashManagement() {
     }
   }
 
-  const statusGroups = (["draft", "live", "expired", "archived"] as const)
-    .map((status) => ({
-      status,
-      items: records?.filter((record) => resolveFlashStatus(record) === status) ?? [],
-    }))
+  const startOfDay = (value: number) => {
+    const date = new Date(value);
+    date.setHours(0, 0, 0, 0);
+    return date.getTime();
+  };
+  const today = startOfDay(Date.now());
+  const day = 86_400_000;
+  const groups = [
+    { key: "today", label: "flash.mine.period.today", predicate: (r: FlashRecord) => startOfDay(r.createdAt) === today },
+    { key: "yesterday", label: "flash.mine.period.yesterday", predicate: (r: FlashRecord) => startOfDay(r.createdAt) === today - day },
+    { key: "twoDays", label: "flash.mine.period.twoDays", predicate: (r: FlashRecord) => startOfDay(r.createdAt) === today - 2 * day },
+    { key: "week", label: "flash.mine.period.week", predicate: (r: FlashRecord) => startOfDay(r.createdAt) >= today - 6 * day && startOfDay(r.createdAt) < today - 2 * day },
+    { key: "older", label: "flash.mine.period.older", predicate: (r: FlashRecord) => startOfDay(r.createdAt) < today - 6 * day },
+  ].map((group) => ({ ...group, items: records?.filter(group.predicate).sort((a, b) => b.createdAt - a.createdAt) ?? [] }))
     .filter((group) => group.items.length > 0);
 
   if (userId === undefined || records === undefined) {
@@ -164,10 +173,10 @@ export function MyFlashManagement() {
         </p>
       ) : null}
 
-      {statusGroups.map((group) => (
-        <section key={group.status}>
+      {groups.map((group) => (
+        <section key={group.key}>
           <h3 className="mb-2 text-sm font-semibold text-muted-foreground">
-            {t(statusKeys[group.status])} ({group.items.length})
+            {t(group.label)} ({group.items.length})
           </h3>
           <div className="stack-3">
             {group.items.map((record) => {
