@@ -83,4 +83,5 @@ jobs:
           bun run test:run -- \
             tests/scan/scan-interpreter.test.ts \
             tests/scan/scan-selection.test.ts \
-            tests/scan/scan-contracts.test.ts
+            tests/scan/scan-contracts.test.ts \
+            tests/scan/flash-scan-boundary.test.ts
