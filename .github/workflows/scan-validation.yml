@@ -57,6 +57,7 @@ jobs:
           bun-version: "1.2.23"
 
       - name: Install locked dependencies
+        id: install-dependencies
         run: bun install --frozen-lockfile
 
       - name: Lint Scan files
@@ -69,6 +70,7 @@ jobs:
             tests/scan/
 
       - name: Run targeted Scan tests
+        if: always() && steps.install-dependencies.outcome == 'success'
         run: |
           bun run test:run -- \
             tests/scan/scan-interpreter.test.ts \
