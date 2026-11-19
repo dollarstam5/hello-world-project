@@ -55,7 +55,6 @@ export function createFlash(input: NewFlashInput) {
     urgency: input.urgency,
     areaLabel: input.areaLabel,
     expiresAt: input.expiresAt,
-    mediaIds: [],
   } as never);
 }
 
