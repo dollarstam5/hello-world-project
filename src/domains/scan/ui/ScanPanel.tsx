@@ -4,6 +4,7 @@ import { formatCommunicationMessage } from "@/lib/communication/format";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useScan } from "../hooks/useScan";
 import { PublicProfilePreview } from "@/components/app/PublicProfilePreview";
+import { ScanNeedInterpretation } from "./ScanNeedInterpretation";
 
 const SCAN_RADII_KM = [1, 5, 10, 20] as const;
 const SCAN_LIMIT = 20;
@@ -80,6 +81,8 @@ export function ScanPanel() {
           className="min-h-12 w-full rounded-xl border border-border bg-surface px-3 text-sm font-normal text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
         />
       </label>
+
+      {needText.trim() ? <ScanNeedInterpretation text={needText} /> : null}
 
       <label className="stack-1 max-w-xs text-sm font-medium" htmlFor="scan-radius">
         <span>{t("scan.radius")}</span>
