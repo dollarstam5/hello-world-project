@@ -215,17 +215,18 @@ describe("runPush transport — Flash creation and convergence", () => {
   });
 });
 
-
 describe("runPush transport — stale Flash updates", () => {
   it("rejects an offline update when the server record is already deleted", async () => {
     const db = new FakeDatabase();
-    db.tables.flashes = [{
-      id: recordId,
-      author_id: ownerId,
-      title: "Flash supprimé",
-      deleted_at: 1234,
-      revision: 4,
-    }];
+    db.tables.flashes = [
+      {
+        id: recordId,
+        author_id: ownerId,
+        title: "Flash supprimé",
+        deleted_at: 1234,
+        revision: 4,
+      },
+    ];
     const entry = flashEntry("update", { title: "Modification hors ligne tardive" });
 
     const result = await runPush(db.client(), request(entry), ownerId);
@@ -270,7 +271,6 @@ describe("runPush transport — Radar mutation receipts", () => {
     });
   });
 
-
   it("does not replay a receipt whose mutation id is bound to another record", async () => {
     const db = new FakeDatabase();
     db.receipts.push({
@@ -290,9 +290,7 @@ describe("runPush transport — Radar mutation receipts", () => {
     const result = await runPush(db.client(), request(entry), ownerId);
 
     expect(result.accepted).toEqual([]);
-    expect(result.rejected).toEqual([
-      { id: mutationId, code: "server_error", retryable: true },
-    ]);
+    expect(result.rejected).toEqual([{ id: mutationId, code: "server_error", retryable: true }]);
     expect(db.successfulBusinessWrites).toBe(0);
     expect(db.tables.radars).toHaveLength(0);
   });
@@ -392,9 +390,7 @@ describe("runPush transport — Radar mutation receipts", () => {
     const first = await runPush(db.client(), request(entry), ownerId);
 
     expect(first.accepted).toEqual([]);
-    expect(first.rejected).toEqual([
-      { id: mutationId, code: "server_error", retryable: true },
-    ]);
+    expect(first.rejected).toEqual([{ id: mutationId, code: "server_error", retryable: true }]);
     expect(db.tables.radars[0].title).toBe("Titre modifié");
     expect(db.successfulBusinessWrites).toBe(1);
     expect(db.receipts).toHaveLength(0);
