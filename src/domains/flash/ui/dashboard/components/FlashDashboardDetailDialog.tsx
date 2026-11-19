@@ -31,7 +31,8 @@ export function FlashDashboardDetailDialog({
         <DialogHeader>
           <DialogTitle className="pr-8">{record.title}</DialogTitle>
           <DialogDescription>
-            {statusLabel} · {new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(record.createdAt)}
+            {statusLabel} {"·"}{" "}
+            {new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(record.createdAt)}
           </DialogDescription>
         </DialogHeader>
         <div className="stack-3 text-sm">

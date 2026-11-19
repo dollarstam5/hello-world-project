@@ -1,5 +1,4 @@
 import type { FlashRecord } from "@eco/core-contracts";
-
 import type { FlashTimelineGroup, FlashTimelineGroupKey } from "../types/flashDashboard.types";
 
 const DAY_MS = 86_400_000;
@@ -29,20 +28,41 @@ export function groupFlashByDate(records: FlashRecord[], now = Date.now()): Flas
     label: string;
     predicate: (record: FlashRecord) => boolean;
   }> = [
-    { key: "today", label: "flash.mine.period.today", predicate: (r) => startOfDay(r.createdAt) === today },
-    { key: "yesterday", label: "flash.mine.period.yesterday", predicate: (r) => startOfDay(r.createdAt) === today - DAY_MS },
-    { key: "twoDays", label: "flash.mine.period.twoDays", predicate: (r) => startOfDay(r.createdAt) === today - 2 * DAY_MS },
+    {
+      key: "today",
+      label: "flash.mine.period.today",
+      predicate: (r) => startOfDay(r.createdAt) === today,
+    },
+    {
+      key: "yesterday",
+      label: "flash.mine.period.yesterday",
+      predicate: (r) => startOfDay(r.createdAt) === today - DAY_MS,
+    },
+    {
+      key: "twoDays",
+      label: "flash.mine.period.twoDays",
+      predicate: (r) => startOfDay(r.createdAt) === today - 2 * DAY_MS,
+    },
     {
       key: "week",
       label: "flash.mine.period.week",
-      predicate: (r) => startOfDay(r.createdAt) >= thisWeekStart && startOfDay(r.createdAt) < today - 2 * DAY_MS,
+      predicate: (r) =>
+        startOfDay(r.createdAt) >= thisWeekStart &&
+        startOfDay(r.createdAt) < today - 2 * DAY_MS,
     },
     {
       key: "lastWeek",
       label: "flash.mine.period.lastWeek",
-      predicate: (r) => startOfDay(r.createdAt) >= lastWeekStart && startOfDay(r.createdAt) < thisWeekStart && startOfDay(r.createdAt) < today - 2 * DAY_MS,
+      predicate: (r) =>
+        startOfDay(r.createdAt) >= lastWeekStart &&
+        startOfDay(r.createdAt) < thisWeekStart &&
+        startOfDay(r.createdAt) < today - 2 * DAY_MS,
     },
-    { key: "older", label: "flash.mine.period.older", predicate: (r) => startOfDay(r.createdAt) < lastWeekStart },
+    {
+      key: "older",
+      label: "flash.mine.period.older",
+      predicate: (r) => startOfDay(r.createdAt) < lastWeekStart,
+    },
   ];
 
   return definitions
