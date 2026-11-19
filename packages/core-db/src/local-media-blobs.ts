@@ -88,7 +88,6 @@ export async function attachLocalFlashMedia(ids: string[], flashId: string): Pro
     }
   });
 }
-
 export async function deleteLocalFlashAttachment(id: string): Promise<void> {
   const ownerId = requireLocalDataOwnerId();
   const db = getDb();
