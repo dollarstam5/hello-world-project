@@ -96,7 +96,6 @@ export function FlashDashboard({
     }
   }
 
-
   async function remove(record: FlashRecord) {
     setBusyId(record.id);
     setActionError(false);
