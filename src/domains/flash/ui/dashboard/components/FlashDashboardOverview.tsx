@@ -1,5 +1,6 @@
 import { Archive, Clock3, FileText, Radio } from "lucide-react";
 import type { FlashRecord } from "@eco/core-contracts";
+import { resolveFlashStatus } from "@eco/core-logic";
 import { Surface } from "@/components/app/Surface";
 import { useI18n } from "@/lib/i18n/useI18n";
 
@@ -24,7 +25,7 @@ export function FlashDashboardOverview({ records }: Props) {
   return (
     <section aria-label={t("flash.mine.title")} className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
       {STATUS_CARDS.map(({ key, icon: Icon, style }) => {
-        const count = records.filter((record) => record.status === key).length;
+        const count = records.filter((record) => resolveFlashStatus(record) === key).length;
         return (
           <Surface key={key} variant="elevated" padding="sm" bordered className="min-w-0">
             <div className="flex items-center gap-2">
