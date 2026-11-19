@@ -25,7 +25,7 @@ export function ScanNeedInterpretation({ text }: { text: string }) {
     : "scan.interpretation.intent.unknown";
 
   return (
-    <section className="stack-1 rounded-2xl border border-border-soft bg-surface p-3" aria-live="polite">
+    <section\n      className="stack-1 rounded-2xl border border-border-soft bg-surface p-3"\n      aria-live="polite"\n    >
       <p className="text-sm font-medium">{t("scan.interpretation.title")}</p>
       <p className="text-sm text-muted-foreground">
         {t("scan.interpretation.intentLabel")} {t(intentKey)}
