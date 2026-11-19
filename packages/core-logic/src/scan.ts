@@ -34,8 +34,8 @@ export function assessScanCandidate(
   interpretation: ScanInterpretation,
   evidence?: ScanCandidateEvidence,
 ): ScanCandidateAssessment {
-  const safeEvidence: ScanCandidateEvidence =
-    evidence ?? result.evidence ?? {
+  const safeEvidence: ScanCandidateEvidence = evidence ??
+    result.evidence ?? {
       needMatch: "unknown",
       confirmedRequiredCriteria: [],
       refutedRequiredCriteria: [],
