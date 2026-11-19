@@ -3,16 +3,10 @@ import { Archive, Eye, Pencil, Trash2 } from "lucide-react";
 import type { FlashRecord } from "@eco/core-contracts";
 import { resolveFlashStatus } from "@eco/core-logic";
 import { Surface } from "@/components/app/Surface";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useI18n } from "@/lib/i18n/useI18n";
+import { FlashDashboardDetailDialog } from "./FlashDashboardDetailDialog";
 
 type Props = {
   record: FlashRecord;
@@ -167,45 +161,14 @@ export function FlashDashboardRecordCard({
           </Button>
         </div>
       </div>
-      <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
-        <DialogContent className="max-h-[85dvh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="pr-8">{record.title}</DialogTitle>
-            <DialogDescription>
-              {t(statusKeys[status])} ·{" "}
-              {new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(record.createdAt)}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="stack-3 text-sm">
-            <div className="rounded-xl border bg-muted/30 p-3">
-              <p className="whitespace-pre-wrap break-words">{record.body}</p>
-            </div>
-            <div className="stack-2 text-muted-foreground">
-              <p>
-                {t("flash.mine.detailCreated")}:{" "}
-                {new Intl.DateTimeFormat(locale, {
-                  dateStyle: "medium",
-                  timeStyle: "short",
-                }).format(record.createdAt)}
-              </p>
-              {record.expiresAt ? (
-                <p>
-                  {t("flash.mine.detailExpires")}:{" "}
-                  {new Intl.DateTimeFormat(locale, {
-                    dateStyle: "medium",
-                    timeStyle: "short",
-                  }).format(record.expiresAt)}
-                </p>
-              ) : null}
-              {record.areaLabel ? (
-                <p>
-                  {t("flash.mine.detailArea")}: {record.areaLabel}
-                </p>
-              ) : null}
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <FlashDashboardDetailDialog
+        record={record}
+        locale={locale}
+        statusLabel={t(statusKeys[status])}
+        open={detailsOpen}
+        onOpenChange={setDetailsOpen}
+      />
+
     </Surface>
   );
 }
