@@ -84,7 +84,7 @@ export function assessScanCandidate(
 /** Keeps qualification groups separate; relevance only orders items within a group. */
 export function rankScanAssessments(
   assessments: ScanCandidateAssessment[],
-  now = Date.now(),
+  now = Date.now,
 ): ScanCandidateAssessment[] {
   const priority: Record<ScanCandidateAssessment["level"], number> = {
     exact: 0,
@@ -101,7 +101,6 @@ export function rankScanAssessments(
   });
 }
 
-
 /**
  * Builds only evidence that the public Flash projection can prove.
  * The current projection exposes a time slot, but not enough semantic detail
@@ -117,8 +116,9 @@ export function buildScanSourceEvidence(
 
   for (const criterion of interpretation.requiredCriteria) {
     if (/^(?:ouvert|disponible) maintenant$/.test(criterion)) {
-      (result.timeSlot === "now" ? confirmedRequiredCriteria : refutedRequiredCriteria)
-        .push(criterion);
+      (result.timeSlot === "now" ? confirmedRequiredCriteria : refutedRequiredCriteria).push(
+        criterion,
+      );
     } else {
       unknownRequiredCriteria.push(criterion);
     }
@@ -139,7 +139,7 @@ export function buildScanSourceEvidence(
 export function selectScanResults(
   results: ScanResult[],
   interpretation: ScanInterpretation,
-  now = Date.now(),
+  now = Date.now,
 ): ScanCandidateAssessment[] {
   return rankScanAssessments(
     results.map((result) => assessScanCandidate(result, interpretation)),
