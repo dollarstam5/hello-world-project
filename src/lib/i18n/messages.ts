@@ -574,6 +574,10 @@ export const messages = {
     "flash.mine.detailExpires": "Expire le",
     "flash.mine.detailArea": "Zone",
     "flash.mine.detailMedia": "Fichiers associés",
+    "flash.mine.localMediaMissing": "Les fichiers associés ne sont pas présents sur cet appareil. Le transfert distant n'est pas encore disponible.",
+    "flash.mine.localOnly": "Sur cet appareil",
+    "flash.mine.openLocalFile": "Ouvrir le fichier",
+
     "flash.mine.media.kind.image": "Image",
     "flash.mine.media.kind.video": "Vidéo",
     "flash.mine.media.kind.audio": "Audio",
@@ -1643,6 +1647,10 @@ export const messages = {
     "flash.mine.detailExpires": "Expires",
     "flash.mine.detailArea": "Area",
     "flash.mine.detailMedia": "Attached files",
+    "flash.mine.localMediaMissing": "The linked files are not available on this device. Remote transfer is not available yet.",
+    "flash.mine.localOnly": "On this device",
+    "flash.mine.openLocalFile": "Open file",
+
     "flash.mine.media.kind.image": "Image",
     "flash.mine.media.kind.video": "Video",
     "flash.mine.media.kind.audio": "Audio",
