@@ -272,7 +272,20 @@ describe("runPush transport — Radar mutation receipts", () => {
     });
   });
 
-  it("replays the same mutation id from its receipt without a second business write", async () => {
+
+  it("does not accept a delete when the server returns no row and no tombstone exists", async () => {
+    const db = new FakeDatabase();
+    const entry = radarEntry("delete", {});
+
+    const result = await runPush(db.client(), request(entry), ownerId);
+
+    expect(result.accepted).toEqual([]);
+    expect(result.rejected).toEqual([
+      { id: mutationId, code: "record_not_found", retryable: false },
+    ]);
+    expect(db.receipts).toHaveLength(0);
+  });
+\n  it("replays the same mutation id from its receipt without a second business write", async () => {
     const db = new FakeDatabase();
     const entry = radarEntry("create", {
       title: "Radar idempotent",
