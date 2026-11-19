@@ -66,9 +66,7 @@ export function FlashDashboardDetailDialog({
         <section className="stack-2">
           <h3 className="text-sm font-medium">{t("flash.mine.detailContent")}</h3>
           <div className="rounded-xl border bg-muted/30 p-4">
-            <p className="whitespace-pre-wrap break-words text-sm leading-relaxed">
-              {record.body}
-            </p>
+            <p className="whitespace-pre-wrap break-words text-sm leading-relaxed">{record.body}</p>
           </div>
         </section>
 
@@ -93,25 +91,13 @@ export function FlashDashboardDetailDialog({
           <h3 className="text-sm font-medium">{t("flash.mine.detailActions")}</h3>
           <div className="flex flex-wrap gap-2">
             {canEdit ? (
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                disabled={busy}
-                onClick={onEdit}
-              >
+              <Button type="button" variant="outline" size="sm" disabled={busy} onClick={onEdit}>
                 <Pencil aria-hidden />
                 {t("flash.mine.edit")}
               </Button>
             ) : null}
             {canArchive ? (
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                disabled={busy}
-                onClick={onArchive}
-              >
+              <Button type="button" variant="outline" size="sm" disabled={busy} onClick={onArchive}>
                 <Archive aria-hidden />
                 {t("flash.mine.archive")}
               </Button>
