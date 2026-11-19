@@ -250,44 +250,41 @@ export function FlashDashboard({
                 </span>
               </button>
             </h3>
-            {collapsed ? null : (
-              <div id={`flash-timeline-${group.key}`} className="stack-3">
-            {statusGroups.map((statusGroup) => {
-              const statusItems = group.items.filter(
-                (record) => resolveFlashStatus(record) === statusGroup.key,
-              );
-              if (statusItems.length === 0) return null;
+            <div id={`flash-timeline-${group.key}`} hidden={collapsed} className="stack-3">
+              {statusGroups.map((statusGroup) => {
+                const statusItems = group.items.filter(
+                  (record) => resolveFlashStatus(record) === statusGroup.key,
+                );
+                if (statusItems.length === 0) return null;
 
-              return (
-                <div key={statusGroup.key} className="stack-2">
-                  <h4 className="flex items-center justify-between gap-2 text-xs font-medium text-foreground/80">
-                    <span>{t(statusGroup.label)}</span>
-                    <span className="text-[11px] tabular-nums text-muted-foreground">
-                      {statusItems.length}
-                    </span>
-                  </h4>
-                  <div className="stack-2">
-                    {statusItems.map((record) => (
-                      <FlashDashboardRecordCard
-                        key={record.id}
-                        record={record}
-                        locale={locale}
-                        busyId={busyId}
-                        onArchive={archive}
-                        onSave={saveEdit}
-                        onDelete={setPendingDelete}
-                      />
-                    ))}
+                return (
+                  <div key={statusGroup.key} className="stack-2">
+                    <h4 className="flex items-center justify-between gap-2 text-xs font-medium text-foreground/80">
+                      <span>{t(statusGroup.label)}</span>
+                      <span className="text-[11px] tabular-nums text-muted-foreground">
+                        {statusItems.length}
+                      </span>
+                    </h4>
+                    <div className="stack-2">
+                      {statusItems.map((record) => (
+                        <FlashDashboardRecordCard
+                          key={record.id}
+                          record={record}
+                          locale={locale}
+                          busyId={busyId}
+                          onArchive={archive}
+                          onSave={saveEdit}
+                          onDelete={setPendingDelete}
+                        />
+                      ))}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-              </div>
-            )}
+                );
+              })}
+            </div>
           </section>
         );
       })}
-
       <FlashDashboardDeleteDialog
         open={pendingDelete !== null}
         busy={busyId !== null}
