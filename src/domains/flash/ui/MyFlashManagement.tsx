@@ -348,16 +348,16 @@ export function MyFlashManagement({
 
                   <div className="mt-3 flex flex-wrap justify-end gap-2">
                     <Button
-        type="button"
-        size="sm"
-        variant="outline"
-        disabled={editingId !== null || busyId !== null}
-        onClick={() => setExpandedId(expandedId === record.id ? null : record.id)}
-      >
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      disabled={editingId !== null || busyId !== null}
+                      onClick={() => setExpandedId(expandedId === record.id ? null : record.id)}
+                    >
                       <Eye className="mr-2 h-4 w-4" aria-hidden />
                       {expandedId === record.id
-            ? t("flash.mine.hideDetails")
-            : t("flash.mine.viewDetails")}
+                        ? t("flash.mine.hideDetails")
+                        : t("flash.mine.viewDetails")}
                     </Button>
                     {editingId !== record.id ? (
                       <Button
