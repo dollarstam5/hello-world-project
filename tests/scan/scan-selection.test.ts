@@ -118,6 +118,18 @@ describe("Scan candidate qualification", () => {
     expect(selected[0].level).toBe("exact");
   });
 
+
+  it("keeps current public Flash projection results unverified, even when title looks relevant", () => {
+    const interpretation = interpretScanRequest("Je cherche un mécanicien");
+    const flashLike = result("Mécanicien disponible");
+    const evidence = buildScanSourceEvidence(flashLike, interpretation);
+    const assessment = assessScanCandidate(flashLike, interpretation, evidence);
+
+    expect(evidence.needMatch).toBe("unknown");
+    expect(assessment.level).toBe("unverified");
+    expect(assessment.explanationCodes).toContain("evidence_incomplete");
+  });
+
   it("orders qualification groups before proximity and freshness", () => {
     const interpretation = interpretScanRequest("Je cherche un mécanicien");
     const exact = assessScanCandidate(result("exact-far", 4), interpretation, {
