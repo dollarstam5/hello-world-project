@@ -46,7 +46,9 @@ export function groupFlashByDate(records: FlashRecord[], now = Date.now()): Flas
     {
       key: "week",
       label: "flash.mine.period.week",
-      predicate: (r) => startOfDay(r.createdAt) >= thisWeekStart && startOfDay(r.createdAt) < today - 2 * DAY_MS,
+      predicate: (r) =>
+        startOfDay(r.createdAt) >= thisWeekStart &&
+        startOfDay(r.createdAt) < today - 2 * DAY_MS,
     },
     {
       key: "lastWeek",
