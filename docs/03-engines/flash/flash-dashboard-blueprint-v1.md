@@ -4,7 +4,7 @@
 **Version :** V1
 **Branche de travail :** `scan-phase-a-interpreter`
 **Périmètre :** parcours obligatoire de première création, déverrouillage du dashboard après sauvegarde ou publication confirmée, puis gestion des Flashs
-**Aucune implémentation runtime n'est autorisée par ce document.**
+**Blueprint de référence UX/produit ; toute implémentation doit respecter le périmètre texte/voix et les décisions existantes.**
 
 ## 1. Objectif et mission
 
