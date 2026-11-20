@@ -69,7 +69,8 @@ describe("Flash composer journey (T2)", () => {
     await click("flash.hero.action");
     await act(async () => {
       const textarea = textArea();
-      textarea.value = message;
+      const nativeSetter = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, "value")?.set;
+      nativeSetter?.call(textarea, message);
       textarea.dispatchEvent(new Event("input", { bubbles: true }));
     });
     await click("common.continue");
@@ -83,7 +84,8 @@ describe("Flash composer journey (T2)", () => {
 
     const select = host.querySelector("select") as HTMLSelectElement;
     await act(async () => {
-      select.value = "tomorrow";
+      const nativeSetter = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, "value")?.set;
+      nativeSetter?.call(select, "tomorrow");
       select.dispatchEvent(new Event("change", { bubbles: true }));
     });
     await click("flash.scope.whole_city");
