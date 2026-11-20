@@ -19,6 +19,12 @@ export function useScanFlow() {
     scan.clearResults();
   }, [scan.clearResults]);
 
+  const updateRadiusKm = useCallback((radius: typeof preferences.radiusKm) => {
+    preferences.setRadiusKm(radius);
+    setStarted(false);
+    scan.clearResults();
+  }, [preferences.setRadiusKm, scan.clearResults]);
+
   const status = getScanStatus({
     started,
     locating: location.locating,
@@ -53,7 +59,7 @@ export function useScanFlow() {
     locationError: location.locationError,
     unsupported: location.unsupported,
     radiusKm: preferences.radiusKm,
-    setRadiusKm: preferences.setRadiusKm,
+    setRadiusKm: updateRadiusKm,
     availableRadii: preferences.availableRadii,
     needText,
     setNeedText: updateNeedText,
