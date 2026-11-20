@@ -453,7 +453,8 @@ export const messages = {
     "scan.radius": "Jusqu’où chercher ? ",
     "scan.radius.unit": "km",
     "scan.start": "Explorer avec Scan",
-    "scan.busy": "Scan explore…",
+    "scan.locating": "Je vous situe…",
+    "scan.busy": "Je cherche les Flashs autour de vous…",
     "scan.empty": "Aucun Flash actif dans cette zone pour le moment.",
     "scan.location.permission":
       "L’accès à la position est refusé. Modifiez l’autorisation du navigateur puis réessayez.",
@@ -1535,7 +1536,8 @@ export const messages = {
     "scan.radius": "How far should we search?",
     "scan.radius.unit": "km",
     "scan.start": "Explore with Scan",
-    "scan.busy": "Scan is exploring…",
+    "scan.locating": "Finding your location…",
+    "scan.busy": "Looking for Flash posts nearby…",
     "scan.empty": "No active Flash in this area yet.",
     "scan.location.permission":
       "Location access was denied. Update your browser permission and try again.",
