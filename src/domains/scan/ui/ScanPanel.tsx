@@ -88,7 +88,7 @@ export function ScanPanel() {
             <div className="stack-3">
               <ScanNeedInterpretation text={needText} />
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                <button type="button" onClick={confirmNeed} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-primary px-4 text-sm font-semibold text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                <button type="button" onClick={confirmInterpretation} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-primary px-4 text-sm font-semibold text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
                   <Check className="h-4 w-4" aria-hidden /> {t("scan.flow.confirmNeed")}
                 </button>
                 <button type="button" onClick={backToNeed} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-border bg-background px-4 text-sm font-medium hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
