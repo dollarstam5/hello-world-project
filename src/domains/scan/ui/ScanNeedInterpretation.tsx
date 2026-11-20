@@ -26,7 +26,7 @@ export function ScanNeedInterpretation({ text }: { text: string }) {
 
   return (
     <section
-      className="stack-1 rounded-2xl border border-border-soft bg-surface p-3"
+      className="stack-1 rounded-xl border border-border-soft bg-surface p-2.5 sm:rounded-2xl sm:p-3"
       aria-live="polite"
     >
       <p className="text-sm font-medium">{t("scan.interpretation.title")}</p>
