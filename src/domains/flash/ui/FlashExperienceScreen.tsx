@@ -4,7 +4,6 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight, Check, Info, Mic, MicOff, Plus, Sparkles, X, Zap } from "lucide-react";
 import { FLASH_SCOPES, FLASH_URGENCIES } from "@eco/core-contracts";
 import type {
-  FlashKind,
   FlashScope,
   FlashTimeSlot,
   FlashUrgency,
@@ -237,8 +236,8 @@ export function FlashExperienceScreen() {
         kind: parsedIntent?.kind ?? "need",
         category: parsedIntent?.category ?? "other",
         timeSlot,
-        scope,
-        urgency,
+        scope: scope ?? "current_area",
+        urgency: urgency ?? "anytime",
         areaLabel: areaLabel.trim() || undefined,
         expiresAt: expiryFor(timeSlot),
       });
@@ -597,7 +596,7 @@ export function FlashExperienceScreen() {
                   className="min-h-12 rounded-full"
                   onClick={() => void saveFlashDraft()}
                   disabled={
-                    !user || authLoading || publishing || !text.trim() || !scope || !urgency
+                    !user || authLoading || publishing || !text.trim()
                   }
                 >
                   {publishing ? t("app.loading") : t("flash.location.saveDraft")}
