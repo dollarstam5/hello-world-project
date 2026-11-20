@@ -19,9 +19,13 @@ describe("Flash and Scan engine boundaries", () => {
     expect(sharedService).toContain(' "scan_public_flashes"');
   });
 
-  it("keeps Scan UI file unchanged as a presentation boundary", () => {
+  it("keeps Scan presentation separate from its preferences state", () => {
     const scanPanel = read("src/domains/scan/ui/ScanPanel.tsx");
+    const scanPreferences = read("src/domains/scan/hooks/useScanPreferences.ts");
+
     expect(scanPanel).toContain("export function ScanPanel()");
-    expect(scanPanel).toContain("SCAN_RADII_KM");
+    expect(scanPanel).toContain("useScanFlow");
+    expect(scanPreferences).toContain("const SCAN_RADII_KM");
+    expect(scanPreferences).toContain("availableRadii: SCAN_RADII_KM");
   });
 });
