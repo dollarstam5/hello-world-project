@@ -161,7 +161,7 @@ class FakeQuery {
 }
 
 class FakeDatabase {
-  tables: Record<string, Row[]> = { radars: [] };
+  tables: Record<string, Row[]> = { radars: [], flashes: [] };
   receipts: Row[] = [];
   receiptWriteFailures = 0;
   concurrentReceiptWinner: Row | null = null;
