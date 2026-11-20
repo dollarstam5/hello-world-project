@@ -1,1 +1,0 @@
-Temporary CI trigger for PR #86 validation after the Prettier-only formatting commit. This file will be removed immediately.
