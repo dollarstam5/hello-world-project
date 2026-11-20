@@ -433,29 +433,10 @@ export function FlashExperienceScreen() {
               ) : !speechSupported ? (
                 <p className="mt-2 text-xs text-muted-foreground">{t("flash.voice.unsupported")}</p>
               ) : null}
-              {parsedIntent ? (
-                <div
-                  className="mt-4 rounded-2xl border border-primary/15 bg-primary/5 p-4"
-                  aria-live="polite"
-                >
-                  <p className="mb-2 text-sm font-semibold">{t("flash.composer.understood")}</p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="rounded-full bg-card px-3 py-1.5 text-xs font-medium">
-                      {t(`flash.kind.${parsedIntent.kind}`)}
-                    </span>
-                    <span className="rounded-full bg-card px-3 py-1.5 text-xs font-medium">
-                      {t(`flash.category.${parsedIntent.category}`)}
-                    </span>
-                    <span className="rounded-full bg-card px-3 py-1.5 text-xs font-medium">
-                      {t(`flash.slot.${parsedIntent.timeSlot}`)}
-                    </span>
-                  </div>
-                </div>
-              ) : null}
               <Button
                 type="button"
                 className="mt-5 min-h-12 w-full rounded-full"
-                disabled={!parsedIntent || !text.trim()}
+                disabled={text.trim().length < 3}
                 onClick={continueToReview}
               >
                 {t("common.continue")}
