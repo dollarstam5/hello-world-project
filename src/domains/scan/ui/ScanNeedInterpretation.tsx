@@ -25,7 +25,7 @@ export function ScanNeedInterpretation({ text }: { text: string }) {
 
   return (
     <section className="stack-2 rounded-2xl border border-border-soft bg-surface p-3 sm:p-4" aria-live="polite">
-      <p className="text-sm font-semibold">{t("scan.interpretation.title")}</p>
+      <p className="text-sm font-semibold">{t("scan.interpretation.title")}</p>\n      <p className="text-sm leading-relaxed">{t("scan.interpretation.originalLabel")}: {parsed.originalText}</p>
       <p className="text-sm text-muted-foreground">{t("scan.interpretation.intentLabel")} {t(intentKey)}</p>
       <div className="stack-1">
         <p className="text-xs font-medium text-muted-foreground">{t("scan.interpretation.detected")}</p>
