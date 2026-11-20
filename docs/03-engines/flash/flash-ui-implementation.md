@@ -156,3 +156,18 @@ Le Dashboard est regroupé dans `src/domains/flash/ui/dashboard/` pour séparer 
 
 
 Flash V1 reste centré sur l'expression naturelle par texte ou voix. Aucun ajout de fichiers, pièce jointe, média ou transfert n'est prévu dans ce périmètre. La migration locale Dexie v6 retire la table expérimentale de blobs et les références `mediaIds` obsolètes des Flashs locaux.
+
+## Évolution produit à intégrer — lieu associé et critères non renseignés
+
+La future étape de composition/revue doit proposer, sans obligation, un **lieu associé à ce Flash**, distinct du lieu de l'auteur et de la portée de diffusion. Exemple : une maison à louer peut avoir son propre emplacement, même si le propriétaire publie depuis un autre endroit.
+
+La précision/visibilité envisagée (à confirmer avant activation) :
+- lieu exact, exposé seulement après permission explicite et via un mécanisme de publication sécurisé ;
+- zone approximative ;
+- lieu non affiché.
+
+Ne jamais partager les coordonnées précises via la table Sync générique ou une projection publique de Flash. L'option doit être absente/masquée par défaut et la création reste possible sans lieu.
+
+Les critères facultatifs doivent rester non bloquants pour l'enregistrement et, quand les règles indispensables sont satisfaites, la publication. Les informations manquantes restent inconnues ; aucun champ, filtre ou caractéristique ne peut être inventé.
+
+**État technique actuel :** le parcours V1 sauvegarde des brouillons locaux, la publication distante est désactivée et les coordonnées sont actuellement gérées par le parcours de localisation de l'auteur. Cette nouvelle option de lieu propre au Flash n'est donc pas encore raccordée au modèle local, au contrat Sync, au stockage sécurisé ni aux projections de découverte. Ne pas afficher un contrôle qui prétend publier une localisation tant que ces raccordements et tests de sécurité ne sont pas faits.
