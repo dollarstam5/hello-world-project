@@ -255,12 +255,19 @@ export async function runPush(
           p_radar_id: entry.recordId,
           p_action: action,
         });
-      } else if (entry.table === "flashes" && entry.kind === "update" && typeof row["status"] === "string") {
+      } else if (
+        entry.table === "flashes" &&
+        entry.kind === "update" &&
+        typeof row["status"] === "string"
+      ) {
         if (Object.keys(row).some((field) => field !== "status") || row["status"] !== "archived") {
           rejected.push({ id: entry.id, code: "invalid_mutation", retryable: false });
           continue;
         }
-        result = await db.rpc("transition_flash", { p_flash_id: entry.recordId, p_status: "archived" });
+        result = await db.rpc("transition_flash", {
+          p_flash_id: entry.recordId,
+          p_status: "archived",
+        });
         if (!result.error && result.data === true) {
           const archived = await recoverAppliedMutation(db, entry, table, row);
           if (archived) {

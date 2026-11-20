@@ -9,7 +9,12 @@ import type {
 } from "@eco/core-contracts";
 import { newId } from "@eco/core-contracts";
 import { isFlashVisible } from "@eco/core-logic";
-import { flashesRepository, flashesLifecycleRepository, requestSyncNow, useLocalQuery } from "@/platform/offline";
+import {
+  flashesRepository,
+  flashesLifecycleRepository,
+  requestSyncNow,
+  useLocalQuery,
+} from "@/platform/offline";
 
 /**
  * Flash data access. The interface calls these functions; they only touch the

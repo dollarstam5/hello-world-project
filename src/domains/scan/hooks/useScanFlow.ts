@@ -15,18 +15,24 @@ export function useScanFlow() {
   const [needText, setNeedText] = useState("");
   const [stage, setStage] = useState<ScanPreparationStage>("need");
 
-  const updateNeedText = useCallback((value: string) => {
-    setNeedText(value);
-    setStage("need");
-    setStarted(false);
-    scan.clearResults();
-  }, [scan.clearResults]);
+  const updateNeedText = useCallback(
+    (value: string) => {
+      setNeedText(value);
+      setStage("need");
+      setStarted(false);
+      scan.clearResults();
+    },
+    [scan.clearResults],
+  );
 
-  const updateRadiusKm = useCallback((radius: typeof preferences.radiusKm) => {
-    preferences.setRadiusKm(radius);
-    setStarted(false);
-    scan.clearResults();
-  }, [preferences.setRadiusKm, scan.clearResults]);
+  const updateRadiusKm = useCallback(
+    (radius: typeof preferences.radiusKm) => {
+      preferences.setRadiusKm(radius);
+      setStarted(false);
+      scan.clearResults();
+    },
+    [preferences.setRadiusKm, scan.clearResults],
+  );
 
   const confirmNeed = useCallback(() => {
     if (needText.trim()) setStage("confirmation");
@@ -61,7 +67,15 @@ export function useScanFlow() {
         limit: SCAN_LIMIT,
       });
     });
-  }, [stage, needText, scan.busy, location.locating, location.locate, scan.execute, preferences.radiusKm]);
+  }, [
+    stage,
+    needText,
+    scan.busy,
+    location.locating,
+    location.locate,
+    scan.execute,
+    preferences.radiusKm,
+  ]);
 
   return {
     rows: scan.rows,

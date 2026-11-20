@@ -9,7 +9,8 @@ const base = createRepository<FlashRecord>("flashes");
 
 function actorId(): UserId {
   const owner = requireLocalDataOwnerId();
-  if (owner.startsWith("guest:")) throw new Error("Authentication is required for Flash lifecycle actions.");
+  if (owner.startsWith("guest:"))
+    throw new Error("Authentication is required for Flash lifecycle actions.");
   return asId<"UserId">(owner);
 }
 
@@ -23,7 +24,13 @@ async function archive(id: string): Promise<FlashRecord> {
   const next = stampUpdate({ ...current, status: "archived" });
   await db.transaction("rw", db.flashes, db.outbox, async () => {
     await db.flashes.put(next);
-    await enqueueMutation({ table: "flashes", recordId: id, kind: "update", patch: { status: "archived" }, mutatedAt: next.updatedAt });
+    await enqueueMutation({
+      table: "flashes",
+      recordId: id,
+      kind: "update",
+      patch: { status: "archived" },
+      mutatedAt: next.updatedAt,
+    });
   });
   return next;
 }

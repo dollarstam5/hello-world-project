@@ -419,18 +419,22 @@ export const messages = {
     "scan.title": "Scanner les Flash",
     "scan.door.eyebrow": "Une porte vers la découverte",
     "scan.door.title": "Qu’est-ce qui pourrait vous aider aujourd’hui ?",
-    "scan.door.desc": "Exprimez votre besoin avec vos mots. Scan explore les possibilités et vous rapproche de ce qui peut vous être utile.",
-    "scan.door.privacy": "Votre position est utilisée pour cette exploration et n’est pas affichée aux autres.",
+    "scan.door.desc":
+      "Exprimez votre besoin avec vos mots. Scan explore les possibilités et vous rapproche de ce qui peut vous être utile.",
+    "scan.door.privacy":
+      "Votre position est utilisée pour cette exploration et n’est pas affichée aux autres.",
     "scan.preferences.title": "Ajuster ma recherche",
     "scan.preferences.optional": "Facultatif",
-    "scan.preferences.radiusNote": "Scan reste dans le rayon choisi et ne l’élargit pas sans votre accord.",
+    "scan.preferences.radiusNote":
+      "Scan reste dans le rayon choisi et ne l’élargit pas sans votre accord.",
     "scan.need.label": "Quel est votre besoin ?",
     "scan.need.placeholder": "Décrivez ce que vous cherchez…",
     "scan.interpretation.title": "Scan a compris",
     "scan.interpretation.originalLabel": "Vous recherchez",
     "scan.interpretation.detected": "Les éléments repérés dans votre demande",
     "scan.interpretation.noDetails": "Aucun détail supplémentaire n’a été détecté automatiquement.",
-    "scan.interpretation.honestyNote": "Cette lecture aide à préparer la recherche. Elle ne reformule pas encore votre demande et ne transforme pas les éléments repérés en filtres actifs.",
+    "scan.interpretation.honestyNote":
+      "Cette lecture aide à préparer la recherche. Elle ne reformule pas encore votre demande et ne transforme pas les éléments repérés en filtres actifs.",
     "scan.flow.progress": "Progression de la préparation",
     "scan.flow.step.need": "Votre demande",
     "scan.flow.step.confirmation": "Confirmation",
@@ -439,7 +443,8 @@ export const messages = {
     "scan.flow.continueNeed": "Comprendre ma demande",
     "scan.flow.confirmNeed": "Oui, c’est bien mon besoin",
     "scan.flow.editNeed": "Modifier ma demande",
-    "scan.flow.criteriaNote": "Le rayon choisi sera appliqué. Les détails détectés restent des repères : les filtres supplémentaires ne sont pas encore appliqués par la recherche.",
+    "scan.flow.criteriaNote":
+      "Le rayon choisi sera appliqué. Les détails détectés restent des repères : les filtres supplémentaires ne sont pas encore appliqués par la recherche.",
     "scan.flow.continueCriteria": "Continuer",
     "scan.flow.finalTitle": "Tout est prêt pour la recherche",
     "scan.flow.radiusLabel": "Rayon de recherche",
@@ -471,7 +476,8 @@ export const messages = {
     "scan.voice.hint": "Ou dites-le à voix haute",
     "scan.voice.listening": "Je vous écoute…",
     "scan.voice.received": "Votre parole a été ajoutée au texte.",
-    "scan.voice.unsupported": "La dictée vocale n’est pas disponible dans ce navigateur. Vous pouvez écrire votre besoin.",
+    "scan.voice.unsupported":
+      "La dictée vocale n’est pas disponible dans ce navigateur. Vous pouvez écrire votre besoin.",
     "scan.voice.permission": "L’accès au micro est refusé. Autorisez-le ou écrivez votre besoin.",
     "scan.voice.error": "La dictée n’a pas fonctionné. Réessayez ou écrivez votre besoin.",
 
@@ -1529,18 +1535,21 @@ export const messages = {
     "scan.title": "Scan Flash",
     "scan.door.eyebrow": "A doorway to discovery",
     "scan.door.title": "What could help you today?",
-    "scan.door.desc": "Describe what you need in your own words. Scan explores what's available and helps you find what may be useful.",
+    "scan.door.desc":
+      "Describe what you need in your own words. Scan explores what's available and helps you find what may be useful.",
     "scan.door.privacy": "Your location is used for this search and isn't shown to others.",
     "scan.preferences.title": "Adjust my search",
     "scan.preferences.optional": "Optional",
-    "scan.preferences.radiusNote": "Scan stays within the chosen radius and won't expand it without your permission.",
+    "scan.preferences.radiusNote":
+      "Scan stays within the chosen radius and won't expand it without your permission.",
     "scan.need.label": "What do you need?",
     "scan.need.placeholder": "Describe what you are looking for…",
     "scan.interpretation.title": "Scan understood",
     "scan.interpretation.originalLabel": "You're looking for",
     "scan.interpretation.detected": "Details recognized in your request",
     "scan.interpretation.noDetails": "No additional details were detected automatically.",
-    "scan.interpretation.honestyNote": "This helps prepare your search. It does not yet rewrite your request or turn the detected details into active filters.",
+    "scan.interpretation.honestyNote":
+      "This helps prepare your search. It does not yet rewrite your request or turn the detected details into active filters.",
     "scan.flow.progress": "Preparation progress",
     "scan.flow.step.need": "Your request",
     "scan.flow.step.confirmation": "Confirm",
@@ -1549,7 +1558,8 @@ export const messages = {
     "scan.flow.continueNeed": "Review my request",
     "scan.flow.confirmNeed": "Yes, that's what I need",
     "scan.flow.editNeed": "Edit my request",
-    "scan.flow.criteriaNote": "The selected radius will be applied. Detected details are only reference points; additional filters are not yet applied by the search.",
+    "scan.flow.criteriaNote":
+      "The selected radius will be applied. Detected details are only reference points; additional filters are not yet applied by the search.",
     "scan.flow.continueCriteria": "Continue",
     "scan.flow.finalTitle": "Ready to search",
     "scan.flow.radiusLabel": "Search radius",
@@ -1581,7 +1591,8 @@ export const messages = {
     "scan.voice.hint": "Or speak it out loud",
     "scan.voice.listening": "Listening…",
     "scan.voice.received": "Your speech was added to the text.",
-    "scan.voice.unsupported": "Voice input isn't available in this browser. You can type your need.",
+    "scan.voice.unsupported":
+      "Voice input isn't available in this browser. You can type your need.",
     "scan.voice.permission": "Microphone access is denied. Allow it or type your need.",
     "scan.voice.error": "Voice input didn't work. Try again or type your need.",
 
@@ -1604,7 +1615,8 @@ export const messages = {
     "scan.unsupported": "This browser cannot provide your location. Try a compatible browser.",
     "page.scan.eyebrow": "Nearby",
     "page.scan.title": "Scan",
-    "page.scan.desc": "Describe what you need. Scan explores nearby possibilities without ever revealing your position.",
+    "page.scan.desc":
+      "Describe what you need. Scan explores nearby possibilities without ever revealing your position.",
     "page.scan.section.scan": "Scan",
     "page.reel.eyebrow": "Your presence",
     "page.reel.title": "Live",

@@ -22,17 +22,24 @@ type SpeechWindow = Window & {
 export function useScanVoiceInput(locale: string, onTranscript: (value: string) => void) {
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
   const [recording, setRecording] = useState(false);
-  const [voiceStatus, setVoiceStatus] = useState<"idle" | "listening" | "received" | "unsupported" | "permission" | "error">("idle");
+  const [voiceStatus, setVoiceStatus] = useState<
+    "idle" | "listening" | "received" | "unsupported" | "permission" | "error"
+  >("idle");
 
-  const SpeechRecognition = typeof window === "undefined"
-    ? undefined
-    : (window as SpeechWindow).SpeechRecognition ?? (window as SpeechWindow).webkitSpeechRecognition;
+  const SpeechRecognition =
+    typeof window === "undefined"
+      ? undefined
+      : ((window as SpeechWindow).SpeechRecognition ??
+        (window as SpeechWindow).webkitSpeechRecognition);
   const supported = Boolean(SpeechRecognition);
 
-  useEffect(() => () => {
-    recognitionRef.current?.stop();
-    recognitionRef.current = null;
-  }, []);
+  useEffect(
+    () => () => {
+      recognitionRef.current?.stop();
+      recognitionRef.current = null;
+    },
+    [],
+  );
 
   const toggleRecording = () => {
     if (recording) {
@@ -64,7 +71,7 @@ export function useScanVoiceInput(locale: string, onTranscript: (value: string) 
     recognition.onend = () => {
       setRecording(false);
       recognitionRef.current = null;
-      setVoiceStatus((current) => current === "listening" ? "idle" : current);
+      setVoiceStatus((current) => (current === "listening" ? "idle" : current));
     };
     recognitionRef.current = recognition;
     setRecording(true);

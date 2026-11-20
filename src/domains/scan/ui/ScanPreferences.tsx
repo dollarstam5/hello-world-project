@@ -44,7 +44,9 @@ export function ScanPreferences({
             ))}
           </div>
         </fieldset>
-        <p className="text-xs leading-relaxed text-muted-foreground">{t("scan.preferences.radiusNote")}</p>
+        <p className="text-xs leading-relaxed text-muted-foreground">
+          {t("scan.preferences.radiusNote")}
+        </p>
       </div>
     </details>
   );
