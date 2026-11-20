@@ -19,12 +19,12 @@ export function ScanPanel() {
 
   return (
     <div className="stack-4">
-      <section className="relative overflow-hidden rounded-[2rem] border border-border-soft bg-gradient-to-br from-surface via-surface to-primary/5 p-5 sm:p-7">
+      <section className="relative overflow-hidden rounded-[1.5rem] border border-border-soft bg-gradient-to-br from-surface via-surface to-primary/5 p-4 sm:rounded-[2rem] sm:p-7">
         <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-primary/10 blur-3xl" aria-hidden />
         <div className="pointer-events-none absolute -bottom-16 -left-12 h-36 w-36 rounded-full bg-primary/5 blur-3xl" aria-hidden />
         <div className="relative stack-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-primary/15 bg-primary/10 text-primary">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl sm:h-10 sm:w-10 sm:rounded-2xl border border-primary/15 bg-primary/10 text-primary">
               <Compass className="h-5 w-5" aria-hidden />
             </div>
             <span className="text-sm font-medium text-primary">{t("scan.door.eyebrow")}</span>
@@ -38,7 +38,7 @@ export function ScanPanel() {
           <label className="stack-2" htmlFor="scan-need">
             <span className="flex items-center justify-between gap-3 text-sm font-medium">
               <span>{t("scan.need.label")}</span>
-              <span className="text-xs font-normal tabular-nums text-muted-foreground">{needText.length}/160</span>
+              <span className="shrink-0 text-xs font-normal tabular-nums text-muted-foreground">{needText.length}/160</span>
             </span>
             <textarea
               id="scan-need"
@@ -48,7 +48,7 @@ export function ScanPanel() {
               placeholder={t("scan.need.placeholder")}
               disabled={busy || locating}
               rows={3}
-              className="min-h-28 w-full resize-none rounded-2xl border border-border bg-background/70 p-4 text-base leading-relaxed text-foreground placeholder:text-muted-foreground/80 transition-colors focus-visible:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
+              className="min-h-24 w-full resize-none rounded-xl border sm:min-h-28 sm:rounded-2xl border border-border bg-background/70 p-3 text-base leading-relaxed sm:p-4 text-foreground placeholder:text-muted-foreground/80 transition-colors focus-visible:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
             />
           </label>
 
