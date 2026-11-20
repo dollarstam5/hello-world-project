@@ -1,5 +1,4 @@
 import { useCallback, useState } from "react";
-import { interpretScanRequest } from "@eco/core-logic";
 import { useScan } from "./useScan";
 import { useScanLocation } from "./useScanLocation";
 import { useScanPreferences } from "./useScanPreferences";
@@ -15,7 +14,6 @@ export function useScanFlow() {
   const [started, setStarted] = useState(false);
   const [needText, setNeedText] = useState("");
   const [stage, setStage] = useState<ScanPreparationStage>("need");
-  const interpretation = interpretScanRequest(needText);
 
   const updateNeedText = useCallback((value: string) => {
     setNeedText(value);
@@ -79,7 +77,6 @@ export function useScanFlow() {
     availableRadii: preferences.availableRadii,
     needText,
     setNeedText: updateNeedText,
-    interpretation,
     stage,
     confirmNeed,
     confirmInterpretation,
