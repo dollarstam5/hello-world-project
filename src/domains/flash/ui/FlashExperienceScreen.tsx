@@ -224,7 +224,7 @@ export function FlashExperienceScreen() {
   }
 
   async function saveFlashDraft() {
-    if (!user || !scope || !urgency || !text.trim()) return;
+    if (!user || !text.trim()) return;
     setPublishing(true);
     setPublishError(false);
     try {
