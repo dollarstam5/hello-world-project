@@ -59,6 +59,45 @@ describe("Flash local data actions", () => {
     expect(create.mock.calls[0][0].id).toBeTruthy();
   });
 
+  it("propagates a local draft creation failure", async () => {
+    create.mockRejectedValue(new Error("offline storage unavailable"));
+
+    await expect(
+      createFlash({
+        authorId: "user-1" as never,
+        title: "Besoin d'aide",
+        body: "Besoin d'aide",
+        kind: "need",
+        category: "home",
+        timeSlot: "today",
+        scope: "current_area",
+        urgency: "anytime",
+        expiresAt: null,
+      }),
+    ).rejects.toThrow("offline storage unavailable");
+  });
+
+  it("truncates the draft title while preserving the full body", async () => {
+    create.mockResolvedValue(undefined);
+    const body = "x".repeat(100);
+
+    await createFlash({
+      authorId: "user-1" as never,
+      title: body,
+      body,
+      kind: "need",
+      category: "home",
+      timeSlot: "today",
+      scope: "current_area",
+      urgency: "anytime",
+      expiresAt: null,
+    });
+
+    expect(create).toHaveBeenCalledWith(
+      expect.objectContaining({ title: `${"x".repeat(77)}…`, body }),
+    );
+  });
+
   it("updates both title and body from trimmed text", async () => {
     update.mockResolvedValue(undefined);
 
