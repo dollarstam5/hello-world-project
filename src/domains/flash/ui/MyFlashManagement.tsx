@@ -184,7 +184,7 @@ export function MyFlashManagement() {
   
                 return (
                   <Surface key={record.id} variant="elevated" padding="md" bordered>
-                    <div className="flex items-start justify-between gap-3">
+                    <div className="flex flex-wrap items-start justify-between gap-3">
                       <div className="min-w-0 flex-1">
                         {editingId === record.id ? (
                           <div className="stack-2">
@@ -261,7 +261,7 @@ export function MyFlashManagement() {
                           {t("flash.mine.createdAt")} {new Intl.DateTimeFormat(locale, { dateStyle: "full", timeStyle: "short" }).format(record.createdAt)}
                         </p>
                         {record.areaLabel ? <p className="mt-1 text-xs text-muted-foreground">{t("flash.mine.location")} : {record.areaLabel}</p> : null}
-                        <p className="mt-1 text-xs text-muted-foreground">{t("flash.mine.mediaCount")} : {record.mediaIds.length}</p>
+                        {record.mediaIds.length > 0 ? <p className="mt-1 text-xs text-muted-foreground">{t("flash.mine.mediaCount")} : {record.mediaIds.length}</p> : null}
                       </div>
                     ) : null}
   
