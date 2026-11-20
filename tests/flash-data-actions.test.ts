@@ -119,6 +119,20 @@ describe("Flash local data actions", () => {
     expect(update).not.toHaveBeenCalled();
   });
 
+  it("propagates local edit storage errors", async () => {
+    update.mockRejectedValue(new Error("edit storage failed"));
+
+    await expect(updateFlash("flash-1", "Texte valide")).rejects.toThrow(
+      "edit storage failed",
+    );
+  });
+
+  it("propagates local deletion errors", async () => {
+    remove.mockRejectedValue(new Error("delete storage failed"));
+
+    await expect(deleteFlash("flash-1")).rejects.toThrow("delete storage failed");
+  });
+
   it("removes a flash from the local repository", async () => {
     remove.mockResolvedValue(undefined);
 
