@@ -12,3 +12,22 @@ export function getFlashDateGroup(createdAt: number, now = Date.now()): FlashDat
   if (days < 7) return "thisWeek";
   return "older";
 }
+
+export const flashDateGroupOrder: readonly FlashDateGroup[] = [
+  "today",
+  "yesterday",
+  "twoDaysAgo",
+  "thisWeek",
+  "older",
+];
+
+export function groupFlashesByDate<T extends { createdAt: number }>(records: T[], now = Date.now()) {
+  return flashDateGroupOrder
+    .map((group) => ({
+      group,
+      items: records
+        .filter((record) => getFlashDateGroup(record.createdAt, now) === group)
+        .sort((a, b) => b.createdAt - a.createdAt),
+    }))
+    .filter((group) => group.items.length > 0);
+}
