@@ -226,7 +226,7 @@ export function FlashExperienceScreen() {
   }
 
   async function saveFlashDraft() {
-    if (!canSaveFlashLater({ hasUser: Boolean(user), authLoading, publishing: draftSaveInFlightRef.current, text })) return;
+    if (!user || !canSaveFlashLater({ hasUser: true, authLoading, publishing: draftSaveInFlightRef.current, text })) return;
     draftSaveInFlightRef.current = true;
     setPublishing(true);
     setPublishError(false);
