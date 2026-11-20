@@ -232,7 +232,7 @@ export function MyFlashManagement() {
                       onClick={() => setExpandedId((current) => current === record.id ? null : record.id)}
                     >
                       {expandedId === record.id ? <ChevronUp className="mr-1 h-4 w-4" aria-hidden /> : <ChevronDown className="mr-1 h-4 w-4" aria-hidden />}
-                      {expandedId === record.id ? "Fermer" : "Voir"}
+                      {expandedId === record.id ? t("flash.mine.closeDetails") : t("flash.mine.details")}
                     </Button>
 
                     {resolvedStatus === "live" ? (
@@ -253,10 +253,10 @@ export function MyFlashManagement() {
                     <div className="mt-3 rounded-xl border border-border bg-muted/40 p-3">
                       <p className="whitespace-pre-wrap text-sm leading-relaxed">{record.body}</p>
                       <p className="mt-3 text-xs text-muted-foreground">
-                        Créé le {new Intl.DateTimeFormat(locale, { dateStyle: "full", timeStyle: "short" }).format(record.createdAt)}
+                        {t("flash.mine.createdAt")} {new Intl.DateTimeFormat(locale, { dateStyle: "full", timeStyle: "short" }).format(record.createdAt)}
                       </p>
-                      {record.areaLabel ? <p className="mt-1 text-xs text-muted-foreground">Lieu : {record.areaLabel}</p> : null}
-                      <p className="mt-1 text-xs text-muted-foreground">Médias : {record.mediaIds.length}</p>
+                      {record.areaLabel ? <p className="mt-1 text-xs text-muted-foreground">{t("flash.mine.location")} : {record.areaLabel}</p> : null}
+                      <p className="mt-1 text-xs text-muted-foreground">{t("flash.mine.mediaCount")} : {record.mediaIds.length}</p>
                     </div>
                   ) : null}
 
