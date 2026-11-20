@@ -1,10 +1,12 @@
 import { useCallback, useState } from "react";
+import { interpretScanRequest } from "@eco/core-logic";
 import { useScan } from "./useScan";
 import { useScanLocation } from "./useScanLocation";
 import { useScanPreferences } from "./useScanPreferences";
 import { getScanStatus } from "../utils/scanStatus";
 
 const SCAN_LIMIT = 20;
+export type ScanPreparationStage = "need" | "confirmation" | "criteria" | "final";
 
 export function useScanFlow() {
   const scan = useScan();
@@ -12,9 +14,12 @@ export function useScanFlow() {
   const preferences = useScanPreferences();
   const [started, setStarted] = useState(false);
   const [needText, setNeedText] = useState("");
+  const [stage, setStage] = useState<ScanPreparationStage>("need");
+  const interpretation = interpretScanRequest(needText);
 
   const updateNeedText = useCallback((value: string) => {
     setNeedText(value);
+    setStage("need");
     setStarted(false);
     scan.clearResults();
   }, [scan.clearResults]);
@@ -24,6 +29,14 @@ export function useScanFlow() {
     setStarted(false);
     scan.clearResults();
   }, [preferences.setRadiusKm, scan.clearResults]);
+
+  const confirmNeed = useCallback(() => {
+    if (needText.trim()) setStage("criteria");
+  }, [needText]);
+
+  const confirmCriteria = useCallback(() => setStage("final"), []);
+  const backToNeed = useCallback(() => setStage("need"), []);
+  const backToCriteria = useCallback(() => setStage("criteria"), []);
 
   const status = getScanStatus({
     started,
@@ -35,7 +48,8 @@ export function useScanFlow() {
     resultCount: scan.rows.length,
   });
 
-  const start = () => {
+  const start = useCallback(() => {
+    if (stage !== "final" || !needText.trim() || scan.busy || location.locating) return;
     setStarted(true);
     void location.locate().then((coordinates) => {
       if (!coordinates) return;
@@ -47,7 +61,7 @@ export function useScanFlow() {
         limit: SCAN_LIMIT,
       });
     });
-  };
+  }, [stage, needText, scan.busy, location.locating, location.locate, scan.execute, preferences.radiusKm]);
 
   return {
     rows: scan.rows,
@@ -63,6 +77,12 @@ export function useScanFlow() {
     availableRadii: preferences.availableRadii,
     needText,
     setNeedText: updateNeedText,
+    interpretation,
+    stage,
+    confirmNeed,
+    confirmCriteria,
+    backToNeed,
+    backToCriteria,
     status,
     start,
   };
