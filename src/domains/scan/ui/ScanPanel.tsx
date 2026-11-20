@@ -13,7 +13,7 @@ export function ScanPanel() {
   const {
     rows, assessments, busy, history, clearHistory,
     locating, locationError, unsupported, radiusKm, setRadiusKm, availableRadii,
-    needText, setNeedText, interpretation, stage, confirmNeed, confirmCriteria,
+    needText, setNeedText, stage, confirmNeed, confirmInterpretation, confirmCriteria,
     backToNeed, backToCriteria, status, start,
   } = useScanFlow();
   const voice = useScanVoiceInput(locale, (transcript) => {
