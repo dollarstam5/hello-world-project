@@ -373,13 +373,13 @@ export function FlashExperienceScreen() {
         <DialogContent className="fixed bottom-0 left-0 top-auto max-h-[92dvh] w-full max-w-lg translate-x-0 translate-y-0 overflow-y-auto rounded-t-[1.75rem] border-border bg-background p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] shadow-2xl sm:left-[50%] sm:top-[50%] sm:bottom-auto sm:translate-x-[-50%] sm:translate-y-[-50%] sm:rounded-[1.75rem] sm:p-6">
           <DialogHeader className="mb-5 pr-10 text-left">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-              {step === "write" ? t("flash.composer.step1") : step === "confirm" ? t("flash.composer.step2") : t("flash.composer.step3")}
+              {step === "write" ? t("flash.composer.step1") : step === "confirm" ? t("flash.composer.step2") : step === "criteria" ? t("flash.composer.step3") : step === "preview" ? t("flash.composer.step4") : t("flash.composer.step5")}
             </p>
             <DialogTitle className="mt-1 text-xl font-bold">
-              {step === "write" ? t("flash.composer.title") : step === "confirm" ? t("flash.composer.confirmTitle") : t("flash.composer.reviewTitle")}
+              {step === "write" ? t("flash.composer.title") : step === "confirm" ? t("flash.composer.confirmTitle") : step === "criteria" ? t("flash.composer.criteriaTitle") : step === "preview" ? t("flash.composer.previewTitle") : t("flash.composer.finalTitle")}
             </DialogTitle>
             <DialogDescription className="mt-1 text-sm text-muted-foreground">
-              {step === "write" ? t("flash.composer.description") : step === "confirm" ? t("flash.composer.confirmDescription") : t("flash.composer.reviewDescription")}
+              {step === "write" ? t("flash.composer.description") : step === "confirm" ? t("flash.composer.confirmDescription") : step === "criteria" ? t("flash.composer.criteriaDescription") : step === "preview" ? t("flash.composer.previewDescription") : t("flash.composer.finalDescription")}
             </DialogDescription>
           </DialogHeader>
 
