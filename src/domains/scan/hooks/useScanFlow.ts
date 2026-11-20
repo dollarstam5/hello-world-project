@@ -31,8 +31,10 @@ export function useScanFlow() {
   }, [preferences.setRadiusKm, scan.clearResults]);
 
   const confirmNeed = useCallback(() => {
-    if (needText.trim()) setStage("criteria");
+    if (needText.trim()) setStage("confirmation");
   }, [needText]);
+
+  const confirmInterpretation = useCallback(() => setStage("criteria"), []);
 
   const confirmCriteria = useCallback(() => setStage("final"), []);
   const backToNeed = useCallback(() => setStage("need"), []);
@@ -80,6 +82,7 @@ export function useScanFlow() {
     interpretation,
     stage,
     confirmNeed,
+    confirmInterpretation,
     confirmCriteria,
     backToNeed,
     backToCriteria,
