@@ -368,6 +368,7 @@ describe("runPush transport — Radar mutation receipts", () => {
       owner_id: ownerId,
       title: "Ancien titre",
       revision: 1,
+      deleted_at: null,
     });
     const entry = radarEntry("update", { title: "Nouveau titre" });
 
@@ -476,6 +477,7 @@ describe("runPush transport — Radar mutation receipts", () => {
       owner_id: ownerId,
       title: "Titre avant",
       query: "recherche initiale",
+      deleted_at: null,
       category: "services",
       radius_km: 4,
       revision: 2,
