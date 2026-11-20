@@ -653,8 +653,9 @@ export function FlashExperienceScreen() {
               <p className="mt-3 text-center text-xs leading-relaxed text-muted-foreground">
                 {t("flash.location.publishPaused")}
               </p>
-            </>
-          )}
+              </motion.div>
+            )}
+            </AnimatePresence>
         </DialogContent>
       </Dialog>
     </section>
