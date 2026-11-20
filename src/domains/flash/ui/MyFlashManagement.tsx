@@ -224,8 +224,6 @@ export function MyFlashManagement() {
                         <p className="mt-1 text-xs text-muted-foreground">
                           {t(statusKeys[resolvedStatus])}
                           {" · "}
-                          {t(`flash.mine.date.${getFlashDateGroup(record.createdAt)})}
-                          {" · "}
                           {new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(
                             record.createdAt,
                           )}
