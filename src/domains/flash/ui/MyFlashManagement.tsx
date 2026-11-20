@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Archive, ChevronDown, ChevronUp, Pencil, Trash2 } from "lucide-react";
 import type { FlashRecord } from "@eco/core-contracts";
-import { resolveFlashStatus } from "@eco/core-logic";
+import { canArchiveFlash, canEditFlash, resolveFlashStatus } from "@eco/core-logic";
 import { EmptyState } from "@/components/app/EmptyState";
 import { Surface } from "@/components/app/Surface";
 import {
@@ -240,7 +240,7 @@ export function MyFlashManagement() {
                         {expandedId === record.id ? t("flash.mine.closeDetails") : t("flash.mine.details")}
                       </Button>
   
-                      {resolvedStatus === "live" ? (
+                      {canArchiveFlash(record) ? (
                         <Button
                           type="button"
                           size="sm"
@@ -273,8 +273,7 @@ export function MyFlashManagement() {
                           variant="ghost"
                           disabled={
                             busyId !== null ||
-                            resolvedStatus === "archived" ||
-                            resolvedStatus === "expired"
+                            !canEditFlash(record)
                           }
                           onClick={() => {
                             setEditingId(record.id);
