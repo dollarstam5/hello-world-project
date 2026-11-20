@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Check, Info, Mic, MicOff, Plus, Sparkles, X, Zap } from "lucide-react";
 import { FLASH_SCOPES, FLASH_URGENCIES } from "@eco/core-contracts";
@@ -81,7 +82,7 @@ export function FlashExperienceScreen() {
   const { user, loading: authLoading } = useAuth();
   const [tab, setTab] = useState<FlashTab>("discover");
   const [composerOpen, setComposerOpen] = useState(false);
-  const [step, setStep] = useState<"write" | "review">("write");
+  const [step, setStep] = useState<"write" | "confirm" | "criteria">("write");
   const [text, setText] = useState("");
   const [kind, setKind] = useState<FlashKind>("need");
   const [category, setCategory] = useState<FlashCategory>("other");
@@ -185,10 +186,15 @@ export function FlashExperienceScreen() {
 
   function continueToReview() {
     if (!parsedIntent || !text.trim()) return;
+    setStep("confirm");
+  }
+
+  function confirmReformulation() {
+    if (!parsedIntent || !text.trim()) return;
     setKind(parsedIntent.kind);
     setCategory(parsedIntent.category);
     setTimeSlot(parsedIntent.timeSlot);
-    setStep("review");
+    setStep("criteria");
   }
 
   async function detectFlashLocation() {
@@ -387,20 +393,19 @@ export function FlashExperienceScreen() {
         <DialogContent className="fixed bottom-0 left-0 top-auto max-h-[92dvh] w-full max-w-lg translate-x-0 translate-y-0 overflow-y-auto rounded-t-[1.75rem] border-border bg-background p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] shadow-2xl sm:left-[50%] sm:top-[50%] sm:bottom-auto sm:translate-x-[-50%] sm:translate-y-[-50%] sm:rounded-[1.75rem] sm:p-6">
           <DialogHeader className="mb-5 pr-10 text-left">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-              {step === "write" ? t("flash.composer.step1") : t("flash.composer.step2")}
+              {step === "write" ? t("flash.composer.step1") : step === "confirm" ? t("flash.composer.step2") : t("flash.composer.step3")}
             </p>
             <DialogTitle className="mt-1 text-xl font-bold">
-              {step === "write" ? t("flash.composer.title") : t("flash.composer.reviewTitle")}
+              {step === "write" ? t("flash.composer.title") : step === "confirm" ? t("flash.composer.confirmTitle") : t("flash.composer.reviewTitle")}
             </DialogTitle>
             <DialogDescription className="mt-1 text-sm text-muted-foreground">
-              {step === "write"
-                ? t("flash.composer.description")
-                : t("flash.composer.reviewDescription")}
+              {step === "write" ? t("flash.composer.description") : step === "confirm" ? t("flash.composer.confirmDescription") : t("flash.composer.reviewDescription")}
             </DialogDescription>
           </DialogHeader>
 
+          <AnimatePresence mode="wait" initial={false}>
           {step === "write" ? (
-            <>
+            <motion.div key="write" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.2 }}>
               <Textarea
                 value={text}
                 onChange={(event) => setText(event.target.value)}
@@ -442,9 +447,24 @@ export function FlashExperienceScreen() {
                 {t("common.continue")}
                 <ArrowRight className="ml-2 size-4" aria-hidden="true" />
               </Button>
-            </>
+            </motion.div>
+          ) : step === "confirm" ? (
+            <motion.div key="confirm" initial={{ opacity: 0, y: 14, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.22 }} className="space-y-4">
+              <div className="rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/10 via-card to-card p-5 shadow-sm">
+                <div className="mb-3 flex items-center gap-2 text-primary">
+                  <Sparkles className="size-4" aria-hidden="true" />
+                  <span className="text-xs font-semibold uppercase tracking-wide">{t("flash.composer.confirmEyebrow")}</span>
+                </div>
+                <p className="whitespace-pre-wrap text-base font-medium leading-relaxed">{text.trim()}</p>
+              </div>
+              <p className="text-sm text-muted-foreground">{t("flash.composer.confirmQuestion")}</p>
+              <div className="grid gap-2 sm:grid-cols-2">
+                <Button type="button" variant="outline" className="min-h-12 rounded-full" onClick={() => setStep("write")}>{t("flash.composer.editMessage")}</Button>
+                <Button type="button" className="min-h-12 rounded-full" onClick={confirmReformulation}>{t("flash.composer.confirmAction")}<ArrowRight className="ml-2 size-4" aria-hidden="true" /></Button>
+              </div>
+            </motion.div>
           ) : (
-            <>
+            <motion.div key="criteria" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.22 }}>
               <div className="rounded-2xl bg-muted/60 p-4">
                 <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                   {t("flash.composer.yourMessage")}
