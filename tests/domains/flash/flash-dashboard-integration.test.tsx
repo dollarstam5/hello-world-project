@@ -174,7 +174,10 @@ describe("Mes Flashs dashboard integration (T3)", () => {
     await click("flash.mine.delete");
     expect(host.querySelector('[data-testid="delete-dialog"]')).toBeTruthy();
     expect(deleteMock).not.toHaveBeenCalled();
-    await click("flash.mine.delete");
+    const confirmButton = host.querySelector("[data-testid=\"delete-dialog\"] button") as HTMLButtonElement;
+    expect(confirmButton.textContent).toContain("flash.mine.delete");
+    await act(async () => confirmButton.click());
+    await act(async () => { await Promise.resolve(); });
     expect(deleteMock).toHaveBeenCalledWith("draft-new");
   });
 
