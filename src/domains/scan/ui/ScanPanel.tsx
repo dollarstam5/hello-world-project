@@ -1,21 +1,21 @@
-import { Compass, ScanLine, Sparkles } from "lucide-react";
+import { Compass, Mic, MicOff, ScanLine, Sparkles } from "lucide-react";
 import { formatCommunicationMessage } from "@/lib/communication/format";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useScanFlow } from "../hooks/useScanFlow";
 import { ScanResults } from "./ScanResults";
 import { ScanNeedInterpretation } from "./ScanNeedInterpretation";
 import { ScanPreferences } from "./ScanPreferences";
-import { ScanHistory } from "./ScanHistory";
+import { ScanHistory } from "./ScanHistory";\nimport { useScanVoiceInput } from "../hooks/useScanVoiceInput";
 /**
  * Scan entry UI. Flow coordination and state derivation live in useScanFlow.
  */
 export function ScanPanel() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const {
     rows, assessments, busy, history, clearHistory,
     locating, locationError, unsupported, radiusKm, setRadiusKm, availableRadii,
     needText, setNeedText, status, start,
-  } = useScanFlow();
+  } = useScanFlow();\n  const voice = useScanVoiceInput(locale, (transcript) => {\n    setNeedText((current) => (current.trim() ? `${current.trim()} ${transcript}` : transcript).slice(0, 160));\n  });
 
   return (
     <div className="stack-4">
