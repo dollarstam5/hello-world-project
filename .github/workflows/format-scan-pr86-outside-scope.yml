@@ -1,0 +1,29 @@
+name: Format Scan PR86 out-of-scope test
+on:
+  push:
+    branches:
+      - scan-phase-a-interpreter
+    paths:
+      - "tests/sync/transport.server.test.ts"
+permissions:
+  contents: write
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: scan-phase-a-interpreter
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bunx prettier --write tests/sync/transport.server.test.ts
+      - name: Commit formatting if changed
+        run: |
+          if ! git diff --quiet -- tests/sync/transport.server.test.ts; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add tests/sync/transport.server.test.ts
+            git commit -m "style(sync): format transport server tests"
+            git push
+          fi
