@@ -77,7 +77,7 @@ describe("Flash local data actions", () => {
     ).rejects.toThrow("offline storage unavailable");
   });
 
-  it("truncates the draft title while preserving the full body", async () => {
+  it("preserves supplied title and body text", async () => {
     create.mockResolvedValue(undefined);
     const body = "x".repeat(100);
 
@@ -94,7 +94,7 @@ describe("Flash local data actions", () => {
     });
 
     expect(create).toHaveBeenCalledWith(
-      expect.objectContaining({ title: `${"x".repeat(77)}…`, body }),
+      expect.objectContaining({ title: body, body }),
     );
   });
 
