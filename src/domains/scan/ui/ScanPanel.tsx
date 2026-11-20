@@ -67,7 +67,7 @@ export function ScanPanel() {
               ) : (
                 <Sparkles className="h-5 w-5" aria-hidden />
               )}
-              {busy || locating ? t("scan.busy") : t("scan.start")}
+              {locating ? t("scan.locating") : busy ? t("scan.busy") : t("scan.start")}
             </button>
             <p className="text-center text-xs leading-relaxed text-muted-foreground">{t("scan.door.privacy")}</p>
           </div>
