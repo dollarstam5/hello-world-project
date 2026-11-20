@@ -65,5 +65,12 @@ export function useScan() {
     [execute],
   );
 
-  return { rows, assessments, busy, failed, execute, history, clearHistory };
+  const clearResults = useCallback(() => {
+    queryRef.current = undefined;
+    setRows([]);
+    setAssessments([]);
+    setFailed(false);
+  }, []);
+
+  return { rows, assessments, busy, failed, execute, clearResults, history, clearHistory };
 }
