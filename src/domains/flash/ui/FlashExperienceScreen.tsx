@@ -68,7 +68,7 @@ export function FlashExperienceScreen() {
   const { user, loading: authLoading } = useAuth();
   const [tab, setTab] = useState<FlashTab>("discover");
   const [composerOpen, setComposerOpen] = useState(false);
-  const [step, setStep] = useState<"write" | "confirm" | "criteria">("write");
+  const [step, setStep] = useState<"write" | "confirm" | "criteria" | "preview" | "final">("write");
   const [text, setText] = useState("");
   const [timeSlot, setTimeSlot] = useState<FlashTimeSlot>("today");
   const [scope, setScope] = useState<FlashScope | null>(null);
@@ -581,33 +581,50 @@ export function FlashExperienceScreen() {
                   {t("flash.composer.error")}
                 </p>
               ) : null}
-              <div className="mt-5 grid gap-2 sm:grid-cols-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="min-h-12 rounded-full"
-                  onClick={() => setStep("write")}
-                  disabled={publishing}
-                >
-                  {t("common.cancel")}
-                </Button>
-                <Button
-                  type="button"
-                  className="min-h-12 rounded-full"
-                  onClick={() => void saveFlashDraft()}
-                  disabled={
-                    !user || authLoading || publishing || !text.trim()
-                  }
-                >
-                  {publishing ? t("app.loading") : t("flash.location.saveDraft")}
-                </Button>
-              </div>
-              <p className="mt-3 text-center text-xs leading-relaxed text-muted-foreground">
-                {t("flash.location.publishPaused")}
-              </p>
+              <Button type="button" className="mt-5 min-h-12 w-full rounded-full" onClick={() => setStep("preview")}>
+                {t("common.continue")}<ArrowRight className="ml-2 size-4" aria-hidden="true" />
+              </Button>
+              </motion.div>
+            ) : step === "preview" ? (
+              <motion.div key="preview" initial={{ opacity: 0, y: 14, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.22 }} className="space-y-4">
+                <div className="rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/10 via-card to-card p-5 shadow-sm">
+                  <div className="mb-3 flex items-center gap-2 text-primary">
+                    <Zap className="size-4" aria-hidden="true" />
+                    <span className="text-xs font-semibold uppercase tracking-wide">{t("flash.composer.previewEyebrow")}</span>
+                  </div>
+                  <p className="whitespace-pre-wrap text-base font-medium leading-relaxed">{text.trim()}</p>
+                  <div className="mt-4 grid gap-2 border-t border-border/60 pt-3 text-sm">
+                    <p><span className="font-semibold">{t("flash.composer.when")}:</span> {t(`flash.slot.${timeSlot}`)}</p>
+                    <p><span className="font-semibold">{t("flash.composer.scope")}:</span> {t(`flash.scope.${scope ?? "current_area"}`)}</p>
+                    <p><span className="font-semibold">{t("flash.composer.urgency")}:</span> {t(`flash.urgency.${urgency ?? "anytime"}`)}</p>
+                    {areaLabel.trim() ? <p><span className="font-semibold">{t("flash.location.title")}:</span> {areaLabel.trim()}</p> : null}
+                  </div>
+                </div>
+                <p className="text-sm text-muted-foreground">{t("flash.composer.previewQuestion")}</p>
+                <div className="grid gap-2 sm:grid-cols-2">
+                  <Button type="button" variant="outline" className="min-h-12 rounded-full" onClick={() => setStep("criteria")}>{t("flash.composer.editCriteria")}</Button>
+                  <Button type="button" className="min-h-12 rounded-full" onClick={() => setStep("final")}>{t("flash.composer.previewContinue")}<ArrowRight className="ml-2 size-4" aria-hidden="true" /></Button>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div key="final" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.22 }} className="space-y-4">
+                <div className="rounded-2xl border border-primary/20 bg-muted/40 p-4">
+                  <p className="text-sm font-semibold">{t("flash.composer.finalChoiceTitle")}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">{t("flash.location.publishPaused")}</p>
+                </div>
+                {!user && !authLoading ? (
+                  <div className="rounded-xl border border-border p-3">
+                    <p className="text-sm text-muted-foreground">{t("flash.composer.signIn")}</p>
+                    <Button asChild className="mt-3 w-full rounded-full"><Link to="/auth">{t("auth.signIn")}</Link></Button>
+                  </div>
+                ) : null}
+                {publishError ? <p className="text-sm text-destructive" role="alert">{t("flash.composer.error")}</p> : null}
+                <div className="grid gap-2 sm:grid-cols-2">
+                  <Button type="button" variant="outline" className="min-h-12 rounded-full" onClick={() => setStep("preview")} disabled={publishing}>{t("flash.composer.backToPreview")}</Button>
+                  <Button type="button" className="min-h-12 rounded-full" onClick={() => void saveFlashDraft()} disabled={!user || authLoading || publishing || !text.trim()}>{publishing ? t("app.loading") : t("flash.location.saveDraft")}</Button>
+                </div>
               </motion.div>
             )}
-            </AnimatePresence>
         </DialogContent>
       </Dialog>
     </section>
