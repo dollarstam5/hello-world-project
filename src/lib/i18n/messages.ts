@@ -319,7 +319,10 @@ export const messages = {
     "flash.location.privateNotice":
       "Votre GPS exact reste privé. Seul le lieu que vous confirmez sera affiché.",
     "flash.location.saveDraft": "Enregistrer le brouillon",
-    "flash.composer.publishPreviewNotice": "La publication réelle n’est pas encore connectée. Vous pouvez parcourir son aperçu ou enregistrer votre Flash pour plus tard.",
+    "flash.composer.publishPreviewNotice": "La publication immédiate n’est pas encore disponible. Vous pouvez conserver votre Flash et le publier plus tard.",
+    "flash.composer.publishNowUnavailable": "La publication immédiate sera activée lorsque la sécurité et la recherche de zone seront prêtes.",
+    "flash.composer.publishLater": "Publier plus tard",
+    "flash.composer.publishNowLabel": "Publier maintenant",
     "flash.scope.current_area": "Ma zone actuelle (500 m)",
     "flash.scope.expanded_area": "Zone élargie (2 km)",
     "flash.scope.half_city": "Grand secteur (5 km)",
@@ -1243,7 +1246,10 @@ export const messages = {
     "flash.location.privateNotice":
       "Your exact GPS position stays private. Only the place you confirm will be shown.",
     "flash.location.saveDraft": "Save draft",
-    "flash.composer.publishPreviewNotice": "Real publishing is not connected yet. You can preview the publish confirmation or save your Flash for later.",
+    "flash.composer.publishPreviewNotice": "Immediate publishing is not available yet. You can keep your Flash and publish it later.",
+    "flash.composer.publishNowUnavailable": "Immediate publishing will be enabled once area-search and security checks are ready.",
+    "flash.composer.publishLater": "Publish later",
+    "flash.composer.publishNowLabel": "Publish now",
     "flash.scope.current_area": "My current area (500 m)",
     "flash.scope.expanded_area": "Expanded area (2 km)",
     "flash.scope.half_city": "Large sector (5 km)",
