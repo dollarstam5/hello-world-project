@@ -81,7 +81,7 @@ Le moteur peut en extraire des critères structurés :
 
 **Règle V1 validée :** comprendre la demande, proposer quelques interprétations lorsque plusieurs sens sont possibles et permettre une exploration générale sans bloquer l'utilisateur. Pour une demande trop large, présenter d'abord une sélection pertinente, expliquer brièvement la limite et proposer des moyens simples de préciser. Une question courte est réservée aux informations réellement indispensables.
 
-La compréhension conversationnelle avancée, la dictée vocale intelligente et l'assistant Vita peuvent évoluer en V2/V3. La recherche de base doit rester utilisable sans dépendance obligatoire à un fournisseur d'IA ou à un service payant.
+La dictée simple (transcription vocale vers le même champ texte) est prévue en V1 lorsque le navigateur la prend en charge ; elle reste facultative et peut dépendre d'un service vocal du navigateur. La compréhension conversationnelle avancée, la reformulation générative et l'assistant Vita peuvent évoluer en V2/V3. La recherche de base doit rester utilisable sans dépendance obligatoire à un fournisseur d'IA ou à un service payant.
 
 ### 4.3 Critères et modes de sélection
 
