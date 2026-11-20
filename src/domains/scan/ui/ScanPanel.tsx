@@ -60,7 +60,7 @@ export function ScanPanel() {
             <button
               type="button"
               onClick={voice.toggleRecording}
-              disabled={!voice.supported || busy || locating}
+              disabled={busy || locating}
               aria-pressed={voice.recording}
               className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-border bg-background px-4 text-sm font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50"
             >
