@@ -494,6 +494,11 @@ export const messages = {
     "flash.mine.status.live": "En cours",
     "flash.mine.status.expired": "Expiré",
     "flash.mine.status.archived": "Archivé",
+    "flash.mine.details": "Voir le contenu",
+    "flash.mine.closeDetails": "Fermer",
+    "flash.mine.createdAt": "Créé le",
+    "flash.mine.location": "Lieu",
+    "flash.mine.mediaCount": "Médias",
     "scan.history.title": "Recherches récentes",
     "scan.history.privacy":
       "Cet historique reste sur cet appareil. Il conserve seulement la date et le nombre de résultats, jamais votre position ni le détail des résultats.",
@@ -1401,6 +1406,11 @@ export const messages = {
     "flash.mine.status.live": "Active",
     "flash.mine.status.expired": "Expired",
     "flash.mine.status.archived": "Archived",
+    "flash.mine.details": "View details",
+    "flash.mine.closeDetails": "Close",
+    "flash.mine.createdAt": "Created",
+    "flash.mine.location": "Location",
+    "flash.mine.mediaCount": "Media",
     "scan.history.title": "Recent searches",
     "scan.history.privacy":
       "This history stays on this device. It keeps only the date and number of results, never your location or result details.",
