@@ -190,4 +190,64 @@ describe("Mes Flashs dashboard integration (T3)", () => {
     expect(archiveMock).toHaveBeenCalledWith("live-item");
     expect(host.querySelector('[role="alert"]')?.textContent).toContain("flash.mine.actionError");
   });
+
+  it("keeps the edit open and shows feedback when saving fails", async () => {
+    await renderDashboard();
+    await click("flash.mine.edit");
+    const textarea = host.querySelector("textarea") as HTMLTextAreaElement;
+    await act(async () => {
+      const setter = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, "value")?.set;
+      setter?.call(textarea, "Modification refusée");
+      textarea.dispatchEvent(new Event("input", { bubbles: true }));
+    });
+    updateMock.mockRejectedValueOnce(new Error("save failed"));
+    await click("common.save");
+    await act(async () => { await Promise.resolve(); });
+    expect(updateMock).toHaveBeenCalledWith("draft-new", "Modification refusée");
+    expect(host.querySelector('[role="alert"]')?.textContent).toContain("flash.mine.actionError");
+    expect(host.querySelector("textarea")).toBeTruthy();
+  });
+
+  it("cancels editing without saving and restores the record display", async () => {
+    await renderDashboard();
+    await click("flash.mine.edit");
+    expect(host.querySelector("textarea")).toBeTruthy();
+    await click("common.cancel");
+    expect(host.querySelector("textarea")).toBeFalsy();
+    expect(updateMock).not.toHaveBeenCalled();
+    expect(host.textContent).toContain("Texte récent");
+  });
+
+  it("keeps delete confirmation open and reports deletion failures", async () => {
+    await renderDashboard();
+    await click("flash.mine.delete");
+    deleteMock.mockRejectedValueOnce(new Error("delete failed"));
+    const confirmButton = Array.from(host.querySelectorAll('[data-testid="delete-dialog"] button')).find((button) => button.textContent?.includes("flash.mine.delete")) as HTMLButtonElement | undefined;
+    expect(confirmButton).toBeTruthy();
+    await act(async () => confirmButton!.click());
+    await act(async () => { await Promise.resolve(); });
+    expect(deleteMock).toHaveBeenCalledWith("draft-new");
+    expect(host.querySelector('[role="alert"]')?.textContent).toContain("flash.mine.actionError");
+    expect(host.querySelector('[data-testid="delete-dialog"]')).toBeTruthy();
+  });
+
+  it("archives a live Flash successfully without displaying an error", async () => {
+    await renderDashboard();
+    await click("flash.mine.archive");
+    await act(async () => { await Promise.resolve(); });
+    expect(archiveMock).toHaveBeenCalledWith("live-item");
+    expect(host.querySelector('[role="alert"]')).toBeFalsy();
+  });
+
+  it("resolves an expired live Flash as expired and restricts its actions", async () => {
+    recordsMock.splice(0, recordsMock.length,
+      makeRecord({ id: "expired-item", title: "Flash arrivé à expiration", status: "live", expiresAt: now - 1 }),
+    );
+    await renderDashboard();
+    expect(host.textContent).toContain("flash.mine.status.expired");
+    expect(host.textContent).not.toContain("flash.mine.archive");
+    const editButton = Array.from(host.querySelectorAll("button")).find((button) => button.textContent?.includes("flash.mine.edit")) as HTMLButtonElement | undefined;
+    expect(editButton).toBeTruthy();
+    expect(editButton!.disabled).toBe(true);
+  });
 });
