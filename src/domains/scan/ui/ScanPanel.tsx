@@ -5,7 +5,8 @@ import { useScanFlow } from "../hooks/useScanFlow";
 import { ScanResults } from "./ScanResults";
 import { ScanNeedInterpretation } from "./ScanNeedInterpretation";
 import { ScanPreferences } from "./ScanPreferences";
-import { ScanHistory } from "./ScanHistory";\nimport { useScanVoiceInput } from "../hooks/useScanVoiceInput";
+import { ScanHistory } from "./ScanHistory";
+import { useScanVoiceInput } from "../hooks/useScanVoiceInput";
 /**
  * Scan entry UI. Flow coordination and state derivation live in useScanFlow.
  */
@@ -15,7 +16,10 @@ export function ScanPanel() {
     rows, assessments, busy, history, clearHistory,
     locating, locationError, unsupported, radiusKm, setRadiusKm, availableRadii,
     needText, setNeedText, status, start,
-  } = useScanFlow();\n  const voice = useScanVoiceInput(locale, (transcript) => {\n    setNeedText((current) => (current.trim() ? `${current.trim()} ${transcript}` : transcript).slice(0, 160));\n  });
+  } = useScanFlow();
+  const voice = useScanVoiceInput(locale, (transcript) => {
+    setNeedText((current) => (current.trim() ? `${current.trim()} ${transcript}` : transcript).slice(0, 160));
+  });
 
   return (
     <div className="stack-4">
@@ -51,6 +55,25 @@ export function ScanPanel() {
               className="min-h-24 w-full resize-none rounded-xl border sm:min-h-28 sm:rounded-2xl border border-border bg-background/70 p-3 text-base leading-relaxed sm:p-4 text-foreground placeholder:text-muted-foreground/80 transition-colors focus-visible:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
             />
           </label>
+
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <button
+              type="button"
+              onClick={voice.toggleRecording}
+              disabled={!voice.supported || busy || locating}
+              aria-pressed={voice.recording}
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-border bg-background px-4 text-sm font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50"
+            >
+              {voice.recording ? <MicOff className="h-4 w-4" aria-hidden /> : <Mic className="h-4 w-4" aria-hidden />}
+              {voice.recording ? t("scan.voice.stop") : t("scan.voice.action")}
+            </button>
+            <span className="text-xs text-muted-foreground">{t("scan.voice.hint")}</span>
+          </div>
+          {voice.voiceStatus !== "idle" ? (
+            <p className="text-xs leading-relaxed text-muted-foreground" role="status" aria-live="polite">
+              {t(`scan.voice.${voice.voiceStatus}`)}
+            </p>
+          ) : null}
 
           {needText.trim() ? <ScanNeedInterpretation text={needText} /> : null}
 
