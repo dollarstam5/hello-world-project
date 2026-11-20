@@ -120,7 +120,7 @@ export function ScanPanel() {
                 <h3 className="text-sm font-semibold">{t("scan.flow.finalTitle")}</h3>
                 <p className="text-sm leading-relaxed">{needText}</p>
                 <div className="flex flex-wrap gap-2 text-xs">
-                  <span className="rounded-full border border-border bg-background px-3 py-1.5">{t("scan.flow.radiusSummary", { radius: radiusKm })}</span>
+                  <span className="rounded-full border border-border bg-background px-3 py-1.5">{t("scan.flow.radiusLabel") + ": " + radiusKm + " " + t("scan.radius.unit")}</span>
                 </div>
               </div>
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
