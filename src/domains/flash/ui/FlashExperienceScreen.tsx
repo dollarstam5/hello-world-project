@@ -78,6 +78,7 @@ export function FlashExperienceScreen() {
   const [publishing, setPublishing] = useState(false);
   const [publishError, setPublishError] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [publishPreview, setPublishPreview] = useState(false);
   const [location, setLocation] = useState<{
     latitude: number;
     longitude: number;
@@ -110,6 +111,7 @@ export function FlashExperienceScreen() {
     setStep("write");
     setVoiceMessage("");
     setPublishError(false);
+    setPublishPreview(false);
     setLocation(null);
     setAreaLabel("");
     setLocationError("");
@@ -608,21 +610,37 @@ export function FlashExperienceScreen() {
               </motion.div>
             ) : (
               <motion.div key="final" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.22 }} className="space-y-4">
-                <div className="rounded-2xl border border-primary/20 bg-muted/40 p-4">
-                  <p className="text-sm font-semibold">{t("flash.composer.finalChoiceTitle")}</p>
-                  <p className="mt-1 text-sm text-muted-foreground">{t("flash.location.publishPaused")}</p>
-                </div>
-                {!user && !authLoading ? (
-                  <div className="rounded-xl border border-border p-3">
-                    <p className="text-sm text-muted-foreground">{t("flash.composer.signIn")}</p>
-                    <Button asChild className="mt-3 w-full rounded-full"><Link to="/auth">{t("auth.signIn")}</Link></Button>
+                {publishPreview ? (
+                  <div className="rounded-2xl border border-primary/25 bg-gradient-to-br from-primary/10 via-card to-card p-5 text-center">
+                    <span className="mx-auto mb-3 grid size-12 place-items-center rounded-full bg-primary/15 text-primary"><Check className="size-6" aria-hidden="true" /></span>
+                    <p className="text-base font-semibold">{t("flash.composer.publishPreviewTitle")}</p>
+                    <p className="mt-2 text-sm text-muted-foreground">{t("flash.composer.publishPreviewDescription")}</p>
+                    <div className="mt-4 rounded-xl border border-border bg-background/70 p-3 text-left">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t("flash.composer.previewEyebrow")}</p>
+                      <p className="mt-2 whitespace-pre-wrap text-sm font-medium">{text.trim()}</p>
+                    </div>
+                    <Button type="button" variant="outline" className="mt-4 min-h-11 w-full rounded-full" onClick={() => setPublishPreview(false)}>{t("flash.composer.backToChoice")}</Button>
                   </div>
-                ) : null}
-                {publishError ? <p className="text-sm text-destructive" role="alert">{t("flash.composer.error")}</p> : null}
-                <div className="grid gap-2 sm:grid-cols-2">
-                  <Button type="button" variant="outline" className="min-h-12 rounded-full" onClick={() => setStep("preview")} disabled={publishing}>{t("flash.composer.backToPreview")}</Button>
-                  <Button type="button" className="min-h-12 rounded-full" onClick={() => void saveFlashDraft()} disabled={!user || authLoading || publishing || !text.trim()}>{publishing ? t("app.loading") : t("flash.location.saveDraft")}</Button>
-                </div>
+                ) : (
+                  <>
+                    <div className="rounded-2xl border border-primary/20 bg-muted/40 p-4">
+                      <p className="text-sm font-semibold">{t("flash.composer.finalChoiceTitle")}</p>
+                      <p className="mt-1 text-sm text-muted-foreground">{t("flash.composer.publishPreviewNotice")}</p>
+                    </div>
+                    {!user && !authLoading ? (
+                      <div className="rounded-xl border border-border p-3">
+                        <p className="text-sm text-muted-foreground">{t("flash.composer.signIn")}</p>
+                        <Button asChild className="mt-3 w-full rounded-full"><Link to="/auth">{t("auth.signIn")}</Link></Button>
+                      </div>
+                    ) : null}
+                    {publishError ? <p className="text-sm text-destructive" role="alert">{t("flash.composer.error")}</p> : null}
+                    <div className="grid gap-2">
+                      <Button type="button" className="min-h-12 w-full rounded-full" onClick={() => setPublishPreview(true)} disabled={!text.trim()}>{t("flash.composer.publishNowPreview")}</Button>
+                      <Button type="button" variant="outline" className="min-h-12 w-full rounded-full" onClick={() => setStep("preview")} disabled={publishing}>{t("flash.composer.backToPreview")}</Button>
+                      <Button type="button" variant="secondary" className="min-h-12 w-full rounded-full" onClick={() => void saveFlashDraft()} disabled={!user || authLoading || publishing || !text.trim()}>{publishing ? t("app.loading") : t("flash.location.saveDraft")}</Button>
+                    </div>
+                  </>
+                )}
               </motion.div>
             )}
         </DialogContent>
