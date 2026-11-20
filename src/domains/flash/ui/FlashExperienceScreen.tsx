@@ -4,7 +4,6 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight, Check, Info, Mic, MicOff, Plus, Sparkles, X, Zap } from "lucide-react";
 import { FLASH_SCOPES, FLASH_URGENCIES } from "@eco/core-contracts";
 import type {
-  FlashCategory,
   FlashKind,
   FlashScope,
   FlashTimeSlot,
@@ -48,18 +47,6 @@ type SpeechWindow = Window & {
   webkitSpeechRecognition?: new () => SpeechRecognitionLike;
 };
 
-const CATEGORIES: FlashCategory[] = [
-  "personal",
-  "professional",
-  "commercial",
-  "home",
-  "transport",
-  "food",
-  "education",
-  "health",
-  "events",
-  "other",
-];
 const TIME_SLOTS: FlashTimeSlot[] = ["now", "today", "tomorrow", "this_week"];
 function getSpeechConstructor() {
   if (typeof window === "undefined") return undefined;
@@ -84,8 +71,6 @@ export function FlashExperienceScreen() {
   const [composerOpen, setComposerOpen] = useState(false);
   const [step, setStep] = useState<"write" | "confirm" | "criteria">("write");
   const [text, setText] = useState("");
-  const [kind, setKind] = useState<FlashKind>("need");
-  const [category, setCategory] = useState<FlashCategory>("other");
   const [timeSlot, setTimeSlot] = useState<FlashTimeSlot>("today");
   const [scope, setScope] = useState<FlashScope | null>(null);
   const [urgency, setUrgency] = useState<FlashUrgency | null>(null);
@@ -122,8 +107,6 @@ export function FlashExperienceScreen() {
     setText("");
     setScope(null);
     setUrgency(null);
-    setKind("need");
-    setCategory("other");
     setTimeSlot("today");
     setStep("write");
     setVoiceMessage("");
@@ -191,8 +174,6 @@ export function FlashExperienceScreen() {
 
   function confirmReformulation() {
     if (!parsedIntent || !text.trim()) return;
-    setKind(parsedIntent.kind);
-    setCategory(parsedIntent.category);
     setTimeSlot(parsedIntent.timeSlot);
     setStep("criteria");
   }
@@ -253,8 +234,8 @@ export function FlashExperienceScreen() {
         authorId: user.id as UserId,
         title: body.length > 80 ? `${body.slice(0, 77)}…` : body,
         body,
-        kind,
-        category,
+        kind: parsedIntent?.kind ?? "need",
+        category: parsedIntent?.category ?? "other",
         timeSlot,
         scope,
         urgency,
@@ -532,34 +513,6 @@ export function FlashExperienceScreen() {
               </section>
 
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                <label className="grid gap-1.5 text-sm font-medium">
-                  {t("flash.composer.kind")}
-                  <select
-                    value={kind}
-                    onChange={(event) => setKind(event.target.value as FlashKind)}
-                    className="min-h-11 rounded-xl border border-input bg-background px-3"
-                  >
-                    {(["need", "offer"] as FlashKind[]).map((value) => (
-                      <option key={value} value={value}>
-                        {t(`flash.kind.${value}`)}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <label className="grid gap-1.5 text-sm font-medium">
-                  {t("flash.composer.category")}
-                  <select
-                    value={category}
-                    onChange={(event) => setCategory(event.target.value as FlashCategory)}
-                    className="min-h-11 rounded-xl border border-input bg-background px-3"
-                  >
-                    {CATEGORIES.map((value) => (
-                      <option key={value} value={value}>
-                        {t(`flash.category.${value}`)}
-                      </option>
-                    ))}
-                  </select>
-                </label>
                 <label className="grid gap-1.5 text-sm font-medium">
                   {t("flash.composer.when")}
                   <select
