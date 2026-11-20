@@ -406,3 +406,17 @@ avec un minimum d'effort pour l'utilisateur.
 # Fin du document
 
 Document ID : VITALA-ENGINE-01 Version : 1.0 Statut : VALIDÉ
+
+# 22. Lieu du Flash — facultatif, distinct de la position de l'auteur
+
+Certains Flash, notamment les annonces de biens ou de lieux (maison à louer, local, lieu d'un événement), peuvent proposer un lieu propre au Flash. Ce champ n'est pas obligatoire. Il ne doit pas reprendre automatiquement la position GPS de l'auteur.
+
+La personne peut continuer sans ajouter de lieu. La future UI devra présenter un choix explicite de confidentialité/precision avant toute diffusion. Les options envisagées sont : lieu exact, zone approximative, ou lieu masqué. Elles sont une proposition de conception, pas encore un choix final de UI.
+
+**Garde-fous :** consentement explicite, séparation de la position auteur et du lieu annoncé, aucun partage de coordonnées précises dans Sync ou projections publiques génériques, et un contrôle serveur adapté avant affichage. Une option de localisation activée ne doit pas divulguer les coordonnées brutes.
+
+# 23. Informations absentes — publication permissive
+
+Les critères non fournis restent facultatifs sauf lorsqu'un champ est réellement indispensable pour la sécurité, les autorisations ou l'action elle-même. Flash doit pouvoir enregistrer/publier une expression exploitable sans exiger que tous les critères soient renseignés.
+
+Les critères absents restent inconnus/non précisés, ne sont ni inventés ni interprétés comme des contraintes. Les contrôles de sécurité, modération, propriété, statut et intégrité ne sont jamais assouplis.
