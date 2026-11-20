@@ -20,6 +20,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { flashesRepository, useLocalQuery } from "@/platform/offline";
 import { archiveFlash, deleteFlash, updateFlash } from "../data";
+import { getFlashDateGroup } from "../model/date-groups";
 
 type PendingDelete = FlashRecord | null;
 
@@ -218,6 +219,8 @@ export function MyFlashManagement() {
                       )}
                       <p className="mt-1 text-xs text-muted-foreground">
                         {t(statusKeys[resolvedStatus])}
+                        {" · "}
+                        {t(`flash.mine.date.${getFlashDateGroup(record.createdAt)})}
                         {" · "}
                         {new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(
                           record.createdAt,
