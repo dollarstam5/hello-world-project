@@ -16,36 +16,42 @@ export function useScanLocation() {
     setLocationError(null);
     setUnsupported(false);
 
-    if (!navigator.geolocation?.getCurrentPosition) {
+    if (typeof navigator === "undefined" || !navigator.geolocation?.getCurrentPosition) {
       setUnsupported(true);
       return Promise.resolve(null);
     }
 
     setLocating(true);
     return new Promise((resolve) => {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLocating(false);
-          resolve({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          });
-        },
-        (error) => {
-          setLocating(false);
-          const code: ScanLocationError =
-            error.code === 1
-              ? "permission"
-              : error.code === 2
-                ? "unavailable"
-                : error.code === 3
-                  ? "timeout"
-                  : "unknown";
-          setLocationError(code);
-          resolve(null);
-        },
-        { enableHighAccuracy: false, timeout: 8000 },
-      );
+      try {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            setLocating(false);
+            resolve({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            });
+          },
+          (error) => {
+            setLocating(false);
+            const code: ScanLocationError =
+              error.code === 1
+                ? "permission"
+                : error.code === 2
+                  ? "unavailable"
+                  : error.code === 3
+                    ? "timeout"
+                    : "unknown";
+            setLocationError(code);
+            resolve(null);
+          },
+          { enableHighAccuracy: false, timeout: 8000 },
+        );
+      } catch {
+        setLocating(false);
+        setLocationError("unknown");
+        resolve(null);
+      }
     });
   }, []);
 
