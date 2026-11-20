@@ -122,3 +122,19 @@ avec un minimum d'effort pour la personne.
 - Tests : `src/tests/flash/`
 
 Toute évolution du moteur doit rester conforme à cette référence et mettre à jour ce document dans la même contribution.
+
+## Localisation propre au Flash — optionnelle
+
+Certains Flash décrivent un lieu qui n'est pas la position de l'auteur (ex. une maison à louer, un local ou un événement). L'auteur peut donc choisir d'ajouter la position du bien/lieu au Flash, indépendamment de sa position personnelle et de la portée de diffusion.
+
+- Cette option est **facultative** et désactivée par défaut.
+- Sans lieu associé, le Flash reste valide et peut être enregistré ou publié si les autres exigences réellement indispensables sont satisfaites.
+- Le lieu du Flash et la position de l'auteur sont deux données distinctes : elles ne doivent jamais être confondues.
+- L'auteur doit choisir explicitement ce qui sera montré. Le choix proposé pour la future UI est : lieu exact contrôlé, zone approximative, ou aucun lieu affiché. Ces niveaux de précision restent à confirmer avec l'expérience de publication et les règles de sécurité.
+- Une adresse ou des coordonnées précises ne doivent jamais être exposées dans les projections publiques, Sync générique ou réponses Scan sans une permission explicite et un mécanisme de publication sécurisé. L'affichage exact doit être rendu par un service contrôlé, pas par une fuite de coordonnées brutes.
+
+## Critères incomplets — ne pas bloquer
+
+Flash accepte une expression suffisamment claire pour créer/enregistrer ou publier. Les détails facultatifs (budget, caractéristiques, zone, urgence, etc.) ne sont pas exigés par défaut. Les champs absents restent « non précisés » : Vita ne les invente pas et ne les transforme pas en contraintes.
+
+Une validation ne bloque que si l'information manquante empêche réellement la création/publication, la sécurité, l'autorisation ou l'intégrité. Les exigences de publication peuvent être distinctes de celles d'un brouillon et doivent rester minimales et justifiées.
