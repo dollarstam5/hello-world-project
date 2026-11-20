@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useScan } from "./useScan";
 import { useScanLocation } from "./useScanLocation";
 import { useScanPreferences } from "./useScanPreferences";
@@ -12,6 +12,12 @@ export function useScanFlow() {
   const preferences = useScanPreferences();
   const [started, setStarted] = useState(false);
   const [needText, setNeedText] = useState("");
+
+  const updateNeedText = useCallback((value: string) => {
+    setNeedText(value);
+    setStarted(false);
+    scan.clearResults();
+  }, [scan.clearResults]);
 
   const status = getScanStatus({
     started,
@@ -50,7 +56,7 @@ export function useScanFlow() {
     setRadiusKm: preferences.setRadiusKm,
     availableRadii: preferences.availableRadii,
     needText,
-    setNeedText,
+    setNeedText: updateNeedText,
     status,
     start,
   };
