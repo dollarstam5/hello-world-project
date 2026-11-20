@@ -174,8 +174,12 @@ class FakeDatabase {
   async rpc(name?: string, args?: Row): Promise<QueryResult> {
     if (name === "transition_flash" && args?.["p_status"] === "archived") {
       const flash = (this.tables.flashes ?? []).find((row) => row.id === args["p_flash_id"]);
-      if (!flash || flash.status !== "live" || flash.deleted_at != null) return { data: false, error: null };
-      flash.status = "archived"; flash.updated_at = Date.now(); flash.revision = Number(flash.revision ?? 0) + 1; this.successfulBusinessWrites += 1;
+      if (!flash || flash.status !== "live" || flash.deleted_at != null)
+        return { data: false, error: null };
+      flash.status = "archived";
+      flash.updated_at = Date.now();
+      flash.revision = Number(flash.revision ?? 0) + 1;
+      this.successfulBusinessWrites += 1;
       return { data: true, error: null };
     }
     return { data: null, error: null };
@@ -188,16 +192,51 @@ class FakeDatabase {
 
 describe("runPush transport — Flash lifecycle command", () => {
   it("archives live Flash through RPC and replays idempotently", async () => {
-    const db = new FakeDatabase(); db.tables.flashes.push({ id: recordId, author_id: ownerId, status: "live", deleted_at: null, revision: 2, title: "Flash", body: "Body" });
+    const db = new FakeDatabase();
+    db.tables.flashes.push({
+      id: recordId,
+      author_id: ownerId,
+      status: "live",
+      deleted_at: null,
+      revision: 2,
+      title: "Flash",
+      body: "Body",
+    });
     const entry = flashEntry("update", { status: "archived" });
-    const first = await runPush(db.client(), request(entry), ownerId); const writes = db.successfulBusinessWrites; const second = await runPush(db.client(), request(entry), ownerId);
-    expect(first.accepted).toEqual([mutationId]); expect(first.rejected).toEqual([]); expect(first.records[0]).toMatchObject({ table: "flashes", data: { id: recordId, status: "archived" } });
-    expect(second.accepted).toEqual([mutationId]); expect(db.tables.flashes[0].status).toBe("archived"); expect(db.successfulBusinessWrites).toBe(writes); expect(db.receipts).toHaveLength(1);
+    const first = await runPush(db.client(), request(entry), ownerId);
+    const writes = db.successfulBusinessWrites;
+    const second = await runPush(db.client(), request(entry), ownerId);
+    expect(first.accepted).toEqual([mutationId]);
+    expect(first.rejected).toEqual([]);
+    expect(first.records[0]).toMatchObject({
+      table: "flashes",
+      data: { id: recordId, status: "archived" },
+    });
+    expect(second.accepted).toEqual([mutationId]);
+    expect(db.tables.flashes[0].status).toBe("archived");
+    expect(db.successfulBusinessWrites).toBe(writes);
+    expect(db.receipts).toHaveLength(1);
   });
   it("rejects archive command when Flash is not live", async () => {
-    const db = new FakeDatabase(); db.tables.flashes.push({ id: recordId, author_id: ownerId, status: "draft", deleted_at: null, revision: 1 });
-    const result = await runPush(db.client(), request(flashEntry("update", { status: "archived" })), ownerId);
-    expect(result.accepted).toEqual([]); expect(result.rejected).toEqual([{ id: mutationId, code: "invalid_mutation", retryable: false }]); expect(db.tables.flashes[0].status).toBe("draft"); expect(db.receipts).toHaveLength(0);
+    const db = new FakeDatabase();
+    db.tables.flashes.push({
+      id: recordId,
+      author_id: ownerId,
+      status: "draft",
+      deleted_at: null,
+      revision: 1,
+    });
+    const result = await runPush(
+      db.client(),
+      request(flashEntry("update", { status: "archived" })),
+      ownerId,
+    );
+    expect(result.accepted).toEqual([]);
+    expect(result.rejected).toEqual([
+      { id: mutationId, code: "invalid_mutation", retryable: false },
+    ]);
+    expect(db.tables.flashes[0].status).toBe("draft");
+    expect(db.receipts).toHaveLength(0);
   });
 });
 describe("runPush transport — Flash creation and convergence", () => {
