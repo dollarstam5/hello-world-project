@@ -16,6 +16,7 @@ export {
   usersRepository,
   udiRepository,
   flashesRepository,
+  flashesLifecycleRepository,
   missionsRepository,
   radarsRepository,
   postsRepository,
