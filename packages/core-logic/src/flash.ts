@@ -21,6 +21,17 @@ export function resolveFlashStatus(flash: FlashRecord, now = Date.now()): FlashS
   return flash.status;
 }
 
+/** Whether the author can edit the content in the management dashboard. */
+export function canEditFlash(flash: FlashRecord, now = Date.now()): boolean {
+  const status = resolveFlashStatus(flash, now);
+  return status === "draft" || status === "live";
+}
+
+/** Archive is a server-authorized transition available only to an active Flash. */
+export function canArchiveFlash(flash: FlashRecord, now = Date.now()): boolean {
+  return resolveFlashStatus(flash, now) === "live";
+}
+
 /** Remaining lifetime in milliseconds, or null when the flash never expires. */
 export function flashTimeLeft(flash: FlashRecord, now = Date.now()): number | null {
   if (flash.expiresAt === null) return null;
