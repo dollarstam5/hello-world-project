@@ -77,3 +77,9 @@ Toute nouvelle fonctionnalité ou correction d'un moteur doit vérifier cette r�
 - [Références produit](../01-product/README.md)
 
 Les fiches propres à chaque moteur précisent les champs minimaux, les compléments facultatifs, les états intermédiaires et les exceptions propres à leur domaine. Elles ne peuvent pas affaiblir le présent principe ; toute exception doit être justifiée par un garde-fou du chapitre 3.
+
+## 7. Clarification transversale — critères facultatifs et lieux associés
+
+- Un Flash peut porter un **lieu associé au contenu** (par exemple, l'emplacement d'une maison à louer), distinct de la position de la personne qui publie. Cette information est facultative et n'est visible que selon le choix explicite de l'auteur et un contrôle de confidentialité sécurisé.
+- La précision d'affichage (exacte, approximative ou masquée) reste une décision d'interface à valider avant activation; aucune coordonnée exacte ne doit être exposée par Sync ou une projection publique générique.
+- Les critères non renseignés ne bloquent pas une action exploitable. Ils restent inconnus et ne sont ni inventés ni convertis en critères stricts. Seuls les champs réellement indispensables, justifiés par la sécurité, les autorisations ou l'intégrité, peuvent bloquer.
