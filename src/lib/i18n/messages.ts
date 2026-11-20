@@ -448,6 +448,15 @@ export const messages = {
     "scan.interpretation.intent.help": "un coup de main ou de l'aide",
     "scan.interpretation.intent.service": "un service",
     "scan.interpretation.intent.unknown": "une exploration générale",
+    "scan.voice.action": "Parler mon besoin",
+    "scan.voice.stop": "Arrêter l’écoute",
+    "scan.voice.hint": "Ou dites-le à voix haute",
+    "scan.voice.listening": "Je vous écoute…",
+    "scan.voice.received": "Votre parole a été ajoutée au texte.",
+    "scan.voice.unsupported": "La dictée vocale n’est pas disponible dans ce navigateur. Vous pouvez écrire votre besoin.",
+    "scan.voice.permission": "L’accès au micro est refusé. Autorisez-le ou écrivez votre besoin.",
+    "scan.voice.error": "La dictée n’a pas fonctionné. Réessayez ou écrivez votre besoin.",
+
     "scan.privacy":
       "Votre position sert à rechercher les Flash proches. Elle n’est pas montrée aux autres personnes.",
     "scan.radius": "Jusqu’où chercher ? ",
@@ -1531,6 +1540,15 @@ export const messages = {
     "scan.interpretation.intent.help": "help or a helping hand",
     "scan.interpretation.intent.service": "a service",
     "scan.interpretation.intent.unknown": "a general exploration",
+    "scan.voice.action": "Speak my need",
+    "scan.voice.stop": "Stop listening",
+    "scan.voice.hint": "Or speak it out loud",
+    "scan.voice.listening": "Listening…",
+    "scan.voice.received": "Your speech was added to the text.",
+    "scan.voice.unsupported": "Voice input isn't available in this browser. You can type your need.",
+    "scan.voice.permission": "Microphone access is denied. Allow it or type your need.",
+    "scan.voice.error": "Voice input didn't work. Try again or type your need.",
+
     "scan.privacy":
       "Your position helps find nearby Flash posts. It is never shown to other people.",
     "scan.radius": "How far should we search?",
