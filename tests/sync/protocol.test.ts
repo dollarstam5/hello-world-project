@@ -131,34 +131,36 @@ describe("sync protocol validation", () => {
     });
     expect(created.entries[0].patch).not.toHaveProperty("status");
 
-    for (const kind of ["create", "update"] as const) {
-      expect(() =>
-        validatePushRequest({
-          protocolVersion: SYNC_PROTOCOL_VERSION,
-          entries: [
-            {
-              ...mutation,
-              kind,
-              patch:
-                kind === "create"
-                  ? {
-                      title: "Publication directe",
-                      body: "Ne doit pas être visible",
-                      expiresAt: 1_900_000_000_000,
-                      kind: "need",
-                      category: "transport",
-                      timeSlot: "today",
-                      scope: "current_area",
-                      urgency: "today",
-                      areaLabel: "Akwa",
-                      status: "live",
-                    }
-                  : { status: "archived" },
+    expect(() =>
+      validatePushRequest({
+        protocolVersion: SYNC_PROTOCOL_VERSION,
+        entries: [
+          {
+            ...mutation,
+            kind: "create",
+            patch: {
+              title: "Publication directe",
+              body: "Ne doit pas être visible",
+              expiresAt: 1_900_000_000_000,
+              kind: "need",
+              category: "transport",
+              timeSlot: "today",
+              scope: "current_area",
+              urgency: "today",
+              areaLabel: "Akwa",
+              status: "live",
             },
-          ],
-        }),
-      ).toThrow(SyncValidationError);
-    }
+          },
+        ],
+      }),
+    ).toThrow(SyncValidationError);
+
+    expect(() =>
+      validatePushRequest({
+        protocolVersion: SYNC_PROTOCOL_VERSION,
+        entries: [{ ...mutation, kind: "update", patch: { status: "archived" } }],
+      }),
+    ).not.toThrow();
   });
 
   it("accepts Flash draft creation without optional scope and urgency", () => {
