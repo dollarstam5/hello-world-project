@@ -179,129 +179,129 @@ export function MyFlashManagement() {
                   {t(statusKeys[status])} ({items.length})
                 </h3>
                 <div className="stack-3">
-                              {items.map((record) => {
-                                const resolvedStatus = resolveFlashStatus(record);
-                  
-                                return (
-                                  <Surface key={record.id} variant="elevated" padding="md" bordered>
-                                    <div className="flex items-start justify-between gap-3">
-                                      <div className="min-w-0 flex-1">
-                                        {editingId === record.id ? (
-                                          <div className="stack-2">
-                                            <Textarea
-                                              value={editDraft}
-                                              onChange={(event) => setEditDraft(event.target.value)}
-                                              maxLength={600}
-                                              rows={3}
-                                              aria-label={t("flash.composer.placeholder")}
-                                            />
-                                            <div className="flex flex-wrap justify-end gap-2">
-                                              <Button
-                                                type="button"
-                                                size="sm"
-                                                variant="ghost"
-                                                disabled={busyId === record.id}
-                                                onClick={() => {
-                                                  setEditingId(null);
-                                                  setEditDraft("");
-                                                }}
-                                              >
-                                                {t("common.cancel")}
-                                              </Button>
-                                              <Button
-                                                type="button"
-                                                size="sm"
-                                                disabled={busyId === record.id || !editDraft.trim()}
-                                                onClick={() => void saveEdit(record)}
-                                              >
-                                                {t("common.save")}
-                                              </Button>
-                                            </div>
-                                          </div>
-                                        ) : (
-                                          <p className="font-semibold leading-snug">{record.title}</p>
-                                        )}
-                                        <p className="mt-1 text-xs text-muted-foreground">
-                                          {t(statusKeys[resolvedStatus])}
-                                          {" · "}
-                                          {t(`flash.mine.date.${getFlashDateGroup(record.createdAt)})}
-                                          {" · "}
-                                          {new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(
-                                            record.createdAt,
-                                          )}
-                                        </p>
-                                      </div>
-                                      <Button
-                                        type="button"
-                                        size="sm"
-                                        variant="ghost"
-                                        aria-expanded={expandedId === record.id}
-                                        onClick={() => setExpandedId((current) => current === record.id ? null : record.id)}
-                                      >
-                                        {expandedId === record.id ? <ChevronUp className="mr-1 h-4 w-4" aria-hidden /> : <ChevronDown className="mr-1 h-4 w-4" aria-hidden />}
-                                        {expandedId === record.id ? t("flash.mine.closeDetails") : t("flash.mine.details")}
-                                      </Button>
-                  
-                                      {resolvedStatus === "live" ? (
-                                        <Button
-                                          type="button"
-                                          size="sm"
-                                          variant="outline"
-                                          disabled={busyId === record.id}
-                                          onClick={() => void archive(record)}
-                                        >
-                                          <Archive className="mr-2 h-4 w-4" aria-hidden />
-                                          {t("flash.mine.archive")}
-                                        </Button>
-                                      ) : null}
-                                    </div>
-                  
-                                    {expandedId === record.id ? (
-                                      <div className="mt-3 rounded-xl border border-border bg-muted/40 p-3">
-                                        <p className="whitespace-pre-wrap text-sm leading-relaxed">{record.body}</p>
-                                        <p className="mt-3 text-xs text-muted-foreground">
-                                          {t("flash.mine.createdAt")} {new Intl.DateTimeFormat(locale, { dateStyle: "full", timeStyle: "short" }).format(record.createdAt)}
-                                        </p>
-                                        {record.areaLabel ? <p className="mt-1 text-xs text-muted-foreground">{t("flash.mine.location")} : {record.areaLabel}</p> : null}
-                                        <p className="mt-1 text-xs text-muted-foreground">{t("flash.mine.mediaCount")} : {record.mediaIds.length}</p>
-                                      </div>
-                                    ) : null}
-                  
-                                    <div className="mt-3 flex flex-wrap justify-end gap-2">
-                                      {editingId !== record.id ? (
-                                        <Button
-                                          type="button"
-                                          size="sm"
-                                          variant="ghost"
-                                          disabled={
-                                            busyId !== null ||
-                                            resolvedStatus === "archived" ||
-                                            resolvedStatus === "expired"
-                                          }
-                                          onClick={() => {
-                                            setEditingId(record.id);
-                                            setEditDraft(record.body);
-                                          }}
-                                        >
-                                          <Pencil className="mr-2 h-4 w-4" aria-hidden />
-                                          {t("flash.mine.edit")}
-                                        </Button>
-                                      ) : null}
-                                      <Button
-                                        type="button"
-                                        size="sm"
-                                        variant="ghost"
-                                        className="text-muted-foreground"
-                                        disabled={busyId !== null || editingId === record.id}
-                                        onClick={() => setPendingDelete(record)}
-                                      >
-                                        <Trash2 className="mr-2 h-4 w-4" aria-hidden />
-                                        {t("flash.mine.delete")}
-                                      </Button>
-                                    </div>
-                                  </Surface>
-                                );
-                              })}
+              {items.map((record) => {
+                const resolvedStatus = resolveFlashStatus(record);
+  
+                return (
+                  <Surface key={record.id} variant="elevated" padding="md" bordered>
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0 flex-1">
+                        {editingId === record.id ? (
+                          <div className="stack-2">
+                            <Textarea
+                              value={editDraft}
+                              onChange={(event) => setEditDraft(event.target.value)}
+                              maxLength={600}
+                              rows={3}
+                              aria-label={t("flash.composer.placeholder")}
+                            />
+                            <div className="flex flex-wrap justify-end gap-2">
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant="ghost"
+                                disabled={busyId === record.id}
+                                onClick={() => {
+                                  setEditingId(null);
+                                  setEditDraft("");
+                                }}
+                              >
+                                {t("common.cancel")}
+                              </Button>
+                              <Button
+                                type="button"
+                                size="sm"
+                                disabled={busyId === record.id || !editDraft.trim()}
+                                onClick={() => void saveEdit(record)}
+                              >
+                                {t("common.save")}
+                              </Button>
+                            </div>
+                          </div>
+                        ) : (
+                          <p className="font-semibold leading-snug">{record.title}</p>
+                        )}
+                        <p className="mt-1 text-xs text-muted-foreground">
+                          {t(statusKeys[resolvedStatus])}
+                          {" · "}
+                          {t(`flash.mine.date.${getFlashDateGroup(record.createdAt)})}
+                          {" · "}
+                          {new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(
+                            record.createdAt,
+                          )}
+                        </p>
+                      </div>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="ghost"
+                        aria-expanded={expandedId === record.id}
+                        onClick={() => setExpandedId((current) => current === record.id ? null : record.id)}
+                      >
+                        {expandedId === record.id ? <ChevronUp className="mr-1 h-4 w-4" aria-hidden /> : <ChevronDown className="mr-1 h-4 w-4" aria-hidden />}
+                        {expandedId === record.id ? t("flash.mine.closeDetails") : t("flash.mine.details")}
+                      </Button>
+  
+                      {resolvedStatus === "live" ? (
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="outline"
+                          disabled={busyId === record.id}
+                          onClick={() => void archive(record)}
+                        >
+                          <Archive className="mr-2 h-4 w-4" aria-hidden />
+                          {t("flash.mine.archive")}
+                        </Button>
+                      ) : null}
+                    </div>
+  
+                    {expandedId === record.id ? (
+                      <div className="mt-3 rounded-xl border border-border bg-muted/40 p-3">
+                        <p className="whitespace-pre-wrap text-sm leading-relaxed">{record.body}</p>
+                        <p className="mt-3 text-xs text-muted-foreground">
+                          {t("flash.mine.createdAt")} {new Intl.DateTimeFormat(locale, { dateStyle: "full", timeStyle: "short" }).format(record.createdAt)}
+                        </p>
+                        {record.areaLabel ? <p className="mt-1 text-xs text-muted-foreground">{t("flash.mine.location")} : {record.areaLabel}</p> : null}
+                        <p className="mt-1 text-xs text-muted-foreground">{t("flash.mine.mediaCount")} : {record.mediaIds.length}</p>
+                      </div>
+                    ) : null}
+  
+                    <div className="mt-3 flex flex-wrap justify-end gap-2">
+                      {editingId !== record.id ? (
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="ghost"
+                          disabled={
+                            busyId !== null ||
+                            resolvedStatus === "archived" ||
+                            resolvedStatus === "expired"
+                          }
+                          onClick={() => {
+                            setEditingId(record.id);
+                            setEditDraft(record.body);
+                          }}
+                        >
+                          <Pencil className="mr-2 h-4 w-4" aria-hidden />
+                          {t("flash.mine.edit")}
+                        </Button>
+                      ) : null}
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="ghost"
+                        className="text-muted-foreground"
+                        disabled={busyId !== null || editingId === record.id}
+                        onClick={() => setPendingDelete(record)}
+                      >
+                        <Trash2 className="mr-2 h-4 w-4" aria-hidden />
+                        {t("flash.mine.delete")}
+                      </Button>
+                    </div>
+                  </Surface>
+                );
+              })}
                 </div>
               </section>
             );
