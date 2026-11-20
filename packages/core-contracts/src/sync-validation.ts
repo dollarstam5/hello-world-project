@@ -296,7 +296,11 @@ export function validateMutationPatch(
     if ("deletedAt" in raw) nullableInteger(raw.deletedAt, `${table}.deletedAt`);
     return {};
   }
-  const allowed = new Set(kind === "create" ? CLIENT_WRITE_POLICY[table].update : clientWritableFields(table));
+  const allowed = new Set(
+    kind === "create" && table === "flashes"
+      ? CLIENT_WRITE_POLICY[table].update
+      : clientWritableFields(table),
+  );
   const result: Record<string, unknown> = {};
   for (const [field, value] of Object.entries(raw)) {
     if (!allowed.has(field)) fail(`${table}.${field} is not writable.`);
