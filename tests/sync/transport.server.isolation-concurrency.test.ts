@@ -69,6 +69,11 @@ class IsolationQuery {
     return this;
   }
 
+  is(column: string, value: unknown): this {
+    this.filters.push([column, value]);
+    return this;
+  }
+
   insert(row: Row): this {
     this.operation = "insert";
     this.payload = row;
