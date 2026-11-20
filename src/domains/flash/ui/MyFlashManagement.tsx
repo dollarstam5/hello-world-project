@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Archive, Pencil, Trash2 } from "lucide-react";
+import { Archive, ChevronDown, ChevronUp, Pencil, Trash2 } from "lucide-react";
 import type { FlashRecord } from "@eco/core-contracts";
 import { resolveFlashStatus } from "@eco/core-logic";
 import { EmptyState } from "@/components/app/EmptyState";
@@ -37,6 +37,7 @@ export function MyFlashManagement() {
   const [busyId, setBusyId] = useState<string | null>(null);
   const [actionError, setActionError] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
   const [editDraft, setEditDraft] = useState("");
   const [userId, setUserId] = useState<string | null | undefined>(undefined);
 
@@ -223,6 +224,16 @@ export function MyFlashManagement() {
                         )}
                       </p>
                     </div>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="ghost"
+                      aria-expanded={expandedId === record.id}
+                      onClick={() => setExpandedId((current) => current === record.id ? null : record.id)}
+                    >
+                      {expandedId === record.id ? <ChevronUp className="mr-1 h-4 w-4" aria-hidden /> : <ChevronDown className="mr-1 h-4 w-4" aria-hidden />}
+                      {expandedId === record.id ? "Fermer" : "Voir"}
+                    </Button>
 
                     {resolvedStatus === "live" ? (
                       <Button
@@ -237,6 +248,17 @@ export function MyFlashManagement() {
                       </Button>
                     ) : null}
                   </div>
+
+                  {expandedId === record.id ? (
+                    <div className="mt-3 rounded-xl border border-border bg-muted/40 p-3">
+                      <p className="whitespace-pre-wrap text-sm leading-relaxed">{record.body}</p>
+                      <p className="mt-3 text-xs text-muted-foreground">
+                        Créé le {new Intl.DateTimeFormat(locale, { dateStyle: "full", timeStyle: "short" }).format(record.createdAt)}
+                      </p>
+                      {record.areaLabel ? <p className="mt-1 text-xs text-muted-foreground">Lieu : {record.areaLabel}</p> : null}
+                      <p className="mt-1 text-xs text-muted-foreground">Médias : {record.mediaIds.length}</p>
+                    </div>
+                  ) : null}
 
                   <div className="mt-3 flex flex-wrap justify-end gap-2">
                     {editingId !== record.id ? (
