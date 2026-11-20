@@ -23,6 +23,7 @@ import { useAuth } from "@/domains/auth";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { reverseGeocodeFlashLocation } from "../api/flash-geocoding.functions";
 import { createFlash } from "../data";
+import { canSaveFlashLater, FLASH_PUBLISH_NOW_ENABLED } from "../model/publication-choice";
 import { FlashFeed } from "./FlashFeed";
 import { MyFlashManagement } from "./MyFlashManagement";
 
@@ -87,6 +88,7 @@ export function FlashExperienceScreen() {
   const [locating, setLocating] = useState(false);
   const [locationError, setLocationError] = useState("");
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
+  const draftSaveInFlightRef = useRef(false);
 
   const parsedIntent = useMemo(
     () => (text.trim().length >= 3 ? parseFlashIntent(text) : null),
@@ -224,7 +226,8 @@ export function FlashExperienceScreen() {
   }
 
   async function saveFlashDraft() {
-    if (!user || !text.trim()) return;
+    if (!canSaveFlashLater({ hasUser: Boolean(user), authLoading, publishing: draftSaveInFlightRef.current, text })) return;
+    draftSaveInFlightRef.current = true;
     setPublishing(true);
     setPublishError(false);
     try {
@@ -247,6 +250,7 @@ export function FlashExperienceScreen() {
     } catch {
       setPublishError(true);
     } finally {
+      draftSaveInFlightRef.current = false;
       setPublishing(false);
     }
   }
@@ -621,10 +625,10 @@ export function FlashExperienceScreen() {
                   ) : null}
                   {publishError ? <p className="text-sm text-destructive" role="alert">{t("flash.composer.error")}</p> : null}
                   <div className="grid gap-2">
-                    <Button type="button" className="min-h-12 w-full rounded-full" disabled>{t("flash.composer.publishNowLabel")}</Button>
+                    <Button type="button" className="min-h-12 w-full rounded-full" disabled={!FLASH_PUBLISH_NOW_ENABLED}>{t("flash.composer.publishNowLabel")}</Button>
                     <p className="text-xs text-muted-foreground">{t("flash.composer.publishNowUnavailable")}</p>
                     <Button type="button" variant="outline" className="min-h-12 w-full rounded-full" onClick={() => setStep("preview")} disabled={publishing}>{t("flash.composer.backToPreview")}</Button>
-                    <Button type="button" variant="secondary" className="min-h-12 w-full rounded-full" onClick={() => void saveFlashDraft()} disabled={!user || authLoading || publishing || !text.trim()}>{publishing ? t("app.loading") : t("flash.composer.publishLater")}</Button>
+                    <Button type="button" variant="secondary" className="min-h-12 w-full rounded-full" onClick={() => void saveFlashDraft()} disabled={!canSaveFlashLater({ hasUser: Boolean(user), authLoading, publishing, text })}>{publishing ? t("app.loading") : t("flash.composer.publishLater")}</Button>
                   </div>
                 </>
             )}
