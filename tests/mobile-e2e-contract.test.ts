@@ -1,4 +1,6 @@
 import script from "../scripts/test-mobile-e2e.sh?raw";
+import scrollCheck from "../scripts/check-mobile-scroll.mjs?raw";
+import workflow from "../.github/workflows/reel-validation.yml?raw";
 import { describe, expect, it } from "vitest";
 
 describe("mobile visual smoke contract", () => {
