@@ -60,9 +60,7 @@ export function ReelHeader({
             openActivity("notifications");
           }}
           disabled={!activityEnabled}
-          aria-label={
-            activityEnabled ? t("reel.ui.notifications") : t("reel.ui.notificationsPaused")
-          }
+          aria-label={activityEnabled ? t("reel.ui.notifications") : t("reel.ui.notificationsPaused")}
           title={activityEnabled ? t("reel.ui.activity") : t("reel.ui.notificationsPausedShort")}
         >
           <Bell aria-hidden="true" />
