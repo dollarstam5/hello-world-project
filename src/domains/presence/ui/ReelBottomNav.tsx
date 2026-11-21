@@ -17,13 +17,23 @@ export function ReelBottomNav({ onOpenMenu, menuOpen }: ReelBottomNavProps) {
     <nav className="reel-page-nav" aria-label={t("nav.primary")}>
       <ul className="reel-page-nav__bar">
         <li>
-          <Link to="/flash" onClick={() => haptic.tap()} className="reel-page-nav__item native-press" aria-label={t("nav.flash")}>
+          <Link
+            to="/flash"
+            onClick={() => haptic.tap()}
+            className="reel-page-nav__item native-press"
+            aria-label={t("nav.flash")}
+          >
             <Zap aria-hidden="true" />
             <span>{t("nav.flash")}</span>
           </Link>
         </li>
         <li>
-          <Link to="/scan" onClick={() => haptic.tap()} className="reel-page-nav__item native-press" aria-label={t("nav.scan")}>
+          <Link
+            to="/scan"
+            onClick={() => haptic.tap()}
+            className="reel-page-nav__item native-press"
+            aria-label={t("nav.scan")}
+          >
             <ScanLine aria-hidden="true" />
             <span>{t("nav.scan")}</span>
           </Link>
@@ -40,7 +50,12 @@ export function ReelBottomNav({ onOpenMenu, menuOpen }: ReelBottomNavProps) {
           </Link>
         </li>
         <li>
-          <Link to="/radar" onClick={() => haptic.tap()} className="reel-page-nav__item native-press" aria-label={t("nav.radar")}>
+          <Link
+            to="/radar"
+            onClick={() => haptic.tap()}
+            className="reel-page-nav__item native-press"
+            aria-label={t("nav.radar")}
+          >
             <Radar aria-hidden="true" />
             <span>{t("nav.radar")}</span>
           </Link>
