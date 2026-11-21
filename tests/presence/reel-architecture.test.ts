@@ -109,8 +109,10 @@ describe("En direct architecture boundaries", () => {
     expect(screenSource).toContain("reel-radar__me-avatar");
     expect(screenSource).toContain('className="reel-radar__me-label"');
     expect(screenSource).toContain("aria-pressed={isPresenceActive}");
-    expect(screenSource).toContain("if (currentPresence) void stopPresence()");
-    expect(screenSource).toContain("else if (guestPresence) void stopGuestPresence()");
+    expect(screenSource).toContain("if (currentPresence) {");
+    expect(screenSource).toContain("void stopPresence();");
+    expect(screenSource).toContain("else if (guestPresence) {");
+    expect(screenSource).toContain("void stopGuestPresence();");
     expect(screenSource).not.toContain("messagesHidden");
   });
 
@@ -207,7 +209,7 @@ describe("En direct architecture boundaries", () => {
 
   it("offers a short, dismissible guided tour without enabling discovery or presence", () => {
     expect(screenSource).toContain('window.localStorage.getItem("vitalis-reel-tour-seen")');
-    expect(headerSource).toContain("onClick={onOpenTour}");
+    expect(headerSource).toContain("onOpenTour();");
     expect(screenSource).toContain('aria-modal="true"');
     expect(screenSource).toContain('t("reel.ui.tour.finish")');
     expect(guidedTourSource).toContain('t("reel.ui.tour.finish")');
