@@ -23,7 +23,6 @@ export function useReelDiscovery({
   guestAreaLabel,
   isPageVisible,
   setIsOnline,
-  isRefreshingDiscovery,
   setIsRefreshingDiscovery,
   discoveryRequestId,
 }: {
@@ -32,9 +31,8 @@ export function useReelDiscovery({
   guestAreaLabel: string;
   isPageVisible: boolean;
   setIsOnline: (online: boolean) => void;
-  isRefreshingDiscovery: boolean;
   setIsRefreshingDiscovery: (refreshing: boolean) => void;
-  discoveryRequestId: React.MutableRefObject<number>;
+  discoveryRequestId: { current: number };
 }) {
   const [discoveryAccess, setDiscoveryAccess] = useState<DiscoveryAccess>("prompt");
   const [locationMessage, setLocationMessage] = useState<string | null>(null);
