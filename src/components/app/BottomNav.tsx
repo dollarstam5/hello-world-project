@@ -2,6 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { Zap, ScanLine, RadioTower, Radar, LayoutGrid } from "lucide-react";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { cn } from "@/lib/utils";
+import { haptic } from "@/platform/device/haptics";
 import "./reel-bottom-nav.css";
 
 type Tab = {
@@ -29,6 +30,9 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
   const { t } = useI18n();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
+  const handleTabPress = () => haptic.tap();
+  const handleCenterPress = () => haptic.toggle();
+
   return (
     <nav
       aria-label={t("nav.primary")}
@@ -46,14 +50,14 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
           const label = t(tab.labelKey);
 
           const inner = isCenter ? (
-            <span className="reel-bottom-nav__center-wrap">
+            <span className="reel-bottom-nav__center-wrap native-press">
               <span className="reel-bottom-nav__center">
                 <Icon aria-hidden="true" />
               </span>
               <span className="reel-bottom-nav__center-label">{label}</span>
             </span>
           ) : (
-            <span className={cn("reel-bottom-nav__item", active && "is-active")}>
+            <span className={cn("reel-bottom-nav__item native-press", active && "is-active")}>
               {active && <span className="reel-bottom-nav__active" aria-hidden="true" />}
               <Icon aria-hidden="true" />
               <span>{label}</span>
@@ -65,7 +69,10 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
               {isMenu ? (
                 <button
                   type="button"
-                  onClick={onOpenMenu}
+                  onClick={() => {
+                    handleTabPress();
+                    onOpenMenu();
+                  }}
                   aria-label={t("nav.open_menu")}
                   aria-haspopup="dialog"
                   aria-expanded={menuOpen}
