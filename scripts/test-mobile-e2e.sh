@@ -2,8 +2,8 @@
 set -euo pipefail
 
 HOST="127.0.0.1"
-PORT="4173"
-BASE_URL="http://${HOST}:${PORT}"
+PORT=""
+BASE_URL=""
 SERVER_LOG="${TMPDIR:-/tmp}/vitalis-e2e.log"
 OUTPUT_DIR="${GITHUB_WORKSPACE:-.}/artifacts/mobile-smoke"
 STORAGE_STATE_BASE="${TMPDIR:-/tmp}/vitalis-e2e-storage-${BASHPID}"
@@ -11,14 +11,21 @@ SERVER_PID=""
 
 cleanup() {
   if [[ -n "$SERVER_PID" ]]; then
-    kill "$SERVER_PID" 2>/dev/null || true
+    # Wrangler may spawn child processes; terminate the entire dedicated session.
+    kill -- "-$SERVER_PID" 2>/dev/null || kill "$SERVER_PID" 2>/dev/null || true
     wait "$SERVER_PID" 2>/dev/null || true
   fi
   rm -f "${STORAGE_STATE_BASE}-fr.json" "${STORAGE_STATE_BASE}-en.json"
 }
 trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
 
 mkdir -p "$OUTPUT_DIR"
+
+# Select a currently unused port for the local production Worker.
+PORT="$(python3 -c 'import socket; s=socket.socket(); s.bind(("127.0.0.1", 0)); print(s.getsockname()[1]); s.close()')"
+BASE_URL="http://${HOST}:${PORT}"
 
 # Start with onboarding already completed so screenshots show each engine itself.
 # Separate deterministic browser states exercise both supported interface languages.
@@ -36,7 +43,7 @@ test -s ".output/server/wrangler.json"
 
 # Nitro's cloudflare preview wrapper currently fails before its preview handler
 # initializes. Start the generated production Worker directly with Wrangler.
-bunx wrangler dev \
+setsid bunx wrangler dev \
   --config ".output/server/wrangler.json" \
   --local \
   --ip "$HOST" \
