@@ -37,18 +37,21 @@ export function PersonAvatar({
 
 export function RingPerson({
   person,
+  index = 0,
   onSelect,
 }: {
   person: Person;
+  index?: number;
   onSelect: (person: Person) => void;
 }) {
   const radians = ((Number.isFinite(person.angle) ? person.angle : 0) * Math.PI) / 180;
-  const orbitLevels = [33, 38, 41] as const;
-  const orbitIndex = Array.from(person.id).reduce((sum, character) => sum + character.charCodeAt(0), 0) % orbitLevels.length;
-  const orbit = orbitLevels[orbitIndex] ?? 38;
+  const orbitTiers = [33, 40, 44] as const;
+  const orbit = orbitTiers[index % orbitTiers.length] ?? 39;
+  const floatDelay = `${(index * 0.5) % 3}s`;
   const position = {
     left: `${50 + orbit * Math.cos(radians)}%`,
     top: `${50 + orbit * Math.sin(radians)}%`,
+    animationDelay: floatDelay,
   } satisfies CSSProperties;
 
   return (
