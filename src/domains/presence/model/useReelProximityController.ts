@@ -4,18 +4,12 @@ import { useReelDiscovery } from "@/domains/presence/model/reel-proximity/useRee
 import { useReelBips } from "@/domains/presence/model/reel-proximity/useReelBips";
 import {
   closeReelConnection,
-  commandReelBip,
-  listReelBips,
   listReelConnections,
   sendReelBip,
   sendReelBipToGuest,
-  commandReelGuestBipMember,
-  listReelGuestBipsForMember,
   listReelGuestConnectionsForMember,
   closeReelGuestConnectionForMember,
-  type ReelBip,
   type ReelConnection,
-  type ReelGuestBip,
   type ReelGuestConnection,
 } from "@/domains/presence/api/reel-presence.client";
 import { resolveReelZone } from "@/domains/presence/api/reel-zone.functions";
@@ -24,8 +18,6 @@ import {
   getMyReelGuestPresence,
   startReelGuestPresence,
   sendReelGuestBip,
-  listMyReelGuestBips,
-  commandMyReelGuestBip,
   listMyReelGuestConnections,
   closeMyReelGuestConnection,
 } from "@/domains/presence/api/reel-guest-session.functions";
