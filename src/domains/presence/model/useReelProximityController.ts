@@ -3,9 +3,7 @@ import { requestReelLocation } from "@/domains/presence/api/reel-location.client
 import { useReelDiscovery } from "@/domains/presence/model/reel-proximity/useReelDiscovery";
 import { useReelBips } from "@/domains/presence/model/reel-proximity/useReelBips";
 import { useReelConnections } from "@/domains/presence/model/reel-proximity/useReelConnections";
-} from "@/domains/presence/api/reel-presence.client";
 import { resolveReelZone } from "@/domains/presence/api/reel-zone.functions";
-} from "@/domains/presence/api/reel-guest-session.functions";
 import {
   endReelPresence,
   startReelPresence,
