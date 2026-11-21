@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type CSSProperties, type MouseEvent as Rea
 import { CircleUserRound, Zap, User, MapPin } from "lucide-react";
 import type { Person } from "@/domains/presence/model/useReelProximityController";
 import { haptic } from "@/platform/device/haptics";
+import { useI18n } from "@/lib/i18n/useI18n";
 
 export function PersonAvatar({
   person,
@@ -38,6 +39,7 @@ export function RingPerson({
   onSelect: (person: Person) => void;
   onQuickBip?: (person: Person) => void;
 }) {
+  const { t } = useI18n();
   const [showPeek, setShowPeek] = useState(false);
   const peekRef = useRef<HTMLDivElement>(null);
   const orbitTiers = [32, 39, 44];
@@ -78,22 +80,22 @@ export function RingPerson({
 
   return (
     <div ref={peekRef} className={`reel-ring-person reel-ring-person--floating ${showPeek ? "is-peek-open" : ""}`} style={position}>
-      <button type="button" className={`reel-ring-person__btn ${isGuest ? "reel-ring-person__btn--guest" : "reel-ring-person__btn--member"}`} onClick={handleAvatarClick} aria-expanded={showPeek} aria-label={`Options pour ${person.name}`}>
+      <button type="button" className={`reel-ring-person__btn ${isGuest ? "reel-ring-person__btn--guest" : "reel-ring-person__btn--member"}`} onClick={handleAvatarClick} aria-expanded={showPeek} aria-label={t("reel.quickPeek.options", { name: person.name })}>
         <PersonAvatar person={person} />
         <span className="reel-ring-person__status-dot" aria-hidden="true" />
       </button>
       <span className="reel-ring-person__name">{person.name}</span>
       {showPeek && (
-        <div className="reel-person-peek" role="dialog" aria-label={`Profil rapide de ${person.name}`}>
+        <div className="reel-person-peek" role="dialog" aria-label={t("reel.quickPeek.title", { name: person.name })}>
           <div className="reel-person-peek__header">
             <strong>{person.name}</strong>
-            <span className={`reel-person-peek__badge ${isGuest ? "is-guest" : "is-member"}`}>{isGuest ? "Invité temporaire" : "Membre"}</span>
+            <span className={`reel-person-peek__badge ${isGuest ? "is-guest" : "is-member"}`}>{isGuest ? t("reel.quickPeek.guest") : t("reel.quickPeek.member")}</span>
           </div>
           {person.locationLabel && <p className="reel-person-peek__loc"><MapPin size={11} aria-hidden="true" /> {person.locationLabel}</p>}
           {person.description && <p className="reel-person-peek__desc">{person.description}</p>}
           <div className="reel-person-peek__actions">
-            <button type="button" className="reel-person-peek__bip-btn" onClick={handleQuickBip}><Zap size={13} aria-hidden="true" /> Faire signe</button>
-            <button type="button" className="reel-person-peek__more-btn" onClick={handleOpenProfile} aria-label="Profil complet"><User size={13} aria-hidden="true" /></button>
+            <button type="button" className="reel-person-peek__bip-btn" onClick={handleQuickBip}><Zap size={13} aria-hidden="true" /> {t("reel.quickPeek.bip")}</button>
+            <button type="button" className="reel-person-peek__more-btn" onClick={handleOpenProfile} aria-label={t("reel.quickPeek.fullProfile")}><User size={13} aria-hidden="true" /></button>
           </div>
         </div>
       )}
