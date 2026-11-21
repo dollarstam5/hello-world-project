@@ -35,13 +35,9 @@ const DURATION_MINUTES: Record<string, number> = {
 export function useReelPresence({
   access,
   t,
-  currentPresence,
-  setLoadedPresence,
 }: {
   access: ReturnType<typeof useAccessMode>;
   t: Translate;
-  currentPresence: ReelPresence | null;
-  setLoadedPresence: (value: { memberId: string; presence: ReelPresence | null }) => void;
 }) {
   const [radius, setRadius] = useState("100 m");
   const [duration, setDuration] = useState("2 h");
@@ -51,7 +47,7 @@ export function useReelPresence({
   const [presenceLoading, setPresenceLoading] = useState(false);
   const [presenceMessage, setPresenceMessage] = useState<string | null>(null);
 
-  const activatePresence = async () => {
+  const activatePresence = async (setLoadedPresence: (value: { memberId: string; presence: ReelPresence | null }) => void) => {
     const decision = evaluateReelAccess(
       {
         access,
@@ -154,7 +150,7 @@ export function useReelPresence({
     }
   };
 
-  const stopPresence = async () => {
+  const stopPresence = async (currentPresence: ReelPresence | null, setLoadedPresence: (value: { memberId: string; presence: ReelPresence | null }) => void) => {
     if (!currentPresence) return;
     setPresenceLoading(true);
     setPresenceMessage(null);
