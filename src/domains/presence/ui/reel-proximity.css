@@ -2522,3 +2522,98 @@
   .reel-atmosphere-pill, .reel-atmosphere-pill__pulse, .reel-atmosphere__icon--spin,
   .reel-radar__me, .reel-radar__me::before { animation: none !important; transition: none !important; }
 }
+
+/* ==========================================================================
+   Avatars orbitaux & micro-fiche tactile (Quick Peek)
+   ========================================================================== */
+.reel-ring-person {
+  position: absolute;
+  z-index: 10;
+  display: flex;
+  width: calc(var(--reel-avatar-size) + 1.75rem);
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  user-select: none;
+}
+.reel-ring-person--floating {
+  animation: reel-avatar-drift 3.8s ease-in-out infinite alternate;
+}
+.reel-ring-person.is-peek-open {
+  z-index: 50;
+  animation-play-state: paused;
+}
+.reel-ring-person__btn {
+  position: relative;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.reel-ring-person__btn:hover,
+.reel-ring-person__btn:focus-visible { transform: scale(1.15); }
+.reel-ring-person.is-peek-open .reel-ring-person__btn { transform: scale(1.18); }
+.reel-ring-person__btn:focus-visible { outline: 2px solid var(--reel-blue-start); outline-offset: 3px; }
+.reel-ring-person__status-dot {
+  position: absolute; bottom: 2px; right: 2px; width: 9px; height: 9px;
+  border-radius: 50%; border: 2px solid var(--color-background, #0b0f17);
+  background: #22c55e; box-shadow: 0 0 6px #22c55e;
+}
+.reel-ring-person__btn--guest .reel-ring-person__status-dot { background: #38bdf8; box-shadow: 0 0 6px #38bdf8; }
+.reel-person-peek {
+  position: absolute; bottom: calc(100% + 0.6rem); left: 50%; transform: translateX(-50%);
+  width: 13rem; max-width: min(13rem, calc(100vw - 1.5rem)); padding: 0.75rem;
+  border-radius: 1rem; background: var(--color-card, rgb(15 23 42 / 92%));
+  border: 1px solid var(--color-border, rgb(255 255 255 / 12%));
+  -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+  box-shadow: 0 12px 30px rgb(0 0 0 / 60%), 0 0 0 1px rgb(255 255 255 / 5%);
+  display: flex; flex-direction: column; gap: 0.4rem; text-align: left;
+  animation: reel-peek-pop 0.2s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: auto;
+}
+.reel-person-peek::after {
+  content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+  border-width: 6px; border-style: solid;
+  border-color: var(--color-card, rgb(15 23 42 / 92%)) transparent transparent transparent;
+}
+.reel-person-peek__header { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
+.reel-person-peek__header strong {
+  font-size: 0.85rem; font-weight: 600; color: var(--color-foreground, #f0f4fc);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.reel-person-peek__badge { font-size: 0.65rem; font-weight: 500; padding: 0.15rem 0.45rem; border-radius: 9999px; white-space: nowrap; }
+.reel-person-peek__badge.is-member { background: rgb(37 99 235 / 20%); color: #60a5fa; border: 1px solid rgb(37 99 235 / 40%); }
+.reel-person-peek__badge.is-guest { background: rgb(56 189 248 / 15%); color: #38bdf8; border: 1px solid rgb(56 189 248 / 30%); }
+.reel-person-peek__loc {
+  display: flex; align-items: center; gap: 0.3rem; font-size: 0.72rem;
+  color: var(--color-muted-foreground, #8e9eb5); margin: 0;
+}
+.reel-person-peek__desc {
+  font-size: 0.75rem; line-height: 1.25; color: var(--color-foreground, #cbd5e1); margin: 0;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.reel-person-peek__actions { display: flex; gap: 0.4rem; margin-top: 0.35rem; padding-top: 0.45rem; border-top: 1px solid var(--color-border, rgb(255 255 255 / 8%)); }
+.reel-person-peek__bip-btn {
+  flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem;
+  background: var(--color-primary, #2563eb); color: #fff; border: 0;
+  font-size: 0.75rem; font-weight: 600; padding: 0.4rem 0.6rem; border-radius: 0.5rem;
+  cursor: pointer; transition: opacity 0.2s ease;
+}
+.reel-person-peek__bip-btn:active { opacity: 0.8; }
+.reel-person-peek__more-btn {
+  display: flex; align-items: center; justify-content: center;
+  background: var(--color-card, rgb(255 255 255 / 8%)); color: var(--color-foreground, #f0f4fc);
+  border: 1px solid var(--color-border, rgb(255 255 255 / 10%)); width: 2rem; height: 2rem;
+  border-radius: 0.5rem; cursor: pointer;
+}
+@keyframes reel-peek-pop {
+  from { opacity: 0; transform: translateX(-50%) translateY(8px) scale(0.95); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+}
+@keyframes reel-avatar-drift { from { transform: translate(-50%, -50%) translateY(0); } to { transform: translate(-50%, -50%) translateY(-5px); } }
+@media (prefers-reduced-motion: reduce) {
+  .reel-ring-person--floating, .reel-person-peek, .reel-ring-person__btn { animation: none !important; transition: none !important; }
+}
