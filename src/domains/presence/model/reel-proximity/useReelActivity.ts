@@ -5,7 +5,7 @@ import { resetReelActivityProjection, useReelActivityProjection } from "@/domain
 import type { ReelConnection, ReelGuestConnection } from "@/domains/presence/api/reel-presence.client";
 
 type Params = {
-  access: { mode: string; guest?: { startedAt?: string } | null };
+  access: { mode: string };
   communication: CommunicationRuntime;
   communicationRevision: unknown;
   panel: string | null;
@@ -14,7 +14,7 @@ type Params = {
   activityIdentity: string | null;
   refreshBips: () => Promise<void>;
   refreshConnections: () => Promise<void>;
-  receivedBips: any[];
+  receivedBips: unknown[];
   receivedGuestBips: unknown[];
   bipsLoadedForIdentity: string | null;
   connections: ReelConnection[];
