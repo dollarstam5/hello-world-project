@@ -76,7 +76,7 @@ export function ReelProximityScreen() {
   const isPresenceActive = Boolean(currentPresence || guestPresence);
 
   return (
-    <section className="reel-proximity" aria-label={t("reel.ui.screenLabel")}>
+    <section className={`reel-proximity${controller.isOnline ? "" : " is-offline"}`} aria-label={t("reel.ui.screenLabel")}>
       <ReelHeader controller={controller} onOpenTour={openTour} />
       <ReelAtmospherePill
         ambiance={controller.ambiance}
