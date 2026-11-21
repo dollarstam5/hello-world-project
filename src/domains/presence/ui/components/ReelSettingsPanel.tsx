@@ -145,7 +145,17 @@ export function ReelSettingsPanel({
           ).map((value) => {
             const isSelected = duration === value;
             const conf = DURATIONS_CONFIG[value];
-            return <button key={value} type="button" className={`reel-duration-card ${isSelected ? "is-selected" : ""}`} aria-pressed={isSelected} onClick={() => handleSelectDuration(value)}><strong>{value}</strong><small>{t(conf?.badgeKey ?? "reel.settings.duration.active")}</small>{isSelected && <span className="reel-duration-card__dot" aria-hidden="true" />}</button>;
+            return <button
+              key={value}
+              type="button"
+              className={`reel-duration-card ${isSelected ? "is-selected" : ""}`}
+              aria-pressed={isSelected}
+              onClick={() => handleSelectDuration(value)}
+            >
+              <strong>{value}</strong>
+              <small>{t(conf?.badgeKey ?? "reel.settings.duration.active")}</small>
+              {isSelected && <span className="reel-duration-card__dot" aria-hidden="true" />}
+            </button>;
           })}
         </div>
         <p className="reel-panel__hint">{t("reel.settings.duration.hint")}</p>
