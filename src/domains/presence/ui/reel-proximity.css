@@ -2619,7 +2619,7 @@
 }
 
 /* Network standby — quiet and non-blocking */
-.reel-network-standby {
+.reel-offline-banner {
   display: flex;
   width: fit-content;
   max-width: calc(100% - 1.5rem);
@@ -2635,8 +2635,10 @@
   font-size: 0.72rem;
   line-height: 1.3;
   text-align: center;
+  flex-direction: row;
+  svg { flex: 0 0 auto; }
 }
-.reel-network-standby__dot {
+.reel-offline-banner__dot {
   width: 6px;
   height: 6px;
   flex: 0 0 auto;
