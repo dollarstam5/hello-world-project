@@ -8,6 +8,7 @@ import {
 } from "@/domains/presence/api/reel-presence.client";
 import { endReelGuestPresence, getMyReelGuestPresence, startReelGuestPresence } from "@/domains/presence/api/reel-guest-session.functions";
 import { useAccessMode } from "@/domains/access-mode";
+import { evaluateReelAccess } from "@/domains/presence/policy/reel-access-policy";
 
 type Translate = (key: string) => string;
 type GuestPresence = {
@@ -36,15 +37,11 @@ export function useReelPresence({
   t,
   currentPresence,
   setLoadedPresence,
-  guestPresence,
-  setGuestPresence,
 }: {
   access: ReturnType<typeof useAccessMode>;
   t: Translate;
   currentPresence: ReelPresence | null;
   setLoadedPresence: (value: { memberId: string; presence: ReelPresence | null }) => void;
-  guestPresence: GuestPresence;
-  setGuestPresence: (value: GuestPresence) => void;
 }) {
   const [radius, setRadius] = useState("100 m");
   const [duration, setDuration] = useState("2 h");
@@ -99,7 +96,7 @@ export function useReelPresence({
     displayName: string;
     areaLabel: string;
     avatarKey: string;
-  }) => {
+  }, setGuestPresence: (value: GuestPresence) => void) => {
     if (access.mode !== "guest" || !guestPresenceConsent) {
       setPresenceMessage(t("reel.controller.visibilityConsent"));
       return;
@@ -141,7 +138,7 @@ export function useReelPresence({
     }
   };
 
-  const stopGuestPresence = async () => {
+  const stopGuestPresence = async (guestPresence: NonNullable<GuestPresence>, setGuestPresence: (value: GuestPresence) => void) => {
     if (!guestPresence) return;
     setPresenceLoading(true);
     setPresenceMessage(null);
