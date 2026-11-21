@@ -155,6 +155,10 @@ export function ReelProximityScreen() {
               haptic.tap();
               openProfile(p);
             }}
+            onQuickBip={(p) => {
+              openProfile(p);
+              void sendBipToSelectedPerson(p);
+            }}
           />
         ))}
       </div>
