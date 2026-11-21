@@ -3,6 +3,7 @@ import { requestReelLocation } from "@/domains/presence/api/reel-location.client
 import { useReelDiscovery } from "@/domains/presence/model/reel-proximity/useReelDiscovery";
 import { useReelBips } from "@/domains/presence/model/reel-proximity/useReelBips";
 import { useReelConnections } from "@/domains/presence/model/reel-proximity/useReelConnections";
+import { useReelActivity } from "@/domains/presence/model/reel-proximity/useReelActivity";
 import { resolveReelZone } from "@/domains/presence/api/reel-zone.functions";
 import {
   endReelPresence,
@@ -16,9 +17,6 @@ import { useReelGuestPresence } from "@/domains/presence/model/reel-proximity/us
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
 import { evaluateReelAccess } from "@/domains/presence/policy/reel-access-policy";
-import {
-  resetReelActivityProjection,
-  useReelActivityProjection,
 } from "@/domains/presence/model/reel-activity-projection";
 
 
@@ -36,7 +34,6 @@ export function useReelProximityController() {
   const access = useAccessMode();
   const communication = useCommunicationRuntime();
   const communicationRevision = communication.getSnapshot();
-  const processedReelEvents = useRef(new Set<string>());
   const { memberAvatarUrl } = useReelMemberProfile(access);
   const {
     isPageVisible,
@@ -110,95 +107,31 @@ export function useReelProximityController() {
     activityIdentity,
     t,
     refreshConnections,
+  });  useReelActivity({
+    access,
+    communication,
+    communicationRevision,
+    panel,
+    activityTab,
+    canUseMemberReel,
+    activityIdentity,
+    refreshBips,
+    refreshConnections,
+    receivedBips,
+    receivedGuestBips,
+    bipsLoadedForIdentity,
+    connections,
+    guestConnections,
+    connectionsLoadedForIdentity,
+    setReceivedBips,
+    setReceivedGuestBips,
+    setConnections,
+    setGuestConnections,
+    setBipsLoadedForIdentity,
+    setConnectionsLoadedForIdentity,
   });
 
-  // The app-scoped bridge owns the single member Realtime subscription.
-  // Guests have no Realtime channel: refresh on app/network return and use a
-  // low-frequency safety check only while their activity panel is visible.
-  const guestActivityRefreshInFlight = useRef(false);
-  useEffect(() => {
-    if (panel !== "activity" || (!canUseMemberReel && access.mode !== "guest")) {
-      return;
-    }
 
-    const refreshVisibleActivity = async () => {
-      if (access.mode === "guest" && document.visibilityState !== "visible") return;
-      if (access.mode === "guest" && guestActivityRefreshInFlight.current) return;
-
-      if (access.mode === "guest") guestActivityRefreshInFlight.current = true;
-      try {
-        if (activityTab === "bips") {
-          await refreshBips();
-        } else if (activityTab === "connections") {
-          await refreshConnections();
-        } else {
-          await Promise.all([refreshBips(), refreshConnections()]);
-        }
-      } finally {
-        if (access.mode === "guest") guestActivityRefreshInFlight.current = false;
-      }
-    };
-
-    void refreshVisibleActivity();
-    if (access.mode !== "guest") {
-      window.addEventListener("vitalis:reel-activity-reconnected", refreshVisibleActivity);
-      return () => {
-        window.removeEventListener("vitalis:reel-activity-reconnected", refreshVisibleActivity);
-      };
-    }
-
-    const refreshWhenAvailable = () => {
-      if (document.visibilityState === "visible") void refreshVisibleActivity();
-    };
-    document.addEventListener("visibilitychange", refreshWhenAvailable);
-    window.addEventListener("focus", refreshWhenAvailable);
-    window.addEventListener("online", refreshWhenAvailable);
-
-    // 30 s safety refresh (down from 3 s); event/lifecycle driven refreshes
-    // remain immediate and are coalesced while a read is already in flight.
-    const poll = window.setInterval(() => {
-      if (document.visibilityState === "visible") void refreshVisibleActivity();
-    }, 30_000);
-
-    return () => {
-      window.clearInterval(poll);
-      document.removeEventListener("visibilitychange", refreshWhenAvailable);
-      window.removeEventListener("focus", refreshWhenAvailable);
-      window.removeEventListener("online", refreshWhenAvailable);
-      guestActivityRefreshInFlight.current = false;
-    };
-  }, [panel, activityTab, refreshBips, refreshConnections, canUseMemberReel, access.mode]);
-
-  useEffect(() => {
-    const incoming = communication
-      .getEvents()
-      .filter((event) => event.source === "reel" && !processedReelEvents.current.has(event.id));
-    if (incoming.length === 0) return;
-    incoming.forEach((event) => processedReelEvents.current.add(event.id));
-    if (panel !== "activity") return;
-
-    const refreshBipsNeeded = incoming.some(
-      (event) =>
-        event.messageKey === "communication.event.reel.bipReceived" ||
-        event.messageKey === "communication.event.reel.bipAccepted" ||
-        event.messageKey === "communication.event.reel.bipDeclined",
-    );
-    const refreshConnectionsNeeded = incoming.some(
-      (event) =>
-        event.messageKey === "communication.event.reel.bipAccepted" ||
-        event.messageKey === "communication.event.reel.connectionClosed",
-    );
-
-    if (refreshBipsNeeded && (activityTab === "bips" || activityTab === "notifications")) {
-      void refreshBips();
-    }
-    if (
-      refreshConnectionsNeeded &&
-      (activityTab === "connections" || activityTab === "notifications")
-    ) {
-      void refreshConnections();
-    }
-  }, [communicationRevision, communication, panel, activityTab, refreshBips, refreshConnections]);
 
   const sendBipToSelectedPerson = async (person?: Person) => {
     const targetPerson = person ?? selectedPerson;
@@ -230,58 +163,6 @@ export function useReelProximityController() {
       setBipsMessage(error instanceof Error ? error.message : t("reel.controller.bipSendFailed"));
     }
   };
-
-  useEffect(() => {
-    processedReelEvents.current.clear();
-    setReceivedBips([]);
-    setReceivedGuestBips([]);
-    setConnections([]);
-    setGuestConnections([]);
-    setBipsLoadedForIdentity(null);
-    setConnectionsLoadedForIdentity(null);
-    resetReelActivityProjection();
-  }, [activityIdentity]);
-
-  useEffect(() => {
-    const mode = access.mode === "guest" ? "guest" : canUseMemberReel ? "member" : null;
-    if (!mode || !activityIdentity || bipsLoadedForIdentity !== activityIdentity) return;
-    useReelActivityProjection
-      .getState()
-      .publishBips(
-        mode,
-        mode === "guest"
-          ? receivedGuestBips.length
-          : receivedBips.length + receivedGuestBips.length,
-      );
-  }, [
-    access.mode,
-    canUseMemberReel,
-    activityIdentity,
-    bipsLoadedForIdentity,
-    receivedBips,
-    receivedGuestBips,
-  ]);
-
-  useEffect(() => {
-    const mode = access.mode === "guest" ? "guest" : canUseMemberReel ? "member" : null;
-    if (!mode || !activityIdentity || connectionsLoadedForIdentity !== activityIdentity) return;
-    useReelActivityProjection
-      .getState()
-      .publishConnections(
-        mode,
-        mode === "guest"
-          ? guestConnections.filter((connection) => connection.status === "active").length
-          : connections.filter((connection) => connection.status === "active").length +
-              guestConnections.filter((connection) => connection.status === "active").length,
-      );
-  }, [
-    access.mode,
-    canUseMemberReel,
-    activityIdentity,
-    connectionsLoadedForIdentity,
-    connections,
-    guestConnections,
-  ]);
 
   const activatePresence = async () => {
     const decision = evaluateReelAccess(
