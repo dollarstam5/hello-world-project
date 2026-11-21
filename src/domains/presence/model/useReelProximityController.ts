@@ -1,14 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
-import { requestReelLocation } from "@/domains/presence/api/reel-location.client";
+import { useReelPresence } from "@/domains/presence/model/reel-proximity/useReelPresence";
 import { useReelDiscovery } from "@/domains/presence/model/reel-proximity/useReelDiscovery";
 import { useReelBips } from "@/domains/presence/model/reel-proximity/useReelBips";
 import { useReelConnections } from "@/domains/presence/model/reel-proximity/useReelConnections";
 import { useReelActivity } from "@/domains/presence/model/reel-proximity/useReelActivity";
-import { resolveReelZone } from "@/domains/presence/api/reel-zone.functions";
-import {
-  endReelPresence,
-  startReelPresence,
-} from "@/domains/presence/api/reel-presence.client";
 import { useAccessMode } from "@/domains/access-mode";
 import { useReelMemberProfile } from "@/domains/presence/model/reel-proximity/useReelMemberProfile";
 import { useReelLifecycle } from "@/domains/presence/model/reel-proximity/useReelLifecycle";
@@ -18,11 +12,8 @@ import { useReelGuestSession } from "@/domains/presence/model/reel-proximity/use
 import { useReelPanelState } from "@/domains/presence/model/reel-proximity/useReelPanelState";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
-import { evaluateReelAccess } from "@/domains/presence/policy/reel-access-policy";
-import { useReelPresence } from "@/domains/presence/model/reel-proximity/useReelPresence";
 import { sendReelBip, sendReelBipToGuest } from "@/domains/presence/api/reel-presence.client";
 import { sendReelGuestBip } from "@/domains/presence/api/reel-guest-session.functions";
-import { useReelActivityProjection } from "@/domains/presence/model/reel-activity-projection";
 
 
 import {
@@ -53,6 +44,9 @@ export function useReelProximityController() {
     selectedPerson, setSelectedPerson, panel, setPanel, activityTab, setActivityTab,
     openProfile, closeProfile, openActivity,
   } = useReelPanelState();
+  const { loadedPresence, setLoadedPresence, currentPresence, canUseMemberReel } =
+    useReelMemberPresence(access, t, setPresenceMessage);
+  const presence = useReelPresence({ access, t, currentPresence, setLoadedPresence });
   const {
     radius, setRadius, duration, setDuration, presenceConsent, setPresenceConsent,
     guestPresenceConsent, setGuestPresenceConsent, presenceDescription, setPresenceDescription,
@@ -73,7 +67,6 @@ export function useReelProximityController() {
 
   const { loadedPresence, setLoadedPresence, currentPresence, canUseMemberReel } =
     useReelMemberPresence(access, t, setPresenceMessage);
-  const presence = useReelPresence({ access, t, currentPresence, setLoadedPresence });
   const activityIdentity = access.mode === "guest"
     ? access.guest?.startedAt ?? null
     : access.memberId ?? null;
