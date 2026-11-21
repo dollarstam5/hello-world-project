@@ -73,8 +73,7 @@ export type ReelAmbiance = {
 };
 
 type RawNearbyPerson = {
-  presence_id?: string;
-  id?: string;
+  presence_id: string;
   display_name?: string | null;
   avatar_key?: string | null;
   description?: string | null;
@@ -103,7 +102,7 @@ function distributePeopleHarmoniously(rawPeople: RawNearbyPerson[], areaLabel: s
   return rawPeople.map((person, index) => {
     const displayName = person.display_name || t("reel.controller.guestName");
     return {
-      id: person.presence_id || person.id,
+      id: person.presence_id,
       name: displayName,
       avatarUrl: null,
       avatarKey: person.avatar_key,
@@ -847,6 +846,8 @@ export function useReelProximityController() {
   }, [isPageVisible, discoveryAccess]);
 
   const ignoreLocation = () => {
+    presenceCache = null;
+    discoveryRequestId.current += 1;
     setDiscoveryAccess("ignored");
     setDiscoveredPeople([]);
     setLocationMessage(null);
