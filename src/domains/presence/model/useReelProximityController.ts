@@ -149,6 +149,7 @@ export function useReelProximityController() {
   }, [access.loading, access.mode, access.memberId, access.memberProfileState]);
 
   const [isPageVisible, setIsPageVisible] = useState(() => typeof document === "undefined" || document.visibilityState === "visible");
+  const [isRefreshingDiscovery, setIsRefreshingDiscovery] = useState(false);
   const discoveryRequestId = useRef(0);
   const [discoveryAccess, setDiscoveryAccess] = useState<
     "prompt" | "requesting" | "granted" | "ignored" | "denied"
@@ -157,7 +158,10 @@ export function useReelProximityController() {
     const handleVisibility = () => {
       const visible = document.visibilityState === "visible";
       setIsPageVisible(visible);
-      if (!visible) discoveryRequestId.current += 1; // invalidate any in-flight discovery
+      if (!visible) {
+        discoveryRequestId.current += 1; // invalidate any in-flight discovery
+        setIsRefreshingDiscovery(false);
+      }
     };
     document.addEventListener("visibilitychange", handleVisibility);
     return () => document.removeEventListener("visibilitychange", handleVisibility);
@@ -801,6 +805,7 @@ export function useReelProximityController() {
     }
 
     const requestId = ++discoveryRequestId.current;
+    setIsRefreshingDiscovery(true);
     if (!presenceCache || presenceCache.mode !== mode) setDiscoveryAccess("requesting");
     setLocationMessage(null);
 
@@ -837,6 +842,8 @@ export function useReelProximityController() {
       // Keep cached content on refresh failure; only mark denied when no usable cache exists.
       if (!presenceCache || presenceCache.mode !== mode) setDiscoveryAccess("denied");
       setLocationMessage(error instanceof Error ? error.message : "Localisation indisponible");
+    } finally {
+      if (requestId === discoveryRequestId.current) setIsRefreshingDiscovery(false);
     }
   };
   const discoveryRunner = useRef<((forceRefresh?: boolean) => Promise<void>) | null>(null);
@@ -872,7 +879,7 @@ export function useReelProximityController() {
   const ambiance: ReelAmbiance = (() => {
     const count = visiblePeople.length;
     const isLive = Boolean(currentPresence || guestPresence);
-    if (presenceLoading || discoveryAccess === "requesting") {
+    if (presenceLoading || discoveryAccess === "requesting" || isRefreshingDiscovery) {
       return { status: "scanning", count, labelKey: "reel.ambiance.scanning" };
     }
     if (isLive) {
@@ -890,6 +897,7 @@ export function useReelProximityController() {
     discoveryAccess,
     isPageVisible,
     ambiance,
+    isRefreshingDiscovery,
     locationMessage,
     guestSessionLoading,
     guestSessionMessage,
