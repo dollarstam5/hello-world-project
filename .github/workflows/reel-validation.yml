@@ -10,6 +10,7 @@ on:
       - "src/domains/presence/model/**"
       - "src/platform/device/haptics.ts"
       - "tests/presence/**"
+      - "tests/mobile-e2e-contract.test.ts"
       - "scripts/test-mobile-e2e.sh"
       - "scripts/check-mobile-scroll.mjs"
       - "package.json"
@@ -66,7 +67,8 @@ jobs:
           bun run test:run -- \
             tests/presence/reel-architecture.test.ts \
             tests/presence/reel-activity-realtime.service.test.ts \
-            tests/presence/reel-activity-projection.test.ts
+            tests/presence/reel-activity-projection.test.ts \
+            tests/mobile-e2e-contract.test.ts
 
       - name: Install Chromium for production route smoke
         run: bunx playwright install --with-deps chromium
