@@ -44,9 +44,10 @@ export function useReelProximityController() {
     selectedPerson, setSelectedPerson, panel, setPanel, activityTab, setActivityTab,
     openProfile, closeProfile, openActivity,
   } = useReelPanelState();
-  const { loadedPresence, setLoadedPresence, currentPresence, canUseMemberReel } =
-    useReelMemberPresence(access, t, setPresenceMessage);
-  const presence = useReelPresence({ access, t, currentPresence, setLoadedPresence });
+  const presence = useReelPresence({ access, t });
+  const { setLoadedPresence, currentPresence, canUseMemberReel } =
+    useReelMemberPresence(access, t, presence.setPresenceMessage);
+
   const {
     radius, setRadius, duration, setDuration, presenceConsent, setPresenceConsent,
     guestPresenceConsent, setGuestPresenceConsent, presenceDescription, setPresenceDescription,
@@ -153,7 +154,7 @@ export function useReelProximityController() {
     }
   };
 
-  const activatePresence = presence.activatePresence;
+  const activatePresence = () => presence.activatePresence(setLoadedPresence);
   const activateGuestPresence = () => presence.activateGuestPresence(
     { displayName: guestDisplayName, areaLabel: guestAreaLabel, avatarKey: guestAvatarKey },
     setGuestPresence,
@@ -161,7 +162,7 @@ export function useReelProximityController() {
   const stopGuestPresence = () => guestPresence
     ? presence.stopGuestPresence(guestPresence, setGuestPresence)
     : Promise.resolve();
-  const stopPresence = presence.stopPresence;
+  const stopPresence = () => presence.stopPresence(currentPresence, setLoadedPresence);
 
   const {
     discoveryAccess,
