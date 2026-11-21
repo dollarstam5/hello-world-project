@@ -67,12 +67,6 @@ export function useReelProximityController() {
   const processedReelEvents = useRef(new Set<string>());
   const { memberAvatarUrl } = useReelMemberProfile(access);
   const {
-    loadedPresence,
-    setLoadedPresence,
-    currentPresence,
-    canUseMemberReel,
-  } = useReelMemberPresence(access, t, setPresenceMessage);
-  const {
     isPageVisible,
     isOnline,
     setIsOnline,
@@ -112,6 +106,12 @@ export function useReelProximityController() {
   );
   const [presenceLoading, setPresenceLoading] = useState(false);
   const [presenceMessage, setPresenceMessage] = useState<string | null>(null);
+  const {
+    loadedPresence,
+    setLoadedPresence,
+    currentPresence,
+    canUseMemberReel,
+  } = useReelMemberPresence(access, t, setPresenceMessage);
   const [receivedBips, setReceivedBips] = useState<ReelBip[]>([]);
   const [bipsLoadedForIdentity, setBipsLoadedForIdentity] = useState<string | null>(null);
   const [receivedGuestBips, setReceivedGuestBips] = useState<ReelGuestBip[]>([]);
