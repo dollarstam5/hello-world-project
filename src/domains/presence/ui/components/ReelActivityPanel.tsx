@@ -1,4 +1,5 @@
 import { Bell, CircleUserRound, RadioTower, UsersRound } from "lucide-react";
+import { haptic } from "@/platform/device/haptics";
 import { useI18n } from "@/lib/i18n/useI18n";
 import type { useReelProximityController } from "@/domains/presence/model/useReelProximityController";
 
@@ -13,6 +14,14 @@ export function ReelActivityPanel({ controller }: { controller: ReelController }
   const { bipsMessage, connectionsLoading, guestConnections } = controller;
   const { connections, endConnection, endGuestConnection } = controller;
   const { connectionsMessage } = controller;
+  const pendingBipsCount = receivedBips.length + receivedGuestBips.length;
+  const activeConnectionsCount =
+    connections.filter((c) => c.status === "active").length +
+    guestConnections.filter((c) => c.status === "active").length;
+  const handleTabChange = (tab: typeof activityTab) => {
+    haptic.tap();
+    setActivityTab(tab);
+  };
   return (
     <>
       <div className="reel-panel__eyebrow">
@@ -20,36 +29,16 @@ export function ReelActivityPanel({ controller }: { controller: ReelController }
       </div>
       <h2 id="reel-panel-title">{t("reel.ui.activityHeading")}</h2>
       <div className="reel-panel__tabs" role="tablist" aria-label={t("reel.ui.activity")}>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={activityTab === "notifications"}
-          aria-disabled={!activityEnabled}
-          disabled={!activityEnabled}
-          className={activityTab === "notifications" ? "is-active" : ""}
-          onClick={() => setActivityTab("notifications")}
-        >
-          Alertes
+        <button type="button" role="tab" aria-selected={activityTab === "notifications"} aria-disabled={!activityEnabled} disabled={!activityEnabled} className={activityTab === "notifications" ? "is-active" : ""} onClick={() => handleTabChange("notifications")}>
+          <span>Alertes</span>
         </button>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={activityTab === "bips"}
-          aria-disabled={!currentPresence && !guestPresence}
-          disabled={!currentPresence && !guestPresence}
-          className={activityTab === "bips" ? "is-active" : ""}
-          onClick={() => setActivityTab("bips")}
-        >
-          {t("reel.ui.receivedBips")}
+        <button type="button" role="tab" aria-selected={activityTab === "bips"} aria-disabled={!currentPresence && !guestPresence} disabled={!currentPresence && !guestPresence} className={activityTab === "bips" ? "is-active" : ""} onClick={() => handleTabChange("bips")}>
+          <span>{t("reel.ui.receivedBips")}</span>
+          {pendingBipsCount > 0 && <span className="reel-panel__tab-badge">{pendingBipsCount}</span>}
         </button>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={activityTab === "connections"}
-          className={activityTab === "connections" ? "is-active" : ""}
-          onClick={() => setActivityTab("connections")}
-        >
-          {t("reel.ui.connectionsTab")}
+        <button type="button" role="tab" aria-selected={activityTab === "connections"} className={activityTab === "connections" ? "is-active" : ""} onClick={() => handleTabChange("connections")}>
+          <span>{t("reel.ui.connectionsTab")}</span>
+          {activeConnectionsCount > 0 && <span className="reel-panel__tab-badge reel-panel__tab-badge--green">{activeConnectionsCount}</span>}
         </button>
       </div>
       {activityTab === "bips" ? (
