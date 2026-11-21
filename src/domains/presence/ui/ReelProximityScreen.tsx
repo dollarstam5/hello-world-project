@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { ChevronDown, Globe, History, X } from "lucide-react";
 import { useReelProximityController } from "@/domains/presence/model/useReelProximityController";
-import { hapticFeedback } from "@/platform/device/haptics";
+import { haptic } from "@/platform/device/haptics";
 import { RingPerson, SelfRadarIdentity } from "./components/ReelRadarIdentity";
 import { ReelGuidedTour } from "./components/ReelGuidedTour";
 import { ReelSettingsHelp } from "./components/ReelSettingsHelp";
@@ -98,9 +98,12 @@ export function ReelProximityScreen() {
             type="button"
             className={`reel-radar__me${isPresenceActive ? " is-presence-active" : ""}`}
             onClick={() => {
-              hapticFeedback.tap();
-              if (currentPresence) void stopPresence();
-              else if (guestPresence) void stopGuestPresence();
+              if (currentPresence) {
+                haptic.tap();
+                void stopPresence();
+              } else if (guestPresence) {
+                haptic.tap();
+                void stopGuestPresence();
               else if (
                 access.mode === "guest" &&
                 guestPresenceConsent &&
@@ -108,6 +111,7 @@ export function ReelProximityScreen() {
                 guestAreaLabel.trim() &&
                 presenceDescription.trim()
               ) {
+                haptic.toggle();
                 void activateGuestPresence();
               } else if (
                 access.mode === "member" &&
@@ -115,6 +119,7 @@ export function ReelProximityScreen() {
                 presenceConsent &&
                 presenceDescription.trim()
               ) {
+                haptic.toggle();
                 void activatePresence();
               } else {
                 setPanel("settings");
@@ -136,8 +141,16 @@ export function ReelProximityScreen() {
             />
           </button>
         </div>
-        {visiblePeople.map((person) => (
-          <RingPerson key={person.id} person={person} onSelect={openProfile} />
+        {visiblePeople.map((person, idx) => (
+          <RingPerson
+            key={person.id}
+            person={person}
+            index={idx}
+            onSelect={(p) => {
+              haptic.tap();
+              openProfile(p);
+            }}
+          />
         ))}
       </div>
 
