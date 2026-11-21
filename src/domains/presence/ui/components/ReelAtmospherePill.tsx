@@ -12,7 +12,13 @@ export function ReelAtmospherePill({ ambiance, onClickPrompt }: ReelAtmospherePi
   const icon = (() => {
     switch (ambiance.status) {
       case "scanning":
-        return <Radio size={14} className="reel-atmosphere__icon reel-atmosphere__icon--spin" aria-hidden="true" />;
+        return (
+          <Radio
+            size={14}
+            className="reel-atmosphere__icon reel-atmosphere__icon--spin"
+            aria-hidden="true"
+          />
+        );
       case "dense":
         return <Users size={14} className="reel-atmosphere__icon" aria-hidden="true" />;
       case "live":
@@ -22,9 +28,10 @@ export function ReelAtmospherePill({ ambiance, onClickPrompt }: ReelAtmospherePi
     }
   })();
 
-  const label = ambiance.status === "dense" && ambiance.labelKey === "reel.ambiance.dense"
-    ? t("reel.ambiance.dense").replace("{count}", String(ambiance.count))
-    : t(ambiance.labelKey);
+  const label =
+    ambiance.status === "dense" && ambiance.labelKey === "reel.ambiance.dense"
+      ? t("reel.ambiance.dense").replace("{count}", String(ambiance.count))
+      : t(ambiance.labelKey);
 
   return (
     <button
