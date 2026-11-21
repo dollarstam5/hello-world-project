@@ -49,13 +49,7 @@ export function ReelHeader({
         {isPresenceActive && <span className="reel-proximity__live-indicator" aria-hidden="true" />}
       </div>
       <nav className="reel-proximity__header-actions" aria-label={t("reel.ui.screenLabel")}>
-        <Link
-          to="/"
-          onClick={() => haptic.tap()}
-          className="reel-proximity__header-action native-press"
-          aria-label={t("reel.ui.home")}
-          title={t("reel.ui.homeTitle")}
-        >
+        <Link to="/" onClick={() => haptic.tap()} className="reel-proximity__header-action native-press" aria-label={t("reel.ui.home")} title={t("reel.ui.homeTitle")}>
           <Home aria-hidden="true" />
         </Link>
         <button
