@@ -10,6 +10,7 @@ import { ReelProfileSheet } from "./components/ReelProfileSheet";
 import { ReelSettingsPanel } from "./components/ReelSettingsPanel";
 import { ReelActivityPanel } from "./components/ReelActivityPanel";
 import { ReelHeader } from "./components/ReelHeader";
+import { ReelAtmospherePill } from "./components/ReelAtmospherePill";
 import { ReelDiscoveryPrompt } from "./components/ReelDiscoveryPrompt";
 import { ReelNearbyPreview } from "./components/ReelNearbyPreview";
 import { ReelGlobalPanel } from "./components/ReelGlobalPanel";
@@ -77,6 +78,10 @@ export function ReelProximityScreen() {
   return (
     <section className="reel-proximity" aria-label={t("reel.ui.screenLabel")}>
       <ReelHeader controller={controller} onOpenTour={openTour} />
+      <ReelAtmospherePill
+        ambiance={controller.ambiance}
+        onClickPrompt={() => setPanel(controller.ambiance.count > 0 ? "people" : "settings")}
+      />
       <ReelGuidedTour
         open={tourOpen}
         step={tourStep}
@@ -104,7 +109,7 @@ export function ReelProximityScreen() {
               } else if (guestPresence) {
                 haptic.tap();
                 void stopGuestPresence();
-              else if (
+              } else if (
                 access.mode === "guest" &&
                 guestPresenceConsent &&
                 guestDisplayName.trim() &&
