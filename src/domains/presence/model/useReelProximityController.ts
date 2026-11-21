@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { requestReelLocation } from "@/domains/presence/api/reel-location.client";
+import { useReelDiscovery } from "@/domains/presence/model/reel-proximity/useReelDiscovery";
 import {
   closeReelConnection,
   commandReelBip,
@@ -18,7 +19,6 @@ import {
 } from "@/domains/presence/api/reel-presence.client";
 import { resolveReelZone } from "@/domains/presence/api/reel-zone.functions";
 import {
-  discoverReelGuestNearby,
   endReelGuestPresence,
   getMyReelGuestPresence,
   startReelGuestPresence,
@@ -30,8 +30,6 @@ import {
 } from "@/domains/presence/api/reel-guest-session.functions";
 import {
   endReelPresence,
-  listReelNearbyPresence,
-  listReelNearbyGuestPresence,
   startReelPresence,
 } from "@/domains/presence/api/reel-presence.client";
 import { useAccessMode } from "@/domains/access-mode";
@@ -53,11 +51,8 @@ import {
   type Panel,
   type ActivityTab,
   type ReelAmbiance,
-  type RawNearbyPerson,
-  type PresenceCacheEntry,
 } from "@/domains/presence/model/reel-proximity/reel-proximity.types";
-import { MAX_RING_PEOPLE, CACHE_TTL_MS } from "@/domains/presence/model/reel-proximity/reel-proximity.constants";
-import { distributePeopleHarmoniously } from "@/domains/presence/model/reel-proximity/reel-proximity.helpers";
+import { MAX_RING_PEOPLE } from "@/domains/presence/model/reel-proximity/reel-proximity.constants";
 export type { Person, Panel, ActivityTab, ReelAmbiance } from "@/domains/presence/model/reel-proximity/reel-proximity.types";
 
 export function useReelProximityController() {
@@ -75,13 +70,8 @@ export function useReelProximityController() {
     setIsRefreshingDiscovery,
     discoveryRequestId,
   } = useReelLifecycle();
-  const [discoveryAccess, setDiscoveryAccess] = useState<
-    "prompt" | "requesting" | "granted" | "ignored" | "denied"
-  >("prompt");
-  const [locationMessage, setLocationMessage] = useState<string | null>(null);
   const [guestSessionLoading, setGuestSessionLoading] = useState(false);
   const [guestSessionMessage, setGuestSessionMessage] = useState<string | null>(null);
-  const [discoveredPeople, setDiscoveredPeople] = useState<Person[]>([]);
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
   const [panel, setPanel] = useState<Panel>(null);
   const [activityTab, setActivityTab] = useState<ActivityTab>("notifications");
@@ -632,94 +622,25 @@ export function useReelProximityController() {
     }
   };
 
-  const requestDiscovery = async (forceRefresh = false) => {
-    if (access.loading || !isPageVisible || (typeof navigator !== "undefined" && !navigator.onLine)) return;
-
-    const mode = access.mode === "guest" ? "guest" : "member";
-    const cacheIsFresh = presenceCache?.mode === mode && Date.now() - presenceCache.timestamp < CACHE_TTL_MS;
-    if (!forceRefresh && presenceCache?.mode === mode) {
-      // SWR: display cached nearby profiles immediately, then refresh if stale.
-      setDiscoveredPeople(presenceCache.people);
-      setDiscoveryAccess("granted");
-      if (cacheIsFresh) return;
-    }
-
-    const requestId = ++discoveryRequestId.current;
-    setIsRefreshingDiscovery(true);
-    if (!presenceCache || presenceCache.mode !== mode) setDiscoveryAccess("requesting");
-    setLocationMessage(null);
-
-    try {
-      const fix = await requestReelLocation();
-      if (!isPageVisible || requestId !== discoveryRequestId.current) return;
-      let rawList: RawNearbyPerson[] = [];
-      let areaLabel = "";
-
-      if (access.mode === "guest") {
-        rawList = await discoverReelGuestNearby({
-          data: { latitude: fix.latitude, longitude: fix.longitude },
-        });
-        areaLabel = guestAreaLabel;
-      } else {
-        const zone = await resolveReelZone({
-          data: { latitude: fix.latitude, longitude: fix.longitude, purpose: "discover", consent: true },
-        });
-        areaLabel = zone.areaLabel;
-        const [members, guests] = await Promise.all([
-          listReelNearbyPresence(),
-          listReelNearbyGuestPresence(),
-        ]);
-        rawList = [...members, ...guests];
-      }
-
-      if (!isPageVisible || requestId !== discoveryRequestId.current) return;
-      const formatted = distributePeopleHarmoniously(rawList, areaLabel, t);
-      presenceCache = { people: formatted, timestamp: Date.now(), mode };
-      setDiscoveredPeople(formatted);
-      setDiscoveryAccess("granted");
-    } catch (error) {
-      if (!isPageVisible || requestId !== discoveryRequestId.current) return;
-      // Keep cached content on refresh failure; only mark denied when no usable cache exists.
-      if (!presenceCache || presenceCache.mode !== mode) setDiscoveryAccess("denied");
-      setLocationMessage(error instanceof Error ? error.message : "Localisation indisponible");
-    } finally {
-      if (requestId === discoveryRequestId.current) setIsRefreshingDiscovery(false);
-    }
-  };
-  const discoveryRunner = useRef<((forceRefresh?: boolean) => Promise<void>) | null>(null);
-  discoveryRunner.current = requestDiscovery;
-  useEffect(() => {
-    const handleOnline = () => {
-      setIsOnline(true);
-      if (discoveryAccess === "granted") void discoveryRunner.current?.(true);
-    };
-    const handleOffline = () => {
-      setIsOnline(false);
-      discoveryRequestId.current += 1;
-      setIsRefreshingDiscovery(false);
-    };
-    window.addEventListener("online", handleOnline);
-    window.addEventListener("offline", handleOffline);
-    return () => {
-      window.removeEventListener("online", handleOnline);
-      window.removeEventListener("offline", handleOffline);
-    };
-  }, [discoveryAccess]);
-  useEffect(() => {
-    if (isPageVisible && discoveryAccess === "granted") void discoveryRunner.current?.(true);
-  }, [isPageVisible, discoveryAccess]);
-
-  const ignoreLocation = () => {
-    presenceCache = null;
-    discoveryRequestId.current += 1;
-    setDiscoveryAccess("ignored");
-    setDiscoveredPeople([]);
-    setLocationMessage(null);
-  };
-  const discoveryEnabled = discoveryAccess === "granted";
+  const {
+    discoveryAccess,
+    locationMessage,
+    discoveredPeople,
+    discoveryEnabled,
+    availablePeople,
+    requestDiscovery,
+    ignoreLocation,
+  } = useReelDiscovery({
+    access,
+    t,
+    guestAreaLabel,
+    isPageVisible,
+    setIsOnline,
+    isRefreshingDiscovery,
+    setIsRefreshingDiscovery,
+    discoveryRequestId,
+  });
   const activityEnabled = discoveryEnabled || Boolean(currentPresence) || Boolean(guestPresence);
-  const availablePeople = discoveryEnabled ? discoveredPeople : [];
-
   const openProfile = (person: Person) => {
     setPanel(null);
     setSelectedPerson(person);
