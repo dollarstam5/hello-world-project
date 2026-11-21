@@ -2673,3 +2673,16 @@
 .reel-panel__tab-badge--green { background: #dcf5e8; color: #23834e; }
 @keyframes reel-tab-badge-pop { from { transform: scale(0.75); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .reel-panel__tabs button, .reel-panel__tab-badge { transition: none; animation: none; } }
+
+/* Zone 4 — modern activity tabs and offline standby */
+.reel-offline-banner { display:flex; width:fit-content; max-width:calc(100% - 1.5rem); align-items:center; justify-content:center; gap:0.5rem; margin:0.5rem auto 0; padding:0.35rem 0.9rem; border-radius:9999px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); color:#f87171; font-size:0.76rem; font-weight:500; line-height:1.3; text-align:center; backdrop-filter:blur(8px); animation:reel-peek-pop 0.25s ease-out; }
+.reel-proximity.is-offline .reel-proximity__radar { filter:grayscale(0.6) opacity(0.85); transition:filter 0.4s ease; }
+.reel-panel__tabs { position:relative; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0.35rem; padding:0.3rem; border-radius:1rem; background:var(--color-card,rgb(255 255 255 / 5%)); border:1px solid var(--color-border,rgb(255 255 255 / 8%)); }
+.reel-panel__tabs button { position:relative; display:flex; min-height:2.75rem; align-items:center; justify-content:center; gap:0.35rem; border:0; border-radius:0.75rem; padding:0.4rem 0.3rem; background:transparent; color:var(--color-muted-foreground,#8e9eb5); font-size:0.78rem; font-weight:600; cursor:pointer; user-select:none; transition:color 0.2s cubic-bezier(0.16,1,0.3,1),background 0.2s cubic-bezier(0.16,1,0.3,1),box-shadow 0.2s cubic-bezier(0.16,1,0.3,1),transform 0.14s ease; }
+.reel-panel__tabs button:hover:not(:disabled) { color:var(--color-foreground,#f0f4fc); background:rgba(255,255,255,0.04); }
+.reel-panel__tabs button.is-active { background:var(--color-primary,#2563eb); color:#fff; box-shadow:0 4px 14px rgba(37,99,235,0.35); }
+.reel-panel__tabs button:disabled { opacity:0.35; cursor:not-allowed; }
+.reel-panel__tab-badge { display:inline-flex; min-width:1.15rem; height:1.15rem; align-items:center; justify-content:center; padding:0 0.3rem; border-radius:9999px; background:#ef4444; color:#fff; font-size:0.65rem; font-weight:700; line-height:1; }
+.reel-panel__tabs button.is-active .reel-panel__tab-badge { background:#fff; color:var(--color-primary,#2563eb); }
+.reel-panel__tab-badge--green { background:#22c55e; }
+@media (prefers-reduced-motion:reduce) { .reel-offline-banner,.reel-panel__tabs button { animation:none !important; transition:none !important; } }
