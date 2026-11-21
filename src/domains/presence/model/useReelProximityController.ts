@@ -69,7 +69,7 @@ const MAX_RING_PEOPLE = 9;
 export type ReelAmbiance = {
   status: "idle" | "scanning" | "live" | "dense";
   count: number;
-  labelKey: string;
+  labelKey: MessageKey;
 };
 
 type RawNearbyPerson = {
