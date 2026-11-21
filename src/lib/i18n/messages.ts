@@ -585,8 +585,8 @@ export const messages = {
     "reel.ui.notifications": "Notifications, bips et mises en relation",
     "reel.ui.notificationsPaused":
       "Les notifications En direct sont en pause sans autorisation de proximité",
-    "reel.quickPeek.options": "Options pour {{name}}",
-    "reel.quickPeek.title": "Profil rapide de {{name}}",
+    "reel.quickPeek.options": "Options pour",
+    "reel.quickPeek.title": "Profil rapide de",
     "reel.quickPeek.guest": "Invité temporaire",
     "reel.quickPeek.member": "Membre",
     "reel.quickPeek.bip": "Faire signe",
@@ -1594,8 +1594,8 @@ export const messages = {
     "reel.ui.notifications": "Notifications, bips and connections",
     "reel.ui.notificationsPaused":
       "Live notifications are paused until proximity access is enabled",
-    "reel.quickPeek.options": "Options for {{name}}",
-    "reel.quickPeek.title": "Quick profile for {{name}}",
+    "reel.quickPeek.options": "Options for",
+    "reel.quickPeek.title": "Quick profile for",
     "reel.quickPeek.guest": "Temporary guest",
     "reel.quickPeek.member": "Member",
     "reel.quickPeek.bip": "Send a signal",
