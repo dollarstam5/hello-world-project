@@ -20,6 +20,7 @@ import { resolveReelZone } from "@/domains/presence/api/reel-zone.functions";
 import {
   discoverReelGuestNearby,
   endReelGuestPresence,
+  getMyReelGuestPresence,
   startReelGuestPresence,
   sendReelGuestBip,
   listMyReelGuestBips,
