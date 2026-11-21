@@ -44,7 +44,7 @@ export function RingPerson({
 }) {
   const radians = ((Number.isFinite(person.angle) ? person.angle : 0) * Math.PI) / 180;
   const orbitLevels = [33, 38, 41] as const;
-  const orbitIndex = Math.abs(Math.round(person.angle ?? 0)) % orbitLevels.length;
+  const orbitIndex = Array.from(person.id).reduce((sum, character) => sum + character.charCodeAt(0), 0) % orbitLevels.length;
   const orbit = orbitLevels[orbitIndex] ?? 38;
   const position = {
     left: `${50 + orbit * Math.cos(radians)}%`,
