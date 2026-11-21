@@ -50,7 +50,9 @@ export function ReelActivityPanel({ controller }: { controller: ReelController }
           onClick={() => handleTabChange("bips")}
         >
           <span>{t("reel.ui.receivedBips")}</span>
-          {pendingBipsCount > 0 && <span className="reel-panel__tab-badge">{pendingBipsCount}</span>}
+          {pendingBipsCount > 0 && (
+            <span className="reel-panel__tab-badge">{pendingBipsCount}</span>
+          )}
         </button>
         <button
           type="button"
@@ -60,7 +62,11 @@ export function ReelActivityPanel({ controller }: { controller: ReelController }
           onClick={() => handleTabChange("connections")}
         >
           <span>{t("reel.ui.connectionsTab")}</span>
-          {activeConnectionsCount > 0 && <span className="reel-panel__tab-badge reel-panel__tab-badge--green">{activeConnectionsCount}</span>}
+          {activeConnectionsCount > 0 && (
+            <span className="reel-panel__tab-badge reel-panel__tab-badge--green">
+              {activeConnectionsCount}
+            </span>
+          )}
         </button>
       </div>
       {activityTab === "bips" ? (
