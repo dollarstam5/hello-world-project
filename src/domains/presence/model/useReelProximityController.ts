@@ -472,8 +472,9 @@ export function useReelProximityController() {
     }
   };
 
-  const sendBipToSelectedPerson = async () => {
-    if (!selectedPerson) return;
+  const sendBipToSelectedPerson = async (person?: Person) => {
+    const targetPerson = person ?? selectedPerson;
+    if (!targetPerson) return;
     try {
       const requestId = globalThis.crypto?.randomUUID?.();
       if (!requestId) throw new Error(t("reel.controller.deviceSecurityUnavailable"));
@@ -481,16 +482,16 @@ export function useReelProximityController() {
         if (!guestPresence) throw new Error(t("reel.controller.publishBeforeBip"));
         await sendReelGuestBip({
           data: {
-            recipientActorKind: selectedPerson.actorKind === "guest" ? "guest" : "member",
-            recipientPresenceId: selectedPerson.id,
+            recipientActorKind: targetPerson.actorKind === "guest" ? "guest" : "member",
+            recipientPresenceId: targetPerson.id,
             clientRequestId: requestId,
           },
         });
       } else if (canUseMemberReel && currentPresence) {
-        if (selectedPerson.actorKind === "guest") {
-          await sendReelBipToGuest(selectedPerson.id, requestId);
+        if (targetPerson.actorKind === "guest") {
+          await sendReelBipToGuest(targetPerson.id, requestId);
         } else {
-          await sendReelBip(selectedPerson.id, requestId);
+          await sendReelBip(targetPerson.id, requestId);
         }
       } else {
         throw new Error(t("reel.controller.presenceBeforeBip"));
