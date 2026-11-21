@@ -625,7 +625,6 @@ export function useReelProximityController() {
   const {
     discoveryAccess,
     locationMessage,
-    discoveredPeople,
     discoveryEnabled,
     availablePeople,
     requestDiscovery,
@@ -636,7 +635,6 @@ export function useReelProximityController() {
     guestAreaLabel,
     isPageVisible,
     setIsOnline,
-    isRefreshingDiscovery,
     setIsRefreshingDiscovery,
     discoveryRequestId,
   });
