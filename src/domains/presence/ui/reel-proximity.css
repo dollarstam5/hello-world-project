@@ -2645,3 +2645,31 @@
   border-radius: 50%;
   background: #94a3b8;
 }
+
+/* Reactive activity tabs: compact counters and tactile sliding transitions */
+.reel-panel__tabs button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  transition: color 180ms ease, background 180ms ease, box-shadow 180ms ease, transform 140ms ease;
+}
+.reel-panel__tabs button:active:not(:disabled) { transform: scale(0.97); }
+.reel-panel__tab-badge {
+  display: inline-flex;
+  min-width: 1.15rem;
+  height: 1.15rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.25rem;
+  border-radius: 999px;
+  background: #dcecff;
+  color: #2878c9;
+  font-size: 0.68rem;
+  font-weight: 750;
+  line-height: 1;
+  animation: reel-tab-badge-pop 220ms ease-out;
+}
+.reel-panel__tab-badge--green { background: #dcf5e8; color: #23834e; }
+@keyframes reel-tab-badge-pop { from { transform: scale(0.75); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .reel-panel__tabs button, .reel-panel__tab-badge { transition: none; animation: none; } }
