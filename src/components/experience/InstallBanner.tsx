@@ -44,7 +44,7 @@ export function InstallBanner() {
       role="region"
       aria-label={t("install.title")}
       className="fixed inset-x-3 z-40 rounded-2xl border border-white/10 bg-card/95 p-3 shadow-2xl backdrop-blur-xl transition-all sm:inset-x-auto sm:right-4 sm:w-96"
-      style={{ bottom: "calc(5.5rem + var(--safe-bottom))" }}
+      style={{ bottom: "calc(6rem + var(--safe-bottom))" }}
     >
       <div className="flex items-center gap-3">
         <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
