@@ -83,9 +83,9 @@ export function ReelProximityScreen() {
         onClickPrompt={() => setPanel(controller.ambiance.count > 0 ? "people" : "settings")}
       />
       {!controller.isOnline && (
-        <div className="reel-network-standby" role="status" aria-live="polite">
-          <span className="reel-network-standby__dot" aria-hidden="true" />
-          {t("reel.network.standby")}
+        <div className="reel-offline-banner" role="status" aria-live="polite">
+          <WifiOff size={14} aria-hidden="true" />
+          <span>{t("reel.network.standby")}</span>
         </div>
       )}
       <ReelGuidedTour
