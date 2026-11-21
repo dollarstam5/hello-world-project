@@ -12,7 +12,7 @@ import {
   commandMyReelGuestBip,
 } from "@/domains/presence/api/reel-guest-session.functions";
 
-type AccessContext = { loading: boolean; mode: "guest" | "member"; memberId?: string | null };
+type AccessContext = { loading: boolean; mode: string; memberId?: string | null };
 
 export function useReelBips({
   access,
