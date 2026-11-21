@@ -115,7 +115,7 @@ export function SelfRadarIdentity({
   meLabel: string;
 }) {
   const guestName = guestDisplayName.trim();
-  const initials = guestName.split(/\\s+/).slice(0, 2).map((part) => part[0]).join("").toLocaleUpperCase();
+  const initials = guestName.split(/\s+/).slice(0, 2).map((part) => part[0]).join("").toLocaleUpperCase();
   return (
     <>
       <span className={`reel-radar__me-avatar${accessMode === "guest" ? ` reel-avatar--${guestAvatarKey}` : ""}`} aria-hidden="true">
