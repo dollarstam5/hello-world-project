@@ -20,7 +20,6 @@ import { resolveReelZone } from "@/domains/presence/api/reel-zone.functions";
 import {
   discoverReelGuestNearby,
   endReelGuestPresence,
-  getMyReelGuestPresence,
   startReelGuestPresence,
   sendReelGuestBip,
   listMyReelGuestBips,
@@ -38,6 +37,7 @@ import { useAccessMode } from "@/domains/access-mode";
 import { useReelMemberProfile } from "@/domains/presence/model/reel-proximity/useReelMemberProfile";
 import { useReelLifecycle } from "@/domains/presence/model/reel-proximity/useReelLifecycle";
 import { useReelMemberPresence } from "@/domains/presence/model/reel-proximity/useReelMemberPresence";
+import { useReelGuestPresence } from "@/domains/presence/model/reel-proximity/useReelGuestPresence";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
 import { evaluateReelAccess } from "@/domains/presence/policy/reel-access-policy";
@@ -88,24 +88,29 @@ export function useReelProximityController() {
   const [duration, setDuration] = useState("2 h");
   const [presenceConsent, setPresenceConsent] = useState(false);
   const [guestPresenceConsent, setGuestPresenceConsent] = useState(false);
-  const [guestDisplayName, setGuestDisplayName] = useState("");
-  const [guestAreaLabel, setGuestAreaLabel] = useState(t("reel.controller.nearby"));
-  const [guestAvatarKey, setGuestAvatarKey] = useState("avatar-blue");
-  const [guestPresence, setGuestPresence] = useState<{
-    id: string;
-    display_name: string;
-    avatar_key: string;
-    area_label: string;
-    description: string;
-    radius_m: number;
-    started_at: string;
-    expires_at: string;
-  } | null>(null);
   const [presenceDescription, setPresenceDescription] = useState(
     t("reel.controller.presenceDescription"),
   );
   const [presenceLoading, setPresenceLoading] = useState(false);
   const [presenceMessage, setPresenceMessage] = useState<string | null>(null);
+  const {
+    guestDisplayName,
+    setGuestDisplayName,
+    guestAreaLabel,
+    setGuestAreaLabel,
+    guestAvatarKey,
+    setGuestAvatarKey,
+    guestPresence,
+    setGuestPresence,
+  } = useReelGuestPresence(
+    access,
+    t,
+    setDuration,
+    setRadius,
+    setPresenceDescription,
+    setPresenceMessage,
+  );
+
   const {
     loadedPresence,
     setLoadedPresence,
@@ -136,56 +141,6 @@ export function useReelProximityController() {
         ? `guest:${access.guest.startedAt}`
         : null;
 
-  useEffect(() => {
-    if (access.loading || access.mode !== "guest") {
-      if (access.mode !== "guest") setGuestPresence(null);
-      return;
-    }
-    let cancelled = false;
-    setDuration("1 h");
-    void getMyReelGuestPresence()
-      .then((presence) => {
-        if (cancelled) return;
-        setGuestPresence(presence);
-        if (presence) {
-          setGuestDisplayName(presence.display_name);
-          setGuestAreaLabel(presence.area_label);
-          setGuestAvatarKey(presence.avatar_key);
-          setPresenceDescription(presence.description);
-          const radiusLabel = presence.radius_m === 1000 ? "1 km" : `${presence.radius_m} m`;
-          setRadius(radiusLabel);
-          const remainingMinutes = Math.max(
-            0,
-            Math.round((Date.parse(presence.expires_at) - Date.now()) / 60_000),
-          );
-          const durationLabel =
-            remainingMinutes <= 30
-              ? "30 min"
-              : remainingMinutes <= 60
-                ? "1 h"
-                : remainingMinutes <= 120
-                  ? "2 h"
-                  : remainingMinutes <= 180
-                    ? "3 h"
-                    : remainingMinutes <= 360
-                      ? "6 h"
-                      : remainingMinutes <= 720
-                        ? "12 h"
-                        : "24 h";
-          setDuration(durationLabel);
-        }
-      })
-      .catch((error) => {
-        if (!cancelled) {
-          setPresenceMessage(
-            error instanceof Error ? error.message : t("reel.controller.guestPresenceMissing"),
-          );
-        }
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [access.loading, access.mode, access.guest?.startedAt, t]);
 
 
   const refreshBips = useCallback(async () => {
