@@ -6,6 +6,25 @@
   padding-bottom: var(--safe-bottom);
 }
 
+/* Native-style floating dock: safe-area aware, translucent, tactile. */
+.reel-bottom-nav:not(.is-proximity) {
+  padding-top: 0.55rem;
+  padding-bottom: calc(0.55rem + var(--safe-bottom));
+  padding-inline: calc(0.75rem + var(--safe-left)) calc(0.75rem + var(--safe-right));
+}
+.reel-bottom-nav:not(.is-proximity) .reel-bottom-nav__bar {
+  border-color: rgb(255 255 255 / 16%);
+  border-radius: 1.55rem;
+  background: rgb(24 30 42 / 78%);
+  box-shadow: 0 0.65rem 2rem rgb(0 0 0 / 26%), inset 0 1px rgb(255 255 255 / 7%);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  backdrop-filter: blur(24px) saturate(1.4);
+}
+@supports (background: color-mix(in srgb, white 50%, transparent)) {
+  .reel-bottom-nav:not(.is-proximity) .reel-bottom-nav__bar {
+    background: color-mix(in srgb, var(--surface-floating, #181e2a) 78%, transparent);
+  }
+}
 /* Shared navigation used by Home, Flash, Scan and Radar. */
 .reel-bottom-nav__bar {
   position: relative;

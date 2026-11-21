@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useI18n } from "@/lib/i18n/useI18n";
-import { ChevronDown, Globe, History, X } from "lucide-react";
+import { ChevronDown, Globe, History, WifiOff, X } from "lucide-react";
 import { useReelProximityController } from "@/domains/presence/model/useReelProximityController";
+import { haptic } from "@/platform/device/haptics";
 import { RingPerson, SelfRadarIdentity } from "./components/ReelRadarIdentity";
 import { ReelGuidedTour } from "./components/ReelGuidedTour";
 import { ReelSettingsHelp } from "./components/ReelSettingsHelp";
@@ -9,6 +10,7 @@ import { ReelProfileSheet } from "./components/ReelProfileSheet";
 import { ReelSettingsPanel } from "./components/ReelSettingsPanel";
 import { ReelActivityPanel } from "./components/ReelActivityPanel";
 import { ReelHeader } from "./components/ReelHeader";
+import { ReelAtmospherePill } from "./components/ReelAtmospherePill";
 import { ReelDiscoveryPrompt } from "./components/ReelDiscoveryPrompt";
 import { ReelNearbyPreview } from "./components/ReelNearbyPreview";
 import { ReelGlobalPanel } from "./components/ReelGlobalPanel";
@@ -74,8 +76,18 @@ export function ReelProximityScreen() {
   const isPresenceActive = Boolean(currentPresence || guestPresence);
 
   return (
-    <section className="reel-proximity" aria-label={t("reel.ui.screenLabel")}>
+    <section className={`reel-proximity${controller.isOnline ? "" : " is-offline"}`} aria-label={t("reel.ui.screenLabel")}>
       <ReelHeader controller={controller} onOpenTour={openTour} />
+      <ReelAtmospherePill
+        ambiance={controller.ambiance}
+        onClickPrompt={() => setPanel(controller.ambiance.count > 0 ? "people" : "settings")}
+      />
+      {!controller.isOnline && (
+        <div className="reel-offline-banner" role="status" aria-live="polite">
+          <WifiOff size={14} aria-hidden="true" />
+          <span>{t("reel.network.standby")}</span>
+        </div>
+      )}
       <ReelGuidedTour
         open={tourOpen}
         step={tourStep}
@@ -91,20 +103,26 @@ export function ReelProximityScreen() {
         <div className="reel-radar__outer-halo" aria-hidden="true" />
         <div className="reel-radar__outer-ring" aria-hidden="true" />
         <div className="reel-radar__inner-ring" aria-hidden="true" />
+        <div className="reel-radar__sweep" aria-hidden="true" />
         <div className="reel-radar__core">
           <button
             type="button"
             className={`reel-radar__me${isPresenceActive ? " is-presence-active" : ""}`}
             onClick={() => {
-              if (currentPresence) void stopPresence();
-              else if (guestPresence) void stopGuestPresence();
-              else if (
+              if (currentPresence) {
+                haptic.tap();
+                void stopPresence();
+              } else if (guestPresence) {
+                haptic.tap();
+                void stopGuestPresence();
+              } else if (
                 access.mode === "guest" &&
                 guestPresenceConsent &&
                 guestDisplayName.trim() &&
                 guestAreaLabel.trim() &&
                 presenceDescription.trim()
               ) {
+                haptic.toggle();
                 void activateGuestPresence();
               } else if (
                 access.mode === "member" &&
@@ -112,6 +130,7 @@ export function ReelProximityScreen() {
                 presenceConsent &&
                 presenceDescription.trim()
               ) {
+                haptic.toggle();
                 void activatePresence();
               } else {
                 setPanel("settings");
@@ -133,8 +152,20 @@ export function ReelProximityScreen() {
             />
           </button>
         </div>
-        {visiblePeople.map((person) => (
-          <RingPerson key={person.id} person={person} onSelect={openProfile} />
+        {visiblePeople.map((person, idx) => (
+          <RingPerson
+            key={person.id}
+            person={person}
+            index={idx}
+            onSelect={(p) => {
+              haptic.tap();
+              openProfile(p);
+            }}
+            onQuickBip={(p) => {
+              openProfile(p);
+              void sendBipToSelectedPerson(p);
+            }}
+          />
         ))}
       </div>
 

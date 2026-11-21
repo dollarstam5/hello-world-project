@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Radar, RadioTower, ScanLine, Zap, ArrowUpRight } from "lucide-react";
+import { Radar, RadioTower, ScanLine, Zap, ArrowUpRight, Sparkles } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Surface } from "@/components/app/Surface";
+import { haptic } from "@/platform/device/haptics";
 import { Button } from "@/components/ui/button";
 import { PublicProfilePreview } from "@/components/app/PublicProfilePreview";
 import { Indicator } from "@/components/app/Indicator";
@@ -47,34 +48,35 @@ function EngineCard({
   return (
     <Link
       to={to}
-      className="group block h-full rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      onClick={() => haptic.tap()}
+      className="native-press group block h-full rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
     >
       <Surface
         variant="elevated"
         padding="md"
         bordered
         interactive
-        className="flex h-full min-h-40 flex-col justify-between gap-5 transition-colors group-hover:border-border-strong"
+        className="flex h-full min-h-36 flex-col justify-between gap-4 transition-all duration-200 group-hover:border-primary/40 group-active:scale-[0.98]"
       >
         <div className="flex items-start justify-between gap-3">
           <span
-            className={`flex h-12 w-12 items-center justify-center rounded-2xl ${toneClasses[tone]}`}
+            className={`flex h-11 w-11 items-center justify-center rounded-2xl ${toneClasses[tone]} shadow-sm`}
           >
-            <Icon className="h-6 w-6" aria-hidden />
+            <Icon className="h-5 w-5" aria-hidden />
           </span>
           <ArrowUpRight
-            className="h-5 w-5 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+            className="h-4 w-4 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
             aria-hidden
           />
         </div>
-        <div className="stack-2">
-          <h3 className="text-title-sm">{title}</h3>
-          <p className="text-sm leading-relaxed text-muted-foreground">{description}</p>
-          <div className="stack-1 rounded-xl bg-surface/70 px-3 py-2.5">
-            <span className="text-xs font-semibold text-muted-foreground">{exampleLabel}</span>
-            <p className="text-sm leading-relaxed">{example}</p>
+        <div className="space-y-1.5">
+          <h3 className="text-base font-semibold tracking-tight text-foreground">{title}</h3>
+          <p className="text-xs leading-relaxed text-muted-foreground line-clamp-2">{description}</p>
+          <div className="rounded-xl border border-border/40 bg-surface/80 px-2.5 py-1.5">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{exampleLabel}</span>
+            <p className="text-xs font-medium leading-relaxed">{example}</p>
           </div>
-          <span className="pt-1 text-xs font-semibold text-primary">{action}</span>
+          <span className="block pt-0.5 text-xs font-semibold text-primary">{action}</span>
         </div>
       </Surface>
     </Link>
@@ -128,9 +130,10 @@ export function HomeFoundation() {
 
   return (
     <div className="page-shell stack-8">
+      {/* Hero Photographique Immersif Native App */}
       <section
         aria-labelledby="home-welcome-title"
-        className="relative isolate flex min-h-[25rem] overflow-hidden rounded-[2rem] bg-card shadow-sm sm:min-h-[31rem]"
+        className="relative isolate flex min-h-[26rem] overflow-hidden rounded-[2.25rem] border border-white/10 bg-card shadow-xl sm:min-h-[32rem]"
       >
         <img
           src={heroPhoto}
@@ -141,34 +144,41 @@ export function HomeFoundation() {
           height={1200}
           fetchPriority="high"
           decoding="async"
-          className="absolute inset-0 z-0 size-full object-cover object-[50%_35%]"
+          className="absolute inset-0 z-0 size-full scale-105 object-cover object-[50%_35%] transition-transform duration-700 ease-out"
         />
+        {/* Masque dégradé cinématographique en verre teinté */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-background/95 via-background/75 to-background/25"
+          className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-background via-background/80 to-background/30 backdrop-blur-[1px]"
         />
-        <div className="relative z-20 flex w-full min-w-0 flex-col justify-between gap-10 p-5 text-foreground sm:p-8">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            {identityLabel ? (
-              <span className="rounded-full border border-border bg-surface/90 px-3 py-1.5 text-xs font-medium text-foreground shadow-sm">
-                {identityLabel}
-              </span>
-            ) : null}
-            <span className="rounded-full bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary">
+
+        <div className="relative z-20 flex w-full min-w-0 flex-col justify-between gap-8 p-5 text-foreground sm:p-8">
+          {/* Badges d'identité et de contexte, sans état local ou réseau simulé */}
+          <div className="flex flex-wrap items-center justify-between gap-2.5">
+            <div className="flex items-center gap-2">
+              {identityLabel && (
+                <span className="rounded-full border border-white/10 bg-background/60 px-3 py-1 text-xs font-medium text-foreground shadow-sm backdrop-blur-md">
+                  {identityLabel}
+                </span>
+              )}
+            </div>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-surface/60 px-3 py-1.5 text-xs font-medium text-foreground shadow-sm backdrop-blur-xl">
+              <Sparkles className="h-3.5 w-3.5 text-primary" aria-hidden />
               {t("app.tagline")}
             </span>
           </div>
-          <div className="max-w-2xl space-y-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+
+          <div className="max-w-2xl space-y-3">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary/90">
               {t("home.hero.eyebrow")}
             </p>
             <h1
               id="home-welcome-title"
-              className="max-w-[13ch] text-4xl font-semibold leading-[1.04] tracking-tight text-foreground sm:text-5xl lg:text-6xl"
+              className="text-3xl font-semibold leading-[1.08] tracking-tight text-foreground sm:text-5xl lg:text-6xl"
             >
               {greeting}
             </h1>
-            <p className="max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+            <p className="max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
               {t("home.subtitle")}
             </p>
           </div>

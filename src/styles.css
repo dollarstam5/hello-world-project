@@ -1513,3 +1513,36 @@
     min-height: calc(100vh - 5rem) !important;
   }
 }
+
+
+/* ========================================================================== */
+/* Native-feel mobile interaction polish                                      */
+/* ========================================================================== */
+html,
+body {
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a,
+nav,
+header,
+[role="button"],
+[role="tab"],
+.interactive,
+.tap,
+.native-press {
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.native-press {
+  transition: transform 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.native-press:active {
+  transform: scale(0.96);
+}
