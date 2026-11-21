@@ -121,12 +121,28 @@ export function ReelSettingsPanel({
 
       <div className="reel-panel__section">
         <div className="reel-setting-header">
-          <div className="reel-setting-header__title"><Clock size={16} aria-hidden="true" /><h3>{t("reel.ui.duration")}</h3></div>
-          <span className="reel-duration-badge" style={{ borderColor: DURATIONS_CONFIG[duration]?.color ?? "#38bdf8", color: DURATIONS_CONFIG[duration]?.color ?? "#38bdf8" }}><ShieldCheck size={12} aria-hidden="true" /> {t(DURATIONS_CONFIG[duration]?.badgeKey ?? "reel.settings.duration.active")}</span>
+          <div className="reel-setting-header__title">
+            <Clock size={16} aria-hidden="true" />
+            <h3>{t("reel.ui.duration")}</h3>
+          </div>
+          <span
+            className="reel-duration-badge"
+            style={{
+              borderColor: DURATIONS_CONFIG[duration]?.color ?? "#38bdf8",
+              color: DURATIONS_CONFIG[duration]?.color ?? "#38bdf8",
+            }}
+          >
+            <ShieldCheck size={12} aria-hidden="true" />{" "}
+            {t(DURATIONS_CONFIG[duration]?.badgeKey ?? "reel.settings.duration.active")}
+          </span>
         </div>
-        {access.mode === "guest" && <p className="reel-panel__note">{t("reel.ui.guestActiveDuration")}</p>}
+        {access.mode === "guest" && (
+          <p className="reel-panel__note">{t("reel.ui.guestActiveDuration")}</p>
+        )}
         <div className="reel-duration-grid">
-          {DURATIONS.filter((value) => access.mode !== "guest" || value === "30 min" || value === "1 h").map((value) => {
+          {DURATIONS.filter(
+            (value) => access.mode !== "guest" || value === "30 min" || value === "1 h",
+          ).map((value) => {
             const isSelected = duration === value;
             const conf = DURATIONS_CONFIG[value];
             return <button key={value} type="button" className={`reel-duration-card ${isSelected ? "is-selected" : ""}`} aria-pressed={isSelected} onClick={() => handleSelectDuration(value)}><strong>{value}</strong><small>{t(conf?.badgeKey ?? "reel.settings.duration.active")}</small>{isSelected && <span className="reel-duration-card__dot" aria-hidden="true" />}</button>;
