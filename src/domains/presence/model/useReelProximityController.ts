@@ -37,9 +37,9 @@ import {
   type ReelPresence,
 } from "@/domains/presence/api/reel-presence.client";
 import { useAccessMode } from "@/domains/access-mode";
+import { useReelMemberProfile } from "@/domains/presence/model/reel-proximity/useReelMemberProfile";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
-import { getMyProfileAvatarUrl } from "@/domains/profile/api/profile-avatar.client";
 import { evaluateReelAccess } from "@/domains/presence/policy/reel-access-policy";
 import {
   resetReelActivityProjection,
@@ -65,7 +65,7 @@ export function useReelProximityController() {
   const communication = useCommunicationRuntime();
   const communicationRevision = communication.getSnapshot();
   const processedReelEvents = useRef(new Set<string>());
-  const [memberAvatarUrl, setMemberAvatarUrl] = useState<string | null>(null);
+  const { memberAvatarUrl } = useReelMemberProfile(access);
 
   useEffect(() => {
     let active = true;
