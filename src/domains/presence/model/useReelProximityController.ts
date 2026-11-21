@@ -19,7 +19,10 @@ import { useReelPanelState } from "@/domains/presence/model/reel-proximity/useRe
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
 import { evaluateReelAccess } from "@/domains/presence/policy/reel-access-policy";
-} from "@/domains/presence/model/reel-activity-projection";
+import { useReelPresence } from "@/domains/presence/model/reel-proximity/useReelPresence";
+import { sendReelBip, sendReelBipToGuest } from "@/domains/presence/api/reel-presence.client";
+import { sendReelGuestBip } from "@/domains/presence/api/reel-guest-session.functions";
+import { useReelActivityProjection } from "@/domains/presence/model/reel-activity-projection";
 
 
 import {
@@ -50,15 +53,11 @@ export function useReelProximityController() {
     selectedPerson, setSelectedPerson, panel, setPanel, activityTab, setActivityTab,
     openProfile, closeProfile, openActivity,
   } = useReelPanelState();
-  const [radius, setRadius] = useState("100 m");
-  const [duration, setDuration] = useState("2 h");
-  const [presenceConsent, setPresenceConsent] = useState(false);
-  const [guestPresenceConsent, setGuestPresenceConsent] = useState(false);
-  const [presenceDescription, setPresenceDescription] = useState(
-    t("reel.controller.presenceDescription"),
-  );
-  const [presenceLoading, setPresenceLoading] = useState(false);
-  const [presenceMessage, setPresenceMessage] = useState<string | null>(null);
+  const {
+    radius, setRadius, duration, setDuration, presenceConsent, setPresenceConsent,
+    guestPresenceConsent, setGuestPresenceConsent, presenceDescription, setPresenceDescription,
+    presenceLoading, presenceMessage, setPresenceMessage,
+  } = presence;
   const {
     guestDisplayName,
     setGuestDisplayName,
@@ -69,20 +68,15 @@ export function useReelProximityController() {
     guestPresence,
     setGuestPresence,
   } = useReelGuestPresence(
-    access,
-    t,
-    setDuration,
-    setRadius,
-    setPresenceDescription,
-    setPresenceMessage,
+    access, t, setDuration, setRadius, setPresenceDescription, setPresenceMessage,
   );
 
-  const {
-    loadedPresence,
-    setLoadedPresence,
-    currentPresence,
-    canUseMemberReel,
-  } = useReelMemberPresence(access, t, setPresenceMessage);
+  const { loadedPresence, setLoadedPresence, currentPresence, canUseMemberReel } =
+    useReelMemberPresence(access, t, setPresenceMessage);
+  const presence = useReelPresence({ access, t, currentPresence, setLoadedPresence });
+  const activityIdentity = access.mode === "guest"
+    ? access.guest?.startedAt ?? null
+    : access.memberId ?? null;
   const {
     connections, setConnections, connectionsLoadedForIdentity, setConnectionsLoadedForIdentity,
     guestConnections, setGuestConnections, connectionsLoading, connectionsMessage,
@@ -166,160 +160,15 @@ export function useReelProximityController() {
     }
   };
 
-  const activatePresence = async () => {
-    const decision = evaluateReelAccess(
-      {
-        access,
-        presenceConsent: true,
-        consents: ["reel_presence"],
-        online: typeof navigator === "undefined" ? false : navigator.onLine,
-      },
-      "start_presence",
-    );
-    if (decision.status !== "server_check" || !presenceConsent) {
-      setPresenceMessage(
-        !presenceConsent ? t("reel.controller.consentRequired") : decision.message,
-      );
-      return;
-    }
-
-    setPresenceLoading(true);
-    setPresenceMessage(null);
-    try {
-      const fix = await requestReelLocation();
-      const zone = await resolveReelZone({
-        data: {
-          latitude: fix.latitude,
-          longitude: fix.longitude,
-          purpose: "presence",
-          consent: true,
-        },
-      });
-      if (!zone.grantId) throw new Error(t("reel.controller.presencePermissionFailed"));
-      const radiusMeters = radius === "1 km" ? 1000 : Number.parseInt(radius, 10);
-      const durationMinutes: Record<string, number> = {
-        "30 min": 30,
-        "1 h": 60,
-        "2 h": 120,
-        "3 h": 180,
-        "6 h": 360,
-        "12 h": 720,
-        "24 h": 1440,
-      };
-      const presence = await startReelPresence({
-        zoneGrantId: zone.grantId,
-        areaLabel: zone.areaLabel,
-        description: presenceDescription,
-        radiusMeters: radiusMeters as 10 | 25 | 50 | 100 | 1000,
-        durationMinutes: durationMinutes[duration] as 30 | 60 | 120 | 180 | 360 | 720 | 1440,
-        consent: true,
-      });
-      if (access.memberId) setLoadedPresence({ memberId: access.memberId, presence });
-      setPresenceMessage(t("reel.controller.presenceVisible"));
-    } catch (error) {
-      setPresenceMessage(
-        error instanceof Error ? error.message : t("reel.controller.presenceActivationFailed"),
-      );
-    } finally {
-      setPresenceLoading(false);
-    }
-  };
-
-  const activateGuestPresence = async () => {
-    if (access.mode !== "guest" || !guestPresenceConsent) {
-      setPresenceMessage(t("reel.controller.visibilityConsent"));
-      return;
-    }
-    const displayName = guestDisplayName.trim();
-    const areaLabel = guestAreaLabel.trim();
-    const description = presenceDescription.trim();
-    if (!displayName || !areaLabel || !description) {
-      setPresenceMessage(t("reel.controller.guestFieldsRequired"));
-      return;
-    }
-    setPresenceLoading(true);
-    setPresenceMessage(null);
-    try {
-      const fix = await requestReelLocation();
-      const radiusMeters = radius === "1 km" ? 1000 : Number.parseInt(radius, 10);
-      const durationMinutes: Record<string, number> = {
-        "30 min": 30,
-        "1 h": 60,
-        "2 h": 120,
-        "3 h": 180,
-        "6 h": 360,
-        "12 h": 720,
-        "24 h": 1440,
-      };
-      const result = await startReelGuestPresence({
-        data: {
-          displayName,
-          avatarKey: guestAvatarKey,
-          areaLabel,
-          description,
-          radiusM: radiusMeters as 10 | 25 | 50 | 100 | 1000,
-          latitude: fix.latitude,
-          longitude: fix.longitude,
-          durationMinutes: Math.min(durationMinutes[duration], 60) as 30 | 60,
-          consent: true,
-        },
-      });
-      const nextPresence = await getMyReelGuestPresence();
-      if (!nextPresence || nextPresence.id !== result.presenceId) {
-        throw new Error(t("reel.controller.presenceConfirmFailed"));
-      }
-      setGuestPresence(nextPresence);
-      setGuestPresenceConsent(false);
-      setPresenceMessage(t("reel.controller.presenceVisibleNearby"));
-    } catch (error) {
-      setPresenceMessage(
-        error instanceof Error ? error.message : t("reel.controller.presenceActivationFailed"),
-      );
-    } finally {
-      setPresenceLoading(false);
-    }
-  };
-
-  const stopGuestPresence = async () => {
-    if (!guestPresence) return;
-    setPresenceLoading(true);
-    setPresenceMessage(null);
-    try {
-      const result = await endReelGuestPresence({
-        data: { presenceId: guestPresence.id },
-      });
-      if (!result.ended) throw new Error(t("reel.controller.presenceNotActive"));
-      setGuestPresence(null);
-      setPresenceMessage(t("reel.controller.presenceHidden"));
-    } catch (error) {
-      setPresenceMessage(
-        error instanceof Error ? error.message : t("reel.controller.presenceStopFailed"),
-      );
-    } finally {
-      setPresenceLoading(false);
-    }
-  };
-
-  const stopPresence = async () => {
-    if (!currentPresence) return;
-    setPresenceLoading(true);
-    setPresenceMessage(null);
-    try {
-      const ended = await endReelPresence(currentPresence.id);
-      if (access.memberId)
-        setLoadedPresence({
-          memberId: access.memberId,
-          presence: ended.status === "active" ? ended : null,
-        });
-      setPresenceMessage(t("reel.controller.presenceHidden"));
-    } catch (error) {
-      setPresenceMessage(
-        error instanceof Error ? error.message : t("reel.controller.presenceStopFailed"),
-      );
-    } finally {
-      setPresenceLoading(false);
-    }
-  };
+  const activatePresence = presence.activatePresence;
+  const activateGuestPresence = () => presence.activateGuestPresence(
+    { displayName: guestDisplayName, areaLabel: guestAreaLabel, avatarKey: guestAvatarKey },
+    setGuestPresence,
+  );
+  const stopGuestPresence = () => guestPresence
+    ? presence.stopGuestPresence(guestPresence, setGuestPresence)
+    : Promise.resolve();
+  const stopPresence = presence.stopPresence;
 
   const {
     discoveryAccess,
