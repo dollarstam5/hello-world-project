@@ -2,6 +2,7 @@ import { RadioTower, X } from "lucide-react";
 import type { Person } from "@/domains/presence/model/useReelProximityController";
 import { PersonAvatar } from "./ReelRadarIdentity";
 import { useI18n } from "@/lib/i18n/useI18n";
+import { hapticFeedback } from "@/platform/device/haptics";
 
 export function ReelProfileSheet({
   person,
@@ -56,7 +57,7 @@ export function ReelProfileSheet({
           </div>
         )}
         {isPresenceActive && (
-          <button type="button" className="reel-profile-sheet__primary" onClick={onSendBip}>
+          <button type="button" className="reel-profile-sheet__primary" onClick={() => { hapticFeedback.pulse(); onSendBip(); }}>
             <RadioTower aria-hidden="true" /> Faire signe
           </button>
         )}
