@@ -30,15 +30,14 @@ import {
 } from "@/domains/presence/api/reel-guest-session.functions";
 import {
   endReelPresence,
-  getMyActiveReelPresence,
   listReelNearbyPresence,
   listReelNearbyGuestPresence,
   startReelPresence,
-  type ReelPresence,
 } from "@/domains/presence/api/reel-presence.client";
 import { useAccessMode } from "@/domains/access-mode";
 import { useReelMemberProfile } from "@/domains/presence/model/reel-proximity/useReelMemberProfile";
 import { useReelLifecycle } from "@/domains/presence/model/reel-proximity/useReelLifecycle";
+import { useReelMemberPresence } from "@/domains/presence/model/reel-proximity/useReelMemberPresence";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
 import { evaluateReelAccess } from "@/domains/presence/policy/reel-access-policy";
@@ -68,6 +67,12 @@ export function useReelProximityController() {
   const processedReelEvents = useRef(new Set<string>());
   const { memberAvatarUrl } = useReelMemberProfile(access);
   const {
+    loadedPresence,
+    setLoadedPresence,
+    currentPresence,
+    canUseMemberReel,
+  } = useReelMemberPresence(access, t, setPresenceMessage);
+  const {
     isPageVisible,
     isOnline,
     setIsOnline,
@@ -87,10 +92,6 @@ export function useReelProximityController() {
   const [activityTab, setActivityTab] = useState<ActivityTab>("notifications");
   const [radius, setRadius] = useState("100 m");
   const [duration, setDuration] = useState("2 h");
-  const [loadedPresence, setLoadedPresence] = useState<{
-    memberId: string;
-    presence: ReelPresence | null;
-  } | null>(null);
   const [presenceConsent, setPresenceConsent] = useState(false);
   const [guestPresenceConsent, setGuestPresenceConsent] = useState(false);
   const [guestDisplayName, setGuestDisplayName] = useState("");
@@ -128,14 +129,6 @@ export function useReelProximityController() {
     | { kind: "guest"; connection: ReelGuestConnection }
     | null
   >(null);
-  const currentPresence =
-    access.mode === "member" &&
-    access.memberProfileState === "active" &&
-    loadedPresence?.memberId === access.memberId
-      ? loadedPresence.presence
-      : null;
-  const canUseMemberReel =
-    access.mode === "member" && access.memberProfileState === "active" && !access.loading;
   const activityIdentity =
     access.mode === "member" && canUseMemberReel && access.memberId
       ? `member:${access.memberId}`
@@ -194,27 +187,6 @@ export function useReelProximityController() {
     };
   }, [access.loading, access.mode, access.guest?.startedAt, t]);
 
-  useEffect(() => {
-    let cancelled = false;
-    const memberId = access.memberId;
-    if (
-      access.mode !== "member" ||
-      access.memberProfileState !== "active" ||
-      access.loading ||
-      !memberId
-    )
-      return;
-    void getMyActiveReelPresence()
-      .then((presence) => {
-        if (!cancelled) setLoadedPresence({ memberId, presence });
-      })
-      .catch(() => {
-        if (!cancelled) setPresenceMessage(t("reel.controller.presenceCheckFailed"));
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [access.mode, access.memberProfileState, access.loading, access.memberId, t]);
 
   const refreshBips = useCallback(async () => {
     if (access.loading) return;
