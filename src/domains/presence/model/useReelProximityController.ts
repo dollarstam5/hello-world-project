@@ -66,31 +66,6 @@ export function useReelProximityController() {
   const communicationRevision = communication.getSnapshot();
   const processedReelEvents = useRef(new Set<string>());
   const { memberAvatarUrl } = useReelMemberProfile(access);
-
-  useEffect(() => {
-    let active = true;
-    setMemberAvatarUrl(null);
-
-    if (
-      access.loading ||
-      access.mode !== "member" ||
-      !access.memberId ||
-      access.memberProfileState !== "active"
-    ) {
-      return () => {
-        active = false;
-      };
-    }
-
-    void getMyProfileAvatarUrl(access.memberId).then((avatarUrl) => {
-      if (active) setMemberAvatarUrl(avatarUrl);
-    });
-
-    return () => {
-      active = false;
-    };
-  }, [access.loading, access.mode, access.memberId, access.memberProfileState]);
-
   const [isPageVisible, setIsPageVisible] = useState(() => typeof document === "undefined" || document.visibilityState === "visible");
   const [isOnline, setIsOnline] = useState(() => typeof navigator === "undefined" ? true : navigator.onLine);
   const [isRefreshingDiscovery, setIsRefreshingDiscovery] = useState(false);
