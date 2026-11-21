@@ -21,7 +21,7 @@ const chrome = spawn(
     "--no-first-run",
     "--no-default-browser-check",
     "--remote-allow-origins=*",
-    `--remote-debugging-port=${port}`,
+    "--remote-debugging-port=0",
     `--user-data-dir=${profile}`,
     "about:blank",
   ],
@@ -33,7 +33,7 @@ try {
   let version;
   for (let i = 0; i < 60; i++) {
     try {
-      const activePort = (await readFile(portFile, "utf8")).split("\\n")[0].trim();
+      const activePort = (await readFile(portFile, "utf8")).split("\n")[0].trim();
       port = Number(activePort);
       if (!Number.isInteger(port) || port <= 0) throw new Error("Invalid Chromium debug port");
       const response = await fetch(`http://127.0.0.1:${port}/json/version`);
@@ -248,6 +248,7 @@ try {
     } catch {
       chrome.kill("SIGTERM");
     }
+    await chrome.exited.catch(() => {});
   }
   await rm(profile, { recursive: true, force: true });
 }
