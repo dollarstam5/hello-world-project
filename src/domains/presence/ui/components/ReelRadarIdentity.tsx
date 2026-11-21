@@ -74,7 +74,11 @@ export function RingPerson({
     event.stopPropagation();
     haptic.pulse();
     setShowPeek(false);
-    onQuickBip ? onQuickBip(person) : onSelect(person);
+    if (onQuickBip) {
+      onQuickBip(person);
+    } else {
+      onSelect(person);
+    }
   };
   const isGuest = person.actorKind === "guest";
 
