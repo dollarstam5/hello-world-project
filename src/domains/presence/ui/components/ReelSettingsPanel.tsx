@@ -1,4 +1,4 @@
-import { Check, CircleHelp, Settings2, ShieldCheck, MapPin, Clock } from "lucide-react";
+import { CircleHelp, Settings2, ShieldCheck, MapPin, Clock } from "lucide-react";
 import { haptic } from "@/platform/device/haptics";
 import { useI18n } from "@/lib/i18n/useI18n";
 import type { useReelProximityController } from "@/domains/presence/model/useReelProximityController";
