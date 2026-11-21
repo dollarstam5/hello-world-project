@@ -83,6 +83,7 @@ export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
               ) : (
                 <Link
                   to={tab.to!}
+                  onClick={isCenter ? handleCenterPress : handleTabPress}
                   aria-label={label}
                   aria-current={active ? "page" : undefined}
                   className="reel-bottom-nav__control min-h-12 min-w-12"
