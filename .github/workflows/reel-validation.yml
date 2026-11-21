@@ -23,7 +23,8 @@ permissions:
 
 concurrency:
   group: reel-validation-${{ github.ref }}
-  cancel-in-progress: true
+  # Never interrupt an active mobile smoke test; keep only one pending run.
+  cancel-in-progress: false
 
 jobs:
   reel-focused:
