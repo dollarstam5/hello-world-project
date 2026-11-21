@@ -749,6 +749,11 @@ export const messages = {
     "reel.ui.memberNotActive":
       "Vos mises en relation seront accessibles lorsque votre profil Vitalis sera actif.",
     "reel.controller.nearby": "À proximité",
+    "reel.ambiance.scanning": "Recherche à proximité…",
+    "reel.ambiance.dense": "{count} personnes autour de vous",
+    "reel.ambiance.live": "Votre présence est visible à proximité",
+    "reel.ambiance.nearbyPeople": "Personnes détectées à proximité",
+    "reel.ambiance.calm": "Zone calme · Touchez pour vous rendre visible",
     "reel.controller.guestName": "Invité",
     "reel.controller.actionFailed": "Cette action n’a pas pu aboutir.",
     "reel.controller.presenceDescription": "Disponible pour échanger autour de moi",
@@ -1741,6 +1746,11 @@ export const messages = {
     "reel.ui.memberNotActive":
       "Your connections will be available when your Vitalis profile is active.",
     "reel.controller.nearby": "Nearby",
+    "reel.ambiance.scanning": "Searching nearby…",
+    "reel.ambiance.dense": "{count} people around you",
+    "reel.ambiance.live": "Your presence is visible nearby",
+    "reel.ambiance.nearbyPeople": "People detected nearby",
+    "reel.ambiance.calm": "Quiet area · Tap to become visible",
     "reel.controller.guestName": "Guest",
     "reel.controller.actionFailed": "This action could not be completed.",
     "reel.controller.presenceDescription": "Available to connect with people around me",
