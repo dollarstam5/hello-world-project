@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Radar, RadioTower, ScanLine, Zap, ArrowUpRight, Sparkles } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Surface } from "@/components/app/Surface";
+import { haptic } from "@/platform/device/haptics";
 import { Button } from "@/components/ui/button";
 import { PublicProfilePreview } from "@/components/app/PublicProfilePreview";
 import { Indicator } from "@/components/app/Indicator";
