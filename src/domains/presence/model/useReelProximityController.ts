@@ -65,6 +65,48 @@ export type ActivityTab = "notifications" | "bips" | "connections";
 
 const MAX_RING_PEOPLE = 9;
 
+export type ReelAmbiance = {
+  status: "idle" | "scanning" | "live" | "dense";
+  count: number;
+  labelKey: string;
+};
+
+type PresenceCacheEntry = { people: Person[]; timestamp: number; mode: "member" | "guest" };
+let presenceCache: PresenceCacheEntry | null = null;
+const CACHE_TTL_MS = 45_000;
+
+function distributePeopleHarmoniously(rawPeople: any[], areaLabel: string, t: (key: string) => string): Person[] {
+  const total = rawPeople.length;
+  if (total === 0) return [];
+  // Each orbit has its own evenly spaced angles; stagger the rings to avoid alignment.
+  const ringGroups: number[][] = [[], [], []];
+  rawPeople.forEach((_, index) => ringGroups[index % 3].push(index));
+  const angles = new Array<number>(total);
+  ringGroups.forEach((indices, ring) => {
+    const count = indices.length;
+    indices.forEach((personIndex, slot) => {
+      const baseAngle = (360 / Math.max(count, 1)) * slot + ring * 23;
+      const jitter = ((personIndex * 17) % 15) - 7.5;
+      angles[personIndex] = (baseAngle + jitter + 360) % 360;
+    });
+  });
+  return rawPeople.map((person, index) => {
+    const displayName = person.display_name || t("reel.controller.guestName");
+    return {
+      id: person.presence_id || person.id,
+      name: displayName,
+      avatarUrl: null,
+      avatarKey: person.avatar_key,
+      initials: displayName.trim().split(/\s+/).slice(0, 2).map((part: string) => part[0]?.toUpperCase() ?? "").join(""),
+      angle: angles[index],
+      description: person.description,
+      locationLabel: person.area_label || areaLabel,
+      actorKind: person.actor_kind || (person.avatar_key ? "guest" : "member"),
+    };
+  });
+}
+
+
 export function useReelProximityController() {
   const { t } = useI18n();
   const access = useAccessMode();
@@ -97,9 +139,21 @@ export function useReelProximityController() {
     };
   }, [access.loading, access.mode, access.memberId, access.memberProfileState]);
 
+  const [isPageVisible, setIsPageVisible] = useState(() => typeof document === "undefined" || document.visibilityState === "visible");
+  const discoveryRequestId = useRef(0);
   const [discoveryAccess, setDiscoveryAccess] = useState<
     "prompt" | "requesting" | "granted" | "ignored" | "denied"
   >("prompt");
+  useEffect(() => {
+    const handleVisibility = () => {
+      const visible = document.visibilityState === "visible";
+      setIsPageVisible(visible);
+      if (!visible) discoveryRequestId.current += 1; // invalidate any in-flight discovery
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () => document.removeEventListener("visibilitychange", handleVisibility);
+  }, []);
+
   const [locationMessage, setLocationMessage] = useState<string | null>(null);
   const [guestSessionLoading, setGuestSessionLoading] = useState(false);
   const [guestSessionMessage, setGuestSessionMessage] = useState<string | null>(null);
@@ -725,95 +779,55 @@ export function useReelProximityController() {
     }
   };
 
-  const requestDiscovery = async () => {
-    if (access.loading) return;
+  const requestDiscovery = async (forceRefresh = false) => {
+    if (access.loading || !isPageVisible) return;
+
+    const mode = access.mode === "guest" ? "guest" : "member";
+    const cacheIsFresh = presenceCache?.mode === mode && Date.now() - presenceCache.timestamp < CACHE_TTL_MS;
+    if (!forceRefresh && presenceCache?.mode === mode) {
+      // SWR: display cached nearby profiles immediately, then refresh if stale.
+      setDiscoveredPeople(presenceCache.people);
+      setDiscoveryAccess("granted");
+      if (cacheIsFresh) return;
+    }
+
+    const requestId = ++discoveryRequestId.current;
     setDiscoveryAccess("requesting");
     setLocationMessage(null);
+
     try {
       const fix = await requestReelLocation();
+      if (!isPageVisible || requestId !== discoveryRequestId.current) return;
+      let rawList: any[] = [];
+      let areaLabel = "";
+
       if (access.mode === "guest") {
-        const rows = await discoverReelGuestNearby({
+        rawList = await discoverReelGuestNearby({
           data: { latitude: fix.latitude, longitude: fix.longitude },
         });
-        setDiscoveredPeople(
-          rows.map((person, index) => ({
-            id: person.presence_id,
-            name: person.display_name || "Profil Vitalis",
-            avatarUrl: null,
-            avatarKey: person.avatar_key,
-            initials: (person.display_name || "V")
-              .trim()
-              .split(/\s+/)
-              .slice(0, 2)
-              .map((part) => part[0]?.toUpperCase() ?? "")
-              .join(""),
-            angle: (index * 137.5) % 360,
-            description: person.description,
-            locationLabel: person.area_label,
-            actorKind: person.actor_kind,
-          })),
-        );
+        areaLabel = guestAreaLabel;
       } else {
-        const decision = evaluateReelAccess(
-          {
-            access,
-            discoveryConsent: true,
-            online: typeof navigator === "undefined" ? false : navigator.onLine,
-          },
-          "discover_presence",
-        );
-        if (decision.status !== "server_check") throw new Error(decision.message);
         const zone = await resolveReelZone({
-          data: {
-            latitude: fix.latitude,
-            longitude: fix.longitude,
-            purpose: "discover",
-            consent: true,
-          },
+          data: { latitude: fix.latitude, longitude: fix.longitude, purpose: "discover", consent: true },
         });
+        areaLabel = zone.areaLabel;
         const [members, guests] = await Promise.all([
           listReelNearbyPresence(),
           listReelNearbyGuestPresence(),
         ]);
-        const memberCards = members.map((person, index) => ({
-          id: person.presence_id,
-          name: person.display_name || "Profil Vitalis",
-          avatarUrl: null,
-          initials: (person.display_name || "V")
-            .trim()
-            .split(/\s+/)
-            .slice(0, 2)
-            .map((part) => part[0]?.toUpperCase() ?? "")
-            .join(""),
-          angle: (index * 137.5) % 360,
-          description: person.description,
-          locationLabel: person.area_label || zone.areaLabel,
-          actorKind: "member" as const,
-        }));
-        const guestCards = guests.map((person, index) => ({
-          id: person.presence_id,
-          name: person.display_name || t("reel.controller.guestName"),
-          avatarUrl: null,
-          avatarKey: person.avatar_key,
-          initials: (person.display_name || "I")
-            .trim()
-            .split(/\s+/)
-            .slice(0, 2)
-            .map((part) => part[0]?.toUpperCase() ?? "")
-            .join(""),
-          angle: ((members.length + index) * 137.5) % 360,
-          description: person.description,
-          locationLabel: person.area_label || zone.areaLabel,
-          actorKind: "guest" as const,
-        }));
-        setDiscoveredPeople([...memberCards, ...guestCards]);
+        rawList = [...members, ...guests];
       }
+
+      if (!isPageVisible || requestId !== discoveryRequestId.current) return;
+      const formatted = distributePeopleHarmoniously(rawList, areaLabel, t);
+      presenceCache = { people: formatted, timestamp: Date.now(), mode };
+      setDiscoveredPeople(formatted);
       setDiscoveryAccess("granted");
     } catch (error) {
-      setDiscoveryAccess("denied");
-      setLocationMessage(
-        error instanceof Error ? error.message : t("reel.controller.discoveryUnavailable"),
-      );
+      if (!isPageVisible || requestId !== discoveryRequestId.current) return;
+      // Keep cached content on refresh failure; only mark denied when no usable cache exists.
+      if (!presenceCache || presenceCache.mode !== mode) setDiscoveryAccess("denied");
+      setLocationMessage(error instanceof Error ? error.message : "Localisation indisponible");
     }
   };
   const ignoreLocation = () => {
@@ -838,6 +852,18 @@ export function useReelProximityController() {
   };
 
   const visiblePeople = availablePeople.slice(0, MAX_RING_PEOPLE);
+  const ambiance: ReelAmbiance = (() => {
+    const count = visiblePeople.length;
+    const isLive = Boolean(currentPresence || guestPresence);
+    if (presenceLoading || discoveryAccess === "requesting") {
+      return { status: "scanning", count, labelKey: "reel.ambiance.scanning" };
+    }
+    if (isLive) {
+      return { status: count >= 4 ? "dense" : "live", count, labelKey: count >= 4 ? "reel.ambiance.dense" : "reel.ambiance.live" };
+    }
+    if (count > 0) return { status: "dense", count, labelKey: "reel.ambiance.nearbyPeople" };
+    return { status: "idle", count: 0, labelKey: "reel.ambiance.calm" };
+  })();
   const nearbyPeople = availablePeople.slice(0, 3);
   const additionalCount = Math.max(0, availablePeople.length - 3);
 
@@ -845,6 +871,8 @@ export function useReelProximityController() {
     access,
     memberAvatarUrl,
     discoveryAccess,
+    isPageVisible,
+    ambiance,
     locationMessage,
     guestSessionLoading,
     guestSessionMessage,
