@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import {
   commandReelBip,
+  commandReelGuestBipMember,
   listReelBips,
   listReelGuestBipsForMember,
   type ReelBip,
