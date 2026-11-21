@@ -149,6 +149,7 @@ export function useReelProximityController() {
   }, [access.loading, access.mode, access.memberId, access.memberProfileState]);
 
   const [isPageVisible, setIsPageVisible] = useState(() => typeof document === "undefined" || document.visibilityState === "visible");
+  const [isOnline, setIsOnline] = useState(() => typeof navigator === "undefined" ? true : navigator.onLine);
   const [isRefreshingDiscovery, setIsRefreshingDiscovery] = useState(false);
   const discoveryRequestId = useRef(0);
   const [discoveryAccess, setDiscoveryAccess] = useState<
@@ -794,7 +795,7 @@ export function useReelProximityController() {
   };
 
   const requestDiscovery = async (forceRefresh = false) => {
-    if (access.loading || !isPageVisible) return;
+    if (access.loading || !isPageVisible || !isOnline) return;
 
     const mode = access.mode === "guest" ? "guest" : "member";
     const cacheIsFresh = presenceCache?.mode === mode && Date.now() - presenceCache.timestamp < CACHE_TTL_MS;
@@ -850,6 +851,23 @@ export function useReelProximityController() {
   const discoveryRunner = useRef<((forceRefresh?: boolean) => Promise<void>) | null>(null);
   discoveryRunner.current = requestDiscovery;
   useEffect(() => {
+    const handleOnline = () => {
+      setIsOnline(true);
+      if (discoveryAccess === "granted") void discoveryRunner.current?.(true);
+    };
+    const handleOffline = () => {
+      setIsOnline(false);
+      discoveryRequestId.current += 1;
+      setIsRefreshingDiscovery(false);
+    };
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, [discoveryAccess]);
+  useEffect(() => {
     if (isPageVisible && discoveryAccess === "granted") void discoveryRunner.current?.(true);
   }, [isPageVisible, discoveryAccess]);
 
@@ -897,6 +915,7 @@ export function useReelProximityController() {
     memberAvatarUrl,
     discoveryAccess,
     isPageVisible,
+    isOnline,
     ambiance,
     isRefreshingDiscovery,
     locationMessage,
