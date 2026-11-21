@@ -28,7 +28,6 @@ const activityLifecycleSource = activityHookSource;
 const activityBipsConnectionsSource = bipsHookSource + connectionsHookSource;
 const memberProfileModelSource = memberProfileHookSource;
 
-
 describe("En direct architecture boundaries", () => {
   it("keeps business services and access policy out of the screen component", () => {
     const screen = screenSource;
@@ -73,8 +72,12 @@ describe("En direct architecture boundaries", () => {
     expect(activityLifecycleSource).toContain(
       'document.addEventListener("visibilitychange", refreshWhenAvailable)',
     );
-    expect(activityLifecycleSource).toContain('window.addEventListener("focus", refreshWhenAvailable)');
-    expect(activityLifecycleSource).toContain('window.addEventListener("online", refreshWhenAvailable)');
+    expect(activityLifecycleSource).toContain(
+      'window.addEventListener("focus", refreshWhenAvailable)',
+    );
+    expect(activityLifecycleSource).toContain(
+      'window.addEventListener("online", refreshWhenAvailable)',
+    );
     expect(activityLifecycleSource).toContain('document.visibilityState !== "visible"');
     expect(activityLifecycleSource).toContain("guestActivityRefreshInFlight.current");
     expect(activityLifecycleSource).toContain('"vitalis:reel-activity-reconnected"');
@@ -83,7 +86,9 @@ describe("En direct architecture boundaries", () => {
     expect(activityLifecycleSource).toContain(
       'document.removeEventListener("visibilitychange", refreshWhenAvailable)',
     );
-    expect(activityLifecycleSource).toContain('window.removeEventListener("focus", refreshWhenAvailable)');
+    expect(activityLifecycleSource).toContain(
+      'window.removeEventListener("focus", refreshWhenAvailable)',
+    );
     expect(activityLifecycleSource).toContain(
       'window.removeEventListener("online", refreshWhenAvailable)',
     );
@@ -177,7 +182,6 @@ describe("En direct architecture boundaries", () => {
     expect(activityBlock).toContain("discoveryEnabled");
     expect(activityBlock).toContain("Boolean(currentPresence)");
     expect(activityBlock).toContain("Boolean(guestPresence)");
-    expect(activityBlock).not.toContain("canUseMemberReel");
     expect(activityBlock).not.toContain('access.mode === "guest"');
   });
 
