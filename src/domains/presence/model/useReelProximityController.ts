@@ -795,7 +795,7 @@ export function useReelProximityController() {
   };
 
   const requestDiscovery = async (forceRefresh = false) => {
-    if (access.loading || !isPageVisible || !isOnline) return;
+    if (access.loading || !isPageVisible || (typeof navigator !== "undefined" && !navigator.onLine)) return;
 
     const mode = access.mode === "guest" ? "guest" : "member";
     const cacheIsFresh = presenceCache?.mode === mode && Date.now() - presenceCache.timestamp < CACHE_TTL_MS;
