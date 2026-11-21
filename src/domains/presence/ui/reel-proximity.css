@@ -463,6 +463,7 @@
   .reel-radar__outer-halo,
   .reel-radar__core {
     animation: none;
+    transition: none;
   }
 }
 
