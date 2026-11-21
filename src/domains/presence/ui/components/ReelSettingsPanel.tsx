@@ -23,7 +23,6 @@ const DURATIONS_CONFIG: Record<string, { badgeKey: string; color: string }> = {
   "24 h": { badgeKey: "reel.settings.duration.1440", color: "#ef4444" },
 };
 
-
 export function ReelSettingsPanel({
   controller,
   onOpenHelp,
@@ -44,8 +43,14 @@ export function ReelSettingsPanel({
   const { guestPresenceConsent, setGuestPresenceConsent, activateGuestPresence } = controller;
   const { presenceConsent, setPresenceConsent, stopPresence } = controller;
   const { activatePresence, presenceMessage } = controller;
-  const handleSelectRadius = (value: string) => { haptic.tap(); setRadius(value); };
-  const handleSelectDuration = (value: string) => { haptic.tap(); setDuration(value); };
+  const handleSelectRadius = (value: string) => {
+    haptic.tap();
+    setRadius(value);
+  };
+  const handleSelectDuration = (value: string) => {
+    haptic.tap();
+    setDuration(value);
+  };
 
   return (
     <>
