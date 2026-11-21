@@ -43,7 +43,9 @@ export function RingPerson({
   onSelect: (person: Person) => void;
 }) {
   const radians = ((Number.isFinite(person.angle) ? person.angle : 0) * Math.PI) / 180;
-  const orbit = 39;
+  const orbitLevels = [33, 38, 41] as const;
+  const orbitIndex = Math.abs(Math.round(person.angle ?? 0)) % orbitLevels.length;
+  const orbit = orbitLevels[orbitIndex] ?? 38;
   const position = {
     left: `${50 + orbit * Math.cos(radians)}%`,
     top: `${50 + orbit * Math.sin(radians)}%`,
@@ -52,7 +54,7 @@ export function RingPerson({
   return (
     <button
       type="button"
-      className="reel-ring-person"
+      className="reel-ring-person reel-ring-person--floating"
       style={position}
       onClick={() => onSelect(person)}
       aria-label={`Voir le profil de ${person.name}`}
