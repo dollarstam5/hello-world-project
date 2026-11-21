@@ -46,7 +46,6 @@ import {
   useReelActivityProjection,
 } from "@/domains/presence/model/reel-activity-projection";
 
-const CACHE_TTL_MS = 45_000;
 
 import {
   type Person,
