@@ -80,13 +80,13 @@ export function RingPerson({
 
   return (
     <div ref={peekRef} className={`reel-ring-person reel-ring-person--floating ${showPeek ? "is-peek-open" : ""}`} style={position}>
-      <button type="button" className={`reel-ring-person__btn ${isGuest ? "reel-ring-person__btn--guest" : "reel-ring-person__btn--member"}`} onClick={handleAvatarClick} aria-expanded={showPeek} aria-label={t("reel.quickPeek.options", { name: person.name })}>
+      <button type="button" className={`reel-ring-person__btn ${isGuest ? "reel-ring-person__btn--guest" : "reel-ring-person__btn--member"}`} onClick={handleAvatarClick} aria-expanded={showPeek} aria-label={`${t("reel.quickPeek.options")} ${person.name}`}>
         <PersonAvatar person={person} />
         <span className="reel-ring-person__status-dot" aria-hidden="true" />
       </button>
       <span className="reel-ring-person__name">{person.name}</span>
       {showPeek && (
-        <div className="reel-person-peek" role="dialog" aria-label={t("reel.quickPeek.title", { name: person.name })}>
+        <div className="reel-person-peek" role="dialog" aria-label={`${t("reel.quickPeek.title")} ${person.name}`}>
           <div className="reel-person-peek__header">
             <strong>{person.name}</strong>
             <span className={`reel-person-peek__badge ${isGuest ? "is-guest" : "is-member"}`}>{isGuest ? t("reel.quickPeek.guest") : t("reel.quickPeek.member")}</span>
