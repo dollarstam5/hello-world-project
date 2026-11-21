@@ -29,7 +29,7 @@ export function ReelRadiusSettings({
           <span className="reel-setting-header__active-badge">{radius}</span>
         </div>
         <p className="reel-setting-caption">
-          {t("reel.settings.radiusContext")}{ " " }
+          {t("reel.settings.radiusContext")}{" "}
           <strong>{t(RADII_CONFIG[radius]?.contextKey ?? "reel.ui.radius")}</strong>
         </p>
         <div className="reel-segment-slider" role="radiogroup" aria-label={t("reel.ui.radius")}>
