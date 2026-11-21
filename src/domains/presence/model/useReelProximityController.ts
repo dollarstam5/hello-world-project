@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { requestReelLocation } from "@/domains/presence/api/reel-location.client";
 import { useReelDiscovery } from "@/domains/presence/model/reel-proximity/useReelDiscovery";
 import { useReelBips } from "@/domains/presence/model/reel-proximity/useReelBips";
