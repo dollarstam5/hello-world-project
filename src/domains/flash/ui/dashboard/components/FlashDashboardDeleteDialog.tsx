@@ -17,7 +17,7 @@ type Props = {
   onConfirm: () => void;
 };
 
-export function FlashDeleteDialog({ open, busy, onOpenChange, onConfirm }: Props) {
+export function FlashDashboardDeleteDialog({ open, busy, onOpenChange, onConfirm }: Props) {
   const { t } = useI18n();
 
   return (
@@ -29,7 +29,13 @@ export function FlashDeleteDialog({ open, busy, onOpenChange, onConfirm }: Props
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={busy}>{t("common.cancel")}</AlertDialogCancel>
-          <AlertDialogAction disabled={busy} onClick={onConfirm}>
+          <AlertDialogAction
+            disabled={busy}
+            onClick={(event) => {
+              event.preventDefault();
+              onConfirm();
+            }}
+          >
             {t("flash.mine.delete")}
           </AlertDialogAction>
         </AlertDialogFooter>

@@ -56,7 +56,7 @@ export function RadarManagement() {
     event.preventDefault();
     const text = query.trim();
     const area = areaLabel.trim();
-    if (text.length < 3 || area.length < 2) return;
+    if (text.length < 3) return;
 
     setBusy(true);
     setActionError(false);
@@ -68,7 +68,7 @@ export function RadarManagement() {
         title: text.length > 160 ? text.slice(0, 157) + "…" : text,
         query: text,
         category: null,
-        areaLabel: area,
+        areaLabel: area.length >= 2 ? area : null,
         radiusKm,
         startsAt,
         expiresAt: startsAt + durationDays * DAY_MS,
@@ -218,7 +218,7 @@ export function RadarManagement() {
                         onClick={() => {
                           setEditingId(record.id);
                           setQuery(record.query);
-                          setAreaLabel(record.areaLabel);
+                          setAreaLabel(record.areaLabel ?? "");
                           setRadiusKm(record.radiusKm);
                           const savedDays = Math.round(
                             (record.expiresAt - record.startsAt) / DAY_MS,

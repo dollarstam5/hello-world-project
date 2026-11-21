@@ -35,7 +35,7 @@ Un Flash est une information diffusée avec un objectif précis. Chaque Flash po
 
 - **Texte** : rédaction directe.
 - **Voix** : la personne parle naturellement ; Vita extrait intention, catégorie, lieu, date, contraintes et durée.
-- **Modes futurs** : image, document, pièce jointe, import externe.
+- Les autres modes d'entrée sont hors périmètre actuel et nécessiteront une décision produit distincte.
 
 Vita accompagne la création : elle comprend l'intention exprimée en langage naturel et ne demande que les informations manquantes.
 

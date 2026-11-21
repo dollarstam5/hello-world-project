@@ -6,6 +6,16 @@ Dossier de cadrage initial. Les éléments ci-dessous réservent le périmètre 
 ## Rôle du moteur
 Flash est le moteur de publication d'une information courte, locale et limitée dans le temps. Son action principale est de **démarrer/créer un Flash**. Il ne doit pas devenir un flux social généraliste ni reprendre l'action centrale d'un autre moteur.
 
+## Application du principe Vitalis aux Flash partiels
+
+Référence obligatoire : [principe fondamental de traitement des demandes partielles](../../00-foundation/vitalis-core-principles.md).
+
+- Un texte exploitable doit pouvoir être conservé comme brouillon sans exiger des détails qui servent seulement à améliorer sa présentation ou sa découverte.
+- Les compléments (catégorie plus précise, moment, portée, urgence, zone ou informations de profil) doivent être classés selon leur nécessité réelle pour l'action concernée ; ils ne deviennent pas tous obligatoires par défaut.
+- La création d'un brouillon et sa publication sont deux actions différentes. Une publication reste soumise à ses propres contrôles de compte, de visibilité, de zone, de consentement, de modération et d'autorisation serveur.
+- Si une donnée est indispensable à la publication mais absente, conserver le brouillon et demander uniquement cette donnée au moment où elle devient nécessaire.
+- **Point de conformité à auditer dans le parcours V1 actuel :** l'interface exige aujourd'hui une portée et une urgence pour enregistrer un brouillon. Cette exigence doit être justifiée par une nécessité réelle ou assouplie ; elle ne doit pas être considérée conforme par défaut au principe P0.
+
 ## Repères d'interface déjà établis
 - En-tête propre à Flash : icône et nom du moteur à gauche, commandes propres à Flash à droite.
 - Aucun titre, icône ou décor au centre de l'en-tête.
@@ -53,7 +63,7 @@ Cette livraison d'interface ne valide pas encore la visibilité par publication 
 ## Sections à compléter pendant la conception
 - Création et durée de vie d'un Flash.
 - Zone géographique et portée de diffusion.
-- Catégories, pièces jointes et limites V1.
+- Catégories, durée et cycle de vie.
 - Expiration, suppression et modération.
 - États vides, erreurs, confirmations et notifications.
 - Données et permissions membre/invité.
@@ -61,6 +71,9 @@ Cette livraison d'interface ne valide pas encore la visibilité par publication 
 
 ## Garde-fous
 - Pas de fonctionnalité simulée présentée comme opérationnelle.
-- V1 privilégie une création simple, peu coûteuse et sans média obligatoire.
+- V1 privilégie une création simple, peu coûteuse, fondée sur l'expression naturelle par texte ou voix.
 - Les règles de confidentialité et de visibilité doivent être vérifiées côté serveur.
 - Les choix d'En direct ne s'appliquent pas à Flash sans décision explicite.
+
+
+L'expérience après publication et le Dashboard de gestion sont cadrés dans [Flash — Blueprint du Dashboard de gestion V1](./flash-dashboard-blueprint-v1.md). Ce blueprint est une proposition UX/produit; il ne certifie pas les fonctions runtime.

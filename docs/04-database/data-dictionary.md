@@ -12,7 +12,7 @@ The initial schema migration creates these nine `public` tables.
 | `profiles`      | Member-facing profile          | `id → auth.users.id`                                      | `display_name`, unique `handle`, `avatar_media_id`, `status`, `locale`, `trust_score`  |
 | `udi`           | Progressive digital identity   | `id`; unique `user_id → auth.users.id`                    | `level`, `verified_at`, `attributes jsonb`                                             |
 | `media`         | Metadata for media objects     | `id`; `owner_id → auth.users.id`                          | `kind`, `state`, `remote_path`, `mime_type`, `byte_size`, dimensions                   |
-| `flashes`       | Short-lived publications       | `id`; `author_id → auth.users.id`                         | `title`, `body`, `status`, `expires_at`, `media_ids uuid[]`                            |
+| `flashes`       | Short-lived publications       | `id`; `author_id → auth.users.id`                         | `title`, `body`, `status`, `expires_at`; legacy `media_ids` column retained but inactive in Flash V1 |
 | `missions`      | Work / collaboration tasks     | `id`; `author_id`, optional `assignee_id → auth.users.id` | `title`, `brief`, `status`, `reward_amount numeric(14,2)`, `reward_currency`, `due_at` |
 | `posts`         | Social posts                   | `id`; `author_id → auth.users.id`                         | `body`, `visibility`, `media_ids uuid[]`, reaction and reply counts                    |
 | `notifications` | Per-recipient notifications    | `id`; `recipient_id → auth.users.id`                      | `channel`, translation keys, `params jsonb`, `read_at`                                 |

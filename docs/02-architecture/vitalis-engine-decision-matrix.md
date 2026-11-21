@@ -4,6 +4,10 @@
 
 ## 1. Principe commun
 
+**Règle P0 : appliquer le [principe fondamental de traitement des demandes partielles](../00-foundation/vitalis-core-principles.md).** Avant de bloquer une action pour une information manquante, le moteur doit établir que cette information est strictement indispensable à son exécution sûre, autorisée et cohérente. Si elle est facultative, il poursuit avec les données disponibles et propose ensuite un complément utile. Si elle est indispensable, il demande uniquement le minimum manquant et conserve/prépare les éléments déjà fournis lorsque cela est possible.
+
+Cette règle ne modifie pas les droits associés aux modes visiteur, invité et membre. L'incomplétude d'un contenu ou d'une demande ne doit pas être confondue avec un statut de compte incomplet, une absence d'autorisation ou une absence de consentement.
+
 Toute demande suit le même ordre :
 
 1. Identifier le mode de session : visiteur, invité ou membre.

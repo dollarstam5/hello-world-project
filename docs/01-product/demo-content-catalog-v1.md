@@ -237,7 +237,7 @@ Cette section remplace les suppositions éditoriales par les formes réellement 
 
 ### Flash — deux formes à ne pas confondre
 
-- FlashRecord (packages/core-contracts/src/records.ts) est l'enregistrement local synchronisable : enveloppe id, createdAt, updatedAt, revision, deletedAt, puis authorId, title, body, status, expiresAt, mediaIds et les champs optionnels kind, category, timeSlot, areaLabel.
+- FlashRecord (packages/core-contracts/src/records.ts) est l'enregistrement local synchronisable : enveloppe id, createdAt, updatedAt, revision, deletedAt, puis authorId, title, body, status, expiresAt et les champs optionnels kind, category, timeSlot, areaLabel.
 - PublicFlash (packages/core-contracts/src/flash.ts) est la forme publique minimale : id, kind, category, title, timeSlot, areaLabel, expiresAt, createdAt. Elle n'expose ni auteur, ni coordonnées, ni corps complet.
 - Les catégories autorisées sont personal, professional, commercial, home, transport, food, education, health, events, other. Les types sont offer / need, les créneaux now / today / tomorrow / this_week.
 - Décision d'implémentation : ne jamais réutiliser une fixture publique comme enregistrement local ni contourner l'enveloppe synchronisable. Les exemples d'interface restent séparés du dépôt local et ne sont pas créés via createFlash.

@@ -24,6 +24,21 @@ function radarEntry(kind: OutboxEntry["kind"], patch: Row, id = mutationId): Out
   };
 }
 
+function flashEntry(kind: OutboxEntry["kind"], patch: Row, id = mutationId): OutboxEntry {
+  return {
+    id,
+    ownerId,
+    table: "flashes",
+    recordId,
+    kind,
+    patch,
+    mutatedAt: 1,
+    attempts: 0,
+    lastAttemptAt: null,
+    lastError: null,
+  };
+}
+
 function request(entry: OutboxEntry): PushRequest {
   return { protocolVersion: 2, entries: [entry] };
 }
@@ -45,6 +60,11 @@ class FakeQuery {
   }
 
   eq(column: string, value: unknown): this {
+    this.filters.push([column, value]);
+    return this;
+  }
+
+  is(column: string, value: unknown): this {
     this.filters.push([column, value]);
     return this;
   }
@@ -80,13 +100,31 @@ class FakeQuery {
     if (this.table === "sync_mutation_receipts") {
       if (this.operation === "select") {
         const receipt = this.database.receipts.find((row) => this.matches(row));
-        return { data: receipt ? { response: receipt.response } : null, error: null };
+        return {
+          data: receipt
+            ? {
+                logical_table: receipt.logical_table,
+                record_id: receipt.record_id,
+                response: receipt.response,
+              }
+            : null,
+          error: null,
+        };
       }
       if (this.database.receiptWriteFailures > 0) {
         this.database.receiptWriteFailures -= 1;
-        return { data: null, error: { code: "08006", message: "simulated receipt write failure" } };
+        return {
+          data: null,
+          error: { code: "08006", message: "simulated receipt write failure" },
+        };
       }
       const receipt = this.payload ?? {};
+      if (this.database.concurrentReceiptWinner) {
+        const winner = this.database.concurrentReceiptWinner;
+        this.database.concurrentReceiptWinner = null;
+        this.database.receipts.push({ ...winner });
+        return { data: null, error: { code: "23505", message: "concurrent receipt insert" } };
+      }
       if (
         this.database.receipts.some(
           (row) => row.mutation_id === receipt.mutation_id && row.owner_id === receipt.owner_id,
@@ -123,16 +161,27 @@ class FakeQuery {
 }
 
 class FakeDatabase {
-  tables: Record<string, Row[]> = { radars: [] };
+  tables: Record<string, Row[]> = { radars: [], flashes: [] };
   receipts: Row[] = [];
   receiptWriteFailures = 0;
+  concurrentReceiptWinner: Row | null = null;
   successfulBusinessWrites = 0;
 
   from(table: string): FakeQuery {
     return new FakeQuery(this, table);
   }
 
-  async rpc(): Promise<QueryResult> {
+  async rpc(name?: string, args?: Row): Promise<QueryResult> {
+    if (name === "transition_flash" && args?.["p_status"] === "archived") {
+      const flash = (this.tables.flashes ?? []).find((row) => row.id === args["p_flash_id"]);
+      if (!flash || flash.status !== "live" || flash.deleted_at != null)
+        return { data: false, error: null };
+      flash.status = "archived";
+      flash.updated_at = Date.now();
+      flash.revision = Number(flash.revision ?? 0) + 1;
+      this.successfulBusinessWrites += 1;
+      return { data: true, error: null };
+    }
     return { data: null, error: null };
   }
 
@@ -140,6 +189,123 @@ class FakeDatabase {
     return this as unknown as SyncClient;
   }
 }
+
+describe("runPush transport — Flash lifecycle command", () => {
+  it("archives live Flash through RPC and replays idempotently", async () => {
+    const db = new FakeDatabase();
+    db.tables.flashes.push({
+      id: recordId,
+      author_id: ownerId,
+      status: "live",
+      deleted_at: null,
+      revision: 2,
+      title: "Flash",
+      body: "Body",
+    });
+    const entry = flashEntry("update", { status: "archived" });
+    const first = await runPush(db.client(), request(entry), ownerId);
+    const writes = db.successfulBusinessWrites;
+    const second = await runPush(db.client(), request(entry), ownerId);
+    expect(first.accepted).toEqual([mutationId]);
+    expect(first.rejected).toEqual([]);
+    expect(first.records[0]).toMatchObject({
+      table: "flashes",
+      data: { id: recordId, status: "archived" },
+    });
+    expect(second.accepted).toEqual([mutationId]);
+    expect(db.tables.flashes[0].status).toBe("archived");
+    expect(db.successfulBusinessWrites).toBe(writes);
+    expect(db.receipts).toHaveLength(1);
+  });
+  it("rejects archive command when Flash is not live", async () => {
+    const db = new FakeDatabase();
+    db.tables.flashes.push({
+      id: recordId,
+      author_id: ownerId,
+      status: "draft",
+      deleted_at: null,
+      revision: 1,
+    });
+    const result = await runPush(
+      db.client(),
+      request(flashEntry("update", { status: "archived" })),
+      ownerId,
+    );
+    expect(result.accepted).toEqual([]);
+    expect(result.rejected).toEqual([
+      { id: mutationId, code: "invalid_mutation", retryable: false },
+    ]);
+    expect(db.tables.flashes[0].status).toBe("draft");
+    expect(db.receipts).toHaveLength(0);
+  });
+});
+describe("runPush transport — Flash creation and convergence", () => {
+  it("creates a Flash with server-owned identity and replays without duplicating it", async () => {
+    const db = new FakeDatabase();
+    const entry = flashEntry("create", {
+      title: "Besoin de transport",
+      body: "Un trajet local",
+      kind: "need",
+      category: "transport",
+      timeSlot: "today",
+      expiresAt: 1_900_000_000_000,
+      mediaIds: [],
+    });
+
+    const first = await runPush(db.client(), request(entry), ownerId);
+    const writesAfterFirstPush = db.successfulBusinessWrites;
+    const second = await runPush(db.client(), request(entry), ownerId);
+
+    expect(first.accepted).toEqual([mutationId]);
+    expect(first.rejected).toEqual([]);
+    expect(first.records[0]).toMatchObject({
+      table: "flashes",
+      data: {
+        id: recordId,
+        authorId: ownerId,
+        title: "Besoin de transport",
+      },
+    });
+    expect(first.records[0].data).not.toHaveProperty("status");
+    expect(second.accepted).toEqual([mutationId]);
+    expect(db.tables.flashes).toHaveLength(1);
+    expect(db.tables.flashes[0]).toMatchObject({
+      id: recordId,
+      author_id: ownerId,
+      title: "Besoin de transport",
+      body: "Un trajet local",
+    });
+    expect(db.tables.flashes[0]).not.toHaveProperty("status");
+    expect(db.successfulBusinessWrites).toBe(writesAfterFirstPush);
+    expect(db.receipts).toHaveLength(1);
+  });
+});
+
+describe("runPush transport — stale Flash updates", () => {
+  it("rejects an offline update when the server record is already deleted", async () => {
+    const db = new FakeDatabase();
+    db.tables.flashes = [
+      {
+        id: recordId,
+        author_id: ownerId,
+        title: "Flash supprimé",
+        deleted_at: 1234,
+        revision: 4,
+      },
+    ];
+    const entry = flashEntry("update", { title: "Modification hors ligne tardive" });
+
+    const result = await runPush(db.client(), request(entry), ownerId);
+
+    expect(result.accepted).toEqual([]);
+    expect(result.rejected).toEqual([
+      { id: mutationId, code: "record_not_found", retryable: false },
+    ]);
+    expect(db.tables.flashes[0].title).toBe("Flash supprimé");
+    expect(db.tables.flashes[0].deleted_at).toBe(1234);
+    expect(db.receipts).toHaveLength(0);
+  });
+});
 
 describe("runPush transport — Radar mutation receipts", () => {
   it("creates a Radar and stores its authoritative receipt", async () => {
@@ -171,6 +337,30 @@ describe("runPush transport — Radar mutation receipts", () => {
     });
   });
 
+  it("does not replay a receipt whose mutation id is bound to another record", async () => {
+    const db = new FakeDatabase();
+    db.receipts.push({
+      mutation_id: mutationId,
+      owner_id: ownerId,
+      logical_table: "flashes",
+      record_id: "00000000-0000-4000-8000-000000000099",
+      response: null,
+    });
+    const entry = radarEntry("create", {
+      title: "Radar cible différente",
+      query: "besoin local",
+      category: "services",
+      radiusKm: 3,
+    });
+
+    const result = await runPush(db.client(), request(entry), ownerId);
+
+    expect(result.accepted).toEqual([]);
+    expect(result.rejected).toEqual([{ id: mutationId, code: "server_error", retryable: true }]);
+    expect(db.successfulBusinessWrites).toBe(0);
+    expect(db.tables.radars).toHaveLength(0);
+  });
+
   it("updates an existing Radar and stores the resulting record in its receipt", async () => {
     const db = new FakeDatabase();
     db.tables.radars.push({
@@ -178,6 +368,7 @@ describe("runPush transport — Radar mutation receipts", () => {
       owner_id: ownerId,
       title: "Ancien titre",
       revision: 1,
+      deleted_at: null,
     });
     const entry = radarEntry("update", { title: "Nouveau titre" });
 
@@ -215,6 +406,50 @@ describe("runPush transport — Radar mutation receipts", () => {
     });
   });
 
+  it("does not accept a delete when the server returns no row and no tombstone exists", async () => {
+    const db = new FakeDatabase();
+    const entry = radarEntry("delete", {});
+
+    const result = await runPush(db.client(), request(entry), ownerId);
+
+    expect(result.accepted).toEqual([]);
+    expect(result.rejected).toEqual([
+      { id: mutationId, code: "record_not_found", retryable: false },
+    ]);
+    expect(db.receipts).toHaveLength(0);
+  });
+
+  it("verifies and replays a receipt won by a concurrent request instead of accepting the local response blindly", async () => {
+    const db = new FakeDatabase();
+    const entry = radarEntry("create", {
+      title: "Radar course",
+      query: "transport local",
+      category: "services",
+      radiusKm: 2,
+    });
+    const expectedReceiptResponse = {
+      table: "radars",
+      revision: 1,
+      deleted: false,
+      data: { id: recordId, owner_id: ownerId, title: "Radar course", revision: 1 },
+    };
+    db.concurrentReceiptWinner = {
+      mutation_id: mutationId,
+      owner_id: ownerId,
+      logical_table: "radars",
+      record_id: recordId,
+      response: expectedReceiptResponse,
+    };
+
+    const result = await runPush(db.client(), request(entry), ownerId);
+
+    expect(result.accepted).toEqual([mutationId]);
+    expect(result.rejected).toEqual([]);
+    expect(result.records).toEqual([expectedReceiptResponse]);
+    expect(db.receipts).toHaveLength(1);
+    expect(db.successfulBusinessWrites).toBe(1);
+  });
+
   it("replays the same mutation id from its receipt without a second business write", async () => {
     const db = new FakeDatabase();
     const entry = radarEntry("create", {
@@ -232,6 +467,39 @@ describe("runPush transport — Radar mutation receipts", () => {
     expect(second.accepted).toEqual([mutationId]);
     expect(db.successfulBusinessWrites).toBe(writesAfterFirstPush);
     expect(db.tables.radars).toHaveLength(1);
+    expect(db.receipts).toHaveLength(1);
+  });
+
+  it("recovers an applied update after receipt failure without repeating the server update", async () => {
+    const db = new FakeDatabase();
+    db.tables.radars.push({
+      id: recordId,
+      owner_id: ownerId,
+      title: "Titre avant",
+      query: "recherche initiale",
+      deleted_at: null,
+      category: "services",
+      radius_km: 4,
+      revision: 2,
+    });
+    db.receiptWriteFailures = 1;
+    const entry = radarEntry("update", { title: "Titre modifié" });
+
+    const first = await runPush(db.client(), request(entry), ownerId);
+
+    expect(first.accepted).toEqual([]);
+    expect(first.rejected).toEqual([{ id: mutationId, code: "server_error", retryable: true }]);
+    expect(db.tables.radars[0].title).toBe("Titre modifié");
+    expect(db.successfulBusinessWrites).toBe(1);
+    expect(db.receipts).toHaveLength(0);
+
+    const retry = await runPush(db.client(), request(entry), ownerId);
+
+    expect(retry.accepted).toEqual([mutationId]);
+    expect(retry.rejected).toEqual([]);
+    expect(retry.records[0]?.data.title).toBe("Titre modifié");
+    expect(db.tables.radars[0].title).toBe("Titre modifié");
+    expect(db.successfulBusinessWrites).toBe(1);
     expect(db.receipts).toHaveLength(1);
   });
 

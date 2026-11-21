@@ -4,6 +4,8 @@ Cette section documente la vision produit, les intentions d'usage, les parcours,
 
 ## Références canoniques
 
+- [Principes fondamentaux de Vitalis — règle prioritaire sur les demandes partielles](../00-foundation/vitalis-core-principles.md)
+
 - [Vision](./vision.md)
 - [Personas](./personas.md)
 - [Parcours utilisateurs](./user-journeys.md)

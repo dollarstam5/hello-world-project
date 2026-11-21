@@ -9,4 +9,5 @@ export * from "./missions";
 export * from "./trust";
 export * from "./modules";
 export * from "./scan";
+export * from "./scan-interpreter";
 export * from "./radar";

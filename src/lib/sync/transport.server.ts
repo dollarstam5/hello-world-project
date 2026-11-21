@@ -100,13 +100,23 @@ async function replayReceipt(
 ): Promise<SyncRecordEnvelope | null | undefined> {
   const { data, error } = await db
     .from("sync_mutation_receipts")
-    .select("response")
+    .select("logical_table,record_id,response")
     .eq("mutation_id", entry.id)
     .eq("owner_id", userId)
     .maybeSingle();
   if (error) throw new Error("sync_receipt_read_failed");
   if (!data) return undefined;
-  return (data as { response: SyncRecordEnvelope | null }).response;
+  const receipt = data as {
+    logical_table?: string;
+    record_id?: string;
+    response: SyncRecordEnvelope | null;
+  };
+  // Idempotency keys are owner-scoped, but must also bind to the original
+  // table and record. Reusing a key for another target is a protocol conflict.
+  if (receipt.logical_table !== entry.table || receipt.record_id !== entry.recordId) {
+    throw new Error("sync_receipt_target_mismatch");
+  }
+  return receipt.response;
 }
 
 async function storeReceipt(
@@ -114,7 +124,7 @@ async function storeReceipt(
   entry: OutboxEntry,
   userId: string,
   response: SyncRecordEnvelope | null,
-): Promise<void> {
+): Promise<SyncRecordEnvelope | null> {
   const { error } = await db.from("sync_mutation_receipts").insert({
     mutation_id: entry.id,
     owner_id: userId,
@@ -122,7 +132,15 @@ async function storeReceipt(
     record_id: entry.recordId,
     response,
   });
-  if (error && error.code !== "23505") throw new Error("sync_receipt_write_failed");
+  if (!error) return response;
+  if (error.code !== "23505") throw new Error("sync_receipt_write_failed");
+
+  // A concurrent request may have persisted this mutation's receipt first.
+  // Never treat a unique-key collision as acceptance until the winning receipt
+  // is read back and its owner/table/record binding is verified.
+  const racedReceipt = await replayReceipt(db, entry, userId);
+  if (racedReceipt === undefined) throw new Error("sync_receipt_conflict_unverified");
+  return racedReceipt;
 }
 
 function sameDatabaseValue(actual: unknown, expected: unknown): boolean {
@@ -181,6 +199,20 @@ export async function runPush(
       const owner = ownerColumn(entry.table);
       const row = toRow(entry.table, entry.patch);
 
+      // A previous attempt may have committed the business update but failed to
+      // persist its receipt. Before repeating an update, recover the already
+      // applied patch from the authoritative row to avoid a duplicate revision
+      // or side effect on retry.
+      if (entry.kind === "update") {
+        const recoveredUpdate = await recoverAppliedMutation(db, entry, table, row);
+        if (recoveredUpdate) {
+          const receiptResponse = await storeReceipt(db, entry, userId, recoveredUpdate);
+          accepted.push(entry.id);
+          if (receiptResponse) records.push(receiptResponse);
+          continue;
+        }
+      }
+
       if (entry.kind === "delete") row["deleted_at"] = Date.now();
 
       let result: {
@@ -223,6 +255,31 @@ export async function runPush(
           p_radar_id: entry.recordId,
           p_action: action,
         });
+      } else if (
+        entry.table === "flashes" &&
+        entry.kind === "update" &&
+        typeof row["status"] === "string"
+      ) {
+        if (Object.keys(row).some((field) => field !== "status") || row["status"] !== "archived") {
+          rejected.push({ id: entry.id, code: "invalid_mutation", retryable: false });
+          continue;
+        }
+        result = await db.rpc("transition_flash", {
+          p_flash_id: entry.recordId,
+          p_status: "archived",
+        });
+        if (!result.error && result.data === true) {
+          const archived = await recoverAppliedMutation(db, entry, table, row);
+          if (archived) {
+            const receiptResponse = await storeReceipt(db, entry, userId, archived);
+            accepted.push(entry.id);
+            if (receiptResponse) records.push(receiptResponse);
+            continue;
+          }
+          rejected.push({ id: entry.id, code: "server_error", retryable: true });
+          continue;
+        }
+        if (!result.error) result.error = { code: "P0001", message: "flash_archive_not_applied" };
       } else if (entry.kind === "create") {
         row["id"] = entry.recordId;
         if (owner) row[owner] = userId;
@@ -234,6 +291,8 @@ export async function runPush(
           .from(table)
           .update(row)
           .eq("id", entry.recordId)
+          // A delayed offline update must not mutate a server tombstone.
+          .is("deleted_at", null)
           .select("*")
           .maybeSingle();
       }
@@ -241,9 +300,9 @@ export async function runPush(
       if (result.error) {
         const recovered = await recoverAppliedMutation(db, entry, table, row);
         if (recovered) {
-          await storeReceipt(db, entry, userId, recovered);
+          const receiptResponse = await storeReceipt(db, entry, userId, recovered);
           accepted.push(entry.id);
-          records.push(recovered);
+          if (receiptResponse) records.push(receiptResponse);
           continue;
         }
         rejected.push({ id: entry.id, ...classifyDatabaseError(result.error) });
@@ -251,18 +310,25 @@ export async function runPush(
       }
       if (!result.data) {
         if (entry.kind === "delete") {
-          await storeReceipt(db, entry, userId, null);
-          accepted.push(entry.id);
-          continue;
+          // A no-row response is not proof that a deletion succeeded. It may
+          // mean the record is missing or hidden by RLS. Accept only when a
+          // follow-up read confirms the tombstone already exists.
+          const recovered = await recoverAppliedMutation(db, entry, table, row);
+          if (recovered) {
+            const receiptResponse = await storeReceipt(db, entry, userId, recovered);
+            accepted.push(entry.id);
+            if (receiptResponse) records.push(receiptResponse);
+            continue;
+          }
         }
         rejected.push({ id: entry.id, code: "record_not_found", retryable: false });
         continue;
       }
 
       const saved = envelope(entry.table, result.data as Record<string, unknown>);
-      await storeReceipt(db, entry, userId, saved);
+      const receiptResponse = await storeReceipt(db, entry, userId, saved);
       accepted.push(entry.id);
-      records.push(saved);
+      if (receiptResponse) records.push(receiptResponse);
     } catch {
       rejected.push({ id: entry.id, code: "server_error", retryable: true });
     }

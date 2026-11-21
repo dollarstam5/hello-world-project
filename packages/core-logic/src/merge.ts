@@ -14,11 +14,12 @@ export function mergeRecords<T extends BaseRecord>(
 ): T {
   if (!local) return remote;
 
-  const localIsNewer = local.updatedAt > remote.updatedAt;
-  if (!localIsNewer || locallyChangedFields.length === 0) {
+  if (locallyChangedFields.length === 0) {
     return { ...remote, updatedAt: Math.max(local.updatedAt, remote.updatedAt) };
   }
 
+  // A pending Outbox mutation represents unacknowledged user intent. Preserve its
+  // fields regardless of wall-clock ordering; client clocks may be skewed.
   const merged = { ...remote } as Record<string, unknown>;
   const localRecord = local as unknown as Record<string, unknown>;
   for (const field of locallyChangedFields) {

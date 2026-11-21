@@ -37,7 +37,8 @@ export interface RadarDraftInput {
   title: string;
   query: string;
   category: FlashCategory | null;
-  areaLabel: string;
+  /** Optional geographic hint; an unknown zone must not block saving a search intent. */
+  areaLabel: string | null;
   radiusKm: RadarRadiusKm;
   startsAt: number;
   expiresAt: number;

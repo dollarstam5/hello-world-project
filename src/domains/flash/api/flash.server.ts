@@ -1,6 +1,12 @@
+import type { ScanQuery, ScanResult } from "@eco/core-contracts";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
 import { callAppRpc } from "@/lib/api/rpc.server";
+import { discoverPublicFlashes } from "@/services/public-flash-discovery.server";
+
+export async function fetchNearbyFlashFeed(query: ScanQuery): Promise<ScanResult[]> {
+  return discoverPublicFlashes(query);
+}
 
 export async function transitionFlash(
   client: SupabaseClient<Database>,

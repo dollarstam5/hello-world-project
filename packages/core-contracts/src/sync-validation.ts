@@ -194,8 +194,6 @@ function validateField(table: SyncedTable, field: string, value: unknown): unkno
       return enumValue(value, ["draft", "live", "expired", "archived"], label);
     case "flashes.expiresAt":
       return nullableInteger(value, label);
-    case "flashes.mediaIds":
-      return stringArray(value, label, true);
     case "missions.title":
       return string(value, label, { min: 1, max: 160 });
     case "missions.brief":
@@ -246,7 +244,7 @@ function validateField(table: SyncedTable, field: string, value: unknown): unkno
             label,
           );
     case "radars.areaLabel":
-      return string(value, label, { min: 2, max: 80 });
+      return value === null ? null : string(value, label, { min: 2, max: 80 });
     case "radars.radiusKm":
       return numberEnum(value, [1, 3, 5, 10, 25, 50], label);
     case "radars.startsAt":
@@ -298,7 +296,11 @@ export function validateMutationPatch(
     if ("deletedAt" in raw) nullableInteger(raw.deletedAt, `${table}.deletedAt`);
     return {};
   }
-  const allowed = new Set(clientWritableFields(table));
+  const allowed = new Set(
+    kind === "create" && table === "flashes"
+      ? CLIENT_WRITE_POLICY[table].update
+      : clientWritableFields(table),
+  );
   const result: Record<string, unknown> = {};
   for (const [field, value] of Object.entries(raw)) {
     if (!allowed.has(field)) fail(`${table}.${field} is not writable.`);
@@ -308,17 +310,7 @@ export function validateMutationPatch(
   if (kind === "create") {
     if (!CLIENT_WRITE_POLICY[table].create) fail(`Creation is not allowed for ${table}.`);
     const required: Partial<Record<SyncedTable, readonly string[]>> = {
-      flashes: [
-        "title",
-        "body",
-        "kind",
-        "category",
-        "timeSlot",
-        "scope",
-        "urgency",
-        "expiresAt",
-        "mediaIds",
-      ],
+      flashes: ["title", "body", "kind", "category", "timeSlot", "expiresAt"],
       missions: [
         "title",
         "brief",
@@ -328,16 +320,7 @@ export function validateMutationPatch(
         "dueAt",
         "assigneeId",
       ],
-      radars: [
-        "title",
-        "query",
-        "category",
-        "areaLabel",
-        "radiusKm",
-        "startsAt",
-        "expiresAt",
-        "status",
-      ],
+      radars: ["title", "query", "category", "radiusKm", "startsAt", "expiresAt", "status"],
       posts: ["body", "visibility", "mediaIds"],
       media: ["kind", "state", "remotePath", "mimeType", "byteSize", "width", "height"],
     };

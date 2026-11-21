@@ -7,6 +7,7 @@ import {
   validatePullRequest,
   validatePullResult,
   validatePushRequest,
+  filterClientWritablePatch,
 } from "@eco/core-contracts";
 
 const uuid = (n: number) => `00000000-0000-4000-8000-${n.toString().padStart(12, "0")}`;
@@ -78,6 +79,35 @@ describe("sync protocol validation", () => {
     });
   });
 
+  it("omits undefined optional fields from Flash create patches while retaining null values", () => {
+    const patch = filterClientWritablePatch("flashes", {
+      title: "Besoin local",
+      body: "Un trajet",
+      kind: "need",
+      category: "transport",
+      timeSlot: "today",
+      expiresAt: null,
+      scope: undefined,
+      urgency: undefined,
+      areaLabel: undefined,
+    });
+
+    expect(patch).toEqual({
+      title: "Besoin local",
+      body: "Un trajet",
+      kind: "need",
+      category: "transport",
+      timeSlot: "today",
+      expiresAt: null,
+    });
+    expect(() =>
+      validatePushRequest({
+        protocolVersion: SYNC_PROTOCOL_VERSION,
+        entries: [{ ...mutation, kind: "create", patch }],
+      }),
+    ).not.toThrow();
+  });
+
   it("creates Flash records without accepting a client-supplied status", () => {
     const created = validatePushRequest({
       protocolVersion: SYNC_PROTOCOL_VERSION,
@@ -89,7 +119,6 @@ describe("sync protocol validation", () => {
             title: "Besoin de transport",
             body: "Un trajet local",
             expiresAt: 1_900_000_000_000,
-            mediaIds: [],
             kind: "need",
             category: "transport",
             timeSlot: "today",
@@ -102,35 +131,82 @@ describe("sync protocol validation", () => {
     });
     expect(created.entries[0].patch).not.toHaveProperty("status");
 
-    for (const kind of ["create", "update"] as const) {
-      expect(() =>
-        validatePushRequest({
-          protocolVersion: SYNC_PROTOCOL_VERSION,
-          entries: [
-            {
-              ...mutation,
-              kind,
-              patch:
-                kind === "create"
-                  ? {
-                      title: "Publication directe",
-                      body: "Ne doit pas être visible",
-                      expiresAt: 1_900_000_000_000,
-                      mediaIds: [],
-                      kind: "need",
-                      category: "transport",
-                      timeSlot: "today",
-                      scope: "current_area",
-                      urgency: "today",
-                      areaLabel: "Akwa",
-                      status: "live",
-                    }
-                  : { status: "archived" },
+    expect(() =>
+      validatePushRequest({
+        protocolVersion: SYNC_PROTOCOL_VERSION,
+        entries: [
+          {
+            ...mutation,
+            kind: "create",
+            patch: {
+              title: "Publication directe",
+              body: "Ne doit pas être visible",
+              expiresAt: 1_900_000_000_000,
+              kind: "need",
+              category: "transport",
+              timeSlot: "today",
+              scope: "current_area",
+              urgency: "today",
+              areaLabel: "Akwa",
+              status: "live",
             },
-          ],
-        }),
-      ).toThrow(SyncValidationError);
-    }
+          },
+        ],
+      }),
+    ).toThrow(SyncValidationError);
+
+    expect(() =>
+      validatePushRequest({
+        protocolVersion: SYNC_PROTOCOL_VERSION,
+        entries: [{ ...mutation, kind: "update", patch: { status: "archived" } }],
+      }),
+    ).not.toThrow();
+  });
+
+  it("accepts Flash draft creation without optional scope and urgency", () => {
+    const created = validatePushRequest({
+      protocolVersion: SYNC_PROTOCOL_VERSION,
+      entries: [
+        {
+          ...mutation,
+          kind: "create",
+          patch: {
+            title: "Besoin de transport",
+            body: "Un trajet local",
+            expiresAt: 1_900_000_000_000,
+            kind: "need",
+            category: "transport",
+            timeSlot: "today",
+          },
+        },
+      ],
+    });
+    expect(created.entries[0].patch).not.toHaveProperty("scope");
+    expect(created.entries[0].patch).not.toHaveProperty("urgency");
+  });
+
+  it("accepts Radar draft creation without an area label", () => {
+    const created = validatePushRequest({
+      protocolVersion: SYNC_PROTOCOL_VERSION,
+      entries: [
+        {
+          ...mutation,
+          table: "radars",
+          kind: "create",
+          patch: {
+            title: "Trouver un répétiteur",
+            query: "Je cherche un répétiteur de mathématiques",
+            category: "education",
+            areaLabel: null,
+            radiusKm: 10,
+            startsAt: 1_700_000_000_000,
+            expiresAt: 1_700_000_000_000 + 10 * 24 * 60 * 60 * 1000,
+            status: "draft",
+          },
+        },
+      ],
+    });
+    expect(created.entries[0].patch.areaLabel).toBeNull();
   });
 
   it("rejects obsolete time-slot values and unknown Flash scope or urgency values", () => {

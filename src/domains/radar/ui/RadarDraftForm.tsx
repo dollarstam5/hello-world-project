@@ -71,15 +71,14 @@ export function RadarDraftForm({
           />
         </label>
         <label className="stack-1 text-sm font-medium" htmlFor="radar-area">
-          {t("radar.manage.area.label")}
+          {t("radar.manage.area.label")}{" "}
+          <span className="font-normal text-muted-foreground">(facultatif)</span>
           <Input
             id="radar-area"
             value={areaLabel}
             onChange={(event) => onAreaChange(event.target.value)}
             placeholder={t("radar.manage.area.placeholder")}
             maxLength={80}
-            minLength={2}
-            required
             disabled={busy}
           />
         </label>
@@ -123,10 +122,7 @@ export function RadarDraftForm({
               {t("common.cancel")}
             </Button>
           ) : null}
-          <Button
-            type="submit"
-            disabled={busy || query.trim().length < 3 || areaLabel.trim().length < 2}
-          >
+          <Button type="submit" disabled={busy || query.trim().length < 3}>
             {busy
               ? t("app.loading")
               : t(editingId ? "radar.manage.edit.action" : "radar.manage.create.action")}

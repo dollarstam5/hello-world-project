@@ -8,6 +8,16 @@
 - **Membre actif** : utilise les opérations permises par son profil, ses consentements et les contrôles serveur.
 - **Profil membre non actif ou invérifiable** : aucune opération métier nécessitant un profil actif n'est autorisée.
 
+## Application du principe Vitalis aux informations partielles
+
+Référence obligatoire : [principe fondamental de traitement des demandes partielles](../../00-foundation/vitalis-core-principles.md).
+
+- Une personne peut consulter l'écran calme d'En direct sans avoir renseigné tous les détails de son profil ni accordé la localisation.
+- La découverte de proximité exige son consentement spécifique ; la publication de sa propre présence exige un consentement distinct. Aucun contenu incomplet ne permet de contourner ces contrôles.
+- Les informations de présentation facultatives ne doivent pas bloquer une opération de présence si les éléments minimaux requis par le contrat serveur sont présents.
+- Si une permission ou une donnée strictement nécessaire manque, En direct explique ce qui manque et laisse accessibles les parties de l'expérience qui ne dépendent pas de cette permission.
+- Les sessions invitées gardent leurs droits propres : cette règle ne leur attribue jamais automatiquement les droits d'un membre.
+
 ## Matrice des opérations
 | Opération | Membre actif | Invité | Visiteur | Conditions essentielles |
 | --- | --- | --- | --- | --- |

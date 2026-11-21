@@ -1,202 +1,278 @@
-import { useState } from "react";
-import { LocateFixed, ScanLine } from "lucide-react";
+import {
+  Compass,
+  Mic,
+  MicOff,
+  ScanLine,
+  Sparkles,
+  ChevronLeft,
+  ChevronRight,
+  Check,
+} from "lucide-react";
 import { formatCommunicationMessage } from "@/lib/communication/format";
 import { useI18n } from "@/lib/i18n/useI18n";
-import { useScan } from "../hooks/useScan";
-import { PublicProfilePreview } from "@/components/app/PublicProfilePreview";
+import { useScanFlow } from "../hooks/useScanFlow";
+import { ScanResults } from "./ScanResults";
+import { ScanNeedInterpretation } from "./ScanNeedInterpretation";
+import { ScanPreferences } from "./ScanPreferences";
+import { ScanHistory } from "./ScanHistory";
+import { useScanVoiceInput } from "../hooks/useScanVoiceInput";
 
-const SCAN_RADII_KM = [1, 5, 10, 20] as const;
-const SCAN_LIMIT = 20;
-
-/**
- * Scan surface: asks for a temporary position, runs one proximity scan,
- * and lists public matches (distance only — never a precise location).
- * Presentation only; scanning logic lives in useScan.
- */
 export function ScanPanel() {
   const { t, locale } = useI18n();
-  const { rows, busy, failed, execute, history, clearHistory } = useScan();
-  const [locationError, setLocationError] = useState<
-    "permission" | "unavailable" | "timeout" | "unknown" | null
-  >(null);
-  const [started, setStarted] = useState(false);
-  const [locating, setLocating] = useState(false);
-  const [unsupported, setUnsupported] = useState(false);
-  const [radiusKm, setRadiusKm] = useState<number>(5);
-
-  const start = () => {
-    setLocationError(null);
-    setUnsupported(false);
-    setStarted(true);
-
-    if (!navigator.geolocation?.getCurrentPosition) {
-      setUnsupported(true);
-      return;
-    }
-
-    setLocating(true);
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setLocating(false);
-        void execute({
-          text: "",
-          category: null,
-          latitude: pos.coords.latitude,
-          longitude: pos.coords.longitude,
-          radiusKm,
-          limit: SCAN_LIMIT,
-        });
-      },
-      (error) => {
-        setLocating(false);
-        const code =
-          error.code === 1
-            ? "permission"
-            : error.code === 2
-              ? "unavailable"
-              : error.code === 3
-                ? "timeout"
-                : "unknown";
-        setLocationError(code);
-      },
-      { enableHighAccuracy: false, timeout: 8000 },
+  const {
+    rows,
+    assessments,
+    busy,
+    history,
+    clearHistory,
+    locating,
+    locationError,
+    unsupported,
+    radiusKm,
+    setRadiusKm,
+    availableRadii,
+    needText,
+    setNeedText,
+    stage,
+    confirmNeed,
+    confirmInterpretation,
+    confirmCriteria,
+    backToNeed,
+    backToCriteria,
+    status,
+    start,
+  } = useScanFlow();
+  const voice = useScanVoiceInput(locale, (transcript) => {
+    setNeedText((current) =>
+      (current.trim() ? `${current.trim()} ${transcript}` : transcript).slice(0, 160),
     );
-  };
+  });
+  const isWorking = busy || locating;
 
   return (
     <div className="stack-4">
-      <p className="text-sm text-muted-foreground">{t("scan.privacy")}</p>
+      <section className="relative overflow-hidden rounded-[1.5rem] border border-border-soft bg-gradient-to-br from-surface via-surface to-primary/5 p-4 sm:rounded-[2rem] sm:p-7">
+        <div
+          className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-primary/10 blur-3xl"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute -bottom-16 -left-12 h-36 w-36 rounded-full bg-primary/5 blur-3xl"
+          aria-hidden
+        />
+        <div className="relative stack-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-primary/15 bg-primary/10 text-primary sm:h-10 sm:w-10 sm:rounded-2xl">
+              <Compass className="h-5 w-5" aria-hidden />
+            </div>
+            <span className="text-sm font-medium text-primary">{t("scan.door.eyebrow")}</span>
+          </div>
+          <div className="stack-1">
+            <h2 className="text-fluid-display-sm font-semibold tracking-tight">
+              {t("scan.door.title")}
+            </h2>
+            <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">
+              {t("scan.door.desc")}
+            </p>
+          </div>
 
-      <label className="stack-1 max-w-xs text-sm font-medium" htmlFor="scan-radius">
-        <span>{t("scan.radius")}</span>
-        <select
-          id="scan-radius"
-          value={radiusKm}
-          onChange={(event) => setRadiusKm(Number(event.target.value))}
-          disabled={busy || locating}
-          className="min-h-12 w-full rounded-xl border border-border bg-surface px-3 text-sm font-normal text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
-        >
-          {SCAN_RADII_KM.map((radius) => (
-            <option key={radius} value={radius}>
-              {radius} {t("scan.radius.unit")}
-            </option>
-          ))}
-        </select>
-      </label>
+          <div className="flex items-center gap-1.5" aria-label={t("scan.flow.progress")}>
+            {(["need", "confirmation", "criteria", "final"] as const).map((step, index) => (
+              <div key={step} className="flex flex-1 items-center gap-1.5">
+                <span
+                  className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${stage === step ? "bg-primary text-primary-foreground" : index < (["need", "confirmation", "criteria", "final"] as const).indexOf(stage) ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground"}`}
+                >
+                  {index <
+                  (["need", "confirmation", "criteria", "final"] as const).indexOf(stage) ? (
+                    <Check className="h-3.5 w-3.5" aria-hidden />
+                  ) : (
+                    index + 1
+                  )}
+                </span>
+                <span className="hidden min-w-0 text-xs text-muted-foreground sm:block">
+                  {t(`scan.flow.step.${step}`)}
+                </span>
+                {index < 3 ? <span className="h-px flex-1 bg-border" /> : null}
+              </div>
+            ))}
+          </div>
 
-      <button
-        type="button"
-        onClick={start}
-        disabled={busy || locating}
-        aria-busy={busy || locating}
-        className="inline-flex min-h-12 items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
-      >
-        {busy || locating ? (
-          <ScanLine className="h-6 w-6 animate-pulse" aria-hidden />
-        ) : (
-          <LocateFixed className="h-6 w-6" aria-hidden />
-        )}
-        {busy || locating ? t("scan.busy") : t("scan.start")}
-      </button>
+          {stage === "need" ? (
+            <div className="stack-3">
+              <label className="stack-2" htmlFor="scan-need">
+                <span className="flex items-center justify-between gap-3 text-sm font-medium">
+                  <span>{t("scan.need.label")}</span>
+                  <span className="shrink-0 text-xs font-normal tabular-nums text-muted-foreground">
+                    {needText.length}/160
+                  </span>
+                </span>
+                <textarea
+                  id="scan-need"
+                  value={needText}
+                  onChange={(event) => setNeedText(event.target.value.slice(0, 160))}
+                  maxLength={160}
+                  placeholder={t("scan.need.placeholder")}
+                  disabled={isWorking}
+                  rows={3}
+                  className="min-h-24 w-full resize-none rounded-xl border border-border bg-background/70 p-3 text-base leading-relaxed text-foreground placeholder:text-muted-foreground/80 transition-colors focus-visible:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60 sm:min-h-28 sm:rounded-2xl sm:p-4"
+                />
+              </label>
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <button
+                  type="button"
+                  onClick={voice.toggleRecording}
+                  disabled={isWorking}
+                  aria-pressed={voice.recording}
+                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-border bg-background px-4 text-sm font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50"
+                >
+                  {voice.recording ? (
+                    <MicOff className="h-4 w-4" aria-hidden />
+                  ) : (
+                    <Mic className="h-4 w-4" aria-hidden />
+                  )}
+                  {voice.recording ? t("scan.voice.stop") : t("scan.voice.action")}
+                </button>
+                <span className="text-xs text-muted-foreground">{t("scan.voice.hint")}</span>
+              </div>
+              {voice.voiceStatus !== "idle" ? (
+                <p
+                  className="text-xs leading-relaxed text-muted-foreground"
+                  role="status"
+                  aria-live="polite"
+                >
+                  {t(`scan.voice.${voice.voiceStatus}`)}
+                </p>
+              ) : null}
+              <button
+                type="button"
+                onClick={confirmNeed}
+                disabled={!needText.trim() || isWorking}
+                className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50"
+              >
+                {t("scan.flow.continueNeed")} <ChevronRight className="h-4 w-4" aria-hidden />
+              </button>
+            </div>
+          ) : null}
 
-      {unsupported && (
+          {stage === "confirmation" ? (
+            <div className="stack-3">
+              <ScanNeedInterpretation text={needText} />
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                <button
+                  type="button"
+                  onClick={confirmInterpretation}
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-primary px-4 text-sm font-semibold text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  <Check className="h-4 w-4" aria-hidden /> {t("scan.flow.confirmNeed")}
+                </button>
+                <button
+                  type="button"
+                  onClick={backToNeed}
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-border bg-background px-4 text-sm font-medium hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  <ChevronLeft className="h-4 w-4" aria-hidden /> {t("scan.flow.editNeed")}
+                </button>
+              </div>
+            </div>
+          ) : null}
+
+          {stage === "criteria" ? (
+            <div className="stack-3">
+              <ScanNeedInterpretation text={needText} />
+              <ScanPreferences
+                radiusKm={radiusKm}
+                availableRadii={availableRadii}
+                disabled={isWorking}
+                onRadiusChange={setRadiusKm}
+                t={t}
+              />
+              <p className="text-xs leading-relaxed text-muted-foreground">
+                {t("scan.flow.criteriaNote")}
+              </p>
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                <button
+                  type="button"
+                  onClick={confirmCriteria}
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-primary px-4 text-sm font-semibold text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  {t("scan.flow.continueCriteria")} <ChevronRight className="h-4 w-4" aria-hidden />
+                </button>
+                <button
+                  type="button"
+                  onClick={backToNeed}
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-border bg-background px-4 text-sm font-medium hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  <ChevronLeft className="h-4 w-4" aria-hidden /> {t("scan.flow.editNeed")}
+                </button>
+              </div>
+            </div>
+          ) : null}
+
+          {stage === "final" ? (
+            <div className="stack-3">
+              <div className="stack-2 rounded-2xl border border-border-soft bg-surface p-3 sm:p-4">
+                <h3 className="text-sm font-semibold">{t("scan.flow.finalTitle")}</h3>
+                <p className="text-sm leading-relaxed">{needText}</p>
+                <div className="flex flex-wrap gap-2 text-xs">
+                  <span className="rounded-full border border-border bg-background px-3 py-1.5">
+                    {t("scan.flow.radiusLabel") + ": " + radiusKm + " " + t("scan.radius.unit")}
+                  </span>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                <button
+                  type="button"
+                  onClick={start}
+                  disabled={isWorking}
+                  aria-busy={isWorking}
+                  className="inline-flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-primary px-5 py-3 text-base font-semibold text-primary-foreground shadow-sm shadow-primary/20 transition-all hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-55"
+                >
+                  {isWorking ? (
+                    <ScanLine className="h-5 w-5 animate-pulse" aria-hidden />
+                  ) : (
+                    <Sparkles className="h-5 w-5" aria-hidden />
+                  )}
+                  {locating ? t("scan.locating") : busy ? t("scan.busy") : t("scan.flow.launch")}
+                </button>
+                <button
+                  type="button"
+                  onClick={backToCriteria}
+                  disabled={isWorking}
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-border bg-background px-4 text-sm font-medium hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50"
+                >
+                  <ChevronLeft className="h-4 w-4" aria-hidden /> {t("scan.flow.editCriteria")}
+                </button>
+              </div>
+              <p className="text-center text-xs leading-relaxed text-muted-foreground">
+                {t("scan.door.privacy")}
+              </p>
+            </div>
+          ) : null}
+        </div>
+      </section>
+
+      {status === "unsupported" && (
         <p className="text-sm text-destructive" role="alert">
           {formatCommunicationMessage(t, "scan.unsupported")}
         </p>
       )}
-      {locationError && (
+      {status === "location-error" && locationError && (
         <p className="text-sm text-destructive" role="alert">
           {formatCommunicationMessage(t, `scan.location.${locationError}`)}
         </p>
       )}
-      {failed && (
+      {status === "scan-error" && (
         <p className="text-sm text-destructive" role="alert">
           {formatCommunicationMessage(t, "scan.error")}
         </p>
       )}
-
-      {started &&
-        !busy &&
-        !locating &&
-        !locationError &&
-        !failed &&
-        !unsupported &&
-        rows.length === 0 && (
-          <p className="text-sm text-muted-foreground" role="status">
-            {t("scan.empty")}
-          </p>
-        )}
-
-      {rows.length > 0 && (
-        <ul className="stack-3">
-          {rows.map((r) => (
-            <li key={r.id} className="rounded-3xl border border-border-soft bg-surface p-4">
-              <div className="flex items-center justify-between gap-3">
-                <span className="text-base font-medium">{r.title}</span>
-                <span className="shrink-0 rounded-full bg-primary-soft px-2.5 py-1 text-xs font-medium text-primary">
-                  {r.distanceKm.toFixed(1)} km
-                </span>
-              </div>
-              <p className="mt-1 text-xs text-muted-foreground">
-                {t(`flash.kind.${r.kind}`)}
-                {" · "}
-                {t(`flash.category.${r.category}`)}
-                {" · "}
-                {t(`flash.slot.${r.timeSlot}`)}
-                {" · "}
-                {r.areaLabel}
-              </p>
-              {r.authorPreview ? (
-                <div className="mt-3 border-t border-border-soft pt-2">
-                  <PublicProfilePreview profile={r.authorPreview} origin="real" />
-                </div>
-              ) : null}
-            </li>
-          ))}
-        </ul>
-      )}
-
-      <section className="stack-3" aria-labelledby="scan-history-heading">
-        <div className="flex items-center justify-between gap-3">
-          <h3 id="scan-history-heading" className="text-sm font-semibold">
-            {t("scan.history.title")}
-          </h3>
-          {history.length > 0 ? (
-            <button
-              type="button"
-              onClick={clearHistory}
-              className="min-h-11 rounded-full px-3 text-xs font-medium text-muted-foreground underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              {t("scan.history.clear")}
-            </button>
-          ) : null}
-        </div>
-        <p className="text-xs leading-relaxed text-muted-foreground">{t("scan.history.privacy")}</p>
-        {history.length === 0 ? (
-          <p className="text-sm text-muted-foreground" role="status">
-            {t("scan.history.empty")}
-          </p>
-        ) : (
-          <ul className="stack-2">
-            {history.map((entry, index) => (
-              <li
-                key={`${entry.searchedAt}-${index}`}
-                className="flex items-center justify-between gap-3 rounded-2xl border border-border-soft bg-surface px-4 py-3"
-              >
-                <span className="text-sm">
-                  {new Intl.DateTimeFormat(locale, {
-                    dateStyle: "medium",
-                    timeStyle: "short",
-                  }).format(entry.searchedAt)}
-                </span>
-                <span className="shrink-0 text-xs text-muted-foreground">
-                  {t("scan.history.results").replace("{count}", String(entry.resultCount))}
-                </span>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+      {status === "empty" ? (
+        <p className="text-sm text-muted-foreground" role="status">
+          {t("scan.empty")}
+        </p>
+      ) : null}
+      {rows.length > 0 ? <ScanResults assessments={assessments} /> : null}
+      <ScanHistory entries={history} onClear={clearHistory} />
     </div>
   );
 }

@@ -39,7 +39,7 @@ Le parcours V1 est le suivant :
 2. **Interpréter** — convertir les éléments compris en critères structurés.
 3. **Distinguer** — séparer les exigences indispensables des préférences facultatives et du contexte.
 4. **Clarifier sans bloquer** — lorsque plusieurs interprétations sont possibles, proposer quelques lectures simples et laisser l'utilisateur choisir ; une exploration générale peut commencer sans attendre si elle reste utile et honnête.
-5. **Confirmer et rechercher** — présenter les critères compris de façon compacte. Une clarification courte reste utile lorsqu'une information indispensable conditionne réellement la recherche, mais elle ne doit pas devenir un questionnaire obligatoire.
+5. **Confirmer et rechercher** — présenter les critères compris de façon compacte. Une clarification courte reste utile lorsqu'une information indispensable conditionne réellement la recherche, mais elle ne doit pas devenir un questionnaire obligatoire.\n\nLe parcours UI de préparation est progressif : l'utilisateur exprime son besoin (texte ou dictée simple si compatible), relit l'interprétation et la confirme ou la corrige, ajuste les critères réellement disponibles, puis relit le récapitulatif final et déclenche lui-même la recherche. La recherche ne démarre pas avant cette dernière confirmation. Le parseur V1 est déterministe et présente le texte original avec les éléments détectés ; il ne s'agit pas d'une reformulation générative.
 
 Exemple : « Je cherche quelqu'un pour m'aider à déménager demain matin à Douala. »
 
@@ -63,7 +63,7 @@ Un résultat qui ne respecte pas une exigence stricte (par exemple la date deman
 - Ne pas afficher de filtre comme appliqué si le service ne le reçoit pas ou ne le respecte pas.
 - La recherche reste ponctuelle et déclenchée par l'utilisateur.
 
-La compréhension conversationnelle plus riche, l'adaptation avancée, la dictée vocale intelligente et l'assistance de Vita sont des évolutions possibles en V2/V3, non des capacités promises en V1.
+La dictée simple (transcription dans le même champ que le texte) fait partie du parcours V1 lorsque le navigateur la prend en charge ; elle reste facultative et peut dépendre d'un service vocal du navigateur. La compréhension conversationnelle plus riche, la reformulation générative, l'adaptation avancée et l'assistance de Vita sont des évolutions possibles en V2/V3, non des capacités promises en V1.
 
 ## 3. Conséquences sur la référence de conception
 
@@ -81,7 +81,7 @@ Cette décision valide la conception produit et documentaire uniquement. Elle n'
 ## 5. Historique de validation
 
 - Validation utilisateur : cinq familles de découverte avec activation progressive selon les sources réellement disponibles en V1.
-- Validation utilisateur : demandes en langage naturel, interprétation structurée et économique en V1, avec une seule clarification courte si nécessaire ; compréhension conversationnelle avancée et voix réservées à une évolution ultérieure.
+- Validation utilisateur : demandes en langage naturel, interprétation structurée et économique en V1, avec une seule clarification courte si nécessaire ; dictée simple texte/voix prise en charge en V1 ; compréhension conversationnelle avancée et reformulation générative réservées à une évolution ultérieure.
 
 
 ## 6. Qualification des résultats — règle V1 validée

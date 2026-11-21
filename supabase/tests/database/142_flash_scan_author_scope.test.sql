@@ -54,7 +54,7 @@ SELECT
   v.id,
   'f5400000-0000-4000-8000-000000000001'::uuid,
   0.0,
-  degrees(v.distance_m / 6371000.0),
+  degrees(v.distance_m / 6378137.0),
   10
 FROM (VALUES
   ('f5500000-0000-4000-8000-000000000001'::uuid, 499.0),

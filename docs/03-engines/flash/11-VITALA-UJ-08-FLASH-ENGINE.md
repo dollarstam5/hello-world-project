@@ -110,12 +110,7 @@ L'utilisateur parle naturellement. Vita extrait automatiquement :
 - contraintes;
 - durée.
 
-## Modes futurs
-
-- Image
-- Document
-- Pièce jointe
-- Import externe
+## Modes d'entrée supplémentaires : hors périmètre actuel et soumis à une décision produit distincte
 
 # 6. Assistance Vita
 

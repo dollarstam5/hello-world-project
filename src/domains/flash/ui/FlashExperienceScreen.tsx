@@ -7,7 +7,7 @@ import { formatCommunicationMessage } from "@/lib/communication/format";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { FlashFeed } from "./FlashFeed";
 import { FlashComposerDialog } from "./FlashComposerDialog";
-import { MyFlashManagement } from "./MyFlashManagement";
+import { FlashDashboard } from "./dashboard/FlashDashboard";
 import { useFlashComposer } from "./useFlashComposer";
 
 type FlashTab = "discover" | "mine";
@@ -16,6 +16,7 @@ export function FlashExperienceScreen() {
   const { t, locale } = useI18n();
   const { user, loading: authLoading } = useAuth();
   const [tab, setTab] = useState<FlashTab>("discover");
+  const [dashboardUnlocked, setDashboardUnlocked] = useState(false);
   const [success, setSuccess] = useState(false);
   const composer = useFlashComposer({
     user,
@@ -23,6 +24,7 @@ export function FlashExperienceScreen() {
     t,
     onSaved: () => {
       setSuccess(true);
+      setDashboardUnlocked(true);
       setTab("mine");
     },
   });
@@ -76,6 +78,9 @@ export function FlashExperienceScreen() {
             {t("flash.hero.action")}
           </Button>
           <p className="mt-2 text-xs text-muted-foreground">{t("flash.hero.voiceHint")}</p>
+          <p className="mt-2 max-w-xs text-xs leading-relaxed text-muted-foreground">
+            {t("flash.hero.dashboardHint")}
+          </p>
         </div>
       </div>
 
@@ -111,19 +116,21 @@ export function FlashExperienceScreen() {
         >
           {t("flash.tabs.discover")}
         </button>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={tab === "mine"}
-          className={`min-h-11 flex-1 rounded-full px-4 text-sm font-semibold transition ${tab === "mine" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
-          onClick={() => setTab("mine")}
-        >
-          {t("flash.tabs.mine")}
-        </button>
+        {dashboardUnlocked ? (
+          <button
+            type="button"
+            role="tab"
+            aria-selected={tab === "mine"}
+            className={`min-h-11 flex-1 rounded-full px-4 text-sm font-semibold transition ${tab === "mine" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+            onClick={() => setTab("mine")}
+          >
+            {t("flash.tabs.mine")}
+          </button>
+        ) : null}
       </div>
 
       <div role="tabpanel" className="min-w-0">
-        {tab === "discover" ? (
+        {tab === "discover" || !dashboardUnlocked ? (
           <div className="stack-3">
             <div className="mb-3 flex items-center justify-between gap-3">
               <div>
@@ -134,15 +141,13 @@ export function FlashExperienceScreen() {
             </div>
             <FlashFeed />
           </div>
-        ) : (
-          <div className="stack-3">
-            <div className="mb-3">
-              <h2 className="text-lg font-bold">{t("flash.mine.title")}</h2>
-              <p className="text-sm text-muted-foreground">{t("flash.mine.desc")}</p>
-            </div>
-            <MyFlashManagement />
-          </div>
-        )}
+        ) : null}
+        <div hidden={tab !== "mine" || !dashboardUnlocked}>
+          <FlashDashboard
+            onCreateFlash={composer.openComposer}
+            onAccessAvailable={setDashboardUnlocked}
+          />
+        </div>
       </div>
 
       <FlashComposerDialog state={composer} user={user} authLoading={authLoading} />

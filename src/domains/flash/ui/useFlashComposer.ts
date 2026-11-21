@@ -10,63 +10,10 @@ import type {
 import { parseFlashIntent } from "@eco/core-logic";
 import { reverseGeocodeFlashLocation } from "../api/flash-geocoding.functions";
 import { createFlash } from "../data";
-import type { MessageKey } from "@/lib/i18n/messages";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
 import { publishFlashCommunicationEvent } from "../communication-events";
-
-type SpeechResultEvent = { results: ArrayLike<ArrayLike<{ transcript?: string }>> };
-type SpeechErrorEvent = { error?: string };
-type SpeechRecognitionLike = {
-  lang: string;
-  interimResults: boolean;
-  maxAlternatives: number;
-  onresult: ((event: SpeechResultEvent) => void) | null;
-  onerror: ((event: SpeechErrorEvent) => void) | null;
-  onend: (() => void) | null;
-  start: () => void;
-  stop: () => void;
-};
-type SpeechWindow = Window & {
-  SpeechRecognition?: new () => SpeechRecognitionLike;
-  webkitSpeechRecognition?: new () => SpeechRecognitionLike;
-};
-type ComposerUser = { id: string } | null;
-type ComposerOptions = {
-  user: ComposerUser;
-  locale: string;
-  t: (key: MessageKey) => string;
-  onSaved: () => void;
-};
-
-const CATEGORIES: FlashCategory[] = [
-  "personal",
-  "professional",
-  "commercial",
-  "home",
-  "transport",
-  "food",
-  "education",
-  "health",
-  "events",
-  "other",
-];
-const TIME_SLOTS: FlashTimeSlot[] = ["now", "today", "tomorrow", "this_week"];
-
-function getSpeechConstructor() {
-  if (typeof window === "undefined") return undefined;
-  const speechWindow = window as SpeechWindow;
-  return speechWindow.SpeechRecognition ?? speechWindow.webkitSpeechRecognition;
-}
-
-function expiryFor(timeSlot: FlashTimeSlot) {
-  const phrases: Record<FlashTimeSlot, string> = {
-    now: "maintenant",
-    today: "aujourd'hui",
-    tomorrow: "demain",
-    this_week: "cette semaine",
-  };
-  return parseFlashIntent(phrases[timeSlot]).expiresAt;
-}
+import type { SpeechRecognitionLike, ComposerOptions } from "./flash-composer-helpers";
+import { CATEGORIES, TIME_SLOTS, expiryFor, getSpeechConstructor } from "./flash-composer-helpers";
 
 export function useFlashComposer({ user, locale, t, onSaved }: ComposerOptions) {
   const communication = useCommunicationRuntime();
@@ -173,10 +120,12 @@ export function useFlashComposer({ user, locale, t, onSaved }: ComposerOptions) 
   }
 
   function continueToReview() {
-    if (!parsedIntent || !text.trim()) return;
-    setKind(parsedIntent.kind);
-    setCategory(parsedIntent.category);
-    setTimeSlot(parsedIntent.timeSlot);
+    if (!text.trim()) return;
+    if (parsedIntent) {
+      setKind(parsedIntent.kind);
+      setCategory(parsedIntent.category);
+      setTimeSlot(parsedIntent.timeSlot);
+    }
     setStep("review");
   }
 
@@ -227,7 +176,7 @@ export function useFlashComposer({ user, locale, t, onSaved }: ComposerOptions) 
   }
 
   async function saveFlashDraft() {
-    if (!user || !scope || !urgency || !text.trim()) return;
+    if (!user || !text.trim()) return;
     setPublishing(true);
     setPublishError(false);
     try {
@@ -239,8 +188,8 @@ export function useFlashComposer({ user, locale, t, onSaved }: ComposerOptions) 
         kind,
         category,
         timeSlot,
-        scope,
-        urgency,
+        scope: scope ?? undefined,
+        urgency: urgency ?? undefined,
         areaLabel: areaLabel.trim() || undefined,
         expiresAt: expiryFor(timeSlot),
       });

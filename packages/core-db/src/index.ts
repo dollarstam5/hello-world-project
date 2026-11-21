@@ -12,5 +12,6 @@ export * from "./outbox";
 export * from "./repositories";
 export * from "./mission-repository";
 export * from "./radar-repository";
+export * from "./flash-repository";
 export * from "./apply-remote";
 export * from "./assistant-cache";

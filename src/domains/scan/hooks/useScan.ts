@@ -1,15 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import type { ScanQuery, ScanResult } from "@eco/core-contracts";
-import { rankScanResults } from "@eco/core-logic";
+import type { ScanCandidateAssessment, ScanQuery, ScanResult } from "@eco/core-contracts";
+import { buildScanSourceEvidence, interpretScanRequest, selectScanResults } from "@eco/core-logic";
 import { scanNearby } from "../api/scan.functions";
 import { subscribeToFlashChanges } from "../services/scan-realtime.service";
-import {
-  clearScanHistory,
-  readScanHistory,
-  recordScanHistory,
-  type ScanHistoryEntry,
-} from "../services/scan-history.service";
+import { useScanHistory } from "./useScanHistory";
 
 export function useScan() {
   const run = useServerFn(scanNearby);
@@ -17,13 +12,10 @@ export function useScan() {
   const queryRef = useRef<ScanQuery | undefined>(undefined);
   const inFlightRef = useRef(false);
   const [rows, setRows] = useState<ScanResult[]>([]);
+  const [assessments, setAssessments] = useState<ScanCandidateAssessment[]>([]);
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);
-  const [history, setHistory] = useState<ScanHistoryEntry[]>([]);
-
-  useEffect(() => {
-    setHistory(readScanHistory());
-  }, []);
+  const { history, addEntry, clearHistory } = useScanHistory();
 
   useEffect(() => {
     runRef.current = run;
@@ -36,11 +28,23 @@ export function useScan() {
       queryRef.current = query;
       setBusy(true);
       setFailed(false);
+      if (options.recordHistory !== false) {
+        setRows([]);
+        setAssessments([]);
+      }
       try {
-        const nextRows = rankScanResults(await runRef.current({ data: query }));
+        const sourceRows = await runRef.current({ data: query });
+        const interpretation = interpretScanRequest(query.text);
+        const evidencedRows = sourceRows.map((row) => ({
+          ...row,
+          evidence: buildScanSourceEvidence(row, interpretation),
+        }));
+        const nextAssessments = selectScanResults(evidencedRows, interpretation);
+        const nextRows = nextAssessments.map((assessment) => assessment.result);
         setRows(nextRows);
+        setAssessments(nextAssessments);
         if (options.recordHistory !== false) {
-          setHistory(recordScanHistory(nextRows.length));
+          addEntry(nextRows.length);
         }
       } catch {
         setFailed(true);
@@ -49,7 +53,7 @@ export function useScan() {
         setBusy(false);
       }
     },
-    [],
+    [addEntry],
   );
 
   useEffect(
@@ -61,10 +65,12 @@ export function useScan() {
     [execute],
   );
 
-  const clearHistory = useCallback(() => {
-    clearScanHistory();
-    setHistory([]);
+  const clearResults = useCallback(() => {
+    queryRef.current = undefined;
+    setRows([]);
+    setAssessments([]);
+    setFailed(false);
   }, []);
 
-  return { rows, busy, failed, execute, history, clearHistory };
+  return { rows, assessments, busy, failed, execute, clearResults, history, clearHistory };
 }

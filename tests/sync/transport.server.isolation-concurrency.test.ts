@@ -69,6 +69,11 @@ class IsolationQuery {
     return this;
   }
 
+  is(column: string, value: unknown): this {
+    this.filters.push([column, value]);
+    return this;
+  }
+
   insert(row: Row): this {
     this.operation = "insert";
     this.payload = row;
@@ -107,14 +112,27 @@ class IsolationQuery {
         const receipt = this.database.receipts.find(
           (row) => this.isVisible(row) && this.matches(row),
         );
-        return { data: receipt ? { response: receipt.response } : null, error: null };
+        return {
+          data: receipt
+            ? {
+                logical_table: receipt.logical_table,
+                record_id: receipt.record_id,
+                response: receipt.response,
+              }
+            : null,
+          error: null,
+        };
       }
 
       const receipt = this.payload ?? {};
       if (receipt.owner_id !== this.authenticatedUserId) {
         return { data: null, error: { code: "42501", message: "RLS insert denied" } };
       }
-      if (this.database.receipts.some((row) => row.mutation_id === receipt.mutation_id)) {
+      if (
+        this.database.receipts.some(
+          (row) => row.owner_id === receipt.owner_id && row.mutation_id === receipt.mutation_id,
+        )
+      ) {
         return { data: null, error: { code: "23505", message: "duplicate receipt" } };
       }
       this.database.receipts.push({ ...receipt });

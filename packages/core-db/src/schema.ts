@@ -69,6 +69,22 @@ export class EcosystemDatabase extends Dexie {
     this.version(4).stores({
       radars: "id, ownerId, status, nextReviewAt, expiresAt, updatedAt, deletedAt",
     });
+
+    this.version(5).stores({
+      mediaBlobs: "id, ownerId, flashId, createdAt",
+    });
+
+    // Remove the experimental local blobs and stale Flash references from DB version 5.
+    this.version(6)
+      .stores({ mediaBlobs: null })
+      .upgrade(async (transaction) => {
+        await transaction
+          .table("flashes")
+          .toCollection()
+          .modify((flash) => {
+            delete (flash as FlashRecord & { mediaIds?: string[] }).mediaIds;
+          });
+      });
   }
 }
 

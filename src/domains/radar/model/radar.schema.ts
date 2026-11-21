@@ -13,7 +13,7 @@ export const radarDraftSchema = z
     title: z.string().trim().min(3).max(160),
     query: z.string().trim().min(3).max(2_000),
     category: z.enum(FLASH_CATEGORIES).nullable(),
-    areaLabel: z.string().trim().min(2).max(80),
+    areaLabel: z.string().trim().min(2).max(80).nullable(),
     radiusKm: z.union([
       z.literal(1),
       z.literal(3),

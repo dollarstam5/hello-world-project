@@ -75,6 +75,16 @@ Les règles de visibilité par publication, l'affichage sélectif des champs du 
 
 La reconnaissance vocale dépend du navigateur et de ses permissions ; elle ne constitue pas une promesse de traitement vocal universel hors ligne.
 
+## Conformité au principe fondamental P0 — écart identifié
+
+Référence : [principe fondamental de traitement des demandes partielles](../../00-foundation/vitalis-core-principles.md).
+
+L'inspection du parcours actuel montre que `saveFlashDraft` refuse l'enregistrement si `scope` ou `urgency` est absent ; le bouton de sauvegarde applique les mêmes deux conditions. Le texte et les autres propositions sont donc bloqués par deux choix qui doivent être évalués comme compléments facultatifs pour un brouillon.
+
+**Écart P0 à corriger avant de considérer le parcours conforme :** permettre d'enregistrer un brouillon avec le texte exploitable et le compte autorisé, sans imposer une portée ni une urgence. Les valeurs absentes doivent rester explicitement non renseignées et ne pas être inventées. Les exigences de publication distante restent distinctes et pourront demander les informations strictement nécessaires au moment de publier.
+
+Cette correction concerne le parcours de brouillon local ; elle n'active pas la publication distante et ne modifie aucun droit d'accès.
+
 ## Vérifications restantes avant clôture de la phase A
 
 - [ ] Tests de parcours d'interface : saisie, correction des propositions, validation, sauvegarde et affichage dans « Mes Flashs ».
@@ -103,3 +113,46 @@ La phase B ne doit commencer qu'après clôture formelle de la phase A. Son ordr
 8. ne réactiver la publication publique qu'après validation de la publication atomique, de l'isolation propriétaire et des tests SQL/concurrence.
 
 Le contrat détaillé reste dans `publication-backend-contract.md`. La préparation documentaire ne vaut ni activation de la publication ni exécution d'une migration distante.
+
+
+## Règle d'entrée au Dashboard — décision produit validée
+
+Le Dashboard « Mes Flashs » n'est pas un écran d'entrée accessible à un utilisateur non reconnu, non inscrit ou n'ayant pas encore créé de Flash. Le parcours d'entrée dans le moteur Flash commence par « Créer un Flash ».
+
+### Première création obligatoire
+
+1. À l'entrée dans Flash, un nouvel utilisateur est orienté vers la découverte et l'action de création. Il ne doit pas pouvoir ouvrir un dashboard vide.
+2. Il lance la création, exprime son besoin/offre, puis vérifie les informations proposées.
+3. À l'étape de décision, les options attendues sont **Publier** ou **Enregistrer dans mon espace**. Les exigences de publication doivent être vérifiées avant d'autoriser la publication.
+4. **Publication réussie et confirmée** : ouvrir le Dashboard sur le Flash publié, avec statut actif uniquement si le backend confirme réellement la publication.
+5. **Enregistrement réussi** : ouvrir le Dashboard sur le Flash enregistré, avec statut brouillon/non publié. L'enregistrement ne doit jamais être présenté comme une publication.
+6. Les deux voies déverrouillent ensuite l'accès au Dashboard. Celui-ci devient l'espace de gestion central pour tous les Flashs, leurs dates, statuts, détails, interactions et actions disponibles, selon leurs connexions réelles.
+
+### Restrictions d'accès et états
+
+- Aucun accès direct au Dashboard avant qu'au moins un Flash de l'utilisateur soit enregistré avec succès ou publié avec succès.
+- L'utilisateur non connecté/non reconnu ne bénéficie pas d'un dashboard de membre ni de droits de membre. Les exigences d'identité et d'enregistrement restent à appliquer au stockage et à la publication; ne pas contourner la règle par un identifiant invité.
+- Le dashboard ne doit pas être construit comme un second parcours de création : il gère les Flashs après le premier succès.
+- Publication distante actuellement indisponible dans cette phase : l'option « Publier » ne doit pas être simulée ni afficher de statut actif. Tant que l'API de publication n'est pas réellement activée et validée, seule la voie de sauvegarde brouillon fonctionne.
+- Au retour dans l'application, l'accès au dashboard doit être déterminé par l'existence de Flashs réellement persistés appartenant au compte autorisé, et non par une simple variable de session ou un bouton qui a été cliqué.
+- Le dashboard doit garder des états de chargement, d'erreur et de synchronisation/offline compréhensibles; l'accès ne doit pas se débloquer sur une sauvegarde échouée.
+
+### Différence entre « accès débloqué » et publication
+
+La sauvegarde d'un brouillon débloque l'espace de gestion mais ne le rend pas visible dans Découvrir. Seule une publication serveur confirmée peut placer un Flash en actif et le rendre accessible selon les règles de publication. Les exigences obligatoires de publication et les champs nécessaires doivent être vérifiés au moment de publier; elles ne doivent pas être artificiellement imposées à un brouillon local.
+
+### Écart d'implémentation à suivre
+
+Le verrou d'accès au dashboard est maintenant appliqué dans le code : « Mes Flashs » reste caché avant le premier Flash sauvegardé, le dashboard est détecté à partir des Flashs persistés appartenant au compte, et un premier brouillon sauvegardé ouvre l'espace. Le regroupement chronologique utilise les semaines civiles et évite les doublons entre les sections relatives et les sections de semaines. La vérification complète reste en attente : Quality s'arrête à « Verify foundation and secrets » avant les tests/build globaux; Scan Validation et Dependency Review sont vérifiés séparément. La publication distante est toujours non disponible.
+## Organisation du Dashboard de gestion
+
+Le Dashboard est regroupé dans `src/domains/flash/ui/dashboard/` pour séparer la gestion des Flashs du parcours de création :
+
+- `FlashDashboard.tsx` : accès, lecture des Flashs du compte, actions de gestion et regroupement chronologique.
+- `components/FlashDashboardEmptyState.tsx` : premier état vide après accès débloqué.
+- `components/FlashDashboardRecordCard.tsx` : fiche/carte d'un Flash et actions disponibles.
+- `components/FlashDashboardDeleteDialog.tsx` : confirmation de suppression.
+- `../flash-composer-helpers.ts` : helpers de saisie/voix du composer, partagés uniquement avec le parcours d'expression.
+
+
+Flash V1 reste centré sur l'expression naturelle par texte ou voix. Aucun ajout de fichiers, pièce jointe, média ou transfert n'est prévu dans ce périmètre. La migration locale Dexie v6 retire la table expérimentale de blobs et les références `mediaIds` obsolètes des Flashs locaux.
