@@ -1,12 +1,15 @@
 /* Réel proximity screen — scoped visual tokens and responsive composition. */
 .reel-proximity {
-  --reel-canvas: #f7faff;
-  --reel-ink: #26364d;
-  --reel-blue-start: #2878f0;
+  --reel-canvas: var(--color-background, #f7faff);
+  --reel-ink: var(--color-foreground, #26364d);
+  --reel-ink-muted: var(--color-muted-foreground, #6b7f98);
+  --reel-blue-start: var(--color-primary, #2878f0);
   --reel-blue-end: #69b8ff;
-  --reel-night: #eaf3ff;
-  --reel-map-ink: #91afd2;
-  --reel-white: #ffffff;
+  --reel-night: var(--color-surface-sunken, #eaf3ff);
+  --reel-map-ink: var(--color-muted-foreground, #91afd2);
+  --reel-white: var(--color-card, #ffffff);
+  --reel-surface: var(--color-card, #ffffff);
+  --reel-border: var(--color-border, rgb(255 255 255 / 8%));
   --reel-avatar-size: clamp(3rem, 14.36vw, 3.5rem);
   --reel-small-avatar-size: clamp(2.8rem, 14.36vw, 3.5rem);
   --reel-center-avatar-size: 4rem;
@@ -76,6 +79,26 @@
       transparent 5.38rem 8.4rem
     );
   mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+}
+
+.reel-radar__sweep {
+  position: absolute;
+  z-index: -2;
+  inset: 7%;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg 270deg,
+    rgb(56 189 248 / 13%) 330deg,
+    rgb(56 189 248 / 0%) 360deg
+  );
+  animation: reel-radar-sweep 6.2s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes reel-radar-sweep {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .reel-proximity__radar {
@@ -231,6 +254,22 @@
   gap: 0.4rem;
   transform: translate(-50%, -50%);
   text-align: center;
+}
+
+.reel-ring-person--floating {
+  animation: reel-avatar-drift 4.2s ease-in-out infinite alternate;
+  transition: scale 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: translate;
+}
+.reel-ring-person--floating:hover,
+.reel-ring-person--floating:focus-visible {
+  scale: 1.08;
+  z-index: 10;
+}
+@keyframes reel-avatar-drift {
+  from { translate: 0 0; }
+  50% { translate: 0 -4px; }
+  to { translate: 0 3px; }
 }
 
 .reel-avatar {
@@ -419,6 +458,8 @@
 @media (prefers-reduced-motion: reduce) {
   .reel-proximity__radar::before,
   .reel-proximity__radar::after,
+  .reel-radar__sweep,
+  .reel-ring-person--floating,
   .reel-radar__outer-halo,
   .reel-radar__core {
     animation: none;
