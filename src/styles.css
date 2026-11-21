@@ -1530,7 +1530,10 @@ a,
 nav,
 header,
 [role="button"],
-[role="tab"] {
+[role="tab"],
+.interactive,
+.tap,
+.native-press {
   -webkit-tap-highlight-color: transparent;
   user-select: none;
   -webkit-user-select: none;
