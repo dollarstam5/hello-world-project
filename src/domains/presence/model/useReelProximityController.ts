@@ -38,6 +38,7 @@ import {
 } from "@/domains/presence/api/reel-presence.client";
 import { useAccessMode } from "@/domains/access-mode";
 import { useI18n } from "@/lib/i18n/useI18n";
+import type { MessageKey } from "@/lib/i18n/messages";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
 import { getMyProfileAvatarUrl } from "@/domains/profile/api/profile-avatar.client";
 import { evaluateReelAccess } from "@/domains/presence/policy/reel-access-policy";
@@ -71,11 +72,20 @@ export type ReelAmbiance = {
   labelKey: string;
 };
 
+type RawNearbyPerson = {
+  presence_id?: string;
+  id?: string;
+  display_name?: string | null;
+  avatar_key?: string | null;
+  description?: string | null;
+  area_label?: string | null;
+  actor_kind?: "member" | "guest" | null;
+};
 type PresenceCacheEntry = { people: Person[]; timestamp: number; mode: "member" | "guest" };
 let presenceCache: PresenceCacheEntry | null = null;
 const CACHE_TTL_MS = 45_000;
 
-function distributePeopleHarmoniously(rawPeople: any[], areaLabel: string, t: (key: string) => string): Person[] {
+function distributePeopleHarmoniously(rawPeople: RawNearbyPerson[], areaLabel: string, t: (key: MessageKey) => string): Person[] {
   const total = rawPeople.length;
   if (total === 0) return [];
   // Each orbit has its own evenly spaced angles; stagger the rings to avoid alignment.
@@ -798,7 +808,7 @@ export function useReelProximityController() {
     try {
       const fix = await requestReelLocation();
       if (!isPageVisible || requestId !== discoveryRequestId.current) return;
-      let rawList: any[] = [];
+      let rawList: RawNearbyPerson[] = [];
       let areaLabel = "";
 
       if (access.mode === "guest") {
