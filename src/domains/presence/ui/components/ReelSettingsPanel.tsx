@@ -1,29 +1,11 @@
-import { CircleHelp, Settings2, ShieldCheck, MapPin, Clock } from "lucide-react";
+import { CircleHelp, Settings2, ShieldCheck, Clock } from "lucide-react";
 import { haptic } from "@/platform/device/haptics";
 import { useI18n } from "@/lib/i18n/useI18n";
 import type { useReelProximityController } from "@/domains/presence/model/useReelProximityController";
+import { DURATIONS, DURATIONS_CONFIG } from "./reel-settings.config";
+import { ReelRadiusSettings } from "./ReelRadiusSettings";
 
 type ReelController = ReturnType<typeof useReelProximityController>;
-const DURATIONS = ["30 min", "1 h", "2 h", "3 h", "6 h", "12 h", "24 h"];
-const RADII = ["10 m", "25 m", "50 m", "100 m", "1 km"];
-const RADII_CONFIG: Record<string, { contextKey: string }> = {
-  "10 m": { contextKey: "reel.settings.radius.10" },
-  "25 m": { contextKey: "reel.settings.radius.25" },
-  "50 m": { contextKey: "reel.settings.radius.50" },
-  "100 m": { contextKey: "reel.settings.radius.100" },
-  "1 km": { contextKey: "reel.settings.radius.1000" },
-};
-const DURATIONS_CONFIG: Record<string, { badgeKey: string; color: string }> = {
-  "30 min": { badgeKey: "reel.settings.duration.30", color: "#22c55e" },
-  "1 h": { badgeKey: "reel.settings.duration.60", color: "#22c55e" },
-  "2 h": { badgeKey: "reel.settings.duration.120", color: "#38bdf8" },
-  "3 h": { badgeKey: "reel.settings.duration.180", color: "#38bdf8" },
-  "6 h": { badgeKey: "reel.settings.duration.360", color: "#eab308" },
-  "12 h": { badgeKey: "reel.settings.duration.720", color: "#f97316" },
-  "24 h": { badgeKey: "reel.settings.duration.1440", color: "#ef4444" },
-};
-
-
 export function ReelSettingsPanel({
   controller,
   onOpenHelp,
@@ -44,8 +26,10 @@ export function ReelSettingsPanel({
   const { guestPresenceConsent, setGuestPresenceConsent, activateGuestPresence } = controller;
   const { presenceConsent, setPresenceConsent, stopPresence } = controller;
   const { activatePresence, presenceMessage } = controller;
-  const handleSelectRadius = (value: string) => { haptic.tap(); setRadius(value); };
-  const handleSelectDuration = (value: string) => { haptic.tap(); setDuration(value); };
+  const handleSelectDuration = (value: string) => {
+    haptic.tap();
+    setDuration(value);
+  };
 
   return (
     <>
@@ -80,34 +64,49 @@ export function ReelSettingsPanel({
         )}
       </div>
 
-      <div className="reel-panel__section">
-        <div className="reel-setting-header">
-          <div className="reel-setting-header__title"><MapPin size={16} aria-hidden="true" /><h3>{t("reel.ui.radius")}</h3></div>
-          <span className="reel-setting-header__active-badge">{radius}</span>
-        </div>
-        <p className="reel-setting-caption">{t("reel.settings.radiusContext")} <strong>{t(RADII_CONFIG[radius]?.contextKey ?? "reel.ui.radius")}</strong></p>
-        <div className="reel-segment-slider" role="radiogroup" aria-label={t("reel.ui.radius")}>
-          {RADII.map((value) => {
-            const isSelected = radius === value;
-            return <button key={value} type="button" role="radio" aria-checked={isSelected} className={`reel-segment-btn ${isSelected ? "is-selected" : ""}`} onClick={() => handleSelectRadius(value)}>{value}</button>;
-          })}
-        </div>
-      </div>
-
-      <p className="reel-panel__note">{t("reel.ui.radiusApplied")}</p>
-      {currentPresence && <p className="reel-panel__note">{t("reel.ui.guestPresenceActive")}</p>}
+      <ReelRadiusSettings radius={radius} setRadius={setRadius} currentPresence={currentPresence} />
 
       <div className="reel-panel__section">
         <div className="reel-setting-header">
-          <div className="reel-setting-header__title"><Clock size={16} aria-hidden="true" /><h3>{t("reel.ui.duration")}</h3></div>
-          <span className="reel-duration-badge" style={{ borderColor: DURATIONS_CONFIG[duration]?.color ?? "#38bdf8", color: DURATIONS_CONFIG[duration]?.color ?? "#38bdf8" }}><ShieldCheck size={12} aria-hidden="true" /> {t(DURATIONS_CONFIG[duration]?.badgeKey ?? "reel.settings.duration.active")}</span>
+          <div className="reel-setting-header__title">
+            <Clock size={16} aria-hidden="true" />
+            <h3>{t("reel.ui.duration")}</h3>
+          </div>
+          <span
+            className="reel-duration-badge"
+            style={{
+              borderColor: DURATIONS_CONFIG[duration]?.color ?? "#38bdf8",
+              color: DURATIONS_CONFIG[duration]?.color ?? "#38bdf8",
+            }}
+          >
+            <ShieldCheck size={12} aria-hidden="true" />{" "}
+            {t(DURATIONS_CONFIG[duration]?.badgeKey ?? "reel.settings.duration.active")}
+          </span>
         </div>
-        {access.mode === "guest" && <p className="reel-panel__note">{t("reel.ui.guestActiveDuration")}</p>}
+        {access.mode === "guest" && (
+          <p className="reel-panel__note">{t("reel.ui.guestActiveDuration")}</p>
+        )}
         <div className="reel-duration-grid">
-          {DURATIONS.filter((value) => access.mode !== "guest" || value === "30 min" || value === "1 h").map((value) => {
+          {DURATIONS.filter(
+            (value) => access.mode !== "guest" || value === "30 min" || value === "1 h",
+          ).map((value) => {
             const isSelected = duration === value;
             const conf = DURATIONS_CONFIG[value];
-            return <button key={value} type="button" className={`reel-duration-card ${isSelected ? "is-selected" : ""}`} aria-pressed={isSelected} onClick={() => handleSelectDuration(value)}><strong>{value}</strong><small>{t(conf?.badgeKey ?? "reel.settings.duration.active")}</small>{isSelected && <span className="reel-duration-card__dot" aria-hidden="true" />}</button>;
+            return (
+              <button
+                key={value}
+                type="button"
+                className={`reel-duration-card ${isSelected ? "is-selected" : ""}`}
+                aria-pressed={isSelected}
+                onClick={() => handleSelectDuration(value)}
+              >
+                <strong>{value}</strong>
+                <small>{t(conf?.badgeKey ?? "reel.settings.duration.active")}</small>
+                {isSelected && (
+                  <span className="reel-duration-card__dot" aria-hidden="true" />
+                )}
+              </button>
+            );
           })}
         </div>
         <p className="reel-panel__hint">{t("reel.settings.duration.hint")}</p>

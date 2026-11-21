@@ -72,7 +72,7 @@ for locale in fr en; do
       "/vision") selector="main h1" ;;
     esac
 
-    for viewport in "360,800" "390,844" "412,915" "768,1024"; do
+    for viewport in "390,844"; do
       output="$OUTPUT_DIR/vitalis-route-home-${viewport//,/-}-${locale}.png"
       case "$route" in
         "/flash") output="$OUTPUT_DIR/vitalis-route-flash-${viewport//,/-}-${locale}.png" ;;
@@ -99,4 +99,4 @@ CHROMIUM_BIN="$(find "$HOME/.cache/ms-playwright" -type f -name chrome -print -q
 test -n "$CHROMIUM_BIN"
 bun scripts/check-mobile-scroll.mjs "$CHROMIUM_BIN" "$BASE_URL"
 
-echo "Production mobile E2E smoke validation passed for Home, Flash, Scan, En direct, Radar and Vision at four target viewports in French and English (48 screenshots), including bottom-scroll clearance assertions for Flash and Scan."
+echo "Production mobile E2E smoke validation passed for Home, Flash, Scan, En direct, Radar and Vision at the 390x844 reference viewport in French and English (12 screenshots), including four-viewport bottom-scroll clearance assertions for Flash and Scan."

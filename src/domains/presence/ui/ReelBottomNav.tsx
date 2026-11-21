@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { LayoutGrid, RadioTower, Radar, ScanLine, Zap } from "lucide-react";
 import { useI18n } from "@/lib/i18n/useI18n";
+import { haptic } from "@/platform/device/haptics";
 import "./reel-bottom-nav.css";
 
 interface ReelBottomNavProps {
@@ -16,13 +17,23 @@ export function ReelBottomNav({ onOpenMenu, menuOpen }: ReelBottomNavProps) {
     <nav className="reel-page-nav" aria-label={t("nav.primary")}>
       <ul className="reel-page-nav__bar">
         <li>
-          <Link to="/flash" className="reel-page-nav__item" aria-label={t("nav.flash")}>
+          <Link
+            to="/flash"
+            onClick={() => haptic.tap()}
+            className="reel-page-nav__item native-press"
+            aria-label={t("nav.flash")}
+          >
             <Zap aria-hidden="true" />
             <span>{t("nav.flash")}</span>
           </Link>
         </li>
         <li>
-          <Link to="/scan" className="reel-page-nav__item" aria-label={t("nav.scan")}>
+          <Link
+            to="/scan"
+            onClick={() => haptic.tap()}
+            className="reel-page-nav__item native-press"
+            aria-label={t("nav.scan")}
+          >
             <ScanLine aria-hidden="true" />
             <span>{t("nav.scan")}</span>
           </Link>
@@ -30,7 +41,8 @@ export function ReelBottomNav({ onOpenMenu, menuOpen }: ReelBottomNavProps) {
         <li className="reel-page-nav__center-slot">
           <Link
             to="/reel"
-            className="reel-page-nav__center"
+            onClick={() => haptic.toggle()}
+            className="reel-page-nav__center native-press"
             aria-current="page"
             aria-label={t("nav.reel")}
           >
@@ -38,7 +50,12 @@ export function ReelBottomNav({ onOpenMenu, menuOpen }: ReelBottomNavProps) {
           </Link>
         </li>
         <li>
-          <Link to="/radar" className="reel-page-nav__item" aria-label={t("nav.radar")}>
+          <Link
+            to="/radar"
+            onClick={() => haptic.tap()}
+            className="reel-page-nav__item native-press"
+            aria-label={t("nav.radar")}
+          >
             <Radar aria-hidden="true" />
             <span>{t("nav.radar")}</span>
           </Link>
@@ -46,8 +63,11 @@ export function ReelBottomNav({ onOpenMenu, menuOpen }: ReelBottomNavProps) {
         <li>
           <button
             type="button"
-            className="reel-page-nav__item"
-            onClick={onOpenMenu}
+            className="reel-page-nav__item native-press"
+            onClick={() => {
+              haptic.tap();
+              onOpenMenu();
+            }}
             aria-label={t("nav.open_menu")}
             title={t("nav.menu")}
             aria-haspopup="dialog"

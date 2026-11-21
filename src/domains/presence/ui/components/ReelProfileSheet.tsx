@@ -102,9 +102,7 @@ export function ReelProfileSheet({
         </button>
         <PersonAvatar person={person} size="me" />
         <h2 id="reel-profile-title">{person.name}</h2>
-        {person.category && (
-          <p className="reel-profile-sheet__category">{person.category}</p>
-        )}
+        {person.category && <p className="reel-profile-sheet__category">{person.category}</p>}
         {person.distanceLabel && (
           <p className="reel-profile-sheet__distance">{person.distanceLabel}</p>
         )}
@@ -119,11 +117,7 @@ export function ReelProfileSheet({
           </div>
         )}
         {isPresenceActive && (
-          <button
-            type="button"
-            className="reel-profile-sheet__primary"
-            onClick={handleSendBip}
-          >
+          <button type="button" className="reel-profile-sheet__primary" onClick={handleSendBip}>
             <RadioTower aria-hidden="true" /> {t("reel.ui.makeSign")}
           </button>
         )}

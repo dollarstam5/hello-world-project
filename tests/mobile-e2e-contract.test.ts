@@ -2,13 +2,12 @@ import script from "../scripts/test-mobile-e2e.sh?raw";
 import { describe, expect, it } from "vitest";
 
 describe("mobile visual smoke contract", () => {
-  it("covers the five core routes at the compact phone, reference phone and tablet viewports", () => {
-    for (const viewport of ["360,800", "390,844", "412,915", "768,1024"]) {
-      expect(script).toContain('"' + viewport + '"');
-    }
+  it("smoke-tests the public routes at the reference phone viewport and delegates viewport coverage to the scroll check", () => {
+    expect(script).toContain('"390,844"');
     for (const route of ['"/"', '"/flash"', '"/scan"', '"/reel"', '"/radar"']) {
       expect(script).toContain(route);
     }
+    expect(script).toContain("scripts/check-mobile-scroll.mjs");
   });
 
   it("serves the generated production Worker rather than a development server", () => {

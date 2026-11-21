@@ -29,16 +29,44 @@ export function ReelActivityPanel({ controller }: { controller: ReelController }
       </div>
       <h2 id="reel-panel-title">{t("reel.ui.activityHeading")}</h2>
       <div className="reel-panel__tabs" role="tablist" aria-label={t("reel.ui.activity")}>
-        <button type="button" role="tab" aria-selected={activityTab === "notifications"} aria-disabled={!activityEnabled} disabled={!activityEnabled} className={activityTab === "notifications" ? "is-active" : ""} onClick={() => handleTabChange("notifications")}>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={activityTab === "notifications"}
+          aria-disabled={!activityEnabled}
+          disabled={!activityEnabled}
+          className={activityTab === "notifications" ? "is-active" : ""}
+          onClick={() => handleTabChange("notifications")}
+        >
           <span>Alertes</span>
         </button>
-        <button type="button" role="tab" aria-selected={activityTab === "bips"} aria-disabled={!currentPresence && !guestPresence} disabled={!currentPresence && !guestPresence} className={activityTab === "bips" ? "is-active" : ""} onClick={() => handleTabChange("bips")}>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={activityTab === "bips"}
+          aria-disabled={!currentPresence && !guestPresence}
+          disabled={!currentPresence && !guestPresence}
+          className={activityTab === "bips" ? "is-active" : ""}
+          onClick={() => handleTabChange("bips")}
+        >
           <span>{t("reel.ui.receivedBips")}</span>
-          {pendingBipsCount > 0 && <span className="reel-panel__tab-badge">{pendingBipsCount}</span>}
+          {pendingBipsCount > 0 && (
+            <span className="reel-panel__tab-badge">{pendingBipsCount}</span>
+          )}
         </button>
-        <button type="button" role="tab" aria-selected={activityTab === "connections"} className={activityTab === "connections" ? "is-active" : ""} onClick={() => handleTabChange("connections")}>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={activityTab === "connections"}
+          className={activityTab === "connections" ? "is-active" : ""}
+          onClick={() => handleTabChange("connections")}
+        >
           <span>{t("reel.ui.connectionsTab")}</span>
-          {activeConnectionsCount > 0 && <span className="reel-panel__tab-badge reel-panel__tab-badge--green">{activeConnectionsCount}</span>}
+          {activeConnectionsCount > 0 && (
+            <span className="reel-panel__tab-badge reel-panel__tab-badge--green">
+              {activeConnectionsCount}
+            </span>
+          )}
         </button>
       </div>
       {activityTab === "bips" ? (
