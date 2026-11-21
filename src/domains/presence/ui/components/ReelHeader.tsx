@@ -92,9 +92,7 @@ export function ReelHeader({
             discoveryAccess === "requesting" || (!canUseMemberReel && access.mode !== "guest")
           }
           aria-pressed={discoveryEnabled}
-          aria-label={
-            discoveryEnabled ? t("reel.ui.disableDiscovery") : t("reel.ui.enableDiscovery")
-          }
+          aria-label={discoveryEnabled ? t("reel.ui.disableDiscovery") : t("reel.ui.enableDiscovery")}
           title={discoveryEnabled ? t("reel.ui.disableDiscovery") : t("reel.ui.enableDiscovery")}
         >
           {discoveryEnabled ? <Eye aria-hidden="true" /> : <EyeOff aria-hidden="true" />}
