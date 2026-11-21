@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { ChevronDown, Globe, History, X } from "lucide-react";
 import { useReelProximityController } from "@/domains/presence/model/useReelProximityController";
+import { hapticFeedback } from "@/platform/device/haptics";
 import { RingPerson, SelfRadarIdentity } from "./components/ReelRadarIdentity";
 import { ReelGuidedTour } from "./components/ReelGuidedTour";
 import { ReelSettingsHelp } from "./components/ReelSettingsHelp";
@@ -91,11 +92,13 @@ export function ReelProximityScreen() {
         <div className="reel-radar__outer-halo" aria-hidden="true" />
         <div className="reel-radar__outer-ring" aria-hidden="true" />
         <div className="reel-radar__inner-ring" aria-hidden="true" />
+        <div className="reel-radar__sweep" aria-hidden="true" />
         <div className="reel-radar__core">
           <button
             type="button"
             className={`reel-radar__me${isPresenceActive ? " is-presence-active" : ""}`}
             onClick={() => {
+              hapticFeedback.tap();
               if (currentPresence) void stopPresence();
               else if (guestPresence) void stopGuestPresence();
               else if (
