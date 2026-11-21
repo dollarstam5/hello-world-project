@@ -792,7 +792,7 @@ export function useReelProximityController() {
     }
 
     const requestId = ++discoveryRequestId.current;
-    setDiscoveryAccess("requesting");
+    if (!presenceCache || presenceCache.mode !== mode) setDiscoveryAccess("requesting");
     setLocationMessage(null);
 
     try {
@@ -830,6 +830,10 @@ export function useReelProximityController() {
       setLocationMessage(error instanceof Error ? error.message : "Localisation indisponible");
     }
   };
+  useEffect(() => {
+    if (isPageVisible && discoveryAccess === "granted") void requestDiscovery(true);
+  }, [isPageVisible]);
+
   const ignoreLocation = () => {
     setDiscoveryAccess("ignored");
     setDiscoveredPeople([]);
