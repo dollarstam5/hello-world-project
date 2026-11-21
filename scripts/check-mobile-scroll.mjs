@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process";
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -8,8 +8,9 @@ if (!chromePath || !baseUrl) {
   throw new Error("Usage: bun scripts/check-mobile-scroll.mjs <chromium-path> <base-url>");
 }
 
-const port = 9222;
 const profile = await mkdtemp(join(tmpdir(), "vitalis-scroll-chrome-"));
+const portFile = join(profile, "DevToolsActivePort");
+let port;
 const chrome = spawn(
   chromePath,
   [
@@ -24,7 +25,7 @@ const chrome = spawn(
     `--user-data-dir=${profile}`,
     "about:blank",
   ],
-  { stdio: "ignore" },
+  { stdio: "ignore", detached: true },
 );
 
 let socket;
@@ -32,6 +33,9 @@ try {
   let version;
   for (let i = 0; i < 60; i++) {
     try {
+      const activePort = (await readFile(portFile, "utf8")).split("\\n")[0].trim();
+      port = Number(activePort);
+      if (!Number.isInteger(port) || port <= 0) throw new Error("Invalid Chromium debug port");
       const response = await fetch(`http://127.0.0.1:${port}/json/version`);
       if (response.ok) {
         version = await response.json();
@@ -238,6 +242,12 @@ try {
   }
 } finally {
   socket?.close();
-  chrome.kill("SIGTERM");
+  if (chrome.pid) {
+    try {
+      process.kill(-chrome.pid, "SIGTERM");
+    } catch {
+      chrome.kill("SIGTERM");
+    }
+  }
   await rm(profile, { recursive: true, force: true });
 }
