@@ -2390,3 +2390,61 @@
   z-index: 60;
   padding-bottom: calc(6.5rem + env(safe-area-inset-bottom, 0px));
 }
+
+
+/* Radar glassmorphism and motion polish (PR #88 follow-up). */
+.reel-proximity__radar::before {
+  border: 1.5px solid rgb(56 189 248 / 40%);
+  box-shadow: 0 0 1.5rem rgb(37 99 235 / 30%), inset 0 0 1rem rgb(56 189 248 / 15%);
+  animation: reel-radar-wave 5.2s cubic-bezier(0.1, 0.7, 0.1, 1) infinite;
+}
+.reel-proximity__radar::after {
+  z-index: -3;
+  inset: -2%;
+  border: 0;
+  background: conic-gradient(from 0deg, transparent 0deg, transparent 280deg, rgb(56 189 248 / 8%) 330deg, rgb(56 189 248 / 22%) 360deg);
+  animation: reel-radar-sweep 7s linear infinite;
+}
+.reel-radar__sweep { display: none; }
+.reel-radar__outer-ring {
+  display: block;
+  z-index: -2;
+  inset: 0;
+  border: clamp(1.2rem, 5vw, 2.2rem) solid transparent;
+  background: linear-gradient(135deg, rgb(255 255 255 / 6%) 0%, rgb(255 255 255 / 1%) 100%) padding-box, linear-gradient(135deg, rgb(56 189 248 / 30%) 0%, rgb(37 99 235 / 10%) 100%) border-box;
+  box-shadow: inset 0 0 1.2rem rgb(56 189 248 / 10%), 0 0 2rem rgb(15 23 42 / 12%);
+}
+.reel-radar__inner-ring {
+  display: block;
+  position: absolute;
+  z-index: -1;
+  inset: 22%;
+  border: 1px dashed rgb(56 189 248 / 25%);
+  background: radial-gradient(circle, rgb(56 189 248 / 6%) 0%, transparent 70%);
+  box-shadow: none;
+}
+.reel-radar__core {
+  background: radial-gradient(circle at 35% 30%, rgb(37 99 235 / 40%) 0%, rgb(15 23 42 / 85%) 100%);
+  border: 1px solid rgb(255 255 255 / 15%);
+  box-shadow: 0 0 1.8rem rgb(37 99 235 / 35%), inset 0 0 1rem rgb(255 255 255 / 12%);
+  backdrop-filter: blur(8px);
+  animation: reel-halo-breathe 4.5s ease-in-out infinite;
+}
+.reel-radar__me {
+  background: radial-gradient(circle at 36% 28%, #ffffff 0%, #d6eaff 52%, #91c4ff 100%);
+  color: var(--reel-ink);
+}
+.reel-ring-person--floating {
+  animation-duration: 3.8s;
+  animation-timing-function: ease-in-out;
+  transition: scale 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.reel-ring-person--floating:hover,
+.reel-ring-person--floating:focus-visible { scale: 1.14; z-index: 10; }
+@media (prefers-reduced-motion: reduce) {
+  .reel-proximity__radar::before,
+  .reel-proximity__radar::after,
+  .reel-ring-person--floating,
+  .reel-radar__core,
+  .reel-radar__outer-halo { animation: none; transition: none; }
+}
