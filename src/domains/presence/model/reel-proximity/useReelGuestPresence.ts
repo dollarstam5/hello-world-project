@@ -79,7 +79,7 @@ export function useReelGuestPresence(
     return () => {
       cancelled = true;
     };
-  }, [access.loading, access.mode, access.guest?.startedAt, t]);
+  }, [access.loading, access.mode, access.guest?.startedAt, t, setDuration, setRadius, setPresenceDescription, setPresenceMessage]);
 
   
   return {
