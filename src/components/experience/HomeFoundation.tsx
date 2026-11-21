@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Radar, RadioTower, ScanLine, Zap, ArrowUpRight } from "lucide-react";
+import { Radar, RadioTower, ScanLine, Zap, ArrowUpRight, Sparkles } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Surface } from "@/components/app/Surface";
 import { Button } from "@/components/ui/button";
@@ -155,7 +155,8 @@ export function HomeFoundation() {
                 {identityLabel}
               </span>
             ) : null}
-            <span className="rounded-full bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-surface/60 px-3 py-1.5 text-xs font-medium text-foreground shadow-sm backdrop-blur-xl">
+              <Sparkles className="h-3.5 w-3.5 text-primary" aria-hidden />
               {t("app.tagline")}
             </span>
           </div>
