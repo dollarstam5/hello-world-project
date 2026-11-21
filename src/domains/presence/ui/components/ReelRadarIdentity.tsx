@@ -1,6 +1,7 @@
-import { type CSSProperties } from "react";
-import { CircleUserRound } from "lucide-react";
+import { useEffect, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent } from "react";
+import { CircleUserRound, Zap, User, MapPin } from "lucide-react";
 import type { Person } from "@/domains/presence/model/useReelProximityController";
+import { haptic } from "@/platform/device/haptics";
 
 export function PersonAvatar({
   person,
@@ -15,22 +16,13 @@ export function PersonAvatar({
       aria-label={person.name}
     >
       {person.avatarUrl ? (
-        <img
-          src={person.avatarUrl}
-          alt=""
-          aria-hidden="true"
-          onError={(event) => {
-            event.currentTarget.hidden = true;
-            event.currentTarget.parentElement?.classList.add("reel-avatar--failed");
-          }}
-        />
+        <img src={person.avatarUrl} alt="" aria-hidden="true" onError={(event) => {
+          event.currentTarget.hidden = true;
+          event.currentTarget.parentElement?.classList.add("reel-avatar--failed");
+        }} />
       ) : person.initials ? (
-        <span className="reel-avatar__initials" aria-hidden="true">
-          {person.initials}
-        </span>
-      ) : (
-        <CircleUserRound className="reel-avatar__silhouette" aria-hidden="true" />
-      )}
+        <span className="reel-avatar__initials" aria-hidden="true">{person.initials}</span>
+      ) : <CircleUserRound className="reel-avatar__silhouette" aria-hidden="true" />}
     </span>
   );
 }
@@ -39,32 +31,73 @@ export function RingPerson({
   person,
   index = 0,
   onSelect,
+  onQuickBip,
 }: {
   person: Person;
   index?: number;
   onSelect: (person: Person) => void;
+  onQuickBip?: (person: Person) => void;
 }) {
-  const radians = ((Number.isFinite(person.angle) ? person.angle : 0) * Math.PI) / 180;
-  const orbitTiers = [33, 40, 44] as const;
+  const [showPeek, setShowPeek] = useState(false);
+  const peekRef = useRef<HTMLDivElement>(null);
+  const orbitTiers = [32, 39, 44];
   const orbit = orbitTiers[index % orbitTiers.length] ?? 39;
-  const floatDelay = `${(index * 0.5) % 3}s`;
+  const radians = ((Number.isFinite(person.angle) ? person.angle : 0) * Math.PI) / 180;
   const position = {
     left: `${50 + orbit * Math.cos(radians)}%`,
     top: `${50 + orbit * Math.sin(radians)}%`,
-    animationDelay: floatDelay,
-  } satisfies CSSProperties;
+    animationDelay: `${(index * 0.45) % 2.5}s`,
+  } as CSSProperties;
+
+  useEffect(() => {
+    if (!showPeek) return;
+    const handleOutside = (event: PointerEvent) => {
+      if (peekRef.current && !peekRef.current.contains(event.target as Node)) setShowPeek(false);
+    };
+    document.addEventListener("pointerdown", handleOutside);
+    return () => document.removeEventListener("pointerdown", handleOutside);
+  }, [showPeek]);
+
+  const handleAvatarClick = (event: ReactMouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    haptic.tap();
+    setShowPeek((open) => !open);
+  };
+  const handleOpenProfile = (event: ReactMouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    setShowPeek(false);
+    onSelect(person);
+  };
+  const handleQuickBip = (event: ReactMouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    haptic.pulse();
+    setShowPeek(false);
+    onQuickBip ? onQuickBip(person) : onSelect(person);
+  };
+  const isGuest = person.actorKind === "guest";
 
   return (
-    <button
-      type="button"
-      className="reel-ring-person reel-ring-person--floating"
-      style={position}
-      onClick={() => onSelect(person)}
-      aria-label={`Voir le profil de ${person.name}`}
-    >
-      <PersonAvatar person={person} />
+    <div ref={peekRef} className={`reel-ring-person reel-ring-person--floating ${showPeek ? "is-peek-open" : ""}`} style={position}>
+      <button type="button" className={`reel-ring-person__btn ${isGuest ? "reel-ring-person__btn--guest" : "reel-ring-person__btn--member"}`} onClick={handleAvatarClick} aria-expanded={showPeek} aria-label={`Options pour ${person.name}`}>
+        <PersonAvatar person={person} />
+        <span className="reel-ring-person__status-dot" aria-hidden="true" />
+      </button>
       <span className="reel-ring-person__name">{person.name}</span>
-    </button>
+      {showPeek && (
+        <div className="reel-person-peek" role="dialog" aria-label={`Profil rapide de ${person.name}`}>
+          <div className="reel-person-peek__header">
+            <strong>{person.name}</strong>
+            <span className={`reel-person-peek__badge ${isGuest ? "is-guest" : "is-member"}`}>{isGuest ? "Invité temporaire" : "Membre"}</span>
+          </div>
+          {person.locationLabel && <p className="reel-person-peek__loc"><MapPin size={11} aria-hidden="true" /> {person.locationLabel}</p>}
+          {person.description && <p className="reel-person-peek__desc">{person.description}</p>}
+          <div className="reel-person-peek__actions">
+            <button type="button" className="reel-person-peek__bip-btn" onClick={handleQuickBip}><Zap size={13} aria-hidden="true" /> Faire signe</button>
+            <button type="button" className="reel-person-peek__more-btn" onClick={handleOpenProfile} aria-label="Profil complet"><User size={13} aria-hidden="true" /></button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -82,38 +115,14 @@ export function SelfRadarIdentity({
   meLabel: string;
 }) {
   const guestName = guestDisplayName.trim();
-  const initials = guestName
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part[0])
-    .join("")
-    .toLocaleUpperCase();
-
+  const initials = guestName.split(/\\s+/).slice(0, 2).map((part) => part[0]).join("").toLocaleUpperCase();
   return (
     <>
-      <span
-        className={`reel-radar__me-avatar${accessMode === "guest" ? ` reel-avatar--${guestAvatarKey}` : ""}`}
-        aria-hidden="true"
-      >
-        {accessMode === "guest" && guestName ? (
-          <span className="reel-avatar__initials">{initials}</span>
-        ) : (
-          <CircleUserRound />
-        )}
-        {accessMode === "member" && memberAvatarUrl ? (
-          <img
-            src={memberAvatarUrl}
-            alt=""
-            aria-hidden="true"
-            onError={(event) => {
-              event.currentTarget.hidden = true;
-            }}
-          />
-        ) : null}
+      <span className={`reel-radar__me-avatar${accessMode === "guest" ? ` reel-avatar--${guestAvatarKey}` : ""}`} aria-hidden="true">
+        {accessMode === "guest" && guestName ? <span className="reel-avatar__initials">{initials}</span> : <CircleUserRound />}
+        {accessMode === "member" && memberAvatarUrl ? <img src={memberAvatarUrl} alt="" aria-hidden="true" onError={(event) => { event.currentTarget.hidden = true; }} /> : null}
       </span>
-      <span className="reel-radar__me-label">
-        {accessMode === "guest" && guestName ? guestName : meLabel}
-      </span>
+      <span className="reel-radar__me-label">{accessMode === "guest" && guestName ? guestName : meLabel}</span>
     </>
   );
 }
