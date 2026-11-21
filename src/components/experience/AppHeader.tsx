@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Bell, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { haptic } from "@/platform/device/haptics";
 import { ProfileQuickPreview } from "./ProfileQuickPreview";
 import { useIdentity } from "@/lib/experience/identity";
 import { useAuth } from "@/domains/auth/model/useAuth";
@@ -39,7 +40,7 @@ export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => 
   return (
     <>
       <header
-        className="sticky top-0 z-30 bg-transparent"
+        className="sticky top-0 z-30 backdrop-blur-xl bg-background/75 border-b border-white/5 transition-colors"
         style={{ paddingTop: "var(--safe-top)" }}
       >
         <div
@@ -52,10 +53,11 @@ export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => 
         >
           <Link
             to="/"
+            onClick={() => haptic.tap()}
             aria-label={t("nav.home")}
-            className="flex h-12 w-12 items-center justify-center rounded-xl outline-none transition-opacity hover:opacity-85 focus-visible:ring-2 focus-visible:ring-ring"
+            className="native-press flex h-11 w-11 items-center justify-center rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <img src="/icon-192.svg" alt="" aria-hidden="true" className="h-9 w-9 rounded-xl" />
+            <img src="/icon-192.svg" alt="" aria-hidden="true" className="h-8 w-8 rounded-xl shadow-sm" />
           </Link>
 
           <div className="flex items-center gap-1">
