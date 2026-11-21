@@ -66,8 +66,6 @@ export function useReelProximityController() {
     access, t, setDuration, setRadius, setPresenceDescription, setPresenceMessage,
   );
 
-  const { loadedPresence, setLoadedPresence, currentPresence, canUseMemberReel } =
-    useReelMemberPresence(access, t, setPresenceMessage);
   const activityIdentity = access.mode === "guest"
     ? access.guest?.startedAt ?? null
     : access.memberId ?? null;
