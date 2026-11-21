@@ -14,6 +14,8 @@ import { useReelMemberProfile } from "@/domains/presence/model/reel-proximity/us
 import { useReelLifecycle } from "@/domains/presence/model/reel-proximity/useReelLifecycle";
 import { useReelMemberPresence } from "@/domains/presence/model/reel-proximity/useReelMemberPresence";
 import { useReelGuestPresence } from "@/domains/presence/model/reel-proximity/useReelGuestPresence";
+import { useReelGuestSession } from "@/domains/presence/model/reel-proximity/useReelGuestSession";
+import { useReelPanelState } from "@/domains/presence/model/reel-proximity/useReelPanelState";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
 import { evaluateReelAccess } from "@/domains/presence/policy/reel-access-policy";
@@ -43,11 +45,11 @@ export function useReelProximityController() {
     setIsRefreshingDiscovery,
     discoveryRequestId,
   } = useReelLifecycle();
-  const [guestSessionLoading, setGuestSessionLoading] = useState(false);
-  const [guestSessionMessage, setGuestSessionMessage] = useState<string | null>(null);
-  const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
-  const [panel, setPanel] = useState<Panel>(null);
-  const [activityTab, setActivityTab] = useState<ActivityTab>("notifications");
+  const { guestSessionLoading, guestSessionMessage, beginGuestSession } = useReelGuestSession(access, t);
+  const {
+    selectedPerson, setSelectedPerson, panel, setPanel, activityTab, setActivityTab,
+    openProfile, closeProfile, openActivity,
+  } = useReelPanelState();
   const [radius, setRadius] = useState("100 m");
   const [duration, setDuration] = useState("2 h");
   const [presenceConsent, setPresenceConsent] = useState(false);
@@ -319,21 +321,6 @@ export function useReelProximityController() {
     }
   };
 
-  const beginGuestSession = async () => {
-    setGuestSessionLoading(true);
-    setGuestSessionMessage(null);
-    try {
-      await access.startGuestSession();
-      setGuestSessionMessage(t("reel.controller.guestSessionReady"));
-    } catch (error) {
-      setGuestSessionMessage(
-        error instanceof Error ? error.message : t("reel.controller.guestSessionOpenFailed"),
-      );
-    } finally {
-      setGuestSessionLoading(false);
-    }
-  };
-
   const {
     discoveryAccess,
     locationMessage,
@@ -351,17 +338,6 @@ export function useReelProximityController() {
     discoveryRequestId,
   });
   const activityEnabled = discoveryEnabled || Boolean(currentPresence) || Boolean(guestPresence);
-  const openProfile = (person: Person) => {
-    setPanel(null);
-    setSelectedPerson(person);
-  };
-  const closeProfile = () => {
-    setSelectedPerson(null);
-  };
-  const openActivity = (tab: ActivityTab) => {
-    setActivityTab(tab);
-    setPanel("activity");
-  };
 
   const visiblePeople = availablePeople.slice(0, MAX_RING_PEOPLE);
   const ambiance: ReelAmbiance = (() => {
