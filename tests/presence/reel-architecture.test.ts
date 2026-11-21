@@ -13,12 +13,21 @@ import globalPanelSource from "../../src/domains/presence/ui/components/ReelGlob
 import peoplePanelSource from "../../src/domains/presence/ui/components/ReelPeoplePanel.tsx?raw";
 
 import controllerSource from "../../src/domains/presence/model/useReelProximityController.ts?raw";
+import presenceHookSource from "../../src/domains/presence/model/reel-proximity/useReelPresence.ts?raw";
+import activityHookSource from "../../src/domains/presence/model/reel-proximity/useReelActivity.ts?raw";
+import memberProfileHookSource from "../../src/domains/presence/model/reel-proximity/useReelMemberProfile.ts?raw";
+import bipsHookSource from "../../src/domains/presence/model/reel-proximity/useReelBips.ts?raw";
+import connectionsHookSource from "../../src/domains/presence/model/reel-proximity/useReelConnections.ts?raw";
 import realtimeServiceSource from "../../src/domains/presence/services/reel-activity-realtime.service.ts?raw";
 import communicationBridgeSource from "../../src/domains/presence/model/ReelCommunicationBridge.tsx?raw";
 import appShellSource from "../../src/components/app/AppShell.tsx?raw";
 import memberAvatarSource from "../../src/domains/profile/api/profile-avatar.client.ts?raw";
 
 const screenSource = `${screenCompositionSource}\n${radarComponentsSource}\n${guidedTourSource}\n${settingsHelpSource}\n${profileSheetSource}\n${settingsPanelSource}\n${activityPanelSource}\n${headerSource}\n${discoveryPromptSource}\n${nearbyPreviewSource}\n${globalPanelSource}\n${peoplePanelSource}`;
+const activityLifecycleSource = activityHookSource;
+const activityBipsConnectionsSource = bipsHookSource + connectionsHookSource;
+const memberProfileModelSource = memberProfileHookSource;
+
 
 describe("En direct architecture boundaries", () => {
   it("keeps business services and access policy out of the screen component", () => {
@@ -61,27 +70,27 @@ describe("En direct architecture boundaries", () => {
   });
 
   it("keeps guest activity refresh event-driven with a low-frequency visible-only fallback", () => {
-    expect(controllerSource).toContain(
+    expect(activityLifecycleSource).toContain(
       'document.addEventListener("visibilitychange", refreshWhenAvailable)',
     );
-    expect(controllerSource).toContain('window.addEventListener("focus", refreshWhenAvailable)');
-    expect(controllerSource).toContain('window.addEventListener("online", refreshWhenAvailable)');
-    expect(controllerSource).toContain('document.visibilityState !== "visible"');
-    expect(controllerSource).toContain("guestActivityRefreshInFlight.current");
-    expect(controllerSource).toContain('"vitalis:reel-activity-reconnected"');
-    expect(controllerSource).toContain("}, 30_000)");
-    expect(controllerSource).not.toContain("}, 3000)");
-    expect(controllerSource).toContain(
+    expect(activityLifecycleSource).toContain('window.addEventListener("focus", refreshWhenAvailable)');
+    expect(activityLifecycleSource).toContain('window.addEventListener("online", refreshWhenAvailable)');
+    expect(activityLifecycleSource).toContain('document.visibilityState !== "visible"');
+    expect(activityLifecycleSource).toContain("guestActivityRefreshInFlight.current");
+    expect(activityLifecycleSource).toContain('"vitalis:reel-activity-reconnected"');
+    expect(activityLifecycleSource).toContain("}, 30_000)");
+    expect(activityLifecycleSource).not.toContain("}, 3000)");
+    expect(activityLifecycleSource).toContain(
       'document.removeEventListener("visibilitychange", refreshWhenAvailable)',
     );
-    expect(controllerSource).toContain('window.removeEventListener("focus", refreshWhenAvailable)');
-    expect(controllerSource).toContain(
+    expect(activityLifecycleSource).toContain('window.removeEventListener("focus", refreshWhenAvailable)');
+    expect(activityLifecycleSource).toContain(
       'window.removeEventListener("online", refreshWhenAvailable)',
     );
   });
 
   it("does not couple guest presence activation to nearby discovery consent", () => {
-    const controller = controllerSource;
+    const controller = presenceHookSource;
     const start = controller.indexOf("const activateGuestPresence = async");
     const end = controller.indexOf("const stopGuestPresence = async", start);
     expect(start).toBeGreaterThanOrEqual(0);
@@ -123,7 +132,7 @@ describe("En direct architecture boundaries", () => {
     expect(memberAvatarSource).toContain('.eq("owner_id", memberId)');
     expect(memberAvatarSource).toContain('.from("avatars")');
     expect(memberAvatarSource).toContain("path.startsWith(`${memberId}/`)");
-    expect(controllerSource).toContain('access.mode !== "member"');
+    expect(memberProfileModelSource).toContain('access.mode !== "member"');
     expect(screenSource).toContain('accessMode === "member" && memberAvatarUrl');
     expect(screenSource).toContain("<img");
   });
@@ -155,10 +164,10 @@ describe("En direct architecture boundaries", () => {
   });
 
   it("refreshes both received bips and connections immediately after acceptance", () => {
-    expect(controllerSource).toContain(
+    expect(activityBipsConnectionsSource).toContain(
       'action === "accept" ? refreshConnections() : Promise.resolve()',
     );
-    expect(controllerSource).toContain("await Promise.all([");
+    expect(activityBipsConnectionsSource).toContain("await Promise.all([");
   });
 
   it("keeps live alerts disabled until nearby discovery or presence is authorized", () => {
@@ -173,10 +182,10 @@ describe("En direct architecture boundaries", () => {
   });
 
   it("builds the alerts view from existing bips and connection reads", () => {
-    expect(controllerSource).toContain('activityTab === "notifications"');
-    expect(controllerSource).toContain("Promise.all([refreshBips(), refreshConnections()])");
-    expect(controllerSource).toContain("listReelBips()");
-    expect(controllerSource).toContain("listReelConnections()");
+    expect(activityHookSource).toContain('activityTab === "notifications"');
+    expect(activityHookSource).toContain("Promise.all([refreshBips(), refreshConnections()])");
+    expect(bipsHookSource).toContain("listReelBips()");
+    expect(connectionsHookSource).toContain("listReelConnections()");
     expect(screenSource).toContain("receivedGuestBips.map((bip)");
     expect(screenSource).toContain('connection.status === "active"');
     expect(screenSource).toContain("connectionsMessage");
