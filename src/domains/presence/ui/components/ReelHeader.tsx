@@ -49,7 +49,13 @@ export function ReelHeader({
         {isPresenceActive && <span className="reel-proximity__live-indicator" aria-hidden="true" />}
       </div>
       <nav className="reel-proximity__header-actions" aria-label={t("reel.ui.screenLabel")}>
-        <Link to="/" onClick={() => haptic.tap()} className="reel-proximity__header-action native-press" aria-label={t("reel.ui.home")} title={t("reel.ui.homeTitle")}>
+        <Link
+          to="/"
+          onClick={() => haptic.tap()}
+          className="reel-proximity__header-action native-press"
+          aria-label={t("reel.ui.home")}
+          title={t("reel.ui.homeTitle")}
+        >
           <Home aria-hidden="true" />
         </Link>
         <button
@@ -60,7 +66,9 @@ export function ReelHeader({
             openActivity("notifications");
           }}
           disabled={!activityEnabled}
-          aria-label={activityEnabled ? t("reel.ui.notifications") : t("reel.ui.notificationsPaused")}
+          aria-label={
+            activityEnabled ? t("reel.ui.notifications") : t("reel.ui.notificationsPaused")
+          }
           title={activityEnabled ? t("reel.ui.activity") : t("reel.ui.notificationsPausedShort")}
         >
           <Bell aria-hidden="true" />
@@ -92,7 +100,9 @@ export function ReelHeader({
             discoveryAccess === "requesting" || (!canUseMemberReel && access.mode !== "guest")
           }
           aria-pressed={discoveryEnabled}
-          aria-label={discoveryEnabled ? t("reel.ui.disableDiscovery") : t("reel.ui.enableDiscovery")}
+          aria-label={
+            discoveryEnabled ? t("reel.ui.disableDiscovery") : t("reel.ui.enableDiscovery")
+          }
           title={discoveryEnabled ? t("reel.ui.disableDiscovery") : t("reel.ui.enableDiscovery")}
         >
           {discoveryEnabled ? <Eye aria-hidden="true" /> : <EyeOff aria-hidden="true" />}
