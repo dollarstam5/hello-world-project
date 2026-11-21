@@ -1,12 +1,11 @@
 import { useEffect, useRef } from "react";
 import type { CommunicationRuntime } from "@/lib/communication/runtime";
-import type { AccessContext } from "@/domains/presence/model/reel-proximity/reel-proximity.types";
 import type { ActivityTab } from "@/domains/presence/model/reel-proximity/reel-proximity.types";
 import { resetReelActivityProjection, useReelActivityProjection } from "@/domains/presence/model/reel-activity-projection";
 import type { ReelConnection, ReelGuestConnection } from "@/domains/presence/api/reel-presence.client";
 
 type Params = {
-  access: AccessContext;
+  access: { mode: string; guest?: { startedAt?: string } | null };
   communication: CommunicationRuntime;
   communicationRevision: unknown;
   panel: string | null;
@@ -15,13 +14,13 @@ type Params = {
   activityIdentity: string | null;
   refreshBips: () => Promise<void>;
   refreshConnections: () => Promise<void>;
-  receivedBips: unknown[];
+  receivedBips: any[];
   receivedGuestBips: unknown[];
   bipsLoadedForIdentity: string | null;
   connections: ReelConnection[];
   guestConnections: ReelGuestConnection[];
   connectionsLoadedForIdentity: string | null;
-  setReceivedBips: (items: never[]) => void;
+  setReceivedBips: (items: any[]) => void;
   setReceivedGuestBips: (items: never[]) => void;
   setConnections: (items: never[]) => void;
   setGuestConnections: (items: never[]) => void;
