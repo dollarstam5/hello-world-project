@@ -40,7 +40,7 @@ export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => 
   return (
     <>
       <header
-        className="sticky top-0 z-30 backdrop-blur-xl bg-background/75 border-b border-white/5 transition-colors"
+        className="sticky top-0 z-30 border-b border-border/30 bg-background/80 backdrop-blur-xl transition-[background-color,border-color]"
         style={{ paddingTop: "var(--safe-top)" }}
       >
         <div
