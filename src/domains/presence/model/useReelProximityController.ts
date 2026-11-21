@@ -830,9 +830,11 @@ export function useReelProximityController() {
       setLocationMessage(error instanceof Error ? error.message : "Localisation indisponible");
     }
   };
+  const discoveryRunner = useRef<((forceRefresh?: boolean) => Promise<void>) | null>(null);
+  discoveryRunner.current = requestDiscovery;
   useEffect(() => {
-    if (isPageVisible && discoveryAccess === "granted") void requestDiscovery(true);
-  }, [isPageVisible]);
+    if (isPageVisible && discoveryAccess === "granted") void discoveryRunner.current?.(true);
+  }, [isPageVisible, discoveryAccess]);
 
   const ignoreLocation = () => {
     setDiscoveryAccess("ignored");
