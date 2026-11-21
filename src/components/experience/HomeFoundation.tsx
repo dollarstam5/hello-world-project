@@ -130,9 +130,10 @@ export function HomeFoundation() {
 
   return (
     <div className="page-shell stack-8">
+      {/* Hero Photographique Immersif Native App */}
       <section
         aria-labelledby="home-welcome-title"
-        className="relative isolate flex min-h-[25rem] overflow-hidden rounded-[2rem] bg-card shadow-sm sm:min-h-[31rem]"
+        className="relative isolate flex min-h-[26rem] overflow-hidden rounded-[2.25rem] border border-white/10 bg-card shadow-xl sm:min-h-[32rem]"
       >
         <img
           src={heroPhoto}
@@ -143,35 +144,41 @@ export function HomeFoundation() {
           height={1200}
           fetchPriority="high"
           decoding="async"
-          className="absolute inset-0 z-0 size-full object-cover object-[50%_35%]"
+          className="absolute inset-0 z-0 size-full scale-105 object-cover object-[50%_35%] transition-transform duration-700 ease-out"
         />
+        {/* Masque dégradé cinématographique en verre teinté */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-background/95 via-background/75 to-background/25"
+          className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-background via-background/80 to-background/30 backdrop-blur-[1px]"
         />
-        <div className="relative z-20 flex w-full min-w-0 flex-col justify-between gap-10 p-5 text-foreground sm:p-8">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            {identityLabel ? (
-              <span className="rounded-full border border-border bg-surface/90 px-3 py-1.5 text-xs font-medium text-foreground shadow-sm">
-                {identityLabel}
-              </span>
-            ) : null}
+
+        <div className="relative z-20 flex w-full min-w-0 flex-col justify-between gap-8 p-5 text-foreground sm:p-8">
+          {/* Badges d'identité et de contexte, sans état local ou réseau simulé */}
+          <div className="flex flex-wrap items-center justify-between gap-2.5">
+            <div className="flex items-center gap-2">
+              {identityLabel && (
+                <span className="rounded-full border border-white/10 bg-background/60 px-3 py-1 text-xs font-medium text-foreground shadow-sm backdrop-blur-md">
+                  {identityLabel}
+                </span>
+              )}
+            </div>
             <span className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-surface/60 px-3 py-1.5 text-xs font-medium text-foreground shadow-sm backdrop-blur-xl">
               <Sparkles className="h-3.5 w-3.5 text-primary" aria-hidden />
               {t("app.tagline")}
             </span>
           </div>
-          <div className="max-w-2xl space-y-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+
+          <div className="max-w-2xl space-y-3">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary/90">
               {t("home.hero.eyebrow")}
             </p>
             <h1
               id="home-welcome-title"
-              className="max-w-[13ch] text-4xl font-semibold leading-[1.04] tracking-tight text-foreground sm:text-5xl lg:text-6xl"
+              className="text-3xl font-semibold leading-[1.08] tracking-tight text-foreground sm:text-5xl lg:text-6xl"
             >
               {greeting}
             </h1>
-            <p className="max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+            <p className="max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
               {t("home.subtitle")}
             </p>
           </div>
