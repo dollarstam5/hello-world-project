@@ -38,6 +38,7 @@ import {
 } from "@/domains/presence/api/reel-presence.client";
 import { useAccessMode } from "@/domains/access-mode";
 import { useReelMemberProfile } from "@/domains/presence/model/reel-proximity/useReelMemberProfile";
+import { useReelLifecycle } from "@/domains/presence/model/reel-proximity/useReelLifecycle";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
 import { evaluateReelAccess } from "@/domains/presence/policy/reel-access-policy";
@@ -66,26 +67,17 @@ export function useReelProximityController() {
   const communicationRevision = communication.getSnapshot();
   const processedReelEvents = useRef(new Set<string>());
   const { memberAvatarUrl } = useReelMemberProfile(access);
-  const [isPageVisible, setIsPageVisible] = useState(() => typeof document === "undefined" || document.visibilityState === "visible");
-  const [isOnline, setIsOnline] = useState(() => typeof navigator === "undefined" ? true : navigator.onLine);
-  const [isRefreshingDiscovery, setIsRefreshingDiscovery] = useState(false);
-  const discoveryRequestId = useRef(0);
+  const {
+    isPageVisible,
+    isOnline,
+    setIsOnline,
+    isRefreshingDiscovery,
+    setIsRefreshingDiscovery,
+    discoveryRequestId,
+  } = useReelLifecycle();
   const [discoveryAccess, setDiscoveryAccess] = useState<
     "prompt" | "requesting" | "granted" | "ignored" | "denied"
   >("prompt");
-  useEffect(() => {
-    const handleVisibility = () => {
-      const visible = document.visibilityState === "visible";
-      setIsPageVisible(visible);
-      if (!visible) {
-        discoveryRequestId.current += 1; // invalidate any in-flight discovery
-        setIsRefreshingDiscovery(false);
-      }
-    };
-    document.addEventListener("visibilitychange", handleVisibility);
-    return () => document.removeEventListener("visibilitychange", handleVisibility);
-  }, []);
-
   const [locationMessage, setLocationMessage] = useState<string | null>(null);
   const [guestSessionLoading, setGuestSessionLoading] = useState(false);
   const [guestSessionMessage, setGuestSessionMessage] = useState<string | null>(null);
