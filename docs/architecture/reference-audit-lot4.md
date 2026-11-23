@@ -3,22 +3,21 @@
 Date: 2026-11-23
 Branch: chore/architecture-folder-cleanup-2026-11
 
-## Corrections appliquées
-- `tooling/scripts/check-global-audit.ts`: chemins documentaires actualisés vers la structure canonique.
-- `tooling/scripts/check-go-no-go.ts`: chemins documentaires actualisés vers la structure canonique.
-- `docs/archive/README.md`: réindexation des sources historiques vers leurs emplacements actuels; liens relatifs vers les index de migration corrigés.
-- `docs/reference/documentation-migration-map.md`: références des domaines normalisées.
-- `PRODUCTION_CHECKLIST.md`: dossiers API, base de données, opérations et IA alignés.
-- `docs/architecture/folder-relocation-manifest-2026.md`: état du plan précisé après les Lots 1 à 3 et chemins de documentation canonisés.
+## Corrections finalisées
+- Références documentaires canoniques mises à jour dans les scripts Global Audit et Go/No-Go.
+- Index archive, migration map, checklist production et manifest de déplacement alignés lors des corrections précédentes.
+- **Foundation checker assaini** : inventaire historique de 145 chemins remplacé par 27 ancres structurelles actuelles; validations de structure de `src/data/knowledge.json` maintenues (JSON valide, au moins 50 entrées, champs de base).
+- Le script `check:foundation` appelle maintenant le checker Foundation, puis lint et tests; il était auparavant un simple alias lint/tests.
+- Six index documentaires (foundation, product, api, modules, database, engineering/ai) corrigés pour les préfixes de dossiers renumérotés.
+- Lien de l'index AI corrigé vers `docs/architecture/ai-architecture-integrations.md`.
 
-## Finding bloquant à traiter
-Le checker `tooling/scripts/check-foundation.mjs` référence encore un inventaire de fichiers obsolète. Comparaison de son inventaire avec l'arbre de la branche: **110 chemins inexistants sur 145 références**. Des chemins de documentation et scripts historiques y figurent encore; son résultat ne peut donc pas servir de validation fiable. Il n'a pas été modifié dans ce lot afin d'éviter d'effacer des contrôles fonctionnels sans revue de leur intention. Une refonte de son inventaire est recommandée au lot de stabilisation.
-
-## Validation effectuée
-- Arbre Git de la branche récupéré et non tronqué: 1 147 entrées (924 fichiers).
-- Vérification ciblée des scripts de contrôle global, Go/No-Go, foundation et checklist de production.
-- Références de dossiers documentaires normalisées dans les fichiers corrigés.
-- Les 46 liens relatifs du `docs/README.md` avaient déjà été contrôlés au Lot 3 (0 cible manquante).
+## Vérifications de chemins
+- Arbre Git non tronqué : 1 148 entrées.
+- Foundation : 27/27 chemins existent.
+- Global Audit : 19/19 chemins requis existent.
+- Go/No-Go : 17/17 chemins requis existent.
+- 10 README d'index de dossiers canoniques contrôlés; les liens relatifs obsolètes identifiés ont été corrigés. Une détection regex brute a un faux positif sur un nom de fichier contenant des parenthèses; la cible UDI a été confirmée présente dans l'arbre.
+- Vérification ciblée des chemins liés aux scripts déplacés et aux dossiers documentaires.
 
 ## Limites
-L'audit n'a pas exécuté Bun, tests, lint, typecheck ni build; l'environnement de travail ne dispose pas de l'installation locale du projet. Une analyse exhaustive de chaque lien Markdown de tous les fichiers et des imports TypeScript n'est pas certifiée par ce lot. Le checker Foundation en mauvais état constitue un point de suivi explicite.
+Les scripts ne sont pas exécutés dans cet environnement : Bun, dépendances, lint, tests, typecheck et build restent non vérifiés. La validation de liens a couvert les dix README d'index canoniques, pas chaque fichier Markdown du dépôt. L'audit exhaustif de tous les imports TypeScript n'est pas certifié ici.
