@@ -153,3 +153,7 @@ La langue effective doit aussi être appliquée à `document.documentElement.lan
 Implémentation : `src/lib/i18n/useI18n.ts`. Tests : `tests/i18n.test.ts` (ordre des langues préférées, variantes régionales, préférence manuelle et changement de langue).
 
 **Limite actuelle :** les catalogues disponibles sont uniquement FR et EN. Une langue système différente ne déclenche pas une traduction approximative : Vitalis utilise le français par défaut jusqu'à l'ajout d'un catalogue validé.
+
+## Parcours PWA à sensation native (2026)
+
+Pour l'expérience d'ouverture, d'installation, de navigation, de reprise, d'interaction et d'accessibilité native-like, suivre le parcours consolidé : [pwa-native-experience-journey-2026.md](./pwa-native-experience-journey-2026.md). Le parcours sépare les fonctionnalités déjà présentes, les priorités et les preuves qui restent à valider.
