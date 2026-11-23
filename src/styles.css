@@ -1546,3 +1546,26 @@ header,
 .native-press:active {
   transform: scale(0.96);
 }
+
+/* P0 mobile lifecycle polish: reserve keyboard space and prevent fixed chrome
+   from covering focused fields while the visual viewport shrinks. */
+:root {
+  --keyboard-inset: 0px;
+  scroll-padding-bottom: calc(var(--safe-bottom) + var(--keyboard-inset) + 1rem);
+}
+
+html.keyboard-open {
+  scroll-padding-bottom: calc(var(--keyboard-inset) + 1rem);
+}
+
+html.keyboard-open .reel-bottom-nav,
+html.keyboard-open [data-mobile-fixed-chrome="true"] {
+  display: none !important;
+}
+
+input,
+textarea,
+select,
+[contenteditable="true"] {
+  scroll-margin-bottom: calc(var(--keyboard-inset) + var(--safe-bottom) + 1rem);
+}
