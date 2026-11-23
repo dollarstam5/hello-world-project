@@ -19,7 +19,7 @@ Normalized the nine active documentation folder names, removing numeric prefixes
 
 ## Additional changes
 - Updated `docs/README.md` active folder paths and references.
-- Renamed the malformed UDI model file to `Evolution du modèle de données - Unified Digital Identity (UDI).md`.
+- Renamed the malformed UDI model file to `Evolution du modèle de données - Unified Digital Identity UDI.md`.
 - Added this report.
 
 ## Validation

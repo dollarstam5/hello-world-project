@@ -41,7 +41,7 @@ Ce répertoire suit une structure canonique pour la documentation active.
 - [Personas Vitalis](./product/personas.md)
 - [Niveaux de confiance](./product/trust-levels.md)
 - [Domaine Trust et Trust Engine](./architecture/trust-domain.md)
-- [Modèle d'identité numérique unifiée](./architecture/Evolution du modèle de données - Unified Digital Identity (UDI).md)
+- [Modèle d'identité numérique unifiée](./architecture/Evolution du modèle de données - Unified Digital Identity UDI.md)
 - [Performance PWA](./operations/performance-pwa.md)
 - [Registre des problèmes de performance](./operations/performance-issues.md)
 - [Registre des problèmes techniques](./operations/technical-issues.md)
