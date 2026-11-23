@@ -2,8 +2,8 @@
 
 Repository: `dollarstam5/hello-world-project`
 Branch: `chore/architecture-folder-cleanup-2026-11`
-Status: target paths locked where tooling compatibility is confirmed; guarded items listed below.
-Scope: folders only in this phase. No file-level refactoring, import edits, API changes, or merges into main.
+Status: plan de référence mis à jour après Lots 1 à 3. Les chemins déjà normalisés sont indiqués comme réalisés; les migrations src/ restent à faire.
+Scope: plan d'architecture évolutif; Lot 4 audite les références. Aucun merge vers main.
 
 ## Target architecture
 `src/{app,modules,platform,shared,composition,config,data,assets}`
@@ -14,15 +14,15 @@ Dependency direction: shared is foundational; platform depends on shared; module
 |---|---|---|
 | `.github/` | `.github/` | Keep CI/workflows at root |
 | `.lovable/` | `.lovable/` | Keep until Lovable metadata location is verified |
-| `docs/00-foundation/` | `docs/foundation/` | Rename |
-| `docs/01-product/` | `docs/product/` | Rename |
-| `docs/02-architecture/` | `docs/architecture/` | Rename |
-| `docs/03-api/` | `docs/api/` | Rename |
-| `docs/03-engines/` | `docs/modules/` | Rename |
-| `docs/04-database/` | `docs/database/` | Rename |
-| `docs/05-ai/` | `docs/engineering/ai/` | Move |
-| `docs/06-operations/` | `docs/operations/` | Rename |
-| `docs/07-annexes/` | `docs/reference/` | Rename |
+| `docs/foundation/` | `docs/foundation/` | Rename |
+| `docs/product/` | `docs/product/` | Rename |
+| `docs/architecture/` | `docs/architecture/` | Rename |
+| `docs/api/` | `docs/api/` | Rename |
+| `docs/modules/` | `docs/modules/` | Rename |
+| `docs/database/` | `docs/database/` | Rename |
+| `docs/engineering/ai/` | `docs/engineering/ai/` | Move |
+| `docs/operations/` | `docs/operations/` | Rename |
+| `docs/reference/` | `docs/reference/` | Rename |
 | `docs/archive/` | `docs/archive/` | Keep |
 | `drizzle/` | `drizzle/` | Keep until drizzle config/package scripts updated |
 | `packages/core-contracts/` | `packages/core-contracts/` | Keep until workspace/alias and imports are migrated |

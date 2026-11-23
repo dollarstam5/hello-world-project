@@ -11,10 +11,10 @@
 
 ## Documentation
 
-- [ ] All API endpoints documented in `docs/03-api/`
-- [ ] Database schema in `docs/04-database/`
-- [ ] Deployment steps in `docs/06-operations/deployment.md`
-- [ ] AI guidelines in `docs/05-ai/`
+- [ ] All API endpoints documented in `docs/api/`
+- [ ] Database schema in `docs/database/`
+- [ ] Deployment steps in `docs/operations/deployment.md`
+- [ ] AI guidelines in `docs/engineering/ai/`
 
 ## Code Quality
 
