@@ -1,6 +1,6 @@
 import type { ErrorComponentProps } from "@tanstack/react-router";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import {
   Outlet,
   Link,
@@ -11,10 +11,9 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
-import { AppShell } from "@/components/app/AppShell";
-import { AccessModeProvider } from "@/domains/access-mode";
+import { RootAppComposition } from "@/app/composition";
 import { useI18n } from "@/lib/i18n/useI18n";
-import { useRootLifecycle } from "@/app/bootstrap/useRootLifecycle";
+import { useRootLifecycle } from "@/app/bootstrap";
 
 function NotFoundComponent() {
   const { t } = useI18n();
@@ -128,13 +127,9 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <AccessModeProvider>
-        <AppShell>
-          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-          <Outlet />
-        </AppShell>
-      </AccessModeProvider>
-    </QueryClientProvider>
+    <RootAppComposition queryClient={queryClient}>
+      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+      <Outlet />
+    </RootAppComposition>
   );
 }
