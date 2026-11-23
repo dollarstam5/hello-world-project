@@ -7,7 +7,6 @@
   "scope": "/",
   "display": "standalone",
   "display_override": ["standalone", "minimal-ui"],
-  "orientation": "portrait",
   "background_color": "#0b0d11",
   "theme_color": "#0b0d11",
   "lang": "fr",
@@ -39,12 +38,16 @@
       "url": "/flash"
     },
     {
-      "name": "Radar",
-      "url": "/radar"
+      "name": "Scan",
+      "url": "/scan"
     },
     {
-      "name": "Espace",
-      "url": "/espace"
+      "name": "En direct",
+      "url": "/reel"
+    },
+    {
+      "name": "Radar",
+      "url": "/radar"
     }
   ]
 }
