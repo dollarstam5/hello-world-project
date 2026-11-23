@@ -156,6 +156,18 @@ function RootComponent() {
 
   const { queryClient } = Route.useRouteContext();
 
+  // Foreground restoration: refresh currently active queries when the shell
+  // announces a genuine background→foreground return, but never while offline.
+  useEffect(() => {
+    const onResume = () => {
+      if (typeof navigator !== "undefined" && navigator.onLine) {
+        void queryClient.invalidateQueries({ refetchType: "active" });
+      }
+    };
+    window.addEventListener("vitalis:app-resume", onResume);
+    return () => window.removeEventListener("vitalis:app-resume", onResume);
+  }, [queryClient]);
+
   return (
     <QueryClientProvider client={queryClient}>
       <AccessModeProvider>
