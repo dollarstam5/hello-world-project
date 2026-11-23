@@ -132,6 +132,7 @@ Cette mise à jour est une inspection statique et documentaire. Aucun build, CI,
 **Modifications réalisées dans le code sur cette branche :**
 
 - `src/components/app/AppShell.tsx`: ajoute un suivi de `visibilitychange` et `pageshow` (incluant BFCache), dispatch un événement de reprise `vitalis:app-resume` après passage background→foreground, et met à jour la taille du viewport visuel via `visualViewport.resize/scroll`. Tous les listeners sont nettoyés et le CSS runtime est réinitialisé au démontage.
+- `src/routes/__root.tsx`: écoute l'événement de reprise et invalide les queries TanStack Query actives uniquement lorsque la connexion est présente, pour rafraîchir les données au retour sans lancer de refetch hors ligne.
 - `src/styles.css`: ajoute `--keyboard-inset`, scroll-padding pour la zone clavier, scroll-margin sur inputs, et masque la barre de navigation fixe lorsque le clavier virtuel réduit l'espace disponible.
 - `tests/mobile-viewport-contract.test.ts`: couvre le contrat de cycle de vie, pageshow, visualViewport, variable clavier et masquage de la barre mobile.
 
