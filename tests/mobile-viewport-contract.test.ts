@@ -73,6 +73,10 @@ describe("installed PWA viewport contract", () => {
   });
   it("tracks foreground resume and virtual keyboard viewport changes in the AppShell", () => {
     expect(appShellSource).toContain("vitalis:app-resume");
+    expect(rootRoute).toContain("vitalis:app-resume");
+    expect(rootRoute).toContain('refetchType: "active"');
+    expect(rootRoute).toContain("queryClient.invalidateQueries");
+
     expect(appShellSource).toContain('document.addEventListener("visibilitychange", onVisibilityChange)');
     expect(appShellSource).toContain('window.addEventListener("pageshow", onPageShow)');
     expect(appShellSource).toContain("window.visualViewport");
