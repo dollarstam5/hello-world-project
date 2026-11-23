@@ -97,6 +97,6 @@ done
 
 CHROMIUM_BIN="$(find "$HOME/.cache/ms-playwright" -type f -name chrome -print -quit)"
 test -n "$CHROMIUM_BIN"
-bun scripts/check-mobile-scroll.mjs "$CHROMIUM_BIN" "$BASE_URL"
+bun tooling/scripts/check-mobile-scroll.mjs "$CHROMIUM_BIN" "$BASE_URL"
 
 echo "Production mobile E2E smoke validation passed for Home, Flash, Scan, En direct, Radar and Vision at four target viewports in French and English (48 screenshots), including bottom-scroll clearance assertions for Flash and Scan."

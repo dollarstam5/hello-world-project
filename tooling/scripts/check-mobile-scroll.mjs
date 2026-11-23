@@ -5,7 +5,7 @@ import { join } from "node:path";
 
 const [chromePath, baseUrl] = process.argv.slice(2);
 if (!chromePath || !baseUrl) {
-  throw new Error("Usage: bun scripts/check-mobile-scroll.mjs <chromium-path> <base-url>");
+  throw new Error("Usage: bun tooling/scripts/check-mobile-scroll.mjs <chromium-path> <base-url>");
 }
 
 const port = 9222;

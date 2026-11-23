@@ -128,7 +128,7 @@ const requiredFiles = [
   "src/routes/api/cron/maintenance.ts",
   "src/data/knowledge.json",
   "src/data/vita-dictionary.json",
-  "scripts/check-supabase-tests.mjs",
+  "tooling/scripts/check-supabase-tests.mjs",
   "supabase/tests/database/00_schema_contract.test.sql",
   "supabase/tests/database/10_profiles_identity_rls.test.sql",
   "supabase/tests/database/20_content_isolation_rls.test.sql",

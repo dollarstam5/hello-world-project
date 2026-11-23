@@ -1,4 +1,4 @@
-import script from "../scripts/test-mobile-e2e.sh?raw";
+import script from "../tooling/scripts/test-mobile-e2e.sh?raw";
 import { describe, expect, it } from "vitest";
 
 describe("mobile visual smoke contract", () => {
@@ -33,7 +33,7 @@ describe("mobile visual smoke contract", () => {
   });
 
   it("asserts bottom-scroll clearance above the fixed navigation for Flash and Scan", () => {
-    expect(script).toContain("scripts/check-mobile-scroll.mjs");
+    expect(script).toContain("tooling/scripts/check-mobile-scroll.mjs");
     expect(script).toContain("bottom-scroll clearance assertions");
   });
 });
