@@ -3,7 +3,7 @@ name: Quality
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main, feat/pwa-native-experience-journey-2026]
   pull_request:
     branches: [main]
 
