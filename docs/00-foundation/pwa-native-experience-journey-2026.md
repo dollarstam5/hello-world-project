@@ -127,3 +127,16 @@ Cette mise à jour est une inspection statique et documentaire. Aucun build, CI,
 - `src/platform/pwa/install.ts`, `src/platform/pwa/update.ts`
 - `public/manifest.webmanifest`, `public/sw.js`
 - `src/components/app/AppShell.tsx`, `src/styles.css`
+## 8. P0 code pass — cycle de vie, clavier et reprise (2026-11-23)
+
+**Modifications réalisées dans le code sur cette branche :**
+
+- `src/components/app/AppShell.tsx`: ajoute un suivi de `visibilitychange` et `pageshow` (incluant BFCache), dispatch un événement de reprise `vitalis:app-resume` après passage background→foreground, et met à jour la taille du viewport visuel via `visualViewport.resize/scroll`. Tous les listeners sont nettoyés et le CSS runtime est réinitialisé au démontage.
+- `src/styles.css`: ajoute `--keyboard-inset`, scroll-padding pour la zone clavier, scroll-margin sur inputs, et masque la barre de navigation fixe lorsque le clavier virtuel réduit l'espace disponible.
+- `tests/mobile-viewport-contract.test.ts`: couvre le contrat de cycle de vie, pageshow, visualViewport, variable clavier et masquage de la barre mobile.
+
+**Décision de navigation/gestes :** aucun interception global du geste retour Android/iOS ajouté. Le navigateur et le système gardent le contrôle des gestes de bord/retour; les modals doivent conserver leur propre priorité de fermeture. La navigation par historique n'est pas interceptée.
+
+**CI :** `.github/workflows/quality.yml` est configuré pour déclencher Quality sur cette branche de travail en plus de main. L'exécution doit être consultée après le push; l'ajout du déclencheur ne prouve pas encore la réussite des jobs.
+
+**Limites de preuve :** les tests automatisés et le rendu sur appareils physiques ne sont pas exécutés depuis cet environnement. Vérifier visuellement clavier, retour système, safe-area et reprise sur Android/iOS réels.
