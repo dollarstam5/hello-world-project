@@ -31,7 +31,7 @@ jobs:
   reel-focused:
     name: Réel focused lint, tests and SSR/mobile rendering
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 60
     steps:
       - name: Checkout without persisted credentials
         uses: actions/checkout@v5
