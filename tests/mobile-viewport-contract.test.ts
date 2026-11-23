@@ -77,12 +77,13 @@ describe("installed PWA viewport contract", () => {
     expect(rootRoute).toContain('refetchType: "active"');
     expect(rootRoute).toContain("queryClient.invalidateQueries");
 
-    expect(appShellSource).toContain('document.addEventListener("visibilitychange", onVisibilityChange)');
+    expect(appShellSource).toContain(
+      'document.addEventListener("visibilitychange", onVisibilityChange)',
+    );
     expect(appShellSource).toContain('window.addEventListener("pageshow", onPageShow)');
     expect(appShellSource).toContain("window.visualViewport");
     expect(appShellSource).toContain("--keyboard-inset");
     expect(styles).toContain("html.keyboard-open .reel-bottom-nav");
     expect(styles).toContain("scroll-margin-bottom: calc(var(--keyboard-inset)");
   });
-
 });
