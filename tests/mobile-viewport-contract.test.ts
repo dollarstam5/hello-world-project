@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import rootRoute from "../src/routes/__root.tsx?raw";
+import appShellSource from "../src/components/app/AppShell.tsx?raw";
 import manifestSource from "../public/manifest.webmanifest?raw";
 import { renderErrorPage } from "../src/lib/error-page";
 
@@ -70,4 +71,14 @@ describe("installed PWA viewport contract", () => {
     expect(html).toContain("min-height: 100vh; min-height: 100dvh;");
     expect(html).toContain("safe-area-inset-bottom");
   });
+  it("tracks foreground resume and virtual keyboard viewport changes in the AppShell", () => {
+    expect(appShellSource).toContain("vitalis:app-resume");
+    expect(appShellSource).toContain('document.addEventListener("visibilitychange", onVisibilityChange)');
+    expect(appShellSource).toContain('window.addEventListener("pageshow", onPageShow)');
+    expect(appShellSource).toContain("window.visualViewport");
+    expect(appShellSource).toContain("--keyboard-inset");
+    expect(styles).toContain("html.keyboard-open .reel-bottom-nav");
+    expect(styles).toContain("scroll-margin-bottom: calc(var(--keyboard-inset)");
+  });
+
 });
