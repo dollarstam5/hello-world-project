@@ -94,6 +94,67 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   useExperienceBoot();
 
+  // Mobile lifecycle: resume safely after backgrounding/BFCache and track the
+  // visual viewport when the virtual keyboard changes the usable screen height.
+  useEffect(() => {
+    if (typeof window === "undefined" || typeof document === "undefined") return;
+
+    const root = document.documentElement;
+    const visualViewport = window.visualViewport;
+    let wasHidden = document.visibilityState === "hidden";
+
+    const updateKeyboardViewport = () => {
+      const viewport = window.visualViewport;
+      if (!viewport) {
+        root.style.setProperty("--keyboard-inset", "0px");
+        root.classList.remove("keyboard-open");
+        return;
+      }
+      const inset = Math.max(0, window.innerHeight - viewport.height - viewport.offsetTop);
+      const keyboardOpen = inset > 120;
+      root.style.setProperty("--keyboard-inset", keyboardOpen ? `${inset}px` : "0px");
+      root.classList.toggle("keyboard-open", keyboardOpen);
+    };
+
+    const announceResume = () => {
+      updateKeyboardViewport();
+      window.dispatchEvent(new CustomEvent("vitalis:app-resume", {
+        detail: { online: navigator.onLine, timestamp: Date.now() },
+      }));
+    };
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        wasHidden = true;
+        return;
+      }
+      if (wasHidden) {
+        wasHidden = false;
+        announceResume();
+      }
+    };
+    const onPageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) announceResume();
+      updateKeyboardViewport();
+    };
+
+    updateKeyboardViewport();
+    visualViewport?.addEventListener("resize", updateKeyboardViewport);
+    visualViewport?.addEventListener("scroll", updateKeyboardViewport);
+    window.addEventListener("resize", updateKeyboardViewport, { passive: true });
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    window.addEventListener("pageshow", onPageShow);
+
+    return () => {
+      visualViewport?.removeEventListener("resize", updateKeyboardViewport);
+      visualViewport?.removeEventListener("scroll", updateKeyboardViewport);
+      window.removeEventListener("resize", updateKeyboardViewport);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      window.removeEventListener("pageshow", onPageShow);
+      root.style.removeProperty("--keyboard-inset");
+      root.classList.remove("keyboard-open");
+    };
+  }, []);
+
   useEffect(() => {
     useAssistantPreferences.getState().hydrate();
   }, []);
