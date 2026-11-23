@@ -1,32 +1,29 @@
-# Tooling relocation — Lot 2
+# Documentation normalization — Lot 3
 
 Date: 2026-11-23
 
 ## Scope
+Normalized the nine active documentation folder names, removing numeric prefixes. Files were relocated with their Git blob contents preserved. No destination collisions were found.
 
-Moved all 10 maintenance scripts from `scripts/` and `src/scripts/` into `tooling/scripts/`. Updated package commands, test imports, and script-internal path references.
+## Directory mapping
+- `docs/00-foundation/` → `docs/foundation/`
+- `docs/01-product/` → `docs/product/`
+- `docs/02-architecture/` → `docs/architecture/`
+- `docs/03-api/` → `docs/api/`
+- `docs/03-engines/` → `docs/modules/`
+- `docs/04-database/` → `docs/database/`
+- `docs/05-ai/` → `docs/engineering/ai/`
+- `docs/06-operations/` → `docs/operations/`
+- `docs/07-annexes/` → `docs/reference/`
+- `docs/archive/` remains unchanged.
 
-## Files relocated
+## Additional changes
+- Updated `docs/README.md` active folder paths and references.
+- Renamed the malformed UDI model file to `Evolution du modèle de données - Unified Digital Identity (UDI).md`.
+- Added this report.
 
-- `scripts/check-global-audit.ts` → `tooling/scripts/check-global-audit.ts`
-- `scripts/check-go-no-go.ts` → `tooling/scripts/check-go-no-go.ts`
-- `scripts/check-mobile-scroll.mjs` → `tooling/scripts/check-mobile-scroll.mjs`
-- `scripts/check-performance-budgets.ts` → `tooling/scripts/check-performance-budgets.ts`
-- `scripts/check-reproducibility.ts` → `tooling/scripts/check-reproducibility.ts`
-- `scripts/performance-budget-measurement.ts` → `tooling/scripts/performance-budget-measurement.ts`
-- `scripts/test-mobile-e2e.sh` → `tooling/scripts/test-mobile-e2e.sh`
-- `src/scripts/check-foundation.mjs` → `tooling/scripts/check-foundation.mjs`
-- `src/scripts/check-secrets.mjs` → `tooling/scripts/check-secrets.mjs`
-- `src/scripts/check-supabase-tests.mjs` → `tooling/scripts/check-supabase-tests.mjs`
-
-## Reference updates
-
-- `package.json` command entries use the new tooling paths.
-- The mobile E2E script and contract test reference the relocated mobile scroll helper.
-- The performance budget checker and tests import the relocated measurement module.
-- Audit and go/no-go checks require the relocated paths.
-- Foundation checker now points to the relocated Supabase test checker.
-
-## Validation status
-
-Path references were reviewed and updated. Lint, tests, typecheck and build were not run in this environment. Some foundation checker documentation paths and references to scripts outside this lot remain legacy and are deferred to later cleanup.
+## Validation
+- 231 files found in the active folders.
+- No destination path collisions found before migration.
+- Markdown link audit deferred to Lot 4.
+- Archive contents were not moved.
