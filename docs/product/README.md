@@ -4,7 +4,7 @@ Cette section documente la vision produit, les intentions d'usage, les parcours,
 
 ## Références canoniques
 
-- [Principes fondamentaux de Vitalis — règle prioritaire sur les demandes partielles](../00-foundation/vitalis-core-principles.md)
+- [Principes fondamentaux de Vitalis — règle prioritaire sur les demandes partielles](../foundation/vitalis-core-principles.md)
 
 - [Vision](./vision.md)
 - [Personas](./personas.md)
@@ -26,13 +26,13 @@ Cette section documente la vision produit, les intentions d'usage, les parcours,
 
 ## Références d'architecture liées
 
-- [Architecture du système de communication](../02-architecture/communication-system-architecture.md)
-- [Gouvernance des données de démonstration — V1](../02-architecture/demo-data-governance.md)
-- [Charte des micro-interactions et du mouvement — V1](../02-architecture/micro-interactions-motion-charter-v1.md)
-- [Domaine Trust et Trust Engine](../02-architecture/trust-domain.md)
-- [Modèle d'identité numérique unifiée](../02-architecture/identity-model.md)
-- [Standards de navigation mobile Android, iOS et Web](../02-architecture/mobile-navigation-standards.md)
-- [Matrice de conformité de la navigation](../07-annexes/navigation-compliance-matrix.md)
+- [Architecture du système de communication](../architecture/communication-system-architecture.md)
+- [Gouvernance des données de démonstration — V1](../architecture/demo-data-governance.md)
+- [Charte des micro-interactions et du mouvement — V1](../architecture/micro-interactions-motion-charter-v1.md)
+- [Domaine Trust et Trust Engine](../architecture/trust-domain.md)
+- [Modèle d'identité numérique unifiée](../architecture/identity-model.md)
+- [Standards de navigation mobile Android, iOS et Web](../architecture/mobile-navigation-standards.md)
+- [Matrice de conformité de la navigation](../reference/navigation-compliance-matrix.md)
 
 ## Sources historiques conservées
 

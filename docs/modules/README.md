@@ -4,7 +4,7 @@ Ce répertoire regroupe les contrats produit, UI/UX, architecture et référence
 
 ## Principe transversal prioritaire — demandes partielles
 
-Tous les moteurs doivent appliquer les [principes fondamentaux de Vitalis](../00-foundation/vitalis-core-principles.md) : exécuter toute demande exploitable avec les informations disponibles, puis proposer les compléments facultatifs. Une information réellement indispensable, un consentement ou une autorisation manquante peut empêcher l'action concernée, mais ne justifie pas de rejeter les éléments déjà exploitables.
+Tous les moteurs doivent appliquer les [principes fondamentaux de Vitalis](../foundation/vitalis-core-principles.md) : exécuter toute demande exploitable avec les informations disponibles, puis proposer les compléments facultatifs. Une information réellement indispensable, un consentement ou une autorisation manquante peut empêcher l'action concernée, mais ne justifie pas de rejeter les éléments déjà exploitables.
 
 ## Règle transversale de visibilité
 
@@ -62,9 +62,9 @@ Veille est documenté comme un moteur de supervision des missions et d'analyse d
 
 L'UDI est une capacité transversale d'agrégation et de présentation de l'identité, pas un moteur métier autonome. Ses sources restent dans les dossiers d'architecture et d'API.
 
-- [Modèle métier UDI](<../02-architecture/14-VITALA-VEILLE-ENGINE. Model - Unified Digital Identity (UDI).md>)
-- [Contrat Unified Digital Identity API](../03-api/5.%20Unified%20Digital%20Identity%20API.md)
-- [Évolution du modèle de données UDI](<../02-architecture/Evolution du mod�le de donn�es - Unified Digital Identity (UDI).md>)
+- [Modèle métier UDI](<../architecture/14-VITALA-VEILLE-ENGINE. Model - Unified Digital Identity (UDI).md>)
+- [Contrat Unified Digital Identity API](../api/5.%20Unified%20Digital%20Identity%20API.md)
+- [Évolution du modèle de données UDI](<../architecture/Evolution du modèle de données - Unified Digital Identity UDI.md>)
 
 ## Limites et traçabilité
 

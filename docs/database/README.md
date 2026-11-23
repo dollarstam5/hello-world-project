@@ -6,7 +6,7 @@ This section documents the repository-backed PostgreSQL model, migrations, grant
 
 - [Data dictionary](./data-dictionary.md) — baseline tables, relationships, fields, and sync metadata.
 - [Schema design, grants, and RLS](./schema-design.md) — baseline access matrix, test coverage, and reconciliation work.
-- [Database architecture](../02-architecture/database-architecture.md) — Auth, persistence, synchronization, and migration-source boundaries.
+- [Database architecture](../architecture/database-architecture.md) — Auth, persistence, synchronization, and migration-source boundaries.
 
 ## PostgreSQL standards
 
