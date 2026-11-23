@@ -38,6 +38,9 @@ jobs:
       - name: Install locked dependencies
         run: bun install --frozen-lockfile
 
+      - name: Mobile viewport and lifecycle contract
+        run: bun run test:run -- tests/mobile-viewport-contract.test.ts
+
       - name: Verify foundation and secrets
         run: |
           bun run check:foundation
