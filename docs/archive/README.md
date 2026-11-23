@@ -4,8 +4,8 @@ Ce dossier documentaire répertorie les sources historiques conservées pour la 
 
 ## Outils de migration documentaire
 
-- [Cartographie de migration documentaire](../07-annexes/documentation-migration-map.md) — associe les références canoniques aux sources historiques recensées et liste les vérifications restantes.
-- [Candidats aux suppressions proposées](../07-annexes/proposed-document-removals.md) — liste distincte de candidats, sans autorisation de suppression.
+- [Cartographie de migration documentaire](../reference/documentation-migration-map.md) — associe les références canoniques aux sources historiques recensées et liste les vérifications restantes.
+- [Candidats aux suppressions proposées](../reference/proposed-document-removals.md) — liste distincte de candidats, sans autorisation de suppression.
 
 ## Structure actuelle
 
