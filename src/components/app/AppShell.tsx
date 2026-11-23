@@ -118,9 +118,11 @@ export function AppShell({ children }: { children: ReactNode }) {
 
     const announceResume = () => {
       updateKeyboardViewport();
-      window.dispatchEvent(new CustomEvent("vitalis:app-resume", {
-        detail: { online: navigator.onLine, timestamp: Date.now() },
-      }));
+      window.dispatchEvent(
+        new CustomEvent("vitalis:app-resume", {
+          detail: { online: navigator.onLine, timestamp: Date.now() },
+        }),
+      );
     };
     const onVisibilityChange = () => {
       if (document.visibilityState === "hidden") {
