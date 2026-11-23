@@ -47,6 +47,10 @@ describe("installed PWA viewport contract", () => {
   it("declares standalone installation and edge-to-edge viewport support", () => {
     const manifest = JSON.parse(manifestSource) as { display: string };
     expect(manifest.display).toBe("standalone");
+    expect(manifestSource).not.toContain('"orientation": "portrait"');
+    for (const shortcut of ["/flash", "/scan", "/reel", "/radar"]) {
+      expect(manifestSource).toContain(shortcut);
+    }
     expect(rootRoute).toContain("viewport-fit=cover");
   });
 
