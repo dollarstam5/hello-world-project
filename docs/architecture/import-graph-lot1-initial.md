@@ -388,3 +388,42 @@ AppShell
 - Aucune source applicative modifiée.
 - Aucun test, lint, typecheck ou build exécuté.
 - Le graphe AST/reverse-import complet, les cycles et la résolution exhaustive des importeurs entrants restent ouverts ; la migration reste suspendue jusqu'à leur établissement.
+
+
+## Suite de migration contrôlée — shared/components et app/navigation
+
+Après les constats précédents, deux petites tranches de déplacement ont été appliquées sur la branche. Les chemins historiques restent disponibles comme shims de compatibilité.
+
+### Primitives partagées déplacées
+
+| Ancien chemin | Emplacement canonique | Traitement |
+|---|---|---|
+| `src/components/app/Surface.tsx` | `src/shared/components/Surface.tsx` | Implémentation déplacée ; shim historique conservé. |
+| `src/components/app/Icon.tsx` | `src/shared/components/Icon.tsx` | Implémentation déplacée ; dépendances design résolues via `@/shared/tokens` et utilitaires via `@/shared/utils` ; shim historique conservé. |
+| `src/components/app/Indicator.tsx` | `src/shared/components/Indicator.tsx` | Implémentation déplacée ; shim historique conservé. |
+
+Le barrel `src/shared/components/index.ts` pointe désormais directement vers ces trois implémentations. `src/components/app/index.ts` continue de les exposer via les chemins de compatibilité. Aucune clé i18n n'est ajoutée à ces trois primitives.
+
+**FormField n'a pas été déplacé dans cette tranche.** Son libellé « optional » est codé en anglais et sa dépendance à Label doit être traitée avant de le considérer comme une primitive partagée neutre.
+
+### Navigation applicative déplacée
+
+| Ancien chemin | Emplacement canonique | Traitement |
+|---|---|---|
+| `src/components/app/BottomNav.tsx` | `src/app/navigation/BottomNav.tsx` | Implémentation déplacée ; shim historique conservé. |
+| `src/components/app/MenuSheet.tsx` | `src/app/navigation/MenuSheet.tsx` | Implémentation déplacée ; shim historique conservé. |
+| `src/components/app/reel-bottom-nav.css` | `src/app/navigation/reel-bottom-nav.css` | Feuille de style déplacée avec BottomNav. |
+
+Le barrel `src/app/navigation/index.ts` expose BottomNav et MenuSheet. AppShell importe BottomNav depuis ce nouveau dossier et conserve le chargement différé de MenuSheet via `React.lazy(() => import("@/app/navigation/MenuSheet"))`. La façade `src/app/app-shell/index.ts` réexporte les composants depuis `app/navigation`.
+
+Les responsabilités métier restent dans `app/navigation` : destinations Flash/Scan/Reel/Radar, routes Espace/Talents, libellés i18n et interactions haptics ne sont pas remontés dans shared.
+
+### Commits publiés
+
+- `fc8733595211ba69769bcd0fa5a0a4f72c277a28` — déplacement de Surface, Icon et Indicator vers shared/components.
+- `f3b71f39ba4b1005d27ee20635dab52ade853c7f` — déplacement de BottomNav et MenuSheet vers app/navigation.
+- `44d6e6d16a5b9fc2d6f74c12c3a015f297264e46` — correction pour préserver le chargement différé de MenuSheet.
+
+### Limites de validation
+
+Les mises à jour de branche ont été confirmées sur GitHub. Aucun test, lint, typecheck ou build n'a été exécuté dans cet environnement. Les shims évitent de casser les importeurs historiques connus, mais le graphe inverse exhaustif reste à calculer ; ces déplacements ne constituent pas une validation AST complète.
