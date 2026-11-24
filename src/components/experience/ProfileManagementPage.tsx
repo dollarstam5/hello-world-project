@@ -167,7 +167,7 @@ export function ProfileManagementPage() {
           <p className="text-subtitle">{t("profile.signInHint")}</p>
         </header>
         <Button asChild className="h-12 rounded-xl">
-          <Link to="/auth">{t("auth.signIn")}</Link>
+          <Link to="/auth" search={{}}>{t("auth.signIn")}</Link>
         </Button>
       </div>
     );
