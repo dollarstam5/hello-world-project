@@ -4,7 +4,7 @@ import { getMyReelGuestPresence } from "@/domains/presence/api/reel-guest-sessio
 type Access = {
   loading: boolean;
   mode: string;
-  guest?: { startedAt?: string } | null;
+  guest?: { startedAt?: number } | null;
 };
 
 export function useReelGuestPresence(
