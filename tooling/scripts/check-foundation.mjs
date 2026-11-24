@@ -47,13 +47,14 @@ try {
   if (!Array.isArray(entries) || entries.length < 50) {
     knowledgeError = "knowledge.json must contain at least 50 entries.";
   } else {
-    const invalid = entries.findIndex((entry) =>
-      !entry ||
-      typeof entry.id !== "string" ||
-      typeof entry.locale !== "string" ||
-      typeof entry.answer !== "string" ||
-      !Array.isArray(entry.questions) ||
-      !Array.isArray(entry.keywords)
+    const invalid = entries.findIndex(
+      (entry) =>
+        !entry ||
+        typeof entry.id !== "string" ||
+        typeof entry.locale !== "string" ||
+        typeof entry.answer !== "string" ||
+        !Array.isArray(entry.questions) ||
+        !Array.isArray(entry.keywords),
     );
     if (invalid !== -1) {
       knowledgeError = `knowledge.json entry ${invalid + 1} has an invalid structure.`;
@@ -68,5 +69,7 @@ if (missing.length || knowledgeError) {
   if (knowledgeError) console.error(knowledgeError);
   process.exitCode = 1;
 } else {
-  console.log(`Foundation check passed: ${requiredFiles.length} architecture anchors and local knowledge (${50}+ entries) are present.`);
+  console.log(
+    `Foundation check passed: ${requiredFiles.length} architecture anchors and local knowledge (${50}+ entries) are present.`,
+  );
 }
