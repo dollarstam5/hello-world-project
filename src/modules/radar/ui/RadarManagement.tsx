@@ -13,9 +13,9 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Indicator } from "@/components/app/Indicator";
+import { Indicator } from "@/shared/components/Indicator";
 import { RadarDraftForm } from "./RadarDraftForm";
-import { Surface } from "@/components/app/Surface";
+import { Surface } from "@/shared/components/Surface";
 import { useAuth } from "@/modules/auth/model/useAuth";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { formatCommunicationMessage } from "@/lib/communication/format";
