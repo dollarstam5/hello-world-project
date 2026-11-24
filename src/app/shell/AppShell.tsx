@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useRouterState } from "@tanstack/react-router";
-import { BottomNav } from "@/components/app/BottomNav";
+import { BottomNav, MenuSheet } from "@/app/navigation";
 import { useExperienceBoot } from "@/lib/experience/orchestrator";
 import { OfflineBanner } from "@/components/experience/OfflineBanner";
 import { AppHeader } from "@/components/experience/AppHeader";
@@ -23,9 +23,6 @@ const ReelBottomNav = lazy(() =>
     default: module.ReelBottomNav,
   })),
 );
-const MenuSheet = lazy(() =>
-  import("@/components/app/MenuSheet").then((module) => ({ default: module.MenuSheet })),
-);
 const CommunicationSheet = lazy(() =>
   import("@/components/experience/CommunicationSheet").then((module) => ({
     default: module.CommunicationSheet,
@@ -39,14 +36,7 @@ const OnboardingSheet = lazy(() =>
 
 /**
  * AppShell — single mount-point that boots foundation services
- * (theme, i18n, onboarding hydration) and provides the calm canvas:
- *  - primary engine navigation on Home, Flash, Scan and Radar
- *  - dedicated navigation on Réel, with its own header and menu access
- *  - Flash owns its own engine header; the shared primary navigation remains
- *  - optional assistant access, controlled by the person
- *  - offline awareness
- *  - first-run guided Vitalis onboarding
- *  - low-end / reduced-motion gating (Phase 5/5)
+ * (theme, i18n, onboarding hydration) and provides the calm canvas.
  */
 export function AppShell({ children }: { children: ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
