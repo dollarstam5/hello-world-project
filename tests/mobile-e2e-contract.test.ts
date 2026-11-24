@@ -35,7 +35,7 @@ describe("mobile visual smoke contract", () => {
 
   it("does not cancel active validation and avoids fixed port collisions", () => {
     expect(workflow).toContain("cancel-in-progress: false");
-    expect(script).toContain("PORT=\"$(python3");
+    expect(script).toContain('PORT="$(python3');
     expect(script).toContain("setsid bunx wrangler dev");
     expect(script).toContain('kill -- "-$SERVER_PID"');
     expect(script).toContain("trap cleanup EXIT");
