@@ -67,7 +67,7 @@ function localBase(specifier, importer) {
 
 async function resolves(base) {
   const candidates = [base];
-  if (!extname(base)) {
+  if (!resolutionExtensions.includes(extname(base))) {
     for (const extension of resolutionExtensions) candidates.push(base + extension);
     for (const extension of resolutionExtensions) candidates.push(join(base, "index" + extension));
   }
