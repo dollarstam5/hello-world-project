@@ -8,7 +8,7 @@ on:
     branches: [main]
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: quality-${{ github.ref }}
@@ -23,8 +23,7 @@ jobs:
       - name: Checkout without persisted credentials
         uses: actions/checkout@v5
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          persist-credentials: true
+          persist-credentials: false
 
       - name: Install Bun
         uses: oven-sh/setup-bun@v2
@@ -38,18 +37,6 @@ jobs:
 
       - name: Install locked dependencies
         run: bun install --frozen-lockfile
-
-      - name: Apply one-time lint autofixes to reported files
-        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
-        run: |
-          bunx eslint --fix .
-          if ! git diff --quiet; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add -u
-            git commit -m "style: apply quality lint autofixes"
-            git push origin HEAD:refs/heads/fix/reel-ssr-native-controls
-          fi
 
       - name: Verify foundation and secrets
         run: |
