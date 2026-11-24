@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import type { CommunicationRuntime } from "@/lib/communication/runtime";
 import type { ActivityTab } from "@/domains/presence/model/reel-proximity/reel-proximity.types";
 import { resetReelActivityProjection, useReelActivityProjection } from "@/domains/presence/model/reel-activity-projection";
-import type { ReelConnection, ReelGuestConnection } from "@/domains/presence/api/reel-presence.client";
+import type { ReelBip, ReelConnection, ReelGuestBip, ReelGuestConnection } from "@/domains/presence/api/reel-presence.client";
 
 type Params = {
   access: { mode: string };
@@ -14,16 +14,16 @@ type Params = {
   activityIdentity: string | null;
   refreshBips: () => Promise<void>;
   refreshConnections: () => Promise<void>;
-  receivedBips: unknown[];
-  receivedGuestBips: unknown[];
+  receivedBips: ReelBip[];
+  receivedGuestBips: ReelGuestBip[];
   bipsLoadedForIdentity: string | null;
   connections: ReelConnection[];
   guestConnections: ReelGuestConnection[];
   connectionsLoadedForIdentity: string | null;
-  setReceivedBips: (items: any[]) => void;
-  setReceivedGuestBips: (items: never[]) => void;
-  setConnections: (items: never[]) => void;
-  setGuestConnections: (items: never[]) => void;
+  setReceivedBips: (items: ReelBip[]) => void;
+  setReceivedGuestBips: (items: ReelGuestBip[]) => void;
+  setConnections: (items: ReelConnection[]) => void;
+  setGuestConnections: (items: ReelGuestConnection[]) => void;
   setBipsLoadedForIdentity: (identity: string | null) => void;
   setConnectionsLoadedForIdentity: (identity: string | null) => void;
 };
