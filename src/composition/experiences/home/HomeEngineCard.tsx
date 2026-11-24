@@ -1,0 +1,77 @@
+import { Link } from "@tanstack/react-router";
+import { ArrowUpRight } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import { Surface } from "@/shared/components/Surface";
+import { haptic } from "@/platform/device/haptics";
+
+type HomeEngineCardProps = {
+  to: "/flash" | "/scan" | "/reel" | "/radar";
+  icon: LucideIcon;
+  title: string;
+  description: string;
+  example: string;
+  exampleLabel: string;
+  action: string;
+  tone: "warm" | "info" | "primary" | "violet";
+};
+
+const toneClasses = {
+  warm: "bg-warm-soft text-warm",
+  info: "bg-info/10 text-info",
+  primary: "bg-primary-soft text-primary",
+  violet: "bg-intelligence-soft text-intelligence",
+} as const;
+
+export function HomeEngineCard({
+  to,
+  icon: Icon,
+  title,
+  description,
+  example,
+  exampleLabel,
+  action,
+  tone,
+}: HomeEngineCardProps) {
+  return (
+    <Link
+      to={to}
+      onClick={() => haptic.tap()}
+      className="native-press group block h-full rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+    >
+      <Surface
+        variant="elevated"
+        padding="md"
+        bordered
+        interactive
+        className="flex h-full min-h-36 flex-col justify-between gap-4 transition-all duration-200 group-hover:border-primary/40 group-active:scale-[0.98]"
+      >
+        <div className="flex items-start justify-between gap-3">
+          <span
+            className={`flex h-11 w-11 items-center justify-center rounded-2xl ${toneClasses[tone]} shadow-sm`}
+          >
+            <Icon className="h-5 w-5" aria-hidden />
+          </span>
+          <ArrowUpRight
+            className="h-4 w-4 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+            aria-hidden
+          />
+        </div>
+        <div className="space-y-1.5">
+          <h3 className="text-base font-semibold tracking-tight text-foreground">{title}</h3>
+          <p className="text-xs leading-relaxed text-muted-foreground line-clamp-2">
+              {description}
+            </p>
+          <div className="rounded-xl border border-border/40 bg-surface/80 px-2.5 py-1.5">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              {exampleLabel}
+            </span>
+            <p className="text-xs font-medium leading-relaxed">{example}</p>
+          </div>
+          <span className="block pt-0.5 text-xs font-semibold text-primary">{action}</span>
+        </div>
+      </Surface>
+    </Link>
+  );
+}
+
+
