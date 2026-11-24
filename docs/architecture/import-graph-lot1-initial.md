@@ -498,7 +498,7 @@ Les implémentations des surfaces réseau/PWA et de la page d’accueil ont ét�
 
 AppShell importe désormais les bannières depuis leurs propriétaires plateforme. Les façades `platform/offline` et `platform/pwa` exposent leurs composants UI via un sous-dossier `ui`. Les anciens chemins `components/experience/*` des trois bannières et de HomeFoundation restent des réexports de compatibilité. La façade `components/experience/index.ts` ne présente plus HomeFoundation ni OfflineBanner comme des exports canoniques.
 
-HomeFoundation reste une composition d’expérience à la racine, plutôt qu’un composant artificiellement attribué à Flash, Profile ou Vision. Ses dépendances croisées restent explicites ; la carte Vision embarquée n’a pas été déplacée indépendamment dans cette tranche.
+HomeFoundation reste une composition d’expérience à la racine, plutôt qu’un composant artificiellement attribué à Flash, Profile ou Vision. Ses dépendances croisées restent explicites ; la carte Vision embarquée est également rangée dans `composition/experiences/vision`, avec un shim historique.
 
 ### Pages métier — prochaine extraction par ownership
 

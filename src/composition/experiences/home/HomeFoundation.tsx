@@ -13,7 +13,7 @@ import { useAuth } from "@/modules/auth/model/useAuth";
 import { claimNameGreetingForSession, getHomeGreetingKey } from "@/lib/communication/greeting";
 import { formatCommunicationMessage } from "@/lib/communication/format";
 import { createDemoFlashes } from "@/modules/flash/model/demo-flashes";
-import { VitalisVisionCard } from "@/components/experience/VitalisVisionCard";
+import { VitalisVisionCard } from "@/composition/experiences/vision/VitalisVisionCard";
 import heroPhoto from "@/assets/images/experience/home-neighbours-1600.webp";
 import heroPhotoSmall from "@/assets/images/experience/home-neighbours-800.webp";
 
