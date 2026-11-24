@@ -1,9 +1,9 @@
-import type { AccessModeState } from "@/domains/access-mode";
+import type { AccessModeState } from "@/modules/access-mode";
 import {
   evaluateVitalisDecision,
   type VitalisDecision,
   type VitalisDecisionContext,
-} from "@/domains/access-mode";
+} from "@/modules/access-mode";
 
 export type ReelOperation =
   | "enter"

@@ -7,7 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { useAuth } from "@/domains/auth";
+import { useAuth } from "@/modules/auth";
 import {
   endReelGuestSession,
   getReelGuestSession,

@@ -3,7 +3,7 @@ import {
   evaluateEngineAccess,
   evaluateVitalisDecision,
   type VitalisEngine,
-} from "@/domains/access-mode";
+} from "@/modules/access-mode";
 
 const state = (
   mode: "visitor" | "guest" | "member",

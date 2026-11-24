@@ -36,7 +36,7 @@ import {
   startReelPresence,
   type ReelPresence,
 } from "@/modules/reel/api/reel-presence.client";
-import { useAccessMode } from "@/domains/access-mode";
+import { useAccessMode } from "@/modules/access-mode";
 import { useI18n } from "@/lib/i18n/useI18n";
 import type { MessageKey } from "@/lib/i18n/messages";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
