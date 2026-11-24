@@ -67,7 +67,7 @@ export function useReelProximityController() {
   );
 
   const activityIdentity = access.mode === "guest"
-    ? access.guest?.startedAt ?? null
+    ? access.guest?.startedAt == null ? null : String(access.guest.startedAt)
     : access.memberId ?? null;
   const {
     connections, setConnections, connectionsLoadedForIdentity, setConnectionsLoadedForIdentity,
