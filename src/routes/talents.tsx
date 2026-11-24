@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Sparkles } from "lucide-react";
 import { EnginePreviewCard } from "@/components/experience/EnginePreviewCard";
-import { SectionFoundation } from "@/components/experience/SectionFoundation";
+import { SectionFoundation } from "@/composition/layouts/SectionFoundation";
 
 export const Route = createFileRoute("/talents")({
   head: () => ({
