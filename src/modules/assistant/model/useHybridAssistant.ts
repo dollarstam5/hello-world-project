@@ -12,7 +12,7 @@ import type {
 import { listPromotedAssistantAnswers } from "@eco/core-db";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useNetworkStatus } from "@/lib/platform/useNetworkStatus";
-import { useAuth } from "@/domains/auth";
+import { useAuth } from "@/modules/auth";
 import { searchLocalKnowledge } from "../services/localSearch.service";
 import {
   AssistantStreamError,
