@@ -14,7 +14,7 @@ export function getReelActivityStatusKey(
 }
 
 const AssistantTab = lazy(() =>
-  import("@/domains/assistant/ui/AssistantTab").then((module) => ({
+  import("@/modules/assistant/ui/AssistantTab").then((module) => ({
     default: module.AssistantTab,
   })),
 );

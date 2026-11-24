@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   assistantCacheKey,
   normalizeAssistantText,
-} from "@/domains/assistant/services/mapping.service";
+} from "@/modules/assistant/services/mapping.service";
 import { safeAssistantRoute } from "@/lib/ai/assistant-policy";
 
 describe("fondation Vitala", () => {
