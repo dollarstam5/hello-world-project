@@ -530,3 +530,25 @@ Les pages consultées dans `components/experience` ont été déplacées vers le
 Les routes mises à jour sont `/espace/informations`, `/espace/parametres/application`, `/espace/parametres/profil`, `/espace/profil`, `/espace/apercu` et `/vision`. Les façades `modules/auth`, `modules/profile`, `app/settings` et `composition/experiences/vision` exposent leurs pages. Les primitives Surface et Indicator utilisées par les pages profil/auth/settings pointent vers `shared/components`.
 
 Cette tranche n’affirme pas que tous les fichiers restant dans `components/experience` sont désormais homogènes : AppHeader, CommunicationSheet et OnboardingSheet conservent leurs responsabilités d’intégration app/communication. Le graphe inverse complet et l’analyse AST des importeurs restent à faire. Aucun test, lint, typecheck ou build n’a été exécuté.
+
+
+## Audit d’imports — première passe sur la branche
+
+Référence de l’audit : branche `chore/architecture-folder-cleanup-2026-11`, HEAD après correction AppShell : `af64b726af5c2fc327445c728e8b2d428aecd8c7`.
+
+L’arbre Git récursif recense 468 fichiers TypeScript/JavaScript sous `src/`. La première passe ciblée a relevé deux imports résiduels dans `app/shell/AppShell.tsx` vers l’ancien espace `@/domains/*`, alors que `src/domains/` ne contient plus les implémentations. Ces références auraient contourné les nouveaux points d’entrée modules et pouvaient provoquer une résolution invalide :
+
+- `@/domains/auth/model/useAuth` → `@/modules/auth`
+- `@/domains/access-mode` → `@/modules/access-mode`
+
+Les deux imports ont été corrigés dans `AppShell.tsx`. Le chargement différé de `MenuSheet` et de `ReelBottomNav` n’a pas été modifié.
+
+La passe a également confirmé un point de frontière à traiter séparément : `shared/components/SyncIndicator.tsx` consomme `useSyncStatus` de `platform/offline` et `useI18n`. Il s’agit donc d’une interface de statut de synchronisation liée à la plateforme, et non d’une primitive neutre. Son déplacement doit être accompagné d’un inventaire de ses importeurs et d’une stratégie de compatibilité ; il n’a pas été déplacé dans cette correction ciblée.
+
+### État de couverture et validation
+
+Cette première passe n’est pas encore un audit exhaustif des 468 fichiers : l’analyse systématique des imports relatifs, alias, barrels, shims, références dans tests/outillage et cycles potentiels reste à terminer. Aucun résultat « zéro référence obsolète » n’est donc revendiqué.
+
+Le workflow GitHub Actions `Quality` existe, mais ses déclencheurs push ciblent `main` et ses déclencheurs pull_request ciblent les PR vers `main`; aucun run n’est associé à cette branche/au commit contrôlé. Le statut GitHub du commit est `pending` sans statut ni check publié. Les outils disponibles dans cette session permettent de lire les runs et de relancer des jobs existants, mais n’exposent pas l’action de dispatch d’un workflow ni un environnement local pour exécuter Bun. En conséquence, lint, tests, typecheck et build ne sont pas déclarés exécutés.
+
+Commit de correction : `af64b726af5c2fc327445c728e8b2d428aecd8c7`.
