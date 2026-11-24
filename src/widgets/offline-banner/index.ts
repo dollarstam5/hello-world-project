@@ -1,1 +1,1 @@
-export { OfflineBanner } from "@/components/experience/OfflineBanner";
+export { OfflineBanner } from "@/platform/offline/ui/OfflineBanner";
