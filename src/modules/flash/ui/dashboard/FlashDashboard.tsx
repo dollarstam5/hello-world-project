@@ -1,4 +1,4 @@
-import { Surface } from "@/components/app/Surface";
+import { Surface } from "@/shared/components/Surface";
 import { FlashDashboardDeleteDialog } from "./components/FlashDashboardDeleteDialog";
 import { FlashDashboardEmptyState } from "./components/FlashDashboardEmptyState";
 import { FlashDashboardDateGroup } from "./components/FlashDashboardDateGroup";
