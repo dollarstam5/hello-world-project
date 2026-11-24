@@ -483,3 +483,30 @@ Les exports `src/composition/layouts/index.ts` et `src/composition/widgets/index
 Commit de cette tranche : `01f1bbf6dd8407b30cd3113fcb8bb4fd30b69560`.
 
 Publication GitHub confirmée. Aucun test, lint, typecheck ou build n'a été exécuté. Les shims maintiennent les anciens imports, mais le graphe inverse exhaustif reste incomplet.
+
+
+## Tranche suivante — ownership des bannières plateforme et de l’accueil
+
+Les implémentations des surfaces réseau/PWA et de la page d’accueil ont été déplacées selon leur responsabilité, avec shims de compatibilité aux anciens chemins.
+
+| Ancien chemin | Emplacement canonique | Ownership |
+|---|---|---|
+| `components/experience/OfflineBanner.tsx` | `platform/offline/ui/OfflineBanner.tsx` | Présentation de l’état réseau et de synchronisation offline ; consomme les hooks offline et le statut réseau. |
+| `components/experience/InstallBanner.tsx` | `platform/pwa/ui/InstallBanner.tsx` | Interface d’installation PWA ; conserve le prompt natif, les instructions manuelles, le stockage de fermeture et les haptics. |
+| `components/experience/UpdateBanner.tsx` | `platform/pwa/ui/UpdateBanner.tsx` | Interface de mise à jour du service worker ; conserve le hook d’update et l’action de rechargement. |
+| `components/experience/HomeFoundation.tsx` | `composition/experiences/home/HomeFoundation.tsx` | Composition de l’accueil : auth, identité, Flash de démonstration, aperçu profil et carte Vision. Ce n’est pas une primitive générique ni un module métier isolé. |
+
+AppShell importe désormais les bannières depuis leurs propriétaires plateforme. Les façades `platform/offline` et `platform/pwa` exposent leurs composants UI via un sous-dossier `ui`. Les anciens chemins `components/experience/*` des trois bannières et de HomeFoundation restent des réexports de compatibilité. La façade `components/experience/index.ts` ne présente plus HomeFoundation ni OfflineBanner comme des exports canoniques.
+
+HomeFoundation reste une composition d’expérience à la racine, plutôt qu’un composant artificiellement attribué à Flash, Profile ou Vision. Ses dépendances croisées restent explicites ; la carte Vision embarquée n’a pas été déplacée indépendamment dans cette tranche.
+
+### Pages métier — prochaine extraction par ownership
+
+L’inventaire des routes consultées établit les responsabilités suivantes, sans les regrouper sous `experience` :
+
+- `AccountInformationPage` est une page de compte/authentification (route `/espace/informations`) ; son accès direct à `supabase.auth.getUser()` justifie un placement dans `modules/auth` ou un sous-espace compte rattaché à auth.
+- `ProfileManagementPage`, `ProfileVisibilitySettingsPage` et `PublicProfilePreviewPage` relèvent du module `profile`, avec `ProfileFieldRow` à déplacer avec son consommateur.
+- `ApplicationSettingsPage` assemble langue, thème et préférences assistant ; elle relève de l’application (`app/settings`), pas d’un module métier unique.
+- `VitalisVisionPage` est une page éditoriale de présentation produit, liée à la route `/vision` ; elle doit être traitée comme une expérience de présentation dédiée, et non comme un écran métier de Profile ou un composant générique.
+
+Ces pages n’ont pas été déplacées dans ce commit : il faut encore établir leurs importeurs entrants et inspecter les dépendances de `ProfileFieldRow` avant les extractions ciblées. Aucun test, lint, typecheck ou build n’a été exécuté.

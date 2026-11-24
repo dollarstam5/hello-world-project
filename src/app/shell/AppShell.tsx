@@ -2,10 +2,10 @@ import { lazy, Suspense, useEffect, useMemo, useRef, useState, type ReactNode } 
 import { useRouterState } from "@tanstack/react-router";
 import { BottomNav } from "@/app/navigation";
 import { useExperienceBoot } from "@/lib/experience/orchestrator";
-import { OfflineBanner } from "@/components/experience/OfflineBanner";
+import { OfflineBanner } from "@/platform/offline/ui/OfflineBanner";
 import { AppHeader } from "@/components/experience/AppHeader";
-import { InstallBanner } from "@/components/experience/InstallBanner";
-import { UpdateBanner } from "@/components/experience/UpdateBanner";
+import { InstallBanner } from "@/platform/pwa/ui/InstallBanner";
+import { UpdateBanner } from "@/platform/pwa/ui/UpdateBanner";
 import { useResponsive } from "@/lib/platform/useResponsive";
 import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
 import { AssistantNoticeLayer } from "@/components/experience/AssistantNoticeLayer";

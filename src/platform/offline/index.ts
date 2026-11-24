@@ -25,3 +25,5 @@ export {
   auditRepository,
   countPending,
 } from "@eco/core-db";
+
+export { OfflineBanner } from "./ui";
