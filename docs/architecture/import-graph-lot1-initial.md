@@ -236,3 +236,62 @@ Les routes secondaires montent séparément les façades ou composants experienc
 ### État de preuve et limites inchangées
 
 Les fichiers listés dans ce complément ont été récupérés sur la branche de travail et leurs imports directs relus. Le tree Git contient 436 fichiers TypeScript/TSX/JavaScript/JSX sous `src/`, mais leur contenu n'a pas tous été analysé dans cette passe. Les recherches de code du connecteur GitHub sont indexées sur la branche par défaut et ne sont donc pas utilisées pour certifier les importeurs de cette branche de travail. L'inventaire inverse complet, la résolution AST effective, les cycles et la matrice complète tests/fichiers restent à produire. Aucun déplacement applicatif ni exécution de test/build n'a été réalisé.
+
+
+## Complément vérifié — routes Espace et dépendances des composants experience (HEAD `eb35d5751698bf2e215229aca75e056421713df3`)
+
+Cette passe a poursuivi l'inventaire au-delà du shell et des routes principales. Les fichiers ci-dessous ont été récupérés depuis la branche de travail et leurs imports directs ont été relus.
+
+### Nouveaux importeurs entrants confirmés
+
+| Importeur | Cible | Type de lien |
+|---|---|---|
+| `src/routes/espace.apercu.tsx` | `@/components/experience/PublicProfilePreviewPage` | Route fichier `/espace/apercu`, montage direct. |
+| `src/routes/espace.informations.tsx` | `@/components/experience/AccountInformationPage` | Route fichier `/espace/informations`, montage direct. |
+| `src/routes/espace.parametres.application.tsx` | `@/components/experience/ApplicationSettingsPage` | Route fichier `/espace/parametres/application`, montage direct. |
+| `src/routes/espace.parametres.profil.tsx` | `@/components/experience/ProfileVisibilitySettingsPage` | Route fichier `/espace/parametres/profil`, montage direct. |
+| `src/routes/espace.profil.tsx` | `@/components/experience/ProfileManagementPage` | Route fichier `/espace/profil`, montage direct. |
+| `src/routes/espace.tsx` | `@/components/experience/PersonalDashboard` | Route fichier `/espace`, montage direct. |
+| `src/routes/vision.lazy.tsx` | `@/components/experience/VitalisVisionPage` | Route lazy TanStack `/vision`. |
+| `src/routes/index.lazy.tsx` | `@/components/experience/HomeFoundation` | Route lazy TanStack `/`. |
+| `src/routes/radar.lazy.tsx` | `@/components/experience/EnginePreviewCard`, `SectionFoundation`, `@/modules/radar/ui/RadarManagement` | Composition de la page Radar. |
+
+Les six routes Espace montent les composants de page directement. Elles ne passent pas par un barrel `components/experience` ni par les façades `widgets/*`. Les routes lazy Vision, accueil et Radar utilisent `createLazyFileRoute`, et non des appels `import()` écrits dans ces fichiers.
+
+### Dépendances sortantes directes des composants experience relus
+
+| Fichier | Dépendances directes observées | Conséquence de résolution / ownership |
+|---|---|---|
+| `AccountInformationPage.tsx` | React hooks, TanStack Router, lucide, `components/app/Surface`, `components/ui/button`, client Supabase, `lib/i18n/useI18n` | Page applicative authentifiée avec accès direct au client Supabase ; pas une primitive shared. |
+| `ApplicationSettingsPage.tsx` | TanStack Router, lucide, Surface/Button, types et hook i18n, store thème, préférences assistant, notifications assistant | Page de réglages qui orchestre plusieurs services app ; candidate composition/app settings. |
+| `AssistantNoticeLayer.tsx` | React hooks, Button, préférences et notices assistant, i18n, `CommunicationRuntimeProvider` | Surface client dépendante du runtime communication et de l'état assistant ; candidate app/composition ou platform UI selon séparation à venir. |
+| `EngineManagementGrid.tsx` | Indicator, Surface, i18n et `MessageKey` | Présentation générique de liste d'éléments, mais les clés i18n globales restent un couplage à examiner. |
+| `PersonalDashboard.tsx` | TanStack Router, icônes, Indicator/Surface, store identité, `modules/auth/model/useAuth`, i18n | Expérience Espace liée à l'auth, au profil et aux routes produit ; candidate composition/experiences/space. |
+| `ProfileFieldRow.tsx` | lucide, Button/Input, type `MessageKey` | Sous-composant de formulaire de profil, actuellement utilisé par ProfileManagementPage ; ne pas classer shared sans autre consommateur et sans découplage i18n. |
+| `ProfileManagementPage.tsx` | React hooks, TanStack Router, Supabase client, Surface, AlertDialog/Button, ProfileFieldRow local, store identité, i18n | Page métier profil avec lectures/écritures directes de `profiles` via Supabase. Frontière client à préserver. |
+| `ProfileQuickPreview.tsx` | React hooks, TanStack Router, Avatar, Sheet, Button, store identité, i18n, import dynamique du client Supabase | Surface client d'aperçu profil ; le chargement Supabase est différé dans un effet. |
+| `ProfileVisibilitySettingsPage.tsx` | TanStack Router, lucide, Indicator/Surface/Button, i18n | Page de réglage du profil, état « bientôt » ; composition applicative plutôt que shared. |
+| `PublicProfilePreviewPage.tsx` | TanStack Router, lucide, Indicator/Surface/Button, i18n | Page de route de prévisualisation, actuellement placeholder fonctionnel. |
+| `SmartStateView.tsx` | ReactNode, SkeletonList, EmptyState, StatusBanner, i18n | Seul candidat évident à une primitive de composition transversale, mais reste couplé aux primitives app et au dictionnaire i18n. |
+| `VisionEngineArtwork.tsx` | quatre assets d'images d'expérience | Présentation liée au récit Vision et aux ressources visuelles dédiées. |
+| `VitalisVisionCard.tsx` | TanStack Router, lucide, i18n | Carte de navigation produit vers /vision. |
+| `VitalisVisionPage.tsx` | TanStack Router, lucide, `useVisionI18n`, `VisionEngineArtwork` | Page d'expérience autonome, mais ancrée au parcours Vision et aux routes Flash/Scan/Reel/Radar. |
+| `PublicProfilePreviewPage.tsx` et pages Espace | Composants app/UI | Dépendances visuelles partagées, mais ownership métier conservé au niveau expérience Espace. |
+
+### Barrels et façades réexaminés
+
+- `src/components/experience/index.ts` ne réexporte que HomeFoundation, AppHeader, CommunicationSheet, OnboardingSheet, OfflineBanner et SmartStateView. Il n'expose pas toutes les pages de compte/profil/Vision listées ci-dessus.
+- `src/components/app/index.ts` réexporte un ensemble hétérogène : primitives visuelles, cartes nommées Flash/Radar/Wallet/Trust, et PublicProfilePreview. Le commentaire « domain-agnostic » n'est pas suffisant pour démontrer cette propriété pour tous les exports.
+- `src/layouts/index.ts` agrège mobile/tablet/desktop/ecosystem/modal et AdaptiveLayout ; `layouts/modal/index.ts` réexporte Sheet et Modal depuis `components/app`.
+- `src/widgets/index.ts` agrège six sous-façades. `widgets/activity-strip/index.ts` reste vide ; ai-layer, offline-banner, section-foundation, smart-feed et smart-state sont des réexports de composants experience.
+- `src/app/index.ts` agrège les façades app-shell, providers, router, bootstrap, guards, shell et composition ; cette agrégation n'est pas en soi une preuve que chaque sous-module est importé par l'entrée client.
+
+### Résolution de dépendances — résultats et limites
+
+- Les importeurs entrants directs des six pages Espace sont désormais établis par lecture des six fichiers route correspondants.
+- Les dépendances sortantes ci-dessus sont des imports directs observés, pas des dépendances transitives entièrement résolues. Les alias `@/` suivent le mapping `@/* -> ./src/*` déjà vérifié ; les imports relatifs et packages externes restent écrits tels quels.
+- Les pages AccountInformationPage et ProfileManagementPage accèdent directement au client Supabase dans le navigateur. Ce couplage est un signal architectural important : toute extraction doit conserver le contexte client et ne pas les déplacer dans une zone server-only.
+- ProfileQuickPreview charge le client Supabase par import dynamique à l'intérieur d'un effet ; cette arête doit rester distinguée des imports statiques.
+- Les pages Espace/Vision sont des composants client (hooks React, événements, composants UI). La frontière serveur des API `src/routes/api/**`, `src/server.ts` et `src/start.ts` demeure distincte.
+- Le contenu de tous les 436 fichiers source n'a pas encore été parcouru ; aucun résultat d'absence d'importeur n'est donc affirmé. Les imports calculés, cycles, exports transitifs, résolution par TypeScript et matrice complète de tests restent à établir.
+- Aucun fichier applicatif n'a été déplacé et aucun test, lint, typecheck ou build n'a été exécuté.
