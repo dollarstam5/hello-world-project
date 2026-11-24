@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Download, X } from "lucide-react";
-import { useInstallPrompt } from "@/platform/pwa";
-import { useI18n } from "@/lib/i18n/useI18n";
+import { useInstallPrompt } from "@/platform/pwa/install";
+import { useI18n } from "@/platform/internationalization/useI18n";
 import { haptic } from "@/platform/device/haptics";
 
 const STORAGE_KEY = "vitalis-install-banner-dismissed";
