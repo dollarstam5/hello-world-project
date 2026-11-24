@@ -9,8 +9,9 @@ import {
 import { endReelGuestPresence, getMyReelGuestPresence, startReelGuestPresence } from "@/domains/presence/api/reel-guest-session.functions";
 import { useAccessMode } from "@/domains/access-mode";
 import { evaluateReelAccess } from "@/domains/presence/policy/reel-access-policy";
+import type { MessageKey } from "@/lib/i18n/messages";
 
-type Translate = (key: string) => string;
+type Translate = (key: MessageKey) => string;
 type GuestPresence = {
   id: string;
   display_name: string;
