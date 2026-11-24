@@ -1,6 +1,6 @@
 import { statSync } from "node:fs";
 import { join } from "node:path";
-import { assertPerformanceBudgets } from "../src/platform/performance/performance-budget-policy";
+import { assertPerformanceBudgets } from "../../src/platform/performance/performance-budget-policy";
 import { measurePerformanceBudgets } from "./performance-budget-measurement";
 
 const candidates = ["dist/client", "dist", ".output/public"];
