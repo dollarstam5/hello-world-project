@@ -5,8 +5,22 @@ const root = process.cwd();
 const sourceRoots = ["src", "packages", "tests", "tooling"];
 const sourceExtensions = new Set([".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"]);
 const resolutionExtensions = [
-  ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".json", ".css", ".scss",
-  ".svg", ".png", ".jpg", ".jpeg", ".webp", ".woff", ".woff2",
+  ".ts",
+  ".tsx",
+  ".js",
+  ".jsx",
+  ".mjs",
+  ".cjs",
+  ".json",
+  ".css",
+  ".scss",
+  ".svg",
+  ".png",
+  ".jpg",
+  ".jpeg",
+  ".webp",
+  ".woff",
+  ".woff2",
 ];
 const workspaceAliases = {
   "@eco/core-contracts": "packages/core-contracts/src/index.ts",
@@ -44,7 +58,8 @@ async function walk(directory) {
 
 function extractSpecifiers(source) {
   const specifiers = [];
-  const staticImport = /\b(?:import|export)\s+(?:type\s+)?(?:[^'";]*?\s+from\s*)?["']([^"']+)["']/gs;
+  const staticImport =
+    /\b(?:import|export)\s+(?:type\s+)?(?:[^'";]*?\s+from\s*)?["']([^"']+)["']/gs;
   const dynamicImport = /\bimport\s*\(\s*["']([^"']+)["']\s*\)/g;
   for (const match of source.matchAll(staticImport)) specifiers.push(match[1]);
   for (const match of source.matchAll(dynamicImport)) specifiers.push(match[1]);
@@ -106,7 +121,9 @@ if (unresolved.length) {
   for (const item of unresolved) console.error(`- ${item.file} -> ${item.specifier}`);
   process.exitCode = 1;
 } else {
-  console.log(`Import resolution passed: ${files.length} source files and ${localImportCount} local imports checked.`);
+  console.log(
+    `Import resolution passed: ${files.length} source files and ${localImportCount} local imports checked.`,
+  );
 }
 
 if (legacy.length) {
