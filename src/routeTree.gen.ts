@@ -22,6 +22,7 @@ import { Route as TalentsRouteImport } from './routes/talents'
 import { Route as VisionRouteImport } from './routes/vision'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as ApiHealthRouteImport } from './routes/api/health'
+import { Route as ApiCronMaintenanceRouteImport } from './routes/api/cron/maintenance'
 import { Route as EspaceApercuRouteImport } from './routes/espace.apercu'
 import { Route as EspaceInformationsRouteImport } from './routes/espace.informations'
 import { Route as EspaceProfilRouteImport } from './routes/espace.profil'
@@ -99,6 +100,11 @@ const ApiHealthRoute = ApiHealthRouteImport.update({
   path: '/api/health',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiCronMaintenanceRoute = ApiCronMaintenanceRouteImport.update({
+  id: '/api/cron/maintenance',
+  path: '/api/cron/maintenance',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EspaceApercuRoute = EspaceApercuRouteImport.update({
   id: '/apercu',
   path: '/apercu',
@@ -169,6 +175,9 @@ export interface FileRoutesByFullPath {
   '/vision': typeof VisionRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/api/health': typeof ApiHealthRoute
+  '/api/cron/maintenance': typeof ApiCronMaintenanceRoute
+  '/api/cron/maintenance': typeof ApiCronMaintenanceRoute
+  '/api/cron/maintenance': typeof ApiCronMaintenanceRoute
   '/espace/apercu': typeof EspaceApercuRoute
   '/espace/informations': typeof EspaceInformationsRoute
   '/espace/profil': typeof EspaceProfilRoute
@@ -317,6 +326,7 @@ export interface RootRouteChildren {
   TalentsRoute: typeof TalentsRoute
   VisionRoute: typeof VisionRoute
   ApiHealthRoute: typeof ApiHealthRoute
+  ApiCronMaintenanceRoute: typeof ApiCronMaintenanceRoute
   ApiPublicAssistantRoute: typeof ApiPublicAssistantRoute
   ApiSyncPullRoute: typeof ApiSyncPullRoute
   ApiSyncPushRoute: typeof ApiSyncPushRoute
@@ -413,6 +423,13 @@ declare module '@tanstack/react-router' {
       path: '/api/health'
       fullPath: '/api/health'
       preLoaderRoute: typeof ApiHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/cron/maintenance': {
+      id: '/api/cron/maintenance'
+      path: '/api/cron/maintenance'
+      fullPath: '/api/cron/maintenance'
+      preLoaderRoute: typeof ApiCronMaintenanceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/espace/apercu': {
@@ -544,6 +561,7 @@ const rootRouteChildren: RootRouteChildren = {
   TalentsRoute: TalentsRoute,
   VisionRoute: VisionRoute,
   ApiHealthRoute: ApiHealthRoute,
+  ApiCronMaintenanceRoute: ApiCronMaintenanceRoute,
   ApiPublicAssistantRoute: ApiPublicAssistantRoute,
   ApiSyncPullRoute: ApiSyncPullRoute,
   ApiSyncPushRoute: ApiSyncPushRoute,
