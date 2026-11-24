@@ -768,7 +768,8 @@ export const messages = {
     "reel.settings.duration.720": "Journée",
     "reel.settings.duration.1440": "Continue",
     "reel.settings.duration.active": "Actif",
-    "reel.settings.duration.hint": "Votre présence s'arrête automatiquement à la fin du délai choisi.",
+    "reel.settings.duration.hint":
+      "Votre présence s'arrête automatiquement à la fin du délai choisi.",
     "reel.ui.radius": "Rayon de proximité",
     "reel.ui.radiusNote":
       "Le rayon est une préférence de proximité. La zone actuelle repose sur un découpage approximatif : elle ne garantit pas une distance exacte en mètres. Les positions GPS précises restent privées et temporaires.",
