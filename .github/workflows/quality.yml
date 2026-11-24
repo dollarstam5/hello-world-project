@@ -42,39 +42,7 @@ jobs:
       - name: Apply one-time lint autofixes to reported files
         if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
         run: |
-          bunx eslint --fix \
-            src/main.ts \
-            src/components/experience/AssistantNoticeLayer.tsx \
-            src/components/experience/CommunicationSheet.tsx \
-            src/components/experience/HomeFoundation.tsx \
-            src/components/experience/ProfileManagementPage.tsx \
-            src/components/ui/badge.tsx \
-            src/components/ui/button.tsx \
-            src/components/ui/form.tsx \
-            src/components/ui/navigation-menu.tsx \
-            src/components/ui/sidebar-provider.tsx \
-            src/components/ui/sidebar.tsx \
-            src/components/ui/toggle.tsx \
-            src/domains/access-mode/model/access-mode.tsx \
-            src/domains/assistant/ui/AssistantTab.tsx \
-            src/domains/flash/ui/FlashComposerReviewStep.tsx \
-            src/domains/flash/ui/dashboard/FlashDashboard.tsx \
-            src/domains/presence/model/reel-proximity/reel-proximity.helpers.ts \
-            src/domains/presence/model/reel-proximity/useReelActivity.ts \
-            src/domains/presence/model/reel-proximity/useReelBips.ts \
-            src/domains/presence/model/reel-proximity/useReelConnections.ts \
-            src/domains/presence/model/reel-proximity/useReelDiscovery.ts \
-            src/domains/presence/model/reel-proximity/useReelGuestPresence.ts \
-            src/domains/presence/model/reel-proximity/useReelLifecycle.ts \
-            src/domains/presence/model/reel-proximity/useReelMemberPresence.ts \
-            src/domains/presence/model/reel-proximity/useReelPanelState.ts \
-            src/domains/presence/model/reel-proximity/useReelPresence.ts \
-            src/domains/presence/model/useReelProximityController.ts \
-            src/domains/presence/ui/components/ReelRadarIdentity.tsx \
-            src/domains/presence/ui/components/ReelSettingsPanel.tsx \
-            src/domains/scan/hooks/useScanFlow.ts \
-            src/lib/communication/CommunicationRuntimeProvider.tsx \
-            src/lib/communication/gate.ts
+          bunx eslint --fix .
           if ! git diff --quiet; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
