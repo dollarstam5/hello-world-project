@@ -3,6 +3,7 @@ import {
   getMyActiveReelPresence,
   type ReelPresence,
 } from "@/domains/presence/api/reel-presence.client";
+import type { MessageKey } from "@/lib/i18n/messages";
 
 type Access = {
   mode: string;
@@ -18,7 +19,7 @@ type PresenceState = {
 
 export function useReelMemberPresence(
   access: Access,
-  t: (key: string) => string,
+  t: (key: MessageKey) => string,
   setPresenceMessage: (message: string | null) => void,
 ) {
   const [loadedPresence, setLoadedPresence] = useState<PresenceState | null>(null);
