@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useAccessMode } from "@/domains/access-mode";
+import type { MessageKey } from "@/lib/i18n/messages";
 
-type Translate = (key: string) => string;
+type Translate = (key: MessageKey) => string;
 
 export function useReelGuestSession(access: ReturnType<typeof useAccessMode>, t: Translate) {
   const [guestSessionLoading, setGuestSessionLoading] = useState(false);
