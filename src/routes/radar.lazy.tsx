@@ -1,7 +1,7 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { MapPin } from "lucide-react";
 import { EnginePreviewCard } from "@/components/experience/EnginePreviewCard";
-import { SectionFoundation } from "@/components/experience/SectionFoundation";
+import { SectionFoundation } from "@/composition/layouts/SectionFoundation";
 import { RadarManagement } from "@/modules/radar/ui/RadarManagement";
 
 export const Route = createLazyFileRoute("/radar")({
