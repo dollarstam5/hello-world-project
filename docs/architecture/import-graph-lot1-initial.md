@@ -459,3 +459,27 @@ Le texte anglais codé en dur « optional » a été retiré. `FormField` conser
 Commit de cette tranche : `2aa1b25cb29c33e0f1f4bea266a7bc8085881334`.
 
 La publication de la branche a été confirmée. Aucun test, lint, typecheck ou build n'a été exécuté. Le scan exhaustif des consommateurs et le graphe AST inverse restent ouverts.
+
+
+## Assainissement ciblé de components/experience
+
+Deux composants d'assemblage génériques ont quitté le dossier hétérogène `components/experience` pour la couche composition, avec shims de compatibilité :
+
+| Ancien chemin | Emplacement canonique | Responsabilité |
+|---|---|---|
+| `src/components/experience/SectionFoundation.tsx` | `src/composition/layouts/SectionFoundation.tsx` | Layout de sections traduites, utilisant les primitives shared. |
+| `src/components/experience/SmartStateView.tsx` | `src/composition/widgets/SmartStateView.tsx` | Orchestration loading/error/empty/ready, utilisant les primitives shared. |
+
+Les exports `src/composition/layouts/index.ts` et `src/composition/widgets/index.ts` sont ajoutés. Les deux implémentations consomment désormais les chemins canoniques `shared/components` pour Indicator, Icon, Surface, StatusBanner et Skeletons. Elles restent en composition plutôt qu'en shared car elles assemblent du contenu d'expérience, consomment i18n et utilisent le fallback EmptyState.
+
+### Composants experience laissés dans leur propriétaire actuel
+
+- `AppHeader` et `CommunicationSheet` restent liés au runtime communication, aux préférences assistant et à la projection Reel ; pas de déplacement indépendant.
+- `OfflineBanner` relève de l'expérience de synchronisation réseau/offline, mais compose les états de `platform/offline` et i18n. Une tranche distincte doit établir son emplacement plateforme et ses importeurs.
+- `InstallBanner` et `UpdateBanner` sont des surfaces PWA, avec stockage local, haptics et copie i18n. À traiter avec `platform/pwa`, pas à mélanger à shared.
+- `HomeFoundation` assemble auth, identité, Flash, profil et Vision ; son propriétaire cible est `composition/experiences`, après inventaire de ses importeurs.
+- Les pages de profil, compte, vision et gestion d'engines ne sont pas des primitives d'expérience : leur ownership métier doit être validé module par module avant déplacement.
+
+Commit de cette tranche : `01f1bbf6dd8407b30cd3113fcb8bb4fd30b69560`.
+
+Publication GitHub confirmée. Aucun test, lint, typecheck ou build n'a été exécuté. Les shims maintiennent les anciens imports, mais le graphe inverse exhaustif reste incomplet.
