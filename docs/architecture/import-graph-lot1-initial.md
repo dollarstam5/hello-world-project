@@ -169,3 +169,70 @@ Cette passe a relu directement les implémentations canoniques et les façades d
 ### Limites de cette passe
 
 Les fichiers listés ont été lus directement dans la branche au HEAD indiqué. Les arêtes entrantes ne sont ajoutées que lorsqu'un importeur a été vérifié. L'index complet des blobs ne donne pas, à lui seul, le contenu des imports de tous les fichiers : l'AST global, les cycles et la résolution exhaustive des tests ne sont toujours pas certifiés. Aucun test, lint, typecheck ou build n'a été exécuté.
+
+
+## Complément vérifié — importeurs directs du shell et des façades experience (HEAD `e6445fef2e681235bf4e7f20709dadd6c69f250d`)
+
+### Importeurs entrants vérifiés
+
+| Importeur | Cible importée | Nature du lien |
+|---|---|---|
+| `src/routes/__root.tsx` | `@/app/composition` (RootAppComposition) et `@/app/bootstrap` (useRootLifecycle) | Entrée racine de l'application ; monte la composition et le hook de cycle de vie. |
+| `src/app/composition/RootAppComposition.tsx` | `@/app/shell/AppShell` | Monte le shell canonique directement. |
+| `src/layouts/mobile/index.ts` | `@/components/app/AppShell` | Réexport via shim de compatibilité vers le shell canonique. |
+| `src/layouts/tablet/index.ts` | `@/components/app/AppShell` | Même shim, façade placeholder. |
+| `src/layouts/desktop/index.ts` | `@/components/app/AppShell` | Même shim, façade placeholder. |
+| `src/layouts/ecosystem/index.ts` | `@/components/app/AppShell` | Même shim, façade placeholder. |
+| `src/app/app-shell/index.ts` | `@/components/app/AppShell`, `BottomNav`, `MenuSheet` | Façade historique qui agrège shell et éléments de navigation/menu. |
+| `src/routes/index.lazy.tsx` | `@/components/experience/HomeFoundation` | Route d'accueil. |
+| `src/routes/radar.lazy.tsx` | `@/components/experience/EnginePreviewCard`, `SectionFoundation` | Composition de la page Radar. |
+| `src/routes/vision.lazy.tsx` | `@/components/experience/VitalisVisionPage` | Page Vision. |
+| `src/routes/espace.tsx` | `@/components/experience/PersonalDashboard` | Route Espace. |
+| `src/routes/talents.tsx` | `@/components/experience/EnginePreviewCard`, `SectionFoundation` | Composition de la page Talents. |
+| `src/app/shell/AppShell.tsx` | `@/components/app/BottomNav` et composants experience OfflineBanner, AppHeader, InstallBanner, UpdateBanner, AssistantNoticeLayer, CommunicationSheet, OnboardingSheet | Assemblage central ; quatre imports React.lazy sont des imports dynamiques réels. |
+
+Cette liste contient uniquement les importeurs dont le contenu a été relu dans cette passe. Elle ne prouve pas encore l'absence d'autres importeurs dans les 436 fichiers source du dépôt.
+
+### Graphe fonctionnel confirmé
+
+```text
+routes/__root
+  ├── app/bootstrap (useRootLifecycle)
+  └── app/composition (RootAppComposition)
+        └── app/shell/AppShell
+              ├── components/app/BottomNav
+              ├── components/experience/{AppHeader, OfflineBanner, InstallBanner,
+              │   UpdateBanner, AssistantNoticeLayer}
+              ├── React.lazy -> components/app/MenuSheet
+              ├── React.lazy -> components/experience/{CommunicationSheet, OnboardingSheet}
+              ├── modules/reel/{ReelCommunicationBridge, activity projection, ReelBottomNav}
+              └── lib/{communication, experience, app, platform, i18n}
+```
+
+Les routes secondaires montent séparément les façades ou composants experience ; elles ne passent pas toutes par un widget intermédiaire. Les répertoires `widgets/*` restent des façades minces et ne sont pas, à ce stade, les points d'entrée effectifs de toutes les pages.
+
+### Tests associés — liens directs confirmés
+
+| Test | Import direct observé | Portée réelle |
+|---|---|---|
+| `tests/components/bottom-nav.test.tsx` | `@/components/app/BottomNav` | Contrats d'ordre, d'accessibilité, d'état actif et de dimensions des contrôles. |
+| `tests/components/app-header.test.tsx` | `@/components/experience/AppHeader` | Contrat du header, compte de notifications et dimensions/focus des contrôles. |
+| `tests/components/communication-sheet.test.tsx` | `@/components/experience/CommunicationSheet` | Onglets, événements, état hors ligne et compteurs. |
+| `tests/components/engine-preview-card.test.tsx` | `@/components/experience/EnginePreviewCard` | Présentation d'un exemple explicitement identifié. |
+| `tests/sync-engine-loader.test.tsx` | `@/components/app/SyncEngineLoader` ; mock de `SyncEngineBootstrap` | Chargement différé du moteur de synchronisation. |
+| `tests/onboarding.test.ts` | `@/lib/experience/onboarding` | État et transitions du store d'onboarding, pas rendu de OnboardingSheet. |
+| `tests/home-journey-copy.test.ts` | `@/lib/i18n/messages`, `vision-messages` | Vérifie le contenu de traduction ; ne teste pas directement HomeFoundation. |
+| `tests/foundation.smoke.test.ts` | mapping assistant et assistant-policy | Aucun import direct des façades shell/experience dans ce test. |
+
+### Constats de dépendances et ownership
+
+1. **Le shell est un véritable point de composition, pas une simple coquille visuelle.** Il possède des états UI (menu, communication), observe le routeur, coordonne l'identité et le mode d'accès, hydrate les préférences assistant, déclenche l'orchestration, et monte plusieurs surfaces transverses. Une extraction devra préserver l'ordre et le cycle de vie de ces services.
+2. **La dépendance auth est incohérente à l'intérieur du shell.** `AppHeader` et `HomeFoundation` utilisent `@/modules/auth/model/useAuth`, tandis que `AppShell` conserve `@/domains/auth/model/useAuth`. C'est une dépendance historique restante à traiter dans un lot auth dédié ; ne pas modifier ce chemin dans ce lot de graphe.
+3. **Le composant BottomNav est lié à la navigation produit.** Ses destinations, clés i18n et interactions haptics sont codées dans le composant. Ownership provisoire : `app/navigation` ou `composition/navigation`, pas `shared/ui` sans extraction de la présentation et injection des items.
+4. **HomeFoundation n'est pas une simple façade visuelle générique.** Elle assemble identité/auth, messages, exemples Flash, navigation vers les modules, profil public et carte Vision. Candidate plus cohérente : `composition/experiences/home` ou un module d'expérience dédié ; à arbitrer après inventaire des importeurs et dépendances.
+5. **SectionFoundation est plus proche d'une primitive de composition.** Elle dépend toutefois des tokens i18n globaux et des primitives app. Elle pourrait relever de `composition/layouts` ou `shared/ui` après découplage des clés métier.
+6. **Les composants experience portent des responsabilités différentes.** OfflineBanner/InstallBanner/UpdateBanner sont des surfaces d'infrastructure PWA/réseau ; AppHeader est de la composition de navigation/identité ; CommunicationSheet est une expérience multi-modules ; OnboardingSheet est un parcours applicatif. Leur ancien dossier commun ne constitue pas une raison de les déplacer ensemble.
+
+### État de preuve et limites inchangées
+
+Les fichiers listés dans ce complément ont été récupérés sur la branche de travail et leurs imports directs relus. Le tree Git contient 436 fichiers TypeScript/TSX/JavaScript/JSX sous `src/`, mais leur contenu n'a pas tous été analysé dans cette passe. Les recherches de code du connecteur GitHub sont indexées sur la branche par défaut et ne sont donc pas utilisées pour certifier les importeurs de cette branche de travail. L'inventaire inverse complet, la résolution AST effective, les cycles et la matrice complète tests/fichiers restent à produire. Aucun déplacement applicatif ni exécution de test/build n'a été réalisé.
