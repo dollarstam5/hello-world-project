@@ -8,7 +8,7 @@
 | `/flash` | `src/routes/flash.tsx` | domaine `src/modules/flash` |
 | `/scan` | `src/routes/scan.tsx` | `src/domains/scan/ui/ScanPanel.tsx` |
 | `/reel` | `src/routes/reel.tsx` | `src/modules/reel/ui/ReelProximityScreen.tsx` (1044 lignes) |
-| `/radar` | `src/routes/radar.tsx` | domaine `src/domains/radar` |
+| `/radar` | `src/routes/radar.tsx` | domaine `src/modules/radar` |
 | `/talents` | `src/routes/talents.tsx` | menu 2x2 |
 | `/espace` (+ `/apercu`, `/profil`, `/informations`, `/parametres/profil`, `/parametres/application`) | `src/routes/espace*.tsx` | espace personnel |
 | `/auth`, `/reset-password` | `src/routes/auth.tsx`, `reset-password.tsx` | connexion |

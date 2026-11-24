@@ -5,7 +5,7 @@ import {
   RADAR_RADII_KM,
   RADAR_STATUSES,
 } from "@eco/core-contracts";
-import { radarDraftSchema } from "@/domains/radar/model/radar.schema";
+import { radarDraftSchema } from "@/modules/radar/model/radar.schema";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
