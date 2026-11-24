@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { StatusBanner } from "@/shared/components/StatusBanner";
-import { useNetworkStatus } from "@/lib/platform/useNetworkStatus";
+import { useNetworkStatus } from "@/platform/network/useNetworkStatus";
 import { useSyncStatus } from "@/platform/offline/sync-status";
-import { useI18n } from "@/lib/i18n/useI18n";
+import { useI18n } from "@/platform/internationalization/useI18n";
 
 /**
  * Shows connection loss and real worker synchronization states.
