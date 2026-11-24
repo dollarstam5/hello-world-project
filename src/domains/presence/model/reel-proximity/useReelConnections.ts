@@ -22,7 +22,7 @@ type Params = {
   access: Access;
   canUseMemberReel: boolean;
   activityIdentity: string | null;
-  t: (key: string) => string;
+  t: (key: MessageKey) => string;
 };
 
 export function useReelConnections({ access, canUseMemberReel, activityIdentity, t }: Params) {
