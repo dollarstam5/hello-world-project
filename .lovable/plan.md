@@ -6,7 +6,7 @@
 |---|---|---|
 | `/` | `src/routes/index.tsx` | `src/components/experience/HomeFoundation.tsx` |
 | `/flash` | `src/routes/flash.tsx` | domaine `src/modules/flash` |
-| `/scan` | `src/routes/scan.tsx` | `src/domains/scan/ui/ScanPanel.tsx` |
+| `/scan` | `src/routes/scan.tsx` | `src/modules/scan/ui/ScanPanel.tsx` |
 | `/reel` | `src/routes/reel.tsx` | `src/modules/reel/ui/ReelProximityScreen.tsx` (1044 lignes) |
 | `/radar` | `src/routes/radar.tsx` | domaine `src/modules/radar` |
 | `/talents` | `src/routes/talents.tsx` | menu 2x2 |
