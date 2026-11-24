@@ -11,6 +11,7 @@ import {
 import type { Person, RawNearbyPerson, PresenceCacheEntry } from "@/domains/presence/model/reel-proximity/reel-proximity.types";
 import { CACHE_TTL_MS } from "@/domains/presence/model/reel-proximity/reel-proximity.constants";
 import { distributePeopleHarmoniously } from "@/domains/presence/model/reel-proximity/reel-proximity.helpers";
+import type { MessageKey } from "@/lib/i18n/messages";
 
 // Shared cache preserved from the original controller-level module scope.
 let presenceCache: PresenceCacheEntry | null = null;
@@ -27,7 +28,7 @@ export function useReelDiscovery({
   discoveryRequestId,
 }: {
   access: { loading: boolean; mode: string };
-  t: (key: string) => string;
+  t: (key: MessageKey) => string;
   guestAreaLabel: string;
   isPageVisible: boolean;
   setIsOnline: (online: boolean) => void;
