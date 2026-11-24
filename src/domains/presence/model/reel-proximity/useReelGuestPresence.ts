@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getMyReelGuestPresence } from "@/domains/presence/api/reel-guest-session.functions";
+import type { MessageKey } from "@/lib/i18n/messages";
 
 type Access = {
   loading: boolean;
@@ -9,7 +10,7 @@ type Access = {
 
 export function useReelGuestPresence(
   access: Access,
-  t: (key: string) => string,
+  t: (key: MessageKey) => string,
   setDuration: (value: string) => void,
   setRadius: (value: string) => void,
   setPresenceDescription: (value: string) => void,
