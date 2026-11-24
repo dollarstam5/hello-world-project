@@ -2,7 +2,7 @@ import { readdir, stat } from "node:fs/promises";
 import { dirname, extname, join, resolve } from "node:path";
 
 const root = process.cwd();
-const sourceRoots = ["src", "packages", "tests", "tooling"];
+const sourceRoots = ["."];
 const sourceExtensions = new Set([".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"]);
 const resolutionExtensions = [
   ".ts",
@@ -47,7 +47,7 @@ async function walk(directory) {
   for (const entry of entries) {
     const path = join(absolute, entry.name);
     if (entry.isDirectory()) {
-      if (["node_modules", ".git", "dist", "build"].includes(entry.name)) continue;
+      if (["node_modules", ".git", "dist", "build", ".output", ".vercel", ".cache", "coverage"].includes(entry.name)) continue;
       files.push(...(await walk(path)));
     } else if (entry.isFile() && sourceExtensions.has(extname(entry.name))) {
       files.push(path);
