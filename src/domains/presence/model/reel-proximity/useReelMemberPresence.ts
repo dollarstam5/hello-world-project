@@ -49,7 +49,7 @@ export function useReelMemberPresence(
   const currentPresence =
     access.mode === "member" &&
     access.memberProfileState === "active" &&
-    loadedPresence?.memberId === access.memberId
+    loadedPresence && loadedPresence.memberId === access.memberId
       ? loadedPresence.presence
       : null;
   const canUseMemberReel =
