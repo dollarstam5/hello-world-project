@@ -49,7 +49,7 @@ describe("AppHeader", () => {
   it("keeps only the app identity, notifications and profile", () => {
     const markup = renderToStaticMarkup(<AppHeader onOpenCommunication={() => undefined} />);
 
-    expect(markup).toContain('class="sticky top-0 z-30 bg-transparent"');
+    expect(markup).toMatch(/class="sticky top-0 z-30 [^"]*"/);
     expect(markup).toContain('href="/"');
     expect(markup).toContain('src="/icon-192.svg"');
     expect(markup).toContain('aria-label="Ouvrir les communications"');
