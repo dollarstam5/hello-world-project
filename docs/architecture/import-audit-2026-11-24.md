@@ -2,9 +2,9 @@
 
 ## Périmètre et méthode
 
-Audit exécuté sur la branche `chore/architecture-folder-cleanup-2026-11`, commit contrôlé `dee07def7a2d68642c56b06c0385125daf8a4811`.
+Audit exécuté sur la branche `chore/architecture-folder-cleanup-2026-11`, commit contrôlé `b1607a4c8c48d2b8f0d5295a9f8daf0c71f454ed`.
 
-Le script `tooling/scripts/check-architecture-imports.mjs` parcourt les sources TypeScript/JavaScript de `src/`, `packages/`, `tests/` et `tooling/`. Il examine les imports statiques, les réexports et les imports dynamiques littéraux, puis vérifie la résolution des chemins relatifs, de l’alias `@/` et des alias workspace `@eco/*`. Il signale également les anciens chemins d’ownership pour les fichiers déjà migrés.
+Le script `tooling/scripts/check-architecture-imports.mjs` parcourt récursivement les fichiers TypeScript/JavaScript du dépôt entier, en excluant les répertoires générés, caches et dépendances (`node_modules`, `.git`, `dist`, `build`, `.output`, `.vercel`, `.cache`, `coverage`). Il examine les imports statiques, les réexports et les imports dynamiques littéraux, puis vérifie la résolution des chemins relatifs, de l’alias `@/` et des alias workspace `@eco/*`. Il signale également les anciens chemins d’ownership pour les fichiers déjà migrés.
 
 Le contrôle a été ajouté à `check:foundation` via `check:architecture-imports`, afin que l’audit soit rejoué à chaque validation Quality.
 
@@ -12,7 +12,7 @@ Le contrôle a été ajouté à `check:foundation` via `check:architecture-impor
 
 **Résultat : passé**
 
-- **589 fichiers** TypeScript/JavaScript parcourus.
+- **594 fichiers** TypeScript/JavaScript parcourus.
 - **1 292 imports locaux** vérifiés.
 - **0 import local non résolu**.
 - **0 référence détectée** vers les anciens chemins d’ownership suivis par le contrôle (anciens `domains/*`, primitives partagées déplacées et surfaces déplacées de `components/experience`).
@@ -20,7 +20,7 @@ Le contrôle a été ajouté à `check:foundation` via `check:architecture-impor
 Résultat CI observé :
 
 ```text
-Import resolution passed: 589 source files and 1292 local imports checked.
+Import resolution passed: 594 source files and 1292 local imports checked.
 No legacy ownership imports detected for migrated paths.
 ```
 
