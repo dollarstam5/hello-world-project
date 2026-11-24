@@ -5,7 +5,7 @@
 | Adresse | Fichier de route | Contenu |
 |---|---|---|
 | `/` | `src/routes/index.tsx` | `src/components/experience/HomeFoundation.tsx` |
-| `/flash` | `src/routes/flash.tsx` | domaine `src/domains/flash` |
+| `/flash` | `src/routes/flash.tsx` | domaine `src/modules/flash` |
 | `/scan` | `src/routes/scan.tsx` | `src/domains/scan/ui/ScanPanel.tsx` |
 | `/reel` | `src/routes/reel.tsx` | `src/modules/reel/ui/ReelProximityScreen.tsx` (1044 lignes) |
 | `/radar` | `src/routes/radar.tsx` | domaine `src/domains/radar` |
@@ -38,7 +38,7 @@ Le projet utilise TanStack Start : chaque fichier de `src/routes/` est une page 
 3. **Deux barres concurrentes** (`BottomNav` et `ReelBottomNav`), avec des styles différents pour les mêmes destinations.
 4. **Commandes de Réel incomplètes ou peu claires.** L'en-tête a préférences + cloche, mais les bips et mises en relation n'ont pas d'entrée distincte. Le Bluetooth est un bouton inactif au milieu de l'écran. Il devrait être dans l'en-tête, marqué « V3 ».
 5. **Réel n'est pas traduit.** `ReelProximityScreen.tsx` n'utilise pas `useI18n` : tout le texte est en français, y compris le texte de chargement dans `reel.tsx`.
-6. **Langues mélangées dans les exemples.** `src/domains/flash/model/demo-flashes.ts` écrit « Lieu non précisé » en dur.
+6. **Langues mélangées dans les exemples.** `src/modules/flash/model/demo-flashes.ts` écrit « Lieu non précisé » en dur.
 7. **Ordre de l'accueil.** Les exemples passent avant « Par où commencer ». Règle : présenter d'abord les moteurs dans un ordre clair (Flash, Scan, Réel, Radar), puis les exemples.
 8. **Informations de partage incomplètes.** `og:type`/`twitter:card` sont absents de la plupart des pages, et `reel.tsx` n'a pas `og:title`/`og:description`.
 

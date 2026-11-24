@@ -18,8 +18,8 @@ on:
       - "tests/vitest.config.ts"
       - ".github/workflows/scan-validation.yml"
       - "src/domains/scan/api/**"
-      - "src/domains/flash/api/**"
-      - "src/domains/flash/hooks/useFlashFeed.ts"
+      - "src/modules/flash/api/**"
+      - "src/modules/flash/hooks/useFlashFeed.ts"
       - "src/services/public-flash-discovery.server.ts"
   pull_request:
     branches:
@@ -37,8 +37,8 @@ on:
       - "tests/vitest.config.ts"
       - ".github/workflows/scan-validation.yml"
       - "src/domains/scan/api/**"
-      - "src/domains/flash/api/**"
-      - "src/domains/flash/hooks/useFlashFeed.ts"
+      - "src/modules/flash/api/**"
+      - "src/modules/flash/hooks/useFlashFeed.ts"
       - "src/services/public-flash-discovery.server.ts"
 
 permissions:

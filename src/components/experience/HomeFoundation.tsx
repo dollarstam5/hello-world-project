@@ -12,7 +12,7 @@ import { useIdentity } from "@/lib/experience/identity";
 import { useAuth } from "@/domains/auth/model/useAuth";
 import { claimNameGreetingForSession, getHomeGreetingKey } from "@/lib/communication/greeting";
 import { formatCommunicationMessage } from "@/lib/communication/format";
-import { createDemoFlashes } from "@/domains/flash/model/demo-flashes";
+import { createDemoFlashes } from "@/modules/flash/model/demo-flashes";
 import { VitalisVisionCard } from "@/components/experience/VitalisVisionCard";
 import heroPhoto from "@/assets/images/experience/home-neighbours-1600.webp";
 import heroPhotoSmall from "@/assets/images/experience/home-neighbours-800.webp";

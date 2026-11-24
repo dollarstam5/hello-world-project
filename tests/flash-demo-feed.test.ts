@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { PublicFlash } from "@eco/core-contracts";
-import { createDemoFlashes, selectFlashFeedItems } from "@/domains/flash/model/demo-flashes";
+import { createDemoFlashes, selectFlashFeedItems } from "@/modules/flash/model/demo-flashes";
 
 const NOW = Date.UTC(2026, 10, 10, 12);
 
