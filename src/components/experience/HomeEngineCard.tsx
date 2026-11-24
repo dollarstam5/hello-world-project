@@ -58,7 +58,9 @@ function EngineCard({
         </div>
         <div className="space-y-1.5">
           <h3 className="text-base font-semibold tracking-tight text-foreground">{title}</h3>
-          <p className="text-xs leading-relaxed text-muted-foreground line-clamp-2">{description}</p>
+          <p className="text-xs leading-relaxed text-muted-foreground line-clamp-2">
+            {description}
+          </p>
           <div className="rounded-xl border border-border/40 bg-surface/80 px-2.5 py-1.5">
             <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
               {exampleLabel}
@@ -108,7 +110,9 @@ export function HomeEngineCard({
         </div>
         <div className="space-y-1.5">
           <h3 className="text-base font-semibold tracking-tight text-foreground">{title}</h3>
-          <p className="text-xs leading-relaxed text-muted-foreground line-clamp-2">{description}</p>
+          <p className="text-xs leading-relaxed text-muted-foreground line-clamp-2">
+            {description}
+          </p>
           <div className="rounded-xl border border-border/40 bg-surface/80 px-2.5 py-1.5">
             <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
               {exampleLabel}

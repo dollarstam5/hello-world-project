@@ -48,16 +48,18 @@ export function FlashDashboard({
     <div className="stack-4">
       <FlashDashboardHeader onCreateFlash={onCreateFlash} />
       <FlashDashboardOverview records={records} />
-      {records.length > 0 ? <FlashDashboardFilters
-        query={filters.query}
-        onQueryChange={filters.setQuery}
-        status={filters.status}
-        onStatusChange={filters.setStatus}
-        period={filters.period}
-        onPeriodChange={filters.setPeriod}
-        hasActiveFilters={filters.hasActiveFilters}
-        onReset={filters.resetFilters}
-      /> : null}
+      {records.length > 0 ? (
+        <FlashDashboardFilters
+          query={filters.query}
+          onQueryChange={filters.setQuery}
+          status={filters.status}
+          onStatusChange={filters.setStatus}
+          period={filters.period}
+          onPeriodChange={filters.setPeriod}
+          hasActiveFilters={filters.hasActiveFilters}
+          onReset={filters.resetFilters}
+        />
+      ) : null}
       {records.length === 0 ? <FlashDashboardEmptyState /> : null}
       {records.length > 0 && filters.filteredRecords.length === 0 ? (
         <Surface variant="sunken" padding="md" bordered>

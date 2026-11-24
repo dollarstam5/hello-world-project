@@ -64,7 +64,11 @@ export function ReelSettingsPanel({
         )}
       </div>
 
-      <ReelRadiusSettings radius={radius} setRadius={setRadius} currentPresence={Boolean(currentPresence)} />
+      <ReelRadiusSettings
+        radius={radius}
+        setRadius={setRadius}
+        currentPresence={Boolean(currentPresence)}
+      />
 
       <div className="reel-panel__section">
         <div className="reel-setting-header">
@@ -102,9 +106,7 @@ export function ReelSettingsPanel({
               >
                 <strong>{value}</strong>
                 <small>{t(conf?.badgeKey ?? "reel.settings.duration.active")}</small>
-                {isSelected && (
-                  <span className="reel-duration-card__dot" aria-hidden="true" />
-                )}
+                {isSelected && <span className="reel-duration-card__dot" aria-hidden="true" />}
               </button>
             );
           })}

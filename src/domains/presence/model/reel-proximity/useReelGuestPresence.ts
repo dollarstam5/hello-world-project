@@ -30,7 +30,6 @@ export function useReelGuestPresence(
     expires_at: string;
   } | null>(null);
 
-  
   useEffect(() => {
     if (access.loading || access.mode !== "guest") {
       if (access.mode !== "guest") setGuestPresence(null);
@@ -80,9 +79,17 @@ export function useReelGuestPresence(
     return () => {
       cancelled = true;
     };
-  }, [access.loading, access.mode, access.guest?.startedAt, t, setDuration, setRadius, setPresenceDescription, setPresenceMessage]);
+  }, [
+    access.loading,
+    access.mode,
+    access.guest?.startedAt,
+    t,
+    setDuration,
+    setRadius,
+    setPresenceDescription,
+    setPresenceMessage,
+  ]);
 
-  
   return {
     guestDisplayName,
     setGuestDisplayName,

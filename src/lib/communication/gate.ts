@@ -16,7 +16,9 @@ export interface CommunicationGateState {
   deliveredRepeatKeys?: ReadonlySet<string>;
 }
 
-export interface CommunicationGateResult<T extends CommunicationCandidate = CommunicationCandidate> {
+export interface CommunicationGateResult<
+  T extends CommunicationCandidate = CommunicationCandidate,
+> {
   selected: T[];
   suppressed: T[];
 }

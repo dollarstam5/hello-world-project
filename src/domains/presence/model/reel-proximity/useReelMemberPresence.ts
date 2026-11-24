@@ -45,12 +45,20 @@ export function useReelMemberPresence(
     return () => {
       cancelled = true;
     };
-  }, [access.mode, access.memberProfileState, access.loading, access.memberId, t, setPresenceMessage]);
+  }, [
+    access.mode,
+    access.memberProfileState,
+    access.loading,
+    access.memberId,
+    t,
+    setPresenceMessage,
+  ]);
 
   const currentPresence =
     access.mode === "member" &&
     access.memberProfileState === "active" &&
-    loadedPresence && loadedPresence.memberId === access.memberId
+    loadedPresence &&
+    loadedPresence.memberId === access.memberId
       ? loadedPresence.presence
       : null;
   const canUseMemberReel =

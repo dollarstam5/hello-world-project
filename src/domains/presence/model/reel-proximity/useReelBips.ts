@@ -77,7 +77,6 @@ export function useReelBips({
     }
   }, [access.loading, access.mode, access.memberId, canUseMemberReel, activityIdentity, t]);
 
-
   const resolveReceivedBip = async (bip: ReelBip, action: "accept" | "decline") => {
     try {
       await commandReelBip(bip.id, action);
@@ -116,6 +115,18 @@ export function useReelBips({
     }
   };
 
-
-  return { receivedBips, setReceivedBips, bipsLoadedForIdentity, setBipsLoadedForIdentity, receivedGuestBips, setReceivedGuestBips, bipsLoading, bipsMessage, setBipsMessage, refreshBips, resolveReceivedBip, resolveGuestBip };
+  return {
+    receivedBips,
+    setReceivedBips,
+    bipsLoadedForIdentity,
+    setBipsLoadedForIdentity,
+    receivedGuestBips,
+    setReceivedGuestBips,
+    bipsLoading,
+    bipsMessage,
+    setBipsMessage,
+    refreshBips,
+    resolveReceivedBip,
+    resolveGuestBip,
+  };
 }

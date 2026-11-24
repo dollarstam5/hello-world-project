@@ -1,5 +1,9 @@
 import { useState } from "react";
-import type { Person, Panel, ActivityTab } from "@/domains/presence/model/reel-proximity/reel-proximity.types";
+import type {
+  Person,
+  Panel,
+  ActivityTab,
+} from "@/domains/presence/model/reel-proximity/reel-proximity.types";
 
 export function useReelPanelState() {
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
@@ -17,7 +21,14 @@ export function useReelPanelState() {
   };
 
   return {
-    selectedPerson, setSelectedPerson, panel, setPanel, activityTab, setActivityTab,
-    openProfile, closeProfile, openActivity,
+    selectedPerson,
+    setSelectedPerson,
+    panel,
+    setPanel,
+    activityTab,
+    setActivityTab,
+    openProfile,
+    closeProfile,
+    openActivity,
   };
 }

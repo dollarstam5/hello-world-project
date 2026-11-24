@@ -15,7 +15,6 @@ import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntim
 import { sendReelBip, sendReelBipToGuest } from "@/domains/presence/api/reel-presence.client";
 import { sendReelGuestBip } from "@/domains/presence/api/reel-guest-session.functions";
 
-
 import {
   type Person,
   type Panel,
@@ -23,7 +22,12 @@ import {
   type ReelAmbiance,
 } from "@/domains/presence/model/reel-proximity/reel-proximity.types";
 import { MAX_RING_PEOPLE } from "@/domains/presence/model/reel-proximity/reel-proximity.constants";
-export type { Person, Panel, ActivityTab, ReelAmbiance } from "@/domains/presence/model/reel-proximity/reel-proximity.types";
+export type {
+  Person,
+  Panel,
+  ActivityTab,
+  ReelAmbiance,
+} from "@/domains/presence/model/reel-proximity/reel-proximity.types";
 
 export function useReelProximityController() {
   const { t } = useI18n();
@@ -39,19 +43,42 @@ export function useReelProximityController() {
     setIsRefreshingDiscovery,
     discoveryRequestId,
   } = useReelLifecycle();
-  const { guestSessionLoading, guestSessionMessage, beginGuestSession } = useReelGuestSession(access, t);
+  const { guestSessionLoading, guestSessionMessage, beginGuestSession } = useReelGuestSession(
+    access,
+    t,
+  );
   const {
-    selectedPerson, setSelectedPerson, panel, setPanel, activityTab, setActivityTab,
-    openProfile, closeProfile, openActivity,
+    selectedPerson,
+    setSelectedPerson,
+    panel,
+    setPanel,
+    activityTab,
+    setActivityTab,
+    openProfile,
+    closeProfile,
+    openActivity,
   } = useReelPanelState();
   const presence = useReelPresence({ access, t });
-  const { setLoadedPresence, currentPresence, canUseMemberReel } =
-    useReelMemberPresence(access, t, presence.setPresenceMessage);
+  const { setLoadedPresence, currentPresence, canUseMemberReel } = useReelMemberPresence(
+    access,
+    t,
+    presence.setPresenceMessage,
+  );
 
   const {
-    radius, setRadius, duration, setDuration, presenceConsent, setPresenceConsent,
-    guestPresenceConsent, setGuestPresenceConsent, presenceDescription, setPresenceDescription,
-    presenceLoading, presenceMessage, setPresenceMessage,
+    radius,
+    setRadius,
+    duration,
+    setDuration,
+    presenceConsent,
+    setPresenceConsent,
+    guestPresenceConsent,
+    setGuestPresenceConsent,
+    presenceDescription,
+    setPresenceDescription,
+    presenceLoading,
+    presenceMessage,
+    setPresenceMessage,
   } = presence;
   const {
     guestDisplayName,
@@ -63,17 +90,35 @@ export function useReelProximityController() {
     guestPresence,
     setGuestPresence,
   } = useReelGuestPresence(
-    access, t, setDuration, setRadius, setPresenceDescription, setPresenceMessage,
+    access,
+    t,
+    setDuration,
+    setRadius,
+    setPresenceDescription,
+    setPresenceMessage,
   );
 
-  const activityIdentity = access.mode === "guest"
-    ? access.guest?.startedAt == null ? null : String(access.guest.startedAt)
-    : access.memberId ?? null;
+  const activityIdentity =
+    access.mode === "guest"
+      ? access.guest?.startedAt == null
+        ? null
+        : String(access.guest.startedAt)
+      : (access.memberId ?? null);
   const {
-    connections, setConnections, connectionsLoadedForIdentity, setConnectionsLoadedForIdentity,
-    guestConnections, setGuestConnections, connectionsLoading, connectionsMessage,
-    refreshConnections, endConnection, endGuestConnection, pendingConnectionEnd,
-    confirmEndConnection, cancelEndConnection,
+    connections,
+    setConnections,
+    connectionsLoadedForIdentity,
+    setConnectionsLoadedForIdentity,
+    guestConnections,
+    setGuestConnections,
+    connectionsLoading,
+    connectionsMessage,
+    refreshConnections,
+    endConnection,
+    endGuestConnection,
+    pendingConnectionEnd,
+    confirmEndConnection,
+    cancelEndConnection,
   } = useReelConnections({ access, canUseMemberReel, activityIdentity, t });
 
   const {
@@ -95,7 +140,8 @@ export function useReelProximityController() {
     activityIdentity,
     t,
     refreshConnections,
-  });  useReelActivity({
+  });
+  useReelActivity({
     access,
     communication,
     communicationRevision,
@@ -118,8 +164,6 @@ export function useReelProximityController() {
     setBipsLoadedForIdentity,
     setConnectionsLoadedForIdentity,
   });
-
-
 
   const sendBipToSelectedPerson = async (person?: Person) => {
     const targetPerson = person ?? selectedPerson;
@@ -153,13 +197,13 @@ export function useReelProximityController() {
   };
 
   const activatePresence = () => presence.activatePresence(setLoadedPresence);
-  const activateGuestPresence = () => presence.activateGuestPresence(
-    { displayName: guestDisplayName, areaLabel: guestAreaLabel, avatarKey: guestAvatarKey },
-    setGuestPresence,
-  );
-  const stopGuestPresence = () => guestPresence
-    ? presence.stopGuestPresence(guestPresence, setGuestPresence)
-    : Promise.resolve();
+  const activateGuestPresence = () =>
+    presence.activateGuestPresence(
+      { displayName: guestDisplayName, areaLabel: guestAreaLabel, avatarKey: guestAvatarKey },
+      setGuestPresence,
+    );
+  const stopGuestPresence = () =>
+    guestPresence ? presence.stopGuestPresence(guestPresence, setGuestPresence) : Promise.resolve();
   const stopPresence = () => presence.stopPresence(currentPresence, setLoadedPresence);
 
   const {
@@ -188,7 +232,11 @@ export function useReelProximityController() {
       return { status: "scanning", count, labelKey: "reel.ambiance.scanning" };
     }
     if (isLive) {
-      return { status: count >= 4 ? "dense" : "live", count, labelKey: count >= 4 ? "reel.ambiance.dense" : "reel.ambiance.live" };
+      return {
+        status: count >= 4 ? "dense" : "live",
+        count,
+        labelKey: count >= 4 ? "reel.ambiance.dense" : "reel.ambiance.live",
+      };
     }
     if (count > 0) return { status: "dense", count, labelKey: "reel.ambiance.nearbyPeople" };
     return { status: "idle", count: 0, labelKey: "reel.ambiance.calm" };

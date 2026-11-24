@@ -4,8 +4,8 @@ export function useReelLifecycle() {
   const [isPageVisible, setIsPageVisible] = useState(
     () => typeof document === "undefined" || document.visibilityState === "visible",
   );
-  const [isOnline, setIsOnline] = useState(
-    () => (typeof navigator === "undefined" ? true : navigator.onLine),
+  const [isOnline, setIsOnline] = useState(() =>
+    typeof navigator === "undefined" ? true : navigator.onLine,
   );
   const [isRefreshingDiscovery, setIsRefreshingDiscovery] = useState(false);
   const discoveryRequestId = useRef(0);

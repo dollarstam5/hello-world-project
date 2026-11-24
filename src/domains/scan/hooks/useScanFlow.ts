@@ -17,7 +17,7 @@ export function useScanFlow() {
 
   const updateNeedText = useCallback(
     (value: SetStateAction<string>) => {
-      setNeedText(current => typeof value === "function" ? value(current) : value);
+      setNeedText((current) => (typeof value === "function" ? value(current) : value));
       setStage("need");
       setStarted(false);
       scan.clearResults();

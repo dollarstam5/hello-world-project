@@ -1,8 +1,16 @@
 import { useEffect, useRef } from "react";
 import type { CommunicationRuntime } from "@/lib/communication/runtime";
 import type { ActivityTab } from "@/domains/presence/model/reel-proximity/reel-proximity.types";
-import { resetReelActivityProjection, useReelActivityProjection } from "@/domains/presence/model/reel-activity-projection";
-import type { ReelBip, ReelConnection, ReelGuestBip, ReelGuestConnection } from "@/domains/presence/api/reel-presence.client";
+import {
+  resetReelActivityProjection,
+  useReelActivityProjection,
+} from "@/domains/presence/model/reel-activity-projection";
+import type {
+  ReelBip,
+  ReelConnection,
+  ReelGuestBip,
+  ReelGuestConnection,
+} from "@/domains/presence/api/reel-presence.client";
 
 type Params = {
   access: { mode: string };
@@ -30,11 +38,27 @@ type Params = {
 
 export function useReelActivity(params: Params) {
   const {
-    access, communication, communicationRevision, panel, activityTab, canUseMemberReel,
-    activityIdentity, refreshBips, refreshConnections, receivedBips, receivedGuestBips,
-    bipsLoadedForIdentity, connections, guestConnections, connectionsLoadedForIdentity,
-    setReceivedBips, setReceivedGuestBips, setConnections, setGuestConnections,
-    setBipsLoadedForIdentity, setConnectionsLoadedForIdentity,
+    access,
+    communication,
+    communicationRevision,
+    panel,
+    activityTab,
+    canUseMemberReel,
+    activityIdentity,
+    refreshBips,
+    refreshConnections,
+    receivedBips,
+    receivedGuestBips,
+    bipsLoadedForIdentity,
+    connections,
+    guestConnections,
+    connectionsLoadedForIdentity,
+    setReceivedBips,
+    setReceivedGuestBips,
+    setConnections,
+    setGuestConnections,
+    setBipsLoadedForIdentity,
+    setConnectionsLoadedForIdentity,
   } = params;
   const processedReelEvents = useRef(new Set<string>());
   const guestActivityRefreshInFlight = useRef(false);
@@ -56,7 +80,8 @@ export function useReelActivity(params: Params) {
     void refreshVisibleActivity();
     if (access.mode !== "guest") {
       window.addEventListener("vitalis:reel-activity-reconnected", refreshVisibleActivity);
-      return () => window.removeEventListener("vitalis:reel-activity-reconnected", refreshVisibleActivity);
+      return () =>
+        window.removeEventListener("vitalis:reel-activity-reconnected", refreshVisibleActivity);
     }
     const refreshWhenAvailable = () => {
       if (document.visibilityState === "visible") void refreshVisibleActivity();
@@ -77,23 +102,30 @@ export function useReelActivity(params: Params) {
   }, [panel, activityTab, refreshBips, refreshConnections, canUseMemberReel, access.mode]);
 
   useEffect(() => {
-    const incoming = communication.getEvents().filter(
-      (event) => event.source === "reel" && !processedReelEvents.current.has(event.id),
-    );
+    const incoming = communication
+      .getEvents()
+      .filter((event) => event.source === "reel" && !processedReelEvents.current.has(event.id));
     if (incoming.length === 0) return;
     incoming.forEach((event) => processedReelEvents.current.add(event.id));
     if (panel !== "activity") return;
-    const refreshBipsNeeded = incoming.some((event) =>
-      event.messageKey === "communication.event.reel.bipReceived" ||
-      event.messageKey === "communication.event.reel.bipAccepted" ||
-      event.messageKey === "communication.event.reel.bipDeclined",
+    const refreshBipsNeeded = incoming.some(
+      (event) =>
+        event.messageKey === "communication.event.reel.bipReceived" ||
+        event.messageKey === "communication.event.reel.bipAccepted" ||
+        event.messageKey === "communication.event.reel.bipDeclined",
     );
-    const refreshConnectionsNeeded = incoming.some((event) =>
-      event.messageKey === "communication.event.reel.bipAccepted" ||
-      event.messageKey === "communication.event.reel.connectionClosed",
+    const refreshConnectionsNeeded = incoming.some(
+      (event) =>
+        event.messageKey === "communication.event.reel.bipAccepted" ||
+        event.messageKey === "communication.event.reel.connectionClosed",
     );
-    if (refreshBipsNeeded && (activityTab === "bips" || activityTab === "notifications")) void refreshBips();
-    if (refreshConnectionsNeeded && (activityTab === "connections" || activityTab === "notifications")) void refreshConnections();
+    if (refreshBipsNeeded && (activityTab === "bips" || activityTab === "notifications"))
+      void refreshBips();
+    if (
+      refreshConnectionsNeeded &&
+      (activityTab === "connections" || activityTab === "notifications")
+    )
+      void refreshConnections();
   }, [communicationRevision, communication, panel, activityTab, refreshBips, refreshConnections]);
 
   useEffect(() => {
@@ -105,26 +137,54 @@ export function useReelActivity(params: Params) {
     setBipsLoadedForIdentity(null);
     setConnectionsLoadedForIdentity(null);
     resetReelActivityProjection();
-  }, [activityIdentity, setReceivedBips, setReceivedGuestBips, setConnections, setGuestConnections, setBipsLoadedForIdentity, setConnectionsLoadedForIdentity]);
+  }, [
+    activityIdentity,
+    setReceivedBips,
+    setReceivedGuestBips,
+    setConnections,
+    setGuestConnections,
+    setBipsLoadedForIdentity,
+    setConnectionsLoadedForIdentity,
+  ]);
 
   useEffect(() => {
     const mode = access.mode === "guest" ? "guest" : canUseMemberReel ? "member" : null;
     if (!mode || !activityIdentity || bipsLoadedForIdentity !== activityIdentity) return;
-    useReelActivityProjection.getState().publishBips(
-      mode,
-      mode === "guest" ? receivedGuestBips.length : receivedBips.length + receivedGuestBips.length,
-    );
-  }, [access.mode, canUseMemberReel, activityIdentity, bipsLoadedForIdentity, receivedBips, receivedGuestBips]);
+    useReelActivityProjection
+      .getState()
+      .publishBips(
+        mode,
+        mode === "guest"
+          ? receivedGuestBips.length
+          : receivedBips.length + receivedGuestBips.length,
+      );
+  }, [
+    access.mode,
+    canUseMemberReel,
+    activityIdentity,
+    bipsLoadedForIdentity,
+    receivedBips,
+    receivedGuestBips,
+  ]);
 
   useEffect(() => {
     const mode = access.mode === "guest" ? "guest" : canUseMemberReel ? "member" : null;
     if (!mode || !activityIdentity || connectionsLoadedForIdentity !== activityIdentity) return;
-    useReelActivityProjection.getState().publishConnections(
-      mode,
-      mode === "guest"
-        ? guestConnections.filter((connection) => connection.status === "active").length
-        : connections.filter((connection) => connection.status === "active").length +
-          guestConnections.filter((connection) => connection.status === "active").length,
-    );
-  }, [access.mode, canUseMemberReel, activityIdentity, connectionsLoadedForIdentity, connections, guestConnections]);
+    useReelActivityProjection
+      .getState()
+      .publishConnections(
+        mode,
+        mode === "guest"
+          ? guestConnections.filter((connection) => connection.status === "active").length
+          : connections.filter((connection) => connection.status === "active").length +
+              guestConnections.filter((connection) => connection.status === "active").length,
+      );
+  }, [
+    access.mode,
+    canUseMemberReel,
+    activityIdentity,
+    connectionsLoadedForIdentity,
+    connections,
+    guestConnections,
+  ]);
 }

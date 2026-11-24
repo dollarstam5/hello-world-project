@@ -1,14 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { requestReelLocation } from "@/domains/presence/api/reel-location.client";
 import { resolveReelZone } from "@/domains/presence/api/reel-zone.functions";
-import {
-  discoverReelGuestNearby,
-} from "@/domains/presence/api/reel-guest-session.functions";
+import { discoverReelGuestNearby } from "@/domains/presence/api/reel-guest-session.functions";
 import {
   listReelNearbyPresence,
   listReelNearbyGuestPresence,
 } from "@/domains/presence/api/reel-presence.client";
-import type { Person, RawNearbyPerson, PresenceCacheEntry } from "@/domains/presence/model/reel-proximity/reel-proximity.types";
+import type {
+  Person,
+  RawNearbyPerson,
+  PresenceCacheEntry,
+} from "@/domains/presence/model/reel-proximity/reel-proximity.types";
 import { CACHE_TTL_MS } from "@/domains/presence/model/reel-proximity/reel-proximity.constants";
 import { distributePeopleHarmoniously } from "@/domains/presence/model/reel-proximity/reel-proximity.helpers";
 import type { MessageKey } from "@/lib/i18n/messages";
@@ -40,10 +42,12 @@ export function useReelDiscovery({
   const [discoveredPeople, setDiscoveredPeople] = useState<Person[]>([]);
 
   const requestDiscovery = async (forceRefresh = false) => {
-    if (access.loading || !isPageVisible || (typeof navigator !== "undefined" && !navigator.onLine)) return;
+    if (access.loading || !isPageVisible || (typeof navigator !== "undefined" && !navigator.onLine))
+      return;
 
     const mode = access.mode === "guest" ? "guest" : "member";
-    const cacheIsFresh = presenceCache?.mode === mode && Date.now() - presenceCache.timestamp < CACHE_TTL_MS;
+    const cacheIsFresh =
+      presenceCache?.mode === mode && Date.now() - presenceCache.timestamp < CACHE_TTL_MS;
     if (!forceRefresh && presenceCache?.mode === mode) {
       // SWR: display cached nearby profiles immediately, then refresh if stale.
       setDiscoveredPeople(presenceCache.people);
@@ -69,7 +73,12 @@ export function useReelDiscovery({
         areaLabel = guestAreaLabel;
       } else {
         const zone = await resolveReelZone({
-          data: { latitude: fix.latitude, longitude: fix.longitude, purpose: "discover", consent: true },
+          data: {
+            latitude: fix.latitude,
+            longitude: fix.longitude,
+            purpose: "discover",
+            consent: true,
+          },
         });
         areaLabel = zone.areaLabel;
         const [members, guests] = await Promise.all([
@@ -123,7 +132,6 @@ export function useReelDiscovery({
     setDiscoveredPeople([]);
     setLocationMessage(null);
   };
-
 
   const discoveryEnabled = discoveryAccess === "granted";
   const availablePeople = discoveryEnabled ? discoveredPeople : [];

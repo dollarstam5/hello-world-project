@@ -27,7 +27,12 @@ export function distributePeopleHarmoniously(
       name: displayName,
       avatarUrl: null,
       avatarKey: person.avatar_key,
-      initials: displayName.trim().split(/\s+/).slice(0, 2).map((part: string) => part[0]?.toUpperCase() ?? "").join(""),
+      initials: displayName
+        .trim()
+        .split(/\s+/)
+        .slice(0, 2)
+        .map((part: string) => part[0]?.toUpperCase() ?? "")
+        .join(""),
       angle: angles[index],
       description: person.description,
       locationLabel: person.area_label || areaLabel,

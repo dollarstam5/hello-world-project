@@ -28,7 +28,9 @@ type Params = {
 
 export function useReelConnections({ access, canUseMemberReel, activityIdentity, t }: Params) {
   const [connections, setConnections] = useState<ReelConnection[]>([]);
-  const [connectionsLoadedForIdentity, setConnectionsLoadedForIdentity] = useState<string | null>(null);
+  const [connectionsLoadedForIdentity, setConnectionsLoadedForIdentity] = useState<string | null>(
+    null,
+  );
   const [guestConnections, setGuestConnections] = useState<ReelGuestConnection[]>([]);
   const [connectionsLoading, setConnectionsLoading] = useState(false);
   const [connectionsMessage, setConnectionsMessage] = useState<string | null>(null);
@@ -98,9 +100,19 @@ export function useReelConnections({ access, canUseMemberReel, activityIdentity,
   const cancelEndConnection = () => setPendingConnectionEnd(null);
 
   return {
-    connections, setConnections, connectionsLoadedForIdentity, setConnectionsLoadedForIdentity,
-    guestConnections, setGuestConnections, connectionsLoading, connectionsMessage,
-    refreshConnections, endConnection, endGuestConnection, pendingConnectionEnd,
-    confirmEndConnection, cancelEndConnection,
+    connections,
+    setConnections,
+    connectionsLoadedForIdentity,
+    setConnectionsLoadedForIdentity,
+    guestConnections,
+    setGuestConnections,
+    connectionsLoading,
+    connectionsMessage,
+    refreshConnections,
+    endConnection,
+    endGuestConnection,
+    pendingConnectionEnd,
+    confirmEndConnection,
+    cancelEndConnection,
   };
 }

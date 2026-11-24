@@ -6,7 +6,11 @@ import {
   startReelPresence,
   type ReelPresence,
 } from "@/domains/presence/api/reel-presence.client";
-import { endReelGuestPresence, getMyReelGuestPresence, startReelGuestPresence } from "@/domains/presence/api/reel-guest-session.functions";
+import {
+  endReelGuestPresence,
+  getMyReelGuestPresence,
+  startReelGuestPresence,
+} from "@/domains/presence/api/reel-guest-session.functions";
 import { useAccessMode } from "@/domains/access-mode";
 import { evaluateReelAccess } from "@/domains/presence/policy/reel-access-policy";
 import type { MessageKey } from "@/lib/i18n/messages";
@@ -44,11 +48,15 @@ export function useReelPresence({
   const [duration, setDuration] = useState("2 h");
   const [presenceConsent, setPresenceConsent] = useState(false);
   const [guestPresenceConsent, setGuestPresenceConsent] = useState(false);
-  const [presenceDescription, setPresenceDescription] = useState(t("reel.controller.presenceDescription"));
+  const [presenceDescription, setPresenceDescription] = useState(
+    t("reel.controller.presenceDescription"),
+  );
   const [presenceLoading, setPresenceLoading] = useState(false);
   const [presenceMessage, setPresenceMessage] = useState<string | null>(null);
 
-  const activatePresence = async (setLoadedPresence: (value: { memberId: string; presence: ReelPresence | null }) => void) => {
+  const activatePresence = async (
+    setLoadedPresence: (value: { memberId: string; presence: ReelPresence | null }) => void,
+  ) => {
     const decision = evaluateReelAccess(
       {
         access,
@@ -59,7 +67,9 @@ export function useReelPresence({
       "start_presence",
     );
     if (decision.status !== "server_check" || !presenceConsent) {
-      setPresenceMessage(!presenceConsent ? t("reel.controller.consentRequired") : decision.message);
+      setPresenceMessage(
+        !presenceConsent ? t("reel.controller.consentRequired") : decision.message,
+      );
       return;
     }
 
@@ -68,7 +78,12 @@ export function useReelPresence({
     try {
       const fix = await requestReelLocation();
       const zone = await resolveReelZone({
-        data: { latitude: fix.latitude, longitude: fix.longitude, purpose: "presence", consent: true },
+        data: {
+          latitude: fix.latitude,
+          longitude: fix.longitude,
+          purpose: "presence",
+          consent: true,
+        },
       });
       if (!zone.grantId) throw new Error(t("reel.controller.presencePermissionFailed"));
       const radiusMeters = radius === "1 km" ? 1000 : Number.parseInt(radius, 10);
@@ -83,17 +98,22 @@ export function useReelPresence({
       if (access.memberId) setLoadedPresence({ memberId: access.memberId, presence });
       setPresenceMessage(t("reel.controller.presenceVisible"));
     } catch (error) {
-      setPresenceMessage(error instanceof Error ? error.message : t("reel.controller.presenceActivationFailed"));
+      setPresenceMessage(
+        error instanceof Error ? error.message : t("reel.controller.presenceActivationFailed"),
+      );
     } finally {
       setPresenceLoading(false);
     }
   };
 
-  const activateGuestPresence = async (guestProfile: {
-    displayName: string;
-    areaLabel: string;
-    avatarKey: string;
-  }, setGuestPresence: (value: GuestPresence) => void) => {
+  const activateGuestPresence = async (
+    guestProfile: {
+      displayName: string;
+      areaLabel: string;
+      avatarKey: string;
+    },
+    setGuestPresence: (value: GuestPresence) => void,
+  ) => {
     if (access.mode !== "guest" || !guestPresenceConsent) {
       setPresenceMessage(t("reel.controller.visibilityConsent"));
       return;
@@ -124,18 +144,24 @@ export function useReelPresence({
         },
       });
       const nextPresence = await getMyReelGuestPresence();
-      if (!nextPresence || nextPresence.id !== result.presenceId) throw new Error(t("reel.controller.presenceConfirmFailed"));
+      if (!nextPresence || nextPresence.id !== result.presenceId)
+        throw new Error(t("reel.controller.presenceConfirmFailed"));
       setGuestPresence(nextPresence);
       setGuestPresenceConsent(false);
       setPresenceMessage(t("reel.controller.presenceVisibleNearby"));
     } catch (error) {
-      setPresenceMessage(error instanceof Error ? error.message : t("reel.controller.presenceActivationFailed"));
+      setPresenceMessage(
+        error instanceof Error ? error.message : t("reel.controller.presenceActivationFailed"),
+      );
     } finally {
       setPresenceLoading(false);
     }
   };
 
-  const stopGuestPresence = async (guestPresence: NonNullable<GuestPresence>, setGuestPresence: (value: GuestPresence) => void) => {
+  const stopGuestPresence = async (
+    guestPresence: NonNullable<GuestPresence>,
+    setGuestPresence: (value: GuestPresence) => void,
+  ) => {
     if (!guestPresence) return;
     setPresenceLoading(true);
     setPresenceMessage(null);
@@ -145,31 +171,55 @@ export function useReelPresence({
       setGuestPresence(null);
       setPresenceMessage(t("reel.controller.presenceHidden"));
     } catch (error) {
-      setPresenceMessage(error instanceof Error ? error.message : t("reel.controller.presenceStopFailed"));
+      setPresenceMessage(
+        error instanceof Error ? error.message : t("reel.controller.presenceStopFailed"),
+      );
     } finally {
       setPresenceLoading(false);
     }
   };
 
-  const stopPresence = async (currentPresence: ReelPresence | null, setLoadedPresence: (value: { memberId: string; presence: ReelPresence | null }) => void) => {
+  const stopPresence = async (
+    currentPresence: ReelPresence | null,
+    setLoadedPresence: (value: { memberId: string; presence: ReelPresence | null }) => void,
+  ) => {
     if (!currentPresence) return;
     setPresenceLoading(true);
     setPresenceMessage(null);
     try {
       const ended = await endReelPresence(currentPresence.id);
-      if (access.memberId) setLoadedPresence({ memberId: access.memberId, presence: ended.status === "active" ? ended : null });
+      if (access.memberId)
+        setLoadedPresence({
+          memberId: access.memberId,
+          presence: ended.status === "active" ? ended : null,
+        });
       setPresenceMessage(t("reel.controller.presenceHidden"));
     } catch (error) {
-      setPresenceMessage(error instanceof Error ? error.message : t("reel.controller.presenceStopFailed"));
+      setPresenceMessage(
+        error instanceof Error ? error.message : t("reel.controller.presenceStopFailed"),
+      );
     } finally {
       setPresenceLoading(false);
     }
   };
 
   return {
-    radius, setRadius, duration, setDuration, presenceConsent, setPresenceConsent,
-    guestPresenceConsent, setGuestPresenceConsent, presenceDescription, setPresenceDescription,
-    presenceLoading, presenceMessage, setPresenceMessage, activatePresence, activateGuestPresence,
-    stopGuestPresence, stopPresence,
+    radius,
+    setRadius,
+    duration,
+    setDuration,
+    presenceConsent,
+    setPresenceConsent,
+    guestPresenceConsent,
+    setGuestPresenceConsent,
+    presenceDescription,
+    setPresenceDescription,
+    presenceLoading,
+    presenceMessage,
+    setPresenceMessage,
+    activatePresence,
+    activateGuestPresence,
+    stopGuestPresence,
+    stopPresence,
   };
 }

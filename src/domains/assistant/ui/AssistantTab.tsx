@@ -49,7 +49,9 @@ export function AssistantTab() {
       <div className="space-y-4 py-4">
         <AIBubble author="assistant">{t("assistant.signInRequired")}</AIBubble>
         <Button asChild className="w-full">
-          <Link to="/auth" search={{ mode: undefined }}>{t("auth.signIn")}</Link>
+          <Link to="/auth" search={{ mode: undefined }}>
+            {t("auth.signIn")}
+          </Link>
         </Button>
       </div>
     );
