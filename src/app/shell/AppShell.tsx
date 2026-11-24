@@ -12,11 +12,11 @@ import { AssistantNoticeLayer } from "@/components/experience/AssistantNoticeLay
 import { useOnboarding } from "@/lib/experience/onboarding";
 import { SyncEngineLoader } from "@/components/app/SyncEngineLoader";
 import { CommunicationRuntimeProvider } from "@/lib/communication/CommunicationRuntimeProvider";
-import { useAuth } from "@/domains/auth/model/useAuth";
+import { useAuth } from "@/modules/auth";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { resetReelActivityProjection } from "@/modules/reel/model/reel-activity-projection";
 import { ReelCommunicationBridge } from "@/modules/reel/model/ReelCommunicationBridge";
-import { useAccessMode } from "@/domains/access-mode";
+import { useAccessMode } from "@/modules/access-mode";
 
 const ReelBottomNav = lazy(() =>
   import("@/modules/reel/ui/ReelBottomNav").then((module) => ({
