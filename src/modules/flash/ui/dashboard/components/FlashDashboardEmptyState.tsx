@@ -1,6 +1,6 @@
 import { Sparkles } from "lucide-react";
 import { EmptyState } from "@/components/app/EmptyState";
-import { Surface } from "@/components/app/Surface";
+import { Surface } from "@/shared/components/Surface";
 import { useI18n } from "@/lib/i18n/useI18n";
 
 const STEPS = [
