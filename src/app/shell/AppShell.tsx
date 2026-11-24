@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useRouterState } from "@tanstack/react-router";
-import { BottomNav, MenuSheet } from "@/app/navigation";
+import { BottomNav } from "@/app/navigation";
 import { useExperienceBoot } from "@/lib/experience/orchestrator";
 import { OfflineBanner } from "@/components/experience/OfflineBanner";
 import { AppHeader } from "@/components/experience/AppHeader";
@@ -22,6 +22,9 @@ const ReelBottomNav = lazy(() =>
   import("@/modules/reel/ui/ReelBottomNav").then((module) => ({
     default: module.ReelBottomNav,
   })),
+);
+const MenuSheet = lazy(() =>
+  import("@/app/navigation/MenuSheet").then((module) => ({ default: module.MenuSheet })),
 );
 const CommunicationSheet = lazy(() =>
   import("@/components/experience/CommunicationSheet").then((module) => ({
