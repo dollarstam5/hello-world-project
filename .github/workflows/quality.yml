@@ -23,6 +23,7 @@ jobs:
       - name: Checkout without persisted credentials
         uses: actions/checkout@v5
         with:
+          ref: ${{ github.event.pull_request.head.ref }}
           persist-credentials: true
 
       - name: Install Bun
