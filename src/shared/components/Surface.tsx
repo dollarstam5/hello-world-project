@@ -2,7 +2,7 @@ import type { HTMLAttributes } from "react";
 import { cn } from "@/shared/utils";
 
 type Variant =
-  | "plain" | "elevated" | "sunken" | "glass" | "glass-strong" | "glass-soft" | "assistant";
+  "plain" | "elevated" | "sunken" | "glass" | "glass-strong" | "glass-soft" | "assistant";
 type Padding = "none" | "sm" | "md" | "lg";
 
 interface SurfaceProps extends HTMLAttributes<HTMLDivElement> {
