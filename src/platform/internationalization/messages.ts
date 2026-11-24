@@ -768,7 +768,8 @@ export const messages = {
     "reel.settings.duration.720": "Journée",
     "reel.settings.duration.1440": "Continue",
     "reel.settings.duration.active": "Actif",
-    "reel.settings.duration.hint": "Votre présence s'arrête automatiquement à la fin du délai choisi.",
+    "reel.settings.duration.hint":
+      "Votre présence s'arrête automatiquement à la fin du délai choisi.",
     "reel.settings.radiusContext": "Range:",
     "reel.settings.radius.10": "Same table or room",
     "reel.settings.radius.25": "Same café or shop",
