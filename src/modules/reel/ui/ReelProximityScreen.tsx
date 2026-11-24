@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { ChevronDown, Globe, History, WifiOff, X } from "lucide-react";
-import { useReelProximityController } from "@/domains/presence/model/useReelProximityController";
+import { useReelProximityController } from "@/modules/reel/model/useReelProximityController";
 import { haptic } from "@/platform/device/haptics";
 import { RingPerson, SelfRadarIdentity } from "./components/ReelRadarIdentity";
 import { ReelGuidedTour } from "./components/ReelGuidedTour";

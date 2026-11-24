@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type TouchEvent } from "react";
 import { RadioTower, X } from "lucide-react";
-import type { Person } from "@/domains/presence/model/useReelProximityController";
+import type { Person } from "@/modules/reel/model/useReelProximityController";
 import { PersonAvatar } from "./ReelRadarIdentity";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { haptic } from "@/platform/device/haptics";

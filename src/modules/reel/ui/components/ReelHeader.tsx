@@ -10,7 +10,7 @@ import {
   SlidersHorizontal,
 } from "lucide-react";
 import { useI18n } from "@/lib/i18n/useI18n";
-import type { useReelProximityController } from "@/domains/presence/model/useReelProximityController";
+import type { useReelProximityController } from "@/modules/reel/model/useReelProximityController";
 
 type ReelController = ReturnType<typeof useReelProximityController>;
 

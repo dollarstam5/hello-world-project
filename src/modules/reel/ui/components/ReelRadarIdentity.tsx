@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent } from "react";
 import { CircleUserRound, Zap, User, MapPin } from "lucide-react";
-import type { Person } from "@/domains/presence/model/useReelProximityController";
+import type { Person } from "@/modules/reel/model/useReelProximityController";
 import { haptic } from "@/platform/device/haptics";
 import { useI18n } from "@/lib/i18n/useI18n";
 

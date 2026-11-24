@@ -1,7 +1,7 @@
 import { Bell, CircleUserRound, RadioTower, UsersRound } from "lucide-react";
 import { haptic } from "@/platform/device/haptics";
 import { useI18n } from "@/lib/i18n/useI18n";
-import type { useReelProximityController } from "@/domains/presence/model/useReelProximityController";
+import type { useReelProximityController } from "@/modules/reel/model/useReelProximityController";
 
 type ReelController = ReturnType<typeof useReelProximityController>;
 

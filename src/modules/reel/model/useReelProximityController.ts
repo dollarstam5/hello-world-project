@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { requestReelLocation } from "@/domains/presence/api/reel-location.client";
+import { requestReelLocation } from "@/modules/reel/api/reel-location.client";
 import {
   closeReelConnection,
   commandReelBip,
@@ -15,8 +15,8 @@ import {
   type ReelConnection,
   type ReelGuestBip,
   type ReelGuestConnection,
-} from "@/domains/presence/api/reel-presence.client";
-import { resolveReelZone } from "@/domains/presence/api/reel-zone.functions";
+} from "@/modules/reel/api/reel-presence.client";
+import { resolveReelZone } from "@/modules/reel/api/reel-zone.functions";
 import {
   discoverReelGuestNearby,
   endReelGuestPresence,
@@ -27,7 +27,7 @@ import {
   commandMyReelGuestBip,
   listMyReelGuestConnections,
   closeMyReelGuestConnection,
-} from "@/domains/presence/api/reel-guest-session.functions";
+} from "@/modules/reel/api/reel-guest-session.functions";
 import {
   endReelPresence,
   getMyActiveReelPresence,
@@ -35,17 +35,17 @@ import {
   listReelNearbyGuestPresence,
   startReelPresence,
   type ReelPresence,
-} from "@/domains/presence/api/reel-presence.client";
+} from "@/modules/reel/api/reel-presence.client";
 import { useAccessMode } from "@/domains/access-mode";
 import { useI18n } from "@/lib/i18n/useI18n";
 import type { MessageKey } from "@/lib/i18n/messages";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
 import { getMyProfileAvatarUrl } from "@/domains/profile/api/profile-avatar.client";
-import { evaluateReelAccess } from "@/domains/presence/policy/reel-access-policy";
+import { evaluateReelAccess } from "@/modules/reel/policy/reel-access-policy";
 import {
   resetReelActivityProjection,
   useReelActivityProjection,
-} from "@/domains/presence/model/reel-activity-projection";
+} from "@/modules/reel/model/reel-activity-projection";
 
 export interface Person {
   id: string;
