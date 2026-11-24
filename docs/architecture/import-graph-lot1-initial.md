@@ -133,3 +133,39 @@ L'inventaire du dépôt contient également des tests de contrats d'accès Reel,
 - Les lignes d'export listent les cibles de réexport ; elles ne prétendent pas être un inventaire des symboles exportés de chaque module cible.
 - La liste des tests ci-dessus est une correspondance confirmée par import direct, non une preuve exhaustive de couverture.
 - L'import entrant complet (reverse graph), les cycles, les imports non littéraux, les modules de déclaration générés par TanStack, et la classification client/serveur par graphe transitif restent à calculer par le compilateur TypeScript.
+
+
+## Complément vérifié — façade AppShell et dépendances directes (relecture au HEAD 6c5546d)
+
+Cette passe a relu directement les implémentations canoniques et les façades de l'application, du shell, des layouts et widgets. Elle affine le sens des arêtes sans déplacer de code.
+
+| Fichier | Imports / réexports directs vérifiés | Exports / runtime / destination candidate |
+|---|---|---|
+| `src/components/app/AppShell.tsx` | `@/app/shell/AppShell` | Shim de compatibilité uniquement ; réexporte AppShell. Cible canonique : `src/app/shell/`. |
+| `src/app/shell/AppShell.tsx` | `react`, `@tanstack/react-router`, `@/components/app/BottomNav`, `@/lib/experience/orchestrator`, `@/components/experience/OfflineBanner`, `AppHeader`, `InstallBanner`, `UpdateBanner`, `@/lib/platform/useResponsive`, `@/lib/app/assistant-preferences`, `AssistantNoticeLayer`, `@/lib/experience/onboarding`, `@/components/app/SyncEngineLoader`, `@/lib/communication/CommunicationRuntimeProvider`, `@/domains/auth/model/useAuth`, `@/lib/i18n/useI18n`, `@/modules/reel/model/reel-activity-projection`, `ReelCommunicationBridge`, `@/domains/access-mode`; imports dynamiques de ReelBottomNav, MenuSheet, CommunicationSheet et OnboardingSheet | Composant React client (hooks, document, événements UI). Candidat : rester dans `app/shell`, mais extraire les responsabilités après graphe entrant/tests. |
+| `src/app/composition/RootAppComposition.tsx` | `react`, `@tanstack/react-query`, `@/modules/access-mode`, `@/app/shell/AppShell` | Exporte RootAppComposition ; composition React côté client. |
+| `src/components/app/BottomNav.tsx` | `@tanstack/react-router`, `lucide-react`, `@/lib/i18n/useI18n`, `@/lib/utils`, `@/platform/device/haptics`, `./reel-bottom-nav.css` | Exporte BottomNav ; UI client et interaction tactile. Candidate : `shared/ui` seulement après vérification que les destinations métier restent injectées et que le composant est réellement générique. |
+| `src/components/app/index.ts` | Réexports relatifs de Icon, Surface, SmartCard, FlashCard, RadarCard, WalletCard, TrustCard, AIBubble, FloatingButton, SmartTabs, Sheet, Modal, Indicator, EmptyState, StatusBanner, FormField, Skeletons, PublicProfilePreview | Barrel mixant primitives visuelles génériques et cartes nommées par domaine ; ne pas déplacer en bloc vers shared sans audit de chaque réexport. |
+| `src/layouts/AdaptiveLayout.tsx` | `@/lib/platform/useResponsive`, `./mobile`, `./tablet`, `./desktop`, `react` | Exporte AdaptiveLayout ; sélection responsive côté client. |
+| `src/layouts/mobile/index.ts`, `desktop/index.ts` | `@/components/app/AppShell` | Réexportent AppShell via le shim de compatibilité ; les layouts ne constituent pas encore des shells indépendants. |
+| `src/widgets/ai-layer/index.ts` | `@/components/experience/CommunicationSheet` | Réexporte CommunicationSheet ; façade vers experience. |
+| `src/widgets/offline-banner/index.ts` | `@/components/experience/OfflineBanner` | Réexporte OfflineBanner ; façade vers experience. |
+| `src/widgets/index.ts` | Barrels locaux smart-feed, ai-layer, offline-banner, smart-state, section-foundation, activity-strip | Exporte des namespaces de widgets ; les implémentations restent principalement dans components/experience. |
+
+### Arêtes entrantes / dépendances à ne pas masquer
+
+- `src/layouts/mobile/index.ts` et `src/layouts/desktop/index.ts` consomment `src/components/app/AppShell.tsx`, qui n'est plus une implémentation : c'est un shim vers `src/app/shell/AppShell.tsx`.
+- Le shell canonique importe encore `@/domains/auth/model/useAuth` et `@/domains/access-mode`, tandis que RootAppComposition consomme `@/modules/access-mode`. La migration de l'accès est donc incomplète au niveau du shell même si la composition racine a basculé vers modules.
+- Le shell utilise également des modules `components/experience` et `lib/*` nombreux. La présente passe ne constitue pas encore le reverse graph complet de ces répertoires : leurs autres importeurs doivent être vérifiés avant de proposer un déplacement.
+- `BottomNav` n'est pas une primitive neutre dans son état actuel : destinations Flash/Scan/Reel/Radar, libellés de navigation et haptics y sont codés en dur. Le ranger dans `shared/ui` sans découplage créerait une dépendance métier dans shared.
+- Le barrel `components/app/index.ts` contient des cartes Flash/Radar/Wallet/Trust et PublicProfilePreview ; son commentaire « generic, reusable primitives » ne suffit pas à prouver que chaque export est transversal.
+
+### Portée runtime affinée
+
+- `src/app/shell/AppShell.tsx`, `src/app/composition/RootAppComposition.tsx`, `src/components/app/BottomNav.tsx` et `src/layouts/AdaptiveLayout.tsx` sont des composants/hooks React côté client.
+- `src/server.ts`, `src/start.ts` et les routes `src/routes/api/**` appartiennent à la frontière serveur/API ; ils ne doivent pas être fusionnés au graphe du bundle client.
+- Le chargement différé de quatre composants dans AppShell utilise `React.lazy(() => import(...))`, distinct du mécanisme `createLazyFileRoute` des fichiers de routes.
+
+### Limites de cette passe
+
+Les fichiers listés ont été lus directement dans la branche au HEAD indiqué. Les arêtes entrantes ne sont ajoutées que lorsqu'un importeur a été vérifié. L'index complet des blobs ne donne pas, à lui seul, le contenu des imports de tous les fichiers : l'AST global, les cycles et la résolution exhaustive des tests ne sont toujours pas certifiés. Aucun test, lint, typecheck ou build n'a été exécuté.
