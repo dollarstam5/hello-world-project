@@ -1,7 +1,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { gzipSync } from "node:zlib";
-import type { PerformanceBudgetResult } from "../src/platform/performance/performance-budget-policy";
+import type { PerformanceBudgetResult } from "../../src/platform/performance/performance-budget-policy";
 
 export function filesUnder(directory: string): string[] {
   const entries = readdirSync(directory, { withFileTypes: true });
