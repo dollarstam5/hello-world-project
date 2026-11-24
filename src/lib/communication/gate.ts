@@ -16,9 +16,9 @@ export interface CommunicationGateState {
   deliveredRepeatKeys?: ReadonlySet<string>;
 }
 
-export interface CommunicationGateResult {
-  selected: CommunicationCandidate[];
-  suppressed: CommunicationCandidate[];
+export interface CommunicationGateResult<T extends CommunicationCandidate = CommunicationCandidate> {
+  selected: T[];
+  suppressed: T[];
 }
 
 const PRIORITY_WEIGHT: Record<CommunicationPriority, number> = {
@@ -32,16 +32,16 @@ const PRIORITY_WEIGHT: Record<CommunicationPriority, number> = {
  * Applies deterministic priority and duplicate filtering to already-confirmed
  * domain events. It does not create events, persist history, or use a timer.
  */
-export function resolveCommunicationCandidates(
-  candidates: readonly CommunicationCandidate[],
+export function resolveCommunicationCandidates<T extends CommunicationCandidate>(
+  candidates: readonly T[],
   state: CommunicationGateState = {},
   maxItems = Number.POSITIVE_INFINITY,
-): CommunicationGateResult {
+): CommunicationGateResult<T> {
   const deliveredEventIds = state.deliveredEventIds ?? new Set<string>();
   const deliveredRepeatKeys = state.deliveredRepeatKeys ?? new Set<string>();
   const seenEventIds = new Set<string>();
   const seenRepeatKeys = new Set<string>();
-  const suppressed: CommunicationCandidate[] = [];
+  const suppressed: T[] = [];
 
   const eligible = candidates.filter((candidate) => {
     const duplicateEvent =
