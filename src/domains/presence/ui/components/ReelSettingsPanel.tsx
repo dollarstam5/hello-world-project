@@ -64,7 +64,7 @@ export function ReelSettingsPanel({
         )}
       </div>
 
-      <ReelRadiusSettings radius={radius} setRadius={setRadius} currentPresence={currentPresence} />
+      <ReelRadiusSettings radius={radius} setRadius={setRadius} currentPresence={Boolean(currentPresence)} />
 
       <div className="reel-panel__section">
         <div className="reel-setting-header">
