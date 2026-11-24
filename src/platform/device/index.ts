@@ -1,3 +1,5 @@
-export { useDevice } from "@/lib/platform/useDevice";
-export { useNetworkStatus } from "@/lib/platform/useNetworkStatus";
-export { useResponsive } from "@/lib/platform/useResponsive";
+export { useDevice, matchesMediaQuery, subscribeToMediaQuery } from "./useDevice";
+export type { DeviceClass, DeviceInfo } from "./useDevice";
+export { useResponsive } from "./useResponsive";
+export type { ResponsiveInfo } from "./useResponsive";
+export * from "./capabilities";
