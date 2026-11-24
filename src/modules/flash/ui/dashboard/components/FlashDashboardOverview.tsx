@@ -1,7 +1,7 @@
 import { Archive, Clock3, FileText, Radio } from "lucide-react";
 import type { FlashRecord } from "@eco/core-contracts";
 import { resolveFlashStatus } from "@eco/core-logic";
-import { Surface } from "@/components/app/Surface";
+import { Surface } from "@/shared/components/Surface";
 import { useI18n } from "@/lib/i18n/useI18n";
 
 type Props = { records: FlashRecord[] };
