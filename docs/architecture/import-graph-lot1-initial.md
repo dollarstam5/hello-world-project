@@ -295,3 +295,96 @@ Les six routes Espace montent les composants de page directement. Elles ne passe
 - Les pages Espace/Vision sont des composants client (hooks React, événements, composants UI). La frontière serveur des API `src/routes/api/**`, `src/server.ts` et `src/start.ts` demeure distincte.
 - Le contenu de tous les 436 fichiers source n'a pas encore été parcouru ; aucun résultat d'absence d'importeur n'est donc affirmé. Les imports calculés, cycles, exports transitifs, résolution par TypeScript et matrice complète de tests restent à établir.
 - Aucun fichier applicatif n'a été déplacé et aucun test, lint, typecheck ou build n'a été exécuté.
+
+## Complément vérifié — dépendances des primitives app, couches UI et contrats de tests (HEAD a4da7d09cc0ddeafed6f3c9a4016ce85d0d6d1ff)
+
+Cette passe a relu les implémentations de primitives dans src/components/app, les wrappers Radix sous src/components/ui et les tests transversaux. Les arêtes ci-dessous sont directes et vérifiées dans les fichiers consultés.
+
+### Dépendances sortantes et ownership
+
+| Fichier | Dépendances directes vérifiées | Ownership provisoire |
+|---|---|---|
+| components/app/AIBubble.tsx | lucide, framer-motion, Icon, motion tokens, reduced-motion, cn | UI conversation réutilisable ; candidat shared après extraction du thème/motion. |
+| components/app/BottomNav.tsx | TanStack Router, lucide, i18n, cn, haptics plateforme, CSS local | Navigation produit client ; app/navigation, pas shared en l'état. |
+| components/app/EmptyState.tsx | ReactNode, lucide, Icon, i18n, cn | Primitive visuelle ; valeurs par défaut couplées au catalogue global. |
+| components/app/FlashCard.tsx | SmartCard, Icon, Indicator, i18n, contrat core PublicProfilePreview et UI PublicProfilePreview | Présentation d'une entité Flash ; module Flash ou shared après vérification des consommateurs. |
+| components/app/FloatingButton.tsx | framer-motion, motion tokens, reduced-motion, cn | Primitive UI candidate shared, dépend de la couche design. |
+| components/app/FormField.tsx | ReactNode, useId, UI Label, cn | Primitive de formulaire candidate shared. |
+| components/app/Icon.tsx | React SVG types, design tokens, cn | Primitive UI candidate shared, couplée aux tokens. |
+| components/app/Indicator.tsx | ReactNode, cn | Primitive de statut candidate shared. |
+| components/app/MenuSheet.tsx | TanStack Link, lucide, UI Sheet Radix, i18n | Navigation produit Espace/Talents ; app/navigation. |
+| components/app/Modal.tsx | ReactNode, UI Dialog Radix, cn | Wrapper UI générique candidate shared. |
+| components/app/PublicProfilePreview.tsx | React state, lucide, contrat core PublicProfilePreview, UI Avatar, wrapper app Sheet, i18n | UI profil public ; module profile ou composition profil. |
+| components/app/RadarCard.tsx | ReactNode, lucide, SmartCard, Icon | Carte de proximité nommée Radar ; ownership produit à confirmer. |
+| components/app/Sheet.tsx | ReactNode, UI Sheet Radix, i18n, cn | Wrapper partagé possible ; dépend de la couche UI et du contexte i18n. |
+| components/app/Skeletons.tsx | UI Skeleton, Surface, cn | Primitive de chargement candidate shared, dépendance interne app à aplanir. |
+| components/app/SmartCard.tsx | React HTML props, framer-motion, Surface, motion tokens, reduced-motion, cn | Primitive candidate shared après séparation design. |
+| components/app/SmartTabs.tsx | React useId, framer-motion, spring token, cn | Primitive UI candidate shared, dépend du système d'animation. |
+| components/app/StatusBanner.tsx | ReactNode/SVG types, lucide, Icon, cn | Primitive de statut candidate shared ; sans logique réseau/PWA. |
+| components/app/Surface.tsx | React HTML props, cn | Primitive de surface candidate shared ; dépend des classes/tokens CSS globaux. |
+| components/app/SyncEngineBootstrap.tsx | platform/offline/sync-controller | Pont app vers infrastructure offline ; moteur détenu par platform/offline. |
+| components/app/SyncEngineLoader.tsx | React hooks, import dynamique local SyncEngineBootstrap, APIs navigateur | Orchestration client différée du démarrage offline ; app/bootstrap ou adaptateur platform/offline. |
+| components/app/TrustCard.tsx | ReactNode, lucide, SmartCard, Icon, Indicator, i18n | Carte de réputation nommée Trust ; ownership produit à confirmer. |
+| components/app/WalletCard.tsx | ReactNode, Surface, cn | Carte de valeur générique possible ; vérifier le domaine Wallet et les consommateurs. |
+
+### Dépendances des wrappers UI sous-jacents
+
+- components/ui/button.tsx dépend de Radix Slot, class-variance-authority et lib/utils.
+- components/ui/sheet.tsx dépend de Radix Dialog, lucide, lib/utils et lib/i18n/useI18n : le wrapper UI Sheet est lui-même couplé au contexte i18n.
+- components/ui/dialog.tsx dépend de Radix Dialog, lucide, lib/utils et i18n.
+- components/ui/tabs.tsx dépend de Radix Tabs et lib/utils.
+- components/ui/avatar.tsx dépend de Radix Avatar et lib/utils.
+- components/ui/skeleton.tsx dépend de lib/utils.
+
+Conséquence : déplacer les wrappers app Sheet, Modal ou FormField vers shared sans cartographier les dépendances UI et le contexte i18n pourrait introduire une dépendance transitive non visible dans les imports du composant appelant.
+
+### Tests reliés directement aux composants ou à leurs services
+
+| Test | Imports directs vérifiés | Portée / limite |
+|---|---|---|
+| tests/components/app-header.test.tsx | components/experience/AppHeader | Rendu statique du header, compteur notifications, tailles/focus. |
+| tests/components/bottom-nav.test.tsx | components/app/BottomNav | Ordre des destinations, route active, menu et cibles tactiles. |
+| tests/components/communication-sheet.test.tsx | components/experience/CommunicationSheet | Onglets, offline, événements et compteurs ; runtime mocké. |
+| tests/components/engine-preview-card.test.tsx | components/experience/EnginePreviewCard | Libellé explicite d'exemple et contenu localisé. |
+| tests/sync-engine-loader.test.tsx | components/app/SyncEngineLoader, mock relatif SyncEngineBootstrap | Chargement après premier rendu, attente offline et reprise online. |
+| tests/auth/deferred-auth.test.tsx | modules/auth/model/useAuth, modules/auth/services/auth.service | Contrat du hook d'auth et des événements Supabase ; pas test du shell. |
+| tests/communication/runtime-provider.test.tsx | lib/communication/CommunicationRuntimeProvider | Instance runtime partagée dans l'arbre React ; dépendance consommée par AppHeader et CommunicationSheet. |
+| tests/communication/assistant-notices.test.ts | stores assistant preferences/notices | Teste l'état consommé par AssistantNoticeLayer, pas son rendu. |
+| tests/communication/reel-activity-projection.test.ts | modules/reel/model/reel-activity-projection | Store partagé par AppHeader et CommunicationSheet. |
+| tests/platform/use-network-status.test.tsx | lib/platform/useNetworkStatus | Hook utilisé par OfflineBanner et CommunicationSheet. |
+| tests/onboarding.test.ts | lib/experience/onboarding | Store utilisé par OnboardingSheet, pas rendu de la sheet. |
+| tests/pwa.test.ts | platform/pwa, platform/pwa/install | API consommées par InstallBanner et UpdateBanner, pas test des composants. |
+| tests/access-mode/engine-access.test.ts | modules/access-mode | Contrat du moteur d'accès, pas test du shell. |
+| tests/access-mode/reel-access-policy.test.ts | modules/reel/policy/reel-access-policy | Politique Réel, distincte du rendu de navigation. |
+
+Autres portées négatives vérifiées : home-journey-copy.test.ts teste les messages i18n et non HomeFoundation ; foundation.smoke.test.ts teste le mapping assistant et sa policy ; mobile-e2e-contract.test.ts inspecte un script E2E brut et ne monte aucun composant. Ces fichiers ne sont pas comptés comme tests directs des façades.
+
+### Graphe de dépendances affiné
+
+AppShell
+- BottomNav -> router + i18n + haptics + CSS
+- AppHeader -> auth + identity + communication runtime + projection Reel -> ProfileQuickPreview
+- CommunicationSheet -> runtime + préférences assistant + projection Reel + network status + AssistantTab lazy
+- OfflineBanner -> network status + offline sync status + StatusBanner
+- InstallBanner / UpdateBanner -> platform/pwa ; InstallBanner utilise aussi haptics
+- OnboardingSheet -> auth + onboarding store + router + i18n
+- SyncEngineLoader -> import dynamique SyncEngineBootstrap -> platform/offline/sync-controller
+- MenuSheet -> router + i18n + components/ui/sheet
+- HomeFoundation -> auth + identity + greeting/format + Flash demos + profile preview + Vision card + assets
+- SectionFoundation -> Surface/Indicator/EmptyState/Icon + i18n
+
+### Points de résolution / risques confirmés
+
+1. components/app ne représente pas un seul ownership. Surface, Icon, Indicator, Modal, FormField, SmartTabs et Skeletons sont candidates shared ; BottomNav/MenuSheet relèvent de la navigation app ; FlashCard/RadarCard/TrustCard ont une sémantique produit ; SyncEngineLoader est un adaptateur app/offline.
+2. La couche UI n'est pas totalement neutre : les wrappers components/ui/sheet et dialog consomment i18n. Une extraction shared doit préserver ce contexte ou injecter les libellés d'accessibilité.
+3. AppHeader et CommunicationSheet partagent le runtime communication et la projection Reel. Leurs tests unitaires isolent ces dépendances par mocks ; une refactorisation doit préserver le contrat d'intégration.
+4. La chaîne offline a deux niveaux : le loader orchestre côté client, le bootstrap appelle le contrôleur platform/offline. Il faut préserver le chargement différé.
+5. Les tests associés couvrent surtout les stores/services ou le rendu statique de quatre composants. Aucun test direct de rendu n'a été identifié dans les fichiers consultés pour InstallBanner, OfflineBanner, OnboardingSheet, UpdateBanner, HomeFoundation ou SectionFoundation.
+6. Cette passe éclaire les dépendances sortantes et les tests ; elle ne certifie pas que tous les consommateurs entrants du dépôt ont été identifiés. La recherche de code GitHub étant limitée à la branche par défaut, elle ne prouve pas l'absence d'autres consommateurs sur la branche de travail.
+
+### État de cette tranche
+
+- Fichiers relus : 22 composants app, 6 wrappers UI sous-jacents et 14 tests/contrats pertinents (certains tests avaient déjà été relus dans les compléments précédents).
+- Aucune source applicative modifiée.
+- Aucun test, lint, typecheck ou build exécuté.
+- Le graphe AST/reverse-import complet, les cycles et la résolution exhaustive des importeurs entrants restent ouverts ; la migration reste suspendue jusqu'à leur établissement.
