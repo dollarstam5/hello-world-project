@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { RefreshCw, X } from "lucide-react";
-import { useAppUpdate } from "@/platform/pwa";
-import { useI18n } from "@/lib/i18n/useI18n";
+import { useAppUpdate } from "@/platform/pwa/update";
+import { useI18n } from "@/platform/internationalization/useI18n";
 
 /** Tells the person a newer version is ready and reloads on demand. */
 export function UpdateBanner() {
