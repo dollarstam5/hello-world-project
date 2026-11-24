@@ -1,55 +1,17 @@
-/** Shared shadcn/Radix UI primitives. Legacy imports remain available via src/components/ui/. */
-export * from "./accordion";
-export * from "./alert-dialog";
-export * from "./alert";
-export * from "./aspect-ratio";
-export * from "./avatar";
-export * from "./badge";
-export * from "./breadcrumb";
-export * from "./button";
-export * from "./calendar";
-export * from "./card";
-export * from "./carousel";
-export * from "./chart-context";
-export * from "./chart-legend";
-export * from "./chart-tooltip";
-export * from "./chart";
-export * from "./checkbox";
-export * from "./collapsible";
-export * from "./command";
-export * from "./context-menu";
-export * from "./dialog";
-export * from "./drawer";
-export * from "./dropdown-menu";
-export * from "./form";
-export * from "./hover-card";
-export * from "./input-otp";
-export * from "./input";
-export * from "./label";
-export * from "./menubar";
-export * from "./navigation-menu";
-export * from "./pagination";
-export * from "./popover";
-export * from "./progress";
-export * from "./radio-group";
-export * from "./resizable";
-export * from "./scroll-area";
-export * from "./select";
-export * from "./separator";
-export * from "./sheet";
-export * from "./sidebar-context";
-export * from "./sidebar-layout";
-export * from "./sidebar-menu";
-export * from "./sidebar-provider";
-export * from "./sidebar-sections";
-export * from "./sidebar";
-export * from "./skeleton";
-export * from "./slider";
-export * from "./sonner";
-export * from "./switch";
-export * from "./table";
-export * from "./tabs";
-export * from "./textarea";
-export * from "./toggle-group";
-export * from "./toggle";
-export * from "./tooltip";
+/**
+ * Shared UI primitives. Import individual modules directly when possible.
+ * Legacy src/components/ui paths remain as compatibility façades.
+ */
+export { Button, buttonVariants } from "./button";
+export { Input } from "./input";
+export { Label } from "./label";
+export { Badge, badgeVariants } from "./badge";
+export { Separator } from "./separator";
+export { Skeleton } from "./skeleton";
+export {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from "./sheet";
