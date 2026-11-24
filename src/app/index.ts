@@ -11,3 +11,5 @@ export * from "./bootstrap";
 export * from "./guards";
 export * from "./shell";
 export * from "./composition";
+
+export * from "./settings";

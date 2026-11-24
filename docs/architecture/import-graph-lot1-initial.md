@@ -510,3 +510,23 @@ L’inventaire des routes consultées établit les responsabilités suivantes, s
 - `VitalisVisionPage` est une page éditoriale de présentation produit, liée à la route `/vision` ; elle doit être traitée comme une expérience de présentation dédiée, et non comme un écran métier de Profile ou un composant générique.
 
 Ces pages n’ont pas été déplacées dans ce commit : il faut encore établir leurs importeurs entrants et inspecter les dépendances de `ProfileFieldRow` avant les extractions ciblées. Aucun test, lint, typecheck ou build n’a été exécuté.
+
+
+## Déplacement des pages métier et des pages d’application
+
+Les pages consultées dans `components/experience` ont été déplacées vers leur propriétaire réel. Les anciens chemins restent des shims de compatibilité ; les routes TanStack utilisent désormais les nouveaux chemins canoniques.
+
+| Ancien chemin | Emplacement canonique | Justification |
+|---|---|---|
+| `components/experience/AccountInformationPage.tsx` | `modules/auth/ui/pages/AccountInformationPage.tsx` | Lit l’identité de session via `supabase.auth.getUser()`; page de compte/auth. |
+| `components/experience/ProfileManagementPage.tsx` | `modules/profile/ui/pages/ProfileManagementPage.tsx` | Gestion du nom public et du handle, persistance dans `profiles`. |
+| `components/experience/ProfileVisibilitySettingsPage.tsx` | `modules/profile/ui/pages/ProfileVisibilitySettingsPage.tsx` | Réglages de visibilité du profil. |
+| `components/experience/PublicProfilePreviewPage.tsx` | `modules/profile/ui/pages/PublicProfilePreviewPage.tsx` | Aperçu public du profil. |
+| `components/experience/ProfileFieldRow.tsx` | `modules/profile/ui/pages/ProfileFieldRow.tsx` | Sous-composant privé du formulaire de gestion du profil, déplacé avec son propriétaire. |
+| `components/experience/ApplicationSettingsPage.tsx` | `app/settings/ApplicationSettingsPage.tsx` | Assemble locale, thème et préférences assistant ; ce n’est pas un module métier unique. |
+| `components/experience/VitalisVisionPage.tsx` | `composition/experiences/vision/VitalisVisionPage.tsx` | Page éditoriale de présentation de la vision produit, hors des domaines métier. |
+| `components/experience/VisionEngineArtwork.tsx` | `composition/experiences/vision/VisionEngineArtwork.tsx` | Support visuel privé de la page Vision, déplacé avec elle. |
+
+Les routes mises à jour sont `/espace/informations`, `/espace/parametres/application`, `/espace/parametres/profil`, `/espace/profil`, `/espace/apercu` et `/vision`. Les façades `modules/auth`, `modules/profile`, `app/settings` et `composition/experiences/vision` exposent leurs pages. Les primitives Surface et Indicator utilisées par les pages profil/auth/settings pointent vers `shared/components`.
+
+Cette tranche n’affirme pas que tous les fichiers restant dans `components/experience` sont désormais homogènes : AppHeader, CommunicationSheet et OnboardingSheet conservent leurs responsabilités d’intégration app/communication. Le graphe inverse complet et l’analyse AST des importeurs restent à faire. Aucun test, lint, typecheck ou build n’a été exécuté.
