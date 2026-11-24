@@ -10,7 +10,7 @@ Le contrôle a été ajouté à `check:foundation` via `check:architecture-impor
 
 ## Résultat de l’audit
 
-<badge>Passé</badge>
+**Résultat : passé**
 
 - **589 fichiers** TypeScript/JavaScript parcourus.
 - **1 292 imports locaux** vérifiés.
