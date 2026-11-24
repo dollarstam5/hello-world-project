@@ -1,6 +1,5 @@
 import type { MessageKey } from "@/lib/i18n/messages";
 import type { Person, RawNearbyPerson } from "./reel-proximity.types";
-import type { MessageKey } from "@/lib/i18n/messages";
 
 export function distributePeopleHarmoniously(
   rawPeople: RawNearbyPerson[],
