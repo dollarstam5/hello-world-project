@@ -330,6 +330,7 @@ export interface RootRouteChildren {
   VisionRoute: typeof VisionRoute
   ApiHealthRoute: typeof ApiHealthRoute
   ApiCronMaintenanceRoute: typeof ApiCronMaintenanceRoute
+  ApiCronMaintenanceRoute: typeof ApiCronMaintenanceRoute
   ApiPublicAssistantRoute: typeof ApiPublicAssistantRoute
   ApiSyncPullRoute: typeof ApiSyncPullRoute
   ApiSyncPushRoute: typeof ApiSyncPushRoute
@@ -564,6 +565,7 @@ const rootRouteChildren: RootRouteChildren = {
   TalentsRoute: TalentsRoute,
   VisionRoute: VisionRoute,
   ApiHealthRoute: ApiHealthRoute,
+  ApiCronMaintenanceRoute: ApiCronMaintenanceRoute,
   ApiCronMaintenanceRoute: ApiCronMaintenanceRoute,
   ApiPublicAssistantRoute: ApiPublicAssistantRoute,
   ApiSyncPullRoute: ApiSyncPullRoute,
