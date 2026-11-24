@@ -40,7 +40,7 @@ import { useAccessMode } from "@/domains/access-mode";
 import { useI18n } from "@/lib/i18n/useI18n";
 import type { MessageKey } from "@/lib/i18n/messages";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
-import { getMyProfileAvatarUrl } from "@/domains/profile/api/profile-avatar.client";
+import { getMyProfileAvatarUrl } from "@/modules/profile/api/profile-avatar.client";
 import { evaluateReelAccess } from "@/modules/reel/policy/reel-access-policy";
 import {
   resetReelActivityProjection,

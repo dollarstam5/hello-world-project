@@ -16,7 +16,7 @@ import controllerSource from "../../src/modules/reel/model/useReelProximityContr
 import realtimeServiceSource from "../../src/modules/reel/services/reel-activity-realtime.service.ts?raw";
 import communicationBridgeSource from "../../src/modules/reel/model/ReelCommunicationBridge.tsx?raw";
 import appShellSource from "../../src/components/app/AppShell.tsx?raw";
-import memberAvatarSource from "../../src/domains/profile/api/profile-avatar.client.ts?raw";
+import memberAvatarSource from "../../src/modules/profile/api/profile-avatar.client.ts?raw";
 
 const screenSource = `${screenCompositionSource}\n${radarComponentsSource}\n${guidedTourSource}\n${settingsHelpSource}\n${profileSheetSource}\n${settingsPanelSource}\n${activityPanelSource}\n${headerSource}\n${discoveryPromptSource}\n${nearbyPreviewSource}\n${globalPanelSource}\n${peoplePanelSource}`;
 
