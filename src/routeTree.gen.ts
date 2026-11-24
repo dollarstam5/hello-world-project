@@ -190,6 +190,7 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesByTo {
+  '/api/cron/maintenance': typeof ApiCronMaintenanceRoute
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/espace': typeof EspaceRouteWithChildren
@@ -213,6 +214,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesById {
+  '/api/cron/maintenance': typeof ApiCronMaintenanceRoute
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
@@ -255,7 +257,6 @@ export interface FileRouteTypes {
     | '/api/health'
     | '/api/cron/maintenance'
     | '/api/cron/maintenance'
-    | '/api/cron/maintenance'
     | '/espace/apercu'
     | '/espace/informations'
     | '/espace/profil'
@@ -279,6 +280,7 @@ export interface FileRouteTypes {
     | '/talents'
     | '/vision'
     | '/api/health'
+    | '/api/cron/maintenance'
     | '/espace/apercu'
     | '/espace/informations'
     | '/espace/profil'
@@ -304,6 +306,7 @@ export interface FileRouteTypes {
     | '/vision'
     | '/_authenticated/admin'
     | '/api/health'
+    | '/api/cron/maintenance'
     | '/espace/apercu'
     | '/espace/informations'
     | '/espace/profil'
