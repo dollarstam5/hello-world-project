@@ -1,5 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
-import { useAuth } from "@/domains/auth/model/useAuth";
+import { useAuth } from "@/modules/auth/model/useAuth";
 import { Sheet } from "@/components/app/Sheet";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";

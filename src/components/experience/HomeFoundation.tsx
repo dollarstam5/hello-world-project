@@ -9,7 +9,7 @@ import { PublicProfilePreview } from "@/components/app/PublicProfilePreview";
 import { Indicator } from "@/components/app/Indicator";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useIdentity } from "@/lib/experience/identity";
-import { useAuth } from "@/domains/auth/model/useAuth";
+import { useAuth } from "@/modules/auth/model/useAuth";
 import { claimNameGreetingForSession, getHomeGreetingKey } from "@/lib/communication/greeting";
 import { formatCommunicationMessage } from "@/lib/communication/format";
 import { createDemoFlashes } from "@/modules/flash/model/demo-flashes";

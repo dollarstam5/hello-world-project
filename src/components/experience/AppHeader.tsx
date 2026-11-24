@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { haptic } from "@/platform/device/haptics";
 import { ProfileQuickPreview } from "./ProfileQuickPreview";
 import { useIdentity } from "@/lib/experience/identity";
-import { useAuth } from "@/domains/auth/model/useAuth";
+import { useAuth } from "@/modules/auth/model/useAuth";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
 import { useReelActivityProjection } from "@/modules/reel/model/reel-activity-projection";

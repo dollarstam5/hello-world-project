@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Indicator } from "@/components/app/Indicator";
 import { RadarDraftForm } from "./RadarDraftForm";
 import { Surface } from "@/components/app/Surface";
-import { useAuth } from "@/domains/auth/model/useAuth";
+import { useAuth } from "@/modules/auth/model/useAuth";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { formatCommunicationMessage } from "@/lib/communication/format";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
