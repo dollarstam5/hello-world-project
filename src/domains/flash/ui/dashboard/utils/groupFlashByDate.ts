@@ -1,4 +1,5 @@
 import type { FlashRecord } from "@eco/core-contracts";
+import type { MessageKey } from "@/lib/i18n/messages";
 import type { FlashTimelineGroup, FlashTimelineGroupKey } from "../types/flashDashboard.types";
 
 function startOfDay(value: number): number {
@@ -31,7 +32,7 @@ export function groupFlashByDate(records: FlashRecord[], now = Date.now()): Flas
 
   const definitions: Array<{
     key: FlashTimelineGroupKey;
-    label: string;
+    label: MessageKey;
     predicate: (record: FlashRecord) => boolean;
   }> = [
     {
