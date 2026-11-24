@@ -11,6 +11,7 @@ import {
   listMyReelGuestConnections,
   closeMyReelGuestConnection,
 } from "@/domains/presence/api/reel-guest-session.functions";
+import type { MessageKey } from "@/lib/i18n/messages";
 
 type Access = {
   loading: boolean;
