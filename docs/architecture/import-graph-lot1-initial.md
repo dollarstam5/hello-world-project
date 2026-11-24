@@ -427,3 +427,35 @@ Les responsabilités métier restent dans `app/navigation` : destinations Flash/
 ### Limites de validation
 
 Les mises à jour de branche ont été confirmées sur GitHub. Aucun test, lint, typecheck ou build n'a été exécuté dans cet environnement. Les shims évitent de casser les importeurs historiques connus, mais le graphe inverse exhaustif reste à calculer ; ces déplacements ne constituent pas une validation AST complète.
+
+
+## Tranche suivante — primitives partagées avec copie injectée
+
+### Déplacements publiés
+
+| Ancien chemin | Emplacement canonique | Traitement |
+|---|---|---|
+| `src/components/app/FormField.tsx` | `src/shared/components/FormField.tsx` | Copie déplacée ; libellé optionnel désormais injecté par `optionalLabel`. |
+| `src/components/app/StatusBanner.tsx` | `src/shared/components/StatusBanner.tsx` | Copie déplacée ; aucun texte produit ou traduction interne. |
+| `src/components/app/Skeletons.tsx` | `src/shared/components/Skeletons.tsx` | Copie déplacée ; dépendance au primitive UI Skeleton conservée, Surface et utilitaires pointent vers shared. |
+
+Les anciens fichiers sont conservés comme shims de compatibilité. Le barrel `shared/components` expose directement les nouvelles implémentations.
+
+### Décision i18n — FormField
+
+Le texte anglais codé en dur « optional » a été retiré. `FormField` conserve le booléen `optional`, mais n'affiche le marqueur que si le parent fournit `optionalLabel` (texte ou élément React localisé). Ainsi, shared ne dépend pas d'un provider de traduction et le texte peut être adapté à la locale du formulaire.
+
+**Point d'intégration à vérifier :** les consommateurs qui activent `optional` doivent transmettre `optionalLabel` pour conserver le marqueur visible. Le scan de code disponible ici ne certifie pas la liste exhaustive des consommateurs sur la branche de travail ; les shims préservent les chemins d'import, pas l'ancien texte par défaut.
+
+### Primitives candidates non déplacées dans cette tranche
+
+- `EmptyState` garde un fallback i18n interne (`common.empty`, `common.empty.desc`) : il doit recevoir des textes injectés avant extraction.
+- `Sheet` et `Modal` reposent sur les wrappers UI dont les libellés/accessibilité dépendent du contexte i18n ; à traiter avec leurs dépendances.
+- `SmartCard`, `AIBubble`, `FloatingButton`, `SmartTabs` restent candidats, mais ont des dépendances motion/design à normaliser avant extraction.
+- `SyncIndicator` est actuellement exporté depuis shared mais lit directement `platform/offline` et `i18n`. Cette dépendance est contraire à la frontière shared ; il doit être reclassé côté plateforme ou transformé en primitive de présentation recevant son état et son contenu en props.
+
+### Validation
+
+Commit de cette tranche : `2aa1b25cb29c33e0f1f4bea266a7bc8085881334`.
+
+La publication de la branche a été confirmée. Aucun test, lint, typecheck ou build n'a été exécuté. Le scan exhaustif des consommateurs et le graphe AST inverse restent ouverts.
