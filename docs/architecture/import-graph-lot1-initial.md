@@ -53,3 +53,83 @@ Cette première tranche consigne les fichiers dont le contenu a été relu direc
 ## Prochaine opération technique
 
 Compléter le graphe AST sur l'ensemble du périmètre Lot 1 (routes, app, layouts, widgets et leurs importeurs), en incluant les réexports, imports dynamiques, alias, tests et classification client/serveur. La migration des composants et façades ne commence qu'après validation de cette couverture.
+
+
+## Complément fichier par fichier — routes, layouts, widgets et tests consultés
+
+Cette section ajoute les fichiers consultés directement dans la branche au commit précédent. Les exports des façades sont des réexports explicites (les regex de déclaration `export const/function` ne les représentent donc pas comme déclarations locales).
+
+### Application et layouts
+
+| Fichier | Dépendances directes | Exports / constat |
+|---|---|---|
+| `src/app/app-shell/index.ts` | `@/components/app/AppShell`, `@/components/app/BottomNav`, `@/components/app/MenuSheet` | Réexporte les trois surfaces AppShell, BottomNav et MenuSheet. |
+| `src/app/providers/index.ts` | `@/lib/app/theme` | Réexporte `initTheme`, `useThemeStore`, `ThemeMode`. |
+| `src/app/router/index.ts` | `@/router` | Réexporte `getRouter`; les routes concrètes sont dans `src/routes/`. |
+| `src/app/guards/index.ts` | `@/lib/app/featureFlags` | Réexporte `isEnabled`, `features`, `FeatureKey`; commentaire de placeholder de guards. |
+| `src/layouts/desktop/index.ts` | `@/components/app/AppShell` | Réexporte AppShell comme DesktopLayout (placeholder). |
+| `src/layouts/tablet/index.ts` | `@/components/app/AppShell` | Réexporte AppShell comme TabletLayout (placeholder). |
+| `src/layouts/ecosystem/index.ts` | `@/components/app/AppShell` | Réexporte AppShell comme EcosystemLayout (placeholder). |
+| `src/layouts/modal/index.ts` | `@/components/app/Sheet`, `@/components/app/Modal` | Réexporte Sheet et Modal. |
+| `src/layouts/mobile/index.ts` | `@/components/app/AppShell` | Réexporte AppShell comme MobileLayout (placeholder). |
+
+Les quatre variantes mobile/tablet/desktop/ecosystem convergent donc actuellement vers le même composant historique `components/app/AppShell`. `AdaptiveLayout` choisit une façade selon `useResponsive`, mais ne sélectionne pas encore des compositions distinctes.
+
+### Widgets
+
+| Fichier | Dépendance directe | Export / constat |
+|---|---|---|
+| `src/widgets/ai-layer/index.ts` | `@/components/experience/CommunicationSheet` | Réexporte CommunicationSheet. |
+| `src/widgets/offline-banner/index.ts` | `@/components/experience/OfflineBanner` | Réexporte OfflineBanner. |
+| `src/widgets/section-foundation/index.ts` | `@/components/experience/SectionFoundation` | Réexporte SectionFoundation. |
+| `src/widgets/smart-feed/index.ts` | `@/components/experience/HomeFoundation` | Réexporte HomeFoundation sous le nom SmartFeed. |
+| `src/widgets/smart-state/index.ts` | `@/components/experience/SmartStateView` | Réexporte SmartStateView. |
+| `src/widgets/activity-strip/index.ts` | aucune | Placeholder, export vide. |
+
+Ces widgets sont des façades vers `components/experience`, pas encore des implémentations autonomes dans `widgets`.
+
+### Routes et composants montés
+
+| Fichier | Dépendances directes | Rôle / runtime |
+|---|---|---|
+| `src/routes/index.tsx` | `@tanstack/react-router` | Déclare la route `/` et ses métadonnées. |
+| `src/routes/index.lazy.tsx` | `@tanstack/react-router`, `@/components/experience/HomeFoundation` | Monte HomeFoundation pour `/`. |
+| `src/routes/auth.tsx` | `@tanstack/react-router`, `@/modules/auth/ui/SignInView` | Route d'authentification. |
+| `src/routes/flash.tsx` | `@tanstack/react-router` | Déclare la route `/flash` et ses métadonnées. |
+| `src/routes/flash.lazy.tsx` | `@tanstack/react-router`, `@/modules/flash/ui/FlashExperienceScreen` | Monte FlashExperienceScreen. |
+| `src/routes/radar.tsx` | `@tanstack/react-router` | Déclare la route `/radar` et ses métadonnées. |
+| `src/routes/radar.lazy.tsx` | `@tanstack/react-router`, `lucide-react`, `@/components/experience/EnginePreviewCard`, `@/components/experience/SectionFoundation`, `@/modules/radar/ui/RadarManagement` | Composition de la page Radar ; monte RadarManagement et EnginePreviewCard dans SectionFoundation. |
+| `src/routes/reel.tsx` | `@tanstack/react-router` | Déclare la route `/reel` et ses métadonnées. |
+| `src/routes/reel.lazy.tsx` | `@tanstack/react-router`, `@/modules/reel/ui/ReelProximityScreen`, `@/lib/i18n/useI18n` | Monte ReelProximityScreen dans `ClientOnly` avec fallback localisé ; frontière client explicite. |
+| `src/routes/scan.tsx` | `@tanstack/react-router` | Déclare la route `/scan` et ses métadonnées. |
+| `src/routes/scan.lazy.tsx` | `@tanstack/react-router`, `@/modules/scan/ui/ScanPanel` | Monte ScanPanel. |
+| `src/routes/vision.tsx` | `@tanstack/react-router` | Déclare la route `/vision` et ses métadonnées. |
+| `src/routes/vision.lazy.tsx` | `@tanstack/react-router`, `@/components/experience/VitalisVisionPage` | Monte VitalisVisionPage depuis l'ancien répertoire experience. |
+
+Les fichiers `*.tsx` de déclaration et `*.lazy.tsx` sont des paires de routes TanStack : les premiers portent les métadonnées et les seconds chargent les composants d'écran. Les routes lazy examinées n'utilisent pas d'import dynamique JavaScript explicite : le chargement différé est assuré par la convention TanStack `createLazyFileRoute`.
+
+### Tests explicitement reliés par leurs imports
+
+Les fichiers suivants ont été lus directement ; le lien de test est limité à la dépendance effectivement importée (il ne signifie pas que le composant testé n'a pas d'autres tests indirects).
+
+| Test | Cible importée |
+|---|---|
+| `tests/components/app-header.test.tsx` | `@/components/experience/AppHeader` |
+| `tests/components/bottom-nav.test.tsx` | `@/components/app/BottomNav` |
+| `tests/components/communication-sheet.test.tsx` | `@/components/experience/CommunicationSheet` |
+| `tests/components/engine-preview-card.test.tsx` | `@/components/experience/EnginePreviewCard` |
+| `tests/sync-engine-loader.test.tsx` | `@/components/app/SyncEngineLoader` |
+| `tests/onboarding.test.ts` | `@/lib/experience/onboarding` |
+| `tests/pwa.test.ts` | `@/platform/pwa`, `@/platform/pwa/install` |
+| `tests/interaction-navigation.test.ts` | `@/lib/performance/interaction-navigation` |
+
+L'inventaire du dépôt contient également des tests de contrats d'accès Reel, de projection d'activité, de runtime communication, de navigation mobile et de fondation. Leur rattachement précis aux fichiers du Lot 1 doit être établi par résolution AST, pas déduit de leur nom.
+
+## Résolution fichier et niveau de preuve
+
+- Les dépendances du tableau sont issues des imports et réexports littéraux visibles dans les contenus de fichiers consultés.
+- Les alias `@` sont résolus par `tsconfig.json`, Vite et Vitest selon la configuration documentée plus haut.
+- Les chemins relatifs ont été conservés tels qu'écrits lorsqu'aucune résolution TypeScript effective n'a été exécutée.
+- Les lignes d'export listent les cibles de réexport ; elles ne prétendent pas être un inventaire des symboles exportés de chaque module cible.
+- La liste des tests ci-dessus est une correspondance confirmée par import direct, non une preuve exhaustive de couverture.
+- L'import entrant complet (reverse graph), les cycles, les imports non littéraux, les modules de déclaration générés par TanStack, et la classification client/serveur par graphe transitif restent à calculer par le compilateur TypeScript.
