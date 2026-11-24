@@ -5,7 +5,7 @@ import type { MessageKey } from "@/lib/i18n/messages";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Surface } from "@/components/app/Surface";
+import { Surface } from "@/shared/components/Surface";
 
 type DurationDays = 3 | 7 | 14 | 30 | 60 | 90;
 
