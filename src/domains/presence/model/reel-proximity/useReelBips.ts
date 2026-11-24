@@ -11,6 +11,7 @@ import {
   listMyReelGuestBips,
   commandMyReelGuestBip,
 } from "@/domains/presence/api/reel-guest-session.functions";
+import type { MessageKey } from "@/lib/i18n/messages";
 
 type AccessContext = { loading: boolean; mode: string; memberId?: string | null };
 
