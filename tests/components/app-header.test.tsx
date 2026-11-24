@@ -28,7 +28,7 @@ vi.mock("@/lib/communication/CommunicationRuntimeProvider", () => ({
   useCommunicationRuntime: () => ({ getEvents: () => state.events }),
 }));
 
-vi.mock("@/domains/presence/model/reel-activity-projection", () => ({
+vi.mock("@/modules/reel/model/reel-activity-projection", () => ({
   useReelActivityProjection: (
     selector: (state: { pendingBips: number; bipsReady: boolean }) => unknown,
   ) => selector({ pendingBips: state.pendingBips, bipsReady: state.bipsReady }),

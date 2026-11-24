@@ -7,7 +7,7 @@
 | `/` | `src/routes/index.tsx` | `src/components/experience/HomeFoundation.tsx` |
 | `/flash` | `src/routes/flash.tsx` | domaine `src/domains/flash` |
 | `/scan` | `src/routes/scan.tsx` | `src/domains/scan/ui/ScanPanel.tsx` |
-| `/reel` | `src/routes/reel.tsx` | `src/domains/presence/ui/ReelProximityScreen.tsx` (1044 lignes) |
+| `/reel` | `src/routes/reel.tsx` | `src/modules/reel/ui/ReelProximityScreen.tsx` (1044 lignes) |
 | `/radar` | `src/routes/radar.tsx` | domaine `src/domains/radar` |
 | `/talents` | `src/routes/talents.tsx` | menu 2x2 |
 | `/espace` (+ `/apercu`, `/profil`, `/informations`, `/parametres/profil`, `/parametres/application`) | `src/routes/espace*.tsx` | espace personnel |
@@ -21,7 +21,7 @@ Coque commune : `src/routes/__root.tsx` puis `src/components/app/AppShell.tsx`.
 - En-tête global : `src/components/experience/AppHeader.tsx` (logo, qui ramène à l'accueil, cloche, avatar).
 - En-tête Réel : intégré dans `ReelProximityScreen.tsx` (balise `<header class="reel-proximity__header">`, préférences, titre « RÉEL », cloche).
 - Barre du bas principale : `src/components/app/BottomNav.tsx` (Flash, Scan, Réel au centre, Radar, 2x2).
-- Barre propre à Réel : `src/domains/presence/ui/ReelBottomNav.tsx` (même ordre, rendu différent).
+- Barre propre à Réel : `src/modules/reel/ui/ReelBottomNav.tsx` (même ordre, rendu différent).
 
 ## 3. Ordre actuel de l'accueil (`HomeFoundation.tsx`)
 1. Badge d'identité + bienvenue + sous-titre

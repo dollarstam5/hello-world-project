@@ -14,12 +14,12 @@ import { SyncEngineLoader } from "@/components/app/SyncEngineLoader";
 import { CommunicationRuntimeProvider } from "@/lib/communication/CommunicationRuntimeProvider";
 import { useAuth } from "@/domains/auth/model/useAuth";
 import { useI18n } from "@/lib/i18n/useI18n";
-import { resetReelActivityProjection } from "@/domains/presence/model/reel-activity-projection";
-import { ReelCommunicationBridge } from "@/domains/presence/model/ReelCommunicationBridge";
+import { resetReelActivityProjection } from "@/modules/reel/model/reel-activity-projection";
+import { ReelCommunicationBridge } from "@/modules/reel/model/ReelCommunicationBridge";
 import { useAccessMode } from "@/domains/access-mode";
 
 const ReelBottomNav = lazy(() =>
-  import("@/domains/presence/ui/ReelBottomNav").then((module) => ({
+  import("@/modules/reel/ui/ReelBottomNav").then((module) => ({
     default: module.ReelBottomNav,
   })),
 );

@@ -1,20 +1,20 @@
 import { describe, expect, it } from "vitest";
-import screenCompositionSource from "../../src/domains/presence/ui/ReelProximityScreen.tsx?raw";
-import radarComponentsSource from "../../src/domains/presence/ui/components/ReelRadarIdentity.tsx?raw";
-import guidedTourSource from "../../src/domains/presence/ui/components/ReelGuidedTour.tsx?raw";
-import settingsHelpSource from "../../src/domains/presence/ui/components/ReelSettingsHelp.tsx?raw";
-import profileSheetSource from "../../src/domains/presence/ui/components/ReelProfileSheet.tsx?raw";
-import settingsPanelSource from "../../src/domains/presence/ui/components/ReelSettingsPanel.tsx?raw";
-import activityPanelSource from "../../src/domains/presence/ui/components/ReelActivityPanel.tsx?raw";
-import headerSource from "../../src/domains/presence/ui/components/ReelHeader.tsx?raw";
-import discoveryPromptSource from "../../src/domains/presence/ui/components/ReelDiscoveryPrompt.tsx?raw";
-import nearbyPreviewSource from "../../src/domains/presence/ui/components/ReelNearbyPreview.tsx?raw";
-import globalPanelSource from "../../src/domains/presence/ui/components/ReelGlobalPanel.tsx?raw";
-import peoplePanelSource from "../../src/domains/presence/ui/components/ReelPeoplePanel.tsx?raw";
+import screenCompositionSource from "../../src/modules/reel/ui/ReelProximityScreen.tsx?raw";
+import radarComponentsSource from "../../src/modules/reel/ui/components/ReelRadarIdentity.tsx?raw";
+import guidedTourSource from "../../src/modules/reel/ui/components/ReelGuidedTour.tsx?raw";
+import settingsHelpSource from "../../src/modules/reel/ui/components/ReelSettingsHelp.tsx?raw";
+import profileSheetSource from "../../src/modules/reel/ui/components/ReelProfileSheet.tsx?raw";
+import settingsPanelSource from "../../src/modules/reel/ui/components/ReelSettingsPanel.tsx?raw";
+import activityPanelSource from "../../src/modules/reel/ui/components/ReelActivityPanel.tsx?raw";
+import headerSource from "../../src/modules/reel/ui/components/ReelHeader.tsx?raw";
+import discoveryPromptSource from "../../src/modules/reel/ui/components/ReelDiscoveryPrompt.tsx?raw";
+import nearbyPreviewSource from "../../src/modules/reel/ui/components/ReelNearbyPreview.tsx?raw";
+import globalPanelSource from "../../src/modules/reel/ui/components/ReelGlobalPanel.tsx?raw";
+import peoplePanelSource from "../../src/modules/reel/ui/components/ReelPeoplePanel.tsx?raw";
 
-import controllerSource from "../../src/domains/presence/model/useReelProximityController.ts?raw";
-import realtimeServiceSource from "../../src/domains/presence/services/reel-activity-realtime.service.ts?raw";
-import communicationBridgeSource from "../../src/domains/presence/model/ReelCommunicationBridge.tsx?raw";
+import controllerSource from "../../src/modules/reel/model/useReelProximityController.ts?raw";
+import realtimeServiceSource from "../../src/modules/reel/services/reel-activity-realtime.service.ts?raw";
+import communicationBridgeSource from "../../src/modules/reel/model/ReelCommunicationBridge.tsx?raw";
 import appShellSource from "../../src/components/app/AppShell.tsx?raw";
 import memberAvatarSource from "../../src/domains/profile/api/profile-avatar.client.ts?raw";
 

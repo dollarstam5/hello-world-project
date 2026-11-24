@@ -12,7 +12,7 @@ import {
   endReelGuestSession,
   getReelGuestSession,
   startReelGuestSession,
-} from "@/domains/presence/api/reel-guest-session.functions";
+} from "@/modules/reel/api/reel-guest-session.functions";
 
 export type AccessMode = "visitor" | "guest" | "member";
 export type MemberProfileState =

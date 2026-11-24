@@ -3,7 +3,7 @@ import { Sheet } from "@/components/app/Sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
-import { useReelActivityProjection } from "@/domains/presence/model/reel-activity-projection";
+import { useReelActivityProjection } from "@/modules/reel/model/reel-activity-projection";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
 import { useNetworkStatus } from "@/lib/platform/useNetworkStatus";
 
