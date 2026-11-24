@@ -1,7 +1,7 @@
 import { forwardRef, type ReactNode } from "react";
 import { motion, type HTMLMotionProps } from "framer-motion";
-import { transition } from "@/lib/design/motion";
-import { useReducedMotion } from "@/lib/design/useReducedMotion";
+import { transition } from "@/shared/animations";
+import { useReducedMotion } from "@/shared/animations/useReducedMotion";
 import { cn } from "@/shared/utils";
 
 type MotionButtonProps = Omit<HTMLMotionProps<"button">, "ref">;

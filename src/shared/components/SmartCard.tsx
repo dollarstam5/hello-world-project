@@ -1,8 +1,8 @@
 import type { HTMLAttributes, ReactNode } from "react";
 import { motion } from "framer-motion";
 import { Surface } from "@/shared/components/Surface";
-import { transition } from "@/lib/design/motion";
-import { useReducedMotion } from "@/lib/design/useReducedMotion";
+import { transition } from "@/shared/animations";
+import { useReducedMotion } from "@/shared/animations/useReducedMotion";
 import { cn } from "@/shared/utils";
 
 interface SmartCardProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {

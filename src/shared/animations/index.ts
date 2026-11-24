@@ -1,2 +1,2 @@
-export * from "@/lib/design/motion";
-export { useReducedMotion } from "@/lib/design/useReducedMotion";
+export * from "./motion";
+export { useReducedMotion } from "./useReducedMotion";
