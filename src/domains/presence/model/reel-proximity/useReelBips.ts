@@ -24,7 +24,7 @@ export function useReelBips({
   access: AccessContext;
   canUseMemberReel: boolean;
   activityIdentity: string | null;
-  t: (key: string) => string;
+  t: (key: MessageKey) => string;
   refreshConnections: () => Promise<void>;
 }) {
   const [receivedBips, setReceivedBips] = useState<ReelBip[]>([]);
