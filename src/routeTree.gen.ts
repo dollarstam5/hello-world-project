@@ -176,8 +176,6 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/api/health': typeof ApiHealthRoute
   '/api/cron/maintenance': typeof ApiCronMaintenanceRoute
-  '/api/cron/maintenance': typeof ApiCronMaintenanceRoute
-  '/api/cron/maintenance': typeof ApiCronMaintenanceRoute
   '/espace/apercu': typeof EspaceApercuRoute
   '/espace/informations': typeof EspaceInformationsRoute
   '/espace/profil': typeof EspaceProfilRoute
@@ -255,7 +253,6 @@ export interface FileRouteTypes {
     | '/vision'
     | '/admin'
     | '/api/health'
-    | '/api/cron/maintenance'
     | '/api/cron/maintenance'
     | '/espace/apercu'
     | '/espace/informations'
