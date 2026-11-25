@@ -44,6 +44,8 @@ describe("mobile visual smoke contract", () => {
     expect(scrollCheck).toContain("DevToolsActivePort");
     expect(scrollCheck).toContain("detached: true");
     expect(scrollCheck).toContain("process.kill(-chrome.pid");
+    expect(scrollCheck).toContain('chrome.once("exit", resolve)');
+    expect(scrollCheck).not.toContain("chrome.exited");
     expect(scrollCheck).not.toContain("9222");
   });
 
