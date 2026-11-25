@@ -653,3 +653,52 @@ Un écran ne peut être déclaré conforme au standard mobile Vitalis que si :
 7. Vérifier la lisibilité du tableau sur téléphone : défilement horizontal contrôlable, conservation du contexte de ligne et alternative acceptable pour les colonnes nombreuses.
 
 **Conclusion de l’audit statique :** Admin est majoritairement une interface de consultation, mais sa navigation mobile et ses commandes de recherche / reprise / pagination présentent plusieurs cibles tactiles inférieures ou non garanties à 48 px. Le bouton de menu à 36 px est l’écart le plus explicite. La sémantique de la navigation courante et les annonces d’état méritent également une validation. Aucun code applicatif n’a été modifié dans cette étape.
+
+
+## 4.13 Audit des commandes et interactions — module Assistant
+
+**Périmètre de l’audit statique :**
+
+- `src/modules/assistant/ui/AssistantTab.tsx`
+- `src/components/experience/AssistantNoticeLayer.tsx`
+- `src/components/app/AIBubble.tsx`
+- Primitives partagées consultées pour interpréter les dimensions : `src/components/ui/button.tsx` et `src/components/ui/input.tsx`
+- Les hooks de conversation ont été consultés uniquement pour comprendre les états d’attente, d’envoi, de streaming et de réinitialisation ; cet audit porte sur leur exposition dans l’interface, pas sur la conformité du service IA.
+
+| Zone / commande | Constat statique | Évaluation mobile |
+|---|---|---|
+| Écran de connexion requise — lien vers authentification | Bouton partagé pleine largeur, sans surcharge locale de dimensions ; la primitive garantit `min-h-12` (48 px) | Conforme sur la cible tactile déclarée |
+| Bandeau de confidentialité | Texte secondaire en `text-xs` (12 px), sans interaction | Acceptable comme information courte, à condition qu’elle ne porte pas seule une information essentielle |
+| Effacer la conversation | Bouton partagé `size="icon"`, avec `aria-label` traduit ; la primitive définit 48 × 48 px minimum | Conforme en dimension et nom accessible ; confirmer que la portée de l’action est claire et que l’effacement ne peut pas être déclenché par erreur |
+| Liste des messages | Conteneur défilant avec `aria-live="polite"` ; les messages sont rendus dans des bulles | Annonce dynamique présente ; vérifier que le lecteur d’écran n’annonce pas à répétition toute la conversation à chaque fragment de streaming |
+| Bulle de message | Texte `text-sm` (14 px), largeur maximale 78 %, avatar décoratif de 28 × 28 px | 14 px peut convenir à un contenu secondaire, mais le corps des réponses est le contenu principal : vérifier la lisibilité et privilégier le jeton de texte courant (cible 16 px) si nécessaire. L’avatar n’est pas une cible interactive |
+| Indicateur de réflexion | Trois points animés ; le texte d’attente est rendu dans la bulle, sans rôle dédié visible dans ce composant | Vérifier que l’attente est annoncée une seule fois et que l’animation respecte la préférence de réduction des mouvements |
+| Erreur d’envoi | Texte avec `role="alert"` | Annonce d’erreur structurée ; vérifier qu’elle reste visible et compréhensible après une réponse partiellement diffusée |
+| Champ de saisie | Primitive Input avec `h-9` (36 px), `text-base` par défaut mais `md:text-sm` à partir du breakpoint desktop ; `aria-label`, limite 600 caractères et lecture seule pendant attente / streaming | Écart mobile explicite : hauteur de 36 px sous le minimum de 48 px. La taille de police est de 16 px sur petit écran, mais tombe à 14 px à partir de `md` ; contrôler le comportement sur tablette et PWA |
+| Envoyer | Bouton partagé `size="icon"`, cible 48 × 48 px ; nom accessible ; désactivé si saisie vide, attente ou streaming | Conforme en dimension et état désactivé ; vérifier l’état de focus et que l’envoi au clavier ne provoque pas de double soumission |
+| Focus automatique du champ | Le champ reçoit le focus lorsque `pending` et `streaming` sont tous deux inactifs | Risque d’interruption : le focus peut être repris après une réponse ou un changement d’état alors que l’utilisateur navigue ailleurs. Valider le parcours clavier et lecteur d’écran ; ne pas déplacer le focus de façon inattendue |
+| Notification flottante — fermeture | Bouton partagé avec surcharge locale `h-8 w-8` (32 × 32 px), malgré la cible par défaut de 48 px ; nom accessible | Non conforme : la surcharge réduit la cible tactile. Porter à 48 × 48 px minimum |
+| Notification flottante — annonce | Conteneur `role="status"` et `aria-live="polite"` ; disparition automatique après 9 secondes | Sémantique d’annonce présente ; valider que le délai laisse le temps de lire et que la fermeture manuelle est accessible. Une information importante ne doit pas dépendre uniquement de cette notification temporaire |
+| Notification flottante — position | Couche fixe avec prise en compte de `--safe-top`, marges latérales et largeur maximale | Bonne prise en compte initiale de la zone sûre ; tester avec clavier virtuel, petites hauteurs d’écran, zoom et superposition avec les contrôles système |
+
+**Constats transversaux :**
+
+- Les actions principales « envoyer », « effacer » et « se connecter » héritent d’une cible de 48 px depuis la primitive Button. La notification flottante constitue une exception explicite : sa classe locale réduit le bouton de fermeture à 32 px.
+- Le champ de saisie est le principal écart de dimension : la primitive Input impose 36 px de hauteur. Il faut le porter à 48 px minimum dans le contexte mobile de l’Assistant, sans présumer qu’une hauteur de 36 px est compensée par le padding.
+- Le contenu des bulles est en 14 px. Comme les réponses de l’assistant sont le contenu principal de cet écran, leur lisibilité doit être contrôlée sur téléphone ; appliquer le standard de 16 px au texte courant si la vérification confirme une lecture trop dense.
+- La région `aria-live="polite"` englobe l’historique et les fragments de réponse diffusés en streaming. Un test avec lecteur d’écran est nécessaire pour éviter des annonces répétitives ou trop fréquentes.
+- Le focus automatique après les états d’attente peut être intrusif pour les personnes qui naviguent au clavier ou au lecteur d’écran. Vérifier le comportement réel avant de retenir ce mécanisme.
+- Le composant de bulle utilise une animation d’apparition et un indicateur animé ; la réduction des mouvements est prise en compte par le hook dédié, mais doit être validée sur appareil.
+- Les commandes partagées utilisent un anneau de focus, mais le contraste et la visibilité en thèmes clair / sombre restent à vérifier en rendu réel.
+
+**Priorités documentaires de mise en conformité :**
+
+1. Garantir 48 px de hauteur minimum au champ de saisie de l’Assistant.
+2. Supprimer la réduction locale du bouton de fermeture de notification et garantir 48 × 48 px.
+3. Valider une taille de 16 px pour le texte principal des bulles et conserver une hiérarchie lisible pour les sources et métadonnées.
+4. Tester l’annonce des messages, du streaming, de l’attente et des erreurs avec lecteur d’écran ; ajuster la région live pour éviter les répétitions.
+5. Vérifier que le focus automatique ne détourne pas l’utilisateur de son parcours et qu’il reste possible d’envoyer / effacer au clavier.
+6. Tester l’écran avec clavier virtuel, en 320 / 360 px, en orientation paysage, avec zoom et avec les zones sûres activées.
+7. Confirmer que l’effacement de conversation est explicite, compréhensible et utilisable sans activation accidentelle.
+
+**Conclusion de l’audit statique :** le module Assistant possède des commandes principales correctement dimensionnées via le composant Button, mais le champ de saisie (36 px) et la fermeture de notification (32 × 32 px) s’écartent clairement de la cible tactile mobile de 48 px. La taille du texte des bulles, les annonces de streaming et le déplacement automatique du focus nécessitent une validation d’accessibilité en conditions réelles. Aucun code applicatif n’a été modifié dans cette étape.
