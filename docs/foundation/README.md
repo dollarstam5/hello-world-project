@@ -10,6 +10,7 @@ Cette section contient les fondations canoniques du projet : architecture, séqu
 - [Langage de design Vitalis](./design-language.md)
 - [Standards UX et accessibilité — Phase 2](./phase-2-ux-standards.md)
 - [Adaptation PWA et capacités des plateformes](./pwa-platform-adaptation.md)
+- [Référentiel produit — collecte en langage humain des moteurs](./conversational-engines-product-reference.md) — état vérifié, clarifications et évolutions non encore livrées pour Flash, Scan et Radar.
 
 ## Principe produit prioritaire
 
@@ -28,6 +29,7 @@ Le projet se construit dans un ordre stable et guidé par les dépendances. Tout
 - [Langage de design](./design-language.md)
 - [Standards UX et accessibilité — Phase 2](./phase-2-ux-standards.md)
 - [Adaptation PWA et capacités des plateformes](./pwa-platform-adaptation.md)
+- [Référentiel produit des moteurs conversationnels](./conversational-engines-product-reference.md)
 
 Le document historique `docs/operations/GO_NO_GO.md` reste conservé pour traçabilité et figure parmi les candidats à comparer avant toute proposition de retrait.
 
