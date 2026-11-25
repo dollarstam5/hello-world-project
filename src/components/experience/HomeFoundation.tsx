@@ -8,7 +8,10 @@ import { Indicator } from "@/components/app/Indicator";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useIdentity } from "@/domains/profile/model/identity";
 import { useAuth } from "@/domains/auth/model/useAuth";
-import { claimNameGreetingForSession, getHomeGreetingKey } from "@/features/communication/model/greeting";
+import {
+  claimNameGreetingForSession,
+  getHomeGreetingKey,
+} from "@/features/communication/model/greeting";
 import { formatCommunicationMessage } from "@/features/communication/model/format";
 import { createDemoFlashes } from "@/domains/flash/model/demo-flashes";
 import { VitalisVisionCard } from "@/components/experience/VitalisVisionCard";
