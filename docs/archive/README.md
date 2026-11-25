@@ -1,6 +1,6 @@
 # Documentation Archive
 
-Ce dossier documentaire répertorie les sources historiques conservées pour la traçabilité et la migration. Les fichiers restent à leur emplacement actuel ; ils ne sont pas supprimés ni déplacés du simple fait d'être répertoriés ici.
+Ce dossier documentaire répertorie les sources historiques conservées pour la traçabilité et la migration. Les chemins ci-dessous reflètent leur emplacement actuel dans cette branche. Les entrées explicitement signalées comme supprimées ne sont conservées qu'à titre de trace de déduplication ; les autres sources restent disponibles et ne sont pas supprimées du simple fait d'être répertoriées ici.
 
 ## Outils de migration documentaire
 
@@ -15,7 +15,7 @@ La documentation active vit dans :
 - `docs/product/`
 - `docs/architecture/`
 - `docs/api/`
-- `docs/modules/` — classement des sources de moteurs/API en cours dans Lot 12
+- `docs/modules/` — sources historiques et contrats classés par domaine métier
 - `docs/database/`
 - `docs/engineering/ai/`
 - `docs/operations/`
@@ -72,7 +72,7 @@ Les sources UJ-08 Flash et UJ-09 Scan sont classées sous `docs/modules/flash/` 
 - `docs/modules/flash/6. Flash API.md` (classé dans Lot 12)
 - `docs/modules/radar/9. Radar API.md` (classé dans Lot 12)
 - `docs/modules/missions/7. Mission API.md` (classé dans Lot 12)
-- `docs/BUILD-API.md 2. Principes communs.md`
+- `docs/api/BUILD-API.md 2. Principes communs.md`
 - `docs/database/Database Architecture.md`
 - `docs/database/DATA_MODEL.md`
 
