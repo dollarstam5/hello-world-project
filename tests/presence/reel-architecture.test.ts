@@ -172,6 +172,12 @@ describe("En direct architecture boundaries", () => {
     expect(radarStylesSource).toContain("animation: none;\n  opacity: 0.48;");
   });
 
+  it("keeps the En direct header fixed below the mobile safe area", () => {
+    expect(headerSource).toContain(
+      'className="reel-proximity__header sticky top-0 z-30 -mx-3 px-3 pt-[env(safe-area-inset-top)]',
+    );
+  });
+
   it("keeps the En direct header and central profile controls in the mobile screen composition", () => {
     expect(screenSource).toContain('className="reel-proximity__header-actions"');
     expect(screenSource).toContain("reel-radar__me-avatar");
