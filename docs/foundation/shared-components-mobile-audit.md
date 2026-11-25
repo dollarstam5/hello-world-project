@@ -657,3 +657,42 @@ Les états « surveillance active », « correspondance trouvée » et « notifi
 Le référentiel canonique est désormais [Référentiel produit — collecte en langage humain des moteurs](./conversational-engines-product-reference.md). Il décrit les capacités actuelles et les écarts sans déclarer comme livrée l'expression libre Radar ni l'automatisation de veille.
 
 **Aucun code applicatif, parseur, service ou comportement runtime n'a été modifié par cette clarification.**
+
+## 13. Réconciliation des composants partagés avec la PR #89 — 25 novembre 2026
+
+### Comparaison des implémentations
+
+La PR #89 a déplacé plusieurs primitives vers `src/shared/components` et conservé les anciens chemins comme façades de compatibilité. La branche #90 possédait déjà une partie de cette centralisation, mais son index partagé renvoyait encore trois composants vers leurs anciennes implémentations.
+
+| Composant | État avant réconciliation | Décision appliquée |
+|---|---|---|
+| `Surface` | Déjà canonique dans `src/shared/components` ; implémentation fonctionnellement équivalente à #89 | Conservé, sans remplacement |
+| `FormField` | Déjà canonique ; #90 ajoute `optionalLabel` pour injecter une traduction depuis l'appelant | Amélioration #90 conservée |
+| `StatusBanner` | Déjà canonique ; rendu et rôles ARIA équivalents | Conservé |
+| `SmartCard` | Implémentation encore située dans `src/components/app` ; index partagé renvoyant vers cet ancien chemin | Implémentation déplacée vers `src/shared/components/SmartCard.tsx` |
+| `Modal` | Implémentation encore située dans `src/components/app` | Implémentation déplacée vers `src/shared/components/Modal.tsx` |
+| `Sheet` | Implémentation encore située dans `src/components/app` | Implémentation déplacée vers `src/shared/components/Sheet.tsx` |
+
+### Compatibilité et dépendances
+
+- Les chemins historiques `src/components/app/SmartCard.tsx`, `Modal.tsx` et `Sheet.tsx` restent disponibles comme façades de réexport ; les consommateurs existants ne sont donc pas forcés de migrer dans ce lot.
+- `src/shared/components/index.ts` exporte désormais les trois implémentations canoniques locales.
+- Les imports ont été adaptés aux dépendances réellement présentes sur la branche #90 : animations depuis `@/lib/design`, utilitaires depuis `@/shared/utils`, primitives Radix depuis `@/components/ui`. Le déplacement de #89 vers d'autres chemins internes n'a pas été copié sans vérifier leur existence sur la branche cible.
+- `FormField.optionalLabel` est conservé : il permet à l'appelant de fournir le libellé traduit et évite d'introduire du texte applicatif dans un composant partagé.
+- Aucune modification de rendu, de navigation ou de règle métier n'a été recherchée dans ce lot.
+
+### Contrat de non-régression ajouté
+
+`tests/shared-components-ownership.test.ts` vérifie :
+- les exports canoniques de l'index partagé ;
+- le maintien des trois façades de compatibilité ;
+- l'absence de dépendance directe des primitives vers les composants d'expérience.
+
+Ces assertions protègent les frontières de fichiers et d'import ; elles ne remplacent pas un test de rendu, d'accessibilité clavier ou de comportement sur appareil.
+
+### Limites restantes
+
+- `FloatingButton`, `SmartTabs`, `AIBubble` et `EmptyState` restent à comparer et, si cela est utile, à centraliser dans un lot distinct.
+- L'audit antérieur de `SmartCard` reste valable : le fait de déplacer le composant ne corrige pas à lui seul la sémantique clavier de son mode interactif.
+- Les contraintes de hauteur/scroll des Sheet et AlertDialog, les zones sûres et les tests sur petits écrans restent à valider au niveau du rendu.
+- Aucun test automatisé n'est déclaré réussi tant que le workflow correspondant n'a pas été exécuté sur le commit courant.
