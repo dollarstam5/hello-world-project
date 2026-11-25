@@ -8,8 +8,59 @@ SERVER_LOG="${TMPDIR:-/tmp}/vitalis-e2e.log"
 OUTPUT_DIR="${GITHUB_WORKSPACE:-.}/artifacts/mobile-smoke"
 STORAGE_STATE_BASE="${TMPDIR:-/tmp}/vitalis-e2e-storage-${BASHPID}"
 SERVER_PID=""
+SCREENSHOT_TIMEOUT_SECONDS=45
+SCREENSHOT_PID=""
+
+terminate_process_group() {
+  local pid="$1"
+  [[ -n "$pid" ]] || return 0
+
+  kill -TERM -- "-$pid" 2>/dev/null || kill -TERM "$pid" 2>/dev/null || true
+  for _ in {1..5}; do
+    if ! kill -0 "$pid" 2>/dev/null; then
+      wait "$pid" 2>/dev/null || true
+      return 0
+    fi
+    sleep 1
+  done
+  kill -KILL -- "-$pid" 2>/dev/null || kill -KILL "$pid" 2>/dev/null || true
+  wait "$pid" 2>/dev/null || true
+}
+
+run_screenshot() {
+  local label="$1"
+  shift
+
+  echo "Capturing ${label}"
+  setsid "$@" &
+  SCREENSHOT_PID=$!
+  local elapsed=0
+
+  while kill -0 "$SCREENSHOT_PID" 2>/dev/null; do
+    if (( elapsed >= SCREENSHOT_TIMEOUT_SECONDS )); then
+      echo "ERROR: screenshot timed out after ${SCREENSHOT_TIMEOUT_SECONDS}s: ${label}" >&2
+      terminate_process_group "$SCREENSHOT_PID"
+      SCREENSHOT_PID=""
+      return 124
+    fi
+    sleep 1
+    elapsed=$((elapsed + 1))
+  done
+
+  local status=0
+  wait "$SCREENSHOT_PID" || status=$?
+  SCREENSHOT_PID=""
+  if (( status != 0 )); then
+    echo "ERROR: screenshot failed (${status}): ${label}" >&2
+  fi
+  return "$status"
+}
 
 cleanup() {
+  if [[ -n "$SCREENSHOT_PID" ]]; then
+    terminate_process_group "$SCREENSHOT_PID"
+    SCREENSHOT_PID=""
+  fi
   if [[ -n "$SERVER_PID" ]]; then
     # Wrangler may spawn child processes; terminate the entire dedicated session.
     kill -- "-$SERVER_PID" 2>/dev/null || kill "$SERVER_PID" 2>/dev/null || true
@@ -88,7 +139,9 @@ for locale in fr en; do
         "/radar") output="$OUTPUT_DIR/vitalis-route-radar-${viewport//,/-}-${locale}.png" ;;
         "/vision") output="$OUTPUT_DIR/vitalis-route-vision-${viewport//,/-}-${locale}.png" ;;
       esac
-      bunx playwright screenshot \
+      run_screenshot \
+        "locale=${locale} route=${route} viewport=${viewport}" \
+        bunx playwright screenshot \
         --browser=chromium \
         --viewport-size="$viewport" \
         --full-page \
