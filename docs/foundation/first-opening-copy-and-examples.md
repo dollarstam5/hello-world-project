@@ -46,9 +46,19 @@ Vous avez besoin de quelque chose, ou quelque chose à proposer ?
 **Flash — texte**  
 Dites-le simplement. Vous pourrez relire votre Flash avant de l'enregistrer en brouillon ou de le publier.
 
-**Exemples illustratifs**  
-- « Je cherche quelqu'un pour m'aider à déménager samedi. »
-- « Je peux préparer des repas pour une réunion ou un événement. »
+**Exemples illustratifs — besoins de la vie quotidienne**  
+Les exemples doivent montrer que Flash accueille aussi bien une demande d'entraide qu'un petit travail rémunéré, une aide ponctuelle ou un besoin qui revient plusieurs fois.
+
+- **Main-d'œuvre pour une courte durée :** « J'aurais besoin de deux personnes pour m'aider à terminer une terrasse pendant trois jours. »
+- **Coup de main de quelques heures :** « Ce soir, j'ai besoin de deux personnes pour m'aider à charger un camion pendant trois heures. »
+- **Aide à la maison :** « Je cherche quelqu'un pour faire le ménage et préparer le repas chez ma grand-mère quelques matinées par semaine. »
+- **Garde d'enfant :** « Je cherche une personne de confiance pour garder mon bébé pendant mes cours, de 8 h à midi. »
+- **Aide entre voisins :** « Je dois descendre un canapé du troisième étage. Deux personnes pourraient-elles me donner un coup de main ? »
+- **Accompagnement :** « J'ai besoin de quelqu'un pour m'accompagner à un rendez-vous et m'aider avec les démarches. »
+- **Recherche de travail ponctuel :** « Je cherche un travail pour les prochains jours. Je peux aider sur un chantier ou pour des travaux de maison. »
+- **Proposition d'aide :** « Je suis disponible samedi pour aider à faire le ménage après un déménagement. »
+
+Ces formulations sont réécrites à partir des situations représentées dans le jeu de données du dépôt. Elles ne reprennent ni les coordonnées, ni les identités, ni les détails privés des enregistrements. Elles illustrent plusieurs durées : quelques heures, une journée, plusieurs jours ou une aide régulière.
 
 **Scan — titre**  
 Vous cherchez quelque chose près de vous ?
@@ -64,6 +74,21 @@ Expliquez ce que vous recherchez. Scan vous permet de chercher parmi les Flashs 
 - Pour Flash, garder la différence entre enregistrer un brouillon et publier.
 - Pour Scan, ne pas laisser entendre que la recherche est lancée dès la saisie. Le lancement intervient après validation explicite.
 - La mention d'une ville dans un exemple ne signifie pas que la localisation de la personne est connue automatiquement.
+
+### Étendue des besoins à représenter dans Flash
+
+Le jeu de données `docs/database/donnees_sql.sql` contient des situations qui dépassent largement les services professionnels : garde d'enfant, aide à un parent âgé, tâches ménagères, accompagnement, aide alimentaire, soutien scolaire, démarches administratives, petits travaux, manutention, travail journalier ou mission de plusieurs jours.
+
+La rédaction de Flash doit donc laisser de la place :
+- aux besoins personnels et familiaux, sans obliger la personne à les présenter comme une prestation commerciale ;
+- à l'entraide de voisinage, avec ou sans rémunération ;
+- aux tâches très courtes (quelques minutes ou quelques heures) ;
+- aux missions ponctuelles d'une journée ou de plusieurs jours ;
+- aux besoins récurrents, par exemple quelques matinées par semaine ;
+- aux personnes qui cherchent du travail autant qu'à celles qui recherchent de l'aide ;
+- aux personnes qui proposent spontanément leur temps ou leur savoir-faire.
+
+**Point de vigilance :** le fichier de données consulté ne contient pas de demande explicite de mère porteuse. Cette situation ne doit pas être ajoutée comme simple exemple de service sans décision produit spécifique et examen des dimensions juridiques, médicales, éthiques et de protection des personnes. Les demandes sensibles (santé, famille, hébergement, enfants) doivent être formulées avec retenue et ne jamais exposer inutilement des informations personnelles.
 
 ### Étape 3 — En direct et Radar
 
@@ -134,7 +159,7 @@ Les cartes doivent aider à choisir en quelques secondes. Une phrase simple suff
 
 | Espace | Description proposée | Exemple |
 |---|---|---|
-| Flash | Vous avez un besoin ou quelque chose à proposer ? Dites-le ici. | « Je peux donner un coup de main pour un déménagement. » |
+| Flash | Vous avez besoin d'un coup de main, vous cherchez une personne pour une tâche ou vous avez du temps à proposer ? Dites-le ici. | « J'aurais besoin de deux personnes pour m'aider pendant trois jours sur un chantier. » |
 | Scan | Vous cherchez quelque chose ? Regardez parmi les Flashs publics. | « Je cherche un mécanicien près de Bonapriso. » |
 | En direct | Voyez les personnes à proximité. Vous gardez le choix de rendre votre présence visible ou non. | « J'aimerais voir qui est autour de moi. » |
 | Radar | Vous avez une recherche à garder en tête ? Décrivez-la librement et enregistrez-la dans Radar. | « Je cherche un développeur pour m'aider sur une application. » |
