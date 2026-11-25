@@ -8,7 +8,10 @@ import {
   type ReactNode,
 } from "react";
 import type { CommunicationContextInput } from "@/features/communication/model/context";
-import { createCommunicationRuntime, type CommunicationRuntime } from "@/features/communication/model/runtime";
+import {
+  createCommunicationRuntime,
+  type CommunicationRuntime,
+} from "@/features/communication/model/runtime";
 
 const CommunicationRuntimeContext = createContext<CommunicationRuntime | null>(null);
 
