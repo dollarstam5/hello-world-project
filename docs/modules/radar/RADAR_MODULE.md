@@ -36,7 +36,7 @@ L'activation et la reprise programment une prochaine revue dans un délai maxima
 
 ## Conformité au principe fondamental P0 — écart identifié
 
-Référence : [principe fondamental de traitement des demandes partielles](../../00-foundation/vitalis-core-principles.md).
+Référence : [principe fondamental de traitement des demandes partielles](../../foundation/vitalis-core-principles.md).
 
 L'inspection du formulaire et du schéma de brouillon montre que la sauvegarde exige actuellement une requête d'au moins trois caractères **et** un libellé de zone d'au moins deux caractères. Le rayon et la durée sont également présents dans le modèle du brouillon.
 
