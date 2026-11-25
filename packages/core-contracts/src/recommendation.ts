@@ -4,13 +4,7 @@ import type { RecommendationId, RecommendationReactionId, UserId } from "./ids";
 export const RECOMMENDATION_CONTRACT_VERSION = 1 as const;
 
 export type RecommendationTargetType =
-  | "mission"
-  | "flash"
-  | "opportunity"
-  | "person"
-  | "skill"
-  | "content"
-  | "action";
+  "mission" | "flash" | "opportunity" | "person" | "skill" | "content" | "action";
 
 export type RecommendationStatus = "generated" | "available" | "expired" | "withdrawn";
 export type RecommendationPriority = "low" | "normal" | "high";
@@ -90,18 +84,10 @@ export interface RecommendationCandidate {
 
 /** Reactions are append-only events; they do not mutate the source resource. */
 export type RecommendationReactionAction =
-  | "viewed"
-  | "saved"
-  | "accepted"
-  | "dismissed"
-  | "reported";
+  "viewed" | "saved" | "accepted" | "dismissed" | "reported";
 
 export type RecommendationReportReason =
-  | "irrelevant"
-  | "inaccurate"
-  | "outdated"
-  | "privacy_concern"
-  | "other";
+  "irrelevant" | "inaccurate" | "outdated" | "privacy_concern" | "other";
 
 export interface RecommendationReaction {
   readonly id: RecommendationReactionId;
