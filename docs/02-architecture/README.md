@@ -1,33 +1,40 @@
-# Architecture
+# Références architecturales
 
-Cette section rassemble les documents d'architecture technique, les frontières des domaines métier et les conventions du front-end et du backend.
+Ce dossier est le point d'entrée canonique de la documentation d'architecture du projet.
 
-## Contents
+## Gouvernance et architecture générale
 
-- [System architecture](./system-architecture.md)
-- [Front-end and experience architecture](./frontend-experience.md)
-- [Gouvernance obligatoire](../../ARCHITECTURE.md)
-- [Front-end and experience architecture](./frontend-experience.md)
-- [Mobile navigation standards — Android, iOS and Web](./mobile-navigation-standards.md)
-- [Backend and API architecture](./backend-api.md)
-- [Database architecture](./database-architecture.md)
-- [Synchronization, offline mode and realtime](./synchronization-offline-realtime.md)
-- [Communication system architecture](./communication-system-architecture.md)
-- [Demo data governance — V1](./demo-data-governance.md)
-- [Scan history — V1](./scan-history-v1.md) — historique local minimal, données exclues et règles de suppression.
-- [SQL demo fixture adapter — V1](./demo-sql-fixture-adapter-v1.md)
-- [AI architecture and integrations](./ai-architecture-integrations.md)
-- [Unified Digital Identity model](./identity-model.md)
-- [Trust domain and Trust Engine](./trust-domain.md)
+- [Gouvernance architecturale](./architecture-governance.md) — propriété des responsabilités, graphe de dépendances, règles de migration et checklist obligatoire.
+- [Architecture système](./system-architecture.md)
+- [Architecture front-end et expérience](./frontend-experience.md)
 
-## Legacy references retained pending approval
+## Références techniques
 
-- docs/18-VITALA-ARCHITECTURE-V1 Partie 1.md
-- docs/18-VITALA-ARCHITECTURE-V1 Partie 2.md
-- docs/18-VITALA-ARCHITECTURE-V1 Partie 3.md
-- docs/Database Architecture.md
-- Les sources historiques UDI et Trust restent conservées dans docs/ jusqu'à validation et autorisation explicite.
+- [Standards de navigation mobile Android, iOS and Web](./mobile-navigation-standards.md)
+- [Architecture backend et API](./backend-api.md)
+- [Architecture de la base de données](./database-architecture.md)
+- [Synchronisation, mode hors ligne et temps réel](./synchronization-offline-realtime.md)
+- [Architecture du système de communication](./communication-system-architecture.md)
+- [Architecture IA et intégrations](./ai-architecture-integrations.md)
+- [Modèle d'identité numérique unifiée](./identity-model.md)
+- [Domaine Trust et Trust Engine](./trust-domain.md)
 
-Les nouveaux changements doivent viser les références canoniques et respecter la propriété des données par domaine. Une référence documentaire n'est pas une preuve que le composant décrit est déjà implémenté.
+## Références produit et capacités
 
-- [Aperçus publics de profil — V1](./public-profile-preview-v1.md) — champs autorisés, consentement, présentation compacte et consultation des profils.
+- [Gouvernance des données de démonstration — V1](./demo-data-governance.md)
+- [Historique Scan — V1](./scan-history-v1.md) — historique local minimal, données exclues et règles de suppression.
+- [Adaptateur SQL des fixtures de démonstration — V1](./demo-sql-fixture-adapter-v1.md)
+- [Aperçus publics de profil — V1](./public-profile-preview-v1.md)
+
+## Sources historiques conservées
+
+Les anciens documents restent conservés pour traçabilité et ne remplacent pas les références canoniques de ce dossier :
+
+- `docs/18-VITALA-ARCHITECTURE-V1 Partie 1.md`
+- `docs/18-VITALA-ARCHITECTURE-V1 Partie 2.md`
+- `docs/18-VITALA-ARCHITECTURE-V1 Partie 3.md`
+- `docs/Database Architecture.md`
+
+Les sources historiques UDI et Trust restent également conservées dans `docs/` jusqu'à validation et autorisation explicite.
+
+Toute nouvelle modification doit viser les références canoniques ci-dessus et respecter la propriété des données par domaine. Une référence documentaire n'est pas une preuve que le composant décrit est déjà implémenté.

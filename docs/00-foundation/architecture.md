@@ -1,25 +1,8 @@
-# Architecture baseline
+# Architecture — ancien emplacement
 
-This document captures the architecture baseline for the project. It should be the entry point for understanding the system structure, dependencies, and design intent.
+Ce fichier est conservé comme renvoi de compatibilité. La documentation architecturale active a été regroupée dans le dossier dédié :
 
-## Scope
+- [Index des références architecturales](../02-architecture/README.md)
+- [Gouvernance architecturale canonique](../02-architecture/architecture-governance.md)
 
-- project layering and responsibilities
-- service boundaries
-- runtime and data model expectations
-- cross-domain rules
-
-## Canonical source
-
-The current project architecture is also described in the repository root file:
-
-- [`../../ARCHITECTURE.md`](../../ARCHITECTURE.md)
-
-## Legacy docs
-
-This architecture baseline was previously split across multiple docs and duplicated under different names. The main sources to review are:
-
-- `docs/ARCHITECTURE.md`
-- `docs/18-VITALA-ARCHITECTURE-V1 Partie 1.md`
-- `docs/18-VITALA-ARCHITECTURE-V1 Partie 2.md`
-- `docs/18-VITALA-ARCHITECTURE-V1 Partie 3.md`
+Les fondations du projet (build, conventions, design et principes) restent indexées dans [cet index](./README.md).
