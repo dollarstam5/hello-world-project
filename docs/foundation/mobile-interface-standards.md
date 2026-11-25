@@ -122,6 +122,27 @@ Tout bouton doit définir, selon son contexte :
 
 Pendant une opération, conserver un libellé compréhensible et ne pas laisser croire qu’une action est terminée avant confirmation réelle. Si l’action est mise en attente localement, le dire explicitement.
 
+
+### 4.4 Audit initial du composant partagé `Button`
+
+**Périmètre vérifié :** `src/components/ui/button.tsx`, lecture statique du composant partagé. Cet audit ne constitue pas une validation visuelle sur appareil et ne couvre pas encore les usages propres à chaque écran.
+
+| Point contrôlé | Constat dans le composant | Évaluation par rapport au standard |
+|---|---|---|
+| Hauteur tactile | Les tailles `default`, `sm`, `lg` utilisent `min-h-12` ; `icon` utilise 48 × 48 px minimum | Conforme à la cible de hauteur minimale de 48 px |
+| Icônes | Les SVG enfants reçoivent `size-5` (20 px) | Conforme au bas de la plage recommandée de 20–24 px |
+| Hiérarchie visuelle | Variantes `default`, `secondary`, `outline`, `ghost`, `link` et `destructive` | Les variantes existent ; leur affectation aux rôles primaire, secondaire, tertiaire et destructif doit être cohérente dans les écrans |
+| Libellé compact | La taille `sm` applique `text-xs` (12 px) | Point de vigilance : ne pas utiliser cette taille pour une action principale ou un libellé nécessitant une lecture confortable ; vérifier les usages |
+| Focus clavier | Classes `focus-visible:outline-none` et `focus-visible:ring-1` | Présence technique détectée ; contraste, épaisseur perceptible et absence de masquage restent à valider visuellement |
+| Désactivation | `disabled:pointer-events-none` et `disabled:opacity-50` | État prévu ; vérifier que la raison de désactivation est compréhensible lorsque nécessaire |
+| Appui | Transition de couleur générique | Un style d’activation tactile explicite n’est pas identifiable dans les classes de base ; à vérifier et harmoniser lors d’un audit d’implémentation |
+| Chargement et double envoi | Aucun contrat de propriété `loading` dans `ButtonProps` | Non garanti par le composant partagé ; chaque parcours doit actuellement être vérifié pour son retour de progression et la prévention du double envoi |
+| Nom accessible | Les attributs natifs sont transmis via `props` | Le composant ne garantit pas à lui seul un nom accessible ; chaque appel doit fournir un texte ou un nom accessible pertinent, notamment pour les boutons icône seule |
+
+**Conclusion de l’audit initial :** le socle de dimension tactile et la taille des icônes sont alignés avec les cibles V1. La conformité complète n’est pas démontrée : les états d’activation et de chargement, le contraste du focus, les libellés compacts et les noms accessibles demandent une vérification ciblée des usages et des rendus réels.
+
+**Règle documentaire immédiate :** tant qu’un audit des écrans n’a pas confirmé le contraire, ne pas considérer `size="sm"` comme le choix par défaut d’une action mobile importante. Ne pas considérer la présence d’un `disabled` natif comme une preuve suffisante de prévention des doubles soumissions ou de gestion du chargement.
+
 ## 5. Cartes, listes et contenus
 
 ### 5.1 Cartes
