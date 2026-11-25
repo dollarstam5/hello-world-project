@@ -52,13 +52,14 @@ En direct est le nom affiché du moteur historiquement nommé En direct. Les rou
 - Le centre de l'en-tête n'accueille aucun titre centré ni élément décoratif. La zone centrale de la page, sous l'en-tête, est réservée à l'action principale du moteur.
 - Sous cette composition viennent les informations et panneaux propres au moteur.
 
-### Action principale d'En direct : le profil
+### Centre du radar : origine des rayons, sans icône
 
-- Le centre du radar accueille le profil de la personne qui utilise En direct. Il constitue le point d'ancrage visuel autour duquel apparaissent les profils proches.
-- En mode invité, l'avatar visuel et le nom temporaire configurés pour la présence sont affichés. Aucun identifiant technique de session invitée ne doit apparaître.
-- En mode membre, le centre affiche « Moi » et charge uniquement l’avatar du compte connecté depuis `profiles.avatar_media_id`, puis `media.remote_path`. Le média doit appartenir au membre, être une image distante non supprimée et utiliser un chemin dans son propre dossier du bucket `avatars`. Une URL signée courte est créée pour cette vue personnelle ; en cas d’absence ou d’échec, l’icône neutre reste affichée. Aucun avatar d’un autre compte n’est chargé dans ce profil central.
-- L'activation du profil central ouvre les réglages de présence existants ; elle ne déclenche pas automatiquement la découverte ni la publication de présence.
-- Les profils proches restent des éléments distincts autour du profil central. Leur sélection ouvre leur fiche. Les disques superposés donnent accès à la liste complète lorsque le nombre de profils dépasse le seuil prévu.
+- Le centre du radar ne présente **aucune icône, aucun avatar, aucune silhouette, aucune initiale et aucun libellé**. Il ne représente pas le profil de la personne.
+- Le centre est un point d'origine visuel neutre. Des rayons partent de ce point et s'étendent vers l'extrémité du radar, jusqu'à sa périphérie. Le rayonnement constitue le motif central de l'interface.
+- Les rayons doivent rester lisibles, fins et équilibrés ; ils structurent l'espace sans masquer les présences découvertes ni concurrencer les profils affichés autour du centre.
+- Les personnes qui ont choisi de partager leur présence restent représentées séparément autour du centre, selon leur position dans le radar. Leur avatar et leur fiche ne sont pas déplacés au centre.
+- La suppression de l'avatar central ne doit pas supprimer les fonctions existantes de gestion de sa propre présence. Leur point d'accès visuel et leur interaction devront être conservés dans les commandes ou réglages dédiés, sans réintroduire d'icône au centre.
+- Aucun changement de comportement n'est présumé par cette règle graphique : le déplacement précis de l'interaction actuellement portée par le bouton central sera vérifié avant toute modification du code.
 
 ### Commandes secondaires d'En direct
 
