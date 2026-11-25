@@ -1,217 +1,231 @@
-# Proposition éditoriale — première découverte et exemples des quatre moteurs
+# Proposition éditoriale — découvrir Vitalis avec des mots naturels
 
-> **Statut : proposition de contenu à valider.** Ce document prépare la validation des textes avant toute conception d'interface. Les formulations proposées ne sont pas encore intégrées à l'application. Elles ne constituent pas une annonce de fonctionnalités nouvelles.
+> **Statut : version retravaillée à valider.** Cette proposition remplace la première version éditoriale. Elle vise un ton humain, direct et naturel, propre à Vitalis. Les textes restent des propositions documentaires : ils ne sont pas encore intégrés à l'application.
 
-## 1. Objectif et règles de rédaction
+## 1. La voix de Vitalis
 
-Fournir un texte court, humain et concret pour expliquer Vitalis dès la première ouverture, puis aider la personne à reconnaître le moteur correspondant à son intention.
+Vitalis ne doit pas parler comme une notice, une publicité ou une application qui aligne des slogans. Il doit s'exprimer simplement, comme dans une conversation utile : avec chaleur, sans familiarité forcée, sans jargon et sans promettre plus que ce qui existe.
 
-La rédaction doit respecter les règles suivantes :
+### Principes de ton
 
-- parler d'abord de ce que la personne veut exprimer ou faire, pas de l'architecture technique ;
-- laisser la personne commencer avec ses propres mots, sans formulaire de critères comme point d'entrée ;
-- ne pas laisser entendre qu'une interprétation automatique comprend tout ou qu'une conversation adaptative est déjà disponible ;
-- ne jamais transformer une valeur par défaut en information déclarée par la personne ;
-- distinguer clairement un brouillon enregistré, une publication, une recherche lancée, une présence rendue visible et une veille réellement active ;
-- présenter la voix comme une possibilité dépendant du navigateur ou de la plateforme ; le texte reste toujours une voie complète ;
-- annoncer les permissions au moment où elles deviennent nécessaires, sans promettre un accès qui n'a pas été accordé ;
-- garder les exemples explicitement illustratifs : ils ne sont ni des annonces réelles, ni des missions publiées, ni des résultats disponibles.
+- **Partir de la personne.** Parler de ce qu'elle a en tête, de ce qu'elle cherche, de ce qu'elle peut proposer ou de ce qu'elle souhaite partager.
+- **Employer des mots de tous les jours.** Préférer « dites ce que vous cherchez » à « exprimez votre intention », « voir les personnes autour de vous » à « découvrir votre environnement social ».
+- **Être naturel sans jouer un personnage.** Pas de « super ! », « génial ! », d'enthousiasme automatique ni de phrases artificiellement familières.
+- **Éviter le langage des interfaces génériques.** Limiter « explorez vos possibilités », « créez des connexions », « libérez votre potentiel », « votre expérience commence ici » et les slogans interchangeables.
+- **Ne pas parler comme un formulaire.** Inviter à raconter librement, puis demander une précision seulement si elle est réellement nécessaire.
+- **Rester précis.** Dire ce qui va se passer, ce qui a été enregistré et ce qui n'a pas encore été fait.
+- **Ne pas prétendre comprendre plus que le système.** Les interprétations actuelles de Flash et Scan sont limitées ; le texte ne doit pas promettre une compréhension parfaite ni une conversation adaptative déjà disponible.
+- **Ne pas confondre intention et action.** Un brouillon n'est pas une publication ; une mission Radar enregistrée n'est pas une veille active.
+- **Garder une voix cohérente.** Le tutoiement/vouvoiement doit être stable dans tout le parcours. Cette proposition conserve le vouvoiement déjà employé dans les textes de travail ; il pourra être revu globalement si la voix produit choisie est le tutoiement.
 
-Le français ci-dessous est la version de travail principale. La version anglaise devra être adaptée après validation du sens en français, et non traduite mécaniquement.
+Le français est la base de validation. L'anglais sera adapté au ton validé, pas traduit mot à mot.
 
-## 2. Diagnostic des formulations actuelles
+## 2. Proposition retravaillée — découverte en cinq étapes
 
-| Emplacement | Formulation ou idée actuelle | Problème à corriger |
-|---|---|---|
-| Introduction — présentation | Présente Vitalis et invite à choisir un premier pas | Bonne base, mais ne montre pas assez concrètement l'expression libre |
-| Introduction — Flash et Scan | Besoin/proposition et recherche de Flashs publics | Conserver le sens, simplifier et donner un exemple formulé à la première personne |
-| Introduction — En direct et Radar | Présente Radar comme une recherche privée enregistrée | Ne montre pas Radar comme moteur d'expression libre d'une mission |
-| Carte Radar de l'accueil | « Enregistrez une intention de recherche privée… » | Trop centré sur le stockage ; ne présente pas la transmission libre d'une mission |
-| Exemple Radar de l'accueil | « Suivre une recherche de garde… » | Peut suggérer une veille et un suivi automatiques non disponibles |
-| Fin de l'introduction | Invite à choisir un espace | À conserver ; ne pas lancer un moteur automatiquement ni imposer un formulaire |
+Les textes entre guillemets sont proposés pour l'interface. Les notes en dessous sont des consignes éditoriales, pas du texte à afficher.
 
-## 3. Proposition de contenu pour la découverte en cinq étapes
-
-Ces textes sont une proposition éditoriale. Ils peuvent être raccourcis lors de la maquette mobile, mais leur sens et leurs limites doivent être conservés.
-
-### Étape 1 — Comprendre Vitalis
+### Étape 1 — Faire connaissance avec Vitalis
 
 **Titre**  
-Vitalis, quatre façons de créer des liens utiles
+Vous avez quelque chose en tête ?
 
 **Texte**  
-Vitalis vous aide à exprimer ce que vous cherchez ou proposez, à explorer les Flashs publics et à découvrir les personnes à proximité.
+Un besoin à partager, quelque chose à proposer, une recherche à faire ou simplement envie de voir qui est autour de vous ? Vitalis vous aide à commencer, avec vos propres mots.
 
 **Phrase d'accompagnement**  
-Commencez simplement, avec vos propres mots. Vous choisissez ce que vous souhaitez partager.
+Pas besoin de trouver les mots parfaits. Dites simplement ce que vous avez en tête.
 
-**Intention éditoriale**  
-Présenter la promesse sans promettre une mise en relation garantie, une réponse ou un résultat automatique.
+**Pourquoi ce ton**  
+On entre par une situation familière, pas par une présentation abstraite de « quatre moteurs ». La phrase invite à parler librement sans laisser croire que Vitalis comprend tout automatiquement.
 
-### Étape 2 — Exprimer ou rechercher avec Flash et Scan
+### Étape 2 — Flash et Scan
 
 **Flash — titre**  
-Partagez un besoin ou une proposition
+Vous avez besoin de quelque chose, ou quelque chose à proposer ?
 
 **Flash — texte**  
-Expliquez simplement ce dont vous avez besoin ou ce que vous souhaitez proposer. Vous pourrez relire votre Flash avant de l'enregistrer en brouillon ou de le publier.
+Dites-le simplement. Vous pourrez relire votre Flash avant de l'enregistrer en brouillon ou de le publier.
 
-**Exemple illustratif**  
-« Je peux préparer un repas pour votre réunion. »
+**Exemples illustratifs**  
+- « Je cherche quelqu'un pour m'aider à déménager samedi. »
+- « Je peux préparer des repas pour une réunion ou un événement. »
 
 **Scan — titre**  
-Recherchez des Flashs publics
+Vous cherchez quelque chose près de vous ?
 
 **Scan — texte**  
-Décrivez ce que vous recherchez. Scan vous aide à explorer les Flashs publics dans la zone choisie. La recherche est lancée après votre validation.
+Expliquez ce que vous recherchez. Scan vous permet de chercher parmi les Flashs publics. Vous pourrez vérifier votre demande avant de lancer la recherche.
 
 **Exemple illustratif**  
-« Je cherche de l'aide pour déménager près de chez moi. »
+« Je cherche un mécanicien pour réparer une moto à Douala. »
 
-**Intention éditoriale**  
-Ne pas confondre la préparation d'un Flash avec sa publication. Ne pas dire qu'un Scan a commencé avant l'action explicite de lancement.
+**Notes de précision**  
+- Les exemples sont des exemples de formulation, pas des offres ou des résultats réels.
+- Pour Flash, garder la différence entre enregistrer un brouillon et publier.
+- Pour Scan, ne pas laisser entendre que la recherche est lancée dès la saisie. Le lancement intervient après validation explicite.
+- La mention d'une ville dans un exemple ne signifie pas que la localisation de la personne est connue automatiquement.
 
-### Étape 3 — Découvrir les personnes et exprimer une mission
+### Étape 3 — En direct et Radar
 
 **En direct — titre**  
-Découvrez les personnes à proximité
+Envie de voir qui est autour de vous ?
 
 **En direct — texte**  
-Explorez les personnes proches de vous. Vous choisissez séparément si vous souhaitez rendre votre propre présence visible.
+En direct vous permet de découvrir les personnes à proximité. Et c'est vous qui choisissez si votre présence peut être visible par les autres.
 
 **Exemple illustratif**  
-« Je participe à cet événement et souhaite voir qui est également présent. »
+« Je suis dans le quartier et j'aimerais voir qui est à proximité. »
 
 **Radar — titre**  
-Exprimez librement une mission à garder
+Il y a quelque chose que vous aimeriez retrouver ?
 
 **Radar — texte**  
-Dites avec vos propres mots ce que vous souhaitez rechercher ou retrouver. Vous pouvez enregistrer cette intention comme brouillon privé.
+Expliquez-le comme vous le diriez à quelqu'un. Une mission, une recherche, une occasion que vous aimeriez repérer… Vous pouvez garder votre message dans Radar.
 
-**Exemple illustratif**  
-« Je cherche un développeur disponible pour m'accompagner sur un projet mobile. »
+**Exemples illustratifs**  
+- « Je cherche un développeur qui pourrait m'accompagner sur un projet mobile. »
+- « Je cherche des terrains à vendre dans le secteur de Bonamoussadi. »
 
-**Mention de transparence Radar**  
-Pour le moment, enregistrer une mission dans Radar ne démarre pas une veille automatique : les correspondances et les alertes automatiques ne sont pas encore disponibles.
+**Précision à afficher avec Radar**  
+Pour l'instant, Radar garde votre recherche sous forme de brouillon privé. Il ne lance pas encore de veille automatique et n'envoie pas d'alertes.
 
-**Intention éditoriale**  
-Radar doit être présenté comme un moteur d'expression libre, pas comme un formulaire de filtres. La mention de transparence doit rester visible au moment où l'on décrit ce que Radar fait aujourd'hui ; elle ne doit pas être reléguée dans une note illisible.
+**Notes de précision**  
+- L'expression libre est le point de départ de Radar. Ne pas commencer par demander une zone, un rayon ou une durée dans un formulaire.
+- Les exemples montrent ce que la personne peut exprimer ; ils ne signifient pas que Radar sait déjà trouver, apparier ou surveiller ces opportunités.
+- Ne pas employer « nous vous préviendrons », « suivez automatiquement » ou « mission active » pour la V1 actuelle.
 
-### Étape 4 — Retrouver les autres espaces
-
-**Titre**  
-Vos espaces, à portée de main
-
-**Texte**  
-Le menu vous donne accès aux espaces complémentaires, à votre profil et aux paramètres de Vitalis.
-
-**Intention éditoriale**  
-Garder une explication de navigation simple. Ne pas attribuer au menu une fonction d'aide permanente tant que l'entrée « Découvrir Vitalis » n'a pas été développée et placée.
-
-### Étape 5 — Choisir librement son premier pas
+### Étape 4 — Les autres espaces
 
 **Titre**  
-Par quoi souhaitez-vous commencer ?
+Et le reste de Vitalis ?
 
 **Texte**  
-Choisissez l'espace qui correspond à votre besoin. Vous pourrez découvrir les autres quand vous le souhaitez.
+Vous pourrez aussi retrouver votre profil, vos espaces et les paramètres de l'application depuis le menu. Vous n'avez pas besoin de tout découvrir maintenant.
 
-**Texte invité — proposition alignée sur l'existant**  
-Vous pouvez découvrir Vitalis sans compte. Certaines actions, comme enregistrer un brouillon Flash, nécessitent de vous connecter ou de créer un compte.
+**Note de précision**  
+Ne pas présenter le menu comme un accès permanent à la découverte tant que l'entrée « Découvrir Vitalis » n'a pas été développée et ajoutée.
 
-**Texte membre — proposition alignée sur l'existant**  
-Votre compte est reconnu. Vous pouvez gérer votre profil et utiliser les espaces disponibles selon les actions proposées.
+### Étape 5 — Laisser la personne commencer
 
-**Action principale**  
-Découvrir les espaces
+**Titre**  
+Alors, par quoi on commence ?
+
+**Texte**  
+Choisissez ce qui vous serait utile maintenant. Vous pourrez revenir aux autres espaces plus tard.
+
+**Texte pour une personne invitée — proposition à confirmer avec les droits réels**  
+Vous pouvez parcourir Vitalis sans compte. Pour certaines actions, comme enregistrer un brouillon Flash, il faudra vous connecter ou créer un compte.
+
+**Texte pour une personne connectée — proposition**  
+Vous êtes connecté. Vous pouvez retrouver votre profil et continuer avec les espaces accessibles à votre compte.
+
+**Action principale — proposition**  
+C'est parti
 
 **Action secondaire**  
-Plus tard
+Je regarderai plus tard
 
-**Intention éditoriale**  
-Aucun moteur n'est sélectionné à la place de la personne. L'action principale conduit au choix ou à l'accueil existant ; elle ne doit pas lancer une mission, publier un Flash ou démarrer une recherche sans action explicite.
+**Note de précision**  
+La première action conduit à l'accueil ou au choix des espaces. Elle ne doit pas publier un Flash, lancer un Scan ou activer une mission Radar sans action explicite de la personne.
 
-## 4. Proposition de textes courts pour les cartes de l'accueil
+## 3. Descriptions courtes pour les cartes de l'accueil
 
-| Moteur | Description proposée | Exemple affiché |
+Les cartes doivent aider à choisir en quelques secondes. Une phrase simple suffit ; l'exemple peut apparaître séparément comme une idée de formulation.
+
+| Espace | Description proposée | Exemple |
 |---|---|---|
-| Flash | Exprimez un besoin ou une proposition, puis relisez votre Flash avant de l'enregistrer en brouillon ou de le publier. | « Je peux préparer un repas pour votre réunion. » |
-| Scan | Recherchez les Flashs publics dans la zone que vous choisissez. | « Je cherche de l'aide pour déménager près de chez moi. » |
-| En direct | Découvrez les personnes à proximité et choisissez séparément si votre présence est visible. | « Je participe à cet événement et souhaite voir qui est également présent. » |
-| Radar | Décrivez librement une mission ou une recherche et enregistrez votre intention comme brouillon privé. | « Je cherche un développeur pour m'accompagner sur un projet mobile. » |
+| Flash | Vous avez un besoin ou quelque chose à proposer ? Dites-le ici. | « Je peux donner un coup de main pour un déménagement. » |
+| Scan | Vous cherchez quelque chose ? Regardez parmi les Flashs publics. | « Je cherche un mécanicien près de Bonapriso. » |
+| En direct | Voyez les personnes à proximité. Vous gardez le choix de rendre votre présence visible ou non. | « J'aimerais voir qui est autour de moi. » |
+| Radar | Vous avez une recherche à garder en tête ? Décrivez-la librement et enregistrez-la dans Radar. | « Je cherche un développeur pour m'aider sur une application. » |
 
-**Mention courte à proximité de Radar**  
-La veille automatique et les alertes ne sont pas encore disponibles.
+**Précision courte pour Radar**  
+La recherche est enregistrée en brouillon privé. La veille automatique et les alertes ne sont pas encore disponibles.
 
-Les exemples doivent conserver un traitement visuel « exemple » ou « illustration ». Ils ne doivent jamais ressembler à des publications actives ou à des résultats réels.
+Les exemples doivent être visuellement identifiés comme des exemples. Ils ne doivent pas ressembler à des publications, à des personnes présentes ou à des résultats réels.
 
-## 5. Microtextes transversaux proposés
+## 4. Petites phrases utiles pendant l'utilisation
 
-| Situation | Formulation proposée | Précaution |
-|---|---|---|
-| Invitation à écrire | « Racontez-nous simplement ce que vous cherchez ou souhaitez proposer. » | Adapter le verbe au moteur concerné |
-| Aide à la saisie | « Écrivez comme vous le diriez à quelqu'un. » | Ne pas promettre une compréhension parfaite |
-| Dictée disponible | « Vous pouvez aussi dicter votre message. » | Afficher uniquement si la capacité est réellement disponible |
-| Dictée indisponible | « La dictée n'est pas disponible ici. Vous pouvez continuer par écrit. » | Ne jamais bloquer la saisie texte |
-| Interprétation incertaine | « Voici ce que nous avons compris. Vous pouvez le corriger. » | N'afficher que les éléments effectivement interprétés |
-| Information manquante | Poser une question courte qui nomme précisément l'information nécessaire | Une seule question à la fois ; ne pas demander une préférence facultative comme si elle était obligatoire |
-| Brouillon Flash | « Votre Flash est enregistré en brouillon. Il n'est pas publié. » | À afficher seulement après confirmation effective de l'enregistrement |
-| Publication Flash | « Votre Flash est publié. » | À afficher seulement après succès confirmé |
-| Scan non lancé | « Votre recherche n'a pas encore été lancée. » | Ne pas afficher de résultat avant le lancement |
-| Intention Radar enregistrée | « Votre mission est enregistrée comme brouillon privé. Aucune veille automatique n'est active. » | Ne pas employer « surveillée », « alerte activée » ou « correspondance trouvée » |
-| Permission de localisation | Expliquer pourquoi la localisation est demandée au moment de l'action qui en a besoin | Ne jamais déduire une position précise d'une permission refusée |
+Ces formulations sont des propositions de ton. Elles ne doivent être affichées que lorsque l'état correspondant existe réellement.
 
-## 6. Formulations à éviter
+| Situation | Formulation proposée |
+|---|---|
+| Inviter à écrire | « Dites-nous ce que vous cherchez ou ce que vous aimeriez proposer. » |
+| Aider à commencer | « Écrivez comme ça vous vient. Vous pourrez préciser ensuite. » |
+| Dictée disponible | « Vous préférez parler ? Vous pouvez dicter votre message. » |
+| Dictée indisponible | « La dictée n'est pas disponible sur cet appareil. Vous pouvez continuer en écrivant. » |
+| Montrer une interprétation | « Voilà ce que nous avons retenu de votre message. Vous pouvez corriger si besoin. » |
+| Interprétation incertaine | « Je ne suis pas sûr d'avoir bien compris ce point. Vous vouliez dire… ? » |
+| Information réellement nécessaire | Poser une seule question, avec des mots simples, en expliquant pourquoi cette précision est nécessaire. |
+| Brouillon Flash enregistré | « C'est enregistré en brouillon. Votre Flash n'est pas encore publié. » |
+| Flash publié | « Votre Flash est publié. » |
+| Scan avant lancement | « Votre demande est prête. Lancez la recherche quand vous le souhaitez. » |
+| Mission Radar enregistrée | « Votre recherche est gardée dans Radar, en brouillon privé. La veille automatique n'est pas encore activée. » |
+| Localisation demandée | « Pour chercher autour de vous, Vitalis a besoin de votre autorisation de localisation. » |
 
-- « Vitalis trouve automatiquement les bonnes personnes » : résultat non garanti.
-- « Radar surveille votre recherche et vous prévient » : veille et alertes automatiques non disponibles dans l'existant audité.
-- « Votre mission est active » après la seule sauvegarde d'un brouillon Radar.
-- « Votre recherche est lancée » avant validation et lancement effectifs de Scan.
+**À propos de la voix narrative :** certaines propositions utilisent « nous » ou « je ». Il faudra choisir une convention cohérente : Vitalis peut parler directement (« Voilà ce que j'ai compris ») ou rester neutre (« Voici ce qui a été retenu »). Ne pas alterner sans raison entre une voix de personne et une voix institutionnelle.
+
+## 5. Les expressions à éviter
+
+Éviter les phrases qui pourraient appartenir à n'importe quelle application :
+
+- « Découvrez une nouvelle expérience. »
+- « Créez des connexions qui comptent. »
+- « Libérez votre potentiel. »
+- « Votre aventure commence ici. »
+- « Explorez toutes les possibilités. »
+- « Trouvez automatiquement les bonnes personnes. »
+
+Éviter aussi les promesses non démontrées :
+
+- « Radar vous prévient dès qu'une opportunité apparaît. »
+- « Votre mission est active » après la seule sauvegarde d'un brouillon.
+- « Votre recherche est lancée » avant le lancement explicite de Scan.
 - « Votre Flash est publié » après un simple enregistrement en brouillon.
-- « Vitalis comprend tout ce que vous dites » : les interpréteurs actuels sont limités et déterministes.
-- « Dictez votre message » comme seule voie de saisie : la disponibilité vocale varie selon le support.
-- Toute formulation qui présente une valeur par défaut comme une information fournie ou confirmée par la personne.
+- « Vitalis comprend tout ce que vous dites. »
+- « Dictez votre message » comme seule possibilité de saisie.
 
-## 7. Éléments actuels et évolutions à ne pas confondre
+## 6. Ce qui existe et ce qui reste à faire
 
-### Déjà présents dans l'existant audité
+### Existant vérifié dans l'audit
 
 - Une introduction en cinq étapes, en français et en anglais.
-- Quatre cartes d'accès aux moteurs sur l'accueil.
-- Des champs textuels libres dans Flash, Scan et Radar, avec des limites et des traitements différents.
-- Une dictée vocale conditionnelle selon le moteur et la disponibilité de la plateforme.
-- Un parseur Flash déterministe limité et un interpréteur Scan déterministe.
-- La gestion de brouillons privés Radar ; pas de veille automatique ni d'alertes connectées dans le code inspecté.
+- Quatre accès aux espaces sur l'accueil.
+- Des saisies libres dans Flash, Scan et Radar, avec des limites et des traitements différents.
+- Une dictée vocale conditionnelle selon la disponibilité de la plateforme.
+- Un parseur Flash déterministe et limité, et un interpréteur Scan déterministe.
+- La sauvegarde de brouillons privés dans Radar ; pas de veille automatique ni d'alertes connectées dans le code inspecté.
 - Des exemples de démonstration sur l'accueil, distincts de l'activité réelle.
 
-### Évolutions éditoriales et produit à réaliser
+### Modifications à réaliser après validation éditoriale
 
-- Réécrire les textes de découverte pour rendre l'expression libre explicite dans les quatre moteurs.
-- Corriger les descriptions et exemples Radar de l'accueil.
-- Expliquer sans ambiguïté les statuts brouillon, publication, recherche lancée et veille non active.
-- Ajouter un accès permanent aux explications, conformément à la décision produit validée ; cet accès n'existe pas encore.
-- Concevoir les explications contextuelles et les états de compréhension/correction sans laisser croire qu'un agent conversationnel adaptatif est déjà disponible.
-- Adapter puis valider les textes anglais après accord sur le contenu français.
+- Remplacer les textes actuels de découverte par les formulations validées.
+- Réécrire les cartes de l'accueil avec les descriptions et exemples validés.
+- Aligner Radar sur l'expression libre d'une mission, tout en expliquant honnêtement le statut de brouillon.
+- Ajouter l'accès permanent « Découvrir Vitalis », conformément à la décision produit déjà validée ; cet accès n'existe pas encore.
+- Concevoir les explications contextuelles sans faire croire qu'un dialogue adaptatif est déjà disponible.
+- Adapter les textes anglais au ton français validé.
 
-Aucun de ces textes proposés n'a été intégré au catalogue de messages ni à l'interface dans le cadre de ce document.
+Aucun texte proposé ici n'a encore été intégré au catalogue de messages ni à l'interface.
 
-## 8. Points à valider avant la conception
+## 7. Points à valider avec l'équipe produit
 
-1. La promesse générale de Vitalis à l'étape 1 est-elle exacte et suffisamment claire ?
-2. Les quatre descriptions et les quatre exemples représentent-ils bien l'intention de chaque moteur ?
-3. La mention de transparence Radar est-elle assez explicite sans faire croire à une veille active ?
-4. Les textes invité/membre décrivent-ils correctement les actions accessibles sans compte et celles qui exigent un compte ?
-5. Le ton est-il assez naturel, simple et direct pour être compris dès la première ouverture sur téléphone ?
-6. Souhaite-t-on conserver le parcours en cinq étapes ou condenser certaines explications dans les cartes de choix ? Cette décision concerne le rythme de présentation, pas les fonctionnalités.
+1. **La voix de Vitalis :** conserver le vouvoiement, ou adopter le tutoiement partout ? Le point important est la cohérence, pas une préférence isolée dans l'onboarding.
+2. **La phrase d'ouverture :** « Vous avez quelque chose en tête ? » vous semble-t-elle naturelle et fidèle à Vitalis ?
+3. **Les exemples :** les formulations Flash, Scan, En direct et Radar ressemblent-elles à ce qu'une vraie personne dirait spontanément ?
+4. **Radar :** la phrase qui précise que la veille automatique n'est pas encore disponible est-elle claire et suffisamment honnête ?
+5. **La voix narrative :** préférez-vous que Vitalis dise « Voilà ce que j'ai compris » ou « Voici ce qui a été retenu » ?
+6. **Le rythme :** gardons-nous les cinq étapes ou certaines explications peuvent-elles être plus courtes ?
 
-## 9. Références et limites
+## 8. Références et limites
 
-- [Référentiel du parcours de première ouverture](./first-opening-product-journey.md)
+- [Parcours produit — première ouverture et découverte](./first-opening-product-journey.md)
 - [Référentiel produit des moteurs conversationnels](./conversational-engines-product-reference.md)
 - [Principes fondamentaux de Vitalis](./vitalis-core-principles.md)
-- Source actuelle des textes : `src/platform/internationalization/messages.ts`
-- Cartes actuelles de l'accueil : `src/composition/experiences/home/HomeFoundation.tsx`
+- [Langage de design Vitalis](./design-language.md)
+- Textes actuels : `src/platform/internationalization/messages.ts`
+- Cartes de l'accueil : `src/composition/experiences/home/HomeFoundation.tsx`
 
-Cette proposition s'appuie sur l'audit statique des textes et des composants mentionnés. Elle ne certifie pas les performances des interpréteurs sur toutes les formulations ni les comportements réels sur chaque appareil.
+Cette proposition s'appuie sur l'audit statique des textes et composants. Elle ne certifie pas la qualité des interpréteurs sur toutes les formulations ni le comportement sur chaque appareil.
 
 **Périmètre : documentation uniquement. Aucun code applicatif, texte d'interface ou comportement runtime n'a été modifié.**
