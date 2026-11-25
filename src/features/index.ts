@@ -7,3 +7,4 @@ export * as search from "./search";
 export * as settings from "./settings";
 export * as discovery from "./discovery";
 export * as presence from "./presence";
+export * as communication from "./communication";
