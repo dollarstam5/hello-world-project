@@ -573,3 +573,42 @@ Un écran ne peut être déclaré conforme au standard mobile Vitalis que si :
 6. Refaire un contrôle sur largeur 320 px : la rangée de champ en édition contient un champ et deux boutons icône ; vérifier qu’elle se replie sans écraser la saisie ni réduire les cibles.
 
 **Conclusion de l’audit statique :** Profile présente des écarts explicites sur les boutons icône d’édition (44 × 44 px) et une surcharge locale de 40 px sur la suppression du handle. Les retours de navigation et l’accès à la connexion reposent sur le bouton partagé et disposent d’une hauteur minimale attendue de 48 px. Les actions de dialogue nécessitent une vérification des primitives partagées. Les écrans de visibilité et d’aperçu public ne proposent pas encore de commandes actives. Aucun code applicatif n’a été modifié dans cette étape.
+
+
+### 4.11 Audit des boutons et formulaires — module Auth
+
+**Périmètre vérifié :** lecture statique, sur la branche `chore/architecture-folder-cleanup-2026-11`, de `SignInView.tsx`, `ResetPasswordView.tsx` et `pages/AccountInformationPage.tsx`, seuls écrans d’interface présents dans `src/modules/auth/ui/`. L’audit couvre connexion, inscription, demande et réinitialisation du mot de passe, changement de langue / thème et consultation des informations du compte. Il ne constitue pas un test de parcours réel ni une validation sur appareil.
+
+| Zone / commande | Constat dans le code de la branche | Évaluation mobile |
+|---|---|---|
+| Connexion / inscription / mot de passe oublié — champs | Champs email, mot de passe et nom avec `min-h-12` (48 px), libellés persistants, types et attributs `autocomplete` adaptés | Conforme en hauteur déclarée et association label/champ ; vérifier la taille de texte réellement rendue (cible 16 px), le clavier mobile et l’affichage avec zoom |
+| Connexion / inscription — soumission | Bouton partagé `Button` avec `min-h-12`, désactivé pendant la requête et libellé de chargement | Conforme selon le contrat du composant partagé ; tester le double appui, l’annonce de progression et la reprise après erreur |
+| Changement de langue | Bouton partagé avec `min-h-12 min-w-12`, libellé court en `text-xs` et `aria-label` | Cible 48 × 48 px déclarée ; 12 px reste acceptable uniquement pour ce libellé secondaire court |
+| Changement de thème | Bouton partagé icône seule avec `h-12 w-12`, `aria-label` et `title` contextualisés | Conforme en dimension et nom accessible ; vérifier le focus, le contraste et l’icône dans les thèmes clair / sombre |
+| Liens d’actions secondaires — mot de passe oublié / bascule connexion-inscription | Boutons natifs avec `min-h-12`, focus visible et libellés explicites | Conforme en hauteur déclarée ; contrôler l’espacement vertical et le retour à la ligne sur 320 px |
+| Messages connexion / inscription | Les erreurs utilisent `role="alert"`, les confirmations utilisent `role="status"` | Sémantique adaptée ; vérifier l’annonce sans déplacement inattendu du focus et la compréhension des messages localisés |
+| Réinitialisation — champs nouveau mot de passe / confirmation | Champs avec `min-h-12`, `required`, `minLength=8` et `autocomplete="new-password"` | Conforme en hauteur déclarée ; vérifier la taille 16 px, le clavier, la visibilité des erreurs et la conservation des valeurs |
+| Réinitialisation — soumission | Bouton natif pleine largeur avec `min-h-12`, désactivé pendant l’opération et libellé de chargement | Conforme en hauteur ; contrairement à l’écran de connexion, le message de résultat n’a pas de `role="alert"` ou `role="status"` explicite |
+| Réinitialisation — erreur de confirmation / retour serveur | Message rendu dans un paragraphe simple ; le traitement asynchrone ne protège pas l’appel par `try/catch/finally` | Annonce lecteur d’écran non garantie ; une exception inattendue peut laisser `busy` actif. À vérifier et traiter dans un chantier d’implémentation séparé, sans modification ici |
+| Informations du compte — retour | Bouton partagé ghost enveloppant un lien, sans réduction locale de hauteur | Minimum tactile de 48 px attendu par le composant partagé ; vérifier le rendu du lien et le focus |
+| Informations du compte — chargement / erreur | États textuels avec `role="status"` et `role="alert"` ; aucune autre action active sur cet écran | Sémantique adaptée ; tester les annonces et l’état d’erreur avec connexion expirée ou réseau indisponible |
+
+**Constats transversaux :**
+
+- Les commandes d’action des trois écrans atteignent ou héritent d’une cible tactile minimale de 48 px dans les classes observées. Aucun bouton sous 48 px n’a été identifié dans ce périmètre.
+- Les champs de saisie déclarent 48 px minimum et utilisent des libellés persistants. Leur classe ne fixe toutefois pas explicitement une taille de police de 16 px ; la conformité typographique doit être mesurée dans le navigateur mobile, notamment pour éviter le zoom automatique de certains navigateurs lors du focus.
+- L’écran de connexion / inscription présente une gestion explicite des états asynchrones, avec désactivation, libellé de chargement et rôles d’annonce des messages. L’écran de réinitialisation est moins robuste sur les annonces et la gestion des exceptions.
+- Les actions de langue et de thème restent accessibles depuis l’écran public de connexion ; leurs noms accessibles sont présents. Vérifier que leur position absolue en haut à droite ne chevauche jamais le titre ou le formulaire sur petit écran et avec une traduction longue.
+- L’écran d’informations du compte est essentiellement consultatif : son seul contrôle est le retour vers l’espace. Les états de chargement et d’erreur sont sémantisés.
+- L’audit statique ne valide ni la navigation réelle entre les trois états d’authentification, ni les liens reçus par email, ni la restitution du focus, ni les annonces TalkBack / VoiceOver.
+
+**Priorités documentaires de validation :**
+
+1. Mesurer la taille effective des textes saisis sur Android et iOS ; viser 16 px pour les champs, sans réduire la cible tactile de 48 px.
+2. Vérifier sur 320 et 360 px que les commandes de langue / thème ne chevauchent pas le titre, et que les formulaires restent défilables lorsque le clavier virtuel est ouvert.
+3. Ajouter aux critères de recette de la réinitialisation l’annonce accessible des erreurs et confirmations, ainsi que la remise à zéro de l’état de chargement après toute exception.
+4. Tester connexion, inscription et récupération : double activation, réseau lent / absent, erreurs serveur, confirmation email, lien de récupération expiré et retour après changement de mot de passe.
+5. Vérifier les annonces et le focus avec TalkBack et VoiceOver, notamment lors du changement de mode connexion / inscription / mot de passe oublié.
+6. Contrôler le focus visible et les contrastes des commandes langue / thème en mode clair et sombre.
+
+**Conclusion de l’audit statique :** le module Auth présente de bonnes bases tactiles : champs et commandes atteignent la cible déclarée de 48 px, les libellés de champs sont persistants et les messages de connexion sont sémantisés. Les points de vigilance sont la taille réelle du texte des champs, le placement des commandes globales sur petit écran et surtout la gestion / l’annonce des erreurs dans la réinitialisation du mot de passe. Les tests sur appareils et lecteurs d’écran restent nécessaires avant clôture. Aucun code applicatif n’a été modifié dans cette étape.
