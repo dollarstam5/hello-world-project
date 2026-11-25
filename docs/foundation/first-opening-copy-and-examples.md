@@ -1,6 +1,6 @@
 # Proposition éditoriale — découvrir Vitalis avec des mots naturels
 
-> **Statut : version retravaillée à valider.** Cette proposition remplace la première version éditoriale. Elle vise un ton humain, direct et naturel, propre à Vitalis. Les textes restent des propositions documentaires : ils ne sont pas encore intégrés à l'application.
+> **Statut : version retravaillée à valider.** Cette proposition remplace la première version éditoriale. Elle vise un ton humain, direct et naturel, propre à Vitalis. Les textes restent des propositions documentaires : ils ne sont pas encore intégrés à l'application. La voix globale est désormais fixée : vouvoiement et première personne directe.
 
 ## 1. La voix de Vitalis
 
@@ -16,7 +16,7 @@ Vitalis ne doit pas parler comme une notice, une publicité ou une application q
 - **Rester précis.** Dire ce qui va se passer, ce qui a été enregistré et ce qui n'a pas encore été fait.
 - **Ne pas prétendre comprendre plus que le système.** Les interprétations actuelles de Flash et Scan sont limitées ; le texte ne doit pas promettre une compréhension parfaite ni une conversation adaptative déjà disponible.
 - **Ne pas confondre intention et action.** Un brouillon n'est pas une publication ; une mission Radar enregistrée n'est pas une veille active.
-- **Garder une voix cohérente.** Le tutoiement/vouvoiement doit être stable dans tout le parcours. Cette proposition conserve le vouvoiement déjà employé dans les textes de travail ; il pourra être revu globalement si la voix produit choisie est le tutoiement.
+- **Vouvoyer systématiquement.** Vitalis s'adresse à la personne en utilisant « vous », dans l'onboarding, les moteurs, les messages de statut, les erreurs et l'aide. Éviter tout passage involontaire au tutoiement.
 
 Le français est la base de validation. L'anglais sera adapté au ton validé, pas traduit mot à mot.
 
@@ -150,20 +150,20 @@ Ces formulations sont des propositions de ton. Elles ne doivent être affichées
 
 | Situation | Formulation proposée |
 |---|---|
-| Inviter à écrire | « Dites-nous ce que vous cherchez ou ce que vous aimeriez proposer. » |
+| Inviter à écrire | « Dites-moi ce que vous cherchez ou ce que vous aimeriez proposer. » |
 | Aider à commencer | « Écrivez comme ça vous vient. Vous pourrez préciser ensuite. » |
 | Dictée disponible | « Vous préférez parler ? Vous pouvez dicter votre message. » |
 | Dictée indisponible | « La dictée n'est pas disponible sur cet appareil. Vous pouvez continuer en écrivant. » |
-| Montrer une interprétation | « Voilà ce que nous avons retenu de votre message. Vous pouvez corriger si besoin. » |
+| Montrer une interprétation | « Voilà ce que j'ai compris de votre message. Vous pouvez corriger si besoin. » |
 | Interprétation incertaine | « Je ne suis pas sûr d'avoir bien compris ce point. Vous vouliez dire… ? » |
 | Information réellement nécessaire | Poser une seule question, avec des mots simples, en expliquant pourquoi cette précision est nécessaire. |
 | Brouillon Flash enregistré | « C'est enregistré en brouillon. Votre Flash n'est pas encore publié. » |
 | Flash publié | « Votre Flash est publié. » |
 | Scan avant lancement | « Votre demande est prête. Lancez la recherche quand vous le souhaitez. » |
-| Mission Radar enregistrée | « Votre recherche est gardée dans Radar, en brouillon privé. La veille automatique n'est pas encore activée. » |
+| Mission Radar enregistrée | « J'ai gardé votre recherche dans Radar, en brouillon privé. La veille automatique n'est pas encore activée. » |
 | Localisation demandée | « Pour chercher autour de vous, Vitalis a besoin de votre autorisation de localisation. » |
 
-**À propos de la voix narrative :** certaines propositions utilisent « nous » ou « je ». Il faudra choisir une convention cohérente : Vitalis peut parler directement (« Voilà ce que j'ai compris ») ou rester neutre (« Voici ce qui a été retenu »). Ne pas alterner sans raison entre une voix de personne et une voix institutionnelle.
+**Voix narrative retenue : première personne directe.** Vitalis parle en son nom avec « je » lorsqu'il décrit son interprétation ou une action qu'il a réellement effectuée : « Voilà ce que j'ai compris », « Je n'ai pas bien compris ce point », « J'ai enregistré votre recherche en brouillon ». Cette voix ne doit jamais lui faire revendiquer une action non exécutée ni une compréhension incertaine comme une certitude. Le vouvoiement reste utilisé pour s'adresser à la personne.
 
 ## 5. Les expressions à éviter
 
@@ -210,11 +210,11 @@ Aucun texte proposé ici n'a encore été intégré au catalogue de messages ni 
 
 ## 7. Points à valider avec l'équipe produit
 
-1. **La voix de Vitalis :** conserver le vouvoiement, ou adopter le tutoiement partout ? Le point important est la cohérence, pas une préférence isolée dans l'onboarding.
+1. **Vouvoiement — validé :** Vitalis s'adresse toujours à la personne en la vouvoyant.
 2. **La phrase d'ouverture :** « Vous avez quelque chose en tête ? » vous semble-t-elle naturelle et fidèle à Vitalis ?
 3. **Les exemples :** les formulations Flash, Scan, En direct et Radar ressemblent-elles à ce qu'une vraie personne dirait spontanément ?
 4. **Radar :** la phrase qui précise que la veille automatique n'est pas encore disponible est-elle claire et suffisamment honnête ?
-5. **La voix narrative :** préférez-vous que Vitalis dise « Voilà ce que j'ai compris » ou « Voici ce qui a été retenu » ?
+5. **Voix narrative à la première personne — validée :** Vitalis parle directement en disant « Voilà ce que j'ai compris », plutôt que d'employer une formulation neutre.
 6. **Le rythme :** gardons-nous les cinq étapes ou certaines explications peuvent-elles être plus courtes ?
 
 ## 8. Références et limites
