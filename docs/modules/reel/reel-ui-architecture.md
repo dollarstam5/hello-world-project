@@ -69,6 +69,23 @@ En direct est le nom affiché du moteur historiquement nommé En direct. Les rou
 - Le radar actuel est construit avec des halos, des anneaux concentriques, une animation de balayage et une onde périphérique. Le CSS comporte plusieurs couches de surcharges successives ; les anneaux sont masqués puis réactivés plus bas. Aucun faisceau radial dédié ne part actuellement de l'avatar vers le bord.
 - La prochaine évolution visuelle devra donc ajouter les rayons comme un calque du radar, avec l'avatar comme origine visuelle, sans remplacer le bouton central, les présences périphériques ni les commandes existantes. Le rendu devra être vérifié en clair/sombre, en mode calme/actif et avec la réduction des animations.
 
+
+#### Proposition de composition visuelle des rayons
+
+Objectif : rendre le radar immédiatement compréhensible, garder l'avatar central parfaitement identifiable et laisser les profils périphériques respirer.
+
+- **Avatar central prioritaire** : conserver sa taille et son contraste actuels comme point focal. Le halo autour de lui reste fin et discret ; aucun faisceau ni effet lumineux ne doit recouvrir son visage ou réduire sa lisibilité.
+- **Faisceaux radiaux** : commencer avec 8 à 12 rayons fins, régulièrement répartis autour de l'avatar et prolongés jusqu'à la périphérie utile du radar. Ils partent visuellement du contour de l'avatar, pas de son visage.
+- **Traitement graphique** : opacité faible, épaisseur constante et couleur issue des variables du thème. Éviter les faisceaux épais, les dégradés très lumineux, les particules et les effets cumulés.
+- **Hiérarchie des plans** : fond et anneaux discrets en arrière-plan ; rayons sur ce fond ; profils et leurs aperçus au premier plan. Les rayons doivent s'effacer localement derrière les profils afin de ne jamais traverser visuellement les visages, les noms ou les commandes.
+- **Anneaux de portée** : conserver au maximum deux repères circulaires très légers. Ils servent à structurer la distance, sans concurrencer les rayons ni les profils.
+- **Animation** : privilégier une propagation lente et peu contrastée, ou un léger balayage ponctuel. Pas de clignotement, de rotation rapide ni de pulsation permanente intense. Avec `prefers-reduced-motion` ou en mode calme, les rayons restent statiques.
+- **Densité adaptative** : sur petit écran ou lorsque plusieurs profils sont visibles, réduire l'intensité et, si nécessaire, le nombre de rayons plutôt que réduire la taille des profils ou de l'avatar central.
+- **États** : conserver une apparence lisible en thème clair/sombre, présence active/inactive, chargement, absence de profils et mode calme. La présence active peut modifier légèrement le halo central, sans transformer tout le radar en source lumineuse.
+- **Validation visuelle** : vérifier que l'avatar est identifiable au premier regard, que chaque profil reste distinct et actionnable, que les noms restent lisibles et que le radar ne paraît pas saturé sur les largeurs mobiles courantes.
+
+Ces valeurs (8 à 12 rayons, deux anneaux au maximum) constituent une base de conception à ajuster sur le rendu réel ; elles ne sont pas des exigences rigides si les tests de lisibilité montrent qu'une densité plus faible est préférable.
+
 ### Commandes secondaires d'En direct
 
 - Accueil : retour à l'accueil Vitalis.
