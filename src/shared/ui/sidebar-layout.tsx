@@ -2,13 +2,7 @@ import * as React from "react";
 import { PanelLeft } from "lucide-react";
 import { cn } from "@/shared/utils";
 import { Button } from "@/shared/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/shared/ui/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/shared/ui/sheet";
 import { useSidebar, SIDEBAR_WIDTH_MOBILE } from "./sidebar-context";
 
 const Sidebar = React.forwardRef<
