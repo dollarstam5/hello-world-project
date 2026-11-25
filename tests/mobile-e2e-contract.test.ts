@@ -25,7 +25,7 @@ describe("mobile visual smoke contract", () => {
     expect(script).toContain('"390,844"');
     expect(script).toContain('selector="#home-engines-title"');
     expect(script).toContain('"/flash") selector="main h1"');
-    expect(script).toContain('"/scan") selector="#scan-radius"');
+    expect(script).toContain('"/scan") selector="#scan-need"');
     expect(script).toContain('"/reel") selector=".reel-proximity"');
     expect(script).toContain('"/radar") selector="main h1"');
     expect(script).toContain('--wait-for-selector="$selector"');
