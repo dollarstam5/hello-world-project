@@ -89,7 +89,7 @@ Les quatre cartes donnent accès directement aux routes des moteurs. L'accueil n
 ### À compléter / décider
 
 - Les paramètres de l'application ne proposent pas actuellement de rubrique permettant de relancer ou consulter l'introduction complète.
-- Il faut décider où retrouver durablement les explications : paramètres, aide contextuelle, entrée « Découvrir Vitalis » ou combinaison de ces points. Aucun de ces accès ne doit être présenté comme existant avant implémentation.
+- **Décision validée — accès durable aux explications :** prévoir une entrée permanente « Découvrir Vitalis » (ou « Comprendre Vitalis ») permettant de retrouver les explications après la première ouverture. Son emplacement précis — menu ou paramètres — reste à arbitrer lors de la conception. Cet accès n'existe pas encore dans l'implémentation auditée.
 
 ## 6. Accès aux moteurs et navigation
 
@@ -142,15 +142,60 @@ Ce parcours est une orientation de travail, pas une fonctionnalité actuellement
 - Présenter clairement l'état réel des capacités ; ne jamais promettre un matching Radar automatique tant qu'il n'est pas implémenté.
 - Prévoir des explications consultables à nouveau, sans supposer leur emplacement avant décision produit.
 
-## 9. Décisions encore ouvertes
+## 9. Décisions produit validées
 
-1. L'introduction modernisée doit-elle rester obligatoire à la première ouverture, ou devenir une découverte facultative avec un repère très visible ?
-2. Quelle est la règle de persistance souhaitée : par appareil, par compte, ou combinaison avec un état de version de l'introduction ?
-3. Où et comment la personne pourra-t-elle rouvrir l'aide et les explications ?
-4. L'introduction doit-elle se terminer par un choix explicite de premier moteur, ou laisser l'accueil comme point de départ ?
-5. Quel contenu doit être commun à tous les moteurs et quel contenu doit être expliqué dans chaque moteur au moment de la première action ?
+Les quatre décisions ci-dessous ont été validées. Elles définissent la direction du parcours cible ; elles ne signifient pas que les évolutions décrites sont déjà présentes dans l'application.
 
-Ces décisions seront validées avant la conception d'interface. Le présent audit ne les tranche pas.
+### 9.1 Découverte proposée automatiquement, jamais imposée
+
+**Décision :** à la première ouverture, Vitalis propose automatiquement une courte découverte. La personne peut la passer ou la fermer et accéder à l'application sans devoir terminer le parcours.
+
+**Existant vérifié :** l'introduction actuelle apparaît lorsque le marqueur local de complétion est absent ; les commandes « Découvrir plus tard » et de fermeture permettent déjà de la passer. Le passage et la complétion écrivent le même marqueur local.
+
+**À faire évoluer :** conserver cette liberté dans l'interface modernisée, clarifier le caractère facultatif et éviter tout blocage d'accès. La formulation et le comportement de fermeture devront être vérifiés sur téléphone.
+
+### 9.2 Persistance adaptée à l'état invité ou membre
+
+**Décision :**
+- Pour une personne invitée, l'état de découverte reste mémorisé localement sur l'appareil.
+- Pour une personne connectée, la cible produit est d'associer cet état au compte afin de le retrouver sur ses autres appareils.
+- Lorsqu'une évolution importante de Vitalis justifie une nouvelle explication, proposer uniquement la découverte des nouveautés pertinentes plutôt que rejouer systématiquement tout le parcours initial.
+
+**Existant vérifié :** le code audité utilise `localStorage` (`vitalis.onboarding.v2=1`) sans synchronisation au compte. L'état local peut donc être conservé sur le même navigateur/appareil, sous réserve de la disponibilité du stockage.
+
+**Évolution à développer :** synchronisation de l'état pour les membres, gestion des versions de découverte et présentation ciblée des nouveautés. Aucune synchronisation ni redécouverte versionnée n'est actuellement démontrée. La stratégie de résolution des états entre appareils reste à préciser techniquement.
+
+### 9.3 Accès permanent aux explications
+
+**Décision :** rendre les explications de Vitalis consultables à tout moment via une entrée durable intitulée « Découvrir Vitalis » ou « Comprendre Vitalis ».
+
+**Existant vérifié :** les paramètres actuels permettent notamment de modifier la langue et le thème, mais ne proposent pas de relancer ou consulter l'introduction.
+
+**Évolution à développer :** créer cet accès permanent et permettre de revoir les explications sans effacer les données du navigateur ni réinitialiser l'onboarding. L'emplacement exact (menu ou paramètres) sera fixé pendant la conception de l'interface.
+
+### 9.4 Aucun moteur imposé à la fin de la découverte
+
+**Décision :** la découverte ne force pas le lancement d'un moteur particulier. Elle présente les quatre intentions et laisse la personne choisir celle qui correspond à son besoin.
+
+- **Flash :** transmettre un besoin ou une proposition.
+- **Scan :** rechercher des Flashs publics dans une zone choisie.
+- **En direct :** découvrir des personnes à proximité et choisir séparément si l'on souhaite rendre sa présence visible.
+- **Radar :** exprimer librement une mission ou une recherche que l'on souhaite conserver.
+
+**Existant vérifié :** l'accueil présente déjà quatre accès aux moteurs ; l'introduction actuelle ne lance aucun moteur automatiquement.
+
+**À faire évoluer :** aligner les textes de découverte et les exemples avec ces définitions, notamment Radar comme moteur d'expression libre. La personne doit pouvoir choisir son premier pas sans que l'introduction transforme ce choix en formulaire de critères.
+
+### 9.5 Points restant à préciser
+
+Les quatre orientations produit précédentes sont validées. Les points suivants restent ouverts pour la conception et la réalisation :
+
+1. Emplacement précis de l'entrée permanente « Découvrir Vitalis ».
+2. Règles techniques de synchronisation et de résolution des états de découverte entre appareils pour les membres.
+3. Critères permettant de qualifier une évolution comme suffisamment importante pour proposer une découverte des nouveautés.
+4. Répartition du contenu commun à tous les moteurs et des explications contextuelles propres à chaque moteur.
+
+Ces précisions ne remettent pas en cause les quatre décisions validées.
 
 ## 10. Fichiers et tests inspectés
 
