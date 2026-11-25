@@ -222,7 +222,7 @@ describe("En direct architecture boundaries", () => {
 
   it("offers a short, dismissible guided tour without enabling discovery or presence", () => {
     expect(screenSource).toContain('window.localStorage.getItem("vitalis-reel-tour-seen")');
-    expect(headerSource).toContain("onClick={onOpenTour}");
+    expect(headerSource).toContain("onOpenTour();");
     expect(screenSource).toContain('aria-modal="true"');
     expect(screenSource).toContain('t("reel.ui.tour.finish")');
     expect(guidedTourSource).toContain('t("reel.ui.tour.finish")');
