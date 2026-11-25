@@ -1,83 +1,162 @@
-# Mission — guide complet du domaine métier
+# Mission — guide autonome du moteur
 
-**Objet :** transformer une intention ou une opportunité en engagement structuré avec un propriétaire, des participants, un résultat et un cycle de vie traçable.  
-**État :** contrat métier/API historique consolidé ; l'implémentation runtime complète n'est pas établie par les sources disponibles.
+**Mission :** formaliser une tâche ou un engagement avec un auteur, un assigné unique, une récompense éventuelle, une échéance et un résultat à valider.  
+**Périmètre actuel :** modèle local Dexie, repository, logique de transitions, outbox de synchronisation et garde-fous PostgreSQL.  
+**Important :** le code établit un domaine métier et une machine d'état, mais l'inventaire de cette branche ne montre pas encore d'API REST ni d'écran/route Mission dédiés.
 
-## 1. Mission et périmètre
+## 1. Mission et valeur métier
 
-Une Mission représente une activité concrète nécessitant la participation d'une ou plusieurs personnes pour atteindre un résultat défini. Elle est distincte d'un Flash : le Flash exprime et diffuse une intention courte ; la Mission formalise un engagement, ses responsabilités, ses participants, son avancement et sa clôture.
+Mission gère le cycle de réalisation d'une tâche entre un auteur (propriétaire de la demande) et un membre assigné. Elle est propriétaire de l'affectation, de l'avancement, de la validation, de l'annulation et de l'état de litige.
 
-Le domaine Mission est propriétaire de ses données et de ses transitions. Les autres domaines peuvent consommer des événements Mission, mais ne peuvent pas modifier directement l'état, les participants ou le résultat d'une mission.
+Le modèle courant est volontairement simple : un seul auteur et au plus un assigné. Il ne comprend pas encore de candidatures multiples, d'équipes, de jalons, de livrables ou de pièces justificatives structurées.
 
-## 2. Parcours utilisateur complet
+## 2. Parcours utilisateur de bout en bout
 
-### 2.1 Créer et préparer
-1. Un utilisateur authentifié initie une mission et devient son propriétaire.
-2. Il définit l'objectif, la description, les informations nécessaires, les dates, la visibilité et les critères de réussite.
-3. Il peut enregistrer un brouillon sans le rendre public.
-4. Le domaine vérifie la cohérence et les champs réellement obligatoires avant toute publication.
-5. Le propriétaire peut consulter et modifier les éléments autorisés tant que l'état le permet.
+### 2.1 Créer une mission
 
-Une mission peut être initiée à partir d'un Flash, mais elle devient un objet métier autonome. La création depuis un Flash ne transfère pas automatiquement les permissions ni ne fusionne les cycles de vie.
+1. Un utilisateur authentifié ouvre une mission.
+2. Il fournit un titre, un brief, un montant de récompense et éventuellement une échéance.
+3. Le repository déduit l'auteur du scope local actif ; il n'accepte pas un auteur choisi par le client.
+4. La mission est initialisée à `open`, sans assigné, avec la devise `XAF` par défaut.
+5. Le record est écrit dans IndexedDB et une mutation est placée dans l'outbox dans la même transaction.
+6. La synchronisation serveur intervient ensuite. Une sauvegarde locale n'est pas une confirmation distante.
 
-### 2.2 Publier et recevoir des participations
-1. Le propriétaire vérifie le contenu et la visibilité.
-2. La publication est acceptée uniquement si les champs obligatoires et les droits sont valides.
-3. Les personnes autorisées peuvent consulter la mission et demander à participer ou la rejoindre selon les règles métier.
-4. Le domaine enregistre les participations et leurs changements.
-5. Le propriétaire et les participants voient uniquement les informations permises par leur rôle.
+Un scope invité (`guest:…`) est refusé pour les actions Mission.
 
-Les règles détaillées d'éligibilité, de capacité, de sélection, de retrait et de validation doivent être définies dans le contrat métier avant activation ; le contrat API historique ne suffit pas à les inférer.
+### 2.2 Modifier avant affectation
 
-### 2.3 Réaliser, terminer et archiver
-Le propriétaire et les participants suivent l'avancement selon les rôles accordés. La fin de mission doit être explicitement enregistrée et validée selon les critères de réussite définis. Une mission terminée ne peut pas être modifiée librement ; toute correction doit suivre une règle métier auditée. L'archivage conserve la trace utile et retire la mission des vues actives selon les permissions. La suppression suit une politique distincte et ne doit pas effacer les obligations de traçabilité applicables.
+Seul l'auteur peut modifier titre, brief, récompense, devise et échéance, et uniquement lorsque le statut est `open` et `assigneeId` nul. Les champs d'identité, d'enveloppe et de cycle de vie ne sont pas modifiables via une mise à jour générique.
 
-## 3. Cycle de vie métier documenté
+### 2.3 Affecter et exécuter
 
-Le contrat historique propose : `Draft → Published → In Progress → Completed → Archived → Deleted`.
+1. L'auteur affecte un autre membre à une mission ouverte.
+2. L'état passe à `assigned`.
+3. L'assigné peut refuser : retour à `open`, assignee remis à `null`.
+4. L'assigné peut démarrer : passage à `in_progress`.
+5. Après réalisation, l'assigné soumet : passage à `pending_validation`.
+6. L'auteur valide : passage à `completed`.
+7. L'auteur ou l'assigné peut signaler un litige depuis `in_progress` ou `pending_validation`, passage à `disputed`.
 
-- **Draft :** préparation privée, modifiable par le propriétaire.
-- **Published :** mission publiée et visible selon sa politique.
-- **In Progress :** mission engagée, avec participants ou activité en cours.
-- **Completed :** résultat déclaré terminé selon les critères.
-- **Archived :** mission conservée hors des vues actives.
-- **Deleted :** suppression selon les règles de conservation.
+Le dépôt actuel ne stocke pas de champ résultat/preuve dédié : la soumission est une transition de statut.
 
-Les transitions exactes, les rôles habilités, les annulations et les états intermédiaires doivent être explicités dans un contrat versionné avant de traiter cette proposition historique comme une machine d'état implémentée.
+### 2.4 Annuler, supprimer et échéance
+
+- L'auteur annule depuis `open` ou `assigned`, sans changer l'assigné lors de l'annulation.
+- La suppression est logique (`deletedAt`) et non physique. La base exige une mission ouverte et sans assigné.
+- `isMissionOverdue` signale une échéance passée sauf pour `completed`, `cancelled` et `disputed`. Aucun ordonnanceur de relance/expiration n'est établi par les sources présentes.
+
+## 3. Machine d'état
+
+```mermaid
+stateDiagram-v2
+  [*] --> open
+  open --> assigned: auteur affecte
+  assigned --> open: assigné refuse
+  assigned --> in_progress: assigné démarre
+  open --> cancelled: auteur annule
+  assigned --> cancelled: auteur annule
+  in_progress --> pending_validation: assigné soumet
+  in_progress --> disputed: auteur ou assigné conteste
+  pending_validation --> completed: auteur valide
+  pending_validation --> disputed: auteur ou assigné conteste
+```
+
+Les états terminaux sont `completed`, `disputed` et `cancelled`. `draft`, `published`, `archived` et `deleted` ne sont pas des statuts de la machine courante ; la suppression est portée par `deletedAt`.
+
+| Action | Acteur autorisé | Transition |
+|---|---|---|
+| `assign(assigneeId)` | auteur, cible différente de l'auteur | open → assigned |
+| `decline()` | assigné | assigned → open |
+| `start()` | assigné | assigned → in_progress |
+| `submitResult()` | assigné | in_progress → pending_validation |
+| `validateResult()` | auteur | pending_validation → completed |
+| `dispute()` | auteur ou assigné | in_progress/pending_validation → disputed |
+| `cancel()` | auteur | open/assigned → cancelled |
+
+Toute transition non listée est refusée.
 
 ## 4. Règles métier et invariants
 
-- Une mission possède un propriétaire unique.
-- La publication exige les informations indispensables et une autorisation valide.
-- Les changements d'état sont historisés.
-- Chaque participation est tracée.
-- Une mission terminée est protégée contre les modifications ordinaires.
-- Les niveaux de confiance ne sont jamais calculés par Mission ; le domaine Trust décide de l'effet éventuel des preuves confirmées.
-- Une détection Radar ou une recommandation ne crée pas automatiquement une mission.
-- Une mission reste la source de vérité pour ses participants, son avancement et son résultat.
+- Un seul auteur, au plus un assigné.
+- L'auteur ne peut pas s'assigner lui-même.
+- Seul l'auteur peut assigner, annuler ou valider.
+- Seul l'assigné peut refuser, démarrer ou soumettre.
+- Auteur et assigné peuvent ouvrir un litige dans les états prévus.
+- Les détails sont modifiables uniquement avant affectation.
+- Une transition d'état ne peut pas modifier simultanément les détails métier.
+- Les champs `id`, `author_id` et `created_at` sont immuables côté client.
+- Les changements de statut sont audités en base.
+- La suppression physique est interdite aux clients authentifiés.
 
-## 5. Sécurité, rôles et confidentialité
+## 5. Architecture et composants
 
-Toutes les opérations sensibles sont authentifiées, autorisées et journalisées. Le propriétaire administre sa mission ; les participants agissent selon les droits associés à leur participation. Les visiteurs non autorisés ne peuvent pas consulter les missions privées ni effectuer de mutation. La visibilité publique, les pièces jointes et les informations de participants doivent respecter les règles du domaine et les autorisations individuelles.
+| Composant | Responsabilité |
+|---|---|
+| `packages/core-contracts/src/records.ts` | `MissionRecord`, `MissionStatus`, `MissionAction` |
+| `packages/core-contracts/src/write-policy.ts` | Champs de mise à jour directe vs champs réservés aux commandes |
+| `packages/core-logic/src/missions.ts` | Transitions, droits d'édition/suppression, retard, tri par échéance |
+| `packages/core-db/src/mission-repository.ts` | API locale `missionsRepository`, authentification locale, commandes |
+| `packages/core-db/src/schema.ts` | Table Dexie `missions`, isolation du scope local |
+| `packages/core-db/src/outbox.ts` | Persistance des mutations hors ligne et reprise/quarantaine |
+| `supabase/migrations/20261113004000_secure_mission_transitions.sql` | Contraintes, privilèges, RLS, trigger de transitions, audit, index |
 
-Le contrat historique prévoit une dépendance à Auth pour l'accès, à l'UDI pour identifier le propriétaire et éventuellement à Media pour les pièces jointes. Ces dépendances ne donnent pas à ces domaines la propriété des données Mission.
+La base locale est la source de lecture de l'interface. Le sync worker est le seul pont réseau. Le repository écrit le record et son entrée outbox dans une transaction Dexie.
 
-## 6. API et événements métier
+## 6. Modèle de données
 
-Le contrat historique propose les opérations suivantes : créer, lire, modifier et supprimer une mission ; consulter ses missions ; consulter les missions accessibles ; publier ; rejoindre ; quitter ; terminer ; archiver. Les chemins REST proposés sont `POST /missions`, `GET /missions/{id}`, `PATCH /missions/{id}`, `DELETE /missions/{id}`, `GET /missions/me`, `GET /missions` et les commandes dédiées `publish`, `join`, `leave`, `complete`, `archive`.
+`MissionRecord` comprend :
 
-Événements proposés : `MissionCreated`, `MissionUpdated`, `MissionPublished`, `MissionJoined`, `MissionLeft`, `MissionCompleted`, `MissionArchived`, `MissionDeleted`. Ces noms et routes sont des contrats historiques cibles, pas la preuve de endpoints actifs.
+- `id: MissionId`
+- `authorId: UserId`
+- `assigneeId: UserId | null`
+- `title: string` (SQL : 1–160 caractères trimés)
+- `brief: string` (SQL : 1–4 000 caractères trimés)
+- `status: MissionStatus`
+- `rewardAmount: number` (SQL : non négatif)
+- `rewardCurrency: string` (SQL V1 : `XAF`)
+- `dueAt: number | null` (millisecondes epoch)
+- `createdAt`, `updatedAt`, `revision`, `deletedAt` via `BaseRecord`
 
-## 7. Architecture et état d'implémentation
+## 7. Persistance, sécurité et synchronisation
 
-Le contrat situe le domaine entre l'interface, Mission API, Mission Domain et la base de données. Les recherches de code de la branche documentaire ne montrent pas de module applicatif Mission autonome comparable à Flash, Scan ou Radar ; les migrations de sécurité des transitions Mission existent dans le dépôt. Cette présence SQL ne suffit pas à prouver le parcours complet, les API, les écrans ou les tests fonctionnels.
+La write policy autorise la création, les mises à jour directes de `title`, `brief`, `rewardAmount`, `rewardCurrency`, `dueAt`, les commandes de statut/assigné via la machine d'état, et la suppression logique.
 
-Avant de déclarer Mission opérationnel, inventorier et valider les routes, contrats TypeScript, dépôts, politiques RLS, commandes SQL, migrations, UI, tests et flux de synchronisation sur le commit courant.
+La migration du 13 novembre 2026 :
+- vérifie les données existantes avant de poser les contraintes, sans les normaliser silencieusement ;
+- limite les statuts et les valeurs de titre/brief/récompense ;
+- impose l'auteur à l'insertion et restreint les mises à jour RLS à l'auteur ou à l'assigné ;
+- protège les transitions dans un trigger SECURITY INVOKER ;
+- audite les changements de statut avec un trigger SECURITY DEFINER à search_path borné ;
+- interdit UPDATE générique et DELETE physique aux clients authentifiés.
 
-## 8. Critères de validation
+Le rôle `service_role` est explicitement traité comme opération de confiance. Il ne doit pas être exposé au client.
 
-Tester propriété unique, isolation inter-comptes, publication conditionnelle, visibilité, participation, retrait, rôles, transitions invalides, concurrence, audit, terminaison, archivage, suppression et événements. Vérifier qu'aucun consommateur externe ne peut modifier directement les données ou l'état Mission.
+## 8. API disponible et contrat historique
 
-## 9. Sources conservées
+L'API actuellement prouvée par le code est le repository local `missionsRepository` : `get`, `list`, `create`, `editDetails`, `assign`, `decline`, `start`, `submitResult`, `validateResult`, `dispute`, `cancel`, `remove`.
 
-Le contrat historique `7. Mission API.md` reste conservé comme source de propositions d'endpoints et d'événements. Ce guide rassemble le modèle, les parcours, les responsabilités et les limites sans exiger de consulter un autre moteur.
+Le fichier historique `7. Mission API.md` propose des routes REST telles que `POST /missions`, `GET /missions/{id}`, `join`, `leave`, `publish` et `archive`. Ces routes et ces états (`Draft/Published/Archived`) ne correspondent pas à la machine d'état actuelle et aucune implémentation REST dédiée n'a été identifiée. Les traiter comme propositions historiques, pas comme endpoints actifs.
+
+## 9. Tests et état de validation
+
+- `tests/mission-transitions.test.ts` : trois tests unitaires existants.
+- `supabase/tests/database/123_mission_state_machine.test.sql` : 23 assertions structurelles pgTAP.
+- Les fichiers de test n'ont pas été exécutés dans le cadre de cette mise à jour documentaire.
+
+Compléter la couverture par des tests de chaque transition, des rôles auteur/assigné/tiers avec JWT réels, des refus RLS, des courses concurrentes, des échecs de sync, de l'isolation multi-comptes et des bornes de validation.
+
+Un écart connu doit être résolu : `canRemoveMission` autorise localement auteur + statut open, tandis que le trigger SQL exige aussi `assignee_id IS NULL`. La règle locale doit être alignée sur la base.
+
+## 10. Limites et évolutions non démontrées
+
+Ne pas annoncer comme actives sans nouveaux éléments de code : route/UI dédiée, API REST, publication publique, candidatures multiples, notifications, commentaires, pièces jointes, preuve de résultat, jalons, livrables, archivage, intégrations événementielles Mission.
+
+## 11. Documentation autonome
+
+- [Spécification fonctionnelle](FUNCTIONAL_SPEC.md)
+- [Architecture technique](TECHNICAL_ARCHITECTURE.md)
+- [Contrat API et synchronisation](API_AND_SYNC_CONTRACT.md)
+- [Tests et sécurité](TESTING_AND_SECURITY.md)
+- [Contrat API historique conservé](7.%20Mission%20API.md)
+
+Ce guide rassemble la vue d'ensemble nécessaire pour comprendre Mission sans lire la documentation d'un autre moteur.
