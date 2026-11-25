@@ -180,3 +180,33 @@ Cette vérification est une revue statique du code et des résultats CI disponib
 - Deux tests de contrat ont été ajoutés pour protéger la hiérarchie visuelle, la visibilité de l'avatar en mode calme, l'adaptation mobile et les règles de mouvement.
 
 Ces ajustements sont des améliorations de présentation. Ils ne changent ni la logique de découverte, ni l'activation de la présence, ni les interactions des profils et panneaux.
+
+## Réconciliation du contrôleur avec la PR #89 — 25 novembre 2026
+
+### Comparaison du découpage fonctionnel
+
+Les hooks introduits dans le commit `55f2408` de la PR #89 ont été comparés aux modules de la branche de migration #90. Après normalisation des alias d'import liés au déplacement de `src/domains/presence` vers `src/modules/reel`, les implémentations fonctionnelles sont identiques pour :
+
+- `useReelPresence` : activation et arrêt des présences membre et invité, consentements, localisation, rayon et durée ;
+- `useReelDiscovery` : découverte de proximité, cache, actualisation, visibilité de page et état réseau ;
+- `useReelBips` : réception, acceptation et refus des Bips, y compris les flux croisés membre/invité ;
+- `useReelConnections` : lecture et clôture des connexions ;
+- `useReelActivity` : actualisation de l'activité et projection des événements ;
+- `useReelMemberProfile`, `useReelLifecycle`, `useReelMemberPresence`, `useReelGuestPresence`, `useReelGuestSession` et `useReelPanelState` ;
+- les types, constantes et helpers associés.
+
+Les différences relevées dans les imports correspondent aux chemins cibles de la migration et aux points d'entrée de communication propres à #90. Aucune différence fonctionnelle non expliquée n'a été relevée dans ces modules lors de cette comparaison.
+
+### Adaptation conservée dans #90
+
+Le contrôleur de #90 préfixe l'identité d'activité avec `guest:` ou `member:`. Le contrôleur de #89 utilisait directement l'horodatage de session invité ou l'identifiant membre. Le préfixe évite qu'une valeur provenant de deux modes d'accès différents soit considérée comme la même identité par les mécanismes de rafraîchissement et de projection d'activité. Cette adaptation est conservée.
+
+Le contrôleur de #90 compose les hooks dans `src/modules/reel/model/reel-proximity/` et conserve les services d'API sous `src/modules/reel/api/`. Il ne réintroduit pas l'ancien contrôleur monolithique.
+
+### Interface et radar
+
+La comparaison confirme que la réconciliation du contrôleur ne nécessite pas de remplacer l'écran Réel. La composition actuelle, l'avatar central cliquable, les profils périphériques et le calque de rayons validé restent présents. Les tests de contrat existants couvrent notamment la séparation des responsabilités, les interactions de présence, les Bips, les connexions et la composition du radar.
+
+### Limites de validation
+
+Cette étape est une comparaison statique des sources sur `main` et sur la branche #90. Elle ne prouve pas l'exécution des tests, le bon fonctionnement en temps réel ni le rendu sur appareils. Aucun workflow CI n'est actuellement associé au dernier commit de la branche. Ces contrôles restent requis avant de déclarer la réconciliation complète et la PR fusionnable.
