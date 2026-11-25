@@ -127,6 +127,26 @@ describe("En direct architecture boundaries", () => {
     expect(screenSource).toContain("<img");
   });
 
+  it("keeps radar rays subtle and layered between the background and nearby profiles", () => {
+    expect(screenCompositionSource).toContain('<div className="reel-radar__rays" aria-hidden="true" />');
+    expect(screenCompositionSource).toContain("<SelfRadarIdentity");
+    expect(radarStylesSource).toContain("rgb(40 120 240 / 14%)");
+    expect(radarStylesSource).toContain("ellipse 13.5% 18%");
+    expect(radarStylesSource).toContain(".reel-proximity__radar .reel-radar__core {\n  z-index: 1;");
+    expect(radarStylesSource).toContain(".reel-proximity__radar .reel-ring-person {\n  z-index: 2;");
+    expect(radarStylesSource).toContain(".reel-proximity__radar .reel-radar__rays {\n  position: absolute;\n  z-index: 0;");
+  });
+
+  it("keeps the central avatar visible in calm mode and reduces ray density on compact phones", () => {
+    expect(radarStylesSource).toContain(".reel-proximity__radar--calm .reel-radar__core {\n  animation: none;\n  opacity: 1;");
+    expect(radarStylesSource).toContain("transparent 0deg 44.55deg");
+    expect(radarStylesSource).toContain("rgb(40 120 240 / 12%) 44.68deg 44.96deg");
+    expect(radarStylesSource).toContain("@media (prefers-reduced-motion: reduce)");
+    expect(radarStylesSource).toContain("animation: none !important;");
+    expect(radarStylesSource).toContain(".dark .reel-proximity__radar .reel-radar__rays");
+    expect(radarStylesSource).toContain("animation: none;\n  opacity: 0.48;");
+  });
+
   it("keeps the En direct header and central profile controls in the mobile screen composition", () => {
     expect(screenSource).toContain('className="reel-proximity__header-actions"');
     expect(screenSource).toContain("reel-radar__me-avatar");
