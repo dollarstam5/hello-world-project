@@ -210,3 +210,27 @@ La comparaison confirme que la réconciliation du contrôleur ne nécessite pas 
 ### Limites de validation
 
 Cette étape est une comparaison statique des sources sur `main` et sur la branche #90. Elle ne prouve pas l'exécution des tests, le bon fonctionnement en temps réel ni le rendu sur appareils. Aucun workflow CI n'est actuellement associé au dernier commit de la branche. Ces contrôles restent requis avant de déclarer la réconciliation complète et la PR fusionnable.
+
+## Réconciliation des composants d'interface avec la PR #89 — 25 novembre 2026
+
+### Résultats de comparaison
+
+Les composants de la PR #89 ont été comparés à leurs équivalents déplacés sous `src/modules/reel/ui` dans #90.
+
+- `ReelProximityScreen` : composition fonctionnelle conservée dans #90. La seule différence structurelle significative relevée dans le contenu comparé est le calque de rayons ajouté dans #90 ; il est conservé.
+- `ReelActivityPanel`, `ReelAtmospherePill`, `ReelProfileSheet` et `ReelRadarIdentity` : contenus identiques après normalisation des alias de modules.
+- `ReelBottomNav` : mêmes destinations, actions haptiques, libellés accessibles et ouverture du menu. Les différences observées sont principalement de formatage JSX.
+- `ReelHeader` : les actions et règles de disponibilité étaient déjà présentes. #89 ajoutait une position sticky, une couche visuelle et le respect de la zone sûre supérieure. La classe de position fixe et de safe-area a été reportée dans #90 sans modifier les actions du bandeau.
+- `ReelSettingsPanel` : #89 extrait la configuration des durées/rayons et le composant `ReelRadiusSettings`. #90 possède déjà une organisation différente, avec `ReelDiscoverySettings` et une configuration partagée dans `reel-settings-config.ts`. Les valeurs de rayon (10 m, 25 m, 50 m, 100 m, 1 km), les durées (30 min à 24 h), les limites invité et les actions de visibilité sont conservées. Il n'est pas utile de remplacer cette organisation par celle de #89.
+
+### Modifications retenues
+
+- Report de la présentation sticky de l'en-tête et de sa marge de zone sûre supérieure dans `ReelHeader.tsx`.
+- Ajout d'un test de contrat vérifiant la présence de cette règle.
+- Conservation sans remplacement de l'écran, des panneaux, du profil, de l'identité centrale, des rayons et de la navigation existante.
+
+### Contrôles et limites
+
+La comparaison des sources confirme que les changements d'interface de #89 sont pour l'essentiel déjà intégrés ou remplacés par une modularisation équivalente dans #90. Le seul ajustement de comportement visuel retenu ici est l'en-tête sticky avec safe-area.
+
+Le test ajouté protège le contrat de classe, mais n'est pas une preuve de rendu. Le comportement sticky dépend du conteneur de défilement et doit encore être vérifié sur petits écrans, notamment avec les encoches et zones système Android/iOS. Les tests automatisés et la CI doivent être exécutés sur le dernier commit avant de déclarer cette étape validée.
