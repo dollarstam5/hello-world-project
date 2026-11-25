@@ -143,6 +143,27 @@ Pendant une opération, conserver un libellé compréhensible et ne pas laisser 
 
 **Règle documentaire immédiate :** tant qu’un audit des écrans n’a pas confirmé le contraire, ne pas considérer `size="sm"` comme le choix par défaut d’une action mobile importante. Ne pas considérer la présence d’un `disabled` natif comme une preuve suffisante de prévention des doubles soumissions ou de gestion du chargement.
 
+### 4.5 Audit d’échantillon des usages mobiles
+
+**Périmètre :** lecture statique de quelques usages représentatifs du composant partagé, notamment l’en-tête global (`src/components/experience/AppHeader.tsx`) et l’onboarding (`src/components/experience/OnboardingSheet.tsx`). Cet échantillon sert à repérer des risques concrets ; il ne représente pas l’ensemble des écrans Vitalis et ne remplace pas une validation sur appareils Android et iOS.
+
+| Usage observé | Constat | Action de conformité / vérification |
+|---|---|---|
+| Actions icône seule de l’en-tête | Les commandes communication et profil utilisent `size="icon"`, des dimensions 48 × 48 px et un `aria-label` explicite | Bon exemple à conserver ; vérifier au rendu que le badge de notification ne réduit pas la cible et que le focus reste visible |
+| Icône de notification | L’icône est agrandie à 24 px, dans la plage recommandée ; le compteur est masqué aux lecteurs d’écran tandis que le nom accessible porte le nombre | Vérifier que le nombre annoncé correspond toujours au nombre d’événements réellement pertinents |
+| Changement de langue dans l’onboarding | Le bouton compact conserve une cible minimale de 48 px, mais son libellé est en 12 px (`text-xs`) | Tolérable pour un contrôle court et secondaire ; ne pas réutiliser cette combinaison pour une action principale ou une instruction |
+| Navigation précédent / suivant / ignorer | Les actions utilisent les variantes ghost ou primaire et héritent de la hauteur minimale de 48 px | Vérifier sur petit écran que les libellés longs ne provoquent ni chevauchement ni débordement ; autoriser l’empilement si nécessaire |
+| Action de fin d’onboarding | L’action « entrer » déclenche une navigation après complétion locale | Vérifier le comportement en cas de double activation et s’assurer que l’état de complétion n’est pas annoncé comme une opération distante |
+| États asynchrones | Dans les usages examinés, aucune propriété de chargement standardisée n’est visible sur le composant partagé | Pour chaque action réseau, vérifier la désactivation temporaire, l’indicateur de progression, le maintien du libellé accessible et le message de résultat |
+
+**Constats de l’échantillon :**
+- Les commandes principales de l’en-tête et les commandes de navigation de l’onboarding respectent la hauteur tactile minimale héritée du composant partagé.
+- Les boutons icône seule de l’en-tête disposent d’un nom accessible explicite ; cette pratique doit être systématique dans tous les modules.
+- Le style compact à 12 px apparaît sur le changement de langue, qui est une commande secondaire courte. Cela ne justifie pas son emploi pour des actions importantes.
+- La conformité du focus, du contraste, des zones d’appui réelles, du comportement en orientation paysage et de la prévention du double appui ne peut pas être conclue à partir du JSX seul.
+
+**Décision d’audit :** aucun défaut bloquant n’est établi dans cet échantillon statique. Les vérifications visuelles et tactiles sur appareils restent ouvertes. Étendre l’audit écran par écran avant de déclarer la bibliothèque de boutons conforme.
+
 ## 5. Cartes, listes et contenus
 
 ### 5.1 Cartes
