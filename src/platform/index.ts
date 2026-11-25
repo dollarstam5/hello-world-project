@@ -1,8 +1,6 @@
 /**
- * platform/ — Cross-application systems shared by all domains.
- * Phase 1 façade — concrete modules still live under src/lib/* and will
- * migrate progressively. New platform slots (pwa, monetization, analytics,
- * notifications, permissions, accessibility) are placeholders ready to grow.
+ * platform/ — cross-application infrastructure shared by features and domains.
+ * Legacy src/lib entry points remain as compatibility façades during migration.
  */
 export * as ai from "./ai";
 export * as realtime from "./realtime";
@@ -16,3 +14,5 @@ export * as notifications from "./notifications";
 export * as permissions from "./permissions";
 export * as device from "./device";
 export * as a11y from "./accessibility";
+export * as performance from "./performance";
+export * as observability from "./observability";
