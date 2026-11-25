@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useRouterState } from "@tanstack/react-router";
 import { BottomNav } from "@/app/navigation";
-import { useExperienceBoot } from "@/lib/experience/orchestrator";
+import { useExperienceBoot } from "@/app/bootstrap";
 import { OfflineBanner } from "@/platform/offline/ui/OfflineBanner";
 import { AppHeader } from "@/components/experience/AppHeader";
 import { InstallBanner } from "@/platform/pwa/ui/InstallBanner";
