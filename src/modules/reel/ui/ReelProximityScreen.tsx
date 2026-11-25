@@ -107,6 +107,7 @@ export function ReelProximityScreen() {
         <div className="reel-radar__outer-ring" aria-hidden="true" />
         <div className="reel-radar__inner-ring" aria-hidden="true" />
         <div className="reel-radar__sweep" aria-hidden="true" />
+        <div className="reel-radar__rays" aria-hidden="true" />
         <div className="reel-radar__core">
           <button
             type="button"
