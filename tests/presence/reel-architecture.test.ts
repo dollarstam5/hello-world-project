@@ -139,8 +139,8 @@ describe("En direct architecture boundaries", () => {
 
   it("keeps the central avatar visible in calm mode and reduces ray density on compact phones", () => {
     expect(radarStylesSource).toContain(".reel-proximity__radar--calm .reel-radar__core {\n  animation: none;\n  opacity: 1;");
-    expect(radarStylesSource).toContain("transparent 0deg 44.55deg");
-    expect(radarStylesSource).toContain("rgb(40 120 240 / 12%) 44.68deg 44.96deg");
+    expect(radarStylesSource).toContain("transparent 0deg 44.45deg");
+    expect(radarStylesSource).toContain("rgb(40 120 240 / 12%) 44.58deg 44.82deg");
     expect(radarStylesSource).toContain("@media (prefers-reduced-motion: reduce)");
     expect(radarStylesSource).toContain("animation: none !important;");
     expect(radarStylesSource).toContain(".dark .reel-proximity__radar .reel-radar__rays");
