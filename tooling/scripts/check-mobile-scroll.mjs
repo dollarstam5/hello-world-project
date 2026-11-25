@@ -136,7 +136,7 @@ try {
   ];
   const routes = [
     { path: "/flash", selector: "main h1" },
-    { path: "/scan", selector: "#scan-radius" },
+    { path: "/scan", selector: "#scan-need" },
   ];
   let checked = 0;
   const failures = [];
