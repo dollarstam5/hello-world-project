@@ -455,3 +455,166 @@ Les écarts les plus nets concernent les cibles de fermeture de 32 px (Assistant
 **Limite de l'audit :** inspection statique du code et recherche des usages indexés. Aucun test sur appareil réel, lecteur d'écran, rendu visuel ou mesure de durée n'a été effectué. La recherche n'a pas retrouvé de montage Toaster ni d'appel toast applicatif ; ce constat reste limité au code indexé consulté.
 
 **Aucun code applicatif ou composant runtime n'a été modifié dans cette étape.**
+
+
+---
+
+## 11. Audit du parcours de collecte en langage humain — et non des formulaires classiques
+
+### 11.1 Intention produit à respecter
+
+Ce périmètre ne doit pas être traité comme un audit générique de champs, de formulaires et de listes déroulantes. Le modèle d'expérience Vitalis est la **collecte progressive en langage humain** : la personne raconte ce qu'elle cherche, ce qu'elle propose ou ce qu'elle veut faire ; Vitalis identifie les informations utiles, conserve le sens de la demande, ne demande que ce qui manque réellement et transforme les éléments compris en données métier.
+
+Le principe fondamental de Vitalis (docs/foundation/vitalis-core-principles.md) impose :
+- agir dès que le minimum nécessaire est disponible ;
+- ne pas bloquer une action pour une préférence ou un détail facultatif ;
+- poser uniquement la question indispensable lorsque l'action ne peut réellement pas avancer ;
+- conserver ce qui est déjà compris et ne pas faire recommencer la personne ;
+- présenter les informations inconnues comme inconnues, sans les inventer ;
+- proposer les enrichissements facultatifs après ou autour de l'action, sans en faire un questionnaire préalable.
+
+La référence éditoriale du produit exige un ton humain, simple, direct et contextualisé. Le langage humain ne signifie toutefois pas que le système V1 comprend déjà une conversation libre illimitée ou qu'il utilise nécessairement un modèle génératif.
+
+### 11.2 Parcours de référence à rendre lisible
+
+Le parcours cible doit être documenté comme une progression conversationnelle, et non comme une suite de pages de formulaire :
+
+1. **Expression libre** — la personne écrit ou dicte naturellement son besoin ou son offre, sans devoir connaître les catégories internes de Vitalis.
+2. **Compréhension** — Vitalis extrait les faits et critères réellement présents dans les mots : intention, objet, lieu, temporalité, quantité, contraintes et préférences selon le moteur.
+3. **Qualification** — chaque élément est distingué comme confirmé par la personne, détecté avec confiance limitée, inconnu, ou simplement facultatif. Une inférence du parseur ne doit pas être présentée comme une déclaration certaine.
+4. **Décision d'avancement** — si le minimum métier, les autorisations et les consentements sont réunis, Vitalis avance avec les données disponibles.
+5. **Clarification humaine ciblée** — si une information réellement indispensable manque, Vitalis pose une seule question à la fois, dans des mots naturels, en conservant la demande initiale et les réponses précédentes.
+6. **Confirmation proportionnée** — avant une action engageante ou difficilement réversible, Vitalis résume ce qu'il va réellement faire et demande l'accord requis. Une confirmation ne doit pas devenir une reconstitution exhaustive de formulaire.
+7. **Action et retour** — Vitalis réalise l'action, puis explique clairement le résultat, les limites et les informations encore inconnues.
+8. **Enrichissement facultatif** — les détails utiles mais non nécessaires peuvent être ajoutés plus tard, sans empêcher la première valeur utile.
+
+Les contrôles structurés (choix, date, rayon, autorisation, catégorie) restent légitimes lorsqu'ils sont plus clairs, plus sûrs ou plus fiables qu'une réponse libre. Ils doivent être présentés comme une question contextuelle ponctuelle, pas comme une grille de champs à remplir. Les consentements et confirmations de sécurité ne doivent jamais être inférés à partir du langage naturel.
+
+### 11.3 Ce que le code V1 fait effectivement aujourd'hui
+
+L'inspection du code montre une différence entre l'intention produit et plusieurs parcours UI déjà présents. Il ne faut ni masquer cette différence ni décrire la V1 comme un agent conversationnel complet.
+
+#### Flash — expression libre suivie d'une revue structurée
+
+Fichiers inspectés :
+- src/modules/flash/ui/FlashComposerDialog.tsx
+- src/modules/flash/ui/FlashComposerWriteStep.tsx
+- src/modules/flash/ui/FlashComposerReviewStep.tsx
+- src/modules/flash/ui/useFlashComposer.ts
+- src/modules/flash/ui/flash-composer-helpers.ts
+- packages/core-logic/src/flash.ts
+
+Constats :
+- L'étape initiale offre un texte libre (600 caractères) et une dictée vocale lorsque Web Speech Recognition est disponible.
+- parseFlashIntent est un parseur local, déterministe et fondé sur des expressions régulières. Il propose le type besoin/offre, une catégorie et un créneau temporel ; il ne comprend pas librement le lieu, la date exacte, la quantité, la durée ou toutes les contraintes.
+- Pour un texte d'au moins trois caractères, une proposition est affichée. Le repli peut être « offre », « autre » et « aujourd'hui » même lorsque ces valeurs ne sont pas explicitement exprimées : ce sont des valeurs par défaut techniques, pas des faits déclarés par la personne.
+- L'interface affiche ensuite une deuxième étape de revue avec le texte original, un contrôle de localisation, des sélecteurs type/catégorie/date, des choix de portée et d'urgence, puis une action d'enregistrement de brouillon.
+- La localisation est facultative pour le brouillon et nécessite une action explicite de détection ; elle ne doit pas être assimilée à une donnée connue simplement parce que le téléphone la possède.
+- Le parcours inspecté ne démontre pas une conversation où Vita pose spontanément des questions en langage humain pour compléter chaque donnée manquante.
+
+**Évaluation :** Flash commence bien par une expression libre, mais sa deuxième étape ressemble encore à un formulaire de revue. La collecte conversationnelle annoncée dans la vision Flash (intention, catégorie, lieu, date, contraintes, durée) n'est pas intégralement démontrée par le parseur V1 observé. Il faut présenter les champs préremplis comme des suggestions modifiables et distinguer explicitement les valeurs déduites des valeurs par défaut.
+
+#### Scan — demande libre suivie de quatre étapes guidées
+
+Fichiers inspectés :
+- src/modules/scan/ui/ScanPanel.tsx
+- src/modules/scan/ui/ScanNeedInterpretation.tsx
+- src/modules/scan/ui/ScanPreferences.tsx
+- src/modules/scan/hooks/useScanFlow.ts
+- packages/core-logic/src/scan-interpreter.ts
+
+Constats :
+- La personne saisit une demande libre de 160 caractères ou utilise la dictée vocale si elle est disponible.
+- Le parcours impose actuellement quatre étapes : need, confirmation, criteria, final.
+- La confirmation affiche le texte original, une intention reconnue et les éléments détectés par le parseur déterministe.
+- Le parseur identifie un ensemble limité d'intentions et extrait certains indices de tâche, objet, lieu, distance, quantité, temps, urgence, exigences et préférences. Il conserve le texte d'origine comme demande principale et ne prétend pas le reformuler parfaitement.
+- Une étape dédiée permet d'ajuster le rayon, présenté comme préférence facultative.
+- Une dernière étape récapitule la demande et le rayon, puis exige un clic explicite pour lancer Scan.
+- Le hook ne lance pas la recherche avant l'étape finale. La localisation est demandée au démarrage de la recherche.
+- Le code ne met pas en œuvre de dialogue adaptatif posant une question ciblée selon les données manquantes ; les étapes de confirmation et de critères sont fixes.
+
+**Évaluation :** Scan utilise une entrée en langage naturel, mais son parcours actuel est un assistant de préparation à étapes fixes, pas une conversation fluide. La revue et le récapitulatif peuvent être utiles pour garder la maîtrise de la recherche, mais l'étape de critères facultatifs ne doit pas être ressentie comme obligatoire si la recherche peut déjà être lancée utilement. Le parcours doit aussi respecter les décisions produit : explorer avec les informations disponibles, qualifier honnêtement les résultats et ne demander que le minimum réellement nécessaire.
+
+#### Radar — formulaire métier explicite
+
+Fichiers repérés lors des audits précédents :
+- src/modules/radar/ui/RadarDraftForm.tsx
+- src/modules/radar/ui/RadarManagement.tsx
+
+Constat :
+- Radar expose un formulaire de création/édition de critères, contrairement au parcours d'expression libre de Flash et Scan.
+- Ce formulaire n'est pas automatiquement une erreur : certains paramètres d'une veille persistante peuvent nécessiter une sélection explicite et une confirmation durable.
+- L'audit de cette étape ne valide pas le détail de chaque champ Radar ni la possibilité d'une entrée libre alternative ; il identifie uniquement une expérience structurée distincte qui doit être confrontée au principe de collecte progressive.
+
+### 11.4 Écart produit / interface à clarifier
+
+| Attendu produit | Réalité observée dans le code V1 | Clarification nécessaire |
+|---|---|---|
+| La personne parle naturellement | Flash et Scan offrent un champ libre et une dictée conditionnelle | Préciser les capacités réelles du navigateur, la disponibilité de la voix et les limites du parseur |
+| Vitalis comprend les données exprimées | Parseurs locaux déterministes, règles et expressions régulières | Ne pas appeler cela compréhension conversationnelle générative ; rendre visibles les limites et la confiance |
+| Vitalis demande seulement les informations manquantes | Flash et Scan affichent des étapes de revue fixes ; pas de moteur commun de question adaptative constaté dans ces parcours | Définir les champs minimaux par action et le contrat de question unique |
+| Les formulaires ne structurent pas l'expérience | Flash affiche plusieurs sélecteurs après la saisie ; Scan impose quatre étapes ; Radar expose un formulaire dédié | Les contrôles doivent devenir contextuels et facultatifs quand la règle métier le permet, sans supprimer les confirmations de sécurité |
+| Les données sont capturées progressivement | Le parseur préremplit quelques propriétés ; le texte source est conservé | Distinguer valeur explicitement dite, valeur détectée, valeur proposée par défaut et valeur confirmée |
+| L'action avance sans questionnaire | Scan exige une confirmation et une étape critères avant la recherche ; Flash présente une revue complète avant sauvegarde | Justifier chaque étape par une nécessité métier, une sécurité, une permission ou une confirmation de publication |
+
+### 11.5 Contrat fonctionnel à documenter pour chaque moteur
+
+Pour éviter qu'un futur parcours retombe dans un formulaire classique, chaque moteur doit déclarer :
+
+- **Intention attendue :** ce que la personne peut dire avec ses propres mots.
+- **Entrées acceptées :** texte, dictée, conversation ou autres moyens effectivement disponibles dans la version ciblée.
+- **Extraction garantie :** champs que le parseur V1 sait réellement identifier, avec exemples de formulations couvertes.
+- **Niveau de confiance :** distinction entre expression explicite, détection probable et valeur inconnue.
+- **Minimum exécutable :** données, consentements et autorisations sans lesquels l'action ne peut pas être effectuée.
+- **Champs facultatifs :** éléments qui améliorent le résultat mais ne bloquent pas la première action.
+- **Questions autorisées :** formulation humaine d'une seule clarification à la fois, uniquement pour un manque bloquant.
+- **Confirmation nécessaire :** publication, engagement, permission ou action irréversible à confirmer explicitement.
+- **Résultat attendu :** action réalisée, brouillon conservé, recherche lancée ou impossibilité expliquée.
+- **Reprise :** retour à la demande initiale sans perdre les éléments déjà compris ou confirmés.
+
+Le système ne doit jamais convertir automatiquement une valeur par défaut en fait confirmé. Une catégorie « autre », un créneau « aujourd'hui » ou une portée présélectionnée doit rester une proposition technique tant que la personne ne l'a pas exprimée ou confirmée lorsque cette confirmation est requise.
+
+### 11.6 Règles d'expérience conversationnelle mobile
+
+1. **Une seule zone d'expression principale :** inviter à raconter le besoin ou l'offre en langage naturel, avec un exemple utile et non un inventaire de champs.
+2. **Réponse humaine avant contrôle :** afficher ce que Vitalis a compris dans une phrase claire, plutôt qu'une collection initiale de badges techniques.
+3. **Question unique :** si un élément est réellement bloquant, demander seulement celui-ci, puis reprendre automatiquement le parcours avec les informations déjà obtenues.
+4. **Choix courts si nécessaires :** proposer quelques réponses tactiles quand elles évitent une ambiguïté ; toujours expliquer la question dans le contexte.
+5. **Facultatif clairement facultatif :** ne pas rendre une préférence obligatoire par la seule présence d'un contrôle dans l'écran.
+6. **Confirmation proportionnée :** confirmer l'action qui engage, pas toutes les données déjà comprises une par une.
+7. **Correction naturelle :** permettre de répondre « non, je voulais dire… » ou de corriger un élément sans recommencer toute la saisie.
+8. **Voix non obligatoire :** la dictée dépend du support navigateur et des permissions ; le texte reste une voie équivalente et complète.
+9. **Accessibilité :** annoncer la question et la réponse comprise une fois, conserver le focus, permettre clavier et lecteur d'écran, respecter les tailles de texte et les cibles tactiles.
+10. **Pas de faux dialogue :** tant que la V1 utilise des parseurs déterministes et des étapes fixes, ne pas laisser croire que Vita pose déjà des questions libres adaptatives.
+
+### 11.7 Scénarios d'acceptation à couvrir
+
+| Scénario | Résultat attendu |
+|---|---|
+| Demande claire avec plusieurs détails | Les éléments explicitement dits sont extraits ; aucune question inutile ; l'action avance si le minimum est présent |
+| Demande partielle mais exploitable | Le moteur poursuit avec les données disponibles et explique les limites |
+| Préférence facultative absente | Aucune étape bloquante ; proposition d'ajout possible plus tard |
+| Information indispensable absente | Une seule question courte, liée au contexte ; aucune perte du texte initial |
+| Parseur incertain ou valeur par défaut | Le système n'affiche pas l'inférence comme un fait ; correction facile |
+| Correction en langage naturel | Les données déjà confirmées sont conservées et seul l'élément concerné est modifié |
+| Dictée indisponible ou permission refusée | Saisie texte immédiatement utilisable, sans blocage ni culpabilisation |
+| Permission de localisation nécessaire | Explication juste avant la demande système ; refus sans contournement ni fausse localisation |
+| Confirmation de publication/action engageante | Résumé compréhensible et consentement explicite avant l'action |
+| Réseau absent pendant la collecte | Texte et données préparées conservés selon les capacités réelles du moteur ; état de synchronisation honnête |
+| Français/anglais et écran 320 px | Questions et réponses restent naturelles, lisibles, sans formulaire horizontal ni troncature utile |
+
+### 11.8 Priorités de suite
+
+1. **P0 — Référence canonique :** faire des principes fondamentaux et des décisions produit de chaque moteur la source de vérité pour minimum exécutable, données facultatives, questions et confirmations.
+2. **P0 — Écart Flash :** clarifier quelles sélections de revue sont réellement nécessaires à la création d'un brouillon, lesquelles sont facultatives et lesquelles sont des suggestions du parseur.
+3. **P0 — Écart Scan :** justifier les étapes fixes de confirmation/critères/final au regard de la règle « rechercher avec les informations disponibles » ; ne pas imposer le rayon facultatif comme condition de lancement.
+4. **P1 — Contrat d'extraction :** documenter les expressions réellement couvertes par les parseurs déterministes, leurs limites, les valeurs par défaut et la manière de corriger une interprétation.
+5. **P1 — Conversation adaptative :** si une évolution produit est approuvée, définir séparément le mécanisme de question unique et la reprise d'état ; ne pas présenter cette capacité comme déjà livrée en V1.
+6. **P1 — Radar :** auditer son formulaire à la lumière de la nature persistante d'une veille et identifier les champs indispensables, les préférences et une éventuelle voie d'expression libre.
+7. **P2 — Composant partagé :** ne pas créer un nouveau « formulaire universel ». Envisager seulement un contrat partagé de collecte/intention si plusieurs moteurs ont réellement le même besoin, en gardant les règles métier dans chaque domaine.
+
+### 11.9 Limites de cette étape
+
+Il s'agit d'un audit documentaire et statique des parcours Flash et Scan, d'un repérage du formulaire Radar et d'une comparaison avec les principes produit. Il ne s'agit pas d'une validation du comportement sur appareil réel, d'une mesure de précision des parseurs sur des corpus représentatifs, ni d'une validation d'une conversation IA en production.
+
+**Aucun composant runtime, parseur, formulaire, service ou code applicatif n'a été modifié.** La présente étape clarifie l'écart entre la vision de collecte en langage humain et les parcours V1 actuellement visibles ; toute évolution de l'interface ou de la logique nécessitera une décision séparée.
