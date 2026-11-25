@@ -1,5 +1,5 @@
-import { Indicator } from "@/components/app/Indicator";
-import { Surface } from "@/components/app/Surface";
+import { Indicator } from "@/shared/components/Indicator";
+import { Surface } from "@/shared/components/Surface";
 import { useI18n } from "@/lib/i18n/useI18n";
 import type { MessageKey } from "@/lib/i18n/messages";
 

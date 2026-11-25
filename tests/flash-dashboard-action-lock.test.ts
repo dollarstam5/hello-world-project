@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createFlashDashboardActionLock } from "@/domains/flash/ui/dashboard/utils/flashDashboardActionLock";
+import { createFlashDashboardActionLock } from "@/modules/flash/ui/dashboard/utils/flashDashboardActionLock";
 
 describe("Flash dashboard action lock", () => {
   it("rejects a second action while one is already running", () => {

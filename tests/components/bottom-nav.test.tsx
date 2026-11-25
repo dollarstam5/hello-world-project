@@ -1,6 +1,6 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
-import { BottomNav } from "@/components/app/BottomNav";
+import { BottomNav } from "@/app/navigation/BottomNav";
 
 vi.mock("@tanstack/react-router", () => ({
   Link: ({

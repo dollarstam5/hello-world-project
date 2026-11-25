@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { evaluateReelAccess } from "@/domains/presence/policy/reel-access-policy";
+import { evaluateReelAccess } from "@/modules/reel/policy/reel-access-policy";
 
 const member = {
   mode: "member" as const,

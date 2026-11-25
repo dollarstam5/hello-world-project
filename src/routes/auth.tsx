@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { SignInView } from "@/domains/auth/ui/SignInView";
+import { SignInView } from "@/modules/auth/ui/SignInView";
 
 export const Route = createFileRoute("/auth")({
   validateSearch: (search: Record<string, unknown>) => ({

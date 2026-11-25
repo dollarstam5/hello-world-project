@@ -1,3 +1,2 @@
-export { AppShell } from "@/components/app/AppShell";
-export { BottomNav } from "@/components/app/BottomNav";
-export { MenuSheet } from "@/components/app/MenuSheet";
+export { AppShell } from "@/app/shell/AppShell";
+export { BottomNav, MenuSheet } from "@/app/navigation";

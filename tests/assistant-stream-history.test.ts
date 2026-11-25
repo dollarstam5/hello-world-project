@@ -3,7 +3,7 @@ import {
   AssistantStreamError,
   buildAssistantRequestMessages,
   streamAssistant,
-} from "@/domains/assistant/services/assistant-stream.service";
+} from "@/modules/assistant/services/assistant-stream.service";
 
 afterEach(() => vi.unstubAllGlobals());
 

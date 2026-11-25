@@ -1,95 +1,94 @@
 # Documentation Archive
 
-Ce dossier documentaire répertorie les sources historiques conservées pour la traçabilité et la migration. Les fichiers restent à leur emplacement actuel ; ils ne sont pas supprimés ni déplacés du simple fait d'être répertoriés ici.
+Ce dossier documentaire répertorie les sources historiques conservées pour la traçabilité et la migration. Les chemins ci-dessous reflètent leur emplacement actuel dans cette branche. Les entrées explicitement signalées comme supprimées ne sont conservées qu'à titre de trace de déduplication ; les autres sources restent disponibles et ne sont pas supprimées du simple fait d'être répertoriées ici.
 
 ## Outils de migration documentaire
 
-- [Cartographie de migration documentaire](../07-annexes/documentation-migration-map.md) — associe les références canoniques aux sources historiques recensées et liste les vérifications restantes.
-- [Candidats aux suppressions proposées](../07-annexes/proposed-document-removals.md) — liste distincte de candidats, sans autorisation de suppression.
+- [Cartographie de migration documentaire](../reference/documentation-migration-map.md) — associe les références canoniques aux sources historiques recensées et liste les vérifications restantes.
+- [Candidats aux suppressions proposées](../reference/proposed-document-removals.md) — liste distincte de candidats, sans autorisation de suppression.
 
-## Purpose
+## Structure actuelle
 
 La documentation active vit dans :
 
-- `docs/00-foundation/`
-- `docs/01-product/`
-- `docs/02-architecture/`
-- `docs/03-api/`
-- `docs/03-engines/` — classement des sources de moteurs/API en cours dans Lot 12
-- `docs/04-database/`
-- `docs/05-ai/`
-- `docs/06-operations/`
-- `docs/07-annexes/`
+- `docs/foundation/`
+- `docs/product/`
+- `docs/architecture/`
+- `docs/api/`
+- `docs/modules/` — sources historiques et contrats classés par domaine métier
+- `docs/database/`
+- `docs/engineering/ai/`
+- `docs/operations/`
+- `docs/reference/`
 
 ## Sources historiques conservées
 
 ### Vision, produit et personas
 
-- `docs/01-product/01-VITALA - VISION PRODUIT V1.md`
-- `docs/01-product/02-VITALA - PERSONAS V1.md`
+- `docs/product/01-VITALA - VISION PRODUIT V1.md`
+- `docs/product/02-VITALA - PERSONAS V1.md`
 
 ### Parcours utilisateurs (User Journeys)
 
-- `docs/04-VITALA-UJ-01-CONSULTANT-TO-MEMBER.md`
-- `docs/05-VITALA-UJ-02-MEMBER-TO-IDENTIFIED.md`
-- `docs/06-VITALA-UJ-03-PUBLISH-OPPORTUNITY.md`
-- `docs/07-VITALA-UJ-04-RESPOND-OPPORTUNITY.md`
-- `docs/08-VITALA-UJ-05-SELECT-CANDIDATE.md`
-- `docs/09-VITALA-UJ-06-ACTION-VALIDATION.md`
-- `docs/10-VITALA-UJ-07-CONFIDENCE-CREATION.md`
-- `docs/04.0-VITALA-UJ-01-Annexe commune aux User Journeys.md`
+- `docs/product/04-VITALA-UJ-01-CONSULTANT-TO-MEMBER.md`
+- `docs/product/05-VITALA-UJ-02-MEMBER-TO-IDENTIFIED.md`
+- `docs/product/06-VITALA-UJ-03-PUBLISH-OPPORTUNITY.md`
+- `docs/product/07-VITALA-UJ-04-RESPOND-OPPORTUNITY.md`
+- `docs/product/08-VITALA-UJ-05-SELECT-CANDIDATE.md`
+- `docs/product/09-VITALA-UJ-06-ACTION-VALIDATION.md`
+- `docs/product/10-VITALA-UJ-07-CONFIDENCE-CREATION.md`
+- `docs/product/04.0-VITALA-UJ-01-Annexe commune aux User Journeys.md`
 
-Les documents historiques mentionnent aussi UJ-08 Flash, UJ-09 Radar et UJ-10 Veille. Leurs fichiers primaires n'ont pas été retrouvés sous les chemins attendus lors de la consolidation ; ne pas recréer ni supprimer ces sources avant d'avoir confirmé leur emplacement et leur contenu.
+Les sources UJ-08 Flash et UJ-09 Scan sont classées sous `docs/modules/flash/` et `docs/modules/scan/`. Les sources UJ-10 Veille sont conservées en plusieurs parties sous `docs/modules/veille/` ; leur comparaison avec le parcours canonique reste à effectuer avant toute proposition de retrait.
 
 ### Identité et confiance
 
-- `docs/03-VITALA-TRUST-LEVELS-V1.md Mise � jour 1.md` (nom encodé de façon imparfaite dans GitHub)
-- `docs/03-VITALA-TRUST-LEVELS-V1.md Mise � jour 2.md` (nom encodé de façon imparfaite dans GitHub)
-- `docs/01-product/03A-VITALA-TRUST-A LEVELS-V1 Partie 0.md`
-- `docs/03-engines/trust/03A-VITALA-TRUST-ENGINE-V1 Partie 1.md` (classé dans Lot 12)
-- `docs/03-engines/trust/03A-VITALA-TRUST-ENGINE-V1 Partie 2.md` (classé dans Lot 12)
-- `docs/03-engines/trust/03A-VITALA-TRUST-ENGINE-V1 Partie 3.md` (classé dans Lot 12)
-- `docs/03-engines/trust/03A-VITALA-TRUST-ENGINE-V1.md Mise � jour.md` (nom encodé de façon imparfaite ; classé dans Lot 12)
-- `docs/02-architecture/14-VITALA-VEILLE-ENGINE. Model - Unified Digital Identity (UDI).md`
-- `docs/03-api/5. Unified Digital Identity API.md` (UDI, non déplacée ; contrat transversal historique)
-- `docs/03-engines/trust/8. Trust API.md` (contrat historique classé sous Lot 12)
+- `docs/product/03-VITALA-TRUST-LEVELS-V1.md Mise � jour 1.md` (nom encodé de façon imparfaite dans GitHub)
+- `docs/product/03-VITALA-TRUST-LEVELS-V1.md Mise � jour 2.md` (nom encodé de façon imparfaite dans GitHub)
+- `docs/product/03A-VITALA-TRUST-A LEVELS-V1 Partie 0.md`
+- `docs/modules/trust/03A-VITALA-TRUST-ENGINE-V1 Partie 1.md` (classé dans Lot 12)
+- `docs/modules/trust/03A-VITALA-TRUST-ENGINE-V1 Partie 2.md` (classé dans Lot 12)
+- `docs/modules/trust/03A-VITALA-TRUST-ENGINE-V1 Partie 3.md` (classé dans Lot 12)
+- `docs/modules/trust/03A-VITALA-TRUST-ENGINE-V1.md Mise � jour.md` (nom encodé de façon imparfaite ; classé dans Lot 12)
+- `docs/architecture/14-VITALA-VEILLE-ENGINE. Model - Unified Digital Identity (UDI).md`
+- `docs/api/5. Unified Digital Identity API.md` (UDI, non déplacée ; contrat transversal historique)
+- `docs/modules/trust/8. Trust API.md` (contrat historique classé sous Lot 12)
 
 ### Moteurs Veille et Recommendation
 
-- `docs/03-engines/veille/10. Veille API.md`
-- `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 1.md`
-- `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 2.md`
-- `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 3.md`
-- `docs/03-engines/veille/14-VITALA-VEILLE-ENGINE.md Partie 1(1).md` (copie de la partie 1 conservée ; décision distincte requise avant retrait)
-- `docs/03-engines/recommendation/11._Recommendation_API.md`
+- `docs/modules/veille/10. Veille API.md`
+- `docs/modules/veille/14-VITALA-VEILLE-ENGINE.md Partie 1.md`
+- `docs/modules/veille/14-VITALA-VEILLE-ENGINE.md Partie 2.md`
+- `docs/modules/veille/14-VITALA-VEILLE-ENGINE.md Partie 3.md`
+- `docs/modules/recommendation/11._Recommendation_API.md`
 
 ### Architecture, API et données
 
-- `docs/02-architecture/18-VITALA-ARCHITECTURE-V1 Partie 1.md`
-- `docs/02-architecture/18-VITALA-ARCHITECTURE-V1 Partie 2.md`
-- `docs/02-architecture/18-VITALA-ARCHITECTURE-V1 Partie 3.md`
-- `docs/03-api/16. Settings API.md` (copie exacte conservée ; la variante `(1)` a été retirée dans Lot 12)
-- `docs/03-engines/flash/6. Flash API.md` (classé dans Lot 12)
-- `docs/03-engines/radar/9. Radar API.md` (classé dans Lot 12)
-- `docs/03-engines/missions/7. Mission API.md` (classé dans Lot 12)
-- `docs/BUILD-API.md 2. Principes communs.md`
-- `docs/04-database/Database Architecture.md`
-- `docs/04-database/DATA_MODEL.md`
+- `docs/architecture/18-VITALA-ARCHITECTURE-V1 Partie 1.md`
+- `docs/architecture/18-VITALA-ARCHITECTURE-V1 Partie 2.md`
+- `docs/architecture/18-VITALA-ARCHITECTURE-V1 Partie 3.md`
+- `docs/api/16. Settings API.md` (copie exacte conservée ; la variante `(1)` a été retirée dans Lot 12)
+- `docs/modules/flash/6. Flash API.md` (classé dans Lot 12)
+- `docs/modules/radar/9. Radar API.md` (classé dans Lot 12)
+- `docs/modules/missions/7. Mission API.md` (classé dans Lot 12)
+- `docs/api/BUILD-API.md 2. Principes communs.md`
+- `docs/database/Database Architecture.md`
+- `docs/database/DATA_MODEL.md`
 
 ### Exploitation et continuité
 
-- `docs/06-operations/ANNEXE G — Plan de reprise d'activité (Disaster Recovery & Business Continuity).md`
+- `docs/operations/ANNEXE G — Plan de reprise d'activité (Disaster Recovery & Business Continuity).md`
 
 ### IA et règles du projet
 
-- `docs/05-ai/00-AI-README.md.md`
-- `docs/05-ai/AI-RULEBOOK.md`
-- `docs/PROJECT_BIBLE.md`
+- `docs/engineering/ai/00-AI-README.md.md`
+- `docs/engineering/ai/AI-RULEBOOK.md`
+- `docs/reference/PROJECT_BIBLE.md`
 
 ### Expérience, design et performance
 
-- `docs/06-operations/PERFORMANCE_ISSUES.md`
-- `docs/06-operations/PERFORMANCE_PWA.md`
+- `docs/operations/PERFORMANCE_ISSUES.md`
+- `docs/operations/PERFORMANCE_PWA.md`
 
 ## Policy
 
