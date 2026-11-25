@@ -14,6 +14,7 @@ Cette section contient les fondations canoniques du projet : architecture, séqu
 - [Expérience géographique — En direct](./en-direct-geographic-experience.md) — parcours cible, recherche autour de soi, types de résultats, fiabilité des informations, interactions et confidentialité.
 - [Parcours produit — première ouverture et découverte](./first-opening-product-journey.md) — audit de l'introduction actuelle, de l'accueil, de la langue, de la persistance et des points à décider avant la modernisation.
 - [Réconciliation du shell applicatif avec la PR #89](./application-shell-reconciliation.md) — comparaison de la navigation, de l’en-tête, de l’accueil, des moteurs et de la première ouverture.
+- [Réconciliation des composants transversaux et des points d'entrée](./cross-cutting-entrypoints-reconciliation.md) — UI partagée, communication, onboarding, découverte, plateforme hors ligne et entrées des modules.
 - [Proposition éditoriale — première découverte et exemples des quatre moteurs](./first-opening-copy-and-examples.md) — textes proposés écran par écran, exemples Flash/Scan/En direct/Radar et limites à expliciter avant validation.
 
 ## Principe produit prioritaire
