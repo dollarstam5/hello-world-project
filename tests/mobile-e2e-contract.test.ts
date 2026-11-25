@@ -34,9 +34,9 @@ describe("mobile visual smoke contract", () => {
   });
 
   it("uses an isolated Chromium endpoint and reliably cleans up the browser process", () => {
-    expect(scrollCheck).toContain('--remote-debugging-port=0');
+    expect(scrollCheck).toContain("--remote-debugging-port=0");
     expect(scrollCheck).toContain("DevToolsActivePort");
-    expect(scrollCheck).toContain('detached: true');
+    expect(scrollCheck).toContain("detached: true");
     expect(scrollCheck).toContain("process.kill(-chrome.pid");
     expect(scrollCheck).toContain('chrome.once("exit", resolve)');
     expect(scrollCheck).not.toContain("9222");
