@@ -696,3 +696,41 @@ Ces assertions protègent les frontières de fichiers et d'import ; elles ne rem
 - L'audit antérieur de `SmartCard` reste valable : le fait de déplacer le composant ne corrige pas à lui seul la sémantique clavier de son mode interactif.
 - Les contraintes de hauteur/scroll des Sheet et AlertDialog, les zones sûres et les tests sur petits écrans restent à valider au niveau du rendu.
 - Aucun test automatisé n'est déclaré réussi tant que le workflow correspondant n'a pas été exécuté sur le commit courant.
+
+## 14. Réconciliation de FloatingButton et SmartTabs avec la PR #89 — 25 novembre 2026
+
+### Composants centralisés
+
+La comparaison de #89 et #90 a montré que les implémentations de `FloatingButton` et `SmartTabs` étaient fonctionnellement identiques, mais encore localisées sous `src/components/app` sur la branche #90.
+
+- Leurs implémentations canoniques résident maintenant dans `src/shared/components/FloatingButton.tsx` et `SmartTabs.tsx`.
+- L'index partagé exporte ces versions locales.
+- Les anciens chemins `src/components/app/FloatingButton.tsx` et `SmartTabs.tsx` sont conservés comme façades de compatibilité.
+- Les imports ont été adaptés aux dépendances existantes de #90 (`@/lib/design` et `@/shared/utils`) au lieu de recopier des chemins propres à #89.
+- `FloatingButton` conserve les positions, tailles, tons, halo et respiration facultative. Son retour d'appui est désactivé lorsque la réduction des animations est demandée.
+- `SmartTabs` conserve les variantes pill et underline, les badges, les rôles/états ARIA et les cibles tactiles de 48 px.
+
+### Composants volontairement laissés dans la couche application
+
+Les fichiers `AIBubble` et `EmptyState` sont identiques entre les deux branches.
+
+- `AIBubble` reste dans `src/components/app` : son rôle est directement lié à l'interface de l'assistant, et son animation/présentation ne justifie pas ici une extraction supplémentaire.
+- `EmptyState` reste dans `src/components/app` : il utilise directement `useI18n` et les clés de traduction de l'application. Le déplacer tel quel dans une couche partagée renforcerait le couplage que cette architecture cherche à éviter.
+- L'index partagé continue de les exposer pour compatibilité de l'API d'import, sans prétendre que leurs implémentations sont désormais indépendantes de l'application.
+
+### Contrat de non-régression
+
+`tests/shared-action-components-ownership.test.ts` protège :
+- les exports canoniques de FloatingButton et SmartTabs ;
+- les façades de compatibilité ;
+- l'absence de dépendance directe de ces primitives vers les composants applicatifs ;
+- le maintien d'AIBubble et EmptyState dans la couche application.
+
+Ces tests vérifient la structure des sources. Ils ne remplacent pas les essais de rendu, d'interaction clavier, de réduction de mouvement et d'affichage sur appareils.
+
+### Points restant à surveiller
+
+- SmartTabs utilise des boutons natifs avec rôles `tab` et `tablist` ; la navigation clavier complète des onglets (flèches, Home/End) n'est pas démontrée par ce déplacement.
+- FloatingButton conserve son positionnement fixe et ses marges de zone sûre ; les superpositions avec navigation basse, clavier virtuel et petits écrans doivent être vérifiées sur appareils.
+- AIBubble et EmptyState pourront être réévalués si une API réellement indépendante de l'application est définie ; aucune extraction artificielle n'est retenue dans ce lot.
+- Aucun test automatisé n'est déclaré réussi tant que le workflow n'a pas été exécuté sur le commit courant.
