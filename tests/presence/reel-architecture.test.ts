@@ -1,6 +1,6 @@
-import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";\nimport { describe, expect, it } from "vitest";
 import screenCompositionSource from "../../src/modules/reel/ui/ReelProximityScreen.tsx?raw";
-import radarStylesSource from "../../src/modules/reel/ui/reel-proximity.css?raw";
+
 import radarComponentsSource from "../../src/modules/reel/ui/components/ReelRadarIdentity.tsx?raw";
 import guidedTourSource from "../../src/modules/reel/ui/components/ReelGuidedTour.tsx?raw";
 import settingsHelpSource from "../../src/modules/reel/ui/components/ReelSettingsHelp.tsx?raw";
@@ -16,10 +16,10 @@ import peoplePanelSource from "../../src/modules/reel/ui/components/ReelPeoplePa
 import controllerSource from "../../src/modules/reel/model/useReelProximityController.ts?raw";
 import realtimeServiceSource from "../../src/modules/reel/services/reel-activity-realtime.service.ts?raw";
 import communicationBridgeSource from "../../src/modules/reel/model/ReelCommunicationBridge.tsx?raw";
-import appShellSource from "../../src/components/app/AppShell.tsx?raw";
+import appShellSource from "../../src/app/shell/AppShell.tsx?raw";
 import memberAvatarSource from "../../src/modules/profile/api/profile-avatar.client.ts?raw";
 
-const screenSource = `${screenCompositionSource}\n${radarComponentsSource}\n${guidedTourSource}\n${settingsHelpSource}\n${profileSheetSource}\n${settingsPanelSource}\n${activityPanelSource}\n${headerSource}\n${discoveryPromptSource}\n${nearbyPreviewSource}\n${globalPanelSource}\n${peoplePanelSource}`;
+const radarStylesSource = readFileSync(new URL("../../src/modules/reel/ui/reel-proximity.css", import.meta.url), "utf8");\n\nconst screenSource = `${screenCompositionSource}\n${radarComponentsSource}\n${guidedTourSource}\n${settingsHelpSource}\n${profileSheetSource}\n${settingsPanelSource}\n${activityPanelSource}\n${headerSource}\n${discoveryPromptSource}\n${nearbyPreviewSource}\n${globalPanelSource}\n${peoplePanelSource}`;
 
 describe("En direct architecture boundaries", () => {
   it("keeps business services and access policy out of the screen component", () => {
@@ -110,8 +110,8 @@ describe("En direct architecture boundaries", () => {
     expect(screenSource).toContain("reel-radar__me-avatar");
     expect(screenSource).toContain('className="reel-radar__me-label"');
     expect(screenSource).toContain("aria-pressed={isPresenceActive}");
-    expect(screenSource).toContain("if (currentPresence) void stopPresence()");
-    expect(screenSource).toContain("else if (guestPresence) void stopGuestPresence()");
+    expect(screenSource).toContain("if (currentPresence) {");\n    expect(screenSource).toContain("void stopPresence();");
+    expect(screenSource).toContain("else if (guestPresence) {");\n    expect(screenSource).toContain("void stopGuestPresence();");
     expect(screenSource).not.toContain("messagesHidden");
   });
 
