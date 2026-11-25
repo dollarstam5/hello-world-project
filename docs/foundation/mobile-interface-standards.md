@@ -503,3 +503,37 @@ Un écran ne peut être déclaré conforme au standard mobile Vitalis que si :
 6. Refaire un contrôle des petits écrans (320 et 360 px) après agrandissement des cibles, notamment pour l’en-tête et les groupes de navigation.
 
 **Conclusion de l’audit statique :** Réel dispose d’une navigation inférieure et de plusieurs actions principales correctement dimensionnées, mais son interface comporte de nombreux contrôles secondaires sous les 48 px ou sans minimum explicite. Les priorités sont les commandes compactes de l’en-tête et des fenêtres, les actions des panneaux d’activité et les sélecteurs personnalisés. Les hauteurs CSS déclarées ne remplacent pas la vérification des zones d’appui, des espacements, du focus et des annonces avec TalkBack et VoiceOver sur appareils réels. Aucun code applicatif n’a été modifié dans cette étape.
+
+
+### 4.9 Audit des boutons — module Radar
+
+**Périmètre vérifié :** lecture statique, sur la branche `chore/architecture-folder-cleanup-2026-11`, de `RadarDraftForm.tsx` et `RadarManagement.tsx`, seuls composants d’interface présents dans `src/modules/radar/ui/`. L’audit couvre les commandes du formulaire de création / modification, les actions sur les intentions enregistrées et la boîte de confirmation d’annulation. Les dimensions sont celles déclarées dans le code ; aucun rendu sur appareil n’a été mesuré.
+
+| Zone / commande | Constat dans le code de la branche | Évaluation mobile |
+|---|---|---|
+| Formulaire — rayon et durée | Deux éléments `select` natifs avec `min-h-12` (48 px), largeur pleine, état désactivé pendant l’enregistrement et focus visible | Conforme en hauteur déclarée ; tester l’ouverture et la sélection avec les sélecteurs natifs Android et iOS |
+| Formulaire — annuler la modification | Composant partagé `Button`, variante ghost, sans surcharge locale de taille | Le composant partagé définit une hauteur minimale de 48 px ; confirmer le rendu réel de la variante ghost et son contraste |
+| Formulaire — créer / enregistrer les modifications | Composant partagé `Button`, action de soumission ; désactivé si le texte est trop court ou si une opération est en cours ; libellé de chargement prévu | Conforme selon le contrat du composant partagé (48 px minimum) ; vérifier que le changement de libellé et l’état désactivé sont annoncés |
+| Liste — modifier une intention | Composant partagé `Button`, taille `sm`, variante ghost ; icône 16 px ; désactivé pendant une opération ou lorsqu’une autre édition est active | La taille `sm` conserve le minimum tactile du composant partagé ; contrôler que l’icône et le libellé restent lisibles sur petit écran |
+| Liste — demander l’annulation d’une intention | Composant partagé `Button`, taille `sm`, variante ghost ; désactivé pendant les opérations | Même conformité attendue à 48 px ; vérifier la distinction visuelle de l’action et l’espacement avec « modifier » |
+| Dialogue — conserver / confirmer l’annulation | `AlertDialogCancel` et `AlertDialogAction` sans dimension locale déclarée | Hauteur tactile non démontrée par les deux composants métier ; inspecter les primitives partagées et mesurer le rendu avant de conclure à la conformité |
+| Dialogue — fermeture / annulation | Fermeture contrôlée par `onOpenChange` ; le dialogue ne se ferme pas par cette voie pendant l’opération (`busyId` non nul) | Comportement de verrouillage visible dans le composant ; vérifier le focus initial, le retour du focus au déclencheur et l’activation clavier / lecteur d’écran |
+
+**Constats transversaux :**
+
+- Les commandes du formulaire et de la liste réutilisent le composant partagé `Button`, dont le contrat documenté dans cet audit prévoit une hauteur minimale de 48 px, y compris pour les tailles compactes. Aucune classe locale ne réduit explicitement cette hauteur dans les deux fichiers Radar examinés.
+- Les sélecteurs natifs de rayon et de durée déclarent explicitement 48 px minimum et un anneau de focus visible. Leur ergonomie finale dépend néanmoins du rendu natif de chaque plateforme.
+- Les opérations de création et de modification désactivent le formulaire pendant le traitement et remplacent le libellé du bouton par un état de chargement. Les commandes de liste sont également désactivées selon `busy`, `busyId` et `editingId`.
+- Les messages d’erreur et de succès utilisent respectivement `role="alert"` et `role="status"`. Le formulaire associe ses champs à des libellés et conserve les contraintes de saisie requises.
+- La boîte de confirmation s’appuie sur les primitives partagées AlertDialog ; leur hauteur, leurs états de focus et leur comportement tactile ne peuvent pas être établis à partir des seuls composants métier audités.
+- Aucun bouton compact de moins de 48 px n’a été identifié dans les deux composants examinés. L’audit ne couvre pas les éventuelles commandes rendues par des composants partagés internes au dialogue.
+
+**Priorités documentaires de validation :**
+
+1. Vérifier dans les primitives partagées `AlertDialogAction` et `AlertDialogCancel` que les deux actions atteignent au moins 48 × 48 px, avec un espacement suffisant.
+2. Tester les sélecteurs rayon / durée sur Android et iOS, notamment l’ouverture du menu natif, le focus, la lisibilité et le comportement lorsque le formulaire est désactivé.
+3. Tester les états de création, modification et annulation : double activation, progression annoncée, erreur, succès et réactivation des commandes.
+4. Vérifier le dialogue avec TalkBack et VoiceOver : annonce du titre et de la description, ordre de focus, fermeture au clavier et restitution du focus au bouton déclencheur.
+5. Contrôler les groupes d’actions sur une largeur de 320 px afin de confirmer qu’ils se replient sans chevauchement ni réduction des cibles.
+
+**Conclusion de l’audit statique :** les commandes directement déclarées dans les composants métier Radar sont globalement alignées sur la cible tactile de 48 px : boutons issus du composant partagé et sélecteurs natifs ont une hauteur minimale explicite ou héritée. Le seul point non vérifié concerne les dimensions et le comportement des actions de la boîte AlertDialog, définis dans des primitives partagées. Les tests sur appareils et lecteurs d’écran restent nécessaires avant de clôturer l’audit. Aucun code applicatif n’a été modifié dans cette étape.
