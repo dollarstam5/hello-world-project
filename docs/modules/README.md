@@ -62,7 +62,7 @@ Veille est documenté comme un moteur de supervision des missions et d'analyse d
 
 L'UDI est une capacité transversale d'agrégation et de présentation de l'identité, pas un moteur métier autonome. Ses sources restent dans les dossiers d'architecture et d'API.
 
-- [Modèle métier UDI](<../architecture/14-VITALA-VEILLE-ENGINE. Model - Unified Digital Identity (UDI).md>)
+- [Modèle métier UDI](<../architecture/14-VITALA-VEILLE-ENGINE. Model - Unified Digital Identity %28UDI%29.md>)
 - [Contrat Unified Digital Identity API](../api/5.%20Unified%20Digital%20Identity%20API.md)
 - [Évolution du modèle de données UDI](<../architecture/Evolution du modèle de données - Unified Digital Identity UDI.md>)
 
