@@ -748,3 +748,47 @@ Un écran ne peut être déclaré conforme au standard mobile Vitalis que si :
 6. Auditer séparément chaque écran consommateur de `TrustCard` avant de conclure sur le parcours Trust complet.
 
 **Conclusion de l’audit statique :** le composant TrustCard présente une hiérarchie visuelle simple et un libellé explicite pour le statut vérifié. Son point de vigilance majeur concerne le mode interactif : l’action `onOpen` est portée par un `div` sans sémantique ni activation clavier natives. La cible tactile n’est pas contractuellement définie et dépend du contenu. Aucun code applicatif n’a été modifié dans cette étape.
+
+
+
+### 4.15 Audit du composant Wallet
+
+**Périmètre de l’audit statique :**
+
+- `src/modules/wallet/index.ts`
+- `src/components/app/WalletCard.tsx`
+- `src/shared/components/Surface.tsx`
+
+**Limite du périmètre :** le module Wallet exporte actuellement un composant générique `WalletCard`, et non un écran ou un parcours de portefeuille autonome. L’audit porte sur la carte de valeur / solde et sa surface de présentation. Il ne permet pas de conclure sur les flux de paiement, de transfert, de recharge, l’historique ou la sécurité d’un portefeuille complet, qui ne sont pas exposés par ces fichiers.
+
+| Zone / commande | Constat statique | Évaluation mobile |
+|---|---|---|
+| Carte Wallet | `WalletCard` compose une surface élevée avec un dégradé, un libellé, une valeur principale et des métadonnées facultatives | Carte de présentation ; aucun comportement interactif propre n’est défini |
+| Libellé | Rendu dans un élément `eyebrow` | À vérifier en petit écran et en thème clair/sombre ; le libellé doit rester lisible et ne pas porter seul une information essentielle |
+| Valeur principale | `font-display text-4xl leading-none`, sans limite de largeur ni règle locale de retour à la ligne | Risque de débordement pour les soldes longs, grands nombres, devises ou formats localisés ; tester 320 px, zoom et valeurs extrêmes |
+| Métadonnées | Élément facultatif en `text-xs` (12 px) | Texte secondaire très compact ; acceptable uniquement pour une information brève et non essentielle. Une devise, une période ou un delta nécessaire à l’interprétation doit rester suffisamment lisible |
+| Action facultative `trailing` | Slot ReactNode placé dans un conteneur `shrink-0`, sans dimension ni sémantique imposée par WalletCard | La cible tactile dépend entièrement du composant fourni par l’appelant ; garantir 48 × 48 px et un nom accessible si le slot contient une commande |
+| Surface | `Surface` avec padding `lg` (24 px), rayon 3xl et variante élevée | Espacement intérieur généreux ; aucune hauteur minimale ni largeur maximale n’est définie. La carte doit rester fluide et ne pas déborder |
+| Interaction de la carte | Aucun `onClick`, rôle interactif ou gestionnaire clavier propre dans `WalletCard` | La carte ne doit pas être présentée comme cliquable par défaut ; toute action doit être portée par un contrôle explicite |
+| Responsive et localisation | Valeur et métadonnées sont des `ReactNode` fournis par l’appelant ; aucune adaptation spécifique à la longueur n’est déclarée | L’appelant doit garantir les formats locaux de devise/nombre, les contenus longs et l’absence de troncature ou de débordement |
+
+**Constats transversaux :**
+
+- Le module Wallet n’expose qu’une carte générique dans son point d’entrée ; aucun écran Wallet autonome n’a été trouvé dans ce périmètre.
+- La carte est non interactive par conception. Il ne faut pas lui ajouter une apparence de commande ni supposer qu’une action existe parce qu’un slot `trailing` peut recevoir un bouton.
+- La valeur principale est volontairement mise en avant, mais sa taille typographique de 4xl peut devenir problématique pour des montants très longs ou des formats de devise localisés.
+- Les métadonnées utilisent 12 px, sous la cible de texte secondaire de 13–14 px. Cette taille ne doit pas servir à afficher une information financière indispensable à la compréhension du solde.
+- Le slot `trailing` est indépendant du contenu principal et ne garantit ni taille tactile, ni rôle, ni nom accessible : ces exigences appartiennent au composant injecté.
+- La carte ne déclare pas de formatage monétaire. La précision, la devise, les séparateurs, le signe des montants et les règles d’arrondi relèvent de l’appelant et doivent rester explicites.
+- Aucun flux financier, état de chargement, erreur réseau ou confirmation transactionnelle n’est audité ici.
+
+**Priorités documentaires de mise en conformité :**
+
+1. Tester les montants longs, les devises, les valeurs négatives et les formats FR/EN à 320, 360 et 390 px, avec zoom et agrandissement du texte.
+2. Prévoir une stratégie de retour à la ligne ou de réduction contrôlée de la valeur, sans tronquer une donnée financière ni provoquer de débordement horizontal.
+3. Réserver le texte de 12 px aux métadonnées réellement secondaires ; augmenter la taille ou ajouter un contexte lisible lorsque la métadonnée est nécessaire à l’interprétation.
+4. Exiger de tout élément injecté dans `trailing` un contrôle natif, un nom accessible, un focus visible et une cible tactile de 48 × 48 px minimum.
+5. Maintenir la carte non interactive tant qu’aucune navigation ou action explicite n’est définie ; si un parcours complet est ajouté, auditer séparément ses écrans et ses états asynchrones.
+6. Vérifier le contraste du dégradé, la lisibilité des textes et le rendu en thèmes clair et sombre sur appareils réels.
+
+**Conclusion de l’audit statique :** `WalletCard` constitue une surface de présentation simple et non interactive, avec un espacement intérieur généreux. Les principaux risques concernent les montants longs en grande typographie, les métadonnées de 12 px et l’absence de contrat sur les éventuelles commandes injectées dans `trailing`. L’audit ne certifie aucun parcours transactionnel Wallet. Aucun code applicatif n’a été modifié dans cette étape.
