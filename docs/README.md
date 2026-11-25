@@ -11,6 +11,7 @@ Ce répertoire suit une structure canonique pour la documentation active.
 - [03-engines/](./03-engines/README.md) — documents de domaines métier classés par moteur
 - [04-database/](./04-database/README.md) — modèle de données, schéma PostgreSQL, grants et politiques RLS
 - [05-ai/](./05-ai/README.md) — gouvernance et règles d'ingénierie IA
+- [07-annexes/PROJECT_BIBLE.md](./07-annexes/PROJECT_BIBLE.md) — règles techniques opposables et propriété des responsabilités
 - [06-operations/](./06-operations/README.md) — déploiement, performance, problèmes techniques et release
 - [07-annexes/](./07-annexes/README.md) — glossaire et références complémentaires
 

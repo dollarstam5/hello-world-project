@@ -5,6 +5,9 @@ Cette section contient les fondations canoniques du projet : architecture, séqu
 ## Contents
 
 - [Architecture](./architecture.md)
+- [Gouvernance d'architecture](../../ARCHITECTURE.md)
+- [Bible du projet](../07-annexes/PROJECT_BIBLE.md)
+- [Instructions Lovable et agents IA](../05-ai/CONTRIBUTING_AI.md)
 - [Build overview](./build-overview.md)
 - [Build conventions](./build-conventions.md)
 - [Langage de design Vitalis](./design-language.md)

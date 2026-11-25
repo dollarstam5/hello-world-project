@@ -6,6 +6,8 @@ Cette section rassemble les documents d'architecture technique, les frontières 
 
 - [System architecture](./system-architecture.md)
 - [Front-end and experience architecture](./frontend-experience.md)
+- [Gouvernance obligatoire](../../ARCHITECTURE.md)
+- [Front-end and experience architecture](./frontend-experience.md)
 - [Mobile navigation standards — Android, iOS and Web](./mobile-navigation-standards.md)
 - [Backend and API architecture](./backend-api.md)
 - [Database architecture](./database-architecture.md)

@@ -27,11 +27,12 @@ packages/
   core-sync/       moteur de synchronisation pur (store + transport injectés)
 src/
   shared/          primitives génériques, zéro métier
-  platform/        infra transverse (offline, pwa, realtime, device, a11y…)
-  features/        parcours réutilisables (onboarding, recherche, réglages)
-  domains/<nom>/   métier : ui, hooks, model, api, types
-  widgets/         composition de plusieurs domaines
+  platform/        infrastructure technique transverse (offline, pwa, realtime, device, a11y…)
+  features/        parcours utilisateur composés à partir des domaines et de platform
+  domains/<nom>/   propriété métier : règles, données, événements, ui, hooks, model, api
+  widgets/         composition de plusieurs domaines/features sans propriété métier
   routes/          entrées de route + composition uniquement
+  app/bootstrap/   initialisation et cycle de vie applicatif
 supabase/          migrations SQL, RLS, storage
 docs/              cette documentation
 ```
@@ -43,7 +44,23 @@ core-contracts → core-logic → core-db → core-sync
 shared → platform → features → domains → widgets → routes
 ```
 
-Le haut importe le bas. **Jamais l'inverse.**
+Le haut importe le bas. **Jamais l'inverse.** Les domaines ne dépendent jamais des features, widgets ou routes.
+
+### Propriété des responsabilités
+
+- **shared** : primitives réellement génériques, sans vocabulaire ni règle métier.
+- **platform** : infrastructure technique transverse (réseau, realtime, device, offline, permissions, observabilité, i18n), jamais de politique métier.
+- **features** : parcours utilisateur qui orchestrent les domaines et platform ; elles ne possèdent pas les faits métier.
+- **domains/<nom>** : source de vérité de ses données, invariants, règles, événements, états, services et contrats métier.
+- **widgets** : composition de plusieurs capacités sans propriété métier.
+- **routes** : entrée de navigation et composition.
+- **app/bootstrap** : cycle de vie et composition initiale, sans logique métier.
+
+Le caractère transversal ou réutilisé d'un module ne suffit pas à le classer dans platform ou shared. La propriété des données, des invariants et des décisions détermine son emplacement.
+
+### Migration d'un ancien répertoire
+
+Interdiction de déplacer un ancien dossier en bloc sans audit. Inventorier chaque fichier, responsabilités, imports entrants/sortants, consommateurs, exports, tests et effets de bord ; identifier son propriétaire réel ; scinder les responsabilités mélangées ; vérifier les dépendances ; migrer par lots cohérents ; mettre à jour consommateurs, tests, barrels et documentation ; conserver si nécessaire des façades legacy dépréciées sans logique dupliquée ; vérifier les imports résiduels et rapporter honnêtement les validations. Voir [ARCHITECTURE.md](../../ARCHITECTURE.md) pour la procédure complète.
 
 ## 4. Flux de données
 
@@ -60,7 +77,11 @@ Toute mutation : écriture locale Dexie + entrée `outbox` → l'écran réagit 
 
 ## 5. Checklist de contribution
 
-- [ ] Le fichier est-il dans la bonne couche ? (voir arbre de décision `ARCHITECTURE.md`)
+- [ ] Le fichier est-il dans la bonne couche et le bon propriétaire métier ? (voir `ARCHITECTURE.md`)
+- [ ] La feature orchestre-t-elle sans posséder les faits métier ?
+- [ ] Platform reste-t-il technique, sans politique métier ?
+- [ ] Les imports vont-ils uniquement vers les couches inférieures ?
+- [ ] En cas de migration, chaque fichier a-t-il été audité individuellement ?
 - [ ] Le composant est-il exempt de logique métier et d'appel réseau ?
 - [ ] Les textes passent-ils par `useI18n` en FR **et** EN ?
 - [ ] Les valeurs visuelles viennent-elles de tokens ?
@@ -95,4 +116,6 @@ Toute mutation : écriture locale Dexie + entrée `outbox` → l'écran réagit 
 - [SYNC_PROTOCOL.md](./SYNC_PROTOCOL.md)
 - [Langage de design canonique](./00-foundation/design-language.md)
 - [BACKEND_RULES.md](./BACKEND_RULES.md)
-- [CONTRIBUTING_AI.md](./CONTRIBUTING_AI.md)
+- [CONTRIBUTING_AI.md](../05-ai/CONTRIBUTING_AI.md)
+- [Gouvernance d'architecture](../../ARCHITECTURE.md)
+- [Instructions agents](../../AGENTS.md)
