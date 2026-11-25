@@ -13,6 +13,13 @@ describe("application shell reconciliation", () => {
     expect(appShellSource).toContain("<ReelCommunicationBridge />");
   });
 
+  it("keeps the optional assistant notice UI out of the initial bundle until a notice exists", () => {
+    expect(appShellSource).toContain("const AssistantNoticeLayer = lazy(");
+    expect(appShellSource).toContain("const assistantNotice = useAssistantNotices(");
+    expect(appShellSource).toContain("{assistantNotice && (");
+    expect(appShellSource).toContain("<AssistantNoticeLayer />");
+  });
+
   it("loads the profile preview only when the person opens it", () => {
     expect(appHeaderSource).toContain("{profileOpen && (");
     expect(appHeaderSource).toContain("<ProfileQuickPreview open={profileOpen}");
