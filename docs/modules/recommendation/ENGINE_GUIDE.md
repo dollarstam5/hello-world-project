@@ -1,69 +1,113 @@
-# Recommendation — guide complet du moteur
+# Recommendation — guide autonome du moteur
 
-**Objet :** proposer à un utilisateur des actions personnalisées, pertinentes et explicables, sans prendre la décision à sa place.  
-**État :** contrat API historique consolidé ; aucun moteur de recommandation runtime complet n'est confirmé par les sources disponibles.
+**Mission :** proposer à un utilisateur des actions personnalisées, pertinentes, explicables et limitées dans le temps, sans décider ni agir à sa place.  
+**Statut constaté :** intention fonctionnelle et contrat API historique documentés ; aucun moteur runtime Recommendation n'est identifié dans l'arborescence de cette branche.
 
-## 1. Mission et périmètre
+## 1. Rôle et périmètre
 
-Recommendation transforme des signaux autorisés du produit en propositions adaptées au contexte d'un utilisateur. Une recommandation peut concerner une mission, un Flash, une opportunité, une personne, une compétence, un contenu ou une action à réaliser. Elle aide à décider, mais ne remplace jamais le choix de la personne et ne réalise pas automatiquement l'action proposée.
+Recommendation transforme des signaux autorisés en propositions personnelles. Une proposition peut porter sur une mission, un Flash, une opportunité, une personne, une compétence, un contenu ou une action. Recommendation est propriétaire de la proposition, de son classement, de sa justification, de sa validité et des réactions du destinataire. La ressource proposée reste la propriété du domaine source.
 
-Chaque recommandation devrait porter un identifiant, un destinataire, une ressource source, une justification, une priorité ou pertinence, une période de validité et un état de réaction. Les scores doivent être explicables et ne doivent pas être inventés lorsque les preuves manquent.
+Le moteur ne doit jamais exécuter automatiquement l'action suggérée, modifier directement la ressource source ou présenter un score comme une vérité objective.
 
-## 2. Parcours utilisateur complet
+## 2. Parcours utilisateur de bout en bout
 
 ### 2.1 Préparer les signaux
-Le moteur ne consomme que des données et événements autorisés. Les domaines sources restent propriétaires de leurs objets : Recommendation ne copie pas leur autorité métier et ne modifie pas directement les missions, Flash, profils ou preuves de confiance. Les données doivent être minimisées, fraîches, contextualisées et filtrées par les permissions du destinataire.
+
+1. Identifier le destinataire authentifié.
+2. Charger uniquement les préférences et projections autorisées pour la finalité de recommandation.
+3. Vérifier la fraîcheur, le statut et les droits d'accès de chaque ressource.
+4. Exclure les ressources expirées, supprimées, privées ou insuffisamment documentées.
+5. Conserver une provenance minimisée et la version des règles utilisées.
+
+La présence d'une source potentielle dans le contrat n'implique pas qu'un connecteur existe ou soit activé.
 
 ### 2.2 Produire et qualifier
-1. Les signaux admissibles sont collectés selon un contrat versionné.
-2. Le moteur évalue leur pertinence pour l'utilisateur et le contexte.
-3. Il élimine les éléments non autorisés, expirés, dupliqués ou insuffisamment étayés.
-4. Il produit une recommandation avec une explication traçable à des données réelles.
-5. La recommandation est présentée pendant sa période de validité.
 
-Les critères, pondérations, seuils, règles de diversité, déduplication et fréquence doivent être documentés et testés avant activation. Aucun score numérique ni modèle d'IA n'est présumé dans cette référence.
+1. Construire les candidats à partir de projections versionnées.
+2. Appliquer les règles d'éligibilité et les permissions.
+3. Dédupliquer les propositions équivalentes.
+4. Classer selon des règles versionnées, explicables et testables.
+5. Appliquer diversité et plafonds de fréquence.
+6. Générer une justification fidèle aux signaux utilisés.
+7. Fixer une période de validité et persister la proposition.
 
-### 2.3 Consulter et agir
-L'utilisateur consulte la liste ou le détail, puis peut enregistrer, accepter/suivre, ignorer/masquer ou signaler une recommandation non pertinente. Chaque réaction est persistée et rattachée à l'utilisateur et à la recommandation. L'acceptation n'exécute pas automatiquement une action métier ; elle exprime une décision ou déclenche une navigation/étape explicitement définie.
+Aucun algorithme, poids, seuil, modèle IA ou score opérationnel n'est défini dans les sources actuelles.
 
-Une recommandation expirée ou retirée ne doit pas être présentée comme disponible. Une action déjà effectuée doit être distinguée d'une simple consultation.
+### 2.3 Consulter et réagir
 
-### 2.4 Améliorer la pertinence
-Les réactions peuvent alimenter l'évaluation future de la qualité, sous réserve de transparence, de minimisation, de protection des données et d'une gouvernance documentée. Une réaction isolée ne doit pas être interprétée comme un consentement général ni comme une vérité durable sur la personne.
+Le destinataire consulte sa liste et le détail d'une proposition. Il peut l'enregistrer, indiquer qu'il souhaite la suivre/accepter, l'ignorer/la masquer ou la signaler. Ces réactions sont propres à son compte et ne modifient jamais l'objet source.
 
-## 3. Cycle de vie de référence
+Une acceptation indique une intention ; elle ne signifie pas que l'utilisateur a rejoint une mission, contacté une personne ou réalisé une action. La mutation effective doit passer par le domaine qui possède la ressource et demander sa propre autorisation.
 
-Le contrat historique distingue implicitement la production, la disponibilité, la consultation et la réaction. Pour une implémentation, formaliser au minimum : générée, disponible, consultée, enregistrée, acceptée/suivie, ignorée/masquée, signalée, expirée ou retirée. Les transitions exactes et la conservation des réactions restent à spécifier dans un contrat versionné ; elles ne sont pas déclarées comme états runtime existants.
+### 2.4 Retirer une proposition
 
-## 4. Règles métier et invariants
+Une proposition expire ou est retirée lorsque sa période est écoulée, que la ressource source devient indisponible ou que le destinataire perd le droit d'y accéder. La permission doit être revérifiée à la lecture et avant l'action, pas seulement au moment du calcul.
 
-- Seul le Recommendation Engine produit les recommandations.
-- Une recommandation est destinée à un utilisateur précis.
-- Toute proposition doit avoir une raison vérifiable ; sinon elle est retirée ou présentée comme incertaine.
-- Les permissions du contenu source sont revérifiées au moment de l'affichage et de l'action.
-- Le domaine source reste propriétaire de ses données et de leur cycle de vie.
-- Les réactions de l'utilisateur ne modifient pas l'objet métier source sans commande explicite vers ce domaine.
-- Une recommandation n'est ni une promesse, ni une décision automatique, ni une action exécutée.
-- La durée de validité et la fraîcheur des signaux sont prises en compte.
+## 3. Objet et données conceptuels
 
-## 5. Confidentialité et sécurité
+Une proposition devrait contenir un identifiant, un destinataire, une référence opaque vers la cible, une explication, une provenance minimisée, une priorité, éventuellement un score versionné, les dates de génération/disponibilité/expiration et une version de règle.
 
-Les opérations nécessitent une authentification et un contrôle d'accès au destinataire. Les préférences personnelles et les signaux utilisés ne sont pas exposés à d'autres utilisateurs. Les champs sensibles provenant de Trust ou d'autres domaines ne sont pas transmis en clair ni utilisés hors de leur finalité autorisée. Les explications doivent éviter de révéler des informations privées sur des tiers.
+Une réaction devrait être liée à l'utilisateur et à la recommandation, avec une action, une date, une clé d'idempotence et éventuellement un motif de signalement.
 
-## 6. API et événements proposés
+Ces schémas sont des propositions : aucun type TypeScript ni table Recommendation n'a été identifié dans le dépôt.
 
-Le contrat historique propose `GET /recommendations`, `GET /recommendations/{id}`, et des commandes `save`, `dismiss`, `accept`, `report`. Il propose les événements `RecommendationViewed`, `RecommendationAccepted`, `RecommendationDismissed`, `RecommendationSaved`, `RecommendationReported`. Ce sont des contrats cibles historiques, pas la preuve de routes actives.
+## 4. Cycle de vie fonctionnel proposé
 
-Les sources potentielles citées sont Trust, Radar, Veille, Flash et Mission. Elles ne peuvent être connectées qu'au moyen de contrats d'événements et de projections autorisées ; Recommendation ne devient propriétaire d'aucune donnée source.
+Le contrat historique ne fixe pas de machine d'état formelle. Le vocabulaire proposé est : `generated`, `available`, `viewed`, `saved`, `accepted`, `dismissed`, `reported`, `expired`, `withdrawn`. Il est préférable de conserver les réactions comme événements séparés plutôt que d'écraser un unique statut.
 
-## 7. Architecture et état d'implémentation
+Ces états sont une cible de conception et non des statuts runtime existants.
 
-Le contrat situe l'interface au-dessus de Recommendation API, Recommendation Domain, Recommendation Engine et du stockage. Les sources disponibles dans cette branche ne montrent pas de module applicatif Recommendation autonome ni de pipeline de production confirmé. Les endpoints, scores, modèles, jobs et règles de personnalisation doivent donc être considérés comme à spécifier/implémenter, sauf preuve indépendante sur le commit courant.
+## 5. Règles métier et invariants
 
-## 8. Critères de validation
+- Une recommandation a un destinataire précis.
+- Une justification doit être reliée à des preuves autorisées.
+- Les droits de la ressource source sont revérifiés au moment de l'affichage.
+- Les propositions expirées, retirées ou dupliquées sont exclues.
+- La fréquence et la diversité sont contrôlées.
+- Les signaux sensibles ne sont jamais révélés dans l'explication.
+- Les réactions n'altèrent pas la ressource source.
+- Aucune action n'est exécutée sans consentement explicite dans le domaine propriétaire.
+- Une recommandation n'est ni une garantie, ni une décision automatique, ni une preuve sur une personne.
 
-Tester l'isolation des destinataires, la révocation d'une ressource source, la fraîcheur et l'expiration, la justification de chaque recommandation, la déduplication, la stabilité du classement, la protection des données sensibles, les réactions idempotentes, le signalement, le retrait et l'absence d'exécution automatique d'une action métier.
+## 6. Architecture cible et état réel
 
-## 9. Sources conservées
+Architecture cible : projections sources versionnées → ingestion/validation → contrôle de permission → génération de candidats → déduplication/fraîcheur → classement/diversité/fréquence → explication/provenance → stockage → API et réactions.
 
-Le contrat historique `11._Recommendation_API.md` reste la source des opérations et événements proposés. Le présent guide explique à lui seul le rôle, les parcours, les règles et les limites du moteur.
+L'inventaire de la branche ne montre aucun package/module applicatif Recommendation, type de contrat, repository, migration SQL, test dédié, job de calcul ou route API active. L'architecture ci-dessus est donc une cible, pas une description de services déjà présents.
+
+## 7. API et événements historiques
+
+Le contrat `11._Recommendation_API.md` propose :
+
+- `GET /recommendations`
+- `GET /recommendations/{id}`
+- `POST /recommendations/{id}/save`
+- `POST /recommendations/{id}/dismiss`
+- `POST /recommendations/{id}/accept`
+- `POST /recommendations/{id}/report`
+
+Événements proposés : `RecommendationViewed`, `RecommendationAccepted`, `RecommendationDismissed`, `RecommendationSaved`, `RecommendationReported`.
+
+Ces routes et événements ne sont pas confirmés comme implémentés. Le destinataire devra toujours être dérivé de l'identité authentifiée.
+
+## 8. Sécurité et gouvernance
+
+L'API future devra appliquer l'isolation stricte par destinataire, la revalidation des ressources sources, l'idempotence des réactions, la limitation de fréquence, l'audit des accès privilégiés et une politique de rétention. Les explications ne doivent pas exposer des attributs privés ou des signaux Trust non autorisés.
+
+Le classement doit être versionné, calibré et contrôlé contre les biais et les effets d'exclusion. Il ne doit pas être optimisé uniquement sur les clics ou acceptations.
+
+## 9. Critères de validation
+
+Tester isolation destinataire, retrait après révocation, fraîcheur, provenance, justification, déduplication, stabilité du classement, diversité, plafonds de fréquence, idempotence, signalement, absence de mutation source et absence d'exécution automatique.
+
+Aucun test dédié Recommendation n'a été identifié dans la branche. Les documents de validation décrivent les tests à créer, non des résultats déjà obtenus.
+
+## 10. Sources autonomes
+
+- [Spécification fonctionnelle](FUNCTIONAL_SPEC.md)
+- [Architecture technique](TECHNICAL_ARCHITECTURE.md)
+- [Contrat API et données](API_AND_DATA_CONTRACT.md)
+- [Tests et gouvernance](TESTING_AND_GOVERNANCE.md)
+- [Contrat API historique conservé](11._Recommendation_API.md)
+
+Ce guide contient la vue d'ensemble de Recommendation sans nécessiter la lecture de la documentation d'un autre moteur.
