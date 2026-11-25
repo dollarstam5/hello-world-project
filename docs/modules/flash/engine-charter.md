@@ -8,7 +8,7 @@ Flash est le moteur de publication d'une information courte, locale et limitée 
 
 ## Application du principe Vitalis aux Flash partiels
 
-Référence obligatoire : [principe fondamental de traitement des demandes partielles](../../00-foundation/vitalis-core-principles.md).
+Référence obligatoire : [principe fondamental de traitement des demandes partielles](../../foundation/vitalis-core-principles.md).
 
 - Un texte exploitable doit pouvoir être conservé comme brouillon sans exiger des détails qui servent seulement à améliorer sa présentation ou sa découverte.
 - Les compléments (catégorie plus précise, moment, portée, urgence, zone ou informations de profil) doivent être classés selon leur nécessité réelle pour l'action concernée ; ils ne deviennent pas tous obligatoires par défaut.
