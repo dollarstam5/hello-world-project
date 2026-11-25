@@ -248,7 +248,9 @@ try {
     } catch {
       chrome.kill("SIGTERM");
     }
-    await chrome.exited.catch(() => {});
+    if (chrome.exitCode === null && chrome.signalCode === null) {
+      await new Promise((resolve) => chrome.once("exit", resolve));
+    }
   }
   await rm(profile, { recursive: true, force: true });
 }
