@@ -61,6 +61,14 @@ En direct est le nom affiché du moteur historiquement nommé En direct. Les rou
 - Le bouton central reste associé à l'avatar de l'utilisateur et conserve son rôle actuel dans la gestion de sa propre présence (activation, arrêt ou accès aux réglages selon l'état). Toute évolution de ce comportement devra être décidée explicitement avant modification du code.
 - Cette règle précise la représentation visuelle attendue ; elle ne demande pas de supprimer l'avatar ni de déplacer l'interaction centrale.
 
+#### État du code vérifié — point de départ visuel
+
+- Le bouton central existant contient bien `SelfRadarIdentity` : avatar du membre lorsqu'il est disponible, ou représentation/initiales de l'invité. Il reste un bouton interactif.
+- Ce bouton conserve actuellement la gestion de sa propre présence : arrêt si elle est active, activation si le consentement et les informations nécessaires sont présents, sinon ouverture des réglages.
+- Les réglages restent également accessibles depuis la commande Préférences de l'en-tête. Ils regroupent notamment la découverte, le rayon, la durée et les paramètres de visibilité.
+- Le radar actuel est construit avec des halos, des anneaux concentriques, une animation de balayage et une onde périphérique. Le CSS comporte plusieurs couches de surcharges successives ; les anneaux sont masqués puis réactivés plus bas. Aucun faisceau radial dédié ne part actuellement de l'avatar vers le bord.
+- La prochaine évolution visuelle devra donc ajouter les rayons comme un calque du radar, avec l'avatar comme origine visuelle, sans remplacer le bouton central, les présences périphériques ni les commandes existantes. Le rendu devra être vérifié en clair/sombre, en mode calme/actif et avec la réduction des animations.
+
 ### Commandes secondaires d'En direct
 
 - Accueil : retour à l'accueil Vitalis.
