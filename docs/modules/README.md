@@ -70,5 +70,5 @@ L'UDI est une capacité transversale d'agrégation et de présentation de l'iden
 
 - Les contrats REST historiques restent des références cibles tant que le runtime n'a pas été vérifié séparément.
 - Les domaines restent propriétaires de leurs données ; l'UDI en expose des vues sans les dupliquer.
-- Les niveaux de confiance produit restent dans `docs/01-product/trust-levels.md`, et ne sont pas assimilés au Trust Engine.
+- Les niveaux de confiance produit restent dans `docs/product/trust-levels.md`, et ne sont pas assimilés au Trust Engine.
 - Cette organisation documentaire ne ferme aucun ticket technique ; TECH-001 à TECH-006 restent suivis dans le registre technique.
