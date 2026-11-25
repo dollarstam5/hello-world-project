@@ -17,7 +17,7 @@ This section stores reference documents that are not primary project guides but 
 
 ## Legacy references
 
-- `docs/API Error Catalog.md`
-- `docs/ANNEXE C — Catalogue officiel des politiques.md`
-- `docs/ANNEXE D — Catalogue officiel des objets.md`
+- `docs/api/API Error Catalog.md`
+- `docs/database/ANNEXE C — Catalogue officiel des politiques.md`
+- `docs/database/ANNEXE D — Catalogue officiel des objets.md`
 - `docs/ANNEXE G — Plan de reprise d'activité ...`
