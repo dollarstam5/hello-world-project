@@ -1,12 +1,12 @@
 import { lazy, Suspense, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Bell, UserRound } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/ui/button";
 import { haptic } from "@/platform/device/haptics";
-import { useIdentity } from "@/lib/experience/identity";
-import { useAuth } from "@/modules/auth/model/useAuth";
-import { useI18n } from "@/lib/i18n/useI18n";
-import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
+import { useIdentity } from "@/modules/profile";
+import { useAuth } from "@/modules/auth";
+import { useI18n } from "@/platform/internationalization/useI18n";
+import { useCommunicationRuntime } from "@/features/communication/CommunicationRuntimeProvider";
 import { useReelActivityProjection } from "@/modules/reel/model/reel-activity-projection";
 
 const ProfileQuickPreview = lazy(() =>
