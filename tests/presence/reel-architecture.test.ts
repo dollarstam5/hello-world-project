@@ -17,6 +17,11 @@ import globalPanelSource from "../../src/modules/reel/ui/components/ReelGlobalPa
 import peoplePanelSource from "../../src/modules/reel/ui/components/ReelPeoplePanel.tsx?raw";
 
 import controllerSource from "../../src/modules/reel/model/useReelProximityController.ts?raw";
+import activityHookSource from "../../src/modules/reel/model/reel-proximity/useReelActivity.ts?raw";
+import bipsHookSource from "../../src/modules/reel/model/reel-proximity/useReelBips.ts?raw";
+import connectionsHookSource from "../../src/modules/reel/model/reel-proximity/useReelConnections.ts?raw";
+import presenceHookSource from "../../src/modules/reel/model/reel-proximity/useReelPresence.ts?raw";
+import memberProfileHookSource from "../../src/modules/reel/model/reel-proximity/useReelMemberProfile.ts?raw";
 import realtimeServiceSource from "../../src/modules/reel/services/reel-activity-realtime.service.ts?raw";
 import communicationBridgeSource from "../../src/modules/reel/model/ReelCommunicationBridge.tsx?raw";
 import appShellSource from "../../src/app/shell/AppShell.tsx?raw";
@@ -70,27 +75,27 @@ describe("En direct architecture boundaries", () => {
   });
 
   it("keeps guest activity refresh event-driven with a low-frequency visible-only fallback", () => {
-    expect(controllerSource).toContain(
+    expect(activityHookSource).toContain(
       'document.addEventListener("visibilitychange", refreshWhenAvailable)',
     );
-    expect(controllerSource).toContain('window.addEventListener("focus", refreshWhenAvailable)');
-    expect(controllerSource).toContain('window.addEventListener("online", refreshWhenAvailable)');
-    expect(controllerSource).toContain('document.visibilityState !== "visible"');
-    expect(controllerSource).toContain("guestActivityRefreshInFlight.current");
-    expect(controllerSource).toContain('"vitalis:reel-activity-reconnected"');
-    expect(controllerSource).toContain("}, 30_000)");
-    expect(controllerSource).not.toContain("}, 3000)");
-    expect(controllerSource).toContain(
+    expect(activityHookSource).toContain('window.addEventListener("focus", refreshWhenAvailable)');
+    expect(activityHookSource).toContain('window.addEventListener("online", refreshWhenAvailable)');
+    expect(activityHookSource).toContain('document.visibilityState !== "visible"');
+    expect(activityHookSource).toContain("guestActivityRefreshInFlight.current");
+    expect(activityHookSource).toContain('"vitalis:reel-activity-reconnected"');
+    expect(activityHookSource).toContain("}, 30_000)");
+    expect(activityHookSource).not.toContain("}, 3000)");
+    expect(activityHookSource).toContain(
       'document.removeEventListener("visibilitychange", refreshWhenAvailable)',
     );
-    expect(controllerSource).toContain('window.removeEventListener("focus", refreshWhenAvailable)');
-    expect(controllerSource).toContain(
+    expect(activityHookSource).toContain('window.removeEventListener("focus", refreshWhenAvailable)');
+    expect(activityHookSource).toContain(
       'window.removeEventListener("online", refreshWhenAvailable)',
     );
   });
 
   it("does not couple guest presence activation to nearby discovery consent", () => {
-    const controller = controllerSource;
+    const controller = presenceHookSource;
     const start = controller.indexOf("const activateGuestPresence = async");
     const end = controller.indexOf("const stopGuestPresence = async", start);
     expect(start).toBeGreaterThanOrEqual(0);
@@ -132,7 +137,7 @@ describe("En direct architecture boundaries", () => {
     expect(memberAvatarSource).toContain('.eq("owner_id", memberId)');
     expect(memberAvatarSource).toContain('.from("avatars")');
     expect(memberAvatarSource).toContain("path.startsWith(`${memberId}/`)");
-    expect(controllerSource).toContain('access.mode !== "member"');
+    expect(memberProfileHookSource).toContain('access.mode !== "member"');
     expect(screenSource).toContain('accessMode === "member" && memberAvatarUrl');
     expect(screenSource).toContain("<img");
   });
@@ -194,10 +199,10 @@ describe("En direct architecture boundaries", () => {
   });
 
   it("refreshes both received bips and connections immediately after acceptance", () => {
-    expect(controllerSource).toContain(
+    expect(bipsHookSource).toContain(
       'action === "accept" ? refreshConnections() : Promise.resolve()',
     );
-    expect(controllerSource).toContain("await Promise.all([");
+    expect(bipsHookSource).toContain("await Promise.all([");
   });
 
   it("keeps live alerts disabled until nearby discovery or presence is authorized", () => {
@@ -212,10 +217,10 @@ describe("En direct architecture boundaries", () => {
   });
 
   it("builds the alerts view from existing bips and connection reads", () => {
-    expect(controllerSource).toContain('activityTab === "notifications"');
-    expect(controllerSource).toContain("Promise.all([refreshBips(), refreshConnections()])");
-    expect(controllerSource).toContain("listReelBips()");
-    expect(controllerSource).toContain("listReelConnections()");
+    expect(activityHookSource).toContain('activityTab === "notifications"');
+    expect(activityHookSource).toContain("Promise.all([refreshBips(), refreshConnections()])");
+    expect(bipsHookSource).toContain("listReelBips()");
+    expect(connectionsHookSource).toContain("listReelConnections()");
     expect(screenSource).toContain("receivedGuestBips.map((bip)");
     expect(screenSource).toContain('connection.status === "active"');
     expect(screenSource).toContain("connectionsMessage");
