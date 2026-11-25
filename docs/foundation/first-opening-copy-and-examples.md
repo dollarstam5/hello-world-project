@@ -123,7 +123,20 @@ La rédaction de Flash doit donc laisser de la place :
 Envie de voir qui est autour de vous ?
 
 **En direct — texte**  
-En direct vous permet de découvrir les personnes qui ont choisi de partager leur présence à proximité. Et si vous le souhaitez, vous pouvez partager la vôtre séparément. Vous gardez le choix.
+En direct vous aide à découvrir ce qui se trouve autour de vous, où que vous soyez : des personnes qui partagent leur présence, mais aussi, à terme, des lieux, des activités et des services dans votre environnement. Vous choisissez ce que vous souhaitez consulter et, séparément, si vous voulez partager votre propre présence.
+
+**Portée produit souhaitée — à concevoir**  
+En direct doit pouvoir s'utiliser dans n'importe quelle zone où la personne se trouve, et non dépendre d'un quartier ou d'un lieu prédéfini. Avec l'autorisation de la personne, Vitalis pourra s'appuyer sur sa position GPS ou sur une zone qu'elle indique pour situer sa demande et rechercher des informations géographiques pertinentes. L'objectif est de lui permettre d'exprimer naturellement ce qu'elle souhaite trouver ou faire autour d'elle, puis de découvrir et d'explorer les possibilités réellement disponibles dans cette zone.
+
+Cette ambition couvre trois familles de découvertes, qui devront être clairement distinguées dans l'expérience :
+- les personnes qui ont choisi de partager leur présence dans En direct ;
+- les lieux et points d'intérêt situés dans la zone ;
+- les activités et services qui peuvent être proposés ou accessibles dans cette zone.
+
+**Limite de l'existant vérifié**  
+L'audit du code confirme aujourd'hui la géolocalisation ponctuelle et la découverte de présences partagées à proximité. Il ne démontre pas encore une recherche générale de lieux, d'activités ou de services, ni une compréhension globale de tout l'environnement géographique. Ces capacités sont une orientation produit à définir et à construire ; elles ne doivent pas être présentées comme déjà disponibles.
+
+La géolocalisation doit rester contextualisée et maîtrisée : demander l'autorisation au moment utile, expliquer pourquoi elle est nécessaire, ne pas supposer une position si elle est indisponible ou refusée, et permettre de préciser ou choisir une zone lorsque cela sera prévu.
 
 **Exemples illustratifs — présences humaines et situations du quotidien**
 
@@ -142,6 +155,8 @@ Ces phrases sont des exemples de descriptions que la personne pourrait choisir d
 **Ce que l'audit de l'implémentation confirme**
 
 - La découverte des personnes à proximité et la publication de sa propre présence sont deux actions distinctes. Découvrir les autres ne rend pas automatiquement la personne visible.
+- La portée produit souhaitée pour En direct est plus large que la seule présence humaine : la personne doit pouvoir explorer son environnement géographique, où qu'elle se trouve, notamment les lieux, activités et services autour d'elle. Cette extension n'est pas démontrée par le code actuel et doit être spécifiée avant toute promesse d'interface.
+- Les résultats géographiques futurs devront indiquer leur nature et leur provenance, ne pas inventer une disponibilité ou une activité, et distinguer une information trouvée d'une possibilité réellement confirmée.
 - La localisation est demandée après une action explicite. Le code inspecté utilise une position ponctuelle ; il ne met pas en place de suivi GPS continu ou en arrière-plan.
 - La personne choisit une zone approximative, un rayon et une durée, puis donne son accord avant de publier sa présence. La description publique est limitée à 180 caractères.
 - Seules les personnes qui ont effectivement partagé une présence peuvent apparaître dans la découverte. Un espace calme doit être présenté honnêtement, sans inventer de personnes autour.
@@ -215,7 +230,7 @@ Les cartes doivent aider à choisir en quelques secondes. Une phrase simple suff
 |---|---|---|
 | Flash | Vous avez besoin d'un coup de main, vous cherchez une personne pour une tâche ou vous avez du temps à proposer ? Dites-le ici. | « J'aurais besoin de deux personnes pour m'aider pendant trois jours sur un chantier. » |
 | Scan | Vous cherchez quelque chose ? Regardez parmi les Flashs publics. | « Je cherche un mécanicien près de Bonapriso. » |
-| En direct | Découvrez les personnes qui partagent leur présence à proximité. Vous choisissez séparément si la vôtre est visible. | « Je viens d'arriver dans le quartier. Ce serait un plaisir de faire connaissance. » |
+| En direct | Découvrez ce qui se trouve autour de vous : présences partagées, puis lieux, activités et services lorsque ces sources seront disponibles. Vous choisissez séparément si la vôtre est visible. | « Qu'est-ce qui se passe et qu'est-ce que je peux trouver autour de moi ? » |
 | Radar | Vous avez une recherche à garder en tête ? Décrivez-la librement et enregistrez-la dans Radar. | « Je cherche un développeur pour m'aider sur une application. » |
 
 **Précision courte pour Radar**  
