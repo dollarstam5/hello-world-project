@@ -7,7 +7,7 @@ Avant de décider du sort d'un candidat, consulter l'[audit préliminaire de cou
 
 Cette liste sert à préparer une décision explicite. Les candidats ci-dessous ne sont pas déclarés redondants par simple similarité de nom ou par présence dans un index d'archives.
 
-**Déduplication exacte effectuée sur cette branche après autorisation explicite :** trois copies au contenu identique (même blob Git) ont été supprimées : `docs/modules/veille/14-VITALA-VEILLE-ENGINE.md Partie 1(1).md`, `docs/database/Vitala Database Architecture.md` et `docs/api/16. Settings API(1).md`. Les copies sans suffixe sont conservées ; les index concernés ont été actualisés. Aucun autre document n'a été supprimé.
+**Déduplication exacte effectuée sur cette branche après autorisation explicite :** trois copies au contenu identique (même blob Git) ont été supprimées : `docs/modules/veille/14-VITALA-VEILLE-ENGINE.md Partie 1(1).md`, `Vitala Database Architecture.md` et `docs/api/16. Settings API(1).md`. Les copies sans suffixe sont conservées ; les index concernés ont été actualisés. Aucun autre document n'a été supprimé.
 
 ## Candidats à évaluer après comparaison de contenu
 
