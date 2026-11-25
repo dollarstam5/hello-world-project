@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import screenCompositionSource from "../../src/modules/reel/ui/ReelProximityScreen.tsx?raw";
+import radarStylesSource from "../../src/modules/reel/ui/reel-proximity.css?raw";
 import radarComponentsSource from "../../src/modules/reel/ui/components/ReelRadarIdentity.tsx?raw";
 import guidedTourSource from "../../src/modules/reel/ui/components/ReelGuidedTour.tsx?raw";
 import settingsHelpSource from "../../src/modules/reel/ui/components/ReelSettingsHelp.tsx?raw";
