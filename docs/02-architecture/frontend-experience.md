@@ -16,6 +16,11 @@
 | Variantes de mouvement                                              | `src/lib/design/motion.ts`                                            |
 | Réduction de mouvement côté React                                   | `src/lib/design/useReducedMotion.ts`                                  |
 | Composition d'expérience réutilisable                               | `src/components/experience/`                                          |
+| Parcours d'onboarding                                                | `src/features/onboarding/`                                            |
+| Registre des sections de découverte                                  | `src/features/discovery/`                                             |
+| Identité, feed, referral et trust métier                              | `src/domains/<name>/model/`                                           |
+| Présence temps réel globale (adaptateur du bus)                       | `src/platform/realtime/presence.ts`                                   |
+| Initialisation du shell et cycle de vie applicatif                   | `src/app/bootstrap/`                                                  |
 | Composants UI génériques                                            | `src/components/ui/`                                                  |
 | Shell global et point d'insertion des routes                        | `src/routes/__root.tsx` et `src/components/app/AppShell`              |
 | Intention produit et principes d'interaction                        | [Vitala Experience System](../01-product/experience-system.md)        |
@@ -45,6 +50,23 @@ Le fichier `src/routes/__root.tsx` configure les métadonnées HTML, les feuille
 Les éléments de `src/components/experience/` servent à assembler des primitives en une expérience cohérente (accueil, en-tête, onboarding, communication, états intelligents et indications hors ligne). Leur rôle déclaré est l'orchestration UX, pas l'implémentation des domaines métier.
 
 `src/layouts/AdaptiveLayout.tsx` choisit un shell mobile, tablette ou desktop selon `useResponsive`. Le code examiné indique que ces variantes délèguent actuellement à `AppShell` ; ce mécanisme ne prouve donc pas, à lui seul, que chaque format dispose d'une composition distincte.
+
+## Propriété des responsabilités d'expérience
+
+Le répertoire historique `src/lib/experience/` n'est pas une couche architecturale. Ses responsabilités sont réparties selon leur propriétaire réel :
+
+| Responsabilité | Emplacement canonique | Motif |
+| --- | --- | --- |
+| Registre des sections de découverte | `src/features/discovery/` | Extension du parcours de découverte ; les domaines enregistrent leurs sections sans être importés par la feature. |
+| État et progression de l'onboarding | `src/features/onboarding/` | Parcours utilisateur réutilisable, sans propriété de faits métier. |
+| Identité progressive et niveaux d'identité | `src/domains/profile/model/` | État et sémantique liés au profil de la personne. |
+| Contrats et agrégation du feed | `src/domains/feed/model/` | Les sources et éléments du flux appartiennent au domaine feed. |
+| Codes et cycle de vie de parrainage | `src/domains/referral/model/` | Le parrainage est une capacité métier avec ses propres règles. |
+| Signaux, seuils et bandes de confiance | `src/domains/trust/model/` | Le scoring et les seuils sont des politiques métier, jamais une responsabilité platform. |
+| Adaptateur de présence globale sur le bus temps réel | `src/platform/realtime/presence.ts` | Adaptation technique du bus ; la présence métier Réel reste dans `src/domains/presence/`. |
+| Démarrage thème/i18n/onboarding | `src/app/bootstrap/` | Composition du cycle de vie au point d'entrée de l'application ; ce n'est ni un domaine ni une infrastructure platform. |
+
+Les anciens modules `src/lib/experience/*.ts` sont conservés comme façades de compatibilité dépréciées. Les nouveaux imports doivent viser les chemins canoniques. Une façade ne doit pas être utilisée pour justifier une dépendance inverse entre couches.
 
 ## Tokens, thèmes et mouvement
 
