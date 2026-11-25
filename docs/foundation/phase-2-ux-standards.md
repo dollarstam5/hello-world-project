@@ -16,6 +16,16 @@ Ce document fixe les règles vérifiables de la phase 2. Il ne certifie pas les 
 - La voix de Vitalis est humaine, chaleureuse et directe ; les messages restent honnêtes sur l'état réel des actions et évitent le jargon inutile. La référence éditoriale est [Langage humain et communication Vitalis](../01-product/communication-language.md).
 - Les états de lecture et les actions requises restent distincts dans le centre de communication.
 
+
+### Priorités de plateforme pour Vitalis V1
+
+- **Mobile (Android et iOS) — P0 :** concevoir, corriger et valider d'abord les parcours sur téléphone. Les dimensions, la navigation tactile, les zones sûres, le clavier virtuel, la lisibilité et les états réseau mobiles constituent la référence V1.
+- **Tablette — P1 :** préserver les parcours et adapter la disposition lorsque l'espace disponible le permet, sans réduire les cibles tactiles ni dégrader l'expérience mobile.
+- **Desktop — P2 :** conserver les parties déjà fonctionnelles et corriger les régressions ou blocages d'accès, de navigation, de sécurité et d'accessibilité. Une refonte desktop dédiée (sidebar, panneaux multiples ou interactions avancées souris/clavier) n'est pas un objectif de Vitalis V1 ; elle relève de Vitalis V2.
+- La présence d'une variante ou d'un breakpoint desktop dans le code ne signifie pas qu'une composition desktop dédiée est livrée ou validée. L'état réel doit être décrit sans surpromesse.
+- Si une amélioration mobile et une amélioration desktop entrent en concurrence, la qualité mobile V1 est prioritaire, sauf blocage desktop touchant une fonction essentielle, la sécurité ou l'accessibilité.
+
+
 ## 2. Responsive et capacités de l'appareil
 
 - Les seuils de mise en page proviennent des tokens de design ; ne pas recréer des breakpoints concurrents dans les composants.
