@@ -1,153 +1,137 @@
-# Recommendation — architecture technique et état d'implémentation
+# Recommendation — architecture technique et état documentaire
 
-## 1. Statut constaté sur la branche
+> **Nature du document :** architecture cible et référence de conception. Ce document ne décrit pas un moteur runtime déployé.
 
-L'inventaire récursif de la branche documentaire ne révèle aucun fichier applicatif ou package runtime nommé Recommendation, aucun type de contrat Recommendation, aucun repository, aucune migration SQL, aucun test dédié ni job de calcul. Les fichiers présents dans `docs/modules/recommendation/` sont le guide autonome, l'index et le contrat API historique.
+## 1. État vérifié et périmètre
 
-**Conclusion :** Recommendation est documenté comme intention produit/architecture, mais le moteur runtime n'est pas démontré par les sources de cette branche. Les composants de ce document décrivent une architecture cible à construire, pas des modules existants.
+Les contrats de domaine TypeScript V1 sont définis dans `packages/core-contracts/src/recommendation.ts` et exportés par `@eco/core-contracts`. Ils constituent le contrat de référence pour les structures métier décrites ci-dessous.
 
-## 2. Responsabilité du domaine
+Cela ne signifie pas que le moteur est opérationnel. Aucun repository Recommendation, schéma SQL/migration, politique RLS, job de calcul, endpoint ou interface dédiée n'est confirmé comme implémenté et validé dans cette branche. Aucun test runtime Recommendation n'est identifié comme exécuté.
 
-Recommendation doit être propriétaire de :
-- la production et le classement des propositions ;
-- l'explication et la provenance de chaque proposition ;
-- la validité et le retrait des propositions ;
-- les réactions du destinataire ;
-- les règles de fréquence, diversité, déduplication et qualité.
+Recommendation est propriétaire des propositions, de leur explication, provenance, validité, retrait, classement et réactions. Les domaines sources restent propriétaires de leurs ressources et de leurs autorisations.
 
-Il ne doit pas être propriétaire des missions, Flash, profils, données Trust ou opportunités des domaines sources.
+## 2. Principes d'architecture
 
-## 3. Architecture cible indépendante
+1. **Propriété des données :** Recommendation ne modifie jamais directement une mission, un Flash, un profil ou une ressource d'un autre domaine.
+2. **Projections minimisées :** les entrées sont des projections versionnées, limitées à la finalité `recommendation`, jamais des lignes brutes importées sans filtre.
+3. **Autorisation continue :** la permission de lire la ressource source est vérifiée au calcul, à l'affichage et avant toute navigation/action sensible.
+4. **Explicabilité :** chaque proposition porte une explication et une provenance suffisantes pour comprendre pourquoi elle est affichée.
+5. **Séparation des états :** le statut de disponibilité de la proposition est distinct des réactions de l'utilisateur.
+6. **Contrôle utilisateur :** une recommandation suggère ; elle n'exécute pas l'action métier.
+7. **Échec sûr :** une source invalide, inconnue ou non autorisée est rejetée ou mise en quarantaine. Une panne de source ne doit pas être présentée comme une absence certaine d'opportunité.
+
+## 3. Contrats métier V1
+
+Les types de référence sont décrits dans `packages/core-contracts/src/recommendation.ts`.
+
+- **RecommendationRecord :** proposition persistée, destinée à un utilisateur, avec cible opaque, titre, explication, provenance, priorité, statut, version de règle et dates.
+- **RecommendationCandidate :** candidat transitoire construit pendant la génération ; il n'est pas encore une proposition affichable.
+- **RecommendationSourceProjection :** projection d'entrée minimisée, versionnée et déclarée pour la finalité `recommendation`.
+- **RecommendationReaction :** événement append-only rattaché à la recommandation et à son destinataire.
+- **RecommendationListQuery / Result :** contrat de pagination et de consultation.
+
+Le statut système V1 est `generated | available | expired | withdrawn`. Les réactions sont `viewed | saved | accepted | dismissed | reported` et ne sont pas des statuts système. Le contrat n'expose aucun score numérique en V1 ; seule une priorité `low | normal | high` est prévue. Tout futur score exigera une formule, une calibration, une version et une politique d'explication approuvées.
+
+Les commandes client ne transportent pas `recipientId`. Le serveur le déduit de l'identité authentifiée. La référence opaque vers une ressource source ne confère aucun droit d'accès.
+
+## 4. Architecture logique cible
 
 ```text
-Sources autorisées
-    | projections / événements versionnés
+Domaines sources autorisés
+    | projections minimisées et versionnées
     v
-Ingestion et normalisation
+Ingestion / validation / quarantaine
     v
-Eligibility + permission re-check
+Vérification finalité + destinataire + permissions
     v
-Candidate generation
+Génération des candidats
     v
-Deduplication + freshness
+Déduplication + fraîcheur + éligibilité
     v
-Ranking + diversity + frequency caps
+Classement par règles versionnées + diversité + fréquence
     v
-Explanation + provenance
+Explication + provenance
     v
-Recommendation Store
+Persistance Recommendation
     |                         |
     v                         v
-Recommendation API       Evaluation / audit
+API personnelle           Audit / évaluation
     |
     v
-Feed personnel + détail + réactions
+Liste + détail + réactions utilisateur
 ```
 
-Chaque composant doit être isolable et testable. Le pipeline ne doit pas appeler directement les bases privées d'un domaine source ni modifier ses données.
+Chaque étape doit être isolable et testable. Le pipeline doit pouvoir fonctionner sans connecteur actif : dans ce cas, il retourne un état vide ou une couverture indisponible explicitement qualifiée, sans fabriquer de résultat.
 
-## 4. Contrats à définir
+## 5. Pipeline cible
 
-Avant d'écrire le moteur, formaliser les objets suivants :
+1. **Ingestion :** recevoir uniquement les projections autorisées et versionnées.
+2. **Validation :** contrôler schéma, finalité, version, horodatage et intégrité ; rejeter ou mettre en quarantaine les entrées invalides.
+3. **Autorisation :** vérifier que le destinataire est habilité à recevoir la proposition et que la cible est consultable.
+4. **Génération :** construire des candidats à partir des seuls champs nécessaires.
+5. **Déduplication :** fusionner ou éliminer les candidats équivalents selon une règle documentée.
+6. **Fraîcheur :** écarter les signaux trop anciens et fixer une période de validité.
+7. **Classement :** appliquer des règles déterministes et versionnées. Les poids, seuils et formules ne sont pas encore décidés.
+8. **Diversité/fréquence :** éviter la concentration sur une seule source, catégorie ou cible et respecter les plafonds d'exposition.
+9. **Explication :** générer une justification fidèle aux signaux réellement utilisés, sans révéler de données privées de tiers.
+10. **Persistance :** enregistrer la proposition, sa provenance et sa version de règle.
+11. **Revalidation :** contrôler à nouveau la visibilité de la source à la lecture et avant toute action.
+12. **Évaluation :** mesurer qualité, biais, erreurs et dérive selon une politique documentée.
 
-### Recommendation (proposition de modèle)
+Aucun de ces composants runtime n'est déclaré livré par le présent document.
 
-- identifiant stable ;
-- destinataire ;
-- type de cible et référence opaque vers la ressource source ;
-- texte/clé de titre et d'explication ;
-- preuves/provenance minimisées ;
-- priorité et score éventuel avec version de calcul ;
-- dates de génération, disponibilité et expiration ;
-- état de retrait ;
-- version de règle/modèle.
+## 6. Données et persistance — conception à réaliser
 
-Le score ne doit pas être ajouté tant que son échelle, son interprétation, sa calibration et ses limites ne sont pas documentées.
+Le contrat TypeScript ne remplace pas le schéma relationnel. La future persistance devra au minimum représenter :
+- la proposition et son destinataire ;
+- sa cible opaque, son explication et sa provenance ;
+- son statut de disponibilité et ses dates ;
+- la version de règle ayant généré la proposition ;
+- les événements de réaction et leur clé d'idempotence.
 
-### RecommendationReaction (proposition de modèle)
+Les contraintes devront garantir la cohérence des identifiants, la validité temporelle, l'unicité/idempotence des événements et l'association d'une réaction au destinataire propriétaire de la proposition. Les index devront couvrir la consultation paginée par destinataire, statut et date. Les choix exacts de schéma, rétention, suppression et stratégie d'archivage restent à documenter avant migration.
 
-- identifiant ;
-- destinataire ;
-- recommendationId ;
-- action parmi viewed/saved/accepted/dismissed/reported ;
-- date ;
-- motif/catégorie facultatif pour le signalement ;
-- clé d'idempotence.
+## 7. API cible — non déployée
 
-Une table d'événements append-only est préférable à un simple champ mutable si l'historique des réactions doit être analysé. Les données conservées doivent être minimisées.
+Le contrat historique propose les opérations suivantes, qui restent des routes cibles et non des endpoints actifs confirmés :
 
-### SourceProjection (contrat à définir)
+- `GET /recommendations` — liste personnelle paginée ;
+- `GET /recommendations/{id}` — détail ;
+- `POST /recommendations/{id}/save` — enregistrer ;
+- `POST /recommendations/{id}/dismiss` — masquer ;
+- `POST /recommendations/{id}/accept` — indiquer une intention de suivi ;
+- `POST /recommendations/{id}/report` — signaler.
 
-Chaque connecteur doit documenter :
-- domaine propriétaire ;
-- événements ou endpoint réellement disponibles ;
-- champs autorisés ;
-- règles d'accès et révocation ;
-- fraîcheur/SLA ;
-- version du schéma ;
-- gestion de suppression et expiration ;
-- quotas et erreurs.
+Le détail des paramètres, formats de réponse, curseurs, codes d'erreur, quotas et garanties de livraison reste à finaliser. Toute opération est authentifiée ; le destinataire vient du contexte d'authentification et n'est jamais choisi par le client. `accept` ne réalise pas la mutation dans le domaine source.
 
-## 5. Pipeline de calcul cible
+## 8. Sécurité et confidentialité
 
-1. **Ingestion :** recevoir des projections explicites et versionnées.
-2. **Validation :** rejeter les événements invalides, incomplets ou anciens.
-3. **Éligibilité :** vérifier le destinataire, la cible, la finalité et les permissions.
-4. **Candidats :** construire les propositions possibles sans exposer les données brutes.
-5. **Déduplication :** éviter qu'une même ressource soit répétée par plusieurs signaux.
-6. **Classement :** appliquer des règles explicables et versionnées.
-7. **Diversité :** limiter la concentration par type/source/thème.
-8. **Fréquence :** respecter les plafonds et les périodes de silence.
-9. **Explication :** associer une justification fidèle aux signaux utilisés.
-10. **Persistance :** enregistrer le résultat et son expiration.
-11. **Revalidation :** vérifier la ressource source avant affichage et action.
-12. **Évaluation :** mesurer qualité et biais sans réutilisation non autorisée des données.
-
-Aucun de ces jobs ou services n'est identifié comme implémenté dans la branche.
-
-## 6. API cible
-
-Le contrat historique propose les routes :
-- `GET /recommendations`
-- `GET /recommendations/{id}`
-- `POST /recommendations/{id}/save`
-- `POST /recommendations/{id}/dismiss`
-- `POST /recommendations/{id}/accept`
-- `POST /recommendations/{id}/report`
-
-Elles sont à considérer comme proposition de façade. La spécification complète devra définir pagination/cursor, filtres, statut, codes d'erreur, idempotence, version de réponse, contrôle d'accès et comportement face à une ressource source retirée. Aucune route active n'a été confirmée.
-
-## 7. Dépendances et limites de couplage
-
-Les domaines cités comme sources potentielles dans le contrat sont Trust, Radar, Veille, Flash et Mission. Ils sont des producteurs potentiels de signaux, pas des dépendances nécessaires à la compréhension de Recommendation.
-
-Le moteur doit fonctionner avec zéro connecteur actif : il doit alors retourner un état vide explicite et non inventer des propositions. L'activation d'un connecteur doit être indépendante et accompagnée de tests de contrat.
-
-## 8. Sécurité
-
-- Authentification obligatoire pour toute lecture/réaction personnelle.
-- Filtrage par destinataire côté serveur.
-- Revalidation des permissions de la ressource source à chaque lecture sensible.
-- Pas d'accès direct à des colonnes privées ou signaux Trust non autorisés.
-- Explications sans fuite de données sur les tiers.
-- Contrôle des accès opérateurs et audit des consultations privilégiées.
-- Protection contre l'injection de contenu provenant des signaux sources.
-- Limitation de fréquence et prévention du scraping.
-- Rétention et suppression conformes à une politique écrite.
+- authentification obligatoire pour les lectures et réactions personnelles ;
+- isolation stricte par destinataire au niveau API et base ;
+- RLS à définir et tester avec plusieurs utilisateurs ;
+- revalidation des droits sur la ressource source ;
+- minimisation des projections et des explications ;
+- exclusion des signaux sensibles non autorisés ;
+- audit des accès opérateurs ;
+- idempotence et protection contre le rejeu ;
+- quotas, limitation de fréquence et prévention du scraping ;
+- politique documentée de conservation, suppression et accès aux données ;
+- traitement des contenus sources comme données non fiables.
 
 ## 9. Observabilité et qualité
 
-Mesurer au minimum : taux de candidats admissibles, doublons éliminés, taux de retrait pour permission, latence par étape, taux d'expiration, réactions par cohorte, signalements, erreurs de connecteurs, diversité et fréquence d'exposition. Ne pas optimiser uniquement le clic ou l'acceptation : ces mesures peuvent encourager des recommandations intrusives.
+Mesurer notamment le volume de candidats, le taux d'éligibilité, les rejets de permission, les doublons, les erreurs et retards de connecteurs, la latence par étape, les expirations, les retraits, la diversité et la fréquence d'exposition, ainsi que les réactions et signalements.
+
+Les métriques doivent être agrégées et minimisées. Les clics et acceptations ne sont pas des mesures suffisantes de qualité et ne doivent pas être les seuls objectifs d'optimisation.
 
 ## 10. Critères d'achèvement technique
 
-Recommendation ne pourra être déclaré implémenté qu'après présence et validation de :
-- contrats de données et migrations ;
-- pipeline de production et tâches de reprise ;
-- connecteurs explicitement autorisés ;
-- service de classement déterministe ou modèle versionné ;
-- persistance destinataire/réaction ;
-- API avec RLS/contrôles d'accès ;
-- UI de liste, détail et réactions ;
-- tests de permissions, fraîcheur, révocation, idempotence et anti-fuite ;
-- documentation des métriques et de la gouvernance.
+Le moteur ne pourra être qualifié d'implémenté qu'après validation de tous les éléments suivants : schéma SQL et migrations ; RLS ; ingestion et reprise ; connecteurs autorisés ; génération et classement versionnés ; persistance des propositions/réactions ; API ; interface ; tests d'autorisation, fraîcheur, révocation, idempotence et absence de fuite ; supervision ; gouvernance et politique de rétention.
+
+## 11. Références documentaires
+
+- [Guide autonome](ENGINE_GUIDE.md)
+- [Spécification fonctionnelle](FUNCTIONAL_SPEC.md)
+- [Contrat API et données](API_AND_DATA_CONTRACT.md)
+- [Tests et gouvernance](TESTING_AND_GOVERNANCE.md)
+- [Contrat API historique — non normatif](11._Recommendation_API.md)
