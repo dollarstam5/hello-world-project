@@ -20,6 +20,19 @@ Vitalis ne doit pas parler comme une notice, une publicité ou une application q
 
 Le français est la base de validation. L'anglais sera adapté au ton validé, pas traduit mot à mot.
 
+### Un principe central : Vitalis doit être humain
+
+Vitalis s'adresse à des personnes qui vivent des situations réelles. Un message peut parler d'un travail, d'un besoin familial, d'un souci pratique, d'une période difficile, d'une envie de rendre service ou d'une recherche que la personne ne sait pas encore bien formuler.
+
+- **Accueillir les besoins difficiles à exprimer.** La personne ne doit pas avoir à trouver la bonne catégorie ni à transformer sa situation en annonce professionnelle pour commencer.
+- **Ne pas réduire Flash aux prestations et petites annonces.** Flash doit pouvoir accueillir des demandes personnelles, familiales, sociales, pratiques, ponctuelles ou régulières, ainsi que des propositions d'aide et des recherches de travail.
+- **Ne pas demander de qualifier trop tôt la situation.** Au premier échange, ne pas imposer de choisir entre professionnel/personnel, familial/social, gratuit/rémunéré ou urgence/non-urgence. Une précision ne sera demandée que si elle est réellement nécessaire à l'action envisagée.
+- **Laisser la personne raconter à sa manière.** Ne pas corriger son vécu, juger sa demande, la rendre artificiellement commerciale ou lui imposer un vocabulaire administratif.
+- **Rester digne et délicat.** Pour les situations sensibles, ne pas dramatiser, infantiliser, culpabiliser ni demander des détails personnels inutiles.
+- **Ne jamais promettre une solution.** Vitalis aide à exprimer, transmettre ou rechercher ; il ne garantit ni réponse, ni disponibilité, ni résultat.
+
+Ce principe concerne les quatre espaces, pas seulement Flash. Il guide les exemples, les questions éventuelles, les confirmations et les messages d'état.
+
 ## 2. Proposition retravaillée — découverte en cinq étapes
 
 Les textes entre guillemets sont proposés pour l'interface. Les notes en dessous sont des consignes éditoriales, pas du texte à afficher.
