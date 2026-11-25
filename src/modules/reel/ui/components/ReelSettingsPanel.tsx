@@ -1,5 +1,6 @@
 import { CircleHelp, Settings2, ShieldCheck, MapPin, Clock } from "lucide-react";
 import { useI18n } from "@/lib/i18n/useI18n";
+import { ReelDiscoverySettings } from "./ReelDiscoverySettings";
 import {
   DURATIONS,
   DURATIONS_CONFIG,
@@ -21,7 +22,7 @@ export function ReelSettingsPanel({
 }) {
   const { t } = useI18n();
   const { access, discoveryEnabled, ignoreLocation } = controller;
-  const { canUseMemberReel, requestDiscovery, radius } = controller;
+  const { canUseMemberReel, radius } = controller;
   const { setRadius, currentPresence, duration } = controller;
   const { setDuration, guestPresence, presenceLoading } = controller;
   const { stopGuestPresence, guestDisplayName, setGuestDisplayName } = controller;
@@ -42,26 +43,12 @@ export function ReelSettingsPanel({
         {t("reel.ui.settingsHelp")}
       </button>
 
-      <div className="reel-panel__section">
-        <h3>{t("reel.ui.discovery")}</h3>
-        <p className="reel-panel__note">
-          {discoveryEnabled ? t("reel.ui.discoveryActive") : t("reel.ui.discoveryInactive")}
-        </p>
-        {discoveryEnabled ? (
-          <button type="button" className="reel-panel__secondary" onClick={ignoreLocation}>
-            {t("reel.ui.disableDiscovery")}
-          </button>
-        ) : (
-          <button
-            type="button"
-            className="reel-panel__primary"
-            onClick={() => void requestDiscovery()}
-            disabled={!canUseMemberReel && access.mode !== "guest"}
-          >
-            {t("reel.ui.enableDiscovery")}
-          </button>
-        )}
-      </div>
+      <ReelDiscoverySettings
+        enabled={discoveryEnabled}
+        canEnable={canUseMemberReel || access.mode === "guest"}
+        onDisable={ignoreLocation}
+        onEnable={() => void controller.requestDiscovery()}
+      />
 
       <div className="reel-panel__section">
         <div className="reel-setting-header">
