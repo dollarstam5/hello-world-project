@@ -702,3 +702,49 @@ Un écran ne peut être déclaré conforme au standard mobile Vitalis que si :
 7. Confirmer que l’effacement de conversation est explicite, compréhensible et utilisable sans activation accidentelle.
 
 **Conclusion de l’audit statique :** le module Assistant possède des commandes principales correctement dimensionnées via le composant Button, mais le champ de saisie (36 px) et la fermeture de notification (32 × 32 px) s’écartent clairement de la cible tactile mobile de 48 px. La taille du texte des bulles, les annonces de streaming et le déplacement automatique du focus nécessitent une validation d’accessibilité en conditions réelles. Aucun code applicatif n’a été modifié dans cette étape.
+
+
+## 4.14 Audit du composant de confiance — module Trust
+
+**Périmètre de l’audit statique :**
+
+- `src/modules/trust/index.ts`
+- `src/components/app/TrustCard.tsx`
+- `src/components/app/SmartCard.tsx`
+- `src/shared/components/Surface.tsx`
+- `src/shared/components/Indicator.tsx`
+- `src/shared/components/Icon.tsx`
+
+**Limite du périmètre :** le module Trust expose actuellement un composant générique `TrustCard`, sans écran de module propre dans `src/modules/trust/`. L’audit porte donc sur ce composant réutilisable et son comportement lorsqu’une action `onOpen` lui est fournie ; il ne prétend pas valider un parcours Trust complet ni ses intégrations dans les écrans appelants.
+
+| Zone / commande | Constat statique | Évaluation mobile |
+|---|---|---|
+| TrustCard sans action | Carte de présentation composée d’une icône, d’un titre, d’une description et d’informations de confiance | Pas de cible interactive ; préserver une apparence non cliquable |
+| TrustCard avec `onOpen` | Passe `interactive`, `onClick` et les attributs restants à `SmartCard` / `Surface` | Le clic est branché sur un conteneur `div`, sans sémantique de bouton ou de lien déclarée |
+| Interaction clavier | `SmartCard` applique des classes visuelles `cursor-pointer`, `tap` et `focus-ring`, mais aucun `role`, `tabIndex`, gestionnaire clavier ou élément natif interactif n’est défini | Écart d’accessibilité : une carte cliquable peut ne pas être atteignable ni activable au clavier / lecteur d’écran |
+| Retour tactile et animation | Animation de survol et de pression via Framer Motion ; la branche animée est un `motion.div`. Le mouvement est supprimé lorsque `useReducedMotion` est actif | Le retour visuel est présent, mais la préférence de réduction des mouvements doit être testée sur appareil ; l’animation ne remplace pas un état de focus ou de pression accessible |
+| Icône de confiance | Icône 40 × 40 px dans un conteneur décoratif ; `Icon` masque l’icône aux lecteurs d’écran en l’absence de libellé | Acceptable comme décoration accompagnant le texte ; ne pas faire porter une information essentielle par la seule icône |
+| Titre et description | Titre `text-base` (16 px), description `text-sm` (14 px) | Hiérarchie globalement lisible ; vérifier le contraste et le retour à la ligne sur 320 px |
+| Score | Score numérique en `text-sm` (14 px), aligné à droite | Le score est une donnée secondaire ; son sens, son échelle et son contexte doivent être fournis par l’appelant et ne pas être suggérés uniquement par le nombre |
+| Statut vérifié | Indicateur success avec libellé traduit, point décoratif masqué aux lecteurs d’écran | Le libellé apporte le sens ; vérifier que le statut reste compréhensible sans la couleur verte |
+| Surface et dimensions | Surface avec padding `md` (16 px) et rayon 2xl ; aucune hauteur minimale ou zone tactile explicite n’est définie | Pour une carte interactive, la surface entière doit constituer une cible confortable et respecter 48 px minimum ; la dimension finale dépend du contenu et doit être mesurée au rendu |
+
+**Constats transversaux :**
+
+- `TrustCard` est une carte générique, pas un écran autonome. Aucun formulaire, champ ou commande secondaire n’est défini dans le composant.
+- Lorsque `onOpen` est fourni, l’interaction est implémentée sur un `div` via `onClick`. Les classes de focus seules ne rendent pas ce conteneur accessible au clavier.
+- Le composant ne fixe pas de hauteur minimale tactile. La taille de la carte dépend du titre, de la description et des éléments de statut.
+- Le score et le statut vérifié sont des données visuelles ; l’appelant doit fournir un contexte textuel suffisant pour éviter une interprétation trompeuse ou uniquement basée sur la couleur.
+- Les styles de titre et description respectent une hiérarchie de texte raisonnable, mais la carte doit être vérifiée en petit écran, avec texte long et zoom.
+- L’audit ne couvre pas les écrans qui consomment éventuellement `TrustCard`, ni les règles métier qui déterminent le score ou le statut.
+
+**Priorités documentaires de mise en conformité :**
+
+1. Si la carte est interactive, la rendre sémantiquement interactive avec un élément natif adapté (`button` ou `a`) plutôt qu’un `div` cliquable ; préserver une zone de focus visible.
+2. Si une action native n’est pas possible dans la structure actuelle, définir explicitement le contrat clavier et lecteur d’écran avant toute utilisation en production.
+3. Vérifier au rendu que toute la surface interactive offre une cible confortable, avec au moins 48 px de hauteur et un espacement suffisant avec les éléments voisins.
+4. Conserver le libellé textuel du statut vérifié et expliciter le sens / l’échelle du score dans le contexte appelant.
+5. Tester les textes longs, l’agrandissement, le contraste en thèmes clair et sombre, ainsi que la réduction des mouvements.
+6. Auditer séparément chaque écran consommateur de `TrustCard` avant de conclure sur le parcours Trust complet.
+
+**Conclusion de l’audit statique :** le composant TrustCard présente une hiérarchie visuelle simple et un libellé explicite pour le statut vérifié. Son point de vigilance majeur concerne le mode interactif : l’action `onOpen` est portée par un `div` sans sémantique ni activation clavier natives. La cible tactile n’est pas contractuellement définie et dépend du contenu. Aucun code applicatif n’a été modifié dans cette étape.
