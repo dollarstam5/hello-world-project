@@ -1,35 +1,23 @@
-# Trust — documentation du domaine
+# Trust — documentation du moteur
 
-Ce dossier conserve les spécifications historiques du Trust Engine et de son contrat API. Il ne constitue pas la source de vérité pour les niveaux de confiance visibles côté produit.
+Le guide [Trust — guide complet du moteur](./ENGINE_GUIDE.md) est le point d'entrée autonome pour comprendre la mission, le parcours des preuves, les règles de validation, le calcul, les corrections, les vues, la sécurité et l'état connu.
 
-## Références canoniques à utiliser
+## Références détaillées
 
-- [Niveaux de confiance produit](../../product/trust-levels.md) — niveaux, règles et expérience produit.
-- [Domaine Trust et Trust Engine](../../architecture/trust-domain.md) — responsabilités et architecture du domaine.
-- [Contrat API Trust](../../api/trust-api.md) — contrat API de référence et statut de son implémentation.
-- [Index général des API](../../api/README.md) — inventaire des contrats et références historiques.
-
-Ces références sont séparées volontairement : les niveaux de confiance produit, le domaine technique Trust et son contrat d'API sont des sujets liés, mais non interchangeables.
+- [Domaine Trust et architecture](../../architecture/trust-domain.md)
+- [Niveaux de confiance côté produit](../../product/trust-levels.md) — distincts du moteur technique Trust.
+- [Contrat API canonique](../../api/trust-api.md)
+- [Statut des contrats API et runtime](../../api/contract-runtime-status.md)
+- [Index API](../../api/README.md)
 
 ## Sources historiques conservées
-
-Les fichiers suivants sont des versions de conception antérieures. Ils sont conservés pour la traçabilité et ne doivent pas être modifiés comme s'ils étaient les spécifications actives.
-
-### Trust Engine
 
 - [Trust Engine — partie 1](./03A-VITALA-TRUST-ENGINE-V1%20Partie%201.md)
 - [Trust Engine — partie 2](./03A-VITALA-TRUST-ENGINE-V1%20Partie%202.md)
 - [Trust Engine — partie 3](./03A-VITALA-TRUST-ENGINE-V1%20Partie%203.md)
-- [Trust Engine — mise à jour historique](./03A-VITALA-TRUST-ENGINE-V1.md%20Mise%20%EF%BF%BD%20jour.md)
-
-### Contrat API historique
-
-- [Trust API — contrat historique](./8.%20Trust%20API.md) — source conservée ; consulter le [contrat API canonique](../../api/trust-api.md) pour le statut et les références actuelles.
+- [Mise à jour historique](./03A-VITALA-TRUST-ENGINE-V1.md%20Mise%20%EF%BF%BD%20jour.md)
+- [Contrat API historique](./8.%20Trust%20API.md)
 
 ## Règles de maintenance
 
-- Toute évolution produit des niveaux de confiance commence dans `docs/product/trust-levels.md`.
-- Toute évolution des responsabilités ou composants techniques commence dans `docs/architecture/trust-domain.md`.
-- Toute évolution du contrat API commence par la vérification de `docs/api/trust-api.md` et de son statut dans `docs/api/contract-runtime-status.md`.
-- Les fichiers historiques ne sont ni renommés, ni fusionnés, ni supprimés sans comparaison de contenu, vérification des liens entrants et validation explicite.
-- Une présence documentaire ne prouve pas qu'une règle ou un endpoint est implémenté dans le runtime.
+Le guide complet décrit le moteur sans exiger la lecture d'un autre moteur. Le document produit reste propriétaire des niveaux visibles ; l'architecture décrit les composants ; le contrat API décrit les échanges. Une évolution doit garder ces responsabilités distinctes. Les sources historiques ne sont ni supprimées ni fusionnées sans comparaison et validation. Une migration ou un champ de base ne prouve pas à lui seul l'existence du pipeline complet.
