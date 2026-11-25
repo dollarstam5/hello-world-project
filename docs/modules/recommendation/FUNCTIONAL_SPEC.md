@@ -105,3 +105,35 @@ Les recommandations collaboratives, embeddings, apprentissage automatique et rec
 - L'acceptation n'exécute pas l'action proposée.
 - Les règles de déduplication, diversité et fréquence sont mesurables et testables.
 - Les signaux utilisés et la version de règle sont auditables.
+
+## 9. Décisions fonctionnelles restant à valider
+
+Cette section rend visibles les règles qui ne sont pas encore suffisamment précises pour être considérées comme des décisions V1. Les éléments ci-dessous ne doivent pas être remplacés par des valeurs supposées pendant l'implémentation. Chaque décision devra être validée par le responsable produit et consignée ici avant de devenir normative.
+
+| Sujet | Décision encore nécessaire | Conséquence à couvrir dans les critères de recette |
+|---|---|---|
+| Sources activées | Définir, pour chaque type de cible, les domaines sources autorisés, les champs projetables, les destinataires possibles et les conditions d'activation. | Une source non activée ou non autorisée ne produit aucun candidat. |
+| Contrôle utilisateur | Préciser si l'utilisateur peut désactiver Recommendation globalement, exclure des catégories de suggestions ou limiter certaines finalités. Définir le comportement par défaut et la prise en compte immédiate d'un changement. | Un choix de désactivation ou d'exclusion est respecté lors des générations suivantes et des lectures. |
+| Fraîcheur et validité | Définir les règles de fraîcheur par catégorie de ressource, les durées de disponibilité et les événements qui provoquent une expiration anticipée. Aucune durée par défaut n'est approuvée dans cette spécification. | Une proposition obsolète ou hors période n'est pas affichée ; les règles sont vérifiables par catégorie. |
+| Fréquence et diversité | Définir les plafonds par destinataire, période, catégorie et éventuellement source, ainsi que la règle de diversité et les exceptions éventuelles. | Les limites sont déterministes, testables et ne peuvent pas être contournées par une nouvelle génération. |
+| Déduplication | Définir ce qui rend deux propositions équivalentes, le périmètre temporel de comparaison et le traitement d'une même ressource proposée sous plusieurs angles. | Une proposition équivalente n'encombre pas le feed ; la règle conserve une provenance exploitable. |
+| Réactions répétées | Préciser si saved, accepted et dismissed sont des états dérivés du dernier événement ou un historique d'événements, et définir les transitions autorisées ainsi que leur réversibilité. | Les répétitions et changements de réaction ont un résultat prévisible ; l'historique ne crée pas d'effets métier implicites. |
+| Persistance après retrait | Définir ce que voit l'utilisateur lorsqu'une proposition sauvegardée ou acceptée expire, est retirée ou devient inaccessible. Définir si une entrée historique minimale reste consultable. | Aucun détail de ressource devenu interdit n'est révélé ; l'utilisateur comprend pourquoi l'entrée n'est plus disponible. |
+| Signalement | Définir les motifs proposés, les champs libres éventuels, les règles anti-abus, le niveau de gravité, le circuit de revue, les délais/engagements de traitement et le retour éventuel au déclarant. | Un signalement est traçable et accessible uniquement aux opérateurs habilités ; son dépôt ne révèle pas l'identité du déclarant à des personnes non autorisées. |
+| Explications | Définir le niveau de détail, les formulations autorisées par catégorie et les informations de provenance qui peuvent être montrées sans révéler des signaux privés ou sensibles. | Chaque explication est fidèle aux signaux utilisés et ne permet pas d'inférer des informations protégées. |
+| Feed vide et indisponibilité | Définir les états d'interface lorsque rien n'est recommandé, lorsque toutes les propositions sont masquées ou lorsque les sources ne sont temporairement pas disponibles. | L'interface distingue clairement l'absence de résultat d'une erreur ou d'une absence d'autorisation. |
+| Notifications | Décider si la V1 comporte des notifications. Si oui, définir les canaux, préférences, fréquences, contenus et règles de confidentialité. En l'absence de décision, aucune notification ne doit être considérée comme une capacité promise. | Les notifications respectent les préférences et ne divulguent pas de contenu protégé sur un écran ou canal non maîtrisé. |
+| Conservation et droits utilisateur | Définir les durées de conservation des propositions, réactions et signalements, ainsi que les effets d'une demande d'accès, d'export ou de suppression du compte. | Les données sont conservées et supprimées selon une politique explicite, cohérente avec les obligations applicables. |
+| Accessibilité et langues | Définir les langues V1, le comportement de repli linguistique et les exigences d'accessibilité du feed, des explications et des actions de réaction. | Les parcours essentiels restent compréhensibles et utilisables avec les langues et technologies d'assistance prises en charge. |
+
+### 9.1 Conditions de clôture de cette revue
+
+La spécification fonctionnelle pourra être considérée comme suffisamment définie pour passer à la revue technique lorsque :
+
+- chaque sujet du tableau est soit décidé et documenté, soit explicitement exclu du périmètre V1 ;
+- les règles retenues sont cohérentes avec les états et événements du contrat de données ;
+- les transitions, cas limites et permissions disposent de critères de recette observables ;
+- aucune valeur métier (durée, quota, seuil, motif ou canal) n'est introduite uniquement par commodité technique ;
+- les sujets encore ouverts ont un responsable de décision et ne sont pas présentés comme des comportements déjà disponibles.
+
+Tant qu'une décision reste ouverte, l'implémentation devra s'abstenir de supposer un comportement produit ; elle devra soit rester hors périmètre, soit attendre une validation explicite.
