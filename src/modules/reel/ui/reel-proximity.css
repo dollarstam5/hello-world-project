@@ -2712,20 +2712,21 @@
 @media(prefers-reduced-motion:reduce){.reel-segment-btn,.reel-duration-card{transition:none!important}}
 
 
-/* Radial reach: subtle spokes originate around the user's avatar. */
+/* Radar rays: low-contrast reach from the avatar to the radar perimeter. */
 .reel-proximity__radar .reel-radar__rays {
   position: absolute;
-  z-index: -1;
+  z-index: 0;
   inset: 1.5%;
   border-radius: 50%;
   background: repeating-conic-gradient(
     from -0.6deg,
     transparent 0deg 35.35deg,
-    rgb(40 120 240 / 19%) 35.48deg 35.82deg,
+    rgb(40 120 240 / 14%) 35.48deg 35.82deg,
     transparent 35.95deg 36deg
   );
-  -webkit-mask-image: radial-gradient(ellipse 23% 31% at 50% 50%, transparent 98%, #000 112%);
-  mask-image: radial-gradient(ellipse 23% 31% at 50% 50%, transparent 98%, #000 112%);
+  -webkit-mask-image: radial-gradient(ellipse 13.5% 18% at 50% 50%, transparent 98%, #000 112%);
+  mask-image: radial-gradient(ellipse 13.5% 18% at 50% 50%, transparent 98%, #000 112%);
+  opacity: 0.82;
   pointer-events: none;
   animation: reel-radar-rays-drift 72s linear infinite;
 }
@@ -2735,21 +2736,98 @@
   to { transform: rotate(360deg); }
 }
 
+/* Explicit stacking keeps rays above the background rings, but below people and avatar. */
+.reel-proximity__radar .reel-radar__core {
+  z-index: 1;
+}
+
+.reel-proximity__radar .reel-ring-person {
+  z-index: 2;
+}
+
+.reel-proximity__radar .reel-ring-person.is-peek-open {
+  z-index: 50;
+}
+
+/* Calm discovery must quiet the radar, never fade the user's own avatar. */
 .reel-proximity__radar--calm .reel-radar__rays {
   animation: none;
+  opacity: 0.48;
+}
+
+.reel-proximity__radar--calm .reel-radar__outer-halo {
+  animation: none;
+  opacity: 0.32;
+  box-shadow: none;
+}
+
+.reel-proximity__radar--calm .reel-radar__core {
+  animation: none;
+  opacity: 1;
+  box-shadow: none;
+  background: radial-gradient(circle at 36% 28%, rgb(255 255 255 / 88%) 0%, rgb(214 234 255 / 54%) 52%, rgb(145 196 255 / 24%) 100%);
+}
+
+/* Active presence changes only the avatar's quiet halo; no fast rotating glow. */
+.reel-radar__me.is-presence-active::before {
+  animation: none;
+  opacity: 0.42;
+}
+
+.reel-radar__me.is-presence-active {
+  box-shadow: none;
+}
+
+.reel-radar__me.is-presence-active .reel-radar__me-avatar {
+  box-shadow: 0 0 0 0.18rem rgb(233 75 87 / 10%), 0 0 0.8rem rgb(233 75 87 / 14%);
 }
 
 .dark .reel-proximity__radar .reel-radar__rays {
   background: repeating-conic-gradient(
     from -0.6deg,
     transparent 0deg 35.35deg,
-    rgb(125 190 255 / 17%) 35.48deg 35.82deg,
+    rgb(125 190 255 / 12%) 35.48deg 35.82deg,
     transparent 35.95deg 36deg
   );
 }
 
-@media (prefers-reduced-motion: reduce) {
+.dark .reel-proximity__radar--calm .reel-radar__core {
+  background: radial-gradient(circle at 36% 28%, rgb(52 73 103 / 88%) 0%, rgb(38 60 90 / 54%) 55%, rgb(29 46 73 / 24%) 100%);
+}
+
+/* On compact phones, use eight rays and soften them rather than shrinking profiles. */
+@media (max-width: 420px) {
   .reel-proximity__radar .reel-radar__rays {
-    animation: none;
+    background: repeating-conic-gradient(
+      from -0.6deg,
+      transparent 0deg 44.7deg,
+      rgb(40 120 240 / 12%) 44.82deg 45.1deg,
+      transparent 45.22deg 45deg
+    );
+    opacity: 0.72;
+  }
+
+  .dark .reel-proximity__radar .reel-radar__rays {
+    background: repeating-conic-gradient(
+      from -0.6deg,
+      transparent 0deg 44.7deg,
+      rgb(125 190 255 / 10%) 44.82deg 45.1deg,
+      transparent 45.22deg 45deg
+    );
+  }
+}
+
+@media (max-width: 360px) {
+  .reel-proximity__radar .reel-radar__rays {
+    opacity: 0.58;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reel-proximity__radar .reel-radar__rays,
+  .reel-proximity__radar .reel-radar__core,
+  .reel-radar__me.is-presence-active::before {
+    animation: none !important;
+    transition: none !important;
   }
 }
