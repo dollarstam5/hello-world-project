@@ -310,3 +310,148 @@ Les usages FlashCard, TrustCard et RadarCard héritent de cette limite lorsqu'un
 **Limite de l'audit :** inspection statique uniquement. Aucun rendu navigateur, test automatisé, test clavier, lecteur d'écran ou essai sur appareil réel n'a été exécuté.
 
 **Aucun code applicatif ou composant runtime n'a été modifié dans cette étape.**
+
+
+---
+
+## 10. Audit mobile — Toasts, notifications et bannières d'état
+
+### 10.1 Périmètre inspecté
+
+- Toast : `src/components/ui/sonner.tsx` et recherche des montages `Toaster` / appels `toast.*`.
+- Bannière générique : `src/shared/components/StatusBanner.tsx`.
+- Réseau et synchronisation : `src/platform/offline/ui/OfflineBanner.tsx`, `src/shared/components/SyncIndicator.tsx`, `src/platform/network/useNetworkStatus.ts`, `src/platform/offline/sync-status.ts`.
+- PWA : `src/platform/pwa/ui/InstallBanner.tsx`, `src/platform/pwa/ui/UpdateBanner.tsx`.
+- Notice transitoire : `src/components/experience/AssistantNoticeLayer.tsx`, `src/lib/app/assistant-notices.ts`.
+- Centre de communication et badge : `src/components/experience/AppHeader.tsx`, `src/components/experience/CommunicationSheet.tsx`, `src/lib/communication/runtime.ts`, `dispatch.ts`, `gate.ts` et `delivery-session.ts`.
+- Intégration globale : `src/app/shell/AppShell.tsx`.
+
+### 10.2 Toast — wrapper Sonner
+
+| Zone | Constat statique | Évaluation mobile |
+|---|---|---|
+| Primitive | `src/components/ui/sonner.tsx` encapsule Sonner et applique les classes de thème, bordure, ombre, description et boutons d'action/annulation | Le style est centralisé, mais le contrat fonctionnel et les options restent ceux de Sonner |
+| Position | Aucune position n'est fixée dans le wrapper | La position effective dépend des props ou des valeurs par défaut du fournisseur ; elle n'est pas contractualisée pour téléphone/PWA |
+| Durée | Aucun délai par défaut n'est défini dans ce wrapper | La durée, les exceptions pour erreurs et la possibilité de pause doivent être décidées explicitement |
+| Fermeture | Aucune option de bouton de fermeture n'est fixée ici | Impossible de garantir une fermeture manuelle cohérente pour les messages longs ou urgents |
+| Annonce | Aucun rôle ARIA n'est ajouté localement ; il est délégué à Sonner | Vérifier le rôle live, la priorité, l'annonce des actions et l'absence de doublon avec les annonces inline |
+| Utilisation | La recherche du code indexé n'a pas identifié de montage `<Toaster>` ni d'appel `toast.*` | Ne pas considérer le système toast comme effectivement disponible dans l'application sur la seule présence du wrapper |
+
+**Conclusion Toast :** le wrapper de style existe, mais aucun montage ni usage applicatif n'a été retrouvé dans l'index inspecté. La position, la durée, la fermeture et le contrat d'annonce ne sont donc pas confirmés. Il faut éviter d'introduire des toasts concurrents aux retours locaux tant qu'une politique unique n'est pas définie.
+
+### 10.3 StatusBanner — bannière générique
+
+| Zone | Constat statique | Évaluation mobile |
+|---|---|---|
+| Sémantique | `role="alert"` pour `error` et `warning`, `role="status"` pour `info`, `success` et `intelligence` | Priorité d'annonce cohérente avec une erreur/alerte, et annonce non urgente pour les états ordinaires |
+| Contenu | Titre et description facultatifs, fournis par l'appelant | Un message sans titre reste possible ; le sens doit être compréhensible hors contexte |
+| Action | Slot `action` libre dans un conteneur `shrink-0` | Aucune taille minimale ni sémantique imposée ; l'appelant doit garantir un bouton/lien natif et une cible de 48 × 48 px |
+| Présentation | Padding horizontal 14 px, vertical 12 px, texte 14 px, description 13 px | Format compact ; contrôler les chaînes longues, la traduction et la largeur utile sur 320 px |
+| Couleur | Variantes info/success/warning/error/intelligence avec icône correspondante | L'icône accompagne la couleur ; conserver un libellé explicite et ne jamais coder le sens par la couleur seule |
+| Fermeture | Aucun mécanisme de fermeture intégré | Adapté aux états persistants tant qu'ils sont vrais ; pour une bannière fermable, le consommateur doit ajouter une commande accessible |
+
+**Conclusion StatusBanner :** bonne primitive inline pour les états non bloquants. Le rôle ARIA dépend du type, mais les dimensions et le contrat d'action ne sont pas garantis par le composant.
+
+### 10.4 Réseau et synchronisation
+
+#### OfflineBanner — `src/platform/offline/ui/OfflineBanner.tsx`
+
+- N'apparaît qu'après montage et lorsqu'une perte réseau ou une activité de synchronisation réelle existe.
+- S'appuie sur StatusBanner : avertissement lorsque le réseau est absent ou que la synchronisation est en erreur/hors ligne ; information pour les autres phases actives.
+- Le nombre d'éléments en attente n'est montré que s'il est fourni par le statut de synchronisation ; le texte distingue un élément de plusieurs éléments.
+- Le composant ne fournit ni bouton ni fermeture : l'état disparaît lorsque la condition disparaît.
+- La bannière est dans le flux du shell (padding 16 px), pas dans une couche flottante ; elle ne masque donc pas directement la navigation.
+- Le statut de synchronisation peut évoluer pendant une opération. Il faut vérifier que les annonces successives ne deviennent pas trop fréquentes.
+
+#### SyncIndicator — `src/shared/components/SyncIndicator.tsx`
+
+- Utilise `role="status"` et `aria-live="polite"`, avec une phrase traduite et un compteur d'attente facultatif.
+- L'icône est décorative pour le lecteur d'écran ; le texte porte l'information.
+- Le texte et le compteur sont en 12 px (`text-xs`) : taille réservée à une information secondaire et courte, à ne pas utiliser comme seul retour essentiel sur la sécurité d'une sauvegarde.
+- L'icône tourne lorsque le travail n'est pas stabilisé ; aucune adaptation locale à `prefers-reduced-motion` n'est visible dans ce composant.
+- À tester : annonces lors des transitions rapides, lecteur d'écran, réduction du mouvement et distinction claire entre « en attente », « hors ligne », « erreur » et « enregistré ».
+
+### 10.5 Bannières PWA
+
+#### InstallBanner — `src/platform/pwa/ui/InstallBanner.tsx`
+
+- Utilise `role="region"` avec un nom accessible localisé ; ce rôle n'annonce pas automatiquement l'apparition comme un statut live.
+- La fermeture est mémorisée dans localStorage et la bannière est masquée par défaut pendant l'hydratation de cette préférence.
+- La bannière est flottante en bas, à `6rem + safe-bottom`, au-dessus du contenu ; elle n'a pas de gestionnaire commun d'empilement.
+- Le texte secondaire est en 11 px, avec troncature sur une ligne : il faut s'assurer que l'information ou les instructions iOS/Android ne sont pas tronquées au point de devenir inutilisables.
+- Le bouton Installer n'a pas de hauteur minimale explicite ni de nom accessible complémentaire au texte visible ; sa taille dépend du padding vertical de 6 px et du texte 12 px.
+- Le bouton de fermeture fait 32 × 32 px : cible inférieure au standard mobile 48 × 48 px.
+- L'action d'installation est asynchrone, mais le composant ne montre pas localement d'état occupé ni de prévention explicite des doubles activations.
+- À tester : safe area, clavier, chevauchement avec la navigation basse, petit écran, zoom texte et instructions manuelles.
+
+#### UpdateBanner — `src/platform/pwa/ui/UpdateBanner.tsx`
+
+- Utilise `role="status"` ; le rôle implique une annonce polie même sans attribut `aria-live` explicite.
+- La bannière est fixe en bas à `6.5rem + safe-bottom`, avec `z-50`. Elle est placée à seulement 0,5 rem de la position de la bannière d'installation (`z-40`) : en l'absence de gestionnaire de pile, un chevauchement est possible si les deux sont visibles simultanément.
+- L'action de mise à jour et la fermeture ont une cible minimale de 48 × 48 px et un focus visible.
+- L'action est désactivée pendant `applying`, avec icône animée ; le libellé ne change pas localement pour annoncer explicitement la progression.
+- La fermeture masque la bannière dans l'état local du composant, jusqu'à son prochain remontage ; aucune persistance durable n'est définie.
+- À tester : annonce du statut, mise à jour en cours, échec/reprise, fermeture, coexistence avec InstallBanner et navigation basse.
+
+### 10.6 Notice temporaire Assistant
+
+- `AssistantNoticeLayer` n'affiche une notice que si l'assistant est explicitement activé et qu'un message a été publié.
+- La notice passe par le runtime de communication, est marquée présentée après rendu, et le message de bienvenue n'est marqué comme présenté qu'à ce moment-là.
+- Le conteneur utilise `role="status"` et `aria-live="polite"`, avec un message en 14 px.
+- La disparition automatique est fixée à 9 secondes ; la fermeture manuelle est disponible.
+- Le bouton de fermeture est explicitement ramené à 32 × 32 px par `h-8 w-8`, malgré l'usage de la primitive Button : écart concret au minimum tactile de 48 px.
+- La notice est positionnée en haut, avec prise en compte de `--safe-top` et `z-[70]`. Le wrapper extérieur ignore les interactions, tandis que la carte interne les réactive.
+- Le délai de neuf secondes peut être trop court pour une phrase longue, une traduction plus longue ou une personne utilisant un lecteur d'écran ; aucune pause au survol/focus ni préférence de durée n'est visible.
+- Le remplacement d'une notice par une autre et la gestion de plusieurs notices simultanées ne sont pas exposés : le store conserve une seule notice courante.
+- À tester : lecture complète avant retrait, annonce unique, fermeture clavier/tactile, changement de langue et interruption par une autre notice.
+
+### 10.7 Notifications du centre de communication
+
+- Le bouton cloche de `AppHeader` utilise une cible de 48 × 48 px et un nom accessible qui inclut le nombre d'éléments nécessitant une attention. Le badge visuel est masqué aux lecteurs d'écran pour éviter la répétition du compteur.
+- Le calcul évite de compter deux fois les bips reçus représentés à la fois par l'événement serveur et la projection En direct.
+- `CommunicationSheet` sépare Notifications, Assistant (uniquement après opt-in), Messages et En direct ; les compteurs d'onglets sont inclus dans les noms accessibles.
+- Les événements sont triés du plus récent au plus ancien et les actions renvoient vers le moteur propriétaire. Le marquage comme lu est disponible.
+- Les actions « ouvrir » et « marquer comme lu » ont des hauteurs minimales de 40 px dans les cartes de notification, sous la cible recommandée de 48 px.
+- Les badges visuels sont compacts (minimum 16 px) mais masqués aux lecteurs d'écran ; le compteur est exposé via le nom de l'onglet.
+- Les états vides, hors ligne et chargement sont exposés avec `role="status"` ou `aria-live="polite"` selon les cas.
+- Le runtime documenté en code est en mémoire de session : les événements du centre ne constituent pas un historique persistant et sont effacés au changement de session/rechargement.
+- Les notifications sont des éléments de liste et ne sont pas annoncées automatiquement à chaque publication par un conteneur live global ; l'utilisateur les consulte en ouvrant le centre.
+- À tester : navigation des onglets au clavier, mise à jour du compteur, marquage lu, ordre de lecture, événements ajoutés pendant que la feuille est ouverte et absence de doublons.
+
+### 10.8 Empilement, durée et priorités transversales
+
+1. **P0 — Cibles tactiles :** porter à 48 × 48 px le bouton de fermeture Assistant (32 px), la fermeture Install (32 px) et les actions de notification actuellement à 40 px ; vérifier aussi le bouton Installer.
+2. **P0 — Empilement mobile :** définir une règle unique de pile pour InstallBanner, UpdateBanner, AssistantNoticeLayer et les futurs toasts. Les deux bannières PWA occupent presque la même position basse et les couches ont des z-index différents sans coordination de hauteur.
+3. **P0 — Annonces live :** fixer une politique par type : `alert` assertif uniquement pour les erreurs nécessitant une attention immédiate ; `status` poli pour les confirmations et progressions ; pas de doublon toast + message inline + lecteur d'écran.
+4. **P1 — Durées :** formaliser les délais par gravité et longueur, permettre la fermeture manuelle, ne pas retirer une information critique automatiquement et suspendre le délai lorsque la notice reçoit le focus si le fournisseur le permet.
+5. **P1 — Réduction du mouvement :** vérifier les animations de progression/toast et respecter `prefers-reduced-motion`, notamment SyncIndicator.
+6. **P1 — Progression asynchrone :** annoncer les transitions importantes sans répéter chaque changement de compteur ou chaque mise à jour fréquente.
+7. **P1 — Texte et localisation :** tester les messages longs en français/anglais, les tailles de texte agrandies et les largeurs 320/360/390 px ; éviter les troncatures qui retirent une instruction utile.
+8. **P1 — Persistance et vérité métier :** distinguer les événements de session des notifications distantes/persistantes ; ne pas promettre une notification push ou un historique durable qui n'est pas implémenté.
+9. **P2 — Toast :** avant d'activer le wrapper Sonner, documenter son point de montage, sa position mobile, ses durées, ses actions, son comportement hors ligne et sa relation avec les messages inline.
+
+### 10.9 Matrice de validation sur appareils
+
+| Scénario | Android téléphone | iPhone | Tablette |
+|---|---|---|---|
+| StatusBanner info/success/warning/error avec texte long | À tester | À tester | À tester |
+| OfflineBanner lors des transitions réseau/synchronisation | À tester | À tester | À tester |
+| SyncIndicator avec lecteur d'écran et réduction du mouvement | À tester | À tester | À tester |
+| InstallBanner avec instruction iOS/Android et stockage bloqué | À tester | À tester | À tester |
+| Fermeture Install et Assistant à 48 × 48 px minimum | À tester | À tester | À tester |
+| InstallBanner et UpdateBanner visibles simultanément | À tester | À tester | À tester |
+| UpdateBanner pendant application, échec et reprise | À tester | À tester | À tester |
+| Notice Assistant lue intégralement avant expiration | À tester | À tester | À tester |
+| Cloche, compteurs, onglets et marquage comme lu | À tester | À tester | À tester |
+| Toast si/une fois monté : position, durée, fermeture, annonces | À tester | À tester | À tester |
+| Safe areas, navigation basse, clavier et orientation | À tester | À tester | À tester |
+
+### 10.10 Conclusion de cette étape
+
+Le socle comporte plusieurs mécanismes distincts : StatusBanner pour les états inline, OfflineBanner/SyncIndicator pour le réseau et la synchronisation, des bannières flottantes dédiées à l'installation et à la mise à jour PWA, une notice temporaire opt-in pour l'Assistant, et un centre de communication en mémoire de session.
+
+Les écarts les plus nets concernent les cibles de fermeture de 32 px (Assistant et installation), les actions de notification à 40 px, l'absence de règle commune d'empilement des bannières PWA, la durée fixe de neuf secondes pour les notices Assistant et l'absence de contrat explicite pour le wrapper Toast. Les rôles live sont présents sur plusieurs composants, mais la fréquence réelle des annonces et leur comportement avec les lecteurs d'écran doivent être testés.
+
+**Limite de l'audit :** inspection statique du code et recherche des usages indexés. Aucun test sur appareil réel, lecteur d'écran, rendu visuel ou mesure de durée n'a été effectué. La recherche n'a pas retrouvé de montage Toaster ni d'appel toast applicatif ; ce constat reste limité au code indexé consulté.
+
+**Aucun code applicatif ou composant runtime n'a été modifié dans cette étape.**
