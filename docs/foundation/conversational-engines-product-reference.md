@@ -1,7 +1,7 @@
 # Référentiel produit — collecte en langage humain des moteurs Vitalis
 
 **Statut : référentiel de clarification produit — V1**  
-**Portée : Flash, Scan et Radar**  
+**Portée : Flash, Scan, En direct et Radar**  
 **Priorité d'expérience : téléphones Android et iOS (P0), tablette (P1), desktop (P2).**  
 **Règle de lecture : ce document décrit séparément l'existant vérifié, les clarifications nécessaires et les évolutions qui ne sont pas encore livrées. Il ne transforme pas une intention produit en capacité technique acquise.**
 
@@ -218,15 +218,76 @@ Constats :
 
 **Décision produit de ce référentiel :** l'expression libre est le point de départ de Radar, au même titre que Flash et Scan. **Ce parcours cible n'est pas encore démontré par l'interface V1 actuelle.**
 
-## 7. Comparaison synthétique : existant et cible
+## 7. En direct — explorer l'environnement géographique et les présences
+
+### 7.1 Rôle produit souhaité
+
+En direct doit pouvoir être utilisé où que se trouve la personne, sans être limité à un quartier, une ville ou une zone prédéfinie. Avec son autorisation, Vitalis s'appuie sur sa position GPS ou sur une zone qu'elle indique pour situer sa demande et explorer ce qui se trouve réellement autour d'elle.
+
+La portée souhaitée dépasse donc la seule découverte de personnes. Elle comprend trois familles d'informations, à distinguer dans l'expérience :
+
+1. **Présences humaines** — découvrir les personnes qui ont choisi de partager leur présence dans En direct.
+2. **Lieux et points d'intérêt** — repérer les lieux pertinents autour de la position ou dans la zone choisie.
+3. **Activités et services** — découvrir les activités et services qui existent ou sont proposés dans cette zone, lorsque des sources fiables permettent de les identifier.
+
+La personne doit pouvoir exprimer naturellement ce qu'elle cherche ou souhaite faire autour d'elle, sans devoir connaître le nom exact d'un lieu ni remplir une série de critères. Vitalis doit ensuite utiliser le contexte géographique pour présenter des pistes et des interactions adaptées à la zone.
+
+Cette ambition ne signifie pas que toute information ou disponibilité peut être connue. L'interface devra distinguer les informations descriptives, les propositions, les horaires ou disponibilités déclarés et les éléments effectivement confirmés.
+
+### 7.2 Existant vérifié dans la V1
+
+Source principale inspectée :
+- `src/modules/reel/model/useReelProximityController.ts`
+- Textes : `src/platform/internationalization/messages.ts`
+
+Constats :
+- La découverte demande une position GPS après une action explicite.
+- Pour les membres, le contrôleur résout une zone approximative avec le motif `discover`, puis récupère les présences de membres et d'invités à proximité.
+- Pour les invités, le contrôleur utilise les coordonnées de la position pour rechercher les présences invitées à proximité.
+- La position est utilisée à la demande ; le code inspecté ne met pas en place de suivi GPS continu ou en arrière-plan.
+- La publication de sa propre présence est une action séparée. Elle demande une position, un consentement et des informations de présence.
+- Les personnes visibles sont celles qui ont effectivement choisi de partager leur présence. La découverte ne publie pas automatiquement la présence de la personne qui consulte.
+- Le Bip est un signal de premier contact soumis aux conditions de présence active et à l'acceptation ou au refus du destinataire.
+
+**Limite essentielle :** l'implémentation inspectée démontre une découverte géolocalisée de présences partagées. Elle ne démontre pas un moteur général de recherche de lieux, de points d'intérêt, d'activités ou de services autour de la personne.
+
+### 7.3 À concevoir et à compléter
+
+Les capacités suivantes représentent l'orientation produit souhaitée, pas des fonctions confirmées dans la V1 actuelle :
+
+- définir les sources géographiques disponibles pour les lieux, activités et services, leur couverture, leur fraîcheur et leurs conditions d'utilisation ;
+- permettre à la personne de demander naturellement ce qu'elle peut trouver ou faire autour d'elle ;
+- déterminer comment Vitalis combine la position actuelle, une zone choisie et le contexte exprimé dans la demande ;
+- distinguer les résultats issus d'une source, les propositions pertinentes et les disponibilités réellement confirmées ;
+- définir les interactions possibles avec un lieu, une activité ou un service sans supposer qu'un contact, une réservation, une commande ou un appel est disponible ;
+- prévoir une solution lorsque le GPS est refusé, indisponible ou imprécis, par exemple permettre à la personne d'indiquer elle-même une zone si ce parcours est retenu ;
+- définir comment la personne élargit ou réduit la zone de recherche sans être enfermée dans un rayon ou un quartier fixe ;
+- protéger la position et éviter d'exposer publiquement la localisation précise de la personne.
+
+### 7.4 Règles de vérité, de confidentialité et d'expérience
+
+- Demander la localisation au moment où elle apporte une valeur réelle, expliquer son usage et respecter le choix de la personne.
+- Ne pas présenter une zone estimée comme une position exacte.
+- Ne pas inventer un lieu, une activité, un service, une personne ou une disponibilité.
+- Signaler les limites de couverture et la date ou la fraîcheur des informations lorsque ces données sont disponibles.
+- Ne pas confondre « trouvé autour de vous », « annoncé comme disponible » et « disponibilité confirmée ».
+- Ne pas faire croire que les données de présence humaine et les données de lieux ou de services proviennent de la même source ou suivent les mêmes règles.
+- La découverte de l'environnement ne doit pas obliger la personne à publier sa propre présence.
+- La personne doit pouvoir exprimer son besoin en langage naturel ; les filtres et paramètres géographiques ne sont proposés que lorsqu'ils aident réellement.
+- Ne pas présenter la découverte géographique comme un service d'urgence, une garantie de sécurité ou une vérification de qualité des services.
+
+**Décision de cadrage :** En direct est conçu comme un moteur d'exploration et d'interaction avec l'environnement géographique de la personne, en plus de la découverte des présences partagées. La découverte de lieux, d'activités et de services reste à spécifier et à implémenter ; elle n'est pas une capacité V1 vérifiée.
+
+## 8. Comparaison synthétique : existant et cible
 
 | Moteur | Entrée libre actuelle | Traitement actuel vérifié | Écart principal à clarifier |
 |---|---|---|---|
 | Flash | Texte 600 caractères ; dictée si API disponible | Parseur déterministe limité puis revue structurée, brouillon ou publication | Distinguer suggestions/defaults et données déclarées ; statuer sur les contrôles indispensables |
 | Scan | Texte 160 caractères ; dictée disponible selon support | Interprétation déterministe et quatre étapes fixes avant lancement | Justifier les étapes ; rendre la préférence facultative réellement non bloquante |
+| En direct | Découverte géolocalisée de présences partagées ; publication séparée de sa propre présence | Position ponctuelle et recherche de présences proches | Étendre et spécifier la découverte de lieux, points d'intérêt, activités et services ; définir les sources, les interactions et les garanties de fraîcheur |
 | Radar | Texte de recherche dans un formulaire ; pas de parcours libre dédié démontré | Enregistrement/gestion de brouillons privés ; appariement automatique et alertes non connectés | Concevoir l'expression libre de mission et distinguer brouillon et veille active |
 
-## 8. Règles UX communes à respecter lors de la future conception
+## 9. Règles UX communes à respecter lors de la future conception
 
 1. Présenter une invitation naturelle à raconter son besoin ou sa mission, pas une liste de champs.
 2. Garder le texte d'origine accessible et ne pas le remplacer silencieusement par une interprétation.
@@ -239,9 +300,10 @@ Constats :
 9. Ne pas afficher un état « actif », « surveillé », « trouvé » ou « notifié » tant que l'action correspondante n'a pas réellement eu lieu.
 10. Prévoir les états sans réseau, en cours, erreur, permission refusée, brouillon enregistré et action terminée selon les capacités réelles de chaque moteur.
 11. Garder une voie texte complète si la voix n'est pas prise en charge.
-12. Respecter les standards mobile Vitalis : lisibilité, cibles tactiles, safe areas, clavier, lecteur d'écran et réduction des animations.
+12. Pour les résultats géographiques d'En direct, distinguer clairement personnes, lieux, activités et services, ainsi que les informations trouvées et les disponibilités confirmées.
+13. Respecter les standards mobile Vitalis : lisibilité, cibles tactiles, safe areas, clavier, lecteur d'écran et réduction des animations.
 
-## 9. Décisions à ne pas inventer
+## 10. Décisions à ne pas inventer
 
 Les points suivants ne sont pas déductibles des fichiers inspectés et doivent rester ouverts tant qu'une décision produit n'est pas documentée :
 
@@ -255,7 +317,7 @@ Les points suivants ne sont pas déductibles des fichiers inspectés et doivent 
 
 Une proposition future doit être étiquetée comme proposition et validée avant d'être présentée comme une règle produit acquise.
 
-## 10. Critères d'acceptation documentaires et produit
+## 11. Critères d'acceptation documentaires et produit
 
 Le référentiel et les futures interfaces devront permettre de vérifier les cas suivants :
 
@@ -274,7 +336,7 @@ Le référentiel et les futures interfaces devront permettre de vérifier les ca
 | Radar enregistré mais non actif | Le statut dit clairement qu'il s'agit d'un brouillon ou d'une intention enregistrée |
 | Confirmation engageante | La personne comprend ce qui va être publié, lancé ou activé |
 
-## 11. Références et limites
+## 12. Références et limites
 
 Références canoniques :
 - [Principes fondamentaux de Vitalis](./vitalis-core-principles.md)
