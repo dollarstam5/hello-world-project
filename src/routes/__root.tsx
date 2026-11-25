@@ -1,27 +1,19 @@
 import type { ErrorComponentProps } from "@tanstack/react-router";
-import { useEffect, useRef } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+import { QueryClient } from "@tanstack/react-query";
 import {
   Outlet,
   Link,
   createRootRouteWithContext,
   useRouter,
-  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
-import { AppShell } from "@/components/app/AppShell";
-import { AccessModeProvider } from "@/domains/access-mode";
+import { RootAppComposition } from "@/app/composition";
 import { useI18n } from "@/lib/i18n/useI18n";
-import { registerServiceWorker } from "@/platform/pwa";
-import { publishWebVitalMetric, startWebVitalsMonitoring } from "@/lib/performance/web-vitals";
-import {
-  completeNavigationMeasurement,
-  startInteractionMonitoring,
-  startNavigationMeasurement,
-} from "@/lib/performance/interaction-navigation";
+import { useRootLifecycle } from "@/app/bootstrap";
 
 function NotFoundComponent() {
   const { t } = useI18n();
@@ -130,40 +122,14 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
-  const routeId = useRouterState({ select: (state) => state.matches.at(-1)?.routeId ?? "/" });
-  const locationKey = useRouterState({
-    select: (state) => state.location.pathname + state.location.searchStr,
-  });
-  const routeIdRef = useRef(routeId);
-  routeIdRef.current = routeId;
-
-  useEffect(() => {
-    registerServiceWorker();
-    const stopWebVitals = startWebVitalsMonitoring(publishWebVitalMetric);
-    const stopInteractions = startInteractionMonitoring(() => routeIdRef.current);
-    const stopNavigation = startNavigationMeasurement();
-
-    return () => {
-      stopWebVitals();
-      stopInteractions();
-      stopNavigation();
-    };
-  }, []);
-
-  useEffect(() => {
-    completeNavigationMeasurement(routeId);
-  }, [routeId, locationKey]);
+  useRootLifecycle();
 
   const { queryClient } = Route.useRouteContext();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <AccessModeProvider>
-        <AppShell>
-          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-          <Outlet />
-        </AppShell>
-      </AccessModeProvider>
-    </QueryClientProvider>
+    <RootAppComposition queryClient={queryClient}>
+      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+      <Outlet />
+    </RootAppComposition>
   );
 }

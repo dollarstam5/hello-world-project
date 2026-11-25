@@ -3,7 +3,7 @@ import {
   clearScanHistory,
   readScanHistory,
   recordScanHistory,
-} from "@/domains/scan/services/scan-history.service";
+} from "@/modules/scan/services/scan-history.service";
 
 describe("device-only Scan history", () => {
   beforeEach(() => {

@@ -3,7 +3,7 @@ import {
   CURRENT_ASSISTANT_CACHE_VERSION,
   MIN_FUZZY_CONFIDENCE,
   searchLocalKnowledge,
-} from "@/domains/assistant/services/localSearch.service";
+} from "@/modules/assistant/services/localSearch.service";
 
 describe("connaissance locale de Vita", () => {
   it("répond exactement hors ligne à une question connue", () => {

@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import {
   resetReelActivityProjection,
   useReelActivityProjection,
-} from "@/domains/presence/model/reel-activity-projection";
+} from "@/modules/reel/model/reel-activity-projection";
 
 describe("Réel activity projection", () => {
   beforeEach(() => {

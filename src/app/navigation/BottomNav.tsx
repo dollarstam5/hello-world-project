@@ -1,0 +1,100 @@
+import { Link, useRouterState } from "@tanstack/react-router";
+import { Zap, ScanLine, RadioTower, Radar, LayoutGrid } from "lucide-react";
+import { useI18n } from "@/lib/i18n/useI18n";
+import { cn } from "@/lib/utils";
+import { haptic } from "@/platform/device/haptics";
+import "./reel-bottom-nav.css";
+
+type Tab = {
+  key: "flash" | "scan" | "reel" | "radar" | "menu";
+  to?: "/flash" | "/scan" | "/reel" | "/radar";
+  icon: React.ComponentType<{ className?: string }>;
+  labelKey: "nav.flash" | "nav.scan" | "nav.reel" | "nav.radar" | "nav.menu";
+};
+
+const TABS: Tab[] = [
+  { key: "flash", to: "/flash", icon: Zap, labelKey: "nav.flash" },
+  { key: "scan", to: "/scan", icon: ScanLine, labelKey: "nav.scan" },
+  { key: "reel", to: "/reel", icon: RadioTower, labelKey: "nav.reel" },
+  { key: "radar", to: "/radar", icon: Radar, labelKey: "nav.radar" },
+  { key: "menu", icon: LayoutGrid, labelKey: "nav.menu" },
+];
+
+interface BottomNavProps {
+  onOpenMenu: () => void;
+  menuOpen: boolean;
+}
+
+/** Five-point application navigation with En direct centered. */
+export function BottomNav({ onOpenMenu, menuOpen }: BottomNavProps) {
+  const { t } = useI18n();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  const handleTabPress = () => haptic.tap();
+  const handleCenterPress = () => haptic.toggle();
+
+  return (
+    <nav
+      aria-label={t("nav.primary")}
+      className={cn(
+        "reel-bottom-nav pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center",
+        pathname === "/reel" && "is-proximity",
+      )}
+    >
+      <ul className="reel-bottom-nav__bar pointer-events-auto flex w-full items-end justify-between">
+        {TABS.map((tab) => {
+          const isMenu = tab.key === "menu";
+          const isCenter = tab.key === "reel";
+          const active = isMenu ? menuOpen : tab.to === pathname;
+          const Icon = tab.icon;
+          const label = t(tab.labelKey);
+
+          const inner = isCenter ? (
+            <span className="reel-bottom-nav__center-wrap native-press">
+              <span className="reel-bottom-nav__center">
+                <Icon aria-hidden="true" />
+              </span>
+              <span className="reel-bottom-nav__center-label">{label}</span>
+            </span>
+          ) : (
+            <span className={cn("reel-bottom-nav__item native-press", active && "is-active")}>
+              {active && <span className="reel-bottom-nav__active" aria-hidden="true" />}
+              <Icon aria-hidden="true" />
+              <span>{label}</span>
+            </span>
+          );
+
+          return (
+            <li key={tab.key} className="reel-bottom-nav__slot">
+              {isMenu ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleTabPress();
+                    onOpenMenu();
+                  }}
+                  aria-label={t("nav.open_menu")}
+                  aria-haspopup="dialog"
+                  aria-expanded={menuOpen}
+                  className="reel-bottom-nav__control min-h-12 min-w-12"
+                >
+                  {inner}
+                </button>
+              ) : (
+                <Link
+                  to={tab.to!}
+                  onClick={isCenter ? handleCenterPress : handleTabPress}
+                  aria-label={label}
+                  aria-current={active ? "page" : undefined}
+                  className="reel-bottom-nav__control min-h-12 min-w-12"
+                >
+                  {inner}
+                </Link>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+  );
+}

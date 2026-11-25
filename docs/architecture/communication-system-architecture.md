@@ -1,0 +1,495 @@
+# Architecture du système de communication Vitalis
+
+**Statut :** architecture de référence V1 ; l’état réellement implémenté est distingué dans les sections d’inventaire et de raccordement.  
+**Principe :** local-first, déterministe, sans coût variable par message en V1.  
+**Limite :** les responsabilités décrites ici ne prouvent pas que des modules équivalents existent déjà dans le dépôt.
+
+## 1. Objectif
+
+Centraliser la sélection et la validation des messages prédéfinis, expressions simples et communications contextuelles, sans centraliser la logique métier des moteurs.
+
+Le système reçoit un contexte minimal et une intention ou un événement métier déjà établi, sélectionne une entrée du catalogue, puis remet un résultat structuré à l'interface.
+
+Il ne doit pas devenir un second système de notifications, une messagerie, un historique de conversation, un moteur de décision métier ou un assistant IA distant en V1.
+
+## 2. Chaîne logique cible
+
+Écran ou domaine métier → intention/événement vérifié → résolution du contexte minimal → sélection du catalogue local → priorité et fréquence → validation → message structuré → présentation UI.
+
+| Responsabilité | Entrée | Résultat |
+|---|---|---|
+| Context Resolver | Langue, heure, mode, écran, état autorisé | Contexte minimal |
+| Intent Resolver | Intention ou événement métier | Catégorie de communication |
+| Catalog Selector | Clé, langue, variantes locales | Texte candidat |
+| Personalization | Prénom ou variable déjà disponible | Texte personnalisé |
+| Priority Manager | Priorité et visibilité actuelle | Décision d'affichage |
+| Frequency Manager | Session et événements stables | Afficher ou ignorer |
+| Message Validator | Variables, langue, état réel | Message validé ou rejeté |
+| Presentation Adapter | Message validé | Contrat consommable par l'UI |
+
+Ces responsabilités peuvent être regroupées dans peu de modules. Ne pas créer une architecture surdimensionnée ni un service distant pour une fonction locale.
+
+## 3. Frontières de responsabilité
+
+- Le domaine métier décide si un bip, une mission, une relation ou une action a réellement atteint son état.
+- Le système de communication décide comment l'annoncer, dans quelle langue et à quel moment.
+- Le centre de communication conserve ses responsabilités d'organisation des notifications, de l'assistant, des messages et des événements En direct.
+- Les composants UI affichent le message et gèrent l'interaction ; ils ne choisissent pas arbitrairement le texte.
+- Le système i18n existant reste la source de localisation s'il répond au besoin. Ne pas créer un deuxième moteur de traduction.
+
+## 4. V1 : local-first et sans coût variable par message
+
+La V1 ne doit nécessiter :
+- aucun appel à une API de génération de texte ou à un fournisseur IA ;
+- aucun appel serveur dédié à une salutation ou expression ;
+- aucune nouvelle table Supabase ou migration pour stocker les salutations ;
+- aucune requête profil uniquement pour récupérer un prénom ;
+- aucun stockage serveur de l'historique des messages de routine.
+
+Le coût marginal des messages standards doit être nul en appels externes et requêtes dédiées. Le système utilise les ressources locales déjà disponibles dans l'application. Cela ne signifie pas que l'hébergement global de l'application n'a aucun coût.
+
+Ordre de préférence pour le contexte :
+1. données déjà présentes dans l'état applicatif ;
+2. session et profil déjà chargés selon les règles de sécurité ;
+3. contexte local de l'écran ou du domaine ;
+4. heure et langue du terminal.
+
+En cas de donnée manquante, utiliser une variante neutre. Ne jamais déclencher une requête réseau pour compléter un message non essentiel.
+
+Stockage :
+- catalogue dans le bundle local ou le mécanisme i18n existant ;
+- règles versionnées dans le code/configuration locale ;
+- anti-répétition en mémoire locale limitée ;
+- invité : aucune persistance inter-session, effacement à la fin de session ;
+- membre : aucune création d'historique parallèle ; préférences futures à raccorder au profil existant après validation.
+
+## 5. Contrat conceptuel du message
+
+Le message remis à l'interface contient une clé stable, la source propriétaire (`app`, `auth`, `home`, `onboarding`, `flash`, `scan`, `reel`, `radar` ou `assistant`), la surface visée (`inline`, `notice` ou `center`), une priorité, le texte localisé résolu, des variables validées et, si nécessaire, un identifiant d'événement métier stable. La surface décrit la destination souhaitée ; elle ne crée ni ne persiste un événement.
+
+Ne jamais inclure de coordonnées précises, identifiants temporaires invités, secrets, jetons d'authentification, contenu de conversation ou données sensibles non nécessaires.
+
+Le contrat TypeScript est porté par `CommunicationRequest` et `ResolvedCommunicationMessage` dans `src/lib/communication/dispatch.ts`. La source et la surface sont obligatoires ; l'ajout d'un nouveau moteur doit étendre le type de source et fournir un adaptateur explicite, sans créer un canal parallèle.
+
+## 6. Événements et raccordement aux domaines
+
+Les exemples ci-dessous sont des intentions à vérifier, pas un contrat runtime existant :
+
+| Intention | Domaine pressenti | Vérification nécessaire |
+|---|---|---|
+| Application ouverte / retour | App et session | Point d'entrée et cycle de navigation réels |
+| Mission créée / mise à jour | Missions | Événements et statuts déjà existants |
+| Bip reçu | En direct | Canal temps réel et événement confirmé |
+| Relation établie / clôturée | En direct | Transition métier et participants |
+| Scan terminé | Scan | Résultat réel, pas état d'interface supposé |
+| Permission refusée | Plateforme | Distinguer refus, indisponibilité et permission non demandée |
+| Réseau perdu / retrouvé | Plateforme et synchronisation | Réutiliser les états de connectivité centralisés |
+
+Aucun événement ne doit être émis uniquement pour provoquer un message. Dédupliquer avec les identifiants stables du domaine. Ne jamais exposer les identifiants de session invités.
+
+## 7. Temps, langue et fallback
+
+Utiliser l'heure locale et le fuseau disponibles sur le terminal. Les périodes sont configurables et désactivables. Une heure ou un fuseau indisponible conduit à une formulation neutre. La langue active de l'application est prioritaire ; utiliser le fallback i18n existant. Ne jamais mélanger des fragments FR et EN dans une phrase ni déduire les habitudes de vie à partir de l'heure.
+
+## 8. Priorité et fréquence
+
+Le système garantit que les erreurs et confirmations métier importantes ne sont pas masquées par des salutations ou suggestions.
+
+Il empêche les répétitions sur les re-rendus et changements de route sans nouvelle intention, déduplique les événements, évite les rafales, respecte les préférences et permissions, et laisse l'écran silencieux lorsqu'aucun message n'apporte de valeur.
+
+Les fenêtres temporelles exactes doivent être déterminées par tests UX ; ne pas fixer des délais arbitraires sans mesure.
+
+## 9. Sécurité et confidentialité
+
+- Les messages ne confèrent aucun droit et ne remplacent ni authentification, ni contrôles métier, ni RLS.
+- Le prénom est une donnée de présentation, pas une preuve d'identité.
+- Les métadonnées modifiables par l'utilisateur ne servent jamais à l'autorisation.
+- Aucun identifiant temporaire invité dans les événements de communication.
+- Aucun contexte de profil ou de navigation envoyé à un fournisseur tiers en V1.
+- Aucun journal du contenu des salutations de routine.
+- Les notifications métier suivent les règles de confidentialité du domaine propriétaire.
+- Les erreurs n'exposent jamais les secrets ni détails internes.
+
+## 10. Évolution V2 et V3
+
+### V2 — adaptation plus riche
+Peut introduire des préférences explicites de ton/fréquence/périodes, des dialogues contextuels et une compréhension naturelle facultative. Une génération IA éventuelle exige une décision dédiée, limites, quotas, consentement, contrôle des données, suivi budgétaire et fallback local. Les confirmations, erreurs, permissions et statuts critiques restent déterministes.
+
+### V3 — assistant personnel facultatif
+Peut introduire conversation approfondie, interaction vocale et contexte plus continu, avec contrôles de confidentialité et coordination entre moteurs. Ces capacités restent désactivables et budgétées. Le mode invité ne devient pas un profil persistant par défaut.
+
+## 11. Observabilité et maîtrise des coûts
+
+En V1 : pas de télémétrie contenant le contenu des salutations, pas d'appel serveur par message, pas de dépendance à une clé fournisseur. Les métriques agrégées ne sont autorisées que si un mécanisme existant et conforme est disponible.
+
+En V2/V3, si une génération distante est approuvée : quota par compte/session, budget maximal, limite de longueur et fréquence, cache si sûr, fallback local, coupe-circuit et suivi des coûts. Aucune activation par défaut sans décision explicite.
+
+## 12. Vérification technique et inventaire
+
+1. Identifier les catalogues i18n et conventions de messages existants.
+2. Identifier les composants globaux d'accueil, expérience, erreur et notification.
+3. Inventorier les événements métier réels.
+4. Vérifier la représentation du mode invité et de la session membre.
+5. Vérifier la source réelle du prénom et la disponibilité heure/langue.
+6. Définir un contrat compatible avec les couches architecturales existantes.
+7. Définir les tests sans ajouter de stockage serveur.
+8. Mesurer bundle et performance ; éviter une dépendance supplémentaire si les primitives existantes suffisent.
+
+## 12. État réel du dépôt — inventaire initial
+
+L'inventaire ci-dessous a été vérifié dans le dépôt avant d'étendre l'intégration. Il sert à réutiliser les points d'entrée existants et à éviter un second système parallèle.
+
+| Élément existant | Rôle observé | Décision d'intégration |
+|---|---|---|
+| `src/lib/i18n/messages.ts` et `src/lib/i18n/useI18n.ts` | Catalogue FR/EN et fonction de traduction typée | Conserver comme catalogue et moteur de localisation V1 |
+| `src/lib/communication/greeting.ts` | Sélection locale des neuf périodes et garde-fou du nom par session | Première règle contextuelle intégrée ; à étendre sans multiplier les sélecteurs isolés |
+| `src/lib/communication/format.ts` | Résolution d'une clé i18n et remplacement contrôlé des variables | Formateur commun utilisé par l'accueil et les notices assistant ; les clés et traductions restent dans i18n |
+| `src/components/experience/HomeFoundation.tsx` | Affiche l'accueil et consomme le sélecteur temporel | Premier écran raccordé |
+| `src/lib/app/assistant-notices.ts` | Canal Zustand de messages ponctuels, soumis à l'activation volontaire de l'assistant | Réutiliser comme adaptateur de présentation ; ne pas créer un second canal de notices |
+| `src/components/experience/AssistantNoticeLayer.tsx` | Affiche et ferme les notices temporaires, avec retrait après neuf secondes | Conserver la responsabilité d'affichage et d'accessibilité ; utiliser le formateur commun |
+| `src/lib/app/assistant-preferences.ts` | Préférence locale de l'assistant, désactivée par défaut | Respecter ce consentement ; la communication standard ne doit pas dépendre de l'activation de l'assistant |
+| `src/components/experience/CommunicationSheet.tsx` | Centre de communication avec onglets Notifications, Assistant facultatif, Messages et En direct | Conserver le centre ; ses panneaux vides ne sont pas des événements métier |
+| `src/components/app/AppShell.tsx` | Monte la couche de notices et le centre de communication | Point de montage global existant à réutiliser |
+
+### Implémentation locale ajoutée — contrat et préparation des messages
+
+Les modules suivants sont maintenant présents sur la branche :
+
+| Module | Responsabilité réellement implémentée | Limite actuelle |
+|---|---|---|
+| `src/lib/communication/gate.ts` | Trie les demandes par priorité, conserve l'ordre d'origine à priorité égale et supprime les doublons via identifiant d'événement ou clé de répétition fournis | Ne mémorise pas lui-même les messages déjà livrés ; l'appelant fournit cet état |
+| `src/lib/communication/dispatch.ts` | Applique le filtre de priorité/déduplication puis résout le texte avec le formateur et le catalogue i18n existants | Prépare un lot ; ne déclenche pas de notification et ne modifie aucun état métier |
+| `src/lib/communication/delivery-session.ts` | Conserve en mémoire les identifiants réellement présentés après accusé de présentation explicite ; déduplication des lots suivants pendant la session | Aucun stockage local persistant ; aucun producteur de notifications moteur raccordé |
+| `src/lib/communication/runtime.ts` | Façade de session qui compose dispatch, gate et accusé de présentation ; expose aussi `resetSession()` | Utilisée via le provider applicatif ; les producteurs métier partagés des moteurs restent à raccorder |
+| `src/lib/communication/CommunicationRuntimeProvider.tsx` | Monte une instance unique du runtime dans `AppShell` et expose `useCommunicationRuntime()` aux domaines | Le hook est disponible aux futurs adaptateurs ; aucun adaptateur métier partagé n'est encore activé |
+| `src/lib/communication/maturity.ts` | Sélectionne une posture conversationnelle selon le nombre agrégé de comptes inscrits : lancement, croissance, communauté établie, maturité | Fonction pure sans requête ; pas encore raccordée à une source de comptage ni aux composants de suggestions |
+| `tests/communication/gate.test.ts` | Vérifie priorités, doublons connus, déduplication dans un lot et limite d'affichage | Tests unitaires, pas tests d'intégration UI |
+| `tests/communication/dispatch.test.ts` | Vérifie la chaîne complète locale et l'interpolation des variables | Ne prouve pas encore le raccordement aux événements des moteurs |
+| `tests/communication/delivery-session.test.ts` | Vérifie l'accusé de présentation avant déduplication et l'isolation entre sessions | Tests unitaires du contrat de livraison |
+| `tests/communication/runtime.test.ts` | Vérifie la préparation, l'accusé explicite, le reset et l'isolation du runtime entre sessions | Ne couvre pas encore les producteurs métier Flash/Scan/Réel/Radar |
+| `tests/communication/runtime-provider.test.tsx` | Vérifie que les composants d'une même application partagent une seule instance runtime | Ne prouve pas encore le raccordement des domaines |
+
+Le contrat d'appelant exige un identifiant d'événement stable provenant du domaine lorsqu'une déduplication inter-lots est nécessaire. Ne jamais utiliser un identifiant invité temporaire, un identifiant de rendu React ou une valeur générée à chaque rendu. Sans identifiant stable, la fonction ne peut dédupliquer que ce que l'appelant identifie explicitement.
+
+Aucun délai de fréquence n'est imposé : la déduplication est déterministe et fondée sur les identifiants fournis. La conservation de l'état « déjà livré » est assurée par delivery-session.ts uniquement après que le composant appelant confirme la présentation. La mémoire est limitée à la session courante et disparaît à sa recréation ; aucun stockage serveur ni appel réseau n'est ajouté.
+
+### Parcours d'accueil et reconnaissance de l'identité
+
+- `HomeFoundation` reçoit la session depuis `useAuth`. L'état Auth est la source de vérité pour le libellé Invité/Membre ; le store local `useIdentity` ne doit pas, à lui seul, attribuer un statut de compte ou de confiance.
+- Le nom affiché conservé dans `useIdentity` est associé à l'ID du compte qui l'a fourni. L'accueil et l'aperçu du profil ne réutilisent jamais le nom mis en cache d'un autre compte sur un appareil partagé.
+- La page d'accueil propose au visiteur un accès au mode invité En direct et un accès à la création de compte. Le membre reconnu reçoit un accès à son profil et une explication courte de ce que son compte lui permet de gérer.
+- `OnboardingSheet` adapte sa dernière explication au statut de session, sans devenir un formulaire d'inscription.
+- L'inscription courte transmet le nom affiché dans les métadonnées Auth. Le déclencheur `handle_new_user` existant crée le profil avec cette valeur. Ce nom reste déclaratif et ne change pas le niveau UDI.
+- L'inscription sans session (par exemple en attente de confirmation e-mail) doit rester présentée comme une confirmation en attente, pas comme une connexion réussie.
+- Les niveaux UDI supérieurs ne sont pas inférés du fait d'être connecté. Ils exigent une lecture fiable de la source UDI ; le présent raccordement ne prétend pas encore fournir cette lecture.
+- Les suggestions d'accueil n'utilisent aucun compteur de progression non disponible. Les événements de première utilisation et les signaux de maturité ne doivent être raccordés qu'à partir de sources métier réelles.
+
+### État réel des moteurs Réel et Radar — inventaire complémentaire
+
+L'inspection du HEAD `a813f026` confirme des producteurs et rendus métier propres aux moteurs, mais pas leur raccordement au pipeline partagé de communication ni au centre global.
+
+| Domaine | Source et déclencheur observés | Présentation actuelle | Limite / décision |
+|---|---|---|---|
+| Réel — membre | RPC Supabase dédiées pour présence, bips et relations ; abonnement privé `subscribeToReelMemberActivity` aux changements `reel_bips` / `reel_connections` et au broadcast `reel_activity` | `ReelActivityPanel` recharge les projections autorisées et affiche bips reçus, décisions et relations | Garder la propriété au moteur ; ne pas recopier automatiquement dans le centre global |
+| Réel — invité | Fonctions serveur de session invitée ; rafraîchissement périodique de 3 secondes dans le contrôleur lorsque les panneaux d'activité sont ouverts | Même panneau, avec projections et actions invitées séparées | Pas d'identifiant de session invité dans le pipeline partagé ; ne pas transformer le polling local au moteur en nouvelle infrastructure globale |
+| Radar V1 | `radarsRepository` via `useLocalQuery`, opérations créer/modifier/annuler et états conservés par le dépôt offline | `RadarManagement` affiche les intentions personnelles, leur statut, les erreurs et confirme en inline les sauvegardes/modifications/annulations réussies via le formateur commun | Aucun moteur de matching automatique ni producteur d'alerte confirmé dans ce raccordement ; ne pas annoncer de correspondance ou d'alerte |
+| Runtime partagé | `createCommunicationRuntime()` compose préparation, priorité, déduplication et accusé de présentation en mémoire ; actuellement consommé par les notices Assistant uniquement | Présentation transitoire, sans stockage ni réseau | Les adaptateurs métier des moteurs et le centre global ne sont pas encore raccordés |
+| Centre global | Aucun adaptateur Réel/Radar vers le runtime ou producteur de notification partagé établi dans cet inventaire | Les moteurs conservent leurs panneaux et retours locaux | Toute future agrégation exige un contrat d'événement stable, une projection autorisée et des tests anti-doublon |
+
+Le panneau Réel expose des états métier réels et recharge les données après les actions. Son onglet « Alertes » compose localement des bips en attente et des relations actives ; il ne constitue pas à lui seul un flux de notifications global. Les états Réel ne doivent donc pas être dupliqués dans `CommunicationSheet` sans contrat explicite.
+
+Radar conserve et gère des intentions privées offline-first. La présence de statuts dans le modèle ne prouve pas l'existence d'un traitement de matching, d'une alerte planifiée ou d'une source de correspondance. La communication peut confirmer la sauvegarde ou l'échec d'une opération seulement à partir du résultat effectif du dépôt ; elle ne peut pas annoncer un résultat de recherche automatique.
+
+### Limites observées
+
+- Le canal `publishAssistantNotice` reste facultatif et opt-in. `AssistantNoticeLayer` passe désormais ses notices par `createCommunicationRuntime`, puis accuse leur présentation après rendu. Le message de bienvenue n'est persisté comme déjà montré qu'après sa présentation effective ; le seul déclenchement observé reste l'activation volontaire dans les paramètres.
+- Les onglets Notifications, Messages et En direct du centre présentent encore des états vides ; aucun flux de notifications métier ne doit être supposé opérationnel à partir de leur seule présence.
+- Le sélecteur temporel ajouté à Home est une première règle, pas encore un orchestrateur universel pour tous les textes de l'application.
+- Le formateur commun résout les variables du catalogue. Le nouveau runtime compose le gate, le dispatch et l'accusé de présentation pour les messages transitoires ; il ne décide toujours pas des événements métier ni des sources à notifier.
+- Flash utilise maintenant le formateur commun pour la confirmation de brouillon réellement enregistré et l'erreur de sauvegarde ; ces retours restent inline dans l'expérience Flash.
+- Scan utilise maintenant le formateur commun pour les erreurs de capacité navigateur, de permission/localisation et d'exécution de recherche ; ces retours restent inline dans le panneau Scan.
+- Radar utilise le formateur commun pour les erreurs d'action et confirme en inline, après retour réussi du dépôt offline-first, la création, la modification et l'annulation d'une veille. Ces confirmations ne signifient pas qu'un matching ou une alerte distante a eu lieu.
+- Flash conserve aussi des états localisés inline pour la dictée (navigateur non compatible, écoute, résultat reçu, permission refusée et erreur) ainsi que pour la localisation facultative (indisponibilité, permission, délai dépassé, erreur et saisie manuelle après échec du géocodage inverse). Ces textes viennent déjà du catalogue i18n ; ils ne déclenchent ni notification ni événement partagé.
+- La localisation Flash est facultative : son échec ne bloque pas l'enregistrement du brouillon ; le lieu peut être renseigné manuellement. La confirmation de brouillon n'est affichée qu'après le retour réussi de `createFlash`.
+- Scan présente « aucun résultat » comme un état neutre localisé, distinct d'une erreur. Le résultat vide n'est pas une notification et ne doit pas être interprété comme un échec.
+- Les états de dictée, de localisation facultative et le résultat vide Scan n'ont pas besoin d'être forcés dans `dispatch.ts` ou `delivery-session.ts` : ils sont des retours inline synchrones/contextuels, déjà localisés par i18n et sans variables à interpoler. Le formateur commun est réservé ici aux messages où sa résolution de clé/variables apporte une valeur réelle.
+- Ces raccordements ne passent volontairement ni par `dispatch.ts`, ni par `delivery-session.ts`, ni par le canal Assistant : il s'agit de confirmations/erreurs locales appartenant aux moteurs, pas de notifications d'événements partagés. Les autres erreurs et confirmations restent à inventorier avant migration.
+- Le canal de l'assistant reste facultatif et opt-in. Il ne doit pas être utilisé pour les confirmations essentielles, erreurs, permissions ou communications qui doivent fonctionner même si l'assistant est désactivé.
+
+### Ordre d'intégration recommandé
+
+1. Stabiliser le contrat local commun et le catalogue i18n sans changer le rendu des domaines.
+2. Notices Assistant : raccordement au runtime commun effectué ; conserver l'opt-in et vérifier le cycle de présentation.
+3. Étendre le raccordement du formateur commun aux autres erreurs et confirmations des moteurs après inventaire des sources fiables ; ne passer par le dispatch partagé que pour des communications multi-composants qui justifient réellement priorité et déduplication.
+4. Raccorder les notifications des moteurs uniquement à partir d'événements métier existants et dédupliqués.
+5. Remplir les panneaux du centre de communication seulement lorsque leurs données réelles sont disponibles.
+
+## 13. Tests d'acceptation
+
+- sélection déterministe, FR/EN et fallback ;
+- limites des périodes horaires, fuseau manquant et changement d'heure ;
+- invité/membre, prénom présent/absent/non autorisé ;
+- priorités, concurrence, répétition et déduplication ;
+- distinction local/envoyé/confirmé ;
+- erreur et reprise hors ligne ;
+- absence d'appel réseau pour une salutation ;
+- absence d'historique serveur et d'identifiant invité dans les payloads ;
+- taille du bundle et performance mobile.
+
+
+## 14. Contrat d'architecture pour toute évolution
+
+Toute nouvelle couche doit respecter le contrat de gouvernance produit. La chaîne technique reste : producteur métier propriétaire → adaptateur typé → contexte minimal → catalogue i18n → personnalisation autorisée → politique de consentement/maturité/priorité/fréquence → validation → présentation → accusé de présentation.
+
+Règles d'implémentation :
+- Le producteur est la seule source de vérité pour son événement et son état.
+- L'adaptateur de communication ne modifie jamais l'état métier et ne fabrique aucun événement.
+- Le catalogue i18n existant reste la source des textes ; aucune traduction parallèle.
+- Les confirmations et erreurs essentielles utilisent des canaux non dépendants de l'opt-in assistant.
+- Le centre ne reçoit que des événements munis d'un identifiant stable et d'un propriétaire de domaine clairement défini.
+- L'accusé de livraison est enregistré uniquement après présentation effective.
+- Le mode invité ne fournit aucun identifiant temporaire réutilisable hors de sa session.
+- Toute donnée agrégée de maturité doit venir d'une source autorisée ; aucun comptage côté client des sessions.
+- Les suggestions sont évaluées à partir de la disponibilité réelle de la route, du moteur et de l'action au moment de l'affichage.
+- Les composants En direct restent propriétaires de leurs états jusqu'à la mise en place d'un contrat d'événements partagés vérifié.
+
+## 15. Gouvernance V2/V3 pour les couches intelligentes
+
+Une couche de compréhension naturelle ou de génération ne peut être ajoutée qu'en V2/V3 après décision distincte. Elle doit rester un adaptateur facultatif et remplaçable, avec fallback local déterministe. Elle ne peut ni confirmer une transition métier, ni décider des droits, ni modifier la RLS, ni générer des identifiants ou événements.
+
+Avant connexion d'un fournisseur distant, documenter le flux de données, les champs transmis, la finalité, le consentement, la rétention, les régions de traitement, les coûts, les quotas, le coupe-circuit, les délais, les erreurs et le comportement hors ligne. Aucun contexte sensible ou identifiant invité temporaire ne doit être envoyé. Le système doit rester utilisable lorsque l'assistant est désactivé ou indisponible.
+
+Les outils d'action restent en lecture seule par défaut. Toute action externe ou ayant un effet durable exige une confirmation adaptée au risque et une validation par le domaine métier. La sortie du modèle est une proposition de formulation ou d'aide, jamais une source de vérité.
+
+## 16. Porte de validation avant raccordement
+
+Un raccordement est refusé tant que les éléments suivants ne sont pas établis :
+1. producteur réel et propriétaire identifié ;
+2. contrat de données typé et stable ;
+3. règles invité/membre et autorisations vérifiées ;
+4. clés i18n et fallback disponibles ;
+5. priorité, fréquence, anti-répétition et durée de vie définies ;
+6. état réseau/local/serveur correctement représenté ;
+7. destination UI réelle et accessible ;
+8. tests unitaires, intégration et rendu mobile ;
+9. coût réseau, stockage, bundle et IA acceptable ;
+10. documentation et statut d'implémentation mis à jour.
+
+Une capacité documentée comme future ou expérimentale ne doit pas être raccordée à un écran de production avant franchissement de cette porte.
+
+## Références
+
+- [Système de communication humaine V1 à V3](../01-product/communication-system-v1-v3.md)
+- [Gouvernance complète V1 à V3](../01-product/communication-system-governance-v1-v3.md)
+- [Catalogue de communication V1](../01-product/communication-catalog-v1.md)
+- [Architecture front-end et expérience](./frontend-experience.md)
+- [Architecture IA et intégrations](./ai-architecture-integrations.md)
+- [Centre de communication — règles produit V1](../01-product/communication-center-v1.md)
+
+
+### Règle de production — aucune notification fabriquée
+
+Le centre de communication ne doit afficher que les événements transmis par une source métier réelle et confirmée. En l'absence de source, les états vides localisés restent visibles ; aucun exemple, compteur, événement simulé ou notification de démonstration ne doit être injecté dans les onglets de production.
+
+Le pipeline est prêt à consommer un lot lorsque son domaine producteur sera disponible :
+1. le domaine fournit une source propriétaire typée, une surface de présentation, une clé i18n autorisée et, si nécessaire, un identifiant stable — jamais un identifiant temporaire invité ;
+2. `createCommunicationRuntime().prepare()` applique priorité/déduplication et prépare le texte localisé ;
+3. l'interface présente effectivement le message sur la surface prévue ;
+4. après présentation, l'appelant transmet le lot à `runtime.markPresented()` ;
+5. un nouvel arrivage portant la même clé stable dans la session est ignoré.
+
+Le système ne crée ni événement métier, ni notification, ni compteur, ni historique. Les événements En direct déjà exposés dans ReelActivityPanel restent affichés par leur composant métier tant qu'aucun flux partagé de notifications n'est fourni. Il ne faut pas recopier ou agréger ces données dans le centre par supposition.
+
+**État de préparation :** catalogue, formatage, sources/surfaces typées, priorité, déduplication, runtime de session et accusé de présentation en mémoire sont implémentés. Le runtime partagé est monté par `AppShell` et utilisé par les notices facultatives de l'assistant ; les producteurs de notifications du centre ne sont pas présents dans le dépôt inspecté. Le centre reste donc en état vide tant que ces producteurs ne sont pas raccordés.
+
+
+### Posture selon la taille de la communauté
+
+`getCommunicationMaturityProfile()` applique les seuils définis dans la spécification produit : 0–500, 501–5 000, 5 001–9 999 et 10 000+. Le compteur attendu est un agrégat fiable de comptes inscrits, hors invités et comptes de test. Le module n'effectue aucune lecture réseau et retombe sur la posture de lancement si le nombre est absent. Il ne faut pas brancher un compteur inventé ni déduire le volume depuis les sessions locales.
+
+Cette fonction est un sélecteur de posture, pas un générateur de suggestions. Les suggestions restent conditionnées à l'existence réelle des fonctionnalités et de leurs données. Tant que la source agrégée et les producteurs métier ne sont pas disponibles, le helper peut être testé mais ne doit pas être présenté comme une personnalisation déjà active en production.
+
+## 23. Critères obligatoires de qualité — rapidité, intelligence contextuelle et fluidité
+
+Ces trois critères sont des conditions d'acceptation de toute évolution du système de communication Vitalis, en V1, V2 ou V3. Ils s'appliquent aux messages inline, à l'accueil, à l'onboarding, aux suggestions, aux notifications, au centre de communication et aux éventuels dialogues de l'assistant.
+
+### Rapidité
+- Donner un retour immédiat à une action lorsque son résultat local est connu ; distinguer explicitement ce retour d'une confirmation serveur ou métier.
+- Privilégier les données déjà disponibles et les traitements locaux. Une communication non essentielle ne doit pas déclencher une requête réseau dédiée ni retarder l'affichage ou la navigation.
+- Vérifier le comportement sur mobile, PWA et réseau faible, y compris les états de chargement, d'erreur et de reprise.
+- Pour chaque évolution, définir avant le développement des objectifs de latence adaptés au parcours, puis joindre des mesures sur le commit candidat. Ne pas déclarer la rapidité validée sur une impression subjective.
+
+### Intelligence contextuelle
+- Adapter le contenu uniquement à partir de faits disponibles et autorisés : statut invité/membre issu de la session réelle, écran ou moteur actif, action engagée, état métier confirmé, langue et préférences explicites.
+- Vérifier que le conseil correspond à une fonctionnalité réellement disponible, à une destination existante et aux droits de la personne.
+- Préférer le silence ou une formulation neutre si le contexte ou sa source est absent, ambigu, périmé ou non autorisé.
+- Ne jamais inventer une activité, un résultat, une progression, un compteur, une disponibilité, une relation ou une capacité. La communication n'est jamais une source de vérité métier et ne confère aucun droit.
+
+### Fluidité
+- Préserver un parcours naturel et cohérent entre l'accueil, l'onboarding et les moteurs, sans créer de système parallèle de messages, de traduction, de notifications ou de navigation.
+- Éviter les répétitions, les sollicitations simultanées et les interruptions inutiles ; une seule demande de décision non critique à la fois.
+- Ne pas bloquer la navigation ni masquer les contrôles essentiels. Respecter les préférences, le consentement, les états de silence et le mouvement réduit.
+- Garder les confirmations et erreurs métier près de l'action qui les a produites, sauf si un contrat d'événement partagé justifie réellement une présentation globale.
+
+### Porte de validation obligatoire
+Une évolution n'est acceptée que si les trois axes sont vérifiés séparément et documentés :
+1. **Rapidité :** mesure de réactivité et vérification sur les appareils/parcours ciblés, y compris une situation réseau dégradée pertinente.
+2. **Intelligence contextuelle :** tests des contextes invité/membre, des états métier, des permissions, des données manquantes et des fonctionnalités indisponibles ; aucune affirmation non prouvée.
+3. **Fluidité :** contrôle du parcours complet, de la fréquence, des doublons, de l'accessibilité et de la réutilisation des composants existants.
+
+Le dossier de chaque évolution doit indiquer les scénarios testés, les résultats observés, les limites restantes et le statut réel de chaque critère. Un critère non mesuré ou non testé est **non vérifié**, jamais réputé satisfait. Si l'un des trois axes échoue, l'évolution n'est pas terminée et doit être corrigée ou explicitement désactivée. Ces critères ne signifient pas que toutes les parties du système actuel les satisfont déjà.
+
+
+## 24. Context Resolver — première tranche implémentée
+
+Le module `src/lib/communication/context.ts` expose `resolveCommunicationContext()`. Il construit un instantané minimal à partir d'informations que l'application lui transmet explicitement ; il ne lit pas Auth, ne demande aucune permission, ne consulte aucun profil et n'effectue aucune requête.
+
+Le contexte typé contient uniquement :
+- l'état d'identité `loading`, `guest` ou `member` fourni par une source Auth déjà résolue ;
+- le chemin de route, nettoyé des paramètres et fragments ;
+- la langue active ;
+- l'état d'activation de l'assistant, ou `null` si les préférences ne sont pas hydratées ;
+- les états distincts des permissions de découverte et de présence (`unknown`, `granted`, `denied`, `not-required`).
+
+Le champ `ready` reste faux tant que l'identité, la route, la langue ou la préférence assistant ne sont pas disponibles. Une session Auth en chargement n'est jamais requalifiée en invité. Une permission inconnue n'est jamais interprétée comme accordée. Les paramètres d'URL, identifiants de compte/session, coordonnées et contenus personnels ne font pas partie du contrat.
+
+`createCommunicationRuntime()` expose maintenant `updateContext()` et `getContext()`. Le runtime conserve uniquement le dernier instantané en mémoire et `resetSession()` efface à la fois cet instantané et l'état de déduplication de livraison. Le contexte ne déclenche pas encore de suggestion et ne modifie pas automatiquement les demandes : les futurs adaptateurs devront le consulter et vérifier leurs préconditions avant de soumettre un message.
+
+**Limite explicite :** ce premier raccordement établit le contrat et son cycle de vie, mais le fournisseur applicatif n'alimente pas encore automatiquement le contexte depuis Auth, i18n, route et préférences. Tant que ces sources ne sont pas reliées et testées ensemble, aucun composant ne doit traiter le contexte comme prêt par défaut.
+
+Tests ajoutés : normalisation route/langue, distinction invité/membre/en chargement, séparation des permissions Réel, refus des chemins protocol-relative, absence de données identifiantes et reset du contexte dans le runtime.
+
+
+### Mise à jour — alimentation applicative raccordée
+
+Le Context Resolver reçoit maintenant ses premières sources depuis `AppShell` :
+- `useAuth()` distingue chargement, membre authentifié et visiteur sans session ;
+- `useRouterState()` fournit le chemin courant ;
+- `useI18n()` fournit la langue active ;
+- `assistant-preferences` expose désormais un indicateur `hydrated`, afin de ne pas confondre la valeur initiale désactivée avec une préférence déjà lue.
+
+Le provider transmet ces valeurs au runtime. Les permissions Réel restent explicitement `unknown` tant qu'un état autorisé ne leur est pas fourni : le resolver ne demande ni ne déduit ces permissions.
+
+Le provider reçoit aussi une clé de comparaison de session d'identité éphémère, utilisée uniquement pour détecter un changement de compte et appeler `resetSession()`. Cette clé n'est jamais copiée dans le contexte, les demandes ou les messages. Le reset est déclenché lors d'un changement entre chargement, invité et compte, ainsi qu'entre deux comptes membres.
+
+**Point de vigilance :** ce raccordement utilise le hook Auth existant dans `AppShell`, sans refactoriser les consommateurs Auth existants. Il ajoute donc un observateur Auth applicatif ; une centralisation du flux Auth ne sera envisagée que si une mesure démontre un coût ou une duplication problématique.
+
+
+### Garde des demandes dépendantes du contexte
+
+`CommunicationRequest` accepte désormais `requiresContext`. Lorsqu'il vaut `true`, le runtime ne prépare pas la demande tant que le snapshot commun n'est pas `ready`; la demande est retournée dans `suppressed` plutôt que présentée avec un contexte incomplet. Les demandes inline indépendantes du contexte conservent leur fonctionnement, notamment les erreurs et confirmations locales qui ne doivent pas être bloquées par l'hydratation Auth ou des préférences.
+
+Cette garde ne remplace pas les contrôles métier : chaque adaptateur reste responsable de vérifier la source, les permissions, la disponibilité de la fonctionnalité et l'état réel avant de soumettre sa demande. Un contexte prêt n'est jamais une autorisation métier.
+
+
+### Découplage de l'opt-in Assistant et du contexte général
+
+La disponibilité du contexte commun (`ready`) dépend maintenant uniquement de l'identité résolue, de la route et de la langue. L'état de préférence Assistant est exposé séparément via `assistantPreferenceReady` et `assistantEnabled`. Ainsi, une préférence Assistant encore en hydratation ne bloque pas une communication métier qui n'en dépend pas.
+
+Les demandes peuvent déclarer `requiresAssistant`. Le runtime ne prépare ces demandes que si le contexte confirme explicitement `assistantEnabled === true`. Une valeur inconnue, une préférence désactivée ou un contexte absent les maintient dans `suppressed`. L'opt-in Assistant ne devient donc jamais une condition cachée pour les notifications métier, et les messages Assistant ne peuvent pas contourner le choix de la personne.
+
+### Décision d'intégration des moteurs après audit
+
+- **Flash** : l'enregistrement d'un brouillon est une confirmation locale d'une action demandée par la personne. Ce n'est pas une notification globale.
+- **Scan** : le résultat, l'état vide et les erreurs appartiennent à la session de scan déclenchée par la personne. Aucun événement asynchrone global n'est produit par ce parcours.
+- **Radar** : enregistrer, modifier ou annuler une intention privée sont des confirmations locales. Le matching automatique et les alertes ne sont pas établis ; aucun statut `matched` ne doit être transformé en notification sans preuve d'un traitement métier réel.
+- **Réel** : bips reçus et relations proviennent de projections métier autorisées. Le contrôleur recharge les projections depuis ses API/RPC après événements Realtime pour les membres ; les sessions invitées utilisent leurs services temporaires et un rafraîchissement local. Le panneau Réel reste propriétaire de ces données aujourd'hui.
+
+**Conséquence :** aucun adaptateur global Flash/Scan/Radar n'est ajouté pour les confirmations déjà affichées localement. Le premier candidat à une projection partagée est une lecture dérivée des bips/relations Réel, mais elle doit être extraite du contrôleur sans créer un second abonnement Realtime, un polling supplémentaire, une deuxième requête RPC, ni exposer les identifiants temporaires invités. Le centre global ne doit pas lancer ses propres lectures tant qu'un contrat de projection partagé et son cycle de vie ne sont pas définis.
+
+
+### Réactivité des consommateurs du contexte
+
+Le runtime publie maintenant une révision locale lorsque le contexte est mis à jour ou réinitialisé. `useCommunicationRuntime()` s'abonne à ces changements et `useCommunicationContextVersion()` expose la révision pour les consommateurs qui mémorisent (`useMemo`) des messages préparés. Cela garantit qu'une demande temporairement supprimée pendant l'hydratation peut être réévaluée dès que les sources deviennent disponibles, sans attendre un changement de notice ou d'état métier.
+
+Les notices Assistant déclarent maintenant `requiresAssistant: true` et incluent la révision de contexte dans leurs dépendances de préparation. Leur présentation attend donc l'opt-in explicitement confirmé, puis se réévalue quand la préférence est hydratée ou modifiée.
+
+
+### Première extraction — projection d'activité Réel partagée
+
+Le read model initial est ajouté dans `src/domains/presence/model/reel-activity-projection.ts`. Il expose uniquement un résumé agrégé en mémoire : mode d'accès (membre/invité), nombre de bips reçus en attente, nombre de mises en relation actives et indicateurs de disponibilité des deux lectures.
+
+Le contrôleur Réel reste, pour cette première tranche, le propriétaire des lectures métier existantes. Après chaque mise à jour de ses projections déjà chargées, il publie les agrégats dans le store partagé. Le centre `CommunicationSheet` consomme exclusivement ces agrégats. Il ne rappelle aucune API/RPC Réel et ne crée aucun abonnement Realtime ni polling supplémentaire.
+
+Les tableaux détaillés et leurs identifiants restent dans le contrôleur et ses composants métier. Le store partagé n'accepte que des nombres normalisés et le mode d'accès : aucun identifiant de présence, bip, relation ou session invitée ne peut y être stocké. Un changement de mode réinitialise les agrégats de l'ancien mode ; un changement d'identité applicative réinitialise également la projection.
+
+Les abonnements Realtime membres et le polling invité à trois secondes restent ceux du contrôleur, déclenchés uniquement lorsque son panneau d'activité est ouvert. La projection du centre représente donc le dernier état réellement chargé par le moteur ; elle n'initie pas de rafraîchissement autonome lorsque le moteur n'est pas actif. Cette limite est volontaire pour cette première tranche, afin de ne pas ajouter de trafic réseau. Une éventuelle centralisation du cycle de vie des abonnements nécessitera une étape distincte et des tests de propriété/ref-count avant toute modification.
+
+Les tests dédiés vérifient l'agrégation sans identifiants, la séparation des modes, la normalisation des compteurs et la remise à zéro. Cette extraction ne crée aucune notification métier : elle expose un résumé des données Réel existantes.
+
+## Matrice de vérification de la projection Réel
+
+La validation de la projection est menée en deux niveaux : tests automatisés du read model et vérification en session réelle. Une validation CI ne prouve pas à elle seule le fonctionnement multi-session avec Supabase Realtime.
+
+| Scénario | Contrôle attendu | Vérification automatisée actuelle | Vérification réelle requise |
+|---|---|---|---|
+| Membre connecté | Les bips reçus et relations actives proviennent des lectures autorisées du contrôleur Réel ; le centre affiche les mêmes agrégats. | Projection partagée et synchronisation des abonnés du store testées. | Ouvrir le panneau Réel, charger les deux listes, comparer les compteurs dans le centre. |
+| Invité | Les compteurs ne comprennent que les données de la session invitée active ; aucune clé de session ou ID métier n'entre dans la projection. | Absence d'identifiants dans l'état sérialisé testée ; changement de mode testé. | Créer une session invitée distincte, vérifier bips/relations et terminer la session. |
+| Changement de compte/session | L'ancienne projection est effacée ; une nouvelle lecture autorisée alimente les nouveaux compteurs. La clé d'identité reste locale à AppShell. | Reset du store testé ; AppShell compare désormais aussi l'horodatage local de session invitée. | Passer du membre A au membre B, du membre à l'invité et renouveler une session invitée. |
+| Remplacement d'une session invitée dans la même application | Les anciennes listes locales ne sont pas republiées sous la nouvelle session ; le centre attend les nouvelles lectures avant d'afficher les compteurs. | Garde d'identité ajoutée au contrôleur ; la validation du cycle asynchrone reste à couvrir dans les essais de session. | Renouveler une session alors que Réel est ouvert, puis contrôler qu'aucun ancien bip ou relation ne réapparaît. |
+| Réel + centre ouverts simultanément | Le centre s'abonne au store en mémoire ; il ne déclenche aucune lecture, aucun polling et aucun canal Realtime supplémentaire. | Deux abonnés observent la même projection ; inspection du code : le centre n'importe aucun client métier. | Relever les appels réseau et canaux actifs avant/après ouverture du centre. |
+| Actualisation des compteurs | Membre : actualisation à la réception d'un événement Realtime ; invité : actualisation à l'ouverture, au retour de visibilité/focus et à la reconnexion, avec secours toutes les 30 s si le panneau est ouvert et visible. Les relations comptées doivent être actives. | Normalisation des compteurs et politique de rafraîchissement testées statiquement ; mesure navigateur réelle encore requise. | Mesurer les appels pendant 60 s au premier plan, arrière-plan, retour d'application et reconnexion. |
+
+### Garde-fous de trafic et de confidentialité
+
+- Le centre de communication ne déclenche aucun appel réseau : il lit uniquement le store partagé.
+- Le contrôleur Réel conserve les lectures métier et l'abonnement membre unique. En mode invité, il n'ouvre aucun canal : il rafraîchit à l'ouverture du panneau, au retour de visibilité/focus et à la reconnexion, avec un contrôle de secours toutes les 30 secondes uniquement lorsque le panneau est ouvert et l'application visible.
+- Aucun deuxième abonnement Realtime ni intervalle supplémentaire n'est créé par l'ouverture du centre.
+- Le contrôle de secours invité est limité au panneau d'activité Réel ouvert et à un document visible ; il est nettoyé à la fermeture du panneau. Les événements de cycle de vie déclenchent une lecture immédiate sans créer de canal ni de service parallèle.
+- La projection ne contient que le mode et des nombres agrégés. Les identifiants de session invitée, de présence, de bip et de relation restent hors de cette surface.
+- Le contrôleur efface aussi ses listes et marqueurs de chargement à chaque changement d'identité ; les compteurs ne sont republiés qu'après une lecture réussie pour l'identité courante.
+- Le centre affiche le dernier état effectivement chargé par Réel. S'il n'y a pas eu de lecture dans la session courante, il ne fabrique pas de compteur et n'initie pas de rafraîchissement autonome.
+
+**État de validation :** les tests unitaires du read model et les contrôles CI sont exécutés sur la branche. Les scénarios multi-session avec deux comptes, l'invité réel et la mesure réseau dans un navigateur connecté restent à valider sur l'environnement applicatif ; ils ne sont pas déclarés réussis sur la seule base des tests de store.
+
+
+
+## Raccordement des événements métier au runtime commun — première tranche
+
+Le registre des événements de centre est intégré à l'instance existante de CommunicationRuntime (src/lib/communication/runtime.ts). Il ne s'agit pas d'un second store ou d'un service réseau. Il utilise le même abonnement de révision déjà fourni par CommunicationRuntimeProvider.
+
+### Événements actuellement raccordés
+
+| Domaine | Source confirmée | Événement visible dans le centre | Lecture / attention |
+|---|---|---|---|
+| Flash | Création locale réussie d'un brouillon, modification locale réussie, archivage confirmé par la commande serveur, suppression locale réussie | Résumé localisé avec lien vers /flash | Déjà lu, car la confirmation apparaît dans le moteur ; aucun badge supplémentaire |
+| Radar | Création, modification ou annulation locale réussie d'une veille | Résumé localisé avec lien vers /radar | Déjà lu, car la confirmation apparaît dans le moteur ; aucun badge supplémentaire |
+| Scan | Résultat de recherche volontaire et synchrone, historique limité au terminal | Aucun événement de centre | Les résultats sont immédiatement visibles dans Scan ; pas de notification redondante |
+| En direct | Projection agrégée des bips en attente et relations actives issue du contrôleur existant | Compteurs dans l'onglet En direct, accès à /reel ; les bips en attente contribuent à la cloche | Le moteur reste propriétaire des listes et des actions ; aucune copie d'identifiant |
+| Messages | Aucun flux de conversation V1 raccordé | État vide explicite | Ne pas fabriquer de conversation ni de compteur |
+
+### Contrat technique et limites
+
+- Les producteurs publient uniquement après le succès de leur opération métier ; les erreurs et clics seuls ne créent pas d'événement.
+- Les identifiants d'événements sont construits à partir des identifiants stables des enregistrements membre et, pour les modifications répétées, de leur updatedAt. Ils ne contiennent aucune identité invitée.
+- publishEvent refuse toute publication si le contexte du runtime n'est pas celui d'un membre connecté. Les événements d'invités restent dans le moteur Réel et ne sont jamais ajoutés au registre global.
+- Les confirmations Flash/Radar déjà présentées inline sont enregistrées comme lues : elles sont consultables dans le centre mais ne gonflent pas le compteur de la cloche.
+- Le compteur de la cloche agrège les événements non lus du runtime et les bips réellement en attente de la projection Réel existante. Les relations actives ne sont pas comptées comme des demandes à traiter.
+- L'ouverture du centre ne déclenche aucune requête, souscription Realtime ou boucle de polling. Les liens renvoient vers les écrans propriétaires pour les actions.
+- Le registre reste en mémoire dans le runtime de la session et disparaît au reset d'identité ou au rechargement. Il ne prétend pas fournir l'historique durable des notifications.
+- La table locale notifications existe déjà, mais la politique client interdit sa création directe. Cette tranche ne contourne pas cette règle et n'ajoute aucune mutation locale ou API. Les notifications distantes persistantes devront provenir d'un événement serveur autorisé et d'un contrat de lecture dédié, pas d'une écriture client opportuniste.
+
+### Contrôles automatisés ajoutés
+
+- Déduplication d'un événement par identifiant stable.
+- Refus de publication en contexte invité.
+- Lecture explicite et calcul du nombre non lu.
+- Confirmation inline visible sans incrémenter la cloche.
+- Effacement du registre au changement de session.
+- Rendu des événements dans Notifications et accès au moteur propriétaire.
+
+## Raccordement réel des événements entrants de Réel
+
+État vérifié sur la branche de communication :
+
+- `ReelCommunicationBridge` est monté une seule fois par `AppShell` dans le `CommunicationRuntimeProvider`. Il possède l'unique abonnement privé membre `reel-member:{memberId}` pour les événements entrants Réel.
+- Le canal existant transporte uniquement `kind`, un UUID de livraison généré par le serveur et un horodatage. Aucun ID de bip, ID de relation, ID de présence, nom, coordonnée ou ID de session invité n'est diffusé.
+- Les déclencheurs serveur couvrent les bips membre/membre et membre/invité : bip reçu pour le destinataire membre, acceptation/refus pour le membre expéditeur, clôture de relation pour les participants membres.
+- Les événements rejoignent le même registre en mémoire du `CommunicationRuntime`. Le centre affiche leur traduction et un lien vers En direct ; la cloche les compte comme non lus.
+- Les listes métier détaillées restent lues par les fonctions/RPC existantes. Le contrôleur ne possède plus d'abonnement Realtime. Il effectue une lecture initiale de l'onglet visible et réagit aux événements du runtime uniquement si le panneau Réel est ouvert.
+- Le mode invité conserve son rafraîchissement temporaire propre au moteur. Il ne reçoit pas de canal membre et ses identifiants temporaires ne rejoignent jamais le runtime partagé.
+- Les événements de bip reçu sont dédupliqués dans le compteur global avec la projection des bips en attente : un bip ne doit pas compter deux fois.
+
+Cette intégration réutilise le canal métier existant ; elle n'ajoute ni canal par onglet, ni abonnement Postgres Changes supplémentaire, ni polling membre, ni requête réseau déclenchée uniquement pour afficher le message. Les événements restent en mémoire de session ; aucune persistance durable n'est introduite.
+
+La CI et les tests automatisés doivent confirmer les contrats de déclenchement SQL, le payload privé, la validation du client, la déduplication runtime et le nombre d'abonnements. Les essais multi-comptes/appareils et mesures réseau en conditions réelles restent une validation séparée et ne sont pas réputés effectués par les tests unitaires.

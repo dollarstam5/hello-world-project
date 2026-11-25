@@ -19,3 +19,4 @@ export * from "./profile-preview";
 export * from "./scan";
 export * from "./scan-interpretation";
 export * from "./radar";
+export * from "./recommendation";

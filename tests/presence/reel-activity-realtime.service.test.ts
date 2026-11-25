@@ -29,7 +29,7 @@ vi.mock("@/integrations/supabase/client", () => ({
   },
 }));
 
-import { subscribeToReelMemberActivity } from "@/domains/presence/services/reel-activity-realtime.service";
+import { subscribeToReelMemberActivity } from "@/modules/reel/services/reel-activity-realtime.service";
 
 describe("Réel member Realtime service", () => {
   beforeEach(() => {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { groupFlashByDate } from "@/domains/flash/ui/dashboard/utils/groupFlashByDate";
+import { groupFlashByDate } from "@/modules/flash/ui/dashboard/utils/groupFlashByDate";
 
 function localDay(year: number, month: number, day: number, hour = 12) {
   return new Date(year, month, day, hour, 0, 0, 0).getTime();

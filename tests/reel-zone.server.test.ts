@@ -12,7 +12,7 @@ vi.mock("@supabase/supabase-js", () => ({
   createClient: createClientMock,
 }));
 
-import { resolveReelZoneForUser } from "@/domains/presence/api/reel-zone.server";
+import { resolveReelZoneForUser } from "@/modules/reel/api/reel-zone.server";
 
 describe("résolution de zone Réel", () => {
   beforeEach(() => {

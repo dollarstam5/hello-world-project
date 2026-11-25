@@ -2,10 +2,10 @@ import { useState } from "react";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { MANAGEMENT_MODULES, type ManagementModuleKey } from "@eco/core-contracts";
 import { moduleByKey } from "@eco/core-logic";
-import { datasetForModule, type AdminDataset } from "@/domains/admin/model/datasets";
-import { AdminRecordsView } from "@/domains/admin/ui/AdminRecordsView";
-import { AdminSystemView } from "@/domains/admin/ui/AdminSystemView";
-import { useAdminOverview, useAdminRecords } from "@/domains/admin/hooks/useAdminData";
+import { datasetForModule, type AdminDataset } from "@/modules/admin/model/datasets";
+import { AdminRecordsView } from "@/modules/admin/ui/AdminRecordsView";
+import { AdminSystemView } from "@/modules/admin/ui/AdminSystemView";
+import { useAdminOverview, useAdminRecords } from "@/modules/admin/hooks/useAdminData";
 
 export const Route = createLazyFileRoute("/_authenticated/admin/$module")({
   component: AdminModulePage,
