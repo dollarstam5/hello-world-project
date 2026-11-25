@@ -60,7 +60,6 @@ Les sources UJ-08 Flash et UJ-09 Scan sont classées sous `docs/modules/flash/` 
 - `docs/modules/veille/14-VITALA-VEILLE-ENGINE.md Partie 1.md`
 - `docs/modules/veille/14-VITALA-VEILLE-ENGINE.md Partie 2.md`
 - `docs/modules/veille/14-VITALA-VEILLE-ENGINE.md Partie 3.md`
-- `docs/modules/veille/14-VITALA-VEILLE-ENGINE.md Partie 1(1).md` (copie de la partie 1 conservée ; décision distincte requise avant retrait)
 - `docs/modules/recommendation/11._Recommendation_API.md`
 
 ### Architecture, API et données
