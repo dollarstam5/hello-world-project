@@ -1,13 +1,13 @@
 # Recommendation — guide autonome du moteur
 
 **Mission :** proposer à un utilisateur des actions personnalisées, pertinentes, explicables et limitées dans le temps, sans décider ni agir à sa place.  
-**Statut constaté :** intention fonctionnelle et contrat API historique documentés ; aucun moteur runtime Recommendation n'est identifié dans l'arborescence de cette branche.
+**Statut constaté :** contrats de domaine TypeScript V1 définis dans `@eco/core-contracts` ; aucun moteur runtime (repository, migration appliquée, API, job ou UI) n'est encore démontré dans cette branche.
 
 ## 1. Rôle et périmètre
 
 Recommendation transforme des signaux autorisés en propositions personnelles. Une proposition peut porter sur une mission, un Flash, une opportunité, une personne, une compétence, un contenu ou une action. Recommendation est propriétaire de la proposition, de son classement, de sa justification, de sa validité et des réactions du destinataire. La ressource proposée reste la propriété du domaine source.
 
-Le moteur ne doit jamais exécuter automatiquement l'action suggérée, modifier directement la ressource source ou présenter un score comme une vérité objective.
+Le moteur ne doit jamais exécuter automatiquement l'action suggérée, modifier directement la ressource source ou présenter un score comme une vérité objective. Le contrat V1 ne publie pas de score numérique ; il utilise une priorité explicable.
 
 ## 2. Parcours utilisateur de bout en bout
 
@@ -31,11 +31,11 @@ La présence d'une source potentielle dans le contrat n'implique pas qu'un conne
 6. Générer une justification fidèle aux signaux utilisés.
 7. Fixer une période de validité et persister la proposition.
 
-Aucun algorithme, poids, seuil, modèle IA ou score opérationnel n'est défini dans les sources actuelles.
+Aucun algorithme, poids, seuil, modèle IA ou score opérationnel n'est défini. Le contrat V1 n'expose donc aucun score numérique.
 
 ### 2.3 Consulter et réagir
 
-Le destinataire consulte sa liste et le détail d'une proposition. Il peut l'enregistrer, indiquer qu'il souhaite la suivre/accepter, l'ignorer/la masquer ou la signaler. Ces réactions sont propres à son compte et ne modifient jamais l'objet source.
+Le destinataire consulte sa liste et le détail d'une proposition. Il peut l'enregistrer, indiquer qu'il souhaite la suivre/accepter, l'ignorer/la masquer ou la signaler. Ces réactions sont des événements distincts, append-only, rattachés au destinataire. Elles ne modifient jamais l'objet source.
 
 Une acceptation indique une intention ; elle ne signifie pas que l'utilisateur a rejoint une mission, contacté une personne ou réalisé une action. La mutation effective doit passer par le domaine qui possède la ressource et demander sa propre autorisation.
 
@@ -43,39 +43,29 @@ Une acceptation indique une intention ; elle ne signifie pas que l'utilisateur a
 
 Une proposition expire ou est retirée lorsque sa période est écoulée, que la ressource source devient indisponible ou que le destinataire perd le droit d'y accéder. La permission doit être revérifiée à la lecture et avant l'action, pas seulement au moment du calcul.
 
-## 3. Objet et données conceptuels
+## 3. Contrats de domaine V1
 
-Une proposition devrait contenir un identifiant, un destinataire, une référence opaque vers la cible, une explication, une provenance minimisée, une priorité, éventuellement un score versionné, les dates de génération/disponibilité/expiration et une version de règle.
+Le contrat est défini dans `packages/core-contracts/src/recommendation.ts` et exporté par `@eco/core-contracts`.
 
-Une réaction devrait être liée à l'utilisateur et à la recommandation, avec une action, une date, une clé d'idempotence et éventuellement un motif de signalement.
+- `RecommendationRecord` : destinataire, cible opaque, explication, provenance, priorité, état de disponibilité, version de règle et dates.
+- `RecommendationCandidate` : candidat transitoire issu des projections autorisées.
+- `RecommendationSourceProjection` : projection minimisée, versionnée et limitée à la finalité `recommendation`.
+- `RecommendationReaction` : événement append-only `viewed/saved/accepted/dismissed/reported`.
+- Les commandes client ne portent pas de `recipientId` ; le serveur doit le dériver de l'identité authentifiée.
+- Les identifiants Recommendation et Reaction sont typés.
+- Les timestamps sont des millisecondes Unix.
+- Les statuts système sont `generated`, `available`, `expired`, `withdrawn`. Les réactions ne sont pas des statuts système.
+- Aucun score numérique n'est exposé tant qu'une formule calibrée et versionnée n'est pas approuvée.
 
-Ces schémas sont des propositions : aucun type TypeScript ni table Recommendation n'a été identifié dans le dépôt.
+Voir [contrat API et données](API_AND_DATA_CONTRACT.md) pour les décisions détaillées.
 
-## 4. Cycle de vie fonctionnel proposé
-
-Le contrat historique ne fixe pas de machine d'état formelle. Le vocabulaire proposé est : `generated`, `available`, `viewed`, `saved`, `accepted`, `dismissed`, `reported`, `expired`, `withdrawn`. Il est préférable de conserver les réactions comme événements séparés plutôt que d'écraser un unique statut.
-
-Ces états sont une cible de conception et non des statuts runtime existants.
-
-## 5. Règles métier et invariants
-
-- Une recommandation a un destinataire précis.
-- Une justification doit être reliée à des preuves autorisées.
-- Les droits de la ressource source sont revérifiés au moment de l'affichage.
-- Les propositions expirées, retirées ou dupliquées sont exclues.
-- La fréquence et la diversité sont contrôlées.
-- Les signaux sensibles ne sont jamais révélés dans l'explication.
-- Les réactions n'altèrent pas la ressource source.
-- Aucune action n'est exécutée sans consentement explicite dans le domaine propriétaire.
-- Une recommandation n'est ni une garantie, ni une décision automatique, ni une preuve sur une personne.
-
-## 6. Architecture cible et état réel
+## 4. Architecture cible et état réel
 
 Architecture cible : projections sources versionnées → ingestion/validation → contrôle de permission → génération de candidats → déduplication/fraîcheur → classement/diversité/fréquence → explication/provenance → stockage → API et réactions.
 
-L'inventaire de la branche ne montre aucun package/module applicatif Recommendation, type de contrat, repository, migration SQL, test dédié, job de calcul ou route API active. L'architecture ci-dessus est donc une cible, pas une description de services déjà présents.
+À ce stade, seuls les contrats de domaine TypeScript sont ajoutés. Aucun repository, migration SQL, test RLS, job de calcul, endpoint ou écran Recommendation n'est confirmé comme livré.
 
-## 7. API et événements historiques
+## 5. API et événements historiques
 
 Le contrat `11._Recommendation_API.md` propose :
 
@@ -86,23 +76,19 @@ Le contrat `11._Recommendation_API.md` propose :
 - `POST /recommendations/{id}/accept`
 - `POST /recommendations/{id}/report`
 
-Événements proposés : `RecommendationViewed`, `RecommendationAccepted`, `RecommendationDismissed`, `RecommendationSaved`, `RecommendationReported`.
-
 Ces routes et événements ne sont pas confirmés comme implémentés. Le destinataire devra toujours être dérivé de l'identité authentifiée.
 
-## 8. Sécurité et gouvernance
+## 6. Sécurité et gouvernance
 
 L'API future devra appliquer l'isolation stricte par destinataire, la revalidation des ressources sources, l'idempotence des réactions, la limitation de fréquence, l'audit des accès privilégiés et une politique de rétention. Les explications ne doivent pas exposer des attributs privés ou des signaux Trust non autorisés.
 
 Le classement doit être versionné, calibré et contrôlé contre les biais et les effets d'exclusion. Il ne doit pas être optimisé uniquement sur les clics ou acceptations.
 
-## 9. Critères de validation
+## 7. Validation et limites
 
-Tester isolation destinataire, retrait après révocation, fraîcheur, provenance, justification, déduplication, stabilité du classement, diversité, plafonds de fréquence, idempotence, signalement, absence de mutation source et absence d'exécution automatique.
+Les contrats TypeScript sont écrits mais leur compilation dans l'environnement du dépôt n'a pas encore été exécutée. Le schéma SQL, les contraintes, les index, les politiques RLS et les tests multi-utilisateurs restent à faire sur une base de test active. La politique de rétention/suppression doit aussi être validée avant persistance des réactions.
 
-Aucun test dédié Recommendation n'a été identifié dans la branche. Les documents de validation décrivent les tests à créer, non des résultats déjà obtenus.
-
-## 10. Sources autonomes
+## 8. Sources autonomes
 
 - [Spécification fonctionnelle](FUNCTIONAL_SPEC.md)
 - [Architecture technique](TECHNICAL_ARCHITECTURE.md)
