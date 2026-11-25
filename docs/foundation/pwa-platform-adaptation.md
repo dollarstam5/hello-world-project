@@ -1,7 +1,8 @@
 # Adaptation PWA et capacités des plateformes
 
 **Statut :** référence de conception V1 — implémentation et validation appareil réel à poursuivre.  
-**Portée :** Android, iOS, tablettes et ordinateurs, dans les navigateurs compatibles et en mode installé.
+**Priorité produit :** Vitalis V1 est mobile-first ; Android et iOS sont les plateformes de référence.  
+**Portée :** Android et iOS en priorité, tablette en adaptation secondaire ; desktop maintenu au niveau déjà fonctionnel, sans refonte dédiée V1.
 
 ## 1. Principe directeur
 
@@ -86,7 +87,7 @@ Chaque capacité utilisée dans un parcours V1 doit être testée au minimum dan
 - Android : navigateur courant et mode installé.
 - iOS : Safari et mode ajouté à l'écran d'accueil lorsque pris en charge.
 - Tablette : portrait et paysage.
-- Desktop : navigateur avec clavier, souris et fenêtre redimensionnable.
+- Desktop : contrôle de non-régression du parcours existant uniquement ; les validations avancées desktop sont hors priorité V1.
 - Réseau : connexion stable, réseau lent, perte réseau, retour réseau.
 - Permissions : non demandée, accordée, refusée, retirée après accord.
 - Préférences : mouvement réduit, pointeur grossier et fin.
@@ -105,7 +106,7 @@ Les résultats doivent préciser l'appareil, la version du système, le navigate
 | PWA-REAL-06 | iPhone récent                       | Vitalis depuis l'écran d'accueil | mode autonome, navigation, safe areas, notifications si prises en charge           |
 | PWA-REAL-07 | iPhone d'une génération antérieure  | Safari et mode installé          | compatibilité, performances, reprise après fermeture et retour réseau              |
 | PWA-REAL-08 | iPad                                | Safari, portrait et paysage      | identification iPadOS, adaptation responsive, clavier et zones sûres               |
-| PWA-REAL-09 | Ordinateur Windows ou macOS         | Chrome ou Edge                   | clavier/souris, redimensionnement, installation si proposée, mise à jour           |
+| PWA-REAL-09 | Ordinateur Windows ou macOS         | Chrome ou Edge                   | contrôle de non-régression : accès, navigation principale, affichage et absence de régression bloquante |
 
 Pour chaque appareil, exécuter les scénarios suivants lorsque pertinents :
 
@@ -153,3 +154,58 @@ La langue effective doit aussi être appliquée à `document.documentElement.lan
 Implémentation : `src/lib/i18n/useI18n.ts`. Tests : `tests/i18n.test.ts` (ordre des langues préférées, variantes régionales, préférence manuelle et changement de langue).
 
 **Limite actuelle :** les catalogues disponibles sont uniquement FR et EN. Une langue système différente ne déclenche pas une traduction approximative : Vitalis utilise le français par défaut jusqu'à l'ajout d'un catalogue validé.
+
+
+## 11. Priorité produit et périmètre des plateformes — Vitalis V1
+
+### 11.1 Mobile-first comme règle de priorité
+
+Vitalis V1 est conçu, développé et validé d'abord pour les téléphones. Les parcours mobiles Android et iOS constituent la référence fonctionnelle et ergonomique de la version.
+
+En conséquence :
+
+- Les parcours essentiels, la navigation, les formulaires, les actions, les états réseau, l'installation et l'accessibilité doivent être validés en priorité sur téléphone.
+- Les décisions de mise en page commencent par les petits viewports et les contraintes tactiles : zones sûres, clavier virtuel, orientation, lisibilité et usage à une main lorsque pertinent.
+- Une adaptation tablette peut être conservée lorsqu'elle fonctionne déjà, mais elle ne doit pas retarder la validation mobile.
+- La priorité mobile ne signifie pas que le desktop doit être supprimé ou rendu inutilisable.
+
+### 11.2 Politique desktop V1
+
+Le dépôt contient déjà une résolution de layout mobile/tablette/desktop (`src/layouts/AdaptiveLayout.tsx`). Toutefois, les variantes actuelles `src/layouts/mobile/index.ts`, `src/layouts/tablet/index.ts` et `src/layouts/desktop/index.ts` délèguent toutes à `AppShell`. Le layout desktop est donc un point d'entrée adaptatif existant, mais pas une composition desktop spécifique aboutie.
+
+Le shell partagé utilise notamment une largeur de contenu `max-w-screen-md` et la navigation basse mobile. La présence d'un breakpoint ou d'un composant `DesktopLayout` ne doit donc pas être interprétée comme la preuve d'une expérience desktop dédiée.
+
+Pour V1 :
+
+- conserver les comportements desktop qui sont déjà utilisables et ne pas introduire de régression ;
+- corriger uniquement les défauts qui bloquent l'accès, la lecture ou l'utilisation des parcours essentiels depuis un navigateur desktop ;
+- ne pas lancer de refonte desktop spécifique, de sidebar dédiée ou de composition multi-panneaux uniquement pour compléter la parité visuelle ;
+- ne pas retarder les validations Android/iOS pour des optimisations desktop non bloquantes ;
+- documenter les limites desktop connues et les conserver dans une liste de suivi V2, sauf si elles empêchent un usage essentiel déjà promis en V1.
+
+### 11.3 Niveau de validation par plateforme
+
+| Plateforme | Niveau attendu en V1 | Priorité |
+|---|---|---|
+| Téléphones Android | Parcours essentiels complets, installation PWA, navigation, permissions, réseau, accessibilité et essais réels | P0 — référence |
+| iPhone / iOS | Parcours essentiels complets, ajout à l'écran d'accueil, mode autonome, navigation, permissions disponibles, réseau et essais réels | P0 — référence |
+| Tablettes | Responsive fonctionnel, orientation et absence de blocage ; pas de composition dédiée exigée | P1 |
+| Desktop web | Non-régression des parcours déjà utilisables, navigation et lisibilité ; pas de refonte ni parité avancée exigée | P2 — maintien |
+
+Cette hiérarchie définit l'ordre de travail et de validation. Elle ne permet pas de déclarer une plateforme compatible sans preuves de tests correspondantes.
+
+### 11.4 Conditions de report à Vitalis V2
+
+Peuvent être reportés à V2, sauf blocage fonctionnel V1 avéré :
+
+- une navigation desktop dédiée (sidebar ou rail) ;
+- les compositions multi-colonnes et multi-panneaux ;
+- les interactions avancées clavier/souris propres au desktop ;
+- l'optimisation des grands écrans et des fenêtres très larges ;
+- la parité visuelle complète avec les parcours mobiles.
+
+Le report ne concerne pas les exigences transversales de sécurité, d'accessibilité de base, de confidentialité ou de fonctionnement des parcours V1 accessibles depuis desktop.
+
+### 11.5 Règle d'arbitrage
+
+Lorsqu'une amélioration mobile et une amélioration desktop entrent en concurrence pour le même effort, la validation et la qualité mobile V1 sont prioritaires. Une exception desktop n'est prioritaire que si elle corrige un défaut de sécurité, d'accessibilité fondamentale ou un blocage d'un parcours V1 déjà annoncé.
