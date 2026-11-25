@@ -84,7 +84,11 @@ type PresenceCacheEntry = { people: Person[]; timestamp: number; mode: "member" 
 let presenceCache: PresenceCacheEntry | null = null;
 const CACHE_TTL_MS = 45_000;
 
-function distributePeopleHarmoniously(rawPeople: RawNearbyPerson[], areaLabel: string, t: (key: MessageKey) => string): Person[] {
+function distributePeopleHarmoniously(
+  rawPeople: RawNearbyPerson[],
+  areaLabel: string,
+  t: (key: MessageKey) => string,
+): Person[] {
   const total = rawPeople.length;
   if (total === 0) return [];
   // Each orbit has its own evenly spaced angles; stagger the rings to avoid alignment.
@@ -106,7 +110,12 @@ function distributePeopleHarmoniously(rawPeople: RawNearbyPerson[], areaLabel: s
       name: displayName,
       avatarUrl: null,
       avatarKey: person.avatar_key,
-      initials: displayName.trim().split(/\s+/).slice(0, 2).map((part: string) => part[0]?.toUpperCase() ?? "").join(""),
+      initials: displayName
+        .trim()
+        .split(/\s+/)
+        .slice(0, 2)
+        .map((part: string) => part[0]?.toUpperCase() ?? "")
+        .join(""),
       angle: angles[index],
       description: person.description,
       locationLabel: person.area_label || areaLabel,
@@ -114,7 +123,6 @@ function distributePeopleHarmoniously(rawPeople: RawNearbyPerson[], areaLabel: s
     };
   });
 }
-
 
 export function useReelProximityController() {
   const { t } = useI18n();
@@ -148,8 +156,12 @@ export function useReelProximityController() {
     };
   }, [access.loading, access.mode, access.memberId, access.memberProfileState]);
 
-  const [isPageVisible, setIsPageVisible] = useState(() => typeof document === "undefined" || document.visibilityState === "visible");
-  const [isOnline, setIsOnline] = useState(() => typeof navigator === "undefined" ? true : navigator.onLine);
+  const [isPageVisible, setIsPageVisible] = useState(
+    () => typeof document === "undefined" || document.visibilityState === "visible",
+  );
+  const [isOnline, setIsOnline] = useState(() =>
+    typeof navigator === "undefined" ? true : navigator.onLine,
+  );
   const [isRefreshingDiscovery, setIsRefreshingDiscovery] = useState(false);
   const discoveryRequestId = useRef(0);
   const [discoveryAccess, setDiscoveryAccess] = useState<
@@ -795,10 +807,12 @@ export function useReelProximityController() {
   };
 
   const requestDiscovery = async (forceRefresh = false) => {
-    if (access.loading || !isPageVisible || (typeof navigator !== "undefined" && !navigator.onLine)) return;
+    if (access.loading || !isPageVisible || (typeof navigator !== "undefined" && !navigator.onLine))
+      return;
 
     const mode = access.mode === "guest" ? "guest" : "member";
-    const cacheIsFresh = presenceCache?.mode === mode && Date.now() - presenceCache.timestamp < CACHE_TTL_MS;
+    const cacheIsFresh =
+      presenceCache?.mode === mode && Date.now() - presenceCache.timestamp < CACHE_TTL_MS;
     if (!forceRefresh && presenceCache?.mode === mode) {
       // SWR: display cached nearby profiles immediately, then refresh if stale.
       setDiscoveredPeople(presenceCache.people);
@@ -824,7 +838,12 @@ export function useReelProximityController() {
         areaLabel = guestAreaLabel;
       } else {
         const zone = await resolveReelZone({
-          data: { latitude: fix.latitude, longitude: fix.longitude, purpose: "discover", consent: true },
+          data: {
+            latitude: fix.latitude,
+            longitude: fix.longitude,
+            purpose: "discover",
+            consent: true,
+          },
         });
         areaLabel = zone.areaLabel;
         const [members, guests] = await Promise.all([
@@ -902,7 +921,11 @@ export function useReelProximityController() {
       return { status: "scanning", count, labelKey: "reel.ambiance.scanning" };
     }
     if (isLive) {
-      return { status: count >= 4 ? "dense" : "live", count, labelKey: count >= 4 ? "reel.ambiance.dense" : "reel.ambiance.live" };
+      return {
+        status: count >= 4 ? "dense" : "live",
+        count,
+        labelKey: count >= 4 ? "reel.ambiance.dense" : "reel.ambiance.live",
+      };
     }
     if (count > 0) return { status: "dense", count, labelKey: "reel.ambiance.nearbyPeople" };
     return { status: "idle", count: 0, labelKey: "reel.ambiance.calm" };
