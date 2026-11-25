@@ -9,9 +9,9 @@ import {
 } from "lucide-react";
 import { Indicator } from "@/shared/components/Indicator";
 import { Surface } from "@/shared/components/Surface";
-import { useIdentity } from "@/lib/experience/identity";
-import { useAuth } from "@/modules/auth/model/useAuth";
-import { useI18n } from "@/lib/i18n/useI18n";
+import { useIdentity } from "@/modules/profile";
+import { useAuth } from "@/modules/auth";
+import { useI18n } from "@/platform/internationalization/useI18n";
 
 const cards = [
   {
