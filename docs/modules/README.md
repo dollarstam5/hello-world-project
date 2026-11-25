@@ -16,7 +16,7 @@ Chaque moteur possède son propre périmètre, son action centrale, ses commande
 
 | Moteur | Dossier documentaire | Domaine applicatif actuel | Action centrale |
 | --- | --- | --- | --- |
-| **En direct** (anciennement En direct) | [reel/](./reel/) | `src/domains/presence/` | Profil et présence de l'utilisateur au centre de l'expérience |
+| **En direct** | [reel/](./reel/) | `src/domains/presence/` | Profil et présence de l'utilisateur au centre de l'expérience |
 | **Flash** | [flash/](./flash/) | `src/domains/flash/` | Démarrer un Flash |
 | **Scan** | [scan/](./scan/) | `src/domains/scan/` | Explorer l'environnement et ses possibilités |
 | **Radar** | [radar/](./radar/) | `src/domains/radar/` | Démarrer une mission de recherche d'opportunités |
@@ -52,11 +52,7 @@ Veille est documenté comme un moteur de supervision des missions et d'analyse d
 
 ### Trust
 
-- [Trust Engine — partie 1](<./trust/03A-VITALA-TRUST-ENGINE-V1 Partie 1.md>)
-- [Trust Engine — partie 2](<./trust/03A-VITALA-TRUST-ENGINE-V1 Partie 2.md>)
-- [Trust Engine — partie 3](<./trust/03A-VITALA-TRUST-ENGINE-V1 Partie 3.md>)
-- [Trust Engine — mise à jour historique](<./trust/03A-VITALA-TRUST-ENGINE-V1.md Mise � jour.md>)
-- [Trust API — contrat historique](<./trust/8. Trust API.md>)
+- [Index Trust](./trust/README.md) — distingue les références canoniques produit et architecture des spécifications historiques du moteur et de son API.
 
 ## Unified Digital Identity (UDI)
 
