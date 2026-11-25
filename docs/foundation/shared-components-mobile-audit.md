@@ -166,3 +166,147 @@ Les principaux écarts documentés sont l'absence de borne de hauteur et de déf
 **Limite de l'audit :** aucune exécution sur appareil, mesure de rendu, test de lecteur d'écran ou test automatisé n'a été effectué. Les conclusions décrivent le code inspecté, pas une conformité runtime certifiée.
 
 **Aucun code applicatif ou composant runtime n'a été modifié dans cette étape.**
+
+
+---
+
+## 9. Audit mobile — Card, Surface et SmartCard
+
+### 9.1 Périmètre inspecté
+
+- `src/components/ui/card.tsx`
+- `src/shared/components/Surface.tsx`
+- `src/components/app/SmartCard.tsx`
+- usages représentatifs : `FlashCard`, `TrustCard`, `RadarCard`, `WalletCard`, `FlashDashboardRecordCard`, `EngineManagementGrid`.
+- points d'entrée de domaine `src/modules/trust/index.ts` et `src/modules/wallet/index.ts`.
+
+**Limite de recherche :** aucune utilisation directe de `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent` ou `CardFooter` n'a été trouvée dans le code applicatif indexé. Les observations de cette primitive portent donc sur son API et ses styles par défaut, pas sur un écran consommateur.
+
+### 9.2 Primitive Card — `src/components/ui/card.tsx`
+
+| Zone | Constat statique | Évaluation mobile |
+|---|---|---|
+| Élément racine | `div` avec bordure, fond, rayon xl et ombre | Conteneur de présentation, sans sémantique interactive ni dimensions imposées |
+| En-tête | Colonne avec espacement vertical et padding 24 px | Padding important sur 320 px ; le consommateur peut le réduire |
+| Titre | `div` en gras, `leading-none` et tracking serré | Pas de balise de titre sémantique ; le niveau de titre doit être assuré par le consommateur |
+| Description | `div` en texte 14 px et couleur atténuée | Taille secondaire conforme à la cible, sous réserve du contraste et de la longueur |
+| Contenu | Padding horizontal/vertical 24 px, retrait supérieur nul | Peut réduire la largeur utile sur petit écran ; prévoir des variantes locales si nécessaire |
+| Pied | Flex horizontal, alignement centré, padding 24 px | Aucun retour à la ligne ou empilement mobile imposé ; les actions multiples doivent être adaptées par le consommateur |
+| Interaction | Tous les éléments sont des `div` ; aucun rôle, tabIndex ou gestionnaire clavier | Ne pas rendre la carte cliquable sans envelopper l'action dans un lien/bouton natif ou définir un contrat interactif explicite |
+
+**Conclusion Card :** primitive neutre et essentiellement visuelle. Elle ne fournit ni adaptation responsive propre, ni structure de titres sémantique, ni contrat d'interaction. Les consommateurs contrôlent la hiérarchie, l'espacement et le comportement des actions.
+
+### 9.3 Surface — `src/shared/components/Surface.tsx`
+
+| Zone | Constat statique | Évaluation mobile |
+|---|---|---|
+| Élément racine | `div` recevant les attributs HTML standards | Sémantique neutre ; la responsabilité du rôle appartient à l'appelant |
+| Variantes | plain, elevated, sunken, glass, glass-strong, glass-soft, assistant | Variété visuelle utile ; contraste et séparation des surfaces à vérifier dans les deux thèmes |
+| Padding | none, sm (12 px), md (16 px), lg (24 px) | Échelle simple ; 24 px peut être trop consommateur sur 320 px, 12 px doit rester suffisant pour le confort de lecture |
+| Rayon | md à full, défaut 2xl (28 px) | Cohérent avec une interface mobile arrondie ; contrôler l'emboîtement des surfaces |
+| Bordure | Option `bordered`, 1 px | La séparation ne doit pas dépendre uniquement de la couleur |
+| Interaction | Option `interactive` ajoute les classes `interactive select-none` | N'ajoute ni rôle, ni tabIndex, ni gestionnaire clavier, ni action ; le nom peut laisser croire à un comportement complet alors qu'il s'agit de styles |
+| Glow | soft, ambient, focal | Effet décoratif ; vérifier contraste, distraction et performance sur appareils modestes |
+| Dimensions | Aucune hauteur, largeur ou cible tactile minimale définie | Les dimensions dépendent entièrement du contenu ; ne pas assimiler une grande surface à une cible d'action accessible |
+
+**Conclusion Surface :** bon conteneur visuel partagé, mais `interactive` ne constitue pas un contrat d'interaction accessible. Une Surface interactive doit être portée par un contrôle natif ou être associée à un comportement clavier et à une sémantique explicitement audités.
+
+### 9.4 SmartCard — `src/components/app/SmartCard.tsx`
+
+| Zone | Constat statique | Évaluation mobile |
+|---|---|---|
+| Composition | Utilise Surface avec padding md, flex colonne et gap 12 px | Espacement interne compact mais régulier |
+| En-tête | Slots leading, eyebrow, title, description et trailing | `leading` et `trailing` sont en shrink-0 ; les contenus injectés doivent gérer les dimensions extrêmes |
+| Titre | `h3`, texte 16 px, tracking serré et text-balance | Sémantique de titre présente, mais le niveau h3 doit être cohérent avec la hiérarchie réelle de la page |
+| Description | Paragraphe 14 px avec interligne relaxé | Conforme au texte secondaire ; vérifier les descriptions longues |
+| Pied | Slot footer libre | Les actions, leur ordre et leurs cibles tactiles relèvent de l'appelant |
+| Mode interactif | Ajoute cursor-pointer, tap, focus-ring et select-none à Surface | Ces classes ne créent pas à elles seules un rôle, tabIndex, nom accessible ni activation clavier |
+| Gestionnaire d'événement | Les attributs HTML reçus sont transmis à Surface ; les usages peuvent passer `onClick` | Un `onClick` sur le div reste insuffisant pour clavier et lecteurs d'écran |
+| Mouvement | motion.div avec hover/tap lorsque interactif et mouvement autorisé ; div sinon | Le retour visuel tactile est présent côté animation, mais le fallback reduced-motion ne résout pas la sémantique clavier |
+| Enveloppe motion | Wrapper avec classe `contents` autour de Surface | Vérifier le rendu réel, l'ordre de focus et les interactions imbriquées sur navigateurs mobiles |
+
+**Conclusion SmartCard :** le composant organise bien les contenus et propose un retour visuel tactile, mais son mode interactif reste un `div` cliquable sans contrat clavier natif. La préférence de mouvement réduit les animations, pas les exigences d'accessibilité.
+
+### 9.5 Usages représentatifs
+
+#### FlashCard — `src/components/app/FlashCard.tsx`
+
+- Transmet `onOpen` à SmartCard et active le style interactif lorsque le callback existe.
+- Le clic porte sur l'ensemble de la carte ; le slot `action` peut contenir d'autres commandes.
+- Risque de commandes imbriquées dans une zone cliquable globale : propagation, ordre de tabulation et activation doivent être explicitement conçus.
+- Le libellé TTL est injecté dans le slot trailing ; vérifier qu'il ne force pas le titre à une largeur trop faible.
+- À tester : activation clavier, lecteurs d'écran, tap sur la commande interne et tap sur le reste de la carte.
+
+#### TrustCard — `src/components/app/TrustCard.tsx`
+
+- Utilise SmartCard et transmet `onOpen` comme FlashCard.
+- L'icône est contenue dans une pastille 40 × 40 px ; elle est un repère visuel, pas une commande.
+- Score en 14 px ; son interprétation et son échelle restent définies par l'appelant.
+- Le statut vérifié comprend un libellé textuel, et ne repose donc pas uniquement sur la couleur.
+- À tester : signification accessible du score, activation clavier si `onOpen` est fourni et ordre de lecture du statut.
+
+#### RadarCard — `src/components/app/RadarCard.tsx`
+
+- Utilise également le mode interactif SmartCard lorsque `onOpen` existe.
+- Icône de localisation dans une zone 40 × 40 px.
+- Distance affichée en 12 px dans le slot trailing ; ne pas y placer une information essentielle à la décision sans assurer une taille et un contraste suffisants.
+- À tester : distances longues, titres localisés, petits écrans et navigation clavier.
+
+#### WalletCard — `src/components/app/WalletCard.tsx`
+
+- Utilise Surface directement, sans comportement interactif de carte.
+- Padding lg (24 px), rayon 3xl et valeur principale 4xl ; risque de débordement pour les valeurs et devises longues.
+- Métadonnées en 12 px ; elles doivent rester secondaires.
+- Slot trailing en shrink-0 sans taille minimale ni sémantique imposée ; l'appelant doit fournir un bouton accessible de 48 × 48 px minimum s'il s'agit d'une action.
+- Ce constat complète l'audit Wallet déjà consigné dans `mobile-interface-standards.md` ; il ne constitue pas un audit de parcours financier.
+
+#### FlashDashboardRecordCard — `src/modules/flash/ui/dashboard/components/FlashDashboardRecordCard.tsx`
+
+- Utilise Surface elevated, padding sm (12 px) et bordure.
+- La carte elle-même n'est pas interactive ; les commandes sont des boutons séparés, ce qui évite de transformer tout le bloc en cible ambiguë.
+- Les boutons de consultation, édition et suppression ont généralement 44 px de hauteur ; le bouton d'archivage et les commandes d'édition en cours sont explicitement réduits à 36 px.
+- Les actions de 36 px sont inférieures à la cible mobile de 48 px et constituent un écart concret, déjà repéré dans l'audit Flash.
+- Les titres et contenus sont limités à deux lignes hors édition ; vérifier que le texte tronqué n'empêche pas de comprendre la décision avant ouverture du détail.
+- À tester : largeur 320 px, édition avec clavier, disposition des commandes, focus et annonce des états busy.
+
+#### EngineManagementGrid — `src/components/experience/EngineManagementGrid.tsx`
+
+- Utilise Surface comme conteneur de présentation dans une grille à une colonne sur petit écran, deux colonnes à partir de sm.
+- Les cartes ne sont pas interactives et affichent un état « bientôt » avec texte.
+- Le titre et la description restent dans un bloc min-w-0 ; l'indicateur peut conserver sa largeur.
+- À tester : traduction longue, retour à une colonne, contraste de l'indicateur et absence de débordement.
+
+### 9.6 Écarts et priorités documentaires
+
+1. **P0 — SmartCard interactive :** remplacer le modèle de div cliquable par un lien ou bouton natif lorsque la carte représente une action unique ; si plusieurs actions coexistent, conserver des contrôles distincts et ne pas rendre toute la surface cliquable.
+2. **P0 — Clavier et lecteur d'écran :** pour chaque carte interactive existante, garantir nom accessible, activation Entrée/Espace selon le rôle, focus visible, ordre de tabulation et restitution correcte du focus.
+3. **P0 — Cibles tactiles :** corriger dans les usages les commandes de 36 px et vérifier toutes les actions injectées dans les slots ; cible attendue 48 × 48 px minimum.
+4. **P1 — Interactions imbriquées :** documenter le comportement des actions dans les slots footer/trailing lorsque la carte entière est activable, afin d'éviter doubles déclenchements et propagation inattendue.
+5. **P1 — Hiérarchie sémantique :** préciser le niveau de titre des SmartCard selon le contexte ; CardTitle en div ne fournit pas de structure de document.
+6. **P1 — Responsive :** tester les contenus longs dans leading/trailing, les titres localisés, les valeurs monétaires et les traductions sur 320, 360 et 390 px.
+7. **P1 — Contraste :** vérifier les variantes glass/elevated/sunken et les effets glow dans les thèmes clair et sombre, avec texte secondaire.
+8. **P2 — API Surface :** clarifier que `interactive` ajoute uniquement des styles visuels et ne rend pas la surface accessible ou activable au clavier.
+9. **P2 — Card non consommé :** avant d'en faire une base d'écran, définir les règles d'espacement mobile, de retour à la ligne du footer et de hiérarchie sémantique.
+
+### 9.7 Matrice de validation sur appareils
+
+| Scénario | Android téléphone | iPhone | Tablette |
+|---|---|---|---|
+| Card avec titre/description longs et padding 24 px | À tester | À tester | À tester |
+| Surface plain/elevated/glass/sunken en thèmes clair/sombre | À tester | À tester | À tester |
+| SmartCard interactive : activation tactile et clavier externe | À tester | À tester | À tester |
+| Focus visible, nom accessible et ordre lecteur d'écran | À tester | À tester | À tester |
+| Actions imbriquées dans footer/trailing | À tester | À tester | À tester |
+| Slots leading/trailing et contenus localisés longs | À tester | À tester | À tester |
+| Boutons de carte à 36/44/48 px et zoom texte | À tester | À tester | À tester |
+| Valeurs Wallet longues et absence de débordement horizontal | À tester | À tester | À tester |
+
+### 9.8 Conclusion de cette étape
+
+Card est une primitive visuelle peu contrainte et sans usage applicatif direct identifié. Surface est largement réutilisée et fournit une base de présentation cohérente, mais son option `interactive` n'ajoute pas de sémantique ou de comportement clavier. SmartCard apporte une composition riche et un retour tactile animé, mais le mode interactif repose lui aussi sur un élément div ; c'est le principal risque transversal relevé.
+
+Les usages FlashCard, TrustCard et RadarCard héritent de cette limite lorsqu'un callback `onOpen` est fourni. À l'inverse, FlashDashboardRecordCard sépare la surface des boutons d'action, mais comporte des cibles de 36 px dans certains états. WalletCard et EngineManagementGrid sont des surfaces de présentation et ne doivent pas être considérées comme interactives.
+
+**Limite de l'audit :** inspection statique uniquement. Aucun rendu navigateur, test automatisé, test clavier, lecteur d'écran ou essai sur appareil réel n'a été exécuté.
+
+**Aucun code applicatif ou composant runtime n'a été modifié dans cette étape.**
