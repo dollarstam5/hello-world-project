@@ -47,6 +47,19 @@ describe("mobile visual smoke contract", () => {
     expect(scrollCheck).not.toContain("9222");
   });
 
+  it("bounds each screenshot wait and cleans up its browser process group", () => {
+    expect(script).toContain("SCREENSHOT_TIMEOUT_SECONDS=45");
+    expect(script).toContain("run_screenshot()");
+    expect(script).toContain('setsid "$@" &');
+    expect(script).toContain('terminate_process_group "$SCREENSHOT_PID"');
+    expect(script).toContain('kill -TERM -- "-$pid"');
+    expect(script).toContain('kill -KILL -- "-$pid"');
+    expect(script).toContain(
+      "ERROR: screenshot timed out after ${SCREENSHOT_TIMEOUT_SECONDS}s: ${label}",
+    );
+    expect(script).toContain('"locale=${locale} route=${route} viewport=${viewport}"');
+  });
+
   it("asserts bottom-scroll clearance above the fixed navigation for Flash and Scan", () => {
     expect(script).toContain("scripts/check-mobile-scroll.mjs");
     expect(script).toContain("bottom-scroll clearance assertions");
