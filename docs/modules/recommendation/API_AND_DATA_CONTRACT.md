@@ -1,14 +1,40 @@
 # Recommendation — contrat API et données
 
-## 1. Statut
+## 1. Décisions R1 retenues
 
-Aucun contrat TypeScript Recommendation, repository, table, migration ou endpoint implémenté n'a été identifié dans l'arborescence de la branche. Ce document sépare donc :
-- les opérations proposées par le document historique ;
-- les champs et règles à définir avant implémentation.
+Le contrat TypeScript V1 est défini dans `packages/core-contracts/src/recommendation.ts` et exporté par `@eco/core-contracts`.
 
-Il ne faut pas générer un client HTTP ni un schéma SQL à partir de cette seule proposition sans validation produit/technique.
+| Sujet | Décision V1 |
+|---|---|
+| Version | `RECOMMENDATION_CONTRACT_VERSION = 1` |
+| Identité | UUID typés `RecommendationId` et `RecommendationReactionId` ; destinataire `UserId` |
+| Cible | Référence opaque `domain + type + ref`, qui ne confère aucun droit d'accès |
+| Types de cible | mission, flash, opportunity, person, skill, content, action |
+| Statut système | generated, available, expired, withdrawn |
+| Réactions | événements distincts : viewed, saved, accepted, dismissed, reported |
+| Réversibilité | les réactions sont des événements append-only ; une annulation future sera un nouvel événement/contrat explicite, pas une réécriture de l'historique |
+| Explication | résumé et codes de raison, sans données privées de tiers |
+| Provenance | domaine source, version de projection, date d'observation et date de mise à jour source |
+| Temps | timestamps Unix en millisecondes, cohérents avec les records du monorepo |
+| Classement | priorité low/normal/high ; aucun score numérique exposé en V1 |
+| Destinataire | absent des commandes client ; toujours dérivé de l'identité authentifiée côté serveur |
 
-## 2. Opérations REST historiques
+Les projections sources sont des entrées minimisées et versionnées, avec finalité explicite `recommendation`. Elles ne sont pas des lignes brutes des tables d'un autre domaine. Le candidat est un artefact de génération en mémoire, distinct du record persistant.
+
+## 2. Statut d'implémentation R1
+
+- [x] Contrats TypeScript versionnés et exportés.
+- [x] Identifiants de domaine typés.
+- [x] Cycle de vie séparant l'état de disponibilité et les réactions utilisateur.
+- [x] Score numérique exclu du contrat V1 tant qu'une formule/calibration versionnée n'est pas approuvée.
+- [ ] Schéma SQL, contraintes et index.
+- [ ] Politiques RLS et tests multi-destinataires.
+- [ ] Tests de compilation et de contrat exécutés dans l'environnement du dépôt.
+- [ ] Politique de rétention/suppression validée et implémentée.
+
+La migration et les tests RLS restent volontairement non déclarés comme livrés : ils doivent être ajoutés et exécutés contre une base de test active. Le projet Supabase associé n'a pas pu être utilisé comme environnement de validation lors de cette étape. Aucun schéma de production n'est présumé.
+
+## 3. Opérations REST historiques
 
 | Méthode | Route proposée | Intention |
 |---|---|---|
@@ -21,43 +47,49 @@ Il ne faut pas générer un client HTTP ni un schéma SQL à partir de cette seu
 
 Ce sont des routes cibles historiques, non des endpoints actifs confirmés. Le destinataire doit toujours être dérivé du contexte d'authentification, jamais d'un userId arbitraire fourni par le client.
 
-## 3. Schéma conceptuel proposé
+## 4. Modèle métier
 
-### Recommendation
+### RecommendationRecord
 
-| Champ | Type conceptuel | Règle |
+| Champ | Type | Règle |
 |---|---|---|
-| id | UUID | stable |
-| recipient_id | UUID | destinataire unique |
-| target_type | enum versionné | type de ressource source |
-| target_ref | référence opaque | ne donne pas de droit d'accès |
-| title / explanation | texte ou clés i18n | justification sans fuite |
-| evidence | JSON minimisé | provenance et signaux autorisés |
-| priority | enum | sémantique définie |
-| score | numérique nullable | uniquement si échelle calibrée/versionnée |
-| algorithm_version | texte | version de règle/modèle |
-| generated_at | timestamp | date de calcul |
-| available_at | timestamp | début d'affichage |
-| expires_at | timestamp | expiration |
-| withdrawn_at | timestamp nullable | retrait/révocation |
+| contractVersion | literal 1 | version du contrat |
+| id | RecommendationId | identifiant stable |
+| recipientId | UserId | destinataire unique |
+| target | RecommendationTargetReference | domaine, type et référence opaque |
+| title / explanation | texte et codes de raison | justification sans fuite |
+| provenance | RecommendationProvenance | projection autorisée et fraîcheur |
+| priority | low/normal/high | ordre explicable V1 |
+| status | generated/available/expired/withdrawn | état de disponibilité |
+| ruleVersion | string | version des règles ayant produit le résultat |
+| generatedAt / availableAt / expiresAt | number | millisecondes Unix |
+| withdrawnAt | number nullable | retrait/révocation |
 
-Ce schéma est une proposition de conception, pas un type ou une table existante.
+Aucun champ score n'existe dans le contrat V1. L'ordre peut utiliser une priorité explicitement définie, mais ne doit pas afficher de score arbitraire.
+
+### RecommendationSourceProjection
+
+Une projection comporte la version du contrat, le domaine source, un identifiant d'événement, la version de schéma, la finalité `recommendation`, la référence de cible, le destinataire autorisé, les horodatages et un payload minimisé. Une projection inconnue, invalide, hors finalité ou non autorisée est rejetée/mise en quarantaine.
+
+### RecommendationCandidate
+
+Un candidat est une structure transitoire construite à partir de projections autorisées. Il transporte destinataire, cible, explication, provenance, priorité, version de règle et fenêtre de disponibilité. Il ne constitue pas encore une recommandation affichable.
 
 ### RecommendationReaction
 
-| Champ | Type conceptuel | Règle |
+| Champ | Type | Règle |
 |---|---|---|
-| id | UUID | identifiant événement |
-| recommendation_id | UUID | référence à la proposition |
-| recipient_id | UUID | doit correspondre au destinataire |
+| id | RecommendationReactionId | identifiant d'événement |
+| recommendationId | RecommendationId | recommandation concernée |
+| recipientId | UserId | doit correspondre au destinataire |
 | action | enum | viewed, saved, accepted, dismissed, reported |
-| reason_code | texte nullable | requis/optionnel selon report |
-| idempotency_key | texte | éviter les doublons de commande |
-| created_at | timestamp | horodatage serveur |
+| idempotencyKey | string | déduplication de commande |
+| reason | enum nullable | motif normalisé pour report |
+| createdAt | number | horodatage serveur en millisecondes |
 
-Décider si `viewed` est une télémétrie nécessaire, si les réactions sont append-only, et comment l'utilisateur peut annuler save/accept/dismiss.
+Les réactions sont append-only. L'état courant (par exemple saved ou dismissed) est une projection calculée à partir de l'historique, et non une mutation du statut de disponibilité de la recommandation. Les règles de réversibilité devront être définies avant d'exposer une commande d'annulation.
 
-## 4. Contrat de lecture proposé
+## 5. Contrat de lecture proposé
 
 La liste doit :
 - retourner uniquement le destinataire courant ;
@@ -69,19 +101,21 @@ La liste doit :
 
 Le détail applique les mêmes contrôles que la liste. Connaître un identifiant de recommandation ne doit pas permettre de lire celle d'un autre utilisateur.
 
-## 5. Contrat de réaction proposé
+## 6. Contrat de réaction proposé
 
 Les commandes save, accept, dismiss et report doivent être authentifiées, idempotentes, limitées au destinataire, auditées et protégées contre le rejeu. Une action répétée ne doit pas créer de multiples réactions identiques.
 
 `accept` ne doit pas exécuter une action métier source. Si la suite du parcours nécessite une mutation, l'API retourne une intention ou un lien de navigation et le domaine source exige sa propre commande authentifiée.
 
-## 6. Codes d'erreur à formaliser
+Les commandes client ne contiennent jamais `recipientId`. La couche serveur l'obtient depuis la session/JWT vérifié.
+
+## 7. Codes d'erreur à formaliser
 
 Prévoir au minimum : non authentifié, non destinataire, recommandation inconnue, expirée, retirée, source inaccessible, action invalide, signalement incomplet, conflit d'idempotence, quota dépassé et source temporairement indisponible.
 
 Les réponses ne doivent pas distinguer inutilement « identifiant inexistant » de « identifiant appartenant à un autre utilisateur » si cette distinction permet l'énumération.
 
-## 7. Événements proposés
+## 8. Événements proposés
 
 Le contrat historique nomme :
 - `RecommendationViewed`
@@ -92,7 +126,7 @@ Le contrat historique nomme :
 
 Avant émission, définir enveloppe commune (eventId, occurredAt, schemaVersion, actor/recipient, recommendationId, action, correlationId), règles de livraison, idempotence, rétention et consommateurs autorisés.
 
-## 8. Versionnement et compatibilité
+## 9. Versionnement et compatibilité
 
 Versionner séparément :
 - le schéma de proposition ;
