@@ -1,27 +1,14 @@
 import { CircleHelp, Settings2, ShieldCheck, MapPin, Clock } from "lucide-react";
-import { haptic } from "@/platform/device/haptics";
 import { useI18n } from "@/lib/i18n/useI18n";
-import type { useReelProximityController } from "@/modules/reel/model/useReelProximityController";
-
-type ReelController = ReturnType<typeof useReelProximityController>;
-const DURATIONS = ["30 min", "1 h", "2 h", "3 h", "6 h", "12 h", "24 h"];
-const RADII = ["10 m", "25 m", "50 m", "100 m", "1 km"];
-const RADII_CONFIG: Record<string, { contextKey: string }> = {
-  "10 m": { contextKey: "reel.settings.radius.10" },
-  "25 m": { contextKey: "reel.settings.radius.25" },
-  "50 m": { contextKey: "reel.settings.radius.50" },
-  "100 m": { contextKey: "reel.settings.radius.100" },
-  "1 km": { contextKey: "reel.settings.radius.1000" },
-};
-const DURATIONS_CONFIG: Record<string, { badgeKey: string; color: string }> = {
-  "30 min": { badgeKey: "reel.settings.duration.30", color: "#22c55e" },
-  "1 h": { badgeKey: "reel.settings.duration.60", color: "#22c55e" },
-  "2 h": { badgeKey: "reel.settings.duration.120", color: "#38bdf8" },
-  "3 h": { badgeKey: "reel.settings.duration.180", color: "#38bdf8" },
-  "6 h": { badgeKey: "reel.settings.duration.360", color: "#eab308" },
-  "12 h": { badgeKey: "reel.settings.duration.720", color: "#f97316" },
-  "24 h": { badgeKey: "reel.settings.duration.1440", color: "#ef4444" },
-};
+import {
+  DURATIONS,
+  DURATIONS_CONFIG,
+  RADII,
+  RADII_CONFIG,
+  selectReelDuration,
+  selectReelRadius,
+  type ReelController,
+} from "./reel-settings-config";
 
 export function ReelSettingsPanel({
   controller,
@@ -43,15 +30,6 @@ export function ReelSettingsPanel({
   const { guestPresenceConsent, setGuestPresenceConsent, activateGuestPresence } = controller;
   const { presenceConsent, setPresenceConsent, stopPresence } = controller;
   const { activatePresence, presenceMessage } = controller;
-  const handleSelectRadius = (value: string) => {
-    haptic.tap();
-    setRadius(value);
-  };
-  const handleSelectDuration = (value: string) => {
-    haptic.tap();
-    setDuration(value);
-  };
-
   return (
     <>
       <div className="reel-panel__eyebrow">
@@ -107,7 +85,7 @@ export function ReelSettingsPanel({
                 role="radio"
                 aria-checked={isSelected}
                 className={`reel-segment-btn ${isSelected ? "is-selected" : ""}`}
-                onClick={() => handleSelectRadius(value)}
+                onClick={() => selectReelRadius(value, setRadius)}
               >
                 {value}
               </button>
@@ -151,7 +129,7 @@ export function ReelSettingsPanel({
                 type="button"
                 className={`reel-duration-card ${isSelected ? "is-selected" : ""}`}
                 aria-pressed={isSelected}
-                onClick={() => handleSelectDuration(value)}
+                onClick={() => selectReelDuration(value, setDuration)}
               >
                 <strong>{value}</strong>
                 <small>{t(conf?.badgeKey ?? "reel.settings.duration.active")}</small>
