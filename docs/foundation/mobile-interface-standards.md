@@ -406,3 +406,43 @@ Un écran ne peut être déclaré conforme au standard mobile Vitalis que si :
 5. Contrôler les espacements et le défilement horizontal des filtres après agrandissement, sans réduire les cibles tactiles pour faire tenir la rangée.
 
 **Conclusion de l’audit statique :** le module Flash comporte plusieurs écarts explicites au standard de cible tactile 48 × 48 px, principalement dans les commandes secondaires, les filtres et les actions de cartes. Il s’agit de constats sur les classes et composants déclarés, pas d’une mesure physique du rendu. Les dimensions effectives, l’espacement, le focus, les annonces de lecteur d’écran et les comportements tactiles doivent être validés sur appareils avant de clore l’audit. Aucun code applicatif n’a été modifié dans le cadre de cette étape.
+
+
+### 4.7 Audit des boutons — module Scan
+
+**Périmètre vérifié :** lecture statique des composants d’interface Scan présents dans la branche `chore/architecture-folder-cleanup-2026-11` : `ScanPanel.tsx`, `ScanPreferences.tsx`, `ScanHistory.tsx`, `ScanNeedInterpretation.tsx` et `ScanResults.tsx`. L’audit couvre les commandes déclarées dans ces fichiers. Le composant partagé `PublicProfilePreview`, rendu à l’intérieur des résultats, n’a pas été audité ici : ses propres commandes restent hors périmètre. Aucun rendu sur appareil n’a été mesuré.
+
+| Zone / commande | Constat dans le code de la branche | Évaluation mobile |
+|---|---|---|
+| Saisie du besoin — démarrer / arrêter la dictée | Bouton `min-h-11` (44 px), avec `aria-pressed` lié à l’état d’enregistrement et désactivation pendant une opération Scan | Sous la cible tactile de 48 px ; porter à 48 px minimum. L’état activé est exposé sémantiquement |
+| Saisie du besoin — continuer | Bouton pleine largeur `min-h-12` (48 px), désactivé si le texte est vide ou si Scan travaille | Conforme en dimension ; prérequis et état désactivé cohérents |
+| Confirmation — confirmer le besoin | Bouton `min-h-12` (48 px), action principale | Conforme en dimension |
+| Confirmation — modifier le besoin | Bouton `min-h-12` (48 px), action secondaire | Conforme en dimension |
+| Critères — continuer | Bouton `min-h-12` (48 px), action principale | Conforme en dimension |
+| Critères — revenir modifier le besoin | Bouton `min-h-12` (48 px) | Conforme en dimension |
+| Lancement — lancer Scan | Bouton `min-h-14` (56 px), désactivé pendant localisation ou traitement, avec `aria-busy` et libellé de progression | Conforme ; bon retour d’état déclaré. Vérifier l’annonce effective et la prévention du double déclenchement |
+| Lancement — modifier les critères | Bouton `min-h-12` (48 px), désactivé pendant une opération | Conforme en dimension |
+| Préférences — ouvrir / fermer les critères de distance | Élément `summary` de divulgation avec `min-h-10` (40 px) sur petit écran et `sm:min-h-11` (44 px) à partir du breakpoint | Sous la cible sur toutes les tailles ; porter à 48 px minimum, y compris sur téléphone |
+| Préférences — choisir un rayon | Boutons `min-h-12` (48 px), avec `aria-pressed` et désactivation possible | Conforme en dimension et état sélectionné exposé |
+| Historique — ouvrir / fermer l’historique | Élément `summary` de divulgation avec `min-h-11` (44 px) | Sous la cible ; porter à 48 px minimum |
+| Historique — effacer l’historique | Bouton `min-h-11` (44 px), affiché uniquement si des entrées existent | Sous la cible ; porter à 48 px. Vérifier également que l’action destructive est confirmée ou annulable selon son comportement réel |
+| Résultats — cartes de candidats | Aucun bouton d’action local n’est déclaré dans `ScanResults.tsx` ; le composant affiche des informations et peut intégrer `PublicProfilePreview` | Pas de conclusion sur les commandes du profil embarqué, qui nécessitent un audit séparé du composant partagé |
+
+**Constats transversaux :**
+
+- Les actions principales du parcours (continuer, confirmer, lancer) respectent la hauteur minimale de 48 px ; le lancement dispose même de 56 px.
+- Les écarts de dimension observés concernent surtout les commandes secondaires et les contrôles de divulgation : dictée vocale à 44 px, ouverture des préférences à 40/44 px, ouverture de l’historique à 44 px et effacement de l’historique à 44 px.
+- Les choix de rayon exposent correctement leur sélection avec `aria-pressed`. La dictée expose son état d’enregistrement avec le même attribut.
+- Les états de chargement et de désactivation sont explicitement gérés sur plusieurs actions du parcours. Le lancement expose `aria-busy` ; la vérification du rendu et des annonces avec TalkBack / VoiceOver reste nécessaire.
+- Les contrôles de progression du parcours sont des indicateurs visuels non interactifs ; ils ne doivent pas être confondus avec des boutons ou des étapes directement sélectionnables.
+- Les éléments `summary` natifs assurent l’ouverture des sections, mais leurs dimensions tactiles doivent respecter le même standard que les boutons.
+
+**Priorités documentaires de mise en conformité :**
+
+1. Porter à 48 px minimum les commandes de dictée, les deux contrôles `summary` (préférences et historique) et le bouton d’effacement de l’historique.
+2. Vérifier le traitement de l’effacement de l’historique : confirmation, possibilité d’annulation ou retour de succès explicite, selon la réversibilité réelle de l’action.
+3. Tester la dictée sur Android et iOS : permission microphone, indisponibilité, démarrage / arrêt, état annoncé et conservation du texte déjà saisi.
+4. Tester le parcours complet au clavier et avec lecteur d’écran, en particulier les divulgations, les états de chargement et les changements d’étape.
+5. Auditer séparément `PublicProfilePreview` avant de déclarer les interactions des résultats Scan conformes.
+
+**Conclusion de l’audit statique :** le parcours principal Scan est globalement aligné sur la cible de hauteur tactile de 48 px. Quatre commandes présentent un écart explicite : dictée, ouverture des préférences, ouverture de l’historique et effacement de l’historique. Les résultats ne déclarent pas de bouton local, mais peuvent contenir des commandes provenant d’un composant partagé non audité ici. Les dimensions effectives, l’espacement, les annonces accessibles et les comportements tactiles doivent être validés sur appareils avant clôture. Aucun code applicatif n’a été modifié dans cette étape.
