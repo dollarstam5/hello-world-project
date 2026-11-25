@@ -1,5 +1,2 @@
-import * as AspectRatioPrimitive from "@radix-ui/react-aspect-ratio";
-
-const AspectRatio = AspectRatioPrimitive.Root;
-
-export { AspectRatio };
+/** @deprecated Import from "@/shared/ui/aspect-ratio" instead. */
+export * from "@/shared/ui/aspect-ratio";

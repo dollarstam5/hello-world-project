@@ -27,3 +27,5 @@ export {
 } from "@eco/core-db";
 
 export { OfflineBanner } from "./ui";
+
+export { SyncIndicator } from "./SyncIndicator";
