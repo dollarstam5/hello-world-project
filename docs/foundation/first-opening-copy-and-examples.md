@@ -123,10 +123,37 @@ La rédaction de Flash doit donc laisser de la place :
 Envie de voir qui est autour de vous ?
 
 **En direct — texte**  
-En direct vous permet de découvrir les personnes à proximité. Et c'est vous qui choisissez si votre présence peut être visible par les autres.
+En direct vous permet de découvrir les personnes qui ont choisi de partager leur présence à proximité. Et si vous le souhaitez, vous pouvez partager la vôtre séparément. Vous gardez le choix.
 
-**Exemple illustratif**  
-« Je suis dans le quartier et j'aimerais voir qui est à proximité. »
+**Exemples illustratifs — présences humaines et situations du quotidien**
+
+En direct ne doit pas être présenté comme un moteur de recherche de services ou comme une messagerie. La personne choisit une courte phrase qui décrit sa présence et ce qu'elle souhaite partager avec les personnes à proximité. Les exemples doivent évoquer des occasions de créer du lien, sans obliger à révéler une difficulté intime.
+
+- **Nouvel arrivant dans un quartier :** « Je viens d'arriver dans le quartier. Ce serait un plaisir de faire connaissance avec les personnes du coin. »
+- **Envie de compagnie :** « Je vais faire une petite marche dans le quartier. Si quelqu'un souhaite faire un bout de chemin, faites-moi signe. »
+- **Activité avec des enfants :** « Je suis au parc avec les enfants. Si d'autres familles sont dans le coin, nous pouvons nous saluer. »
+- **Rencontre autour d'un intérêt :** « J'aime la lecture et les échanges autour des livres. Ravi de rencontrer des personnes qui partagent cet intérêt. »
+- **Présence lors d'un événement :** « Je participe à la rencontre aujourd'hui. N'hésitez pas à me faire signe si vous y êtes aussi. »
+- **Besoin de lien, exprimé avec discrétion :** « J'aimerais échanger avec quelqu'un du quartier, simplement et sans pression. »
+- **Proposition d'entraide de proximité :** « Je suis dans le secteur cet après-midi et disponible pour un petit coup de main si besoin. »
+
+Ces phrases sont des exemples de descriptions que la personne pourrait choisir de rendre visibles. Elles ne signifient pas que d'autres personnes sont présentes, qu'une activité est organisée ou qu'une aide sera apportée.
+
+**Ce que l'audit de l'implémentation confirme**
+
+- La découverte des personnes à proximité et la publication de sa propre présence sont deux actions distinctes. Découvrir les autres ne rend pas automatiquement la personne visible.
+- La localisation est demandée après une action explicite. Le code inspecté utilise une position ponctuelle ; il ne met pas en place de suivi GPS continu ou en arrière-plan.
+- La personne choisit une zone approximative, un rayon et une durée, puis donne son accord avant de publier sa présence. La description publique est limitée à 180 caractères.
+- Seules les personnes qui ont effectivement partagé une présence peuvent apparaître dans la découverte. Un espace calme doit être présenté honnêtement, sans inventer de personnes autour.
+- « Faire signe » (Bip) est l'action de premier contact. L'envoi nécessite que la personne qui fait signe ait elle-même une présence active ; l'autre personne peut accepter ou refuser. L'acceptation établit une mise en relation et celle-ci peut ensuite être terminée.
+- Ne pas promettre une conversation privée, une rencontre physique, une vérification d'identité ou une relation de confiance comme conséquence automatique d'un Bip.
+
+**Précautions humaines et de confidentialité**
+
+- Ne jamais pousser quelqu'un à publier qu'il est seul, vulnérable, en difficulté, malade ou en recherche de protection. Une formulation plus discrète doit toujours rester possible.
+- Ne pas utiliser de détails permettant de localiser précisément une personne, notamment une adresse, une habitude horaire fixe ou l'endroit où se trouve un enfant.
+- Ne pas transformer En direct en service de secours, de garde, de soins, de rencontre amoureuse ou de mise en relation professionnelle : ces usages ne sont pas établis par le comportement audité.
+- Éviter les formulations qui suggèrent que la personne doit être visible pour profiter de Vitalis. La découverte peut rester séparée de sa propre visibilité.
 
 **Radar — titre**  
 Il y a quelque chose que vous aimeriez retrouver ?
@@ -188,7 +215,7 @@ Les cartes doivent aider à choisir en quelques secondes. Une phrase simple suff
 |---|---|---|
 | Flash | Vous avez besoin d'un coup de main, vous cherchez une personne pour une tâche ou vous avez du temps à proposer ? Dites-le ici. | « J'aurais besoin de deux personnes pour m'aider pendant trois jours sur un chantier. » |
 | Scan | Vous cherchez quelque chose ? Regardez parmi les Flashs publics. | « Je cherche un mécanicien près de Bonapriso. » |
-| En direct | Voyez les personnes à proximité. Vous gardez le choix de rendre votre présence visible ou non. | « J'aimerais voir qui est autour de moi. » |
+| En direct | Découvrez les personnes qui partagent leur présence à proximité. Vous choisissez séparément si la vôtre est visible. | « Je viens d'arriver dans le quartier. Ce serait un plaisir de faire connaissance. » |
 | Radar | Vous avez une recherche à garder en tête ? Décrivez-la librement et enregistrez-la dans Radar. | « Je cherche un développeur pour m'aider sur une application. » |
 
 **Précision courte pour Radar**  
