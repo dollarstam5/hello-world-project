@@ -86,6 +86,16 @@ Objectif : rendre le radar immédiatement compréhensible, garder l'avatar centr
 
 Ces valeurs (8 à 12 rayons, deux anneaux au maximum) constituent une base de conception à ajuster sur le rendu réel ; elles ne sont pas des exigences rigides si les tests de lisibilité montrent qu'une densité plus faible est préférable.
 
+
+#### Première implémentation des rayons
+
+- Un calque décoratif `reel-radar__rays` est rendu dans le radar, derrière les profils et sans remplacer le bouton central.
+- Le calque dessine dix rayons fins, espacés régulièrement, avec une faible opacité. Un masque elliptique laisse dégagé l'espace occupé par l'avatar et son libellé : les rayons semblent partir de son voisinage immédiat sans passer sur son visage ni son nom.
+- Le mouvement de rotation est très lent (72 secondes par tour). Il est arrêté en mode calme et lorsque le système demande une réduction des animations.
+- Une nuance légèrement distincte est prévue pour le thème sombre.
+- L'avatar, sa commande d'activation/arrêt de présence et les profils périphériques conservent leur structure et leurs interactions.
+- Vérification effectuée sur les fichiers de la branche : présence du calque, maintien de `SelfRadarIdentity` et de la liste `visiblePeople`, règles clair/sombre et réduction des animations. Les tests automatisés, le rendu navigateur et les essais sur appareils mobiles restent à effectuer ; cette première intégration n'est pas encore déclarée validée visuellement.
+
 ### Commandes secondaires d'En direct
 
 - Accueil : retour à l'accueil Vitalis.
