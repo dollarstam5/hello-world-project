@@ -20,9 +20,9 @@ This section documents the repository-backed PostgreSQL model, migrations, grant
 
 ## Historical references retained
 
-- `docs/database/DATABASE-DICTIONARY Partie 1.md`
-- `docs/database/DATABASE-DICTIONARY Partie 2.md`
-- `docs/database/Database Architecture.md` (copie exacte conservée ; `docs/database/Vitala Database Architecture.md` a été retiré après vérification de l'identité du contenu)
+- `docs/database/DATABASE-DICTIONARY Partie 1 — Présentation générale.md`
+- `docs/database/DATABASE-DICTIONARY Partie 5 — Annexes.md`
+- `docs/database/Database Architecture.md` (copie exacte conservée ; `Vitala Database Architecture.md` a été retiré après vérification de l'identité du contenu)
 - `docs/database/DATA_MODEL.md`
 
 These references remain historical context. Their intended architecture is not proof of the current SQL schema. Seules les copies strictement identiques, vérifiées par leur blob Git et approuvées dans le cadre de la déduplication, peuvent être retirées ; les sources contenant des informations uniques restent conservées.
