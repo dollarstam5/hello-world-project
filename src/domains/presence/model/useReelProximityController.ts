@@ -11,7 +11,7 @@ import { useReelGuestPresence } from "@/domains/presence/model/reel-proximity/us
 import { useReelGuestSession } from "@/domains/presence/model/reel-proximity/useReelGuestSession";
 import { useReelPanelState } from "@/domains/presence/model/reel-proximity/useReelPanelState";
 import { useI18n } from "@/lib/i18n/useI18n";
-import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
+import { useCommunicationRuntime } from "@/features/communication/CommunicationRuntimeProvider";
 import { sendReelBip, sendReelBipToGuest } from "@/domains/presence/api/reel-presence.client";
 import { sendReelGuestBip } from "@/domains/presence/api/reel-guest-session.functions";
 

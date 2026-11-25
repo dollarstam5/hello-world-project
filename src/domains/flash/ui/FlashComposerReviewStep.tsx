@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { FLASH_SCOPES, FLASH_URGENCIES } from "@eco/core-contracts";
 import type { FlashCategory, FlashKind, FlashTimeSlot } from "@eco/core-contracts";
 import { Button } from "@/components/ui/button";
-import { formatCommunicationMessage } from "@/lib/communication/format";
+import { formatCommunicationMessage } from "@/features/communication/model/format";
 import { useI18n } from "@/lib/i18n/useI18n";
 import type { useFlashComposer } from "./useFlashComposer";
 

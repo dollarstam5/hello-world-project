@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { claimNameGreetingForSession, getHomeGreetingKey } from "@/lib/communication/greeting";
-import { formatCommunicationMessage } from "@/lib/communication/format";
-import type { MessageKey } from "@/lib/i18n/messages";
+import { claimNameGreetingForSession, getHomeGreetingKey } from "@/features/communication/model/greeting";
+import { formatCommunicationMessage } from "@/features/communication/model/format";
+import type { MessageKey } from "@/platform/internationalization/messages";
 
 describe("getHomeGreetingKey", () => {
   afterEach(() => {

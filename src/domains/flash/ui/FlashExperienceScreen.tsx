@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight, Check, Plus, Sparkles, X, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/domains/auth";
-import { formatCommunicationMessage } from "@/lib/communication/format";
+import { formatCommunicationMessage } from "@/features/communication/model/format";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { FlashFeed } from "./FlashFeed";
 import { FlashComposerDialog } from "./FlashComposerDialog";

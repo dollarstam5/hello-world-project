@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { prepareCommunicationMessages } from "@/lib/communication/dispatch";
-import type { MessageKey } from "@/lib/i18n/messages";
+import { prepareCommunicationMessages } from "@/features/communication/model/dispatch";
+import type { MessageKey } from "@/platform/internationalization/messages";
 
 describe("prepareCommunicationMessages", () => {
   const translate = (key: MessageKey) => (key === "home.welcome.named" ? "Bonjour, {name} !" : key);

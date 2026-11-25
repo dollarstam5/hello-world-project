@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { createCommunicationDeliverySession } from "@/lib/communication/delivery-session";
-import { prepareCommunicationMessages } from "@/lib/communication/dispatch";
-import type { MessageKey } from "@/lib/i18n/messages";
+import { createCommunicationDeliverySession } from "@/features/communication/model/delivery-session";
+import { prepareCommunicationMessages } from "@/features/communication/model/dispatch";
+import type { MessageKey } from "@/platform/internationalization/messages";
 
 describe("communication delivery session", () => {
   const translate = (key: MessageKey) => key;
