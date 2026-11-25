@@ -1,5 +1,8 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { claimNameGreetingForSession, getHomeGreetingKey } from "@/features/communication/model/greeting";
+import {
+  claimNameGreetingForSession,
+  getHomeGreetingKey,
+} from "@/features/communication/model/greeting";
 import { formatCommunicationMessage } from "@/features/communication/model/format";
 import type { MessageKey } from "@/platform/internationalization/messages";
 
