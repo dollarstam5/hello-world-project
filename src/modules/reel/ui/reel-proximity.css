@@ -2724,8 +2724,8 @@
     rgb(40 120 240 / 19%) 35.48deg 35.82deg,
     transparent 35.95deg 36deg
   );
-  -webkit-mask-image: radial-gradient(circle, transparent 0 23%, #000 27% 100%);
-  mask-image: radial-gradient(circle, transparent 0 23%, #000 27% 100%);
+  -webkit-mask-image: radial-gradient(ellipse 23% 31% at 50% 50%, transparent 98%, #000 112%);
+  mask-image: radial-gradient(ellipse 23% 31% at 50% 50%, transparent 98%, #000 112%);
   pointer-events: none;
   animation: reel-radar-rays-drift 72s linear infinite;
 }
