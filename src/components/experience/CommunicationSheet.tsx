@@ -1,11 +1,11 @@
 import { lazy, Suspense } from "react";
-import { Sheet } from "@/components/app/Sheet";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useI18n } from "@/lib/i18n/useI18n";
+import { Sheet } from "@/shared/components/Sheet";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
+import { useI18n } from "@/platform/internationalization/useI18n";
 import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
 import { useReelActivityProjection } from "@/modules/reel/model/reel-activity-projection";
-import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
-import { useNetworkStatus } from "@/lib/platform/useNetworkStatus";
+import { useCommunicationRuntime } from "@/features/communication/CommunicationRuntimeProvider";
+import { useNetworkStatus } from "@/platform/network/useNetworkStatus";
 
 export function getReelActivityStatusKey(
   online: boolean,
