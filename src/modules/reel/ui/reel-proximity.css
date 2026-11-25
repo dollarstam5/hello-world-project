@@ -2800,9 +2800,9 @@
   .reel-proximity__radar .reel-radar__rays {
     background: repeating-conic-gradient(
       from -0.6deg,
-      transparent 0deg 44.55deg,
-      rgb(40 120 240 / 12%) 44.68deg 44.96deg,
-      transparent 45.08deg 45deg
+      transparent 0deg 44.45deg,
+      rgb(40 120 240 / 12%) 44.58deg 44.82deg,
+      transparent 44.95deg 45deg
     );
     opacity: 0.72;
   }
@@ -2810,9 +2810,9 @@
   .dark .reel-proximity__radar .reel-radar__rays {
     background: repeating-conic-gradient(
       from -0.6deg,
-      transparent 0deg 44.55deg,
-      rgb(125 190 255 / 10%) 44.68deg 44.96deg,
-      transparent 45.08deg 45deg
+      transparent 0deg 44.45deg,
+      rgb(125 190 255 / 10%) 44.58deg 44.82deg,
+      transparent 44.95deg 45deg
     );
   }
 }
