@@ -14,11 +14,11 @@ See [API contract status and runtime mapping](./contract-runtime-status.md) for 
 
 ## Legacy references
 
-- `docs/4. Auth API.md`
-- [`docs/03-engines/flash/6. Flash API.md`](<../modules/flash/6. Flash API.md>) — source classée ; l'ancien chemin reste à vérifier avant clôture de la migration
-- [`docs/03-engines/trust/8. Trust API.md`](<../modules/trust/8. Trust API.md>) — contrat historique classé
-- [`docs/03-engines/radar/9. Radar API.md`](<../modules/radar/9. Radar API.md>) — source classée ; l'ancien chemin reste à vérifier avant clôture de la migration
-- [`docs/03-engines/veille/10. Veille API.md`](<../modules/veille/10. Veille API.md>) — contrat historique classé
-- [`docs/03-engines/recommendation/11._Recommendation_API.md`](../modules/recommendation/11._Recommendation_API.md) — contrat historique classé
-- `docs/15. Sync API.md`
-- `docs/5. Unified Digital Identity API.md`
+- [`4. Auth API.md`](<./4. Auth API.md>)
+- [Flash API — source historique](<../modules/flash/6. Flash API.md>) — classée sous `docs/modules/flash/`
+- [Trust API — source historique](<../modules/trust/8. Trust API.md>) — classée sous `docs/modules/trust/`
+- [Radar API — source historique](<../modules/radar/9. Radar API.md>) — classée sous `docs/modules/radar/`
+- [Veille API — source historique](<../modules/veille/10. Veille API.md>) — classée sous `docs/modules/veille/`
+- [Recommendation API — source historique](../modules/recommendation/11._Recommendation_API.md) — classée sous `docs/modules/recommendation/`
+- [`15. Sync API.md`](<./15. Sync API.md>)
+- [`5. Unified Digital Identity API.md`](<./5. Unified Digital Identity API.md>)
