@@ -8,7 +8,7 @@ import { InstallBanner } from "@/platform/pwa/ui/InstallBanner";
 import { UpdateBanner } from "@/platform/pwa/ui/UpdateBanner";
 import { useResponsive } from "@/platform/device/useResponsive";
 import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
-import { AssistantNoticeLayer } from "@/components/experience/AssistantNoticeLayer";
+import { useAssistantNotices } from "@/lib/app/assistant-notices";
 import { useOnboarding } from "@/features/onboarding";
 import { SyncEngineLoader } from "@/components/app/SyncEngineLoader";
 import { CommunicationRuntimeProvider } from "@/features/communication/CommunicationRuntimeProvider";
@@ -17,6 +17,11 @@ import { useI18n } from "@/platform/internationalization/useI18n";
 import { resetReelActivityProjection } from "@/modules/reel/model/reel-activity-projection";
 import { useAccessMode } from "@/modules/access-mode";
 
+const AssistantNoticeLayer = lazy(() =>
+  import("@/components/experience/AssistantNoticeLayer").then((module) => ({
+    default: module.AssistantNoticeLayer,
+  })),
+);
 const ReelCommunicationBridge = lazy(() =>
   import("@/modules/reel/model/ReelCommunicationBridge").then((module) => ({
     default: module.ReelCommunicationBridge,
@@ -55,6 +60,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const access = useAccessMode();
   const { locale } = useI18n();
   const assistantEnabled = useAssistantPreferences((state) => state.enabled);
+  const assistantNotice = useAssistantNotices((state) => state.notice);
   const assistantPreferencesHydrated = useAssistantPreferences((state) => state.hydrated);
   const communicationContext = useMemo(
     () => ({
@@ -138,7 +144,11 @@ export function AppShell({ children }: { children: ReactNode }) {
         <Suspense fallback={null}>
           <ReelCommunicationBridge />
         </Suspense>
-        <AssistantNoticeLayer />
+        {assistantNotice && (
+          <Suspense fallback={null}>
+            <AssistantNoticeLayer />
+          </Suspense>
+        )}
         <OfflineBanner />
         {!routeOwnsHeader && <AppHeader onOpenCommunication={() => setCommunicationOpen(true)} />}
         <main
