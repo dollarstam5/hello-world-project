@@ -6,14 +6,14 @@ import { OfflineBanner } from "@/platform/offline/ui/OfflineBanner";
 import { AppHeader } from "@/components/experience/AppHeader";
 import { InstallBanner } from "@/platform/pwa/ui/InstallBanner";
 import { UpdateBanner } from "@/platform/pwa/ui/UpdateBanner";
-import { useResponsive } from "@/lib/platform/useResponsive";
+import { useResponsive } from "@/platform/device/useResponsive";
 import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
 import { AssistantNoticeLayer } from "@/components/experience/AssistantNoticeLayer";
-import { useOnboarding } from "@/lib/experience/onboarding";
+import { useOnboarding } from "@/features/onboarding";
 import { SyncEngineLoader } from "@/components/app/SyncEngineLoader";
-import { CommunicationRuntimeProvider } from "@/lib/communication/CommunicationRuntimeProvider";
+import { CommunicationRuntimeProvider } from "@/features/communication/CommunicationRuntimeProvider";
 import { useAuth } from "@/modules/auth";
-import { useI18n } from "@/lib/i18n/useI18n";
+import { useI18n } from "@/platform/internationalization/useI18n";
 import { resetReelActivityProjection } from "@/modules/reel/model/reel-activity-projection";
 import { useAccessMode } from "@/modules/access-mode";
 
