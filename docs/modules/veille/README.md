@@ -15,3 +15,7 @@ Documentation autonome du moteur Veille.
 ## Statut en bref
 
 La branche contient des spécifications et contrats historiques, mais aucun pipeline runtime Veille (collecte, agrégation, anonymisation, calcul de tendances/IOV), API, migration, job, UI ou test dédié n'a été identifié. Les documents séparent explicitement la cible produit des capacités effectivement démontrées.
+
+## Backlog d'implémentation
+
+- [Issue #92 — implémenter Veille personnelle et intelligence collective protégée](https://github.com/dollarstam5/hello-world-project/issues/92) : décisions produit, surveillance personnelle, sources, pipeline, agrégations privées, tendances/IOV et consentements.
