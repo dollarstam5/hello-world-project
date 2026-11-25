@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useAccessMode } from "@/domains/access-mode";
 import { subscribeToReelMemberActivity } from "@/domains/presence/services/reel-activity-realtime.service";
-import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
-import type { MessageKey } from "@/lib/i18n/messages";
+import { useCommunicationRuntime } from "@/features/communication/CommunicationRuntimeProvider";
+import type { MessageKey } from "@/platform/internationalization/messages";
 
 const messageByKind = {
   bip_received: "communication.event.reel.bipReceived",

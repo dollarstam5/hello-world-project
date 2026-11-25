@@ -7,7 +7,7 @@ import { ProfileQuickPreview } from "./ProfileQuickPreview";
 import { useIdentity } from "@/lib/experience/identity";
 import { useAuth } from "@/domains/auth/model/useAuth";
 import { useI18n } from "@/lib/i18n/useI18n";
-import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
+import { useCommunicationRuntime } from "@/features/communication/CommunicationRuntimeProvider";
 import { useReelActivityProjection } from "@/domains/presence/model/reel-activity-projection";
 
 export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => void }) {

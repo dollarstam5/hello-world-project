@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { Pencil, X } from "lucide-react";
 import type { RadarRadiusKm, RadarRecord } from "@eco/core-contracts";
-import type { MessageKey } from "@/lib/i18n/messages";
+import type { MessageKey } from "@/platform/internationalization/messages";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,8 +18,8 @@ import { RadarDraftForm } from "./RadarDraftForm";
 import { Surface } from "@/components/app/Surface";
 import { useAuth } from "@/domains/auth/model/useAuth";
 import { useI18n } from "@/lib/i18n/useI18n";
-import { formatCommunicationMessage } from "@/lib/communication/format";
-import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
+import { formatCommunicationMessage } from "@/features/communication/model/format";
+import { useCommunicationRuntime } from "@/features/communication/CommunicationRuntimeProvider";
 import { publishRadarCommunicationEvent } from "../communication-events";
 import { statusKeys, statusTones } from "./radar-presentation";
 import { cancelRadar, createRadarDraft, editRadarDraft, useMyRadars } from "../data";

@@ -11,7 +11,7 @@ import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
 import { AssistantNoticeLayer } from "@/components/experience/AssistantNoticeLayer";
 import { useOnboarding } from "@/lib/experience/onboarding";
 import { SyncEngineLoader } from "./SyncEngineLoader";
-import { CommunicationRuntimeProvider } from "@/lib/communication/CommunicationRuntimeProvider";
+import { CommunicationRuntimeProvider } from "@/features/communication/CommunicationRuntimeProvider";
 import { useAuth } from "@/domains/auth/model/useAuth";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { resetReelActivityProjection } from "@/domains/presence/model/reel-activity-projection";
