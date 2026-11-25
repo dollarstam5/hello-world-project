@@ -33,6 +33,17 @@ describe("mobile visual smoke contract", () => {
     expect(script).toContain('test -s "$output"');
   });
 
+  it("uses an isolated production server port and reliably cleans up screenshot processes", () => {
+    expect(script).toContain('PORT="$(python3');
+    expect(script).toContain("setsid bunx wrangler dev");
+    expect(script).toContain('kill -- "-$SERVER_PID"');
+    expect(script).toContain("SCREENSHOT_TIMEOUT_SECONDS=45");
+    expect(script).toContain("run_screenshot()");
+    expect(script).toContain('setsid "$@" &');
+    expect(script).toContain('terminate_process_group "$SCREENSHOT_PID"');
+    expect(script).not.toContain('PORT="4173"');
+  });
+
   it("uses an isolated Chromium endpoint and reliably cleans up the browser process", () => {
     expect(scrollCheck).toContain("--remote-debugging-port=0");
     expect(scrollCheck).toContain("DevToolsActivePort");
