@@ -3,7 +3,7 @@
 **Statut :** référence active consolidée
 **Périmètre :** intention, cycle de vie, diffusion et expérience du moteur Flash.
 **Source primaire vérifiée :** [11-VITALA-UJ-08-FLASH-ENGINE.md](./11-VITALA-UJ-08-FLASH-ENGINE.md) (VITALA-ENGINE-01, v1.0, VALIDÉ)
-**Contrat API cible :** [6. Flash API.md](./6.%20Flash%20API.md) — comportement cible, pas preuve de routes livrées (voir [statut des contrats](../../03-api/contract-runtime-status.md)).
+**Contrat API cible :** [6. Flash API.md](./6.%20Flash%20API.md) — comportement cible, pas preuve de routes livrées (voir [statut des contrats](../../api/contract-runtime-status.md)).
 
 ## Mission
 
@@ -91,7 +91,7 @@ Les personnes peuvent montrer leur intérêt, répondre, se proposer ou demander
 ## Expérience
 
 - Publier en quelques secondes ; parler naturellement ; réduire les formulaires ; privilégier l'intention ; diffuser de manière pertinente ; favoriser les résultats réels.
-- **Effet Flash** à la publication : animation dédiée (⚡ analyse → compréhension → classification → vérification → diffusion), courte, spectaculaire, compréhensible et utile. Personnalité du moteur : rapide, énergique, immédiat (voir [Experience System](../../01-product/experience-system.md)).
+- **Effet Flash** à la publication : animation dédiée (⚡ analyse → compréhension → classification → vérification → diffusion), courte, spectaculaire, compréhensible et utile. Personnalité du moteur : rapide, énergique, immédiat (voir [Experience System](../../product/experience-system.md)).
 
 ## Place dans le cycle des moteurs
 
