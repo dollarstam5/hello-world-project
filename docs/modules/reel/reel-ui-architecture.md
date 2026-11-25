@@ -137,3 +137,33 @@ Le profil utilisé dans En direct est une projection contextuelle et limitée du
 - Le réglage ne vaut que pour En direct. Il ne modifie pas les règles de Flash, Scan ou Radar.
 - Le contrôle est appliqué côté serveur/API et doit respecter immédiatement le retrait du consentement pour les consultations suivantes.
 - Cette règle est un élément prioritaire du périmètre En direct. Le présent document décrit la cible produit ; l'existence effective du réglage et de son enforcement doit être vérifiée séparément dans le code avant d'être déclarée terminée.
+
+
+## Vérification technique initiale du radar — 25 novembre 2026
+
+### Contrôles statiques effectués
+
+- Le calque des rayons est décoratif (`aria-hidden`) et ne modifie aucune interaction.
+- Le dégradé conique se répète tous les 36 degrés : dix rayons fins répartis sur 360 degrés.
+- Le masque elliptique réserve une zone centrale autour de l'avatar et de son libellé.
+- Les profils périphériques conservent leur niveau de superposition supérieur (`z-index: 2`). Le bouton central et `SelfRadarIdentity` sont conservés.
+- Le mode calme arrête la rotation ; `prefers-reduced-motion: reduce` arrête également l'animation.
+- Une nuance dédiée est définie pour le thème applicatif `.dark`.
+- Les règles de largeur étroite et de paysage déjà présentes continuent de dimensionner le radar ; le calque ne change pas son gabarit.
+
+### Contrôle CI disponible sur la branche
+
+- Le contrôle ciblé Scan est passé, mais ne couvre pas le moteur En direct.
+- Le contrôle Quality a échoué pendant le lint global, avant l'exécution des tests, des tests RLS, des smoke tests mobiles et du build.
+- Le journal de cette exécution identifie trois erreurs Prettier dans `packages/core-contracts/src/recommendation.ts`. Aucun problème du fichier Radar n'est signalé dans cet extrait ; les avertissements affichés concernent d'autres fichiers.
+- Les étapes mobiles et build sont donc **non exécutées**, et non réussies.
+
+### Vérifications encore nécessaires
+
+- Rendu réel aux largeurs 320, 360, 390 et 430 px, puis sur tablette.
+- Thèmes clair et sombre, avec profils nombreux et peu nombreux.
+- Mode calme, présence active/inactive, chargement et absence de profils.
+- Séparation visuelle des rayons, du visage, du libellé et des noms des profils.
+- Essais sur Android et iOS, avec et sans réduction des animations.
+
+Cette vérification est une revue statique du code et des résultats CI disponibles. Elle ne constitue pas une validation visuelle ni une recette sur appareils.
