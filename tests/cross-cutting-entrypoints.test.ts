@@ -17,6 +17,14 @@ import modalSource from "../src/shared/components/Modal.tsx?raw";
 import sheetSource from "../src/shared/components/Sheet.tsx?raw";
 import skeletonsSource from "../src/shared/components/Skeletons.tsx?raw";
 import modulesIndex from "../src/modules/index.ts?raw";
+import appShell from "../src/app/shell/AppShell.tsx?raw";
+import appHeader from "../src/components/experience/AppHeader.tsx?raw";
+import communicationSheet from "../src/components/experience/CommunicationSheet.tsx?raw";
+import homeFoundation from "../src/composition/experiences/home/HomeFoundation.tsx?raw";
+import onboardingSheet from "../src/components/experience/OnboardingSheet.tsx?raw";
+import personalDashboard from "../src/components/experience/PersonalDashboard.tsx?raw";
+import profileRoute from "../src/routes/espace.profil.tsx?raw";
+import accountRoute from "../src/routes/espace.informations.tsx?raw";
 
 describe("cross-cutting canonical entrypoints", () => {
   it("makes shared/ui canonical and keeps components/ui compatibility facades", () => {
@@ -61,5 +69,18 @@ describe("cross-cutting canonical entrypoints", () => {
     expect(modulesIndex).toContain('export * as scan from "./scan"');
     expect(modulesIndex).toContain('export * as radar from "./radar"');
     expect(modulesIndex).toContain('export * as reel from "./reel"');
+  });
+
+  it("uses canonical feature, platform and module entrypoints in app composition", () => {
+    expect(appShell).toContain('@/features/communication/CommunicationRuntimeProvider');
+    expect(appShell).toContain('@/features/onboarding');
+    expect(appShell).toContain('@/platform/internationalization/useI18n');
+    expect(appHeader).toContain('@/features/communication/CommunicationRuntimeProvider');
+    expect(communicationSheet).toContain('@/platform/network/useNetworkStatus');
+    expect(homeFoundation).toContain('@/features/communication');
+    expect(onboardingSheet).toContain('@/features/onboarding');
+    expect(personalDashboard).toContain('@/modules/profile');
+    expect(profileRoute).toContain('@/modules/profile/ui/pages/ProfileManagementPage');
+    expect(accountRoute).toContain('@/modules/auth/ui/pages/AccountInformationPage');
   });
 });
