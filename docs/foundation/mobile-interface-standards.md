@@ -358,3 +358,51 @@ Un écran ne peut être déclaré conforme au standard mobile Vitalis que si :
 - les comportements réels de la PWA sont décrits sans promesse de fonctionnalité native non disponible.
 
 **Règle de gouvernance :** toute exception doit être motivée dans la revue UX ou la spécification du module. Les valeurs doivent être harmonisées dans les tokens et composants partagés avant d’être copiées dans les écrans. Ce référentiel définit la cible ; il ne transforme pas les composants existants en composants conformes sans audit et preuve.
+
+
+### 4.6 Audit des boutons — module Flash
+
+**Périmètre vérifié :** lecture statique des composants du module Flash présents dans la branche `chore/architecture-folder-cleanup-2026-11` : découverte (`FlashExperienceScreen`, `FlashFeed`), composition (`FlashComposerWriteStep`, `FlashComposerReviewStep`) et tableau de bord (`FlashDashboardHeader`, `FlashDashboardFilters`, `FlashDashboardRecordCard`, `FlashDashboardDetailDialog`, `FlashDashboardDeleteDialog`). Le composant partagé `src/components/ui/button.tsx` a également été relu pour distinguer les classes locales des dimensions héritées. Cet audit est statique ; il ne certifie pas le rendu sur appareils.
+
+| Zone / commande | Constat dans le code de la branche | Évaluation mobile |
+|---|---|---|
+| En-tête Flash — retour accueil | Lien icône seule de 44 × 44 px (`size-11`), avec `aria-label` et `title` | Sous la cible 48 × 48 px ; augmenter la zone interactive ou garantir un conteneur tactile équivalent |
+| Action principale « créer un Flash » | Bouton pleine largeur, `min-h-12`, libellé et icône 20 px | Conforme à la cible de hauteur ; bonne hiérarchie d’action |
+| Onglets Découvrir / Mes Flashs | Boutons natifs avec `min-h-11` (44 px), rôles `tab` et état `aria-selected` | Sémantique de sélection présente ; hauteur sous la cible 48 px |
+| Découverte — demander la position / réessayer | Boutons avec `min-h-12`, désactivés pendant le chargement | Hauteur conforme ; vérifier le retour de progression et l’annonce du résultat |
+| Découverte — actualiser | Bouton avec `min-h-11` (44 px), désactivé pendant le chargement | Sous la cible 48 px |
+| Composition — dictée vocale | Bouton `min-h-11` (44 px) ; désactivé si la reconnaissance vocale n’est pas prise en charge | Sous la cible ; état d’indisponibilité présent, mais l’explication est affichée séparément |
+| Composition — continuer | Bouton pleine largeur `min-h-12`, désactivé sans texte et intention analysée | Conforme en dimension ; désactivation cohérente avec les prérequis visibles du parcours |
+| Relecture — modifier le message | Bouton HTML natif sans dimension tactile explicite | Risque de cible trop petite ; fixer une zone d’au moins 48 px |
+| Relecture — détecter / actualiser la position | Bouton `min-h-11` (44 px), désactivé pendant localisation ou publication | Sous la cible ; libellé de progression présent pendant la localisation |
+| Relecture — choix de portée | Boutons natifs `min-h-12` et `aria-pressed` | Hauteur conforme et état sélectionné exposé |
+| Relecture — choix d’urgence | Boutons natifs `min-h-10` (40 px) et `aria-pressed` | Sous la cible de 8 px ; à porter à 48 px minimum |
+| Relecture — annuler / enregistrer le brouillon | Boutons `min-h-12`; enregistrement désactivé selon authentification, chargement et contenu ; libellé de chargement prévu | Hauteur conforme ; le verrouillage pendant publication est présent |
+| Tableau de bord — créer un Flash | Bouton `min-h-11` (44 px) | Sous la cible ; porter à 48 px |
+| Filtres — effacer la recherche | Bouton HTML natif positionné dans le champ, sans dimension minimale explicite | Risque élevé de cible étroite ; prévoir une zone de 48 × 48 px sans masquer la saisie |
+| Filtres — statut | Boutons `min-h-9` (36 px), sélection exposée avec `aria-pressed`, rangée défilante horizontalement | Sous la cible ; conserver le défilement mais agrandir les cibles |
+| Filtres — période et réinitialisation | Boutons `min-h-8` (32 px) | Sous la cible ; agrandir les cibles et préserver la lisibilité de la rangée |
+| Carte — afficher les détails | Bouton `min-h-11` (44 px) | Sous la cible ; libellé textuel masqué sous le breakpoint `sm`, mais l’action est accompagnée d’une icône |
+| Carte — modifier / supprimer | Boutons `min-h-11` (44 px), avec `aria-label` et `title` | Sous la cible ; noms accessibles explicites |
+| Carte — archiver | Bouton `min-h-9` (36 px), avec `aria-label` et `title` | Sous la cible ; agrandir la cible |
+| Carte — enregistrer / annuler une modification | Classes locales `h-9 min-h-9` (36 px), malgré la taille partagée `sm` qui prévoit normalement 48 px | Dérogation locale explicite au minimum partagé ; non conforme au standard tactile |
+| Dialogue de détail — modifier / archiver / supprimer | Boutons partagés `size="sm"`, sans réduction locale de hauteur | La base partagée conserve `min-h-12` (48 px) ; vérifier l’espacement et le retour visuel dans le dialogue |
+| Dialogue de suppression — annuler / confirmer | Primitives `AlertDialogCancel` et `AlertDialogAction`, sans dimension locale visible dans ce composant | Hauteur réelle à confirmer dans les primitives partagées et sur appareil ; ne pas conclure à la conformité sur ce seul fichier |
+
+**Constats transversaux :**
+
+- Le composant partagé `Button` définit bien une hauteur minimale de 48 px, y compris pour `size="sm"`. Plusieurs écrans contournent toutefois cette base avec des classes locales `min-h-11`, `min-h-10`, `min-h-9` ou `min-h-8`. Les boutons natifs HTML ne bénéficient pas automatiquement de la base du composant partagé.
+- Les choix de portée, d’urgence, de statut et de période exposent leur état avec `aria-pressed`. Les onglets utilisent `role="tab"` et `aria-selected`. La présence de ces attributs est positive, mais le comportement clavier complet du modèle d’onglets doit encore être testé.
+- Plusieurs actions asynchrones sont désactivées pendant l’opération et certains libellés indiquent le chargement. Il reste à vérifier l’annonce accessible de progression, la prévention effective du double déclenchement et le message de résultat dans les scénarios réseau réels.
+- Les actions icône seule de la carte et le lien de retour ont un nom accessible explicite. Le bouton d’effacement de recherche possède également un `aria-label`, mais sa zone tactile n’est pas dimensionnée.
+- Le contrôle « modifier le message » est un bouton natif sans dimension explicite ; il ne faut pas déduire sa conformité des boutons partagés utilisés ailleurs dans le même écran.
+
+**Priorités documentaires de mise en conformité :**
+
+1. Relever à 48 px minimum toutes les commandes explicitement sous-dimensionnées : onglets, dictée, localisation, actualisation, choix d’urgence, filtres, actions de carte et action de création du tableau de bord.
+2. Définir une zone de 48 × 48 px pour les boutons natifs « modifier le message », « effacer la recherche » et retour accueil.
+3. Supprimer les réductions locales à 36 px des actions enregistrer / annuler dans la carte.
+4. Vérifier le modèle clavier des onglets, l’annonce des états asynchrones, le double déclenchement et les dialogues destructifs sur Android et iOS.
+5. Contrôler les espacements et le défilement horizontal des filtres après agrandissement, sans réduire les cibles tactiles pour faire tenir la rangée.
+
+**Conclusion de l’audit statique :** le module Flash comporte plusieurs écarts explicites au standard de cible tactile 48 × 48 px, principalement dans les commandes secondaires, les filtres et les actions de cartes. Il s’agit de constats sur les classes et composants déclarés, pas d’une mesure physique du rendu. Les dimensions effectives, l’espacement, le focus, les annonces de lecteur d’écran et les comportements tactiles doivent être validés sur appareils avant de clore l’audit. Aucun code applicatif n’a été modifié dans le cadre de cette étape.
