@@ -107,9 +107,11 @@ export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => 
           </div>
         </div>
       </header>
-      <Suspense fallback={null}>
-        <ProfileQuickPreview open={profileOpen} onOpenChange={setProfileOpen} />
-      </Suspense>
+      {profileOpen && (
+        <Suspense fallback={null}>
+          <ProfileQuickPreview open={profileOpen} onOpenChange={setProfileOpen} />
+        </Suspense>
+      )}
     </>
   );
 }
