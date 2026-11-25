@@ -1,4 +1,5 @@
-import { readFileSync } from "node:fs";\nimport { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
+import { describe, expect, it } from "vitest";
 import screenCompositionSource from "../../src/modules/reel/ui/ReelProximityScreen.tsx?raw";
 
 import radarComponentsSource from "../../src/modules/reel/ui/components/ReelRadarIdentity.tsx?raw";
@@ -19,7 +20,12 @@ import communicationBridgeSource from "../../src/modules/reel/model/ReelCommunic
 import appShellSource from "../../src/app/shell/AppShell.tsx?raw";
 import memberAvatarSource from "../../src/modules/profile/api/profile-avatar.client.ts?raw";
 
-const radarStylesSource = readFileSync(new URL("../../src/modules/reel/ui/reel-proximity.css", import.meta.url), "utf8");\n\nconst screenSource = `${screenCompositionSource}\n${radarComponentsSource}\n${guidedTourSource}\n${settingsHelpSource}\n${profileSheetSource}\n${settingsPanelSource}\n${activityPanelSource}\n${headerSource}\n${discoveryPromptSource}\n${nearbyPreviewSource}\n${globalPanelSource}\n${peoplePanelSource}`;
+const radarStylesSource = readFileSync(
+  new URL("../../src/modules/reel/ui/reel-proximity.css", import.meta.url),
+  "utf8",
+);
+
+const screenSource = `${screenCompositionSource}\n${radarComponentsSource}\n${guidedTourSource}\n${settingsHelpSource}\n${profileSheetSource}\n${settingsPanelSource}\n${activityPanelSource}\n${headerSource}\n${discoveryPromptSource}\n${nearbyPreviewSource}\n${globalPanelSource}\n${peoplePanelSource}`;
 
 describe("En direct architecture boundaries", () => {
   it("keeps business services and access policy out of the screen component", () => {
