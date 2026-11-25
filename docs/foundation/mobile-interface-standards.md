@@ -446,3 +446,60 @@ Un écran ne peut être déclaré conforme au standard mobile Vitalis que si :
 5. Auditer séparément `PublicProfilePreview` avant de déclarer les interactions des résultats Scan conformes.
 
 **Conclusion de l’audit statique :** le parcours principal Scan est globalement aligné sur la cible de hauteur tactile de 48 px. Quatre commandes présentent un écart explicite : dictée, ouverture des préférences, ouverture de l’historique et effacement de l’historique. Les résultats ne déclarent pas de bouton local, mais peuvent contenir des commandes provenant d’un composant partagé non audité ici. Les dimensions effectives, l’espacement, les annonces accessibles et les comportements tactiles doivent être validés sur appareils avant clôture. Aucun code applicatif n’a été modifié dans cette étape.
+
+
+### 4.8 Audit des boutons — module Réel
+
+**Périmètre vérifié :** lecture statique des composants d’interface Réel présents dans la branche `chore/architecture-folder-cleanup-2026-11` : `ReelProximityScreen.tsx`, `ReelBottomNav.tsx`, `ReelActivityPanel.tsx`, `ReelAtmospherePill.tsx`, `ReelDiscoveryPrompt.tsx`, `ReelDiscoverySettings.tsx`, `ReelGuidedTour.tsx`, `ReelHeader.tsx`, `ReelNearbyPreview.tsx`, `ReelPeoplePanel.tsx`, `ReelProfileSheet.tsx`, `ReelRadarIdentity.tsx`, `ReelSettingsHelp.tsx` et `ReelSettingsPanel.tsx`, ainsi que les règles CSS associées dans `reel-proximity.css` et `reel-bottom-nav.css`. Les dimensions ci-dessous proviennent des règles CSS déclarées ; elles ne constituent pas une mesure sur appareil.
+
+| Zone / commande | Constat dans le code et les styles de la branche | Évaluation mobile |
+|---|---|---|
+| En-tête — accueil, alertes, préférences, découverte, aide et Bluetooth | Classe commune de 40 × 40 px ; à 360 px et moins, largeur ramenée à 35,2 px. D’autres règles responsives la ramènent à 36 px | Sous la cible de 48 × 48 px dans tous les cas ; agrandir les cibles sans laisser les six commandes comprimer le titre ou déborder |
+| Navigation inférieure — destinations Flash, Scan, Réel, Radar et menu | Liens et bouton de menu avec `min-height: 3.35rem` (53,6 px) ; commande centrale de 3,65 rem (58,4 px) | Conforme en hauteur déclarée ; vérifier l’espace horizontal, la zone sûre inférieure et l’état de destination active |
+| Pastille d’ambiance | Bouton `min-height: 2.65rem` (42,4 px), désactivé lorsqu’aucune action n’est fournie | Sous la cible ; porter à 48 px minimum. Le libellé dynamique est annoncé avec `aria-live="polite"` |
+| Radar — commande « ma présence » | Le bouton remplit le noyau central du radar ; nom accessible dynamique, `aria-pressed` et désactivation pendant le chargement | La surface semble largement supérieure à 48 px ; confirmer la zone réelle au rendu et vérifier l’annonce de l’état |
+| Radar — sélection d’une personne | Le bouton contient un avatar dont la taille est définie par une variable CSS de 48 à 56 px selon la largeur | Dimension de l’avatar compatible avec la cible minimale ; vérifier que le bouton réel conserve cette zone et que le menu rapide ne la recouvre pas |
+| Aperçu rapide — envoyer un Bip | Bouton avec seulement un padding vertical de 0,4 rem (6,4 px), texte et icône de 13 px ; aucune hauteur minimale | Cible probablement inférieure à 48 px ; fixer explicitement une zone tactile minimale |
+| Aperçu rapide — ouvrir le profil complet | Bouton icône de 32 × 32 px | Écart important ; porter à 48 × 48 px |
+| Carte de localisation — voir les personnes proches / réessayer / continuer en invité / pas maintenant | Boutons primaire et secondaire avec `min-height: 2.65rem` (42,4 px) | Sous la cible ; porter à 48 px minimum |
+| Raccourcis de l’écran calme — découverte globale / activité passée | Boutons de carte avec `min-height: 4.25rem` (68 px) | Conforme en hauteur ; conserver cette cible confortable |
+| Aperçu des personnes proches — afficher toute la liste | Bouton avec `min-height: 2.25rem` (36 px) | Sous la cible ; porter à 48 px |
+| Aperçu des personnes proches — ouvrir une personne | Carte entière interactive, sans `min-height` explicite ; padding et avatar déterminent la hauteur intrinsèque | Pas de garantie explicite du minimum ; vérifier la hauteur réelle sur téléphone étroit et définir une cible minimale |
+| Panneau personnes — ouvrir un profil | Bouton de ligne avec padding de 0,6 rem et avatar interne ; pas de `min-height` explicite | La hauteur intrinsèque peut dépasser 48 px, mais le minimum n’est pas contractualisé ; vérifier la zone réelle |
+| Panneau activité — onglets Alertes / Bips / Connexions | Les règles CSS finales donnent `min-height: 2.75rem` (44 px) | Sous la cible ; porter à 48 px. `aria-selected` est présent ; vérifier navigation clavier et gestion du focus dans le tablist |
+| Panneau activité — accepter / refuser un Bip | Boutons natifs dans une ligne, sans classe dédiée ni hauteur minimale visible dans le composant ou la règle CSS de la ligne | Zone tactile non garantie et probablement trop petite ; définir 48 px minimum et un espacement suffisant entre accepter et refuser |
+| Panneau activité — terminer une connexion | Bouton natif dans une ligne, sans dimension tactile explicite | Zone tactile non garantie ; fixer 48 px minimum et prévenir les activations répétées pendant la terminaison |
+| Panneau principal — fermer | Bouton icône de 40 × 40 px | Sous la cible ; porter à 48 × 48 px |
+| Panneau de réglages — ouvrir l’aide | Bouton `min-height: 2.75rem` (44 px) | Sous la cible ; porter à 48 px |
+| Réglages — activer / désactiver la découverte | Boutons primaire et secondaire avec `min-height: 3rem` (48 px) | Conforme en hauteur ; l’activation est désactivée si l’accès n’est pas autorisé |
+| Réglages — choisir le rayon | Boutons radio personnalisés sans `min-height` ; padding vertical de 0,55 rem (8,8 px) | Hauteur tactile non garantie ; porter chaque option à 48 px minimum tout en conservant le rôle radio et l’état `aria-checked` |
+| Réglages — choisir la durée | Cartes-boutons sans `min-height`, avec padding vertical de 0,65 rem (10,4 px) | Hauteur tactile non garantie ; fixer 48 px minimum et conserver l’état sélectionné exposé par `aria-pressed` |
+| Réglages — arrêter une présence | Bouton secondaire avec `min-height: 3rem` (48 px), désactivé pendant le chargement | Conforme en hauteur ; vérifier le retour de progression et la prévention des doubles activations |
+| Réglages — activer une présence | Bouton primaire avec `min-height: 3rem` (48 px), désactivé selon consentement, champs requis et chargement ; libellé de progression prévu | Conforme en hauteur ; vérifier l’annonce du chargement et le résultat de l’opération |
+| Feuille profil — fermer | Bouton icône de 2,25 rem (36 px) | Sous la cible ; porter à 48 × 48 px |
+| Feuille profil — envoyer un Bip | Bouton pleine largeur avec `min-height: 3.25rem` (52 px) | Conforme en hauteur |
+| Aide des réglages — fermer | Bouton icône de 40 × 40 px | Sous la cible ; porter à 48 × 48 px |
+| Aide des réglages — terminer | Bouton primaire partagé du panneau, `min-height: 3rem` (48 px) | Conforme en hauteur |
+| Visite guidée — fermer | Bouton icône de 32 × 32 px | Écart important ; porter à 48 × 48 px |
+| Visite guidée — ignorer / précédent / suivant / terminer | Boutons avec `min-height: 2.5rem` (40 px) | Sous la cible ; porter à 48 px minimum et maintenir l’empilement sur petit écran |
+| Dialogue de fin de connexion — conserver / terminer | Boutons utilisant les classes primaire et secondaire du panneau, hauteur minimale de 48 px | Conforme en hauteur déclarée ; vérifier l’espacement et l’état pendant la confirmation |
+
+**Constats transversaux :**
+
+- Plusieurs composants Réel utilisent leurs propres classes CSS plutôt que le composant partagé `Button`. Les tailles locales varient donc et plusieurs commandes restent sous le standard même si le composant partagé est conforme.
+- Les écarts les plus nets concernent l’en-tête, les boutons icône de fermeture, les commandes de l’aperçu rapide, les onglets d’activité, les sélecteurs de rayon et de durée, les actions des lignes d’activité et les commandes de la visite guidée.
+- Les onglets d’activité exposent `role="tab"` et `aria-selected`, et les boutons de rayon utilisent `role="radio"` et `aria-checked`. Le comportement clavier complet (flèches, tabulation et focus actif) reste à tester ; les gestionnaires visibles ne définissent pas un modèle de roving tabindex.
+- Plusieurs opérations asynchrones désactivent leurs commandes ou modifient le libellé. Les commandes d’acceptation/refus et de fin de connexion n’exposent pas, dans les composants audités, de verrouillage local visible pendant leur exécution ; vérifier le contrôle anti-double activation dans le contrôleur et au rendu.
+- La navigation inférieure respecte la hauteur tactile, mais les actions icône seule de l’en-tête et des fenêtres sont trop petites malgré leurs noms accessibles.
+- Les styles de focus explicites existent pour certains contrôles (navigation, radar et feuille profil), mais ne sont pas uniformément visibles dans toutes les classes locales. Vérifier chaque commande au clavier et avec les thèmes clair et sombre.
+
+**Priorités documentaires de mise en conformité :**
+
+1. Uniformiser à 48 × 48 px les commandes d’en-tête et les boutons icône de fermeture des panneaux, feuilles et fenêtres d’aide / visite guidée.
+2. Porter à 48 px les actions de la pastille d’ambiance, de la carte de localisation, de l’aperçu « toute la liste », des onglets d’activité et des commandes de visite guidée.
+3. Donner une hauteur minimale de 48 px aux choix de rayon et de durée, ainsi qu’aux boutons accepter / refuser / terminer des lignes d’activité.
+4. Agrandir les deux actions de l’aperçu rapide, en particulier le bouton icône de 32 px, sans réduire la lisibilité du contenu.
+5. Vérifier les zones interactives des cartes de personnes, le comportement clavier des groupes tablist/radiogroup et la prévention des doubles actions asynchrones.
+6. Refaire un contrôle des petits écrans (320 et 360 px) après agrandissement des cibles, notamment pour l’en-tête et les groupes de navigation.
+
+**Conclusion de l’audit statique :** Réel dispose d’une navigation inférieure et de plusieurs actions principales correctement dimensionnées, mais son interface comporte de nombreux contrôles secondaires sous les 48 px ou sans minimum explicite. Les priorités sont les commandes compactes de l’en-tête et des fenêtres, les actions des panneaux d’activité et les sélecteurs personnalisés. Les hauteurs CSS déclarées ne remplacent pas la vérification des zones d’appui, des espacements, du focus et des annonces avec TalkBack et VoiceOver sur appareils réels. Aucun code applicatif n’a été modifié dans cette étape.
