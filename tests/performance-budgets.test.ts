@@ -9,7 +9,7 @@ import {
   measureFromManifest,
   measureHtmlEntry,
   measurePerformanceBudgets,
-} from "../scripts/performance-budget-measurement";
+} from "../tooling/scripts/performance-budget-measurement";
 import {
   assertPerformanceBudgets,
   type PerformanceBudgetResult,

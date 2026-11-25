@@ -10,7 +10,7 @@ import { renderErrorPage } from "../src/lib/error-page";
 const readSource = (path: string) =>
   readFileSync(fileURLToPath(new URL(path, import.meta.url)), "utf8");
 const styles = readSource("../src/styles.css");
-const reelCss = readSource("../src/domains/presence/ui/reel-proximity.css");
+const reelCss = readSource("../src/modules/reel/ui/reel-proximity.css");
 const serviceWorker = readSource("../public/sw.js");
 const offlinePage = readSource("../public/offline.html");
 const floatingButton = readSource("../src/components/app/FloatingButton.tsx");

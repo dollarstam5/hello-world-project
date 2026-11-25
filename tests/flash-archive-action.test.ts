@@ -9,7 +9,7 @@ vi.mock("@/platform/offline", () => ({
   requestSyncNow,
   useLocalQuery: vi.fn(),
 }));
-import { archiveFlash } from "@/domains/flash/data";
+import { archiveFlash } from "@/modules/flash/data";
 describe("Flash archive action", () => {
   beforeEach(() => vi.clearAllMocks());
   it("queues local archive before sync", async () => {

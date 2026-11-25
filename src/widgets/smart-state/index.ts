@@ -1,1 +1,1 @@
-export { SmartStateView } from "@/components/experience/SmartStateView";
+export { SmartStateView } from "@/composition/widgets/SmartStateView";

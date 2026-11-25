@@ -4,7 +4,7 @@ import {
   PROMOTED_CACHE_TTL_MS,
   isPromotedAssistantAnswerFresh,
   searchLocalKnowledge,
-} from "@/domains/assistant/services/localSearch.service";
+} from "@/modules/assistant/services/localSearch.service";
 
 const now = 1_800_000_000_000;
 

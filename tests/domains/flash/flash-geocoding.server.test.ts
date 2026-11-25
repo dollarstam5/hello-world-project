@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { lookupFlashArea } from "@/domains/flash/api/flash-geocoding.server";
+import { lookupFlashArea } from "@/modules/flash/api/flash-geocoding.server";
 
 describe("Geoapify reverse geocoding", () => {
   beforeEach(() => {

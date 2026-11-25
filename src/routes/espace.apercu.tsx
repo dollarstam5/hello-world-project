@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PublicProfilePreviewPage } from "@/components/experience/PublicProfilePreviewPage";
+import { PublicProfilePreviewPage } from "@/modules/profile/ui/pages/PublicProfilePreviewPage";
 
 export const Route = createFileRoute("/espace/apercu")({
   head: () => ({ meta: [{ title: "Aperçu du profil — Vitalis" }] }),

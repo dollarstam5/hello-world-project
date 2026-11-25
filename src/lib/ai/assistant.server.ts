@@ -18,7 +18,7 @@ import {
 import {
   mapAssistantVocabulary,
   normalizeAssistantText,
-} from "@/domains/assistant/services/mapping.service";
+} from "@/modules/assistant/services/mapping.service";
 
 type SupabaseLike = SupabaseClient;
 

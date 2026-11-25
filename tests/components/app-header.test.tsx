@@ -28,7 +28,7 @@ vi.mock("@/lib/communication/CommunicationRuntimeProvider", () => ({
   useCommunicationRuntime: () => ({ getEvents: () => state.events }),
 }));
 
-vi.mock("@/domains/presence/model/reel-activity-projection", () => ({
+vi.mock("@/modules/reel/model/reel-activity-projection", () => ({
   useReelActivityProjection: (
     selector: (state: { pendingBips: number; bipsReady: boolean }) => unknown,
   ) => selector({ pendingBips: state.pendingBips, bipsReady: state.bipsReady }),
@@ -49,7 +49,9 @@ describe("AppHeader", () => {
   it("keeps only the app identity, notifications and profile", () => {
     const markup = renderToStaticMarkup(<AppHeader onOpenCommunication={() => undefined} />);
 
-    expect(markup).toContain('class="sticky top-0 z-30 bg-transparent"');
+    expect(markup).toContain(
+      'class="sticky top-0 z-30 border-b border-border/30 bg-background/80 backdrop-blur-xl transition-[background-color,border-color]"',
+    );
     expect(markup).toContain('href="/"');
     expect(markup).toContain('src="/icon-192.svg"');
     expect(markup).toContain('aria-label="Ouvrir les communications"');

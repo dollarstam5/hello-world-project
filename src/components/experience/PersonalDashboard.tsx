@@ -7,10 +7,10 @@ import {
   SlidersHorizontal,
   UserRound,
 } from "lucide-react";
-import { Indicator } from "@/components/app/Indicator";
-import { Surface } from "@/components/app/Surface";
+import { Indicator } from "@/shared/components/Indicator";
+import { Surface } from "@/shared/components/Surface";
 import { useIdentity } from "@/lib/experience/identity";
-import { useAuth } from "@/domains/auth/model/useAuth";
+import { useAuth } from "@/modules/auth/model/useAuth";
 import { useI18n } from "@/lib/i18n/useI18n";
 
 const cards = [

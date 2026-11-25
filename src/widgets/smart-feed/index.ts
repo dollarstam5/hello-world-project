@@ -1,1 +1,1 @@
-export { HomeFoundation as SmartFeed } from "@/components/experience/HomeFoundation";
+export { HomeFoundation as SmartFeed } from "@/composition/experiences/home/HomeFoundation";

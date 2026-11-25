@@ -1,1 +1,1 @@
-export * from "@/lib/platform/realtime";
+export * from "./realtime";

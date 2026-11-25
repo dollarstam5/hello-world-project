@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createCommunicationRuntime } from "@/lib/communication/runtime";
-import { publishFlashCommunicationEvent } from "@/domains/flash/communication-events";
-import { publishRadarCommunicationEvent } from "@/domains/radar/communication-events";
+import { publishFlashCommunicationEvent } from "@/modules/flash/communication-events";
+import { publishRadarCommunicationEvent } from "@/modules/radar/communication-events";
 
 describe("domain communication event adapters", () => {
   function memberRuntime() {

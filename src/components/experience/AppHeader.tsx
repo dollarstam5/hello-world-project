@@ -5,10 +5,10 @@ import { Button } from "@/components/ui/button";
 import { haptic } from "@/platform/device/haptics";
 import { ProfileQuickPreview } from "./ProfileQuickPreview";
 import { useIdentity } from "@/lib/experience/identity";
-import { useAuth } from "@/domains/auth/model/useAuth";
+import { useAuth } from "@/modules/auth/model/useAuth";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
-import { useReelActivityProjection } from "@/domains/presence/model/reel-activity-projection";
+import { useReelActivityProjection } from "@/modules/reel/model/reel-activity-projection";
 
 export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => void }) {
   const { t } = useI18n();
@@ -57,7 +57,12 @@ export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => 
             aria-label={t("nav.home")}
             className="native-press flex h-11 w-11 items-center justify-center rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <img src="/icon-192.svg" alt="" aria-hidden="true" className="h-8 w-8 rounded-xl shadow-sm" />
+            <img
+              src="/icon-192.svg"
+              alt=""
+              aria-hidden="true"
+              className="h-8 w-8 rounded-xl shadow-sm"
+            />
           </Link>
 
           <div className="flex items-center gap-1">

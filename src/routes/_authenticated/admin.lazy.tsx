@@ -1,7 +1,7 @@
 import { createLazyFileRoute, Outlet } from "@tanstack/react-router";
-import { AdminShell } from "@/domains/admin/ui/AdminShell";
-import { AdminAccessGate } from "@/domains/admin/ui/AdminAccessGate";
-import { useAdminViewer } from "@/domains/admin/hooks/useAdminData";
+import { AdminShell } from "@/modules/admin/ui/AdminShell";
+import { AdminAccessGate } from "@/modules/admin/ui/AdminAccessGate";
+import { useAdminViewer } from "@/modules/admin/hooks/useAdminData";
 
 export const Route = createLazyFileRoute("/_authenticated/admin")({
   component: AdminLayout,

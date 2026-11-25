@@ -15,4 +15,5 @@ export * as i18n from "./internationalization";
 export * as notifications from "./notifications";
 export * as permissions from "./permissions";
 export * as device from "./device";
+export * as network from "./network";
 export * as a11y from "./accessibility";

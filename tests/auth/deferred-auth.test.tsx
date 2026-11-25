@@ -25,8 +25,8 @@ vi.mock("@/integrations/supabase/client", () => ({
   },
 }));
 
-import { useAuth, signOut } from "@/domains/auth/model/useAuth";
-import { authService } from "@/domains/auth/services/auth.service";
+import { useAuth, signOut } from "@/modules/auth/model/useAuth";
+import { authService } from "@/modules/auth/services/auth.service";
 
 function createSession(id: string): Session {
   return {

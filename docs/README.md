@@ -4,60 +4,60 @@ Ce répertoire suit une structure canonique pour la documentation active.
 
 ## Structure active
 
-- [00-foundation/](./00-foundation/README.md) — architecture, conventions et langage de design
-- [01-product/](./01-product/README.md) — vision, personas, parcours, navigation, confiance et expérience
-- [02-architecture/](./02-architecture/README.md) — architecture système, front-end, backend, base de données, synchronisation et identité numérique
-- [03-api/](./03-api/README.md) — contrats et références API
-- [03-engines/](./03-engines/README.md) — documents de domaines métier classés par moteur
-- [04-database/](./04-database/README.md) — modèle de données, schéma PostgreSQL, grants et politiques RLS
-- [05-ai/](./05-ai/README.md) — gouvernance et règles d'ingénierie IA
-- [06-operations/](./06-operations/README.md) — déploiement, performance, problèmes techniques et release
-- [07-annexes/](./07-annexes/README.md) — glossaire et références complémentaires
+- [foundation/](./foundation/README.md) — architecture, conventions et langage de design
+- [product/](./product/README.md) — vision, personas, parcours, navigation, confiance et expérience
+- [architecture/](./architecture/README.md) — architecture système, front-end, backend, base de données, synchronisation et identité numérique
+- [api/](./api/README.md) — contrats et références API
+- [modules/](./modules/README.md) — documents de domaines métier classés par moteur
+- [database/](./database/README.md) — modèle de données, schéma PostgreSQL, grants et politiques RLS
+- [engineering/ai/](./engineering/ai/README.md) — gouvernance et règles d'ingénierie IA
+- [operations/](./operations/README.md) — déploiement, performance, problèmes techniques et release
+- [reference/](./reference/README.md) — glossaire et références complémentaires
 
 ## Références canoniques
 
-- [Langage de design Vitalis](./00-foundation/design-language.md)
-- [Vitalis Experience System](./01-product/experience-system.md)
-- [Navigation produit Vitalis](./01-product/navigation.md)
-- [Système de communication humaine V1 à V3](./01-product/communication-system-v1-v3.md)
-- [Gouvernance complète de la communication V1 à V3](./01-product/communication-system-governance-v1-v3.md) — exigences, limites, sécurité, maturité, IA future, tests et critères de livraison.
-- [Catalogue de communication V1](./01-product/communication-catalog-v1.md)
-- [Architecture du système de communication](./02-architecture/communication-system-architecture.md)
-- [Centre de communication — règles produit V1](./01-product/communication-center-v1.md)
-- [Langage humain et communication Vitalis](./01-product/communication-language.md)
-- [Espaces personnels et gestion indépendante des moteurs — V1](./01-product/personal-and-engine-management-v1.md)
-- [Parcours utilisateurs](./01-product/user-journeys.md)
-- [Présentation des pages moteurs — V1](./01-product/engine-page-preview-standard-v1.md)
-- [Parcours du profil — V1](./01-product/profile-experience-v1.md)
-- [Architecture front-end et expérience](./02-architecture/frontend-experience.md)
-- [Standards de navigation mobile Android, iOS et Web](./02-architecture/mobile-navigation-standards.md)
-- [Architecture backend et API](./02-architecture/backend-api.md)
-- [Architecture de la base de données](./02-architecture/database-architecture.md)
-- [Synchronisation, mode hors ligne et temps réel](./02-architecture/synchronization-offline-realtime.md)
-- [Architecture IA et intégrations](./02-architecture/ai-architecture-integrations.md)
-- [API de synchronisation](./03-api/sync-api.md)
-- [Dictionnaire de données](./04-database/data-dictionary.md)
-- [Schéma, grants et politiques RLS](./04-database/schema-design.md)
-- [Personas Vitalis](./01-product/personas.md)
-- [Niveaux de confiance](./01-product/trust-levels.md)
-- [Domaine Trust et Trust Engine](./02-architecture/trust-domain.md)
-- [Modèle d'identité numérique unifiée](./02-architecture/identity-model.md)
-- [Performance PWA](./06-operations/performance-pwa.md)
-- [Registre des problèmes de performance](./06-operations/performance-issues.md)
-- [Registre des problèmes techniques](./06-operations/technical-issues.md)
-- [Préparation de release et décision Go/No-Go](./06-operations/release-readiness.md)
-- [Reprise après incident et continuité d'activité](./06-operations/disaster-recovery.md)
+- [Langage de design Vitalis](./foundation/design-language.md)
+- [Vitalis Experience System](./product/experience-system.md)
+- [Navigation produit Vitalis](./product/navigation.md)
+- [Système de communication humaine V1 à V3](./product/communication-system-v1-v3.md)
+- [Gouvernance complète de la communication V1 à V3](./product/communication-system-governance-v1-v3.md) — exigences, limites, sécurité, maturité, IA future, tests et critères de livraison.
+- [Catalogue de communication V1](./product/communication-catalog-v1.md)
+- [Architecture du système de communication](./architecture/communication-system-architecture.md)
+- [Centre de communication — règles produit V1](./product/communication-center-v1.md)
+- [Langage humain et communication Vitalis](./product/communication-language.md)
+- [Espaces personnels et gestion indépendante des moteurs — V1](./product/personal-and-engine-management-v1.md)
+- [Parcours utilisateurs](./product/user-journeys.md)
+- [Présentation des pages moteurs — V1](./product/engine-page-preview-standard-v1.md)
+- [Parcours du profil — V1](./product/profile-experience-v1.md)
+- [Architecture front-end et expérience](./architecture/frontend-experience.md)
+- [Standards de navigation mobile Android, iOS et Web](./architecture/mobile-navigation-standards.md)
+- [Architecture backend et API](./architecture/backend-api.md)
+- [Architecture de la base de données](./architecture/database-architecture.md)
+- [Synchronisation, mode hors ligne et temps réel](./architecture/synchronization-offline-realtime.md)
+- [Architecture IA et intégrations](./architecture/ai-architecture-integrations.md)
+- [API de synchronisation](./api/sync-api.md)
+- [Dictionnaire de données](./database/data-dictionary.md)
+- [Schéma, grants et politiques RLS](./database/schema-design.md)
+- [Personas Vitalis](./product/personas.md)
+- [Niveaux de confiance](./product/trust-levels.md)
+- [Domaine Trust et Trust Engine](./architecture/trust-domain.md)
+- [Modèle d'identité numérique unifiée](./architecture/Evolution du modèle de données - Unified Digital Identity UDI.md)
+- [Performance PWA](./operations/performance-pwa.md)
+- [Registre des problèmes de performance](./operations/performance-issues.md)
+- [Registre des problèmes techniques](./operations/technical-issues.md)
+- [Préparation de release et décision Go/No-Go](./operations/release-readiness.md)
+- [Reprise après incident et continuité d'activité](./operations/disaster-recovery.md)
 
 ## Annexes de contrôle
 
-- [Matrice de conformité de la navigation Vitalis V1](./07-annexes/navigation-compliance-matrix.md) — critères, constats sur PR #37, preuves et tests d'acceptation.
+- [Matrice de conformité de la navigation Vitalis V1](./reference/navigation-compliance-matrix.md) — critères, constats sur PR #37, preuves et tests d'acceptation.
 
 ## Migration documentaire
 
-- [Cartographie des références canoniques et historiques](./07-annexes/documentation-migration-map.md) — correspondances par domaine et vérifications restantes.
-- [Réconciliation fichier par fichier du Lot 12](./07-annexes/lot12-file-reconciliation.md) — dépendances, contrôles disponibles, corrections proposées et limites de validation de la PR #25.
-- [Audit préliminaire de couverture du contenu](./07-annexes/documentation-content-coverage.md) — premiers constats de comparaison ; aucun retrait n'est autorisé par cet audit.
-- [Candidats aux suppressions documentaires](./07-annexes/proposed-document-removals.md) — propositions uniquement, en attente d'approbation explicite.
+- [Cartographie des références canoniques et historiques](./reference/documentation-migration-map.md) — correspondances par domaine et vérifications restantes.
+- [Réconciliation fichier par fichier du Lot 12](./reference/lot12-file-reconciliation.md) — dépendances, contrôles disponibles, corrections proposées et limites de validation de la PR #25.
+- [Audit préliminaire de couverture du contenu](./reference/documentation-content-coverage.md) — premiers constats de comparaison ; aucun retrait n'est autorisé par cet audit.
+- [Candidats aux suppressions documentaires](./reference/proposed-document-removals.md) — propositions uniquement, en attente d'approbation explicite.
 
 ## Archives
 

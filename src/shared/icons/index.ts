@@ -1,4 +1,4 @@
 /**
- * Icon registry façade. Use lucide-react directly via @/components/app/Icon.
+ * Icon registry façade. Use lucide-react directly via @/shared/components/Icon.
  */
-export { Icon } from "@/components/app/Icon";
+export { Icon } from "@/shared/components/Icon";

@@ -4,7 +4,7 @@ import { resolve } from "node:path";
 
 describe("Scan realtime lifecycle", () => {
   it("keeps the latest query in a ref and cleans the subscription", () => {
-    const hook = readFileSync(resolve("src/domains/scan/hooks/useScan.ts"), "utf8");
+    const hook = readFileSync(resolve("src/modules/scan/hooks/useScan.ts"), "utf8");
     expect(hook).toContain("queryRef.current = query");
     expect(hook).toContain("subscribeToFlashChanges");
     expect(hook).toContain("[execute]");
@@ -13,7 +13,7 @@ describe("Scan realtime lifecycle", () => {
 
   it("removes the Supabase channel during cleanup", () => {
     const service = readFileSync(
-      resolve("src/domains/scan/services/scan-realtime.service.ts"),
+      resolve("src/modules/scan/services/scan-realtime.service.ts"),
       "utf8",
     );
     expect(service).toContain("supabase.removeChannel(channel)");

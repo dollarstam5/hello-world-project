@@ -1,4 +1,5 @@
-import script from "../scripts/test-mobile-e2e.sh?raw";
+import script from "../tooling/scripts/test-mobile-e2e.sh?raw";
+import scrollCheck from "../tooling/scripts/check-mobile-scroll.mjs?raw";
 import { describe, expect, it } from "vitest";
 
 describe("mobile visual smoke contract", () => {
@@ -25,15 +26,35 @@ describe("mobile visual smoke contract", () => {
     expect(script).toContain('"390,844"');
     expect(script).toContain('selector="#home-engines-title"');
     expect(script).toContain('"/flash") selector="main h1"');
-    expect(script).toContain('"/scan") selector="#scan-radius"');
+    expect(script).toContain('"/scan") selector="#scan-need"');
     expect(script).toContain('"/reel") selector=".reel-proximity"');
     expect(script).toContain('"/radar") selector="main h1"');
     expect(script).toContain('--wait-for-selector="$selector"');
     expect(script).toContain('test -s "$output"');
   });
 
+  it("uses an isolated production server port and reliably cleans up screenshot processes", () => {
+    expect(script).toContain('PORT="$(python3');
+    expect(script).toContain("setsid bunx wrangler dev");
+    expect(script).toContain('kill -- "-$SERVER_PID"');
+    expect(script).toContain("SCREENSHOT_TIMEOUT_SECONDS=45");
+    expect(script).toContain("run_screenshot()");
+    expect(script).toContain('setsid "$@" &');
+    expect(script).toContain('terminate_process_group "$SCREENSHOT_PID"');
+    expect(script).not.toContain('PORT="4173"');
+  });
+
+  it("uses an isolated Chromium endpoint and reliably cleans up the browser process", () => {
+    expect(scrollCheck).toContain("--remote-debugging-port=0");
+    expect(scrollCheck).toContain("DevToolsActivePort");
+    expect(scrollCheck).toContain("detached: true");
+    expect(scrollCheck).toContain("process.kill(-chrome.pid");
+    expect(scrollCheck).toContain('chrome.once("exit", resolve)');
+    expect(scrollCheck).not.toContain("9222");
+  });
+
   it("asserts bottom-scroll clearance above the fixed navigation for Flash and Scan", () => {
-    expect(script).toContain("scripts/check-mobile-scroll.mjs");
+    expect(script).toContain("tooling/scripts/check-mobile-scroll.mjs");
     expect(script).toContain("bottom-scroll clearance assertions");
   });
 });

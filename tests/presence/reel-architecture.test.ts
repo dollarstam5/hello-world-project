@@ -1,22 +1,31 @@
-import { describe, expect, it } from "vitest";
-import screenCompositionSource from "../../src/domains/presence/ui/ReelProximityScreen.tsx?raw";
-import radarComponentsSource from "../../src/domains/presence/ui/components/ReelRadarIdentity.tsx?raw";
-import guidedTourSource from "../../src/domains/presence/ui/components/ReelGuidedTour.tsx?raw";
-import settingsHelpSource from "../../src/domains/presence/ui/components/ReelSettingsHelp.tsx?raw";
-import profileSheetSource from "../../src/domains/presence/ui/components/ReelProfileSheet.tsx?raw";
-import settingsPanelSource from "../../src/domains/presence/ui/components/ReelSettingsPanel.tsx?raw";
-import activityPanelSource from "../../src/domains/presence/ui/components/ReelActivityPanel.tsx?raw";
-import headerSource from "../../src/domains/presence/ui/components/ReelHeader.tsx?raw";
-import discoveryPromptSource from "../../src/domains/presence/ui/components/ReelDiscoveryPrompt.tsx?raw";
-import nearbyPreviewSource from "../../src/domains/presence/ui/components/ReelNearbyPreview.tsx?raw";
-import globalPanelSource from "../../src/domains/presence/ui/components/ReelGlobalPanel.tsx?raw";
-import peoplePanelSource from "../../src/domains/presence/ui/components/ReelPeoplePanel.tsx?raw";
+// @vitest-environment node
 
-import controllerSource from "../../src/domains/presence/model/useReelProximityController.ts?raw";
-import realtimeServiceSource from "../../src/domains/presence/services/reel-activity-realtime.service.ts?raw";
-import communicationBridgeSource from "../../src/domains/presence/model/ReelCommunicationBridge.tsx?raw";
-import appShellSource from "../../src/components/app/AppShell.tsx?raw";
-import memberAvatarSource from "../../src/domains/profile/api/profile-avatar.client.ts?raw";
+import { readFileSync } from "node:fs";
+import { describe, expect, it } from "vitest";
+import screenCompositionSource from "../../src/modules/reel/ui/ReelProximityScreen.tsx?raw";
+
+import radarComponentsSource from "../../src/modules/reel/ui/components/ReelRadarIdentity.tsx?raw";
+import guidedTourSource from "../../src/modules/reel/ui/components/ReelGuidedTour.tsx?raw";
+import settingsHelpSource from "../../src/modules/reel/ui/components/ReelSettingsHelp.tsx?raw";
+import profileSheetSource from "../../src/modules/reel/ui/components/ReelProfileSheet.tsx?raw";
+import settingsPanelSource from "../../src/modules/reel/ui/components/ReelSettingsPanel.tsx?raw";
+import activityPanelSource from "../../src/modules/reel/ui/components/ReelActivityPanel.tsx?raw";
+import headerSource from "../../src/modules/reel/ui/components/ReelHeader.tsx?raw";
+import discoveryPromptSource from "../../src/modules/reel/ui/components/ReelDiscoveryPrompt.tsx?raw";
+import nearbyPreviewSource from "../../src/modules/reel/ui/components/ReelNearbyPreview.tsx?raw";
+import globalPanelSource from "../../src/modules/reel/ui/components/ReelGlobalPanel.tsx?raw";
+import peoplePanelSource from "../../src/modules/reel/ui/components/ReelPeoplePanel.tsx?raw";
+
+import controllerSource from "../../src/modules/reel/model/useReelProximityController.ts?raw";
+import realtimeServiceSource from "../../src/modules/reel/services/reel-activity-realtime.service.ts?raw";
+import communicationBridgeSource from "../../src/modules/reel/model/ReelCommunicationBridge.tsx?raw";
+import appShellSource from "../../src/app/shell/AppShell.tsx?raw";
+import memberAvatarSource from "../../src/modules/profile/api/profile-avatar.client.ts?raw";
+
+const radarStylesSource = readFileSync(
+  new URL("../../src/modules/reel/ui/reel-proximity.css", import.meta.url),
+  "utf8",
+);
 
 const screenSource = `${screenCompositionSource}\n${radarComponentsSource}\n${guidedTourSource}\n${settingsHelpSource}\n${profileSheetSource}\n${settingsPanelSource}\n${activityPanelSource}\n${headerSource}\n${discoveryPromptSource}\n${nearbyPreviewSource}\n${globalPanelSource}\n${peoplePanelSource}`;
 
@@ -109,8 +118,10 @@ describe("En direct architecture boundaries", () => {
     expect(screenSource).toContain("reel-radar__me-avatar");
     expect(screenSource).toContain('className="reel-radar__me-label"');
     expect(screenSource).toContain("aria-pressed={isPresenceActive}");
-    expect(screenSource).toContain("if (currentPresence) void stopPresence()");
-    expect(screenSource).toContain("else if (guestPresence) void stopGuestPresence()");
+    expect(screenSource).toMatch(/if \(currentPresence\) \{/);
+    expect(screenSource).toContain("void stopPresence();");
+    expect(screenSource).toMatch(/else if \(guestPresence\) \{/);
+    expect(screenSource).toContain("void stopGuestPresence();");
     expect(screenSource).not.toContain("messagesHidden");
   });
 
@@ -124,6 +135,36 @@ describe("En direct architecture boundaries", () => {
     expect(controllerSource).toContain('access.mode !== "member"');
     expect(screenSource).toContain('accessMode === "member" && memberAvatarUrl');
     expect(screenSource).toContain("<img");
+  });
+
+  it("keeps radar rays subtle and layered between the background and nearby profiles", () => {
+    expect(screenCompositionSource).toContain(
+      '<div className="reel-radar__rays" aria-hidden="true" />',
+    );
+    expect(screenCompositionSource).toContain("<SelfRadarIdentity");
+    expect(radarStylesSource).toContain("rgb(40 120 240 / 14%)");
+    expect(radarStylesSource).toContain("ellipse 13.5% 18%");
+    expect(radarStylesSource).toContain(
+      ".reel-proximity__radar .reel-radar__core {\n  z-index: 1;",
+    );
+    expect(radarStylesSource).toContain(
+      ".reel-proximity__radar .reel-ring-person {\n  z-index: 2;",
+    );
+    expect(radarStylesSource).toContain(
+      ".reel-proximity__radar .reel-radar__rays {\n  position: absolute;\n  z-index: 0;",
+    );
+  });
+
+  it("keeps the central avatar visible in calm mode and reduces ray density on compact phones", () => {
+    expect(radarStylesSource).toContain(
+      ".reel-proximity__radar--calm .reel-radar__core {\n  animation: none;\n  opacity: 1;",
+    );
+    expect(radarStylesSource).toContain("transparent 0deg 44.45deg");
+    expect(radarStylesSource).toContain("rgb(40 120 240 / 12%) 44.58deg 44.82deg");
+    expect(radarStylesSource).toContain("@media (prefers-reduced-motion: reduce)");
+    expect(radarStylesSource).toContain("animation: none !important;");
+    expect(radarStylesSource).toContain(".dark .reel-proximity__radar .reel-radar__rays");
+    expect(radarStylesSource).toContain("animation: none;\n  opacity: 0.48;");
   });
 
   it("keeps the En direct header and central profile controls in the mobile screen composition", () => {

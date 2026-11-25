@@ -28,7 +28,7 @@ const reelProjection = vi.hoisted(() => ({
   connectionsReady: false,
 }));
 
-vi.mock("@/domains/presence/model/reel-activity-projection", () => ({
+vi.mock("@/modules/reel/model/reel-activity-projection", () => ({
   useReelActivityProjection: (selector: (state: typeof reelProjection) => unknown) =>
     selector(reelProjection),
 }));

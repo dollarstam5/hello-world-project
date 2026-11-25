@@ -1,1 +1,1 @@
-export { SectionFoundation } from "@/components/experience/SectionFoundation";
+export { SectionFoundation } from "@/composition/layouts/SectionFoundation";
