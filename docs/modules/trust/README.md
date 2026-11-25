@@ -6,7 +6,8 @@ Ce dossier conserve les spécifications historiques du Trust Engine et de son co
 
 - [Niveaux de confiance produit](../../product/trust-levels.md) — niveaux, règles et expérience produit.
 - [Domaine Trust et Trust Engine](../../architecture/trust-domain.md) — responsabilités et architecture du domaine.
-- [Contrat API Trust](../../api/) — consulter l'index API pour le contrat actuellement retenu.
+- [Contrat API Trust](../../api/trust-api.md) — contrat API de référence et statut de son implémentation.
+- [Index général des API](../../api/README.md) — inventaire des contrats et références historiques.
 
 Ces références sont séparées volontairement : les niveaux de confiance produit, le domaine technique Trust et son contrat d'API sont des sujets liés, mais non interchangeables.
 
@@ -23,12 +24,12 @@ Les fichiers suivants sont des versions de conception antérieures. Ils sont con
 
 ### Contrat API historique
 
-- [Trust API — contrat historique](./8.%20Trust%20API.md)
+- [Trust API — contrat historique](./8.%20Trust%20API.md) — source conservée ; consulter le [contrat API canonique](../../api/trust-api.md) pour le statut et les références actuelles.
 
 ## Règles de maintenance
 
 - Toute évolution produit des niveaux de confiance commence dans `docs/product/trust-levels.md`.
 - Toute évolution des responsabilités ou composants techniques commence dans `docs/architecture/trust-domain.md`.
-- Toute évolution du contrat API commence par la vérification de l'index `docs/api/README.md` et de son contrat canonique.
+- Toute évolution du contrat API commence par la vérification de `docs/api/trust-api.md` et de son statut dans `docs/api/contract-runtime-status.md`.
 - Les fichiers historiques ne sont ni renommés, ni fusionnés, ni supprimés sans comparaison de contenu, vérification des liens entrants et validation explicite.
 - Une présence documentaire ne prouve pas qu'une règle ou un endpoint est implémenté dans le runtime.
