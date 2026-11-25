@@ -3,14 +3,15 @@ import { Link } from "@tanstack/react-router";
 import { Bell, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { haptic } from "@/platform/device/haptics";
-const ProfileQuickPreview = lazy(() =>
-  import("./ProfileQuickPreview").then((module) => ({ default: module.ProfileQuickPreview })),
-);
 import { useIdentity } from "@/lib/experience/identity";
 import { useAuth } from "@/modules/auth/model/useAuth";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
 import { useReelActivityProjection } from "@/modules/reel/model/reel-activity-projection";
+
+const ProfileQuickPreview = lazy(() =>
+  import("./ProfileQuickPreview").then((module) => ({ default: module.ProfileQuickPreview })),
+);
 
 export function AppHeader({ onOpenCommunication }: { onOpenCommunication: () => void }) {
   const { t } = useI18n();
