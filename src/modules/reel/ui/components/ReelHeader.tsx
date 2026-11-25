@@ -39,7 +39,7 @@ export function ReelHeader({
   const isPresenceActive = Boolean(currentPresence || guestPresence);
 
   return (
-    <header className="reel-proximity__header">
+    <header className="reel-proximity__header sticky top-0 z-30 -mx-3 px-3 pt-[env(safe-area-inset-top)] border-b border-white/5 bg-background/80 backdrop-blur-xl">
       <div className="reel-proximity__heading">
         <RadioTower aria-hidden="true" />
         <div className="reel-proximity__heading-copy">
