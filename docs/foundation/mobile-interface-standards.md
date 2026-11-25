@@ -612,3 +612,44 @@ Un écran ne peut être déclaré conforme au standard mobile Vitalis que si :
 6. Contrôler le focus visible et les contrastes des commandes langue / thème en mode clair et sombre.
 
 **Conclusion de l’audit statique :** le module Auth présente de bonnes bases tactiles : champs et commandes atteignent la cible déclarée de 48 px, les libellés de champs sont persistants et les messages de connexion sont sémantisés. Les points de vigilance sont la taille réelle du texte des champs, le placement des commandes globales sur petit écran et surtout la gestion / l’annonce des erreurs dans la réinitialisation du mot de passe. Les tests sur appareils et lecteurs d’écran restent nécessaires avant clôture. Aucun code applicatif n’a été modifié dans cette étape.
+
+
+### 4.12 Audit des commandes et de la navigation — module Admin
+
+**Périmètre vérifié :** lecture statique, sur la branche `chore/architecture-folder-cleanup-2026-11`, de `AdminAccessGate.tsx`, `AdminOverviewView.tsx`, `AdminRecordsView.tsx`, `AdminShell.tsx`, `AdminSystemView.tsx`, `ModuleHeader.tsx`, `StatCard.tsx` et `StateBlock.tsx`. L’audit couvre la navigation mobile du tableau de bord, les états d’accès, la recherche et la pagination des données, ainsi que les vues de synthèse et système. Les composants purement visuels ne sont pas considérés comme des commandes. Aucun rendu sur appareil n’a été mesuré.
+
+| Zone / commande | Constat dans le code de la branche | Évaluation mobile |
+|---|---|---|
+| En-tête — ouvrir / fermer la navigation | Bouton icône avec `size-9` (36 × 36 px), visible uniquement sous le breakpoint desktop, nom accessible dynamique via `aria-label` | Nettement sous la cible 48 × 48 px ; agrandir la zone tactile sans augmenter excessivement l’encombrement de l’en-tête |
+| Navigation latérale — liens de modules | Liens avec padding vertical `py-2` (8 px par côté), sans hauteur minimale explicite ni indication `aria-current` visible dans le composant | Hauteur intrinsèque probablement sous 48 px selon la police ; définir une cible de 48 px minimum et exposer la page courante de façon sémantique |
+| Navigation latérale — fermeture après sélection | Le clic sur un lien appelle `setNavOpen(false)` ; panneau mobile fixe, défilable, sous l’en-tête | Fermeture prévue après navigation ; tester focus, retour arrière, défilement et absence de masquage du contenu |
+| Écran d’accès — réessayer | Bouton natif sans hauteur minimale, padding vertical `py-1.5` (6 px) | Cible tactile non garantie et probablement inférieure à 48 px ; appliquer le standard |
+| Écran d’accès refusé — retour accueil | Lien avec padding vertical `py-1.5`, sans minimum tactile explicite | Cible tactile non garantie ; porter la zone à 48 px minimum et conserver un focus visible |
+| État d’erreur partagé — réessayer | Bouton natif dans `StateBlock`, padding vertical `py-1.5`, sans minimum explicite | Sous le standard probable ; porter à 48 px et garantir un focus visible |
+| Registres — champ de recherche | Champ avec padding `py-2`, sans `min-height` ni taille de police explicite ; nom accessible via `aria-label` | Hauteur tactile non garantie ; fixer 48 px minimum et vérifier une police de 16 px pour éviter le zoom mobile |
+| Registres — lancer la recherche | Bouton natif avec padding `py-2`, sans hauteur minimale explicite | Cible tactile non garantie ; porter à 48 px minimum, avec focus visible |
+| Registres — page précédente / suivante | Boutons natifs avec padding `py-1.5`, sans hauteur minimale ; état `disabled` selon la page | Sous le standard probable ; définir 48 px minimum, vérifier l’espacement et conserver un état désactivé perceptible |
+| Synthèse / système — cartes statistiques et lignes d’audit | Éléments de présentation non interactifs dans les composants examinés | Pas de cible tactile à mesurer ; préserver la lisibilité et ne pas leur donner une apparence cliquable |
+| Chargement / erreur / vide | Les états de chargement utilisent `aria-busy="true"` ; erreurs et données vides sont présentées sous forme de texte ; le bouton de reprise est audité ci-dessus | Le chargement est signalé au niveau du bloc, mais l’annonce lecteur d’écran du texte d’erreur / vide n’est pas explicitement structurée par `role="alert"` ou `role="status"` dans ces composants |
+
+**Constats transversaux :**
+
+- Le module Admin possède une structure desktop avec navigation latérale et une navigation mobile en panneau fixe. Cette adaptation est fonctionnelle dans son principe, mais plusieurs commandes conservent des dimensions compactes qui ne répondent pas à la cible mobile V1.
+- Le bouton d’ouverture du menu est de 36 × 36 px. Les liens de navigation et les commandes de recherche / pagination n’ont pas de hauteur minimale explicite ; leur padding seul ne garantit pas une cible de 48 px.
+- Les boutons de reprise des erreurs d’accès et des vues de données utilisent un padding vertical de 6 px sans minimum tactile. Ils constituent un écart récurrent à corriger.
+- Les liens de navigation ferment le panneau mobile après sélection, mais le composant ne déclare pas explicitement `aria-current="page"` sur la destination active. Le style visuel seul ne suffit pas à annoncer la position courante à tous les utilisateurs.
+- Les vues de synthèse et système sont principalement consultatives. La vue des registres est en lecture seule, avec recherche et pagination ; aucun contrôle d’édition de données n’a été observé dans le périmètre.
+- Les composants audités ne montrent pas de contrat de focus clavier uniforme sur les boutons natifs et les liens. Les classes de focus doivent être vérifiées ou explicitées.
+- La présence de `aria-busy` sur le squelette de chargement est positive, mais les erreurs, résultats vides et changements de pagination doivent être testés avec les lecteurs d’écran.
+
+**Priorités documentaires de mise en conformité :**
+
+1. Porter le bouton d’ouverture / fermeture de navigation à 48 × 48 px.
+2. Donner une hauteur minimale de 48 px aux liens du menu mobile, aux boutons de reprise, au champ et au bouton de recherche, ainsi qu’aux commandes de pagination.
+3. Ajouter une indication sémantique de destination courante aux liens du menu, par exemple `aria-current="page"`, en plus du style visuel actif.
+4. Garantir un focus visible cohérent pour tous les boutons natifs et liens du module, en thème clair et sombre.
+5. Structurer les annonces des états erreur / vide / mise à jour des registres ; tester l’annonce de la recherche et du changement de page sans déplacement forcé du focus.
+6. Tester le menu sur 320 et 360 px : hauteur disponible, défilement, superposition avec l’en-tête, fermeture après sélection et navigation retour.
+7. Vérifier la lisibilité du tableau sur téléphone : défilement horizontal contrôlable, conservation du contexte de ligne et alternative acceptable pour les colonnes nombreuses.
+
+**Conclusion de l’audit statique :** Admin est majoritairement une interface de consultation, mais sa navigation mobile et ses commandes de recherche / reprise / pagination présentent plusieurs cibles tactiles inférieures ou non garanties à 48 px. Le bouton de menu à 36 px est l’écart le plus explicite. La sémantique de la navigation courante et les annonces d’état méritent également une validation. Aucun code applicatif n’a été modifié dans cette étape.
