@@ -123,7 +123,7 @@ export interface CreateRecommendationReactionInput {
 export interface RecommendationListQuery {
   readonly cursor?: string;
   readonly limit?: number;
-  readonly status?: "available" | "saved";
+  readonly view?: "available" | "saved";
 }
 
 export interface RecommendationListResult {
