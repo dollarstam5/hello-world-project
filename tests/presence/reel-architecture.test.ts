@@ -116,9 +116,9 @@ describe("En direct architecture boundaries", () => {
     expect(screenSource).toContain("reel-radar__me-avatar");
     expect(screenSource).toContain('className="reel-radar__me-label"');
     expect(screenSource).toContain("aria-pressed={isPresenceActive}");
-    expect(screenSource).toContain("if (currentPresence) {");
+    expect(screenSource).toMatch(/if \(currentPresence\) \{/);
     expect(screenSource).toContain("void stopPresence();");
-    expect(screenSource).toContain("else if (guestPresence) {");
+    expect(screenSource).toMatch(/else if \(guestPresence\) \{/);
     expect(screenSource).toContain("void stopGuestPresence();");
     expect(screenSource).not.toContain("messagesHidden");
   });
