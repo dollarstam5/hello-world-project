@@ -52,14 +52,14 @@ En direct est le nom affiché du moteur historiquement nommé En direct. Les rou
 - Le centre de l'en-tête n'accueille aucun titre centré ni élément décoratif. La zone centrale de la page, sous l'en-tête, est réservée à l'action principale du moteur.
 - Sous cette composition viennent les informations et panneaux propres au moteur.
 
-### Centre du radar : origine des rayons, sans icône
+### Centre du radar : avatar utilisateur et rayons vers la périphérie
 
-- Le centre du radar ne présente **aucune icône, aucun avatar, aucune silhouette, aucune initiale et aucun libellé**. Il ne représente pas le profil de la personne.
-- Le centre est un point d'origine visuel neutre. Des rayons partent de ce point et s'étendent vers l'extrémité du radar, jusqu'à sa périphérie. Le rayonnement constitue le motif central de l'interface.
+- L'avatar de l'utilisateur reste **au centre du radar**. Il représente sa propre présence et conserve son rôle de point de repère visuel.
+- Les rayons partent visuellement de cet avatar et s'étendent vers l'extérieur, jusqu'à l'extrémité et à la périphérie du radar. L'avatar est donc l'origine du rayonnement, et non un point neutre ou vide.
 - Les rayons doivent rester lisibles, fins et équilibrés ; ils structurent l'espace sans masquer les présences découvertes ni concurrencer les profils affichés autour du centre.
-- Les personnes qui ont choisi de partager leur présence restent représentées séparément autour du centre, selon leur position dans le radar. Leur avatar et leur fiche ne sont pas déplacés au centre.
-- La suppression de l'avatar central ne doit pas supprimer les fonctions existantes de gestion de sa propre présence. Leur point d'accès visuel et leur interaction devront être conservés dans les commandes ou réglages dédiés, sans réintroduire d'icône au centre.
-- Aucun changement de comportement n'est présumé par cette règle graphique : le déplacement précis de l'interaction actuellement portée par le bouton central sera vérifié avant toute modification du code.
+- Les personnes qui ont choisi de partager leur présence restent représentées séparément autour de l'avatar central, selon leur position dans le radar.
+- Le bouton central reste associé à l'avatar de l'utilisateur et conserve son rôle actuel dans la gestion de sa propre présence (activation, arrêt ou accès aux réglages selon l'état). Toute évolution de ce comportement devra être décidée explicitement avant modification du code.
+- Cette règle précise la représentation visuelle attendue ; elle ne demande pas de supprimer l'avatar ni de déplacer l'interaction centrale.
 
 ### Commandes secondaires d'En direct
 
@@ -77,7 +77,7 @@ En direct est le nom affiché du moteur historiquement nommé En direct. Les rou
 - Les commandes bips et mises en relation restent conditionnées aux droits réellement disponibles côté serveur. Un élément visuel ne doit pas laisser croire qu'une action non raccordée fonctionne.
 - L'écran reste mobile-first, clair, aéré, accessible au clavier et compatible avec les zones sûres Android/iOS.
 - L’en-tête conserve l’identité du moteur à gauche et ses cinq commandes à droite ; les règles compactes à 420 px et 360 px réduisent les espacements et les commandes sans déplacer un titre au centre.
-- Le profil central garde une taille carrée stable ; l’image membre utilise `object-fit: cover`, et le profil invité conserve son avatar temporaire choisi et ses initiales.
+- L’avatar central garde une taille carrée stable ; l’image membre utilise `object-fit: cover`, et le profil invité conserve son avatar temporaire choisi et ses initiales.
 - La matrice de référence couvre 320×720, 360×800, 390×844, 412×915, 768×1024, 1024×768, 1280×800 et 844×390. Le contrat Vitest vérifie que la matrice de huit viewports reste couverte ; le script Playwright `bun run test:e2e` produit les captures de contrôle lorsqu’il est exécuté dans un environnement équipé de Chromium.
 
 ## Contrôles automatisés
