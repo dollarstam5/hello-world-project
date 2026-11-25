@@ -1,14 +1,15 @@
 import script from "../scripts/test-mobile-e2e.sh?raw";
+import scrollCheck from "../scripts/check-mobile-scroll.mjs?raw";
+import workflow from "../.github/workflows/reel-validation.yml?raw";
 import { describe, expect, it } from "vitest";
 
 describe("mobile visual smoke contract", () => {
-  it("covers the five core routes at the compact phone, reference phone and tablet viewports", () => {
-    for (const viewport of ["360,800", "390,844", "412,915", "768,1024"]) {
-      expect(script).toContain('"' + viewport + '"');
-    }
+  it("smoke-tests the public routes at the reference phone viewport and delegates viewport coverage to the scroll check", () => {
+    expect(script).toContain('"390,844"');
     for (const route of ['"/"', '"/flash"', '"/scan"', '"/reel"', '"/radar"']) {
       expect(script).toContain(route);
     }
+    expect(script).toContain("scripts/check-mobile-scroll.mjs");
   });
 
   it("serves the generated production Worker rather than a development server", () => {
@@ -25,11 +26,40 @@ describe("mobile visual smoke contract", () => {
     expect(script).toContain('"390,844"');
     expect(script).toContain('selector="#home-engines-title"');
     expect(script).toContain('"/flash") selector="main h1"');
-    expect(script).toContain('"/scan") selector="#scan-radius"');
+    expect(script).toContain('"/scan") selector="#scan-need"');
     expect(script).toContain('"/reel") selector=".reel-proximity"');
     expect(script).toContain('"/radar") selector="main h1"');
     expect(script).toContain('--wait-for-selector="$selector"');
     expect(script).toContain('test -s "$output"');
+  });
+
+  it("does not cancel active validation and avoids fixed port collisions", () => {
+    expect(workflow).toContain("cancel-in-progress: false");
+    expect(script).toContain('PORT="$(python3');
+    expect(script).toContain("setsid bunx wrangler dev");
+    expect(script).toContain('kill -- "-$SERVER_PID"');
+    expect(script).toContain("trap cleanup EXIT");
+    expect(script).not.toContain('PORT="4173"');
+    expect(scrollCheck).toContain("--remote-debugging-port=0");
+    expect(scrollCheck).toContain("DevToolsActivePort");
+    expect(scrollCheck).toContain("detached: true");
+    expect(scrollCheck).toContain("process.kill(-chrome.pid");
+    expect(scrollCheck).toContain('chrome.once("exit", resolve)');
+    expect(scrollCheck).not.toContain("chrome.exited");
+    expect(scrollCheck).not.toContain("9222");
+  });
+
+  it("bounds each screenshot wait and cleans up its browser process group", () => {
+    expect(script).toContain("SCREENSHOT_TIMEOUT_SECONDS=45");
+    expect(script).toContain("run_screenshot()");
+    expect(script).toContain('setsid "$@" &');
+    expect(script).toContain('terminate_process_group "$SCREENSHOT_PID"');
+    expect(script).toContain('kill -TERM -- "-$pid"');
+    expect(script).toContain('kill -KILL -- "-$pid"');
+    expect(script).toContain(
+      "ERROR: screenshot timed out after ${SCREENSHOT_TIMEOUT_SECONDS}s: ${label}",
+    );
+    expect(script).toContain('"locale=${locale} route=${route} viewport=${viewport}"');
   });
 
   it("asserts bottom-scroll clearance above the fixed navigation for Flash and Scan", () => {

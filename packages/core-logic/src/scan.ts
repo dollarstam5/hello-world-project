@@ -85,7 +85,7 @@ export function assessScanCandidate(
 /** Keeps qualification groups separate; relevance only orders items within a group. */
 export function rankScanAssessments(
   assessments: ScanCandidateAssessment[],
-  now = Date.now,
+  now = Date.now(),
 ): ScanCandidateAssessment[] {
   const priority: Record<ScanCandidateAssessment["level"], number> = {
     exact: 0,
@@ -139,7 +139,7 @@ export function buildScanSourceEvidence(
 export function selectScanResults(
   results: ScanResult[],
   interpretation: ScanInterpretation,
-  now = Date.now,
+  now = Date.now(),
 ): ScanCandidateAssessment[] {
   return rankScanAssessments(
     results.map((result) => assessScanCandidate(result, interpretation)),

@@ -10,7 +10,7 @@ import type {
 import { parseFlashIntent } from "@eco/core-logic";
 import { reverseGeocodeFlashLocation } from "../api/flash-geocoding.functions";
 import { createFlash } from "../data";
-import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
+import { useCommunicationRuntime } from "@/features/communication/CommunicationRuntimeProvider";
 import { publishFlashCommunicationEvent } from "../communication-events";
 import type { SpeechRecognitionLike, ComposerOptions } from "./flash-composer-helpers";
 import { CATEGORIES, TIME_SLOTS, expiryFor, getSpeechConstructor } from "./flash-composer-helpers";

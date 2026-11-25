@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import type { FlashRecord } from "@eco/core-contracts";
-import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
+import { useCommunicationRuntime } from "@/features/communication/CommunicationRuntimeProvider";
 import { publishFlashCommunicationEvent } from "../../../communication-events";
 import { archiveFlash, deleteFlash, updateFlash } from "../../../data";
 import { createFlashDashboardActionLock } from "../utils/flashDashboardActionLock";

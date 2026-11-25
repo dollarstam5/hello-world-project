@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { FLASH_SCOPES, FLASH_URGENCIES } from "@eco/core-contracts";
 import type { FlashCategory, FlashKind, FlashTimeSlot } from "@eco/core-contracts";
 import { Button } from "@/components/ui/button";
-import { formatCommunicationMessage } from "@/lib/communication/format";
+import { formatCommunicationMessage } from "@/features/communication/model/format";
 import { useI18n } from "@/lib/i18n/useI18n";
 import type { useFlashComposer } from "./useFlashComposer";
 
@@ -183,7 +183,9 @@ export function FlashComposerReviewStep({ state, user, authLoading }: Props) {
         <div className="mt-4 rounded-xl border border-border p-3">
           <p className="text-sm text-muted-foreground">{t("flash.composer.signIn")}</p>
           <Button asChild className="mt-3 w-full rounded-full">
-            <Link to="/auth">{t("auth.signIn")}</Link>
+            <Link to="/auth" search={{ mode: undefined }}>
+              {t("auth.signIn")}
+            </Link>
           </Button>
         </div>
       ) : null}

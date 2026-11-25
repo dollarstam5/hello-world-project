@@ -3,7 +3,7 @@ import { useAuth } from "@/domains/auth/model/useAuth";
 import { Sheet } from "@/components/app/Sheet";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { useOnboarding } from "@/lib/experience/onboarding";
+import { useOnboarding } from "@/features/onboarding";
 import { useI18n } from "@/lib/i18n/useI18n";
 import {
   ArrowLeft,

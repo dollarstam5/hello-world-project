@@ -1,5 +1,5 @@
 import type { FlashRecord } from "@eco/core-contracts";
-import type { CommunicationRuntime } from "@/lib/communication/runtime";
+import type { CommunicationRuntime } from "@/features/communication/model/runtime";
 
 type FlashCommunicationAction = "draft-saved" | "updated" | "archived" | "deleted";
 

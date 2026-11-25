@@ -376,7 +376,7 @@ Cette règle est une exigence de gouvernance à appliquer à la suite du chantie
 
 ## Mise en œuvre du Context Resolver — statut contrôlé
 
-La première tranche du Context Resolver est implémentée dans `src/lib/communication/context.ts` et intégrée au runtime partagé. Elle normalise uniquement les faits déjà fournis par l'application : état Auth (chargement/invité/membre), route sans query/fragment, langue active, préférence assistant hydratée et états séparés des permissions découverte/présence.
+La première tranche du Context Resolver est implémentée dans `src/features/communication/model/context.ts` et intégrée au runtime partagé. Elle normalise uniquement les faits déjà fournis par l'application : état Auth (chargement/invité/membre), route sans query/fragment, langue active, préférence assistant hydratée et états séparés des permissions découverte/présence.
 
 Le contexte reste explicitement incomplet lorsque l'une des sources obligatoires manque. « Inconnu » n'est jamais équivalent à « autorisé » et « Auth en chargement » n'est jamais équivalent à « invité ». Le runtime expose `updateContext()`, `getContext()` et efface le contexte lors de `resetSession()`.
 

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { useOnboarding } from "@/lib/experience/onboarding";
+import { useOnboarding } from "@/features/onboarding";
 
 describe("Vitalis onboarding", () => {
   beforeEach(() => {

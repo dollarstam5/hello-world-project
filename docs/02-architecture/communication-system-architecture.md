@@ -69,7 +69,7 @@ Le message remis à l'interface contient une clé stable, la source propriétair
 
 Ne jamais inclure de coordonnées précises, identifiants temporaires invités, secrets, jetons d'authentification, contenu de conversation ou données sensibles non nécessaires.
 
-Le contrat TypeScript est porté par `CommunicationRequest` et `ResolvedCommunicationMessage` dans `src/lib/communication/dispatch.ts`. La source et la surface sont obligatoires ; l'ajout d'un nouveau moteur doit étendre le type de source et fournir un adaptateur explicite, sans créer un canal parallèle.
+Le contrat TypeScript est porté par `CommunicationRequest` et `ResolvedCommunicationMessage` dans `src/features/communication/model/dispatch.ts`. La source et la surface sont obligatoires ; l'ajout d'un nouveau moteur doit étendre le type de source et fournir un adaptateur explicite, sans créer un canal parallèle.
 
 ## 6. Événements et raccordement aux domaines
 
@@ -141,9 +141,9 @@ L'inventaire ci-dessous a été vérifié dans le dépôt avant d'étendre l'int
 
 | Élément existant | Rôle observé | Décision d'intégration |
 |---|---|---|
-| `src/lib/i18n/messages.ts` et `src/lib/i18n/useI18n.ts` | Catalogue FR/EN et fonction de traduction typée | Conserver comme catalogue et moteur de localisation V1 |
-| `src/lib/communication/greeting.ts` | Sélection locale des neuf périodes et garde-fou du nom par session | Première règle contextuelle intégrée ; à étendre sans multiplier les sélecteurs isolés |
-| `src/lib/communication/format.ts` | Résolution d'une clé i18n et remplacement contrôlé des variables | Formateur commun utilisé par l'accueil et les notices assistant ; les clés et traductions restent dans i18n |
+| `src/platform/internationalization/messages.ts` et `src/platform/internationalization/useI18n.ts` | Catalogue FR/EN et fonction de traduction typée | Conserver comme catalogue et moteur de localisation V1 |
+| `src/features/communication/model/greeting.ts` | Sélection locale des neuf périodes et garde-fou du nom par session | Première règle contextuelle intégrée ; à étendre sans multiplier les sélecteurs isolés |
+| `src/features/communication/model/format.ts` | Résolution d'une clé i18n et remplacement contrôlé des variables | Formateur commun utilisé par l'accueil et les notices assistant ; les clés et traductions restent dans i18n |
 | `src/components/experience/HomeFoundation.tsx` | Affiche l'accueil et consomme le sélecteur temporel | Premier écran raccordé |
 | `src/lib/app/assistant-notices.ts` | Canal Zustand de messages ponctuels, soumis à l'activation volontaire de l'assistant | Réutiliser comme adaptateur de présentation ; ne pas créer un second canal de notices |
 | `src/components/experience/AssistantNoticeLayer.tsx` | Affiche et ferme les notices temporaires, avec retrait après neuf secondes | Conserver la responsabilité d'affichage et d'accessibilité ; utiliser le formateur commun |
@@ -157,12 +157,12 @@ Les modules suivants sont maintenant présents sur la branche :
 
 | Module | Responsabilité réellement implémentée | Limite actuelle |
 |---|---|---|
-| `src/lib/communication/gate.ts` | Trie les demandes par priorité, conserve l'ordre d'origine à priorité égale et supprime les doublons via identifiant d'événement ou clé de répétition fournis | Ne mémorise pas lui-même les messages déjà livrés ; l'appelant fournit cet état |
-| `src/lib/communication/dispatch.ts` | Applique le filtre de priorité/déduplication puis résout le texte avec le formateur et le catalogue i18n existants | Prépare un lot ; ne déclenche pas de notification et ne modifie aucun état métier |
-| `src/lib/communication/delivery-session.ts` | Conserve en mémoire les identifiants réellement présentés après accusé de présentation explicite ; déduplication des lots suivants pendant la session | Aucun stockage local persistant ; aucun producteur de notifications moteur raccordé |
-| `src/lib/communication/runtime.ts` | Façade de session qui compose dispatch, gate et accusé de présentation ; expose aussi `resetSession()` | Utilisée via le provider applicatif ; les producteurs métier partagés des moteurs restent à raccorder |
-| `src/lib/communication/CommunicationRuntimeProvider.tsx` | Monte une instance unique du runtime dans `AppShell` et expose `useCommunicationRuntime()` aux domaines | Le hook est disponible aux futurs adaptateurs ; aucun adaptateur métier partagé n'est encore activé |
-| `src/lib/communication/maturity.ts` | Sélectionne une posture conversationnelle selon le nombre agrégé de comptes inscrits : lancement, croissance, communauté établie, maturité | Fonction pure sans requête ; pas encore raccordée à une source de comptage ni aux composants de suggestions |
+| `src/features/communication/model/gate.ts` | Trie les demandes par priorité, conserve l'ordre d'origine à priorité égale et supprime les doublons via identifiant d'événement ou clé de répétition fournis | Ne mémorise pas lui-même les messages déjà livrés ; l'appelant fournit cet état |
+| `src/features/communication/model/dispatch.ts` | Applique le filtre de priorité/déduplication puis résout le texte avec le formateur et le catalogue i18n existants | Prépare un lot ; ne déclenche pas de notification et ne modifie aucun état métier |
+| `src/features/communication/model/delivery-session.ts` | Conserve en mémoire les identifiants réellement présentés après accusé de présentation explicite ; déduplication des lots suivants pendant la session | Aucun stockage local persistant ; aucun producteur de notifications moteur raccordé |
+| `src/features/communication/model/runtime.ts` | Façade de session qui compose dispatch, gate et accusé de présentation ; expose aussi `resetSession()` | Utilisée via le provider applicatif ; les producteurs métier partagés des moteurs restent à raccorder |
+| `src/features/communication/CommunicationRuntimeProvider.tsx` | Monte une instance unique du runtime dans `AppShell` et expose `useCommunicationRuntime()` aux domaines | Le hook est disponible aux futurs adaptateurs ; aucun adaptateur métier partagé n'est encore activé |
+| `src/features/communication/model/maturity.ts` | Sélectionne une posture conversationnelle selon le nombre agrégé de comptes inscrits : lancement, croissance, communauté établie, maturité | Fonction pure sans requête ; pas encore raccordée à une source de comptage ni aux composants de suggestions |
 | `tests/communication/gate.test.ts` | Vérifie priorités, doublons connus, déduplication dans un lot et limite d'affichage | Tests unitaires, pas tests d'intégration UI |
 | `tests/communication/dispatch.test.ts` | Vérifie la chaîne complète locale et l'interpolation des variables | Ne prouve pas encore le raccordement aux événements des moteurs |
 | `tests/communication/delivery-session.test.ts` | Vérifie l'accusé de présentation avant déduplication et l'isolation entre sessions | Tests unitaires du contrat de livraison |
@@ -342,7 +342,7 @@ Le dossier de chaque évolution doit indiquer les scénarios testés, les résul
 
 ## 24. Context Resolver — première tranche implémentée
 
-Le module `src/lib/communication/context.ts` expose `resolveCommunicationContext()`. Il construit un instantané minimal à partir d'informations que l'application lui transmet explicitement ; il ne lit pas Auth, ne demande aucune permission, ne consulte aucun profil et n'effectue aucune requête.
+Le module `src/features/communication/model/context.ts` expose `resolveCommunicationContext()`. Il construit un instantané minimal à partir d'informations que l'application lui transmet explicitement ; il ne lit pas Auth, ne demande aucune permission, ne consulte aucun profil et n'effectue aucune requête.
 
 Le contexte typé contient uniquement :
 - l'état d'identité `loading`, `guest` ou `member` fourni par une source Auth déjà résolue ;
@@ -446,7 +446,7 @@ La validation de la projection est menée en deux niveaux : tests automatisés d
 
 ## Raccordement des événements métier au runtime commun — première tranche
 
-Le registre des événements de centre est intégré à l'instance existante de CommunicationRuntime (src/lib/communication/runtime.ts). Il ne s'agit pas d'un second store ou d'un service réseau. Il utilise le même abonnement de révision déjà fourni par CommunicationRuntimeProvider.
+Le registre des événements de centre est intégré à l'instance existante de CommunicationRuntime (src/features/communication/model/runtime.ts). Il ne s'agit pas d'un second store ou d'un service réseau. Il utilise le même abonnement de révision déjà fourni par CommunicationRuntimeProvider.
 
 ### Événements actuellement raccordés
 

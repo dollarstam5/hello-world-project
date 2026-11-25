@@ -1,5 +1,5 @@
 import type { RadarRecord } from "@eco/core-contracts";
-import type { CommunicationRuntime } from "@/lib/communication/runtime";
+import type { CommunicationRuntime } from "@/features/communication/model/runtime";
 
 type RadarCommunicationAction = "saved" | "updated" | "cancelled";
 

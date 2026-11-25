@@ -21,7 +21,7 @@ async function archive(id: string): Promise<FlashRecord> {
   if (current.authorId !== actorId()) throw new Error("Only the owner can archive this Flash.");
   if (current.status !== "live") throw new Error("Only live Flash can be archived.");
 
-  const next = stampUpdate({ ...current, status: "archived" });
+  const next = stampUpdate({ ...current, status: "archived" as const });
   await db.transaction("rw", db.flashes, db.outbox, async () => {
     await db.flashes.put(next);
     await enqueueMutation({

@@ -6,7 +6,7 @@ Le moteur vit dans `@eco/core-sync`. Il est **pur** : on lui injecte un store (D
 
 ```text
 1. PUSH   outbox → POST /api/sync/push   (par lots, ordre d'insertion)
-2. PULL   GET /api/sync/pull?cursor=…    (incrémental, par curseur de révision)
+2. PULL   POST /api/sync/pull           (JSON : protocolVersion, cursors, limit)
 3. APPLY  écriture locale sans écraser les mutations encore en attente
 4. STATE  mise à jour des curseurs + statut exposé à l'UI
 ```
@@ -15,7 +15,7 @@ Le push précède toujours le pull : on ne récupère jamais un état distant qu
 
 ## Curseurs
 
-`sync_state` garde, par table, la dernière `revision` reçue. Le pull renvoie les enregistrements dont `revision > cursor`, paginés ; on avance le curseur page par page, ce qui rend une interruption réseau sans conséquence.
+`sync_state` garde, par table, la dernière `revision` reçue. Le worker envoie un corps JSON conforme à `PullRequest` (`protocolVersion`, `cursors`, `limit`) avec un jeton Bearer. Le endpoint `POST /api/sync/pull` valide le corps, applique les RLS avec la session de l'utilisateur et renvoie les enregistrements dont `revision > cursor`, paginés. On avance le curseur page par page, ce qui rend une interruption réseau sans conséquence.
 
 ## Conflits
 
@@ -27,7 +27,7 @@ Retour en ligne, réveil de l'onglet et fin d'une mutation déclenchent un cycle
 
 ## Sécurité
 
-`/api/sync/pull` et `/api/sync/push` exigent un jeton Bearer valide ; sans jeton, réponse `401`. Chaque requête est exécutée avec l'identité de l'utilisateur : les RLS s'appliquent normalement.
+`POST /api/sync/pull` et `POST /api/sync/push` exigent `Content-Type: application/json` et un jeton Bearer valide ; sans session, réponse `401`. Les deux endpoints valident le corps JSON et appliquent une limite de taille. Chaque requête est exécutée avec le client Supabase lié à la session de l'utilisateur : les RLS s'appliquent normalement.
 
 ## Statut côté écran
 

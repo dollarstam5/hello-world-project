@@ -8,7 +8,7 @@ import {
   ChevronRight,
   Check,
 } from "lucide-react";
-import { formatCommunicationMessage } from "@/lib/communication/format";
+import { formatCommunicationMessage } from "@/features/communication/model/format";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useScanFlow } from "../hooks/useScanFlow";
 import { ScanResults } from "./ScanResults";

@@ -1,7 +1,5 @@
-/**
- * Accessibility foundation — reduced motion, contrast, focus utilities.
- */
-export { useReducedMotion } from "@/lib/design/useReducedMotion";
+/** Accessibility preferences and shared reduced-motion behavior. */
+export { useReducedMotion } from "@/shared/animations/useReducedMotion";
 
 export interface A11yPreferences {
   reduceMotion: boolean;

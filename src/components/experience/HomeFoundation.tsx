@@ -1,87 +1,23 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Radar, RadioTower, ScanLine, Zap, ArrowUpRight, Sparkles } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import { Sparkles, Zap, ScanLine, RadioTower, Radar } from "lucide-react";
 import { Surface } from "@/components/app/Surface";
-import { haptic } from "@/platform/device/haptics";
 import { Button } from "@/components/ui/button";
 import { PublicProfilePreview } from "@/components/app/PublicProfilePreview";
 import { Indicator } from "@/components/app/Indicator";
 import { useI18n } from "@/lib/i18n/useI18n";
-import { useIdentity } from "@/lib/experience/identity";
+import { useIdentity } from "@/domains/profile/model/identity";
 import { useAuth } from "@/domains/auth/model/useAuth";
-import { claimNameGreetingForSession, getHomeGreetingKey } from "@/lib/communication/greeting";
-import { formatCommunicationMessage } from "@/lib/communication/format";
+import {
+  claimNameGreetingForSession,
+  getHomeGreetingKey,
+} from "@/features/communication/model/greeting";
+import { formatCommunicationMessage } from "@/features/communication/model/format";
 import { createDemoFlashes } from "@/domains/flash/model/demo-flashes";
 import { VitalisVisionCard } from "@/components/experience/VitalisVisionCard";
+import { HomeEngineCard } from "@/components/experience/HomeEngineCard";
 import heroPhoto from "@/assets/images/experience/home-neighbours-1600.webp";
 import heroPhotoSmall from "@/assets/images/experience/home-neighbours-800.webp";
-
-type EngineCardProps = {
-  to: "/flash" | "/scan" | "/reel" | "/radar";
-  icon: LucideIcon;
-  title: string;
-  description: string;
-  example: string;
-  exampleLabel: string;
-  action: string;
-  tone: "warm" | "info" | "primary" | "violet";
-};
-
-const toneClasses = {
-  warm: "bg-warm-soft text-warm",
-  info: "bg-info/10 text-info",
-  primary: "bg-primary-soft text-primary",
-  violet: "bg-intelligence-soft text-intelligence",
-} as const;
-
-function EngineCard({
-  to,
-  icon: Icon,
-  title,
-  description,
-  example,
-  exampleLabel,
-  action,
-  tone,
-}: EngineCardProps) {
-  return (
-    <Link
-      to={to}
-      onClick={() => haptic.tap()}
-      className="native-press group block h-full rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-    >
-      <Surface
-        variant="elevated"
-        padding="md"
-        bordered
-        interactive
-        className="flex h-full min-h-36 flex-col justify-between gap-4 transition-all duration-200 group-hover:border-primary/40 group-active:scale-[0.98]"
-      >
-        <div className="flex items-start justify-between gap-3">
-          <span
-            className={`flex h-11 w-11 items-center justify-center rounded-2xl ${toneClasses[tone]} shadow-sm`}
-          >
-            <Icon className="h-5 w-5" aria-hidden />
-          </span>
-          <ArrowUpRight
-            className="h-4 w-4 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-            aria-hidden
-          />
-        </div>
-        <div className="space-y-1.5">
-          <h3 className="text-base font-semibold tracking-tight text-foreground">{title}</h3>
-          <p className="text-xs leading-relaxed text-muted-foreground line-clamp-2">{description}</p>
-          <div className="rounded-xl border border-border/40 bg-surface/80 px-2.5 py-1.5">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{exampleLabel}</span>
-            <p className="text-xs font-medium leading-relaxed">{example}</p>
-          </div>
-          <span className="block pt-0.5 text-xs font-semibold text-primary">{action}</span>
-        </div>
-      </Surface>
-    </Link>
-  );
-}
 
 /** Home is the calm entry point; examples are previews, never live activity. */
 export function HomeFoundation() {
@@ -231,7 +167,7 @@ export function HomeFoundation() {
         </div>
 
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          <EngineCard
+          <HomeEngineCard
             to="/flash"
             icon={Zap}
             title={t("home.engine.flash.title")}
@@ -241,7 +177,7 @@ export function HomeFoundation() {
             action={t("home.engine.action")}
             tone="warm"
           />
-          <EngineCard
+          <HomeEngineCard
             to="/scan"
             icon={ScanLine}
             title={t("home.engine.scan.title")}
@@ -251,7 +187,7 @@ export function HomeFoundation() {
             action={t("home.engine.action")}
             tone="info"
           />
-          <EngineCard
+          <HomeEngineCard
             to="/reel"
             icon={RadioTower}
             title={t("home.engine.reel.title")}
@@ -261,7 +197,7 @@ export function HomeFoundation() {
             action={t("home.engine.action")}
             tone="primary"
           />
-          <EngineCard
+          <HomeEngineCard
             to="/radar"
             icon={Radar}
             title={t("home.engine.radar.title")}

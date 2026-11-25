@@ -1,1 +1,1 @@
-export * from "@/lib/experience/discovery";
+export * from "./model/discovery-registry";

@@ -13,7 +13,7 @@ const styles = readSource("../src/styles.css");
 const reelCss = readSource("../src/domains/presence/ui/reel-proximity.css");
 const serviceWorker = readSource("../public/sw.js");
 const offlinePage = readSource("../public/offline.html");
-const floatingButton = readSource("../src/components/app/FloatingButton.tsx");
+const floatingButton = readSource("../src/shared/components/FloatingButton.tsx");
 
 describe("installed PWA viewport contract", () => {
   it("uses dynamic viewport height with a legacy viewport fallback", () => {

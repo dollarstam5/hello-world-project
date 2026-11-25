@@ -13,7 +13,7 @@
     "test": "vitest run --config tests/vitest.config.ts",
     "test:run": "vitest run --config tests/vitest.config.ts",
     "test:watch": "vitest --config tests/vitest.config.ts",
-    "check:foundation": "bun run lint && bun run test:run",
+    "check:foundation": "bun run check:architecture && bun run typecheck && bun run lint && bun run test:run",
     "security:secrets": "bun run check:tracked-env",
     "check:tracked-env": "test ! -f .env",
     "check:db-tests": "test -d supabase/tests/database && find supabase/tests/database -type f -name '*.test.sql' | grep -q .",
@@ -30,7 +30,9 @@
     "test:e2e": "bash scripts/test-mobile-e2e.sh",
     "check:global-audit": "bun run scripts/check-global-audit.ts",
     "check:reproducibility": "bun run scripts/check-reproducibility.ts",
-    "check:go-no-go": "bun run scripts/check-go-no-go.ts"
+    "check:go-no-go": "bun run scripts/check-go-no-go.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "check:architecture": "node scripts/check-architecture-boundaries.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

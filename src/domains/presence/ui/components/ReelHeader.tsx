@@ -10,6 +10,7 @@ import {
   SlidersHorizontal,
 } from "lucide-react";
 import { useI18n } from "@/lib/i18n/useI18n";
+import { haptic } from "@/platform/device/haptics";
 import type { useReelProximityController } from "@/domains/presence/model/useReelProximityController";
 
 type ReelController = ReturnType<typeof useReelProximityController>;
@@ -38,7 +39,7 @@ export function ReelHeader({
   const isPresenceActive = Boolean(currentPresence || guestPresence);
 
   return (
-    <header className="reel-proximity__header">
+    <header className="reel-proximity__header sticky top-0 z-30 -mx-3 px-3 pt-[env(safe-area-inset-top)] border-b border-white/5 bg-background/80 backdrop-blur-xl">
       <div className="reel-proximity__heading">
         <RadioTower aria-hidden="true" />
         <div className="reel-proximity__heading-copy">
@@ -50,7 +51,8 @@ export function ReelHeader({
       <nav className="reel-proximity__header-actions" aria-label={t("reel.ui.screenLabel")}>
         <Link
           to="/"
-          className="reel-proximity__header-action"
+          onClick={() => haptic.tap()}
+          className="reel-proximity__header-action native-press"
           aria-label={t("reel.ui.home")}
           title={t("reel.ui.homeTitle")}
         >
@@ -58,8 +60,11 @@ export function ReelHeader({
         </Link>
         <button
           type="button"
-          className="reel-proximity__header-action reel-proximity__notification"
-          onClick={() => openActivity("notifications")}
+          className="reel-proximity__header-action native-press reel-proximity__notification"
+          onClick={() => {
+            haptic.tap();
+            openActivity("notifications");
+          }}
           disabled={!activityEnabled}
           aria-label={
             activityEnabled ? t("reel.ui.notifications") : t("reel.ui.notificationsPaused")
@@ -70,8 +75,11 @@ export function ReelHeader({
         </button>
         <button
           type="button"
-          className="reel-proximity__header-action"
-          onClick={() => setPanel("settings")}
+          className="reel-proximity__header-action native-press"
+          onClick={() => {
+            haptic.tap();
+            setPanel("settings");
+          }}
           aria-label={t("reel.ui.preferences")}
           title={t("reel.ui.preferencesTitle")}
         >
@@ -80,10 +88,11 @@ export function ReelHeader({
         <button
           type="button"
           className={
-            "reel-proximity__header-action reel-proximity__discovery-toggle" +
+            "reel-proximity__header-action native-press reel-proximity__discovery-toggle" +
             (discoveryEnabled ? " is-active" : "")
           }
           onClick={() => {
+            haptic.toggle();
             if (discoveryEnabled) ignoreLocation();
             else void requestDiscovery();
           }}
@@ -100,8 +109,11 @@ export function ReelHeader({
         </button>
         <button
           type="button"
-          className="reel-proximity__header-action reel-proximity__tour-trigger"
-          onClick={onOpenTour}
+          className="reel-proximity__header-action native-press reel-proximity__tour-trigger"
+          onClick={() => {
+            haptic.tap();
+            onOpenTour();
+          }}
           aria-label={t("reel.ui.tour.open")}
           title={t("reel.ui.tour.open")}
         >

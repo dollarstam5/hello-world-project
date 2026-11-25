@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, type SetStateAction } from "react";
 import { useScan } from "./useScan";
 import { useScanLocation } from "./useScanLocation";
 import { useScanPreferences } from "./useScanPreferences";
@@ -16,8 +16,8 @@ export function useScanFlow() {
   const [stage, setStage] = useState<ScanPreparationStage>("need");
 
   const updateNeedText = useCallback(
-    (value: string) => {
-      setNeedText(value);
+    (value: SetStateAction<string>) => {
+      setNeedText((current) => (typeof value === "function" ? value(current) : value));
       setStage("need");
       setStarted(false);
       scan.clearResults();

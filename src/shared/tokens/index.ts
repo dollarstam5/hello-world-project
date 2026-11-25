@@ -1,6 +1,2 @@
-/**
- * Design tokens — colors, spacing, radius, shadows, typography, z-index,
- * motion, opacity. CSS variables live in src/styles.css; TS mirrors live
- * in src/lib/design/tokens.ts.
- */
-export * from "@/lib/design/tokens";
+/** Shared design tokens; CSS variables are defined in src/styles.css. */
+export * from "./tokens";

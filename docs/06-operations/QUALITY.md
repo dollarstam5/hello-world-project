@@ -17,7 +17,9 @@ La CI utilise ensuite `bun install --frozen-lockfile`. Elle doit échouer si `pa
 
 | Commande                   | Rôle                                                                          | Bloquante                   |
 | -------------------------- | ----------------------------------------------------------------------------- | --------------------------- |
-| `bun run check:foundation` | Lint et tests Vitest du socle                                                 | oui                         |
+| `bun run check:foundation` | Lint, typecheck, frontières architecturales et tests Vitest du socle                                                 | oui                         |
+| `bun run typecheck`         | Vérifie les types TypeScript en mode strict sans émettre de fichiers          | oui                         |
+| `bun run check:architecture` | Vérifie le sens des dépendances entre couches et packages `core-*`            | oui                         |
 | `bun run security:secrets` | Vérifie l'absence de fichier `.env` suivi par le dépôt                        | oui                         |
 | `bun run test:run`         | Exécute une fois tous les tests Vitest                                        | oui                         |
 | `bun run check:release`    | Lint, tests, build, budgets, audit documentaire, reproductibilité et Go/No-Go | oui                         |

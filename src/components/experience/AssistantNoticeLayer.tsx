@@ -7,7 +7,7 @@ import { useI18n } from "@/lib/i18n/useI18n";
 import {
   useCommunicationContextVersion,
   useCommunicationRuntime,
-} from "@/lib/communication/CommunicationRuntimeProvider";
+} from "@/features/communication/CommunicationRuntimeProvider";
 
 /** Appears only while an explicitly published assistant message is available. */
 export function AssistantNoticeLayer() {

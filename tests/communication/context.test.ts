@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { resolveCommunicationContext } from "@/lib/communication/context";
+import { resolveCommunicationContext } from "@/features/communication/model/context";
 
 describe("resolveCommunicationContext", () => {
   it("normalizes the route and locale while preserving separate permissions", () => {

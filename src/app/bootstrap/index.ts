@@ -1,4 +1,4 @@
 /**
- * App lifecycle hooks (boot orchestration).
+ * Application composition root: lifecycle and startup orchestration only.
  */
-export { useExperienceBoot } from "@/lib/experience/orchestrator";
+export { useExperienceBoot } from "./useExperienceBoot";

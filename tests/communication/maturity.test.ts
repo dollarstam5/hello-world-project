@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getCommunicationMaturityProfile } from "@/lib/communication/maturity";
+import { getCommunicationMaturityProfile } from "@/features/communication/model/maturity";
 
 describe("communication maturity profile", () => {
   it.each([

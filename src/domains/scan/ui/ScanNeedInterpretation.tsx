@@ -1,5 +1,6 @@
 import { interpretScanRequest } from "@eco/core-logic";
 import { useI18n } from "@/lib/i18n/useI18n";
+import type { MessageKey } from "@/lib/i18n/messages";
 
 const INTENT_KEYS = [
   "repair",
@@ -20,8 +21,8 @@ const INTENT_KEYS = [
 export function ScanNeedInterpretation({ text }: { text: string }) {
   const { t } = useI18n();
   const parsed = interpretScanRequest(text);
-  const intentKey = INTENT_KEYS.includes(parsed.intent as (typeof INTENT_KEYS)[number])
-    ? `scan.interpretation.intent.${parsed.intent}`
+  const intentKey: MessageKey = INTENT_KEYS.includes(parsed.intent as (typeof INTENT_KEYS)[number])
+    ? (`scan.interpretation.intent.${parsed.intent}` as MessageKey)
     : "scan.interpretation.intent.unknown";
   const details = [
     parsed.timeContext,

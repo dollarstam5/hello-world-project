@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { createCommunicationRuntime } from "@/lib/communication/runtime";
-import type { MessageKey } from "@/lib/i18n/messages";
+import { createCommunicationRuntime } from "@/features/communication/model/runtime";
+import type { MessageKey } from "@/platform/internationalization/messages";
 
 describe("communication runtime", () => {
   const translate = (key: MessageKey) => key;

@@ -4,8 +4,8 @@ import { describe, expect, it } from "vitest";
 import {
   CommunicationRuntimeProvider,
   useCommunicationRuntime,
-} from "@/lib/communication/CommunicationRuntimeProvider";
-import type { CommunicationRuntime } from "@/lib/communication/runtime";
+} from "@/features/communication/CommunicationRuntimeProvider";
+import type { CommunicationRuntime } from "@/features/communication/model/runtime";
 
 describe("communication runtime provider", () => {
   it("shares one runtime instance across the mounted application tree", () => {

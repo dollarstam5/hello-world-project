@@ -15,7 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ProfileFieldRow } from "./ProfileFieldRow";
 import { supabase } from "@/integrations/supabase/client";
-import { useIdentity } from "@/lib/experience/identity";
+import { useIdentity } from "@/domains/profile/model/identity";
 import { useI18n } from "@/lib/i18n/useI18n";
 import type { MessageKey } from "@/lib/i18n/messages";
 
@@ -167,7 +167,9 @@ export function ProfileManagementPage() {
           <p className="text-subtitle">{t("profile.signInHint")}</p>
         </header>
         <Button asChild className="h-12 rounded-xl">
-          <Link to="/auth">{t("auth.signIn")}</Link>
+          <Link to="/auth" search={{ mode: undefined }}>
+            {t("auth.signIn")}
+          </Link>
         </Button>
       </div>
     );
