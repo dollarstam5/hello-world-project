@@ -12,6 +12,7 @@ Cette section contient les fondations canoniques du projet : architecture, séqu
 - [Adaptation PWA et capacités des plateformes](./pwa-platform-adaptation.md)
 - [Référentiel produit — collecte en langage humain des moteurs](./conversational-engines-product-reference.md) — état vérifié, clarifications et évolutions non encore livrées pour Flash, Scan et Radar.
 - [Parcours produit — première ouverture et découverte](./first-opening-product-journey.md) — audit de l'introduction actuelle, de l'accueil, de la langue, de la persistance et des points à décider avant la modernisation.
+- [Proposition éditoriale — première découverte et exemples des quatre moteurs](./first-opening-copy-and-examples.md) — textes proposés écran par écran, exemples Flash/Scan/En direct/Radar et limites à expliciter avant validation.
 
 ## Principe produit prioritaire
 
