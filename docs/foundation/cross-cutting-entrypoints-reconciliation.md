@@ -104,3 +104,17 @@ Avant de considérer la réconciliation achevée :
 5. Contrôles CI de budget de performance, audit global, reproductibilité et Go/No-Go.
 
 La CI GitHub doit confirmer ces contrôles sur le nouveau commit. Aucune fusion de PR n'est effectuée dans cette étape.
+
+## Résultat du contrôle statique ciblé
+
+Sur le commit de travail courant, un contrôle de résolution des imports a été effectué à partir de l'arbre GitHub :
+
+- les 55 fichiers canoniques de `src/shared/ui` et leurs imports locaux ;
+- les entrées communication, onboarding et découverte ;
+- le statut de synchronisation et son export plateforme ;
+- les principaux fichiers d'assemblage (shell, en-tête, panneau Communication, accueil, introduction, espace personnel) ;
+- les composants partagés `Modal`, `Sheet` et `Skeletons`.
+
+Aucun import local non résolu n'a été détecté dans cet échantillon. Ce contrôle ciblé n'est pas un substitut à l'exécution complète de `bun run check:architecture-imports` sur le dépôt.
+
+Aucune exécution GitHub Actions n'est associée au dernier SHA au moment de cette vérification. La PR est toujours en brouillon ; elle n'a pas été marquée prête à être examinée pour forcer un déclenchement CI.
