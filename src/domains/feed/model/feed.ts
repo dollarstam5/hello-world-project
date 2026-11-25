@@ -26,6 +26,8 @@ export function unregisterFeedSource(key: string) {
 }
 
 export async function loadFeed(): Promise<FeedItem[]> {
-  const all = await Promise.all([...sources.values()].map((source) => source.load().catch(() => [])));
+  const all = await Promise.all(
+    [...sources.values()].map((source) => source.load().catch(() => [])),
+  );
   return all.flat().sort((a, b) => b.ts - a.ts || (b.weight ?? 0) - (a.weight ?? 0));
 }
