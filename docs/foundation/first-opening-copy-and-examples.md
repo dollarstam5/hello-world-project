@@ -79,14 +79,28 @@ Vous cherchez quelque chose près de vous ?
 **Scan — texte**  
 Expliquez ce que vous recherchez. Scan vous permet de chercher parmi les Flashs publics. Vous pourrez vérifier votre demande avant de lancer la recherche.
 
-**Exemple illustratif**  
-« Je cherche un mécanicien pour réparer une moto à Douala. »
+**Exemples illustratifs — recherches de la vie courante**
 
-**Notes de précision**  
-- Les exemples sont des exemples de formulation, pas des offres ou des résultats réels.
-- Pour Flash, garder la différence entre enregistrer un brouillon et publier.
-- Pour Scan, ne pas laisser entendre que la recherche est lancée dès la saisie. Le lancement intervient après validation explicite.
-- La mention d'une ville dans un exemple ne signifie pas que la localisation de la personne est connue automatiquement.
+Scan doit montrer que l'on peut chercher parmi les Flashs publics pour des situations variées, et pas seulement pour trouver un prestataire.
+
+- **Réparation :** « Je cherche un mécanicien pour réparer ma moto à Bonamoussadi. »
+- **Coup de main :** « Je cherche 2 personnes pour m'aider à déplacer un canapé près de Bonapriso. »
+- **Repas :** « Je cherche un repas chaud près d'Akwa ce soir. »
+- **Travail ponctuel :** « Je cherche un petit boulot demain à Douala. »
+- **Apprentissage :** « Je cherche un cours de soutien en maths pour mon enfant à Bonanjo. »
+- **Lien social :** « J'aimerais rencontrer quelqu'un pour discuter et marcher près de Bonanjo. »
+- **Garde d'enfant :** « Je cherche quelqu'un pour garder mon enfant demain matin à Akwa. »
+- **Lieu :** « Je cherche un endroit calme pour travailler près de Bonapriso. »
+
+Ces phrases sont des exemples de demandes que la personne pourrait saisir. Elles ne signifient pas qu'un Flash correspondant existe déjà ni que Scan garantit un résultat.
+
+**Notes de précision**
+- Scan recherche parmi les Flashs publics ; il ne crée pas une demande et ne publie rien à la place de la personne.
+- Ne pas laisser entendre que la recherche est lancée dès la saisie. Le lancement intervient après validation explicite.
+- La localisation écrite dans la demande est une information déclarée par la personne ; elle ne signifie pas que Vitalis connaît automatiquement sa position.
+- Le rayon reste une préférence facultative dans le parcours actuel. Ne pas en faire une condition obligatoire pour commencer à exprimer une recherche.
+- L'interpréteur actuel est déterministe et limité. Il reconnaît certains indices (intention, tâche, objet, lieu, distance, quantité, temps), mais ne comprend pas nécessairement le sens complet d'une demande. Les exemples ne doivent donc pas laisser croire que chaque détail sera automatiquement extrait ou parfaitement classé.
+- Si un élément n'est pas reconnu, conserver le texte d'origine et ne pas inventer une interprétation.
 
 ### Étendue des besoins à représenter dans Flash
 
