@@ -79,20 +79,20 @@ Vous cherchez quelque chose près de vous ?
 **Scan — texte**  
 Expliquez ce que vous recherchez. Scan vous permet de chercher parmi les Flashs publics. Vous pourrez vérifier votre demande avant de lancer la recherche.
 
-**Exemples illustratifs — recherches de la vie courante**
+**Exemples illustratifs — recherches rares, délicates ou difficiles à formuler**
 
-Scan doit montrer que l'on peut chercher parmi les Flashs publics pour des situations variées, et pas seulement pour trouver un prestataire.
+Scan doit montrer que les personnes peuvent rechercher bien plus qu'un produit ou un prestataire courant. Certaines recherches touchent à la famille, à l'isolement, à une période de fragilité ou à une situation inhabituelle. Les exemples doivent rester dignes, sobres et suffisamment discrets.
 
-- **Réparation :** « Je cherche un mécanicien pour réparer ma moto à Bonamoussadi. »
-- **Coup de main :** « Je cherche 2 personnes pour m'aider à déplacer un canapé près de Bonapriso. »
-- **Repas :** « Je cherche un repas chaud près d'Akwa ce soir. »
-- **Travail ponctuel :** « Je cherche un petit boulot demain à Douala. »
-- **Apprentissage :** « Je cherche un cours de soutien en maths pour mon enfant à Bonanjo. »
-- **Lien social :** « J'aimerais rencontrer quelqu'un pour discuter et marcher près de Bonanjo. »
-- **Garde d'enfant :** « Je cherche quelqu'un pour garder mon enfant demain matin à Akwa. »
-- **Lieu :** « Je cherche un endroit calme pour travailler près de Bonapriso. »
+- **Retour à domicile après une hospitalisation :** « Je cherche une personne de confiance qui pourrait accompagner mon père pendant quelques jours à son retour de l'hôpital. Je ne peux pas être présent toute la journée. »
+- **Mise à l'abri temporaire :** « Je cherche une solution d'hébergement temporaire pour une mère et son enfant, le temps qu'ils puissent organiser la suite. »
+- **Isolement d'un proche :** « Je cherche quelqu'un qui pourrait rendre visite de temps en temps à une personne âgée qui vit seule et qui a peu de proches à proximité. »
+- **Soutien après un événement difficile :** « Je cherche une personne ou une association qui pourrait aider une famille à reprendre certaines démarches après un événement qui a bouleversé son quotidien. »
+- **Compétence rare :** « Je cherche quelqu'un qui sait restaurer des photographies anciennes abîmées par l'humidité. »
+- **Aide après un sinistre :** « Je cherche deux personnes disponibles pendant deux jours pour aider une famille à trier et remettre en état une maison après un dégât des eaux. »
+- **Accompagnement dans des démarches complexes :** « Je cherche quelqu'un qui connaît les démarches à suivre pour refaire des documents importants perdus pendant un déplacement. »
+- **Répit pour un aidant familial :** « Je cherche une personne expérimentée qui pourrait prendre le relais quelques heures auprès d'un proche dépendant, pour permettre à la personne qui s'en occupe de souffler. »
 
-Ces phrases sont des exemples de demandes que la personne pourrait saisir. Elles ne signifient pas qu'un Flash correspondant existe déjà ni que Scan garantit un résultat.
+Ces phrases sont des exemples de demandes que la personne pourrait saisir. Elles ne signifient pas qu'un Flash correspondant existe déjà ni que Scan garantit un résultat. Elles ne doivent pas non plus laisser entendre que Vitalis vérifie les qualifications, garantit un hébergement, fournit une prise en charge médicale ou assure la sécurité d'une personne. Pour les situations sensibles, ne demander que les précisions indispensables et éviter d'exposer des noms, adresses précises, diagnostics ou autres détails intimes dans un exemple public.
 
 **Notes de précision**
 - Scan recherche parmi les Flashs publics ; il ne crée pas une demande et ne publie rien à la place de la personne.
