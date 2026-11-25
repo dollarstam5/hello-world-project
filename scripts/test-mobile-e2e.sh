@@ -124,7 +124,7 @@ for locale in fr en; do
     selector="#home-engines-title"
     case "$route" in
       "/flash") selector="main h1" ;;
-      "/scan") selector="#scan-radius" ;;
+      "/scan") selector="#scan-need" ;;
       "/reel") selector=".reel-proximity" ;;
       "/radar") selector="main h1" ;;
       "/vision") selector="main h1" ;;
