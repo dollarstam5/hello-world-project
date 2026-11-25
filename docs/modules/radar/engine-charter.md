@@ -20,7 +20,7 @@ L'utilisateur peut démarrer une mission Radar directement, sans devoir effectue
 
 ## Application du principe Vitalis aux intentions Radar partielles
 
-Référence obligatoire : [principe fondamental de traitement des demandes partielles](../../00-foundation/vitalis-core-principles.md).
+Référence obligatoire : [principe fondamental de traitement des demandes partielles](../../foundation/vitalis-core-principles.md).
 
 - Une intention exploitable doit pouvoir être enregistrée comme brouillon privé même si certains critères de recherche restent inconnus ou à préciser.
 - Radar distingue les éléments nécessaires pour sauvegarder l'intention de ceux qui seront nécessaires pour qualifier, activer ou exécuter une mission réelle.
