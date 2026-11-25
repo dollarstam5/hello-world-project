@@ -141,7 +141,7 @@ L'inventaire ci-dessous a été vérifié dans le dépôt avant d'étendre l'int
 
 | Élément existant | Rôle observé | Décision d'intégration |
 |---|---|---|
-| `src/lib/i18n/messages.ts` et `src/lib/i18n/useI18n.ts` | Catalogue FR/EN et fonction de traduction typée | Conserver comme catalogue et moteur de localisation V1 |
+| `src/platform/internationalization/messages.ts` et `src/platform/internationalization/useI18n.ts` | Catalogue FR/EN et fonction de traduction typée | Conserver comme catalogue et moteur de localisation V1 |
 | `src/features/communication/model/greeting.ts` | Sélection locale des neuf périodes et garde-fou du nom par session | Première règle contextuelle intégrée ; à étendre sans multiplier les sélecteurs isolés |
 | `src/features/communication/model/format.ts` | Résolution d'une clé i18n et remplacement contrôlé des variables | Formateur commun utilisé par l'accueil et les notices assistant ; les clés et traductions restent dans i18n |
 | `src/components/experience/HomeFoundation.tsx` | Affiche l'accueil et consomme le sélecteur temporel | Premier écran raccordé |
