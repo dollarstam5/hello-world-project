@@ -167,3 +167,16 @@ Le profil utilisé dans En direct est une projection contextuelle et limitée du
 - Essais sur Android et iOS, avec et sans réduction des animations.
 
 Cette vérification est une revue statique du code et des résultats CI disponibles. Elle ne constitue pas une validation visuelle ni une recette sur appareils.
+
+
+### Ajustements de cohérence avec la composition validée
+
+- La hiérarchie des calques est maintenant explicite : anneaux de fond, rayons (`z-index: 0`), avatar central (`z-index: 1`), profils (`z-index: 2`) et aperçu ouvert au premier plan.
+- Le masque des rayons est resserré autour de l'avatar et de son libellé (`ellipse 13.5% 18%`) afin qu'ils paraissent partir du contour du profil central, plutôt que d'un grand vide autour de lui.
+- Les dix rayons de la composition standard restent fins et discrets. Sur les écrans de 420 px ou moins, leur densité passe à huit ; leur intensité diminue encore sous 360 px. La taille des avatars et des profils n'est pas réduite.
+- Le mode calme n'applique plus d'opacité au conteneur qui contient l'avatar : l'avatar et son libellé restent à pleine visibilité. Seuls les rayons et le halo de fond sont atténués.
+- L'état de présence active conserve son indication sur l'avatar, mais ne déclenche plus de rotation lumineuse rapide de quatre secondes ; le halo devient statique et discret.
+- Le thème sombre conserve une nuance bleutée dédiée. Le mode calme et `prefers-reduced-motion` arrêtent les animations des rayons.
+- Deux tests de contrat ont été ajoutés pour protéger la hiérarchie visuelle, la visibilité de l'avatar en mode calme, l'adaptation mobile et les règles de mouvement.
+
+Ces ajustements sont des améliorations de présentation. Ils ne changent ni la logique de découverte, ni l'activation de la présence, ni les interactions des profils et panneaux.
