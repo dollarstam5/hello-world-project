@@ -14,3 +14,7 @@ Documentation autonome du moteur Recommendation.
 ## Statut en bref
 
 Aucun code runtime Recommendation (modèle, repository, migration, API, job, UI ou tests dédiés) n'a été identifié dans l'arborescence de la branche. Les documents séparent donc la cible fonctionnelle/technique des capacités réellement démontrées. Les domaines sources éventuels sont décrits comme des producteurs de signaux, jamais comme des prérequis pour comprendre Recommendation.
+
+## Backlog d'implémentation
+
+- [Issue #91 — implémenter Recommendation de bout en bout](https://github.com/dollarstam5/hello-world-project/issues/91) : contrats, RLS, ingestion, classement, API/UI, gouvernance et tests d'acceptation.
