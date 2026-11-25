@@ -1,10 +1,10 @@
 import { useNavigate } from "@tanstack/react-router";
-import { useAuth } from "@/modules/auth/model/useAuth";
-import { Sheet } from "@/components/app/Sheet";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { useOnboarding } from "@/lib/experience/onboarding";
-import { useI18n } from "@/lib/i18n/useI18n";
+import { useAuth } from "@/modules/auth";
+import { Sheet } from "@/shared/components/Sheet";
+import { Button } from "@/shared/ui/button";
+import { Progress } from "@/shared/ui/progress";
+import { useOnboarding } from "@/features/onboarding";
+import { useI18n } from "@/platform/internationalization/useI18n";
 import {
   ArrowLeft,
   ArrowRight,
