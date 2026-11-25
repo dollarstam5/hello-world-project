@@ -1,12 +1,12 @@
 import { useEffect, useRef } from "react";
 import { useRouterState } from "@tanstack/react-router";
 import { registerServiceWorker } from "@/platform/pwa";
-import { publishWebVitalMetric, startWebVitalsMonitoring } from "@/lib/performance/web-vitals";
+import { publishWebVitalMetric, startWebVitalsMonitoring } from "@/platform/performance/web-vitals";
 import {
   completeNavigationMeasurement,
   startInteractionMonitoring,
   startNavigationMeasurement,
-} from "@/lib/performance/interaction-navigation";
+} from "@/platform/performance/interaction-navigation";
 
 /**
  * Root lifecycle orchestration: service worker, Web Vitals, interaction/navigation
