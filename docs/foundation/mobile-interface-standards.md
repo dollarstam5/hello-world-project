@@ -537,3 +537,39 @@ Un écran ne peut être déclaré conforme au standard mobile Vitalis que si :
 5. Contrôler les groupes d’actions sur une largeur de 320 px afin de confirmer qu’ils se replient sans chevauchement ni réduction des cibles.
 
 **Conclusion de l’audit statique :** les commandes directement déclarées dans les composants métier Radar sont globalement alignées sur la cible tactile de 48 px : boutons issus du composant partagé et sélecteurs natifs ont une hauteur minimale explicite ou héritée. Le seul point non vérifié concerne les dimensions et le comportement des actions de la boîte AlertDialog, définis dans des primitives partagées. Les tests sur appareils et lecteurs d’écran restent nécessaires avant de clôturer l’audit. Aucun code applicatif n’a été modifié dans cette étape.
+
+
+### 4.10 Audit des boutons — module Profile
+
+**Périmètre vérifié :** lecture statique, sur la branche `chore/architecture-folder-cleanup-2026-11`, de `ProfileFieldRow.tsx`, `ProfileManagementPage.tsx`, `ProfileVisibilitySettingsPage.tsx` et `PublicProfilePreviewPage.tsx`. L’audit couvre les commandes d’édition des champs d’identité, la suppression du handle, les retours de navigation et les pages d’aperçu / visibilité. Les composants partagés AlertDialog sont évalués uniquement à partir de leur usage dans le module ; leurs dimensions internes ne sont pas déduites.
+
+| Zone / commande | Constat dans le code de la branche | Évaluation mobile |
+|---|---|---|
+| Profil — modifier un champ (nom / handle) | Bouton icône partagé `Button`, avec `h-11 w-11` (44 × 44 px) et libellé accessible explicite | La largeur locale est inférieure à la cible 48 px ; vérifier l’effet du style partagé et garantir 48 × 48 px sans ambiguïté |
+| Édition — enregistrer / annuler un champ | Deux boutons icône avec `h-11 w-11` (44 × 44 px), état désactivé pendant l’enregistrement et noms accessibles | Largeur déclarée sous la cible ; porter explicitement les deux dimensions à 48 px. L’état désactivé est prévu |
+| Profil — supprimer le handle | Bouton partagé `Button`, taille `sm`, avec surcharge locale `h-10` (40 px) et padding horizontal réduit | Hauteur CSS locale sous la cible ; le minimum du composant partagé peut la contraindre, mais ne pas compter sur une règle héritée : déclarer une cible explicite de 48 px |
+| Navigation — retour vers l’espace | Bouton partagé ghost enveloppant un lien, largeur ajustée au contenu ; aucune réduction locale de hauteur | Le composant partagé apporte le minimum tactile de 48 px ; vérifier le rendu du lien et le focus visible |
+| Accès à la connexion depuis un profil déconnecté | Bouton partagé avec classe explicite `h-12` (48 px) | Conforme en hauteur déclarée ; vérifier la largeur et le focus sur téléphone |
+| Dialogue — annuler / confirmer la suppression du handle | `AlertDialogCancel` et `AlertDialogAction`, sans dimension locale déclarée ; confirmation avant suppression | Hauteur tactile non démontrée par les composants métier ; contrôler les primitives partagées et mesurer les deux actions |
+| Page de visibilité du profil | Aucun bouton de réglage : la fonctionnalité est signalée « bientôt » ; seul le retour est interactif | Pas de commande de visibilité active à auditer dans cette version |
+| Aperçu du profil public | Aucun bouton d’aperçu : le contenu indique que la fonctionnalité n’est pas disponible ; seul le retour est interactif | Pas de commande d’aperçu active à auditer dans cette version |
+
+**Constats transversaux :**
+
+- Le module réutilise le composant partagé `Button`, mais plusieurs boutons icône du composant `ProfileFieldRow` réduisent localement largeur et hauteur à 44 px. Ces dimensions doivent être normalisées explicitement à 48 × 48 px.
+- Le bouton de suppression du handle applique une hauteur locale de 40 px. Même si une contrainte minimale héritée peut influencer le rendu final, cette surcharge rend le contrat tactile moins lisible et doit être remplacée par une dimension explicite de 48 px.
+- Les commandes d’enregistrement et d’annulation d’un champ portent un nom accessible via `aria-label`, et sont désactivées pendant l’enregistrement. Le formulaire de profil expose des retours de succès via `role="status"` et des erreurs via `role="alert"`.
+- La suppression du handle est précédée d’un dialogue de confirmation. Le bouton de confirmation est désactivé pendant l’opération ; le focus, les dimensions tactiles et l’annonce de la progression restent à valider.
+- Les pages de visibilité et d’aperçu public sont des écrans d’information non encore actifs : ne pas interpréter leurs indicateurs « bientôt » comme des commandes fonctionnelles.
+- Les libellés de champs et les noms accessibles des boutons icône sont présents. Il reste à vérifier la navigation au clavier, la restitution du focus après dialogue et le comportement avec TalkBack / VoiceOver.
+
+**Priorités documentaires de mise en conformité :**
+
+1. Porter les boutons icône Modifier / Enregistrer / Annuler à 48 × 48 px, y compris leur largeur effective.
+2. Remplacer la hauteur locale de 40 px du bouton de suppression du handle par une cible explicite d’au moins 48 px.
+3. Vérifier les dimensions de `AlertDialogCancel` et `AlertDialogAction` dans les primitives partagées et sur appareils.
+4. Tester la suppression du handle : confirmation, désactivation pendant l’opération, annonce du résultat, gestion d’erreur et absence de double activation.
+5. Valider le focus clavier et lecteur d’écran sur les commandes d’édition, le dialogue et le retour de navigation.
+6. Refaire un contrôle sur largeur 320 px : la rangée de champ en édition contient un champ et deux boutons icône ; vérifier qu’elle se replie sans écraser la saisie ni réduire les cibles.
+
+**Conclusion de l’audit statique :** Profile présente des écarts explicites sur les boutons icône d’édition (44 × 44 px) et une surcharge locale de 40 px sur la suppression du handle. Les retours de navigation et l’accès à la connexion reposent sur le bouton partagé et disposent d’une hauteur minimale attendue de 48 px. Les actions de dialogue nécessitent une vérification des primitives partagées. Les écrans de visibilité et d’aperçu public ne proposent pas encore de commandes actives. Aucun code applicatif n’a été modifié dans cette étape.
