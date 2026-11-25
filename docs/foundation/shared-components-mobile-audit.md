@@ -618,3 +618,42 @@ Le système ne doit jamais convertir automatiquement une valeur par défaut en f
 Il s'agit d'un audit documentaire et statique des parcours Flash et Scan, d'un repérage du formulaire Radar et d'une comparaison avec les principes produit. Il ne s'agit pas d'une validation du comportement sur appareil réel, d'une mesure de précision des parseurs sur des corpus représentatifs, ni d'une validation d'une conversation IA en production.
 
 **Aucun composant runtime, parseur, formulaire, service ou code applicatif n'a été modifié.** La présente étape clarifie l'écart entre la vision de collecte en langage humain et les parcours V1 actuellement visibles ; toute évolution de l'interface ou de la logique nécessitera une décision séparée.
+
+
+---
+
+## 12. Clarification produit complémentaire — Radar est aussi un moteur d'expression libre
+
+Cette précision complète et remplace toute ambiguïté de la section 11.3/11.8 : **Radar doit commencer par l'expression libre d'une mission, au même titre que Flash et Scan.** Son formulaire actuel décrit seulement l'interface V1 existante ; il ne définit pas à lui seul le parcours produit attendu.
+
+### 12.1 Faits V1 vérifiés dans le code
+
+- `RadarDraftForm` exige un texte de recherche de 3 à 2 000 caractères.
+- La zone est facultative ; le rayon initial est de 5 km ; la durée initiale est de 7 jours.
+- `RadarManagement` enregistre et gère des brouillons privés en mode offline-first.
+- Le commentaire de `RadarManagement` précise que l'appariement automatique et les alertes ne sont pas disponibles tant que le moteur et le traitement planifié ne sont pas connectés.
+- Par conséquent, une sauvegarde Radar actuelle ne doit pas être présentée comme l'activation d'une surveillance réelle.
+
+### 12.2 Décision de parcours produit
+
+Le point de départ attendu est une phrase libre décrivant ce que la personne souhaite surveiller, retrouver ou repérer. Vitalis doit ensuite reformuler la mission à partir des éléments qu'il comprend réellement. Les paramètres comme la zone, le rayon et la durée sont recueillis de façon contextuelle, uniquement lorsqu'ils sont nécessaires à l'étape visée ou utiles comme préférences.
+
+La question d'une information indispensable doit être posée une à la fois. Une préférence facultative ne doit pas bloquer l'enregistrement d'une intention exploitable.
+
+### 12.3 Séparation obligatoire des états
+
+La documentation et les futures interfaces doivent distinguer :
+- intention exprimée ;
+- brouillon Radar enregistré ;
+- mission préparée pour activation ;
+- surveillance effectivement active ;
+- correspondance réellement trouvée ;
+- notification réellement envoyée.
+
+Les états « surveillance active », « correspondance trouvée » et « notification envoyée » ne peuvent être affichés que lorsque les opérations correspondantes existent et ont effectivement eu lieu.
+
+### 12.4 Conséquence sur la priorité documentaire
+
+Le référentiel canonique est désormais [Référentiel produit — collecte en langage humain des moteurs](./conversational-engines-product-reference.md). Il décrit les capacités actuelles et les écarts sans déclarer comme livrée l'expression libre Radar ni l'automatisation de veille.
+
+**Aucun code applicatif, parseur, service ou comportement runtime n'a été modifié par cette clarification.**
