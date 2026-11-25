@@ -30,21 +30,21 @@ La documentation active vit dans :
 
 ### Parcours utilisateurs (User Journeys)
 
-- `docs/04-VITALA-UJ-01-CONSULTANT-TO-MEMBER.md`
-- `docs/05-VITALA-UJ-02-MEMBER-TO-IDENTIFIED.md`
-- `docs/06-VITALA-UJ-03-PUBLISH-OPPORTUNITY.md`
-- `docs/07-VITALA-UJ-04-RESPOND-OPPORTUNITY.md`
-- `docs/08-VITALA-UJ-05-SELECT-CANDIDATE.md`
-- `docs/09-VITALA-UJ-06-ACTION-VALIDATION.md`
-- `docs/10-VITALA-UJ-07-CONFIDENCE-CREATION.md`
-- `docs/04.0-VITALA-UJ-01-Annexe commune aux User Journeys.md`
+- `docs/product/04-VITALA-UJ-01-CONSULTANT-TO-MEMBER.md`
+- `docs/product/05-VITALA-UJ-02-MEMBER-TO-IDENTIFIED.md`
+- `docs/product/06-VITALA-UJ-03-PUBLISH-OPPORTUNITY.md`
+- `docs/product/07-VITALA-UJ-04-RESPOND-OPPORTUNITY.md`
+- `docs/product/08-VITALA-UJ-05-SELECT-CANDIDATE.md`
+- `docs/product/09-VITALA-UJ-06-ACTION-VALIDATION.md`
+- `docs/product/10-VITALA-UJ-07-CONFIDENCE-CREATION.md`
+- `docs/product/04.0-VITALA-UJ-01-Annexe commune aux User Journeys.md`
 
-Les documents historiques mentionnent aussi UJ-08 Flash, UJ-09 Radar et UJ-10 Veille. Leurs fichiers primaires n'ont pas été retrouvés sous les chemins attendus lors de la consolidation ; ne pas recréer ni supprimer ces sources avant d'avoir confirmé leur emplacement et leur contenu.
+Les sources UJ-08 Flash et UJ-09 Scan sont classées sous `docs/modules/flash/` et `docs/modules/scan/`. Les sources UJ-10 Veille sont conservées en plusieurs parties sous `docs/modules/veille/` ; leur comparaison avec le parcours canonique reste à effectuer avant toute proposition de retrait.
 
 ### Identité et confiance
 
-- `docs/03-VITALA-TRUST-LEVELS-V1.md Mise � jour 1.md` (nom encodé de façon imparfaite dans GitHub)
-- `docs/03-VITALA-TRUST-LEVELS-V1.md Mise � jour 2.md` (nom encodé de façon imparfaite dans GitHub)
+- `docs/product/03-VITALA-TRUST-LEVELS-V1.md Mise � jour 1.md` (nom encodé de façon imparfaite dans GitHub)
+- `docs/product/03-VITALA-TRUST-LEVELS-V1.md Mise � jour 2.md` (nom encodé de façon imparfaite dans GitHub)
 - `docs/product/03A-VITALA-TRUST-A LEVELS-V1 Partie 0.md`
 - `docs/modules/trust/03A-VITALA-TRUST-ENGINE-V1 Partie 1.md` (classé dans Lot 12)
 - `docs/modules/trust/03A-VITALA-TRUST-ENGINE-V1 Partie 2.md` (classé dans Lot 12)
@@ -84,7 +84,7 @@ Les documents historiques mentionnent aussi UJ-08 Flash, UJ-09 Radar et UJ-10 Ve
 
 - `docs/engineering/ai/00-AI-README.md.md`
 - `docs/engineering/ai/AI-RULEBOOK.md`
-- `docs/PROJECT_BIBLE.md`
+- `docs/reference/PROJECT_BIBLE.md`
 
 ### Expérience, design et performance
 
