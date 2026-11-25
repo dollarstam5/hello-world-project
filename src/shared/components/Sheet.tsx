@@ -5,7 +5,7 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from "@/components/ui/sheet";
+} from "@/shared/ui/sheet";
 import { cn } from "@/shared/utils";
 
 interface AppSheetProps {
