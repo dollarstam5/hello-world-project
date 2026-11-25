@@ -29,7 +29,7 @@ Le projet se construit dans un ordre stable et guidé par les dépendances. Tout
 - [Standards UX et accessibilité — Phase 2](./phase-2-ux-standards.md)
 - [Adaptation PWA et capacités des plateformes](./pwa-platform-adaptation.md)
 
-Le document historique `docs/GO_NO_GO.md` reste conservé pour traçabilité et figure parmi les candidats à comparer avant toute proposition de retrait.
+Le document historique `docs/operations/GO_NO_GO.md` reste conservé pour traçabilité et figure parmi les candidats à comparer avant toute proposition de retrait.
 
 ## Legacy sources merged here
 
