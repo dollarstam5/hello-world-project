@@ -60,12 +60,12 @@ An AI must not:
 
 ## Legacy sources merged here
 
-- `docs/00-AI-README.md.md`
-- `docs/AI-RULEBOOK.md`
-- `docs/AI Development Manual.md`
-- `docs/AI Constitution.md`
-- `docs/12-AI-CODING-STANDARDS.md`
-- `docs/13-AI-SECURITY-RULES.md`
-- `docs/14-AI-TESTING-STANDARDS.md`
+- `docs/engineering/ai/00-AI-README.md.md`
+- `docs/engineering/ai/AI-RULEBOOK.md`
+- `docs/engineering/ai/AI Development Manual.md`
+- `docs/engineering/ai/AI Constitution.md`
+- `docs/engineering/ai/12-AI-CODING-STANDARDS.md`
+- `docs/engineering/ai/13-AI-SECURITY-RULES.md`
+- `docs/engineering/ai/14-AI-TESTING-STANDARDS.md`
 
 These legacy files remain as historical references; the canonical AI folder above is the active source for guidance.
