@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { resolveCommunicationCandidates } from "@/lib/communication/gate";
+import { resolveCommunicationCandidates } from "@/features/communication/model/gate";
 
 describe("resolveCommunicationCandidates", () => {
   it("orders confirmed messages by priority and keeps stable order within a priority", () => {

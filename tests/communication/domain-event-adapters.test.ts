@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createCommunicationRuntime } from "@/lib/communication/runtime";
+import { createCommunicationRuntime } from "@/features/communication/model/runtime";
 import { publishFlashCommunicationEvent } from "@/domains/flash/communication-events";
 import { publishRadarCommunicationEvent } from "@/domains/radar/communication-events";
 

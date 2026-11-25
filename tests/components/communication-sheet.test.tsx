@@ -37,7 +37,7 @@ vi.mock("@/lib/platform/useNetworkStatus", () => ({
   useNetworkStatus: () => ({ online: networkState.online }),
 }));
 
-vi.mock("@/lib/communication/CommunicationRuntimeProvider", () => ({
+vi.mock("@/features/communication/CommunicationRuntimeProvider", () => ({
   useCommunicationRuntime: () => ({
     getEvents: () => communicationState.events,
     markEventRead: communicationState.markEventRead,

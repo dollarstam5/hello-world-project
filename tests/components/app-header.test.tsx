@@ -24,7 +24,7 @@ vi.mock("@tanstack/react-router", () => ({
   ),
 }));
 
-vi.mock("@/lib/communication/CommunicationRuntimeProvider", () => ({
+vi.mock("@/features/communication/CommunicationRuntimeProvider", () => ({
   useCommunicationRuntime: () => ({ getEvents: () => state.events }),
 }));
 
