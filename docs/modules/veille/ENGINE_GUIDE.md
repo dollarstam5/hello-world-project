@@ -1,66 +1,152 @@
-# Veille — guide complet du moteur
+# Veille — guide autonome du moteur
 
-**Objet :** superviser les surveillances personnelles et révéler des tendances collectives à partir de signaux agrégés et anonymisés.  
-**État :** vision produit consolidée ; les traitements, tableaux de bord et notifications ne sont pas déclarés opérationnels sans preuve runtime.
+**Mission :** superviser les surveillances personnelles et révéler des tendances collectives à partir de signaux autorisés, agrégés et anonymisés.  
+**Statut constaté :** vision fonctionnelle détaillée dans les documents historiques ; aucun pipeline runtime Veille complet n'est identifié dans l'arborescence de cette branche.
 
-## 1. Mission et périmètre
+## 1. Finalité et deux espaces
 
-Veille a deux espaces indépendants :
-1. **Veille personnelle :** suivi privé des surveillances, missions, événements, paramètres et évolutions appartenant à l'utilisateur.
-2. **Veille collective :** analyse de signaux compatibles, agrégés et anonymisés pour faire ressortir les besoins émergents, les opportunités latentes et les tendances.
+Veille répond à deux besoins distincts :
 
-Veille supervise et explique. Il ne remplace pas le moteur qui exécute une recherche persistante, ne modifie pas les missions à la place de leur propriétaire et ne révèle pas les personnes à l'origine d'un signal.
+1. **Veille personnelle :** permettre à un membre de suivre ses propres surveillances, leurs paramètres, états, événements, résultats et échéances.
+2. **Veille collective :** analyser des signaux autorisés et anonymisés pour révéler besoins émergents, opportunités latentes et tendances.
 
-## 2. Parcours personnel complet
+La veille personnelle est privée. La veille collective ne révèle jamais les personnes ou objets individuels à l'origine des agrégats.
 
-### 2.1 Créer une surveillance
-Une surveillance peut être initiée depuis une intention de recherche, une publication que son propriétaire souhaite suivre ou depuis l'espace Veille, selon les capacités validées. La personne définit la cible, la catégorie, les zones, les critères, la durée et les préférences de notification. Toute donnée inconnue reste explicitement inconnue.
+## 2. Responsabilités et frontières
 
-La création d'une veille ne doit pas activer une recherche sous-jacente sans que les prérequis et le consentement soient réunis. La personne relit la configuration et confirme les actions ayant un effet réel.
+Veille supervise les surveillances et explique les évolutions. Les domaines qui produisent les données restent propriétaires de leurs objets, états, permissions et mutations. Veille consomme des projections ou événements autorisés ; il ne modifie pas directement une mission, un Flash ou une recherche persistante.
 
-### 2.2 Consulter et comprendre
-L'espace personnel n'affiche que les surveillances de l'utilisateur connecté. Chaque élément indique son état, sa progression connue, son échéance et les derniers événements confirmés. Un résumé à l'ouverture peut présenter les changements importants depuis la dernière visite, mais ne doit pas inventer de correspondance ou d'événement.
+Une surveillance peut être configurée à partir d'une recherche persistante, d'un Flash ou directement depuis Veille selon les capacités validées. Cette origine ne transfère pas la propriété de la ressource.
 
-### 2.3 Gérer
-Selon les transitions réellement prises en charge, le propriétaire peut ouvrir le détail, modifier les paramètres autorisés, suspendre, reprendre, prolonger, arrêter ou archiver une surveillance. Veille ne modifie, n'active, ne partage et ne supprime jamais une mission sans accord explicite. Les archives peuvent conserver paramètres et événements utiles selon une politique de conservation validée.
+## 3. Parcours personnel de bout en bout
 
-## 3. Parcours collectif complet
+### 3.1 Créer une surveillance
 
-### 3.1 Construire les signaux
-Le moteur collecte uniquement des signaux dont la finalité, la fraîcheur, la provenance et les permissions sont documentées. Les données individuelles ne sont pas exposées. Les sources historiques incluent des signaux de publications et d'activités compatibles ; leur disponibilité doit être vérifiée avant de les compter comme consultées.
+L'utilisateur choisit la cible, la catégorie, la ou les zones, les critères, la durée et les préférences de notification. Il peut initier le parcours depuis une recherche persistante, un Flash qu'il souhaite suivre ou depuis Veille. Il relit et confirme la configuration avant toute activation qui a un effet réel.
 
-### 3.2 Détecter tendances et besoins
-Le moteur peut regrouper les besoins répétés, les catégories en croissance, les zones où la demande évolue et les situations où l'offre paraît insuffisante. Une tendance n'est affichée que si le volume et la qualité des données atteignent des seuils d'agrégation définis. Les seuils, fenêtres temporelles, règles de réidentification et méthode de calcul restent à spécifier.
+Les catégories (emploi, immobilier, service, produit, événement), zones (ville, quartier, rayon) et durées (3 jours, semaine, mois, trimestre) des documents historiques sont des exemples, pas des valeurs runtime garanties.
 
-L'Indice d'Opportunité (IOV) est une proposition de mesure combinant volume de demande, disponibilité de l'offre, évolution, attente et concentration géographique. Sa formule, ses seuils et sa gouvernance ne sont pas considérés comme validés. Il ne doit jamais être présenté comme une prédiction ou garantie de marché.
+### 3.2 Consulter le tableau de bord
 
-### 3.3 Répondre à un besoin collectif
-Un utilisateur peut manifester qu'il est en mesure de répondre à une tendance. Cette action ne révèle pas les personnes à l'origine des signaux et ne crée pas de contact direct. Une mise en relation exige une expression d'intérêt et une acceptation explicites des parties concernées ; l'identité reste protégée jusque-là.
+Le tableau personnel affiche uniquement les surveillances du membre connecté. Il distingue les surveillances actives, suspendues, arrivant à échéance, terminées et archivées. Chaque élément présente état, cible, échéance, progression mesurée et derniers événements confirmés.
 
-## 4. États, notifications et conservation
+### 3.3 Consulter le détail et gérer
 
-Les documents historiques décrivent des états de préparation, actif, attente de résultats, suspendu, arrivé à échéance, terminé et archivé. Leur correspondance avec les états techniques existants doit être établie avant de les traiter comme un contrat runtime. Les notifications doivent être contextuelles : évolution importante, échéance proche, nouvelle correspondance réellement confirmée ou tendance pertinente. Fréquences, canaux, consentements et quotas restent à définir.
+Le détail expose paramètres, historique, résultats, dates et raison du statut. Les actions fonctionnelles prévues sont modifier les paramètres autorisés, ajuster zone/durée, suspendre, reprendre, arrêter, prolonger et archiver.
 
-La conservation des archives, des paramètres et des événements doit être alignée sur la politique de données, les droits d'effacement et les coûts. Aucune durée historique proposée ne vaut règle de production sans validation.
+Chaque commande doit contrôler propriétaire, état, permissions et impact sur le traitement sous-jacent. Veille ne modifie jamais les critères d'une recherche source sans confirmation explicite.
 
-## 5. Règles métier et confidentialité
+### 3.4 Résumé depuis la dernière visite
 
-- Les surveillances personnelles sont privées et visibles par leur propriétaire uniquement.
-- Les signaux collectifs sont agrégés et anonymisés avant présentation.
-- Aucun contenu privé, identifiant, mission individuelle ou donnée réidentifiante n'est exposé.
-- Une tendance est un indicateur d'observation, pas une garantie de demande ou de résultat.
-- Toute mise en relation exige un intérêt mutuel et une autorisation explicite.
-- Les propositions de Veille sont facultatives ; la personne garde le contrôle.
-- Veille ne remplace pas le traitement de recherche et ne modifie pas ses critères à sa place.
+Le résumé met en évidence les changements confirmés : résultat nouveau, évolution d'état, échéance proche ou tendance suivie ayant évolué. Il s'appuie sur un curseur/horodatage de dernière visite, reste idempotent et distingue les événements nouveaux des événements déjà lus.
 
-## 6. Architecture et état d'implémentation
+## 4. Parcours collectif de bout en bout
 
-Les sources documentaires disponibles décrivent une charte, trois parties historiques et un contrat API ancien. Elles ne prouvent pas l'existence d'un pipeline complet de collecte, d'agrégation, d'anonymisation, de calcul de tendance, de tableau de bord collectif, de notifications ou de tâches planifiées dans le runtime actuel. Avant activation, inventorier les sources, les jobs, les vues, les politiques RLS, les quotas, les seuils et les tests.
+### 4.1 Ingestion des signaux
 
-## 7. Critères de validation
+Les sources doivent être explicitement autorisées, documentées, versionnées et fraîches. Les documents historiques citent Flash, Radar, Mission, Trust et Recommendation comme producteurs potentiels. Aucun connecteur ne doit être considéré actif sans preuve de code et de permission.
 
-Tester l'isolation des veilles personnelles, l'anonymisation, les seuils anti-réidentification, la provenance des signaux, la fraîcheur, les tendances reproductibles, les faux positifs, l'IOV explicable, l'intérêt mutuel, les consentements de notification, les expirations et l'effacement des archives.
+### 4.2 Besoins émergents
 
-## 8. Sources conservées
+Le moteur regroupe des signaux comparables par catégorie, période et zone suffisamment large. Il recherche répétition, progression ou insatisfaction persistante. Les signaux invalides, dupliqués, anciens ou hors finalité sont écartés.
 
-Les trois parties historiques Veille et le contrat API sont conservés comme matériaux de conception. Le présent guide décrit le parcours complet et les garde-fous de Veille sans nécessiter de lecture croisée d'un autre moteur.
+Un résultat n'est publiable que si les seuils de contribution et les contrôles anti-réidentification sont respectés. Les seuils numériques restent à décider après analyse de risque.
+
+### 4.3 Opportunités latentes
+
+Une opportunité latente suggère un écart entre demande agrégée et offre mesurée. Elle présente catégorie, zone agrégée, période, métriques de demande/offre, couverture des sources, fraîcheur, explication et limites.
+
+Une source d'offre absente ou en panne ne prouve pas une absence d'offre. Le système doit afficher une couverture partielle plutôt que produire une opportunité artificielle.
+
+### 4.4 Tendances collectives
+
+Une tendance compare des fenêtres temporelles homogènes. Sa fiche détaille catégorie, zone généralisée, évolution, volume publiable, facteurs, période, couverture, incertitude et date de calcul. Aucune identité, mission individuelle ou publication privée ne doit pouvoir être reconstituée.
+
+### 4.5 Répondre à un besoin et mise en relation
+
+1. Un membre découvre une tendance agrégée.
+2. Il manifeste explicitement son intérêt pour y répondre.
+3. Veille enregistre l'intérêt sans lui révéler les demandeurs.
+4. Les demandeurs compatibles reçoivent une sollicitation neutre.
+5. Chaque partie peut accepter, refuser ou ignorer.
+6. La mise en relation n'est créée qu'après consentements mutuels.
+7. Les identités et coordonnées sont révélées uniquement au périmètre accepté.
+
+Prévoir retrait du consentement, expiration, anti-spam et audit.
+
+## 5. IOV — Indice d'Opportunité Vitala
+
+Les facteurs historiques proposés sont volume de demande, disponibilité de l'offre, évolution de la demande, durée moyenne d'attente et concentration géographique. Les classes proposées sont Faible, Modéré, Fort et Prioritaire.
+
+La formule, les variables exactes, la normalisation, les poids, seuils, fenêtres, valeurs manquantes et calibration ne sont pas définis. Ne pas afficher de score ou de classe avant validation d'une formule versionnée. Chaque IOV doit être expliqué, daté, accompagné de la couverture et présenté comme aide à la décision, jamais comme garantie de marché.
+
+## 6. Notifications et archives
+
+Les événements pouvant justifier une notification sont une évolution importante, un résultat confirmé, une échéance proche, une tendance suivie devenue significative ou une manifestation d'intérêt pertinente. Les canaux, opt-in, fréquences, heures silencieuses et quotas restent à définir.
+
+Les archives personnelles peuvent conserver paramètres, durée, événements et résultat selon une politique explicite de rétention, d'effacement et de coût. Aucune durée historique ne vaut règle de production sans validation.
+
+## 7. États fonctionnels
+
+Les documents historiques proposent les états de surveillance : préparation, active, attente de résultats, suspendue, arrivée à échéance, terminée et archivée. La machine canonique et les transitions doivent être versionnées avant de devenir un contrat API.
+
+Le pipeline collectif a un cycle distinct : collecte, agrégation, contrôle qualité, publiable, rejeté, expiré. Un snapshot de tendance doit être versionné afin de conserver la reproductibilité sans garder inutilement les identifiants sources.
+
+## 8. Architecture technique cible
+
+```text
+Sources autorisées
+  -> registre de connecteurs et projections versionnées
+  -> ingestion / validation / déduplication
+  -> normalisation et fraîcheur
+  -> agrégation par catégorie, zone et fenêtre
+  -> contrôles qualité et anti-réidentification
+  -> détection de tendances / opportunités / IOV
+  -> snapshots publiables
+  -> API collective et dashboard
+
+Surveillances personnelles
+  -> API privée et machine d'état
+  -> stockage isolé par propriétaire
+  -> historique / résumé / notifications opt-in
+```
+
+Les pipelines personnel et collectif doivent être séparés en stockage, permissions et finalité. Les jobs doivent être idempotents, observables, reprenables, versionnés et dotés de retries bornés/dead-letter.
+
+## 9. Confidentialité et sécurité
+
+- RLS stricte sur les surveillances personnelles.
+- Séparation des données brutes, personnelles et agrégées.
+- Minimisation des champs dès l'ingestion.
+- Suppression des petits groupes et généralisation géographique/temporelle.
+- Contrôle des requêtes différentielles et des exports.
+- Audit des accès opérateur.
+- Propagation des suppressions et révocations.
+- Pas de réutilisation de données Trust sans finalité et autorisation explicites.
+- Aucun partage d'identité avant consentement mutuel.
+
+La pseudonymisation ne suffit pas à garantir l'anonymat. Les seuils, techniques de généralisation et éventuelle confidentialité différentielle doivent être décidés et testés ; aucune protection formelle n'est revendiquée comme implémentée.
+
+## 10. API et état runtime
+
+Le contrat historique propose GET /veille, GET /veille/{id} et les commandes read/save/ignore/report, ainsi que les événements VeilleItemViewed, VeilleItemSaved, VeilleItemIgnored et VeilleItemReported. Ces routes et événements ne sont pas confirmés comme actifs.
+
+L'inventaire de la branche ne montre pas de module runtime Veille, types, repository, migration, endpoint, job planifié, tests dédiés ou IOV calculé. Les schémas, APIs, jobs et dashboards de ce guide sont des cibles à construire, pas des composants déjà déployés.
+
+## 11. Critères de validation
+
+Tester isolation propriétaire, transitions, sources et provenance, fraîcheur, déduplication, couverture partielle, seuils anti-réidentification, attaques par différences, tendances reproductibles, calcul IOV versionné, consentement mutuel, notifications opt-in/idempotentes, expiration, suppression et conservation.
+
+## 12. Documentation autonome
+
+- [Spécification fonctionnelle](FUNCTIONAL_SPEC.md)
+- [Architecture technique](TECHNICAL_ARCHITECTURE.md)
+- [Pipeline et confidentialité](DATA_PIPELINE_AND_PRIVACY.md)
+- [API et exploitation](API_AND_OPERATIONS.md)
+- [Charte de cadrage](engine-charter.md)
+- [API historique](10.%20Veille%20API.md)
+- [Partie 1 historique](14-VITALA-VEILLE-ENGINE.md%20Partie%201.md)
+- [Partie 2 historique](14-VITALA-VEILLE-ENGINE.md%20Partie%202.md)
+- [Partie 3 historique](14-VITALA-VEILLE-ENGINE.md%20Partie%203.md)
+
+Ce guide contient la vue d'ensemble nécessaire pour comprendre Veille sans devoir lire la documentation d'un autre moteur.
