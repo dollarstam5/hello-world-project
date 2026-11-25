@@ -1,4 +1,5 @@
 import script from "../tooling/scripts/test-mobile-e2e.sh?raw";
+import scrollCheck from "../tooling/scripts/check-mobile-scroll.mjs?raw";
 import { describe, expect, it } from "vitest";
 
 describe("mobile visual smoke contract", () => {
@@ -30,6 +31,15 @@ describe("mobile visual smoke contract", () => {
     expect(script).toContain('"/radar") selector="main h1"');
     expect(script).toContain('--wait-for-selector="$selector"');
     expect(script).toContain('test -s "$output"');
+  });
+
+  it("uses an isolated Chromium endpoint and reliably cleans up the browser process", () => {
+    expect(scrollCheck).toContain('--remote-debugging-port=0');
+    expect(scrollCheck).toContain("DevToolsActivePort");
+    expect(scrollCheck).toContain('detached: true');
+    expect(scrollCheck).toContain("process.kill(-chrome.pid");
+    expect(scrollCheck).toContain('chrome.once("exit", resolve)');
+    expect(scrollCheck).not.toContain("9222");
   });
 
   it("asserts bottom-scroll clearance above the fixed navigation for Flash and Scan", () => {
