@@ -12,7 +12,7 @@ Scan n'est ni un flux de publication, ni une présence en temps réel, ni une mi
 
 ## Application du principe Vitalis aux demandes Scan partielles
 
-Référence obligatoire : [principe fondamental de traitement des demandes partielles](../../00-foundation/vitalis-core-principles.md).
+Référence obligatoire : [principe fondamental de traitement des demandes partielles](../../foundation/vitalis-core-principles.md).
 
 - Une demande en langage naturel suffisamment exploitable déclenche une recherche avec les critères compris, même si des préférences ou des détails restent inconnus.
 - Une demande large ou ambiguë reçoit une première exploration utile lorsque celle-ci reste honnête ; Scan explique les limites et propose une clarification courte sans imposer un long questionnaire.
