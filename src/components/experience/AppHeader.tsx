@@ -4,7 +4,7 @@ import { Bell, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { haptic } from "@/platform/device/haptics";
 import { ProfileQuickPreview } from "./ProfileQuickPreview";
-import { useIdentity } from "@/lib/experience/identity";
+import { useIdentity } from "@/domains/profile/model/identity";
 import { useAuth } from "@/domains/auth/model/useAuth";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useCommunicationRuntime } from "@/features/communication/CommunicationRuntimeProvider";

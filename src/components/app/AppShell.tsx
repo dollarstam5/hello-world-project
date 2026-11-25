@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useRouterState } from "@tanstack/react-router";
 import { BottomNav } from "./BottomNav";
-import { useExperienceBoot } from "@/lib/experience/orchestrator";
+import { useExperienceBoot } from "@/app/bootstrap";
 import { OfflineBanner } from "@/components/experience/OfflineBanner";
 import { AppHeader } from "@/components/experience/AppHeader";
 import { InstallBanner } from "@/components/experience/InstallBanner";
@@ -9,7 +9,7 @@ import { UpdateBanner } from "@/components/experience/UpdateBanner";
 import { useResponsive } from "@/lib/platform/useResponsive";
 import { useAssistantPreferences } from "@/lib/app/assistant-preferences";
 import { AssistantNoticeLayer } from "@/components/experience/AssistantNoticeLayer";
-import { useOnboarding } from "@/lib/experience/onboarding";
+import { useOnboarding } from "@/features/onboarding";
 import { SyncEngineLoader } from "./SyncEngineLoader";
 import { CommunicationRuntimeProvider } from "@/features/communication/CommunicationRuntimeProvider";
 import { useAuth } from "@/domains/auth/model/useAuth";

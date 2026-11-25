@@ -4,7 +4,7 @@ import { ChevronRight, UserRound } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Sheet } from "@/components/app/Sheet";
 import { Button } from "@/components/ui/button";
-import { useIdentity } from "@/lib/experience/identity";
+import { useIdentity } from "@/domains/profile/model/identity";
 import { useI18n } from "@/lib/i18n/useI18n";
 
 interface ProfileQuickPreviewProps {

@@ -15,7 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ProfileFieldRow } from "./ProfileFieldRow";
 import { supabase } from "@/integrations/supabase/client";
-import { useIdentity } from "@/lib/experience/identity";
+import { useIdentity } from "@/domains/profile/model/identity";
 import { useI18n } from "@/lib/i18n/useI18n";
 import type { MessageKey } from "@/lib/i18n/messages";
 

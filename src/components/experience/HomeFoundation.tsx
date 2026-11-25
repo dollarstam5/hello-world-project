@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { PublicProfilePreview } from "@/components/app/PublicProfilePreview";
 import { Indicator } from "@/components/app/Indicator";
 import { useI18n } from "@/lib/i18n/useI18n";
-import { useIdentity } from "@/lib/experience/identity";
+import { useIdentity } from "@/domains/profile/model/identity";
 import { useAuth } from "@/domains/auth/model/useAuth";
 import { claimNameGreetingForSession, getHomeGreetingKey } from "@/features/communication/model/greeting";
 import { formatCommunicationMessage } from "@/features/communication/model/format";

@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { Indicator } from "@/components/app/Indicator";
 import { Surface } from "@/components/app/Surface";
-import { useIdentity } from "@/lib/experience/identity";
+import { useIdentity } from "@/domains/profile/model/identity";
 import { useAuth } from "@/domains/auth/model/useAuth";
 import { useI18n } from "@/lib/i18n/useI18n";
 
