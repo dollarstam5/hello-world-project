@@ -8,10 +8,4 @@ export { Label } from "./label";
 export { Badge, badgeVariants } from "./badge";
 export { Separator } from "./separator";
 export { Skeleton } from "./skeleton";
-export {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-} from "./sheet";
+export { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "./sheet";
