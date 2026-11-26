@@ -8,4 +8,4 @@
 - [État d'implémentation V1](./radar-v1-implementation-status.md)
 - [Contrat API historique](./9.%20Radar%20API.md)
 
-L'enregistrement d'une veille ne prouve pas que le moteur de correspondances ou les traitements planifiés sont actifs.
+L'enregistrement d'une intention sous forme de brouillon ne lance pas une veille : le moteur de correspondances, les traitements planifiés et les alertes ne sont pas actifs.
