@@ -28,9 +28,9 @@ function publicBuildSnapshot(): BuildSnapshot {
     const fileHash = createHash("sha256").update(readFileSync(path)).digest("hex");
     files.set(name, fileHash);
     hash.update(name);
-    hash.update("\\0");
+    hash.update("\0");
     hash.update(fileHash);
-    hash.update("\\0");
+    hash.update("\0");
   }
   return { digest: hash.digest("hex"), files };
 }
@@ -49,9 +49,7 @@ const second = publicBuildSnapshot();
 
 if (first.digest !== second.digest) {
   const paths = [...new Set([...first.files.keys(), ...second.files.keys()])].sort();
-  const changedFiles = paths.filter(
-    (path) => first.files.get(path) !== second.files.get(path),
-  );
+  const changedFiles = paths.filter((path) => first.files.get(path) !== second.files.get(path));
   throw new Error(
     [
       "Reproducibility check failed: public build digests differ",
@@ -61,7 +59,7 @@ if (first.digest !== second.digest) {
         (path) =>
           `- ${path}: ${first.files.get(path) ?? "missing"} -> ${second.files.get(path) ?? "missing"}`,
       ),
-    ].join("\\n"),
+    ].join("\n"),
   );
 }
 
