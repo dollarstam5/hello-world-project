@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useAccessMode } from "@/modules/access-mode";
 import { subscribeToReelMemberActivity } from "@/modules/reel/services/reel-activity-realtime.service";
-import { useCommunicationRuntime } from "@/lib/communication/CommunicationRuntimeProvider";
+import { useCommunicationRuntime } from "@/features/communication/CommunicationRuntimeProvider";
 import type { MessageKey } from "@/lib/i18n/messages";
 
 const messageByKind = {
