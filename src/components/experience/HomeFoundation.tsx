@@ -171,6 +171,7 @@ export function HomeFoundation() {
             example={t("home.engine.flash.example")}
             exampleLabel={t("home.engine.exampleLabel")}
             action={t("home.engine.action")}
+            exampleAction={t("home.engine.exampleAction")}
             tone="warm"
           />
           <HomeEngineCard
