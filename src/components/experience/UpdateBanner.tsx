@@ -12,6 +12,7 @@ export function UpdateBanner() {
   const [dismissed, setDismissed] = useState(false);
   const [checking, setChecking] = useState(false);
   const [freshPendingCount, setFreshPendingCount] = useState<number | null>(null);
+  const [freshPendingSyncTimestamp, setFreshPendingSyncTimestamp] = useState<number | null>(null);
   const [checkFailed, setCheckFailed] = useState(false);
   const safeToApply = canApplyUpdate(
     sync.phase,
@@ -19,8 +20,15 @@ export function UpdateBanner() {
   );
 
   useEffect(() => {
-    if (sync.isSettled) setFreshPendingCount(null);
-  }, [sync.isSettled]);
+    if (
+      sync.isSettled &&
+      freshPendingCount !== null &&
+      (freshPendingCount === 0 || sync.lastSyncedAt !== freshPendingSyncTimestamp)
+    ) {
+      setFreshPendingCount(null);
+      setFreshPendingSyncTimestamp(null);
+    }
+  }, [freshPendingCount, freshPendingSyncTimestamp, sync.isSettled, sync.lastSyncedAt]);
 
   async function handleApply() {
     if (applying || checking || !safeToApply) return;
@@ -28,8 +36,9 @@ export function UpdateBanner() {
     setCheckFailed(false);
     try {
       const pendingCount = await countPending();
-      setFreshPendingCount(pendingCount);
       const latestSync = useSyncStatusStore.getState();
+      setFreshPendingCount(pendingCount);
+      setFreshPendingSyncTimestamp(latestSync.lastSyncedAt);
       if (!canApplyUpdate(latestSync.phase, pendingCount)) {
         requestSyncNow();
         return;
