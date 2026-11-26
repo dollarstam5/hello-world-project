@@ -56,6 +56,12 @@ describe("installed PWA viewport contract", () => {
     expect(serviceWorker).toContain(
       'const SHELL_ROUTES = ["/", "/flash", "/scan", "/reel", "/radar", "/espace", "/talents"];',
     );
+    expect(serviceWorker).toContain("return SHELL_ROUTES.includes(path) ? path : null;");
+    expect(serviceWorker).toContain("response.ok && key");
+    expect(serviceWorker).toContain("if (key) {");
+    expect(serviceWorker).not.toContain('cache.match("/") ??');
+    expect(serviceWorker).toContain('if (url.pathname.startsWith("/api/")) return;');
+    expect(serviceWorker).toContain('if (url.pathname.startsWith("/_serverFn/")) return;');
     expect(offlinePage).toContain("Vous êtes momentanément hors connexion");
     expect(offlinePage).toContain('href="/"');
   });
