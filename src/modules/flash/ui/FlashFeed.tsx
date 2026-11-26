@@ -1,5 +1,5 @@
 import { useHydrated } from "@tanstack/react-router";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/ui/button";
 import { FlashCard } from "./FlashCard";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useFlashFeed } from "../hooks/useFlashFeed";
