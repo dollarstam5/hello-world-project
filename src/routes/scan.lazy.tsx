@@ -1,5 +1,5 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { ScanPanel } from "@/modules/scan/ui/ScanPanel";
+import { ScanPanel } from "@/modules/scan";
 
 export const Route = createLazyFileRoute("/scan")({
   component: ScanRoute,
