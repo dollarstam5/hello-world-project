@@ -1,6 +1,6 @@
 # Moteur Radar
 
-Radar permet d'enregistrer une recherche que la personne souhaite suivre sur plusieurs jours. Une veille dure au minimum 3 jours et au maximum 90 jours. Elle reste privée : seul son propriétaire peut lire ses critères et commander son cycle de vie.
+Radar permet actuellement d'enregistrer une intention de recherche privée sous forme de brouillon. Le modèle prévoit une durée de 3 à 90 jours, mais l'enregistrement d'un brouillon ne signifie pas qu'une veille automatique est active. Seul son propriétaire peut lire ses critères et commander son cycle de vie.
 
 ## Frontière avec les autres moteurs
 
@@ -38,15 +38,15 @@ L'activation et la reprise programment une prochaine revue dans un délai maxima
 
 Référence : [principe fondamental de traitement des demandes partielles](../../foundation/vitalis-core-principles.md).
 
-L'inspection du formulaire et du schéma de brouillon montre que la sauvegarde exige actuellement une requête d'au moins trois caractères **et** un libellé de zone d'au moins deux caractères. Le rayon et la durée sont également présents dans le modèle du brouillon.
+Le schéma actuel exige un texte de recherche d'au moins trois caractères, un rayon autorisé, une date de début et une échéance. Le libellé de zone est nullable : il n'est pas requis pour enregistrer le brouillon. L'interface propose initialement un rayon de 5 km et une durée de 7 jours, modifiables par la personne ; ces valeurs initiales sont des paramètres par défaut, pas des informations exprimées par l'utilisateur.
 
-**Écart P0 à examiner et corriger :** la personne doit pouvoir enregistrer une intention Radar exploitable comme brouillon privé même si sa zone ou certains paramètres ne sont pas encore précisés. Il faut distinguer les données nécessaires à la conservation d'une intention de celles indispensables à l'activation réelle d'une mission. Les informations manquantes restent inconnues ; aucune zone ni aucun critère ne doit être inventé. L'activation et l'exécution restent bloquées tant que leurs exigences réelles, les autorisations et les services nécessaires ne sont pas satisfaits.
+Le minimum de texte et les paramètres de durée/rayon appartiennent au contrat actuel de sauvegarde. La zone reste inconnue lorsqu'elle n'est pas fournie. Les exigences d'activation et d'exécution sont distinctes : l'interface ne doit pas laisser croire qu'une veille automatique est lancée tant que les sources, traitements planifiés et autorisations nécessaires ne sont pas opérationnels.
 
 La modification de ce parcours ne doit pas faire croire que la recherche automatique ou la surveillance en arrière-plan est déjà disponible.
 
 ## État de l'interface V1
 
-La page Radar permet maintenant d'enregistrer une veille privée en brouillon, de modifier ses critères et de l'annuler après confirmation. Les données sont enregistrées dans IndexedDB et passent par l'outbox de synchronisation.
+La page Radar permet actuellement d'enregistrer une intention de recherche privée comme brouillon, de modifier ses critères et de l'annuler après confirmation. Les données sont enregistrées dans IndexedDB et passent par l'outbox de synchronisation.
 
 La détection automatique, le traitement planifié des correspondances, les résultats et les alertes ne sont pas encore raccordés. Un état `active` dans le modèle de données ne doit donc pas être présenté comme la preuve d'une recherche automatique en cours.
 
