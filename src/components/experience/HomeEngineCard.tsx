@@ -64,22 +64,22 @@ export function HomeEngineCard({
         </div>
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-1 text-xs font-semibold">
           <Link
-          to={to}
-          hash="guide"
-          onClick={() => haptic.tap()}
-          className="inline-flex min-h-11 items-center gap-1.5 rounded-md px-1 text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        >
+            to={to}
+            hash="guide"
+            onClick={() => haptic.tap()}
+            className="inline-flex min-h-11 items-center gap-1.5 rounded-md px-1 text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
             <BookOpen className="h-3.5 w-3.5" aria-hidden />
-          {action}
+            {action}
           </Link>
           <Link
-          to={to}
-          hash="example"
-          onClick={() => haptic.tap()}
-          className="inline-flex min-h-11 items-center gap-1.5 rounded-md px-1 text-muted-foreground underline-offset-4 hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        >
+            to={to}
+            hash="example"
+            onClick={() => haptic.tap()}
+            className="inline-flex min-h-11 items-center gap-1.5 rounded-md px-1 text-muted-foreground underline-offset-4 hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
             <Lightbulb className="h-3.5 w-3.5" aria-hidden />
-          {exampleAction}
+            {exampleAction}
           </Link>
         </div>
       </div>
