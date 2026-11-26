@@ -51,7 +51,7 @@ export function ScanPanel() {
 
   return (
     <div className="stack-4">
-      <section className="relative overflow-hidden rounded-[1.5rem] border border-border-soft bg-gradient-to-br from-surface via-surface to-primary/5 p-4 sm:rounded-[2rem] sm:p-7">
+      <section id="guide" className="relative overflow-hidden rounded-[1.5rem] border border-border-soft bg-gradient-to-br from-surface via-surface to-primary/5 p-4 sm:rounded-[2rem] sm:p-7">
         <div
           className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-primary/10 blur-3xl"
           aria-hidden
@@ -271,6 +271,9 @@ export function ScanPanel() {
           {t("scan.empty")}
         </p>
       ) : null}
+      <div id="example" className="scroll-mt-6">
+        <p className="mb-2 text-xs font-medium text-muted-foreground">{t("home.engine.scan.example")}</p>
+      </div>
       {rows.length > 0 ? <ScanResults assessments={assessments} /> : null}
       <ScanHistory entries={history} onClear={clearHistory} />
     </div>
