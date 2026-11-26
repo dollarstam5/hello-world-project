@@ -86,3 +86,7 @@ Une checklist ne constitue pas une certification WCAG : des tests automatisés e
 - W3C — [WCAG 2.2](https://www.w3.org/TR/WCAG22/)
 
 Recontrôler les versions et la guidance au moment de chaque release majeure.
+
+## Référentiel directeur de l'expérience native
+
+Ce document spécialisé est rattaché au [Référentiel de l'expérience native — Vitalis](../00-foundation/native-experience-standard.md), qui définit la grille transversale de sensation native, les niveaux Web/PWA/API système/enveloppe native, les dimensions d'expérience et les preuves attendues. Les règles de navigation de ce fichier restent les décisions détaillées applicables à la navigation Vitalis.
