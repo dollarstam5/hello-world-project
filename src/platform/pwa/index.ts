@@ -1,2 +1,2 @@
 export { registerServiceWorker, useInstallPrompt } from "./install";
-export { useAppUpdate } from "./update";
+export { canApplyUpdate, useAppUpdate } from "./update";
