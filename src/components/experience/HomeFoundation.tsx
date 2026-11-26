@@ -119,8 +119,9 @@ export function HomeFoundation() {
 
       {!authLoading ? (
         <Surface
-          variant="sunken"
+          variant="glass-soft"
           padding="md"
+          radius="3xl"
           bordered
           className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
           aria-labelledby="home-journey-title"
@@ -221,6 +222,7 @@ export function HomeFoundation() {
               key={flash.id}
               variant="glass-soft"
               padding="md"
+              radius="2xl"
               bordered
               className="flex min-h-32 flex-col justify-between gap-4"
             >
@@ -241,7 +243,7 @@ export function HomeFoundation() {
 
       <VitalisVisionCard />
 
-      <Surface variant="sunken" padding="md" bordered className="flex items-start gap-3">
+      <Surface variant="glass-soft" padding="md" radius="2xl" bordered className="flex items-start gap-3">
         <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-surface text-muted-foreground">
           <span className="text-xl leading-none" aria-hidden="true">
             ✧
