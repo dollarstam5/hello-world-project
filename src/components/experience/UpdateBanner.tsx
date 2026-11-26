@@ -24,7 +24,11 @@ export function UpdateBanner() {
         <div className="min-w-0 flex-1">
           <p className="text-sm font-medium">{t("update.title")}</p>
           <p className="mt-0.5 text-xs text-muted-foreground">{t("update.subtitle")}</p>
-          {failed ? <p role="alert" className="mt-1 text-xs text-destructive">{t("update.failed")}</p> : null}
+          {failed ? (
+            <p role="alert" className="mt-1 text-xs text-destructive">
+              {t("update.failed")}
+            </p>
+          ) : null}
           <button
             type="button"
             onClick={apply}
