@@ -80,7 +80,7 @@ export function ReelProximityScreen() {
       className={`reel-proximity${controller.isOnline ? "" : " is-offline"}`}
       aria-label={t("reel.ui.screenLabel")}
     >
-      <ReelHeader controller={controller} onOpenTour={openTour} />
+      <div id="guide" className="scroll-mt-6"><ReelHeader controller={controller} onOpenTour={openTour} /></div>
       <ReelAtmospherePill
         ambiance={controller.ambiance}
         onClickPrompt={() => setPanel(controller.ambiance.count > 0 ? "people" : "settings")}
@@ -91,12 +91,14 @@ export function ReelProximityScreen() {
           <span>{t("reel.network.standby")}</span>
         </div>
       )}
+      <div id="example" className="scroll-mt-6">
       <ReelGuidedTour
         open={tourOpen}
         step={tourStep}
         onClose={closeTour}
         onStepChange={setTourStep}
       />
+      </div>
 
       <ReelDiscoveryPrompt controller={controller} />
 
