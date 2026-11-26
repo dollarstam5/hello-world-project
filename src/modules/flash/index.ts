@@ -1,8 +1,4 @@
-/**
- * Flash module entrypoint.
- * Exposes the stable module marker, shared Flash card, and local data API.
- * Feature-specific screens, hooks and server functions remain explicit imports.
- */
+/** Flash module public entrypoints. */
 export const FLASH_DOMAIN = "flash" as const;
 export { FlashCard } from "./ui/FlashCard";
 export { PublicProfilePreview } from "./ui/PublicProfilePreview";
