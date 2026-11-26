@@ -55,8 +55,8 @@ La gravité indique le risque de l'écart, pas une preuve qu'un incident s'est d
 | Priorité | Domaine | État initial | Décision de sortie |
 | --- | --- | --- | --- |
 | P0 | CI et référence de qualité | **CONTRÔLE CI CLOS POUR LE SHA VALIDÉ** — les erreurs Prettier introduites ont été corrigées ; Quality, Réel Validation et Dependency Review passent sur `d243928` | Réouvrir si un nouveau commit fait échouer un contrôle ; cela ne clôt pas les autres P0 de fiabilité |
-| P0 | Brouillons et navigation | **CODE + ÉCART** — remount du contenu sur changement de pathname ; conservation non prouvée | Démontrer sauvegarde, restauration et navigation sans perte |
-| P0 | Mise à jour Service Worker | **CODE + ÉCART** — rechargement de secours temporisé après 3 s | Démontrer mise à jour sans perte, ou supprimer le rechargement non sûr |
+| P0 | Brouillons et navigation | **CODE + TEST + MANUEL** — clé de remount supprimée et test de contrat ajouté ; conservation réelle des brouillons/scroll à vérifier sur appareils | Démontrer sauvegarde, restauration et navigation sans perte |
+| P0 | Mise à jour Service Worker | **CODE + TEST + ÉCART RÉSIDUEL** — rechargement de secours supprimé ; timeout désormais non destructif ; coordination avec brouillons/outbox/sync encore à établir | Démontrer mise à jour sans perte avec travail local et synchronisation en cours |
 | P0 | Offline et reprise de sync | **CODE + TEST** — outbox et moteur testés ; intégration bout en bout non prouvée | Démontrer création hors ligne, persistance, reprise, résolution et états réels |
 | P1 | Retour et historique | **CODE + MANUEL** — router Web présent ; retour système non démontré | Essais Android, iOS et navigateur |
 | P1 | Insets, clavier, orientation, cibles | **CODE + TEST + MANUEL** — safe areas et viewport couverts par contrats | Mesures et parcours appareil réel, revoir orientation portrait |
@@ -113,8 +113,8 @@ La gravité indique le risque de l'écart, pas une preuve qu'un incident s'est d
 | Exigence | Préserver l'état utile d'un moteur : brouillon, filtres, recherche, onglet, sous-route et position de défilement, sous réserve des règles de session et de sécurité. |
 | Fichiers / composants | `src/components/app/AppShell.tsx`, `src/components/app/BottomNav.tsx`, routes TanStack, écrans Flash/Scan/Radar/En direct. |
 | main | `AppShell` enveloppe le contenu avec `<div key={pathname}>`, ce qui remonte l'arbre de route lorsque le pathname change. |
-| Branche | Même implémentation que main pour ces fichiers ; aucune correction de restauration dans PR #96. |
-| Preuve | Code vérifié ; `tests/interaction-navigation.test.ts` mesure des durées de navigation mais ne démontre pas la restauration du contenu. |
+| Branche | `src/components/app/AppShell.tsx` ne force plus le remount par `key={pathname}` ; le menu global reste fermé après navigation. |
+| Preuve | Test de contrat ajouté dans `tests/app-shell-navigation-contract.test.ts`. Quality, Réel Validation et Dependency Review ont tous réussi sur le commit `c9fa44258c38be6301dc9d2d1cde6bc088e9d844`. Les essais réels de conservation du brouillon, des filtres et du scroll restent à réaliser. |
 | Plateforme | Toutes. |
 | Gravité | **Bloquante** pour un travail non sauvegardé ; majeure pour filtres et position perdus. |
 | Acceptation | Depuis chaque moteur, modifier un filtre et une position ; changer de destination ; revenir par barre, retour système et historique navigateur ; vérifier restauration exacte et absence de doublons d'historique. |
@@ -126,14 +126,14 @@ La gravité indique le risque de l'écart, pas une preuve qu'un incident s'est d
 | --- | --- |
 | ID | **P0-PWA-UPDATE-01** |
 | Exigence | Une mise à jour ne doit pas forcer un rechargement tant que le travail local ou une mutation est en cours, ni interrompre une sauvegarde/synchronisation. |
-| Fichiers / composants | `src/platform/pwa/update.ts`, `src/components/experience/UpdateBanner.tsx`, `public/sw.js`, `src/components/app/AppShell.tsx`. |
+| Fichiers / composants | `src/platform/pwa/update.ts`, `src/components/experience/UpdateBanner.tsx`, `src/platform/internationalization/messages.ts`, `tests/pwa.test.ts`, `public/sw.js`. |
 | main | Le hook propose une action explicite et envoie `SKIP_WAITING`; un rechargement de secours est déclenché après 3 secondes si `controllerchange` n'arrive pas. |
-| Branche | Identique à main. |
-| Preuve | `tests/pwa.test.ts` vérifie les exports et les instructions d'installation ; aucun test de perte de travail pendant une mise à jour n'est démontré. |
+| Branche | Le rechargement de secours a été supprimé. La page ne se recharge que si l'événement `controllerchange` confirme la prise de contrôle. Un timeout de 10 secondes ou une erreur de `postMessage` rétablit l'action et affiche une possibilité de réessayer. Le Service Worker conserve son protocole `SKIP_WAITING` / `clients.claim()` ; aucun changement de `public/sw.js` n'a été nécessaire pour cette correction. |
+| Preuve | Trois tests ajoutés dans `tests/pwa.test.ts` : prise de contrôle confirmée, timeout sans succès et échec de `postMessage`. Les workflows du dernier commit sont en attente au moment de cette mise à jour documentaire ; leur résultat sera consigné après exécution. |
 | Plateforme | PWA Android/iOS et navigateurs desktop avec Service Worker. |
-| Gravité | **Bloquante**. |
-| Acceptation | Déclencher une nouvelle version pendant un brouillon en cours, une mutation outbox et une synchronisation active ; vérifier que le rechargement attend une sauvegarde confirmée et que le contenu reste disponible après prise de contrôle. Tester aussi l'échec/timeout du nouveau worker. |
-| Correction proposée | Remplacer le délai de rechargement inconditionnel par un protocole de préparation : état dirty/outbox/sync, confirmation de sauvegarde, message de prise de contrôle, puis rechargement contrôlé. Prévoir un parcours explicite de récupération si le worker échoue. |
+| Gravité | **Bloquante tant que la coordination avec le travail non sauvegardé n'est pas démontrée**. |
+| Acceptation | Déclencher une nouvelle version pendant un brouillon en cours, une mutation outbox et une synchronisation active ; vérifier que l'interface empêche ou diffère la prise de contrôle tant que la sauvegarde n'est pas confirmée. Tester aussi le timeout, l'échec du worker et la reprise utilisateur. |
+| Correction appliquée / limite restante | Le rechargement temporisé non conditionnel est supprimé et les échecs sont récupérables. Cette correction évite le rechargement aveugle après 3 secondes, mais elle ne prouve pas encore que le travail métier est sauvegardé avant un clic volontaire sur « Recharger maintenant ». Il reste à relier le parcours d'update aux états dirty, outbox et synchronisation, ou à fournir une confirmation de sauvegarde fiable avant `SKIP_WAITING`. |
 
 ### P0.5 — Cache de navigation et route offline
 
