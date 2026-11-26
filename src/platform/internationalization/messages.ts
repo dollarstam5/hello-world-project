@@ -1322,7 +1322,8 @@ export const messages = {
     "home.engine.radar.desc":
       "Save a private search intention and find it in your space, even offline.",
     "home.engine.radar.example": "Keep track of a search for weekend childcare.",
-    "home.engine.action": "View this space",
+    "home.engine.action": "How it works",
+    "home.engine.exampleAction": "See an example",
     "home.menuHint":
       "Explore additional spaces and other Vitalis features from the 2x2 menu at the bottom of the screen.",
     "home.journey.guest.title": "Start at your own pace",
