@@ -210,7 +210,7 @@ export function ProfileManagementPage() {
 
       <section className="stack-3">
         <h2 className="text-base font-semibold">{t("profile.section.identity")}</h2>
-        <Surface variant="elevated" padding="lg" bordered>
+        <Surface variant="glass-soft" padding="lg" radius="3xl" bordered>
           <div className="divide-y divide-border-soft">
             <div className="pb-4">
               <ProfileFieldRow
@@ -261,7 +261,7 @@ export function ProfileManagementPage() {
 
       <section className="stack-2">
         <h2 className="text-base font-semibold">{t("profile.section.protection")}</h2>
-        <Surface variant="sunken" padding="md" bordered>
+        <Surface variant="sunken" padding="md" radius="2xl" bordered>
           <p className="text-sm leading-relaxed text-muted-foreground">
             {t("profile.systemFields")}
           </p>
