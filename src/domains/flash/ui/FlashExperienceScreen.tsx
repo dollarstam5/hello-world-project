@@ -34,7 +34,7 @@ export function FlashExperienceScreen() {
       className="min-h-[calc(100dvh-5rem)] px-4 pb-8 pt-5 sm:px-6"
       aria-label={t("flash.screen.label")}
     >
-      <header className="mb-6 flex items-center justify-between gap-3">
+      <header id="guide" className="mb-6 flex items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
           <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-primary/12 text-primary">
             <Zap className="size-6" aria-hidden="true" />
@@ -54,7 +54,7 @@ export function FlashExperienceScreen() {
         </Link>
       </header>
 
-      <div className="mb-7 overflow-hidden rounded-[1.75rem] border border-primary/15 bg-gradient-to-br from-primary/12 via-card to-card p-5 shadow-sm sm:p-7">
+      <div id="example" className="mb-7 overflow-hidden rounded-[1.75rem] border border-primary/15 bg-gradient-to-br from-primary/12 via-card to-card p-5 shadow-sm sm:p-7">
         <div className="mx-auto flex max-w-sm flex-col items-center text-center">
           <span className="mb-3 grid size-[4.25rem] place-items-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/20">
             <Zap className="size-8" fill="currentColor" aria-hidden="true" />
