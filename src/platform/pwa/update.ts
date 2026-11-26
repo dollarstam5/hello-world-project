@@ -4,6 +4,13 @@
  */
 import { useEffect, useState } from "react";
 
+type UpdateSyncPhase = "idle" | "pulling" | "pushing" | "offline" | "error";
+
+/** An update may proceed only when the sync worker reports a settled outbox. */
+export function canApplyUpdate(phase: UpdateSyncPhase, pendingCount: number): boolean {
+  return phase === "idle" && pendingCount === 0;
+}
+
 let waitingWorker: ServiceWorker | null = null;
 const listeners = new Set<(ready: boolean) => void>();
 
