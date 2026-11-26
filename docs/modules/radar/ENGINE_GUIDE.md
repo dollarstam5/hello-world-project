@@ -1,8 +1,8 @@
 # Radar — guide complet du moteur
 
 **Objet :** transformer une intention en mission de recherche persistante, privée et configurable.  
-**Action centrale :** enregistrer, qualifier puis valider une mission Radar.  
-**État :** le stockage et le cycle de vie de la veille sont documentés ; la recherche automatique n'est pas déclarée active.
+**Action centrale actuellement livrée :** enregistrer et gérer un brouillon d'intention de recherche. La qualification et l'activation complète sont des étapes cibles, non une capacité runtime confirmée.  
+**État :** le stockage et le cycle de vie des enregistrements sont raccordés ; l'interface V1 crée des brouillons. La recherche automatique, les correspondances et les alertes ne sont pas actives.
 
 ## 1. Mission et périmètre
 
@@ -61,7 +61,7 @@ Contrat : `packages/core-contracts/src/radar.ts`. Logique de cycle de vie : `pac
 
 ## 6. État d'implémentation connu
 
-L'interface V1 permet d'enregistrer, modifier et annuler une veille privée en brouillon, de consulter les veilles du compte et de synchroniser les données. En revanche, le moteur de correspondances, le traitement planifié, les résultats automatiques et les alertes ne sont pas déclarés raccordés. Le formulaire exige historiquement un texte et un libellé de zone ; la conformité au principe de sauvegarde partielle doit être vérifiée et corrigée si cette exigence n'est pas strictement nécessaire.
+L'interface V1 permet d'enregistrer, modifier et annuler un brouillon privé d'intention de recherche, de consulter les recherches enregistrées du compte et de synchroniser les données. Le moteur de correspondances, le traitement planifié, les résultats automatiques et les alertes ne sont pas raccordés. Le texte de recherche doit comporter au moins trois caractères. Le libellé de zone est facultatif. Le rayon et la durée sont préremplis par défaut (5 km et 7 jours) et peuvent être modifiés ; ils ne doivent pas être présentés comme des données exprimées par la personne.
 
 ## 7. Critères de validation
 
