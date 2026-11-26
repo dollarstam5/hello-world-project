@@ -21,17 +21,17 @@ function RadarRoute() {
           key: "management",
           titleKey: "radar.section.management",
           perf: "short",
-          render: () => <RadarManagement />,
+          render: () => <div id="guide" className="scroll-mt-6"><RadarManagement /></div>,
         },
         {
           key: "example",
           titleKey: "home.demo.title",
           perf: "short",
           render: () => (
-            <EnginePreviewCard
+            <div id="example" className="scroll-mt-6"><EnginePreviewCard
               titleKey="home.engine.radar.title"
               descriptionKey="home.engine.radar.example"
-            />
+            /></div>
           ),
         },
       ]}
