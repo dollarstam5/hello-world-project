@@ -54,7 +54,10 @@ export function FlashExperienceScreen() {
         </Link>
       </header>
 
-      <div id="example" className="mb-7 overflow-hidden rounded-3xl border border-primary/15 bg-gradient-to-br from-primary/12 via-card to-card p-5 shadow-sm sm:p-7">
+      <div
+        id="example"
+        className="mb-7 overflow-hidden rounded-3xl border border-primary/15 bg-gradient-to-br from-primary/12 via-card to-card p-5 shadow-sm sm:p-7"
+      >
         <div className="mx-auto flex max-w-sm flex-col items-center text-center">
           <span className="mb-3 grid size-[4.25rem] place-items-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/20">
             <Zap className="size-8" fill="currentColor" aria-hidden="true" />
@@ -135,7 +138,15 @@ export function FlashExperienceScreen() {
         ) : null}
       </div>
 
-      <div id="flash-tabpanel" role="tabpanel" aria-labelledby={tab === "mine" && dashboardUnlocked ? "flash-tab-mine" : "flash-tab-discover"} tabIndex={0} className="min-w-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+      <div
+        id="flash-tabpanel"
+        role="tabpanel"
+        aria-labelledby={
+          tab === "mine" && dashboardUnlocked ? "flash-tab-mine" : "flash-tab-discover"
+        }
+        tabIndex={0}
+        className="min-w-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      >
         {tab === "discover" || !dashboardUnlocked ? (
           <div className="stack-3">
             <div className="mb-3 flex items-center justify-between gap-3">
