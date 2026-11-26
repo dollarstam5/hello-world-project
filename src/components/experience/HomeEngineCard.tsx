@@ -39,7 +39,6 @@ export function HomeEngineCard({
       variant="glass-soft"
       padding="md"
       bordered
-      interactive
       className="group flex h-full min-h-36 flex-col justify-between gap-4 transition-colors duration-200 motion-reduce:transition-none"
     >
       <div className="flex items-start justify-between gap-3">
