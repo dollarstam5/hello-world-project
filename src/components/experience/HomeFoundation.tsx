@@ -67,7 +67,7 @@ export function HomeFoundation() {
       {/* Accueil illustré : une présence humaine, sans photographie de stock. */}
       <section
         aria-labelledby="home-welcome-title"
-        className="relative isolate flex min-h-[21rem] overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(ellipse_at_78%_20%,hsl(var(--primary)/0.22),transparent_42%),linear-gradient(145deg,hsl(var(--card)),hsl(var(--background)))] shadow-xl sm:min-h-[23rem]"
+        className="relative isolate flex min-h-[21rem] overflow-hidden rounded-3xl border border-border-soft bg-gradient-to-br from-surface via-surface to-primary/5 shadow-md sm:min-h-[23rem]"
       >
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
           <div className="absolute -right-10 -top-12 h-64 w-64 rounded-full border border-primary/20 bg-primary/10 blur-[1px]" />
@@ -93,11 +93,11 @@ export function HomeFoundation() {
         <div className="relative z-10 flex w-full min-w-0 flex-col justify-between gap-10 p-5 sm:p-8">
           <div className="flex flex-wrap items-center justify-between gap-2.5">
             {identityLabel ? (
-              <span className="rounded-full border border-white/10 bg-background/55 px-3 py-1 text-xs font-medium text-foreground backdrop-blur-xl">
+              <span className="rounded-full border border-border-soft bg-surface/80 px-3 py-1 text-xs font-medium text-foreground backdrop-blur-sm">
                 {identityLabel}
               </span>
             ) : <span />}
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-background/45 px-3 py-1.5 text-xs font-medium text-foreground backdrop-blur-xl">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-border-soft bg-surface/80 px-3 py-1.5 text-xs font-medium text-foreground backdrop-blur-sm">
               <Sparkles className="h-3.5 w-3.5 text-primary" aria-hidden />
               {t("app.tagline")}
             </span>
