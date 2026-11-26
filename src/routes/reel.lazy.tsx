@@ -3,7 +3,7 @@ import { ClientOnly, createLazyFileRoute } from "@tanstack/react-router";
 import { useI18n } from "@/lib/i18n/useI18n";
 
 const ReelProximityScreen = lazy(() =>
-  import("@/modules/reel/ui/ReelProximityScreen").then((module) => ({
+  import("@/modules/reel").then((module) => ({
     default: module.ReelProximityScreen,
   })),
 );
