@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, Compass } from "lucide-react";
-import { useI18n } from "@/lib/i18n/useI18n";
+import { useI18n } from "@/platform/internationalization/useI18n";
 
 /** A consistent doorway to the complete, honest explanation of Vitalis. */
 export function VitalisVisionCard() {
