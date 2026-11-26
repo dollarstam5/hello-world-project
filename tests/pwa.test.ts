@@ -3,7 +3,7 @@ import { createElement } from "react";
 import { renderToString } from "react-dom/server";
 import { registerServiceWorker, useAppUpdate, useInstallPrompt } from "@/platform/pwa";
 import { getManualInstallInstructions } from "@/platform/pwa/install";
-import { requestServiceWorkerActivation } from "@/platform/pwa/update";
+import { canApplyUpdate, requestServiceWorkerActivation } from "@/platform/pwa/update";
 
 describe("PWA platform exports", () => {
   it("keeps installation unavailable on the first render, even on a secure Android device", () => {
@@ -56,6 +56,16 @@ describe("platform-specific installation guidance", () => {
   it("offers Android manual installation when native prompt is unavailable", () => {
     expect(getManualInstallInstructions("android", true, false)).toBe("android");
     expect(getManualInstallInstructions("windows", true, false)).toBeNull();
+  });
+});
+
+describe("PWA update synchronization guard", () => {
+  it("allows updates only after sync is idle with no pending actions", () => {
+    expect(canApplyUpdate("idle", 0)).toBe(true);
+    expect(canApplyUpdate("idle", 1)).toBe(false);
+    expect(canApplyUpdate("pushing", 0)).toBe(false);
+    expect(canApplyUpdate("offline", 0)).toBe(false);
+    expect(canApplyUpdate("error", 0)).toBe(false);
   });
 });
 
