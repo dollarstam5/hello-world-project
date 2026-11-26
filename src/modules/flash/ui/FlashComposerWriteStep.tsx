@@ -65,7 +65,7 @@ export function FlashComposerWriteStep({ state }: { state: ComposerState }) {
       <Button
         type="button"
         className="mt-5 min-h-12 w-full rounded-full"
-        disabled={!state.parsedIntent || !state.text.trim()}
+        disabled={!state.text.trim()}
         onClick={state.continueToReview}
       >
         {t("common.continue")}
