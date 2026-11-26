@@ -11,8 +11,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
+} from "@/shared/ui/alert-dialog";
+import { Button } from "@/shared/ui/button";
 import { Indicator } from "@/shared/components/Indicator";
 import { RadarDraftForm } from "./RadarDraftForm";
 import { Surface } from "@/shared/components/Surface";
