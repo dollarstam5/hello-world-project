@@ -964,6 +964,8 @@ export const messages = {
       "Cette partie sera disponible quand En direct pourra partager les présences et gérer les interactions en toute sécurité. Aucune présence ni relation n'est simulée.",
     "radar.manage.intro":
       "Enregistrez une intention de recherche privée comme brouillon. L’appariement automatique et les alertes ne sont pas encore actifs.",
+    "radar.manage.defaultsHint":
+      "Le rayon initial de 5 km et la durée initiale de 7 jours sont des propositions modifiables, pas des informations déduites de votre message.",
     "radar.manage.edit.title": "Modifier mon brouillon",
     "radar.manage.edit": "Modifier",
     "radar.manage.edit.action": "Enregistrer les changements",
@@ -2093,6 +2095,8 @@ export const messages = {
       "This section will be ready when Live can share presence and manage interactions securely. No presence or connection is simulated.",
     "radar.manage.intro":
       "Save a private search intention as a draft. Automatic matching and alerts are not active yet.",
+    "radar.manage.defaultsHint":
+      "The initial 5 km radius and 7-day duration are editable suggestions, not details inferred from your message.",
     "radar.manage.edit.title": "Edit my draft",
     "radar.manage.edit": "Edit",
     "radar.manage.edit.action": "Save changes",
