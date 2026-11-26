@@ -59,6 +59,8 @@ const SLOT_TTL: Record<FlashTimeSlot, number> = {
 
 const NEED_PATTERN =
   /\b(besoin|cherche|recherche|recherch\w*|il me faut|je veux|je voudrais|j'aimerais|j’aimerais|need|needed|looking for|wanted|searching for)\b/i;
+const OFFER_PATTERN =
+  /\b(je propose|je peux|je mets à disposition|je vends|offre|disponible|propose|offering|i offer|i can provide|available)\b/i;
 
 const CATEGORY_PATTERNS: ReadonlyArray<readonly [FlashCategory, RegExp]> = [
   ["food", /\b(food|meal|restaurant|cook|repas|nourriture|manger|cuisine|livraison)\b/i],
