@@ -183,6 +183,7 @@ export function HomeFoundation() {
             example={t("home.engine.scan.example")}
             exampleLabel={t("home.engine.exampleLabel")}
             action={t("home.engine.action")}
+            exampleAction={t("home.engine.exampleAction")}
             tone="info"
           />
           <HomeEngineCard
@@ -193,6 +194,7 @@ export function HomeFoundation() {
             example={t("home.engine.reel.example")}
             exampleLabel={t("home.engine.exampleLabel")}
             action={t("home.engine.action")}
+            exampleAction={t("home.engine.exampleAction")}
             tone="primary"
           />
           <HomeEngineCard
@@ -203,6 +205,7 @@ export function HomeFoundation() {
             example={t("home.engine.radar.example")}
             exampleLabel={t("home.engine.exampleLabel")}
             action={t("home.engine.action")}
+            exampleAction={t("home.engine.exampleAction")}
             tone="violet"
           />
         </div>
