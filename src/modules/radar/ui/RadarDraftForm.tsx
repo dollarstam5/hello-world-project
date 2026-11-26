@@ -2,9 +2,9 @@ import type { FormEvent } from "react";
 import { Radar as RadarIcon } from "lucide-react";
 import type { RadarRadiusKm } from "@eco/core-contracts";
 import type { MessageKey } from "@/lib/i18n/messages";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/shared/ui/button";
+import { Input } from "@/shared/ui/input";
+import { Textarea } from "@/shared/ui/textarea";
 import { Surface } from "@/shared/components/Surface";
 
 type DurationDays = 3 | 7 | 14 | 30 | 60 | 90;
