@@ -3,9 +3,8 @@ import { visionMessages } from "@/platform/internationalization/vision-messages"
 
 describe("Vision capability copy", () => {
   it("describes Flash as a local draft until publication is available", () => {
-    for (const locale of ["fr", "en"] as const) {
-      expect(visionMessages[locale]["vision.engine.flash.action"].toLowerCase()).toContain("draft");
-    }
+    expect(visionMessages.fr["vision.engine.flash.action"]).toContain("brouillon");
+    expect(visionMessages.en["vision.engine.flash.action"]).toContain("draft");
     expect(visionMessages.fr["vision.engine.flash.action"]).toContain("brouillon");
     expect(visionMessages.fr["vision.deep.flash.use"]).toContain("publication n’est pas encore activée");
     expect(visionMessages.en["vision.deep.flash.use"]).toContain("Publication is not yet active");
