@@ -170,7 +170,8 @@ export const messages = {
     "home.engine.radar.desc":
       "Enregistrez une intention de recherche privée et retrouvez-la dans votre espace, même hors ligne.",
     "home.engine.radar.example": "Suivre une recherche de garde pour les prochains week-ends.",
-    "home.engine.action": "Voir cet espace",
+    "home.engine.action": "Comprendre",
+    "home.engine.exampleAction": "Voir un exemple",
     "home.menuHint":
       "Les espaces complémentaires et les autres fonctionnalités de Vitalis sont accessibles depuis le menu 2×2 en bas de l’écran.",
     "home.journey.guest.title": "Commencez librement",
