@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { readdirSync, readFileSync, rmSync, statSync } from "node:fs";
+import { readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { join, relative } from "node:path";
 import { execFileSync } from "node:child_process";
 
@@ -39,13 +39,43 @@ function build(): void {
   execFileSync("bun", ["run", "build:check"], { stdio: "inherit" });
 }
 
-rmSync(".output", { recursive: true, force: true });
-build();
-const first = publicBuildSnapshot();
+const generatedRouteTree = "src/routeTree.gen.ts";
+const originalRouteTree = readFileSync(generatedRouteTree);
 
-rmSync(".output", { recursive: true, force: true });
-build();
-const second = publicBuildSnapshot();
+function resetBuildArtifacts(): void {
+  // Each snapshot must start from the same cold build state. The release check
+  // has already built once, so clearing only .output leaves warm Vite/Nitro and
+  // TanStack artifacts that can change chunk graphs between the two builds.
+  for (const directory of [
+    ".output",
+    ".tanstack",
+    ".vinxi",
+    ".nitro",
+    "node_modules/.nitro",
+  ]) {
+    rmSync(directory, { recursive: true, force: true });
+  }
+
+  // TanStack Router may rewrite its generated route tree during a build.
+  // Restore the checked-in input so both builds start from identical sources.
+  writeFileSync(generatedRouteTree, originalRouteTree);
+}
+
+let first: BuildSnapshot;
+let second: BuildSnapshot;
+
+try {
+  resetBuildArtifacts();
+  build();
+  first = publicBuildSnapshot();
+
+  resetBuildArtifacts();
+  build();
+  second = publicBuildSnapshot();
+} finally {
+  // Do not leave generated source changes behind if a build or comparison fails.
+  writeFileSync(generatedRouteTree, originalRouteTree);
+}
 
 if (first.digest !== second.digest) {
   const paths = [...new Set([...first.files.keys(), ...second.files.keys()])].sort();
