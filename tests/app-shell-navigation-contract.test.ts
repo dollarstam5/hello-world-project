@@ -11,7 +11,7 @@ const appShell = readFileSync(
 
 describe("AppShell route state contract", () => {
   it("does not force-remount the route subtree when the pathname changes", () => {
-    expect(appShell).not.toContain('<div key={pathname}');
+    expect(appShell).not.toContain("<div key={pathname}");
     expect(appShell).toContain("<main");
     expect(appShell).toContain("{children}");
   });
