@@ -82,8 +82,9 @@ describe("safe service worker activation", () => {
 
   it("resolves only after the new worker takes control", async () => {
     vi.useFakeTimers();
-    const serviceWorker = new EventTarget();
+    const serviceWorker = new EventTarget() as EventTarget & { controller: ServiceWorker | null };
     const worker = { postMessage: vi.fn() } as unknown as ServiceWorker;
+    serviceWorker.controller = {} as ServiceWorker;
 
     const activation = requestServiceWorkerActivation(
       worker,
@@ -92,6 +93,7 @@ describe("safe service worker activation", () => {
     );
 
     expect(worker.postMessage).toHaveBeenCalledWith({ type: "SKIP_WAITING" });
+    serviceWorker.controller = worker;
     serviceWorker.dispatchEvent(new Event("controllerchange"));
 
     await expect(activation).resolves.toBe(true);
@@ -100,7 +102,8 @@ describe("safe service worker activation", () => {
 
   it("reports a timeout without treating it as successful activation", async () => {
     vi.useFakeTimers();
-    const serviceWorker = new EventTarget();
+    const serviceWorker = new EventTarget() as EventTarget & { controller: ServiceWorker | null };
+    serviceWorker.controller = {} as ServiceWorker;
     const worker = { postMessage: vi.fn() } as unknown as ServiceWorker;
 
     const activation = requestServiceWorkerActivation(
@@ -116,7 +119,8 @@ describe("safe service worker activation", () => {
 
   it("reports a postMessage failure without reloading the page", async () => {
     vi.useFakeTimers();
-    const serviceWorker = new EventTarget();
+    const serviceWorker = new EventTarget() as EventTarget & { controller: ServiceWorker | null };
+    serviceWorker.controller = {} as ServiceWorker;
     const worker = {
       postMessage: vi.fn(() => {
         throw new Error("worker unavailable");
