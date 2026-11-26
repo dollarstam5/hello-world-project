@@ -91,14 +91,12 @@ export function ReelProximityScreen() {
           <span>{t("reel.network.standby")}</span>
         </div>
       )}
-      <div id="example" className="scroll-mt-6">
       <ReelGuidedTour
         open={tourOpen}
         step={tourStep}
         onClose={closeTour}
         onStepChange={setTourStep}
       />
-      </div>
 
       <ReelDiscoveryPrompt controller={controller} />
 
@@ -174,7 +172,7 @@ export function ReelProximityScreen() {
         ))}
       </div>
 
-      <ReelNearbyPreview controller={controller} />
+      <div id="example" className="scroll-mt-6"><ReelNearbyPreview controller={controller} /></div>
 
       {!discoveryEnabled && discoveryAccess !== "prompt" && discoveryAccess !== "requesting" && (
         <div className="reel-calm-shortcuts" aria-label={t("reel.ui.otherWays")}>
