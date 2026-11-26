@@ -49,19 +49,17 @@ export function requestServiceWorkerActivation(
 ): Promise<boolean> {
   return new Promise((resolve) => {
     let settled = false;
-    let timeout: number | undefined;
-
     const finish = (activated: boolean) => {
       if (settled) return;
       settled = true;
       serviceWorker.removeEventListener("controllerchange", onControllerChange);
-      if (timeout !== undefined) window.clearTimeout(timeout);
+      window.clearTimeout(timeout);
       resolve(activated);
     };
 
     const onControllerChange = () => finish(true);
     serviceWorker.addEventListener("controllerchange", onControllerChange);
-    timeout = window.setTimeout(() => finish(false), timeoutMs);
+    const timeout = window.setTimeout(() => finish(false), timeoutMs);
 
     try {
       worker.postMessage({ type: "SKIP_WAITING" });
