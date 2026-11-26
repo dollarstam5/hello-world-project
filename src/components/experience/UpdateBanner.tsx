@@ -63,7 +63,7 @@ export function UpdateBanner() {
           <p className="mt-0.5 text-xs text-muted-foreground">{t("update.subtitle")}</p>
           {!safeToApply ? (
             <p className="mt-1 text-xs text-muted-foreground">
-              {t("update.waitingForSync")}
+{t("update.waitingForSync")}
             </p>
           ) : null}
           {checkFailed ? (
