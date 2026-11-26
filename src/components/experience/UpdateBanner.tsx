@@ -54,11 +54,24 @@ export function UpdateBanner() {
   if (!ready || dismissed) return null;
 
   return (
-    <div
-      role="status"
+    <aside
+      aria-label={t("update.title")}
       className="fixed inset-x-3 z-50 rounded-2xl border border-border/60 bg-background/95 p-3 shadow-lg backdrop-blur"
       style={{ bottom: "calc(6.5rem + var(--safe-bottom))" }}
     >
+      <p role="status" aria-live="polite" className="sr-only">
+        {checking
+          ? t("update.checking")
+          : applying
+            ? t("update.applying")
+            : checkFailed
+              ? t("update.checkFailed")
+              : failed
+                ? t("update.failed")
+                : !safeToApply
+                  ? t("update.waitingForSync")
+                  : ""}
+      </p>
       <div className="flex items-start gap-3">
         <span className="mt-0.5 inline-flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
           <RefreshCw aria-hidden className={applying ? "size-4 animate-spin" : "size-4"} />
@@ -103,6 +116,6 @@ export function UpdateBanner() {
           <X className="size-4" />
         </button>
       </div>
-    </div>
+    </aside>
   );
 }
