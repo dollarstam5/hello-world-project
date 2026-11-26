@@ -27,11 +27,11 @@ export function VitalisVisionPage() {
   const { t } = useVisionI18n();
 
   return (
-    <main className="page-shell space-y-16 pb-12 sm:space-y-24">
-      <header className="relative isolate overflow-hidden rounded-[2rem] border border-primary/15 bg-gradient-to-br from-primary/15 via-card to-card px-6 py-10 sm:px-10 sm:py-14">
+    <main className="page-shell space-y-12 pb-12 sm:space-y-20">
+      <header className="relative isolate overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(ellipse_at_82%_12%,hsl(var(--warm)/0.16),transparent_42%),linear-gradient(145deg,hsl(var(--card)/0.88),hsl(var(--background)/0.94))] px-6 py-9 shadow-xl shadow-black/10 backdrop-blur-xl sm:px-10 sm:py-12">
         <div
           aria-hidden="true"
-          className="absolute -right-16 -top-24 size-72 rounded-full bg-primary/10 blur-3xl"
+          className="absolute -right-16 -top-24 size-72 rounded-full bg-warm/15 blur-3xl"
         />
         <div className="relative max-w-3xl">
           <Link
@@ -70,7 +70,7 @@ export function VitalisVisionPage() {
             {t("vision.deep.whatHeading")}
           </h2>
         </div>
-        <div className="rounded-3xl border border-border/70 bg-card p-6 shadow-sm sm:p-8">
+        <div className="rounded-3xl border border-white/10 bg-card/70 p-6 shadow-sm backdrop-blur-xl sm:p-8">
           <p className="text-base leading-relaxed">{t("vision.what.body")}</p>
           <p className="mt-4 border-l-2 border-primary/40 pl-4 text-sm leading-relaxed text-muted-foreground">
             {t("vision.what.not")}
@@ -98,7 +98,7 @@ export function VitalisVisionPage() {
             <a
               key={engine.id}
               href={`#${engine.id}`}
-              className="flex min-h-12 items-center gap-2 rounded-2xl border border-border/70 bg-card px-3 py-2 text-sm font-semibold transition hover:border-primary/40 hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="flex min-h-12 items-center gap-2 rounded-2xl border border-white/10 bg-card/65 px-3 py-2 text-sm font-semibold shadow-sm backdrop-blur-lg transition hover:border-primary/40 hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <span className="text-xs text-muted-foreground">{engine.number}</span>
               {t(`vision.engine.${engine.id}.title`)}
@@ -113,7 +113,7 @@ export function VitalisVisionPage() {
           <section
             key={engine.id}
             id={engine.id}
-            className="scroll-mt-8 space-y-8 border-t border-border/70 pt-10 sm:pt-14"
+            className="scroll-mt-8 space-y-7 border-t border-white/10 pt-8 sm:space-y-8 sm:pt-12"
           >
             <div
               className={`grid gap-7 lg:grid-cols-2 lg:items-center ${index % 2 ? "lg:[&>div:first-child]:order-2" : ""}`}
@@ -169,7 +169,7 @@ export function VitalisVisionPage() {
             </div>
 
             <div className="grid gap-4 lg:grid-cols-3">
-              <article className="rounded-3xl border border-border/70 bg-card p-5 sm:p-6">
+              <article className="rounded-3xl border border-white/10 bg-card/65 p-5 shadow-sm backdrop-blur-lg sm:p-6">
                 <div className="mb-3 flex items-center gap-2 text-primary">
                   <Target className="size-4" />
                   <h3 className="text-sm font-bold">{t("vision.engine.actionTitle")}</h3>
@@ -178,7 +178,7 @@ export function VitalisVisionPage() {
                   {t(`vision.deep.${engine.id}.use`)}
                 </p>
               </article>
-              <article className="rounded-3xl border border-border/70 bg-card p-5 sm:p-6">
+              <article className="rounded-3xl border border-white/10 bg-card/65 p-5 shadow-sm backdrop-blur-lg sm:p-6">
                 <div className="mb-3 flex items-center gap-2 text-primary">
                   <Check className="size-4" />
                   <h3 className="text-sm font-bold">{t("vision.engine.stepsTitle")}</h3>
@@ -187,7 +187,7 @@ export function VitalisVisionPage() {
                   {t(`vision.deep.${engine.id}.flow`)}
                 </p>
               </article>
-              <article className="rounded-3xl border border-border/70 bg-muted/50 p-5 sm:p-6">
+              <article className="rounded-3xl border border-primary/15 bg-primary/[0.06] p-5 backdrop-blur-lg sm:p-6">
                 <div className="mb-3 flex items-center gap-2 text-primary">
                   <Sparkles className="size-4" />
                   <h3 className="text-sm font-bold">{t("vision.deep.realLife")}</h3>
@@ -198,13 +198,13 @@ export function VitalisVisionPage() {
               </article>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
-              <div className="rounded-2xl border border-border/70 p-5">
+              <div className="rounded-2xl border border-white/10 bg-card/40 p-5">
                 <h3 className="font-semibold">{t("vision.deep.unique")}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                   {t(`vision.deep.${engine.id}.difference`)}
                 </p>
               </div>
-              <div className="rounded-2xl border border-primary/20 bg-primary/5 p-5">
+              <div className="rounded-2xl border border-primary/20 bg-primary/[0.06] p-5 backdrop-blur-lg">
                 <h3 className="font-semibold">{t("vision.deep.remember")}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                   {t(`vision.engine.${engine.id}.boundary`)}
@@ -216,7 +216,7 @@ export function VitalisVisionPage() {
       })}
 
       <section className="grid gap-4 lg:grid-cols-2">
-        <article className="rounded-3xl border border-border/70 bg-card p-6 sm:p-8">
+        <article className="rounded-3xl border border-white/10 bg-card/70 p-6 shadow-sm backdrop-blur-xl sm:p-8">
           <div className="mb-4 grid size-11 place-items-center rounded-2xl bg-primary/10 text-primary">
             <ShieldCheck className="size-5" />
           </div>
@@ -225,7 +225,7 @@ export function VitalisVisionPage() {
             {t("vision.deep.privacy.body")}
           </p>
         </article>
-        <article className="rounded-3xl border border-border/70 bg-card p-6 sm:p-8">
+        <article className="rounded-3xl border border-white/10 bg-card/70 p-6 shadow-sm backdrop-blur-xl sm:p-8">
           <div className="mb-4 grid size-11 place-items-center rounded-2xl bg-primary/10 text-primary">
             <Compass className="size-5" />
           </div>
@@ -236,7 +236,7 @@ export function VitalisVisionPage() {
         </article>
       </section>
 
-      <footer className="rounded-[2rem] border border-primary/20 bg-gradient-to-br from-primary/12 via-card to-card px-6 py-9 text-center sm:px-10">
+      <footer className="rounded-[2rem] border border-primary/20 bg-[radial-gradient(ellipse_at_50%_0%,hsl(var(--warm)/0.12),transparent_55%),linear-gradient(145deg,hsl(var(--card)/0.9),hsl(var(--background)/0.92))] px-6 py-9 text-center shadow-lg shadow-black/10 backdrop-blur-xl sm:px-10">
         <h2 className="text-2xl font-semibold tracking-tight">{t("vision.end.title")}</h2>
         <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">
           {t("vision.end.body")}
