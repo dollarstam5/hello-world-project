@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Check, Plus, Sparkles, X, Zap } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/ui/button";
 import { useAuth } from "@/modules/auth";
 import { formatCommunicationMessage } from "@/features/communication";
 import { useI18n } from "@/lib/i18n/useI18n";
