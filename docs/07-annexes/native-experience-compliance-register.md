@@ -1,7 +1,7 @@
 # Registre de conformité — expérience native Vitalis
 
 **Statut :** audit documentaire initial, non certification.  
-**Version :** 1.0 — 26 novembre 2026.  
+**Version :** 1.1 — 26 novembre 2026.  
 **Référentiel :** [Référentiel de l'expérience native](../00-foundation/native-experience-standard.md).  
 **Branche auditée :** `feat/vitalis-warm-editorial-glass`.  
 **Base de comparaison :** `main`.  
@@ -19,8 +19,8 @@ Ce registre transforme les exigences du référentiel directeur en contrôles tr
 Photographie GitHub au 26 novembre 2026 :
 
 - PR #96 : état `open`, `merged = false`.
-- Branche : 27 commits en avance sur `main`, 0 commit en retard.
-- Fichiers modifiés par rapport à `main` : 15. Ils concernent trois documents de fondation/navigation et des composants de présentation Home, Flash, Scan, En direct et Radar.
+- Branche : 29 commits en avance sur `main`, 0 commit en retard.
+- Fichiers modifiés par rapport à `main` : 16 (dont le présent registre). Ils concernent trois documents de fondation/navigation et des composants de présentation Home, Flash, Scan, En direct et Radar.
 - Les fichiers techniques de plateforme examinés — `AppShell.tsx`, `BottomNav.tsx`, `ReelBottomNav.tsx`, `install.ts`, `update.ts`, `haptics.ts`, `sw.js` et `manifest.webmanifest` — sont identiques entre `main` et la branche au moment de l'audit.
 - En conséquence, les écarts P0/P1 décrits ci-dessous sont des écarts de la base commune, et non des régressions de plateforme propres à PR #96. Les changements d'interface de la branche restent soumis à leur propre validation visuelle et lint.
 
@@ -54,7 +54,7 @@ La gravité indique le risque de l'écart, pas une preuve qu'un incident s'est d
 
 | Priorité | Domaine | État initial | Décision de sortie |
 | --- | --- | --- | --- |
-| P0 | CI et référence de qualité | **À ÉTABLIR** — Quality échoue au lint ; baseline main non mesurée dans la même CI | Obtenir une référence main comparable, isoler les erreurs de la PR et exécuter le pipeline complet |
+| P0 | CI et référence de qualité | **ÉCART ATTRIBUÉ** — `main` passe Quality avec 0 erreur lint ; la branche échoue avec 56 erreurs Prettier nouvelles | Corriger uniquement les erreurs des fichiers modifiés, puis obtenir un pipeline complet vert |
 | P0 | Brouillons et navigation | **CODE + ÉCART** — remount du contenu sur changement de pathname ; conservation non prouvée | Démontrer sauvegarde, restauration et navigation sans perte |
 | P0 | Mise à jour Service Worker | **CODE + ÉCART** — rechargement de secours temporisé après 3 s | Démontrer mise à jour sans perte, ou supprimer le rechargement non sûr |
 | P0 | Offline et reprise de sync | **CODE + TEST** — outbox et moteur testés ; intégration bout en bout non prouvée | Démontrer création hors ligne, persistance, reprise, résolution et états réels |
@@ -80,13 +80,14 @@ La gravité indique le risque de l'écart, pas une preuve qu'un incident s'est d
 | ID | **P0-CI-01** |
 | Exigence | Disposer d'une baseline reproductible ; distinguer les défauts de main des régressions introduites par la branche ; ne pas masquer le lint. |
 | Fichiers / composants | `.github/workflows/*`, `package.json`, `eslint.config.*`, `.prettierrc*`, fichiers modifiés de la PR. |
-| main | Le commit de base `55f2408969c7da6367f06f0fc096cb2018807a9e` n'a pas de workflow PR retourné par l'API consultée ; baseline CI comparable **non établie**. |
-| Branche | Le commit `1cff3407cf48fbae6a26210059994e9a59250f3d` a un workflow Quality en échec. |
-| Preuve | Run [Quality #45800556871](https://github.com/dollarstam5/hello-world-project/actions/runs/45800556871), job `139842609409` : étape « Verify foundation and secrets » échoue pendant lint ; 56 erreurs et 71 avertissements ; les étapes suivantes sont ignorées. Les erreurs Prettier touchent notamment les fichiers modifiés `HomeEngineCard.tsx`, `HomeFoundation.tsx`, `FlashExperienceScreen.tsx`, `ReelProximityScreen.tsx`, `ScanPanel.tsx` et `radar.lazy.tsx`. |
+| main | Commit `55f2408969c7da6367f06f0fc096cb2018807a9e` : workflow Quality [#45670065729](https://github.com/dollarstam5/hello-world-project/actions/runs/45670065729) terminé avec succès. Job `139402604002` ; « Verify foundation and secrets » passe ; lint : **0 erreur, 71 avertissements** ; tests DB, smoke mobile et release check passent. |
+| Branche | Commit `c1922e80228723b4459ea8c716735d2d968a8510` : workflow Quality [#45804569220](https://github.com/dollarstam5/hello-world-project/actions/runs/45804569220) en échec. Job `139856488791` ; « Verify foundation and secrets » échoue pendant lint ; les étapes DB, smoke mobile et release check sont donc ignorées. |
+| Preuve | Les deux runs utilisent le même workflow `.github/workflows/quality.yml` (blob SHA `c32235a2b882456e81e3fe6feb59a6d8c15c61d9`), Bun `1.2.23`, `bun install --frozen-lockfile` et les mêmes scripts. La branche présente **56 erreurs / 71 avertissements** contre **0 erreur / 71 avertissements** sur main. Les 56 erreurs sont toutes `prettier/prettier`, réparties sur six fichiers modifiés par la PR : `HomeEngineCard.tsx` (34), `HomeFoundation.tsx` (11), `FlashExperienceScreen.tsx` (2), `ReelProximityScreen.tsx` (2), `ScanPanel.tsx` (2) et `radar.lazy.tsx` (5). Aucun écart lint n'est observé dans les 71 avertissements comptabilisés sur les deux runs ; le nombre identique ne prouve toutefois pas à lui seul que chaque avertissement est strictement identique. |
+| Plateforme | Toutes ; pipeline CI. |
 | Plateforme | Toutes ; pipeline CI. |
 | Gravité | **Bloquante** pour la fusion. |
-| Acceptation | Exécuter exactement les mêmes versions de dépendances, scripts et runner sur le SHA main et le SHA branche ; conserver les rapports lint détaillés ; identifier chaque erreur comme préexistante ou introduite ; exécuter ensuite typecheck, tests, build, budgets et E2E. |
-| Correction proposée | Produire un rapport de différentiel lint main/branche. Corriger uniquement les lignes introduites par la PR et conserver les erreurs préexistantes dans une liste distincte avec propriétaire et décision explicite. Ne pas lancer un formatage global et ne pas désactiver Prettier. |
+| Acceptation | Baseline réalisée : mêmes workflow, version Bun, installation verrouillée et scripts. Résultat : 56 erreurs nouvelles localisées dans six fichiers modifiés ; les 71 avertissements sont également présents en nombre sur main. Après correction ciblée, relancer Quality et vérifier que typecheck, tests, build, budgets et E2E sont effectivement exécutés. |
+| Correction proposée | Corriger uniquement les 56 violations Prettier identifiées dans les six fichiers cités, en conservant le style existant et sans formatage global. Ne pas toucher aux 71 avertissements de base dans cette passe et ne pas désactiver Prettier. |
 
 ### P0.2 — Persistance et restauration des brouillons
 
