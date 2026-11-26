@@ -103,6 +103,8 @@ Constats :
 - Les règles reconnues sont limitées à des mots et expressions français/anglais prévus dans le code.
 - Le parseur ne démontre pas une extraction générale du lieu, de la date exacte, de la quantité, de la durée ou de toutes les contraintes.
 - Les valeurs de repli actuelles comprennent notamment « offre », « autre » et « aujourd'hui ». Elles ne prouvent pas que la personne a exprimé ces informations.
+- Le parseur expose maintenant un indicateur de reconnaissance distinct pour le type, la catégorie et le créneau temporel. L'interface peut donc signaler séparément les éléments reconnus et les valeurs proposées par défaut ; cette reconnaissance reste déterministe et limitée aux règles codées.
+- La saisie non vide peut passer à la revue même si le parseur ne reconnaît pas de champ ou si le texte est trop court pour être analysé. Les valeurs non reconnues restent des propositions modifiables, pas des faits confirmés.
 - Après la saisie, une étape de revue présente le texte d'origine et des contrôles de localisation, type, catégorie, date/créneau, portée et urgence.
 - La localisation peut être ajoutée explicitement ; elle n'est pas automatiquement connue.
 - Le parcours distingue l'enregistrement d'un brouillon et la publication dans les actions de revue.
