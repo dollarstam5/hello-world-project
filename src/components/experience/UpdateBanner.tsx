@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { RefreshCw, X } from "lucide-react";
 import { canApplyUpdate, useAppUpdate } from "@/platform/pwa";
-import { countPending, requestSyncNow, useSyncStatus, useSyncStatusStore } from "@/platform/offline";
+import {
+  countPending,
+  requestSyncNow,
+  useSyncStatus,
+  useSyncStatusStore,
+} from "@/platform/offline";
 import { useI18n } from "@/lib/i18n/useI18n";
 
 /** Tells the person a newer version is ready and reloads on demand. */
@@ -62,9 +67,7 @@ export function UpdateBanner() {
           <p className="text-sm font-medium">{t("update.title")}</p>
           <p className="mt-0.5 text-xs text-muted-foreground">{t("update.subtitle")}</p>
           {!safeToApply ? (
-            <p className="mt-1 text-xs text-muted-foreground">
-{t("update.waitingForSync")}
-            </p>
+            <p className="mt-1 text-xs text-muted-foreground">{t("update.waitingForSync")}</p>
           ) : null}
           {checkFailed ? (
             <p role="alert" className="mt-1 text-xs text-destructive">
