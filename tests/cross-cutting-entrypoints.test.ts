@@ -17,6 +17,13 @@ import modalSource from "../src/shared/components/Modal.tsx?raw";
 import sheetSource from "../src/shared/components/Sheet.tsx?raw";
 import skeletonsSource from "../src/shared/components/Skeletons.tsx?raw";
 import modulesIndex from "../src/modules/index.ts?raw";
+import flashModule from "../src/modules/flash/index.ts?raw";
+import scanModule from "../src/modules/scan/index.ts?raw";
+import radarModule from "../src/modules/radar/index.ts?raw";
+import flashRoute from "../src/routes/flash.lazy.tsx?raw";
+import scanRoute from "../src/routes/scan.lazy.tsx?raw";
+import radarRoute from "../src/routes/radar.lazy.tsx?raw";
+import reelRoute from "../src/routes/reel.lazy.tsx?raw";
 import appShell from "../src/app/shell/AppShell.tsx?raw";
 import appHeader from "../src/components/experience/AppHeader.tsx?raw";
 import communicationSheet from "../src/components/experience/CommunicationSheet.tsx?raw";
@@ -71,6 +78,20 @@ describe("cross-cutting canonical entrypoints", () => {
     expect(modulesIndex).toContain('export * as reel from "./reel"');
   });
 
+  it("exposes engine UI through module entrypoints and keeps route imports public", () => {
+    expect(flashModule).toContain('export { FlashExperienceScreen } from "./ui/FlashExperienceScreen"');
+    expect(flashModule).toContain('export { FlashCard } from "./ui/FlashCard"');
+    expect(scanModule).toContain('export { ScanPanel } from "./ui/ScanPanel"');
+    expect(radarModule).toContain('export { RadarManagement } from "./ui/RadarManagement"');
+    expect(flashRoute).toContain('@/modules/flash"');
+    expect(scanRoute).toContain('@/modules/scan"');
+    expect(radarRoute).toContain('@/modules/radar"');
+    expect(reelRoute).toContain('import("@/modules/reel")');
+    expect(flashRoute).not.toContain('@/modules/flash/ui/');
+    expect(scanRoute).not.toContain('@/modules/scan/ui/');
+    expect(radarRoute).not.toContain('@/modules/radar/ui/');
+  });
+
   it("uses canonical feature, platform and module entrypoints in app composition", () => {
     expect(appShell).toContain('@/features/communication/CommunicationRuntimeProvider');
     expect(appShell).toContain('@/features/onboarding');
@@ -80,7 +101,9 @@ describe("cross-cutting canonical entrypoints", () => {
     expect(homeFoundation).toContain('@/features/communication');
     expect(onboardingSheet).toContain('@/features/onboarding');
     expect(personalDashboard).toContain('@/modules/profile');
-    expect(profileRoute).toContain('@/modules/profile/ui/pages/ProfileManagementPage');
-    expect(accountRoute).toContain('@/modules/auth/ui/pages/AccountInformationPage');
+    expect(profileRoute).toContain('@/modules/profile');
+    expect(accountRoute).toContain('@/modules/auth');
+    expect(profileRoute).not.toContain('@/modules/profile/ui/');
+    expect(accountRoute).not.toContain('@/modules/auth/ui/');
   });
 });
