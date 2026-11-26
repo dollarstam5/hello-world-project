@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type KeyboardEvent } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Check, Plus, Sparkles, X, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,25 @@ export function FlashExperienceScreen() {
   const [tab, setTab] = useState<FlashTab>("discover");
   const [dashboardUnlocked, setDashboardUnlocked] = useState(false);
   const [success, setSuccess] = useState(false);
+  function handleTabKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
+    const tabs = Array.from(
+      event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('[role="tab"]') ?? [],
+    );
+    const currentIndex = tabs.indexOf(event.currentTarget);
+    if (currentIndex < 0 || tabs.length === 0) return;
+
+    let nextIndex = currentIndex;
+    if (event.key === "ArrowRight") nextIndex = (currentIndex + 1) % tabs.length;
+    else if (event.key === "ArrowLeft") nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+    else if (event.key === "Home") nextIndex = 0;
+    else if (event.key === "End") nextIndex = tabs.length - 1;
+    else return;
+
+    event.preventDefault();
+    tabs[nextIndex].focus();
+    tabs[nextIndex].click();
+  }
+
   const composer = useFlashComposer({
     user,
     locale,
@@ -119,6 +138,7 @@ export function FlashExperienceScreen() {
           tabIndex={tab === "discover" ? 0 : -1}
           className={`min-h-11 flex-1 rounded-full px-4 text-sm font-semibold transition motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${tab === "discover" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
           onClick={() => setTab("discover")}
+          onKeyDown={handleTabKeyDown}
         >
           {t("flash.tabs.discover")}
         </button>
@@ -132,6 +152,7 @@ export function FlashExperienceScreen() {
             tabIndex={tab === "mine" ? 0 : -1}
             className={`min-h-11 flex-1 rounded-full px-4 text-sm font-semibold transition motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${tab === "mine" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
             onClick={() => setTab("mine")}
+            onKeyDown={handleTabKeyDown}
           >
             {t("flash.tabs.mine")}
           </button>
