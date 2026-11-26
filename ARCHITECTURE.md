@@ -20,6 +20,8 @@ src/
 
 TanStack Start routing remains under `src/routes/` because the framework requires it. Generated route artifacts and server/client entrypoints remain at their current framework-owned paths unless a dedicated routing migration is designed.
 
+**Important distinction — two composition boundaries:** `src/composition/` is the product-experience layer described below: it assembles business modules into reusable experiences, layouts and widgets. `src/app/composition/` is a narrower application-root implementation detail: it currently contains `RootAppComposition`, which wires global providers around `AppShell` and the route outlet. It does not replace or duplicate the product-experience layer. The global shell, bootstrap and route lifecycle remain owned by `src/app/`; framework route files remain in `src/routes/`.
+
 ## Ownership
 
 | Area | Owns | Must not own |
