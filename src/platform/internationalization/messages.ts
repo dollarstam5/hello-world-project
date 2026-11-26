@@ -985,7 +985,7 @@ export const messages = {
     "radar.manage.saved": "Votre intention de recherche est enregistrée en brouillon sur cet appareil.",
     "radar.manage.updated": "Votre brouillon de recherche a bien été modifié.",
     "radar.manage.cancelled": "Votre brouillon de recherche a bien été annulé.",
-    "radar.manage.until": "Jusqu'au {date}",
+    "radar.manage.until": "Échéance prévue : {date}",
     "radar.manage.cancel": "Annuler la veille",
     "radar.manage.cancel.title": "Annuler cette veille ?",
     "radar.manage.cancel.confirm":
@@ -2116,7 +2116,7 @@ export const messages = {
     "radar.manage.saved": "Your search intention has been saved as a draft on this device.",
     "radar.manage.updated": "Your search draft has been updated.",
     "radar.manage.cancelled": "Your search draft has been cancelled.",
-    "radar.manage.until": "Until {date}",
+    "radar.manage.until": "Planned end: {date}",
     "radar.manage.cancel": "Cancel watch",
     "radar.manage.cancel.title": "Cancel this watch?",
     "radar.manage.cancel.confirm":
