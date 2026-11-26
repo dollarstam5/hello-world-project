@@ -16,8 +16,6 @@ import { formatCommunicationMessage } from "@/features/communication/model/forma
 import { createDemoFlashes } from "@/domains/flash/model/demo-flashes";
 import { VitalisVisionCard } from "@/components/experience/VitalisVisionCard";
 import { HomeEngineCard } from "@/components/experience/HomeEngineCard";
-import heroPhoto from "@/assets/images/experience/home-neighbours-1600.webp";
-import heroPhotoSmall from "@/assets/images/experience/home-neighbours-800.webp";
 
 /** Home is the calm entry point; examples are previews, never live activity. */
 export function HomeFoundation() {
@@ -66,55 +64,53 @@ export function HomeFoundation() {
 
   return (
     <div className="page-shell stack-8">
-      {/* Hero Photographique Immersif Native App */}
+      {/* Accueil illustré : une présence humaine, sans photographie de stock. */}
       <section
         aria-labelledby="home-welcome-title"
-        className="relative isolate flex min-h-[26rem] overflow-hidden rounded-[2.25rem] border border-white/10 bg-card shadow-xl sm:min-h-[32rem]"
+        className="relative isolate flex min-h-[21rem] overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(ellipse_at_78%_20%,hsl(var(--primary)/0.22),transparent_42%),linear-gradient(145deg,hsl(var(--card)),hsl(var(--background)))] shadow-xl sm:min-h-[23rem]"
       >
-        <img
-          src={heroPhoto}
-          srcSet={`${heroPhotoSmall} 800w, ${heroPhoto} 1600w`}
-          sizes="(min-width: 1024px) 64rem, 100vw"
-          alt={t("home.hero.photoAlt")}
-          width={1600}
-          height={1200}
-          fetchPriority="high"
-          decoding="async"
-          className="absolute inset-0 z-0 size-full scale-105 object-cover object-[50%_35%] transition-transform duration-700 ease-out"
-        />
-        {/* Masque dégradé cinématographique en verre teinté */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-background via-background/80 to-background/30 backdrop-blur-[1px]"
-        />
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="absolute -right-10 -top-12 h-64 w-64 rounded-full border border-primary/20 bg-primary/10 blur-[1px]" />
+          <div className="absolute right-16 top-10 h-40 w-40 rounded-full border border-white/10 bg-white/[0.03]" />
+          <svg viewBox="0 0 420 300" className="absolute -bottom-3 right-0 h-[78%] w-[min(76%,26rem)] opacity-90 sm:right-5" fill="none">
+            <circle cx="310" cy="74" r="35" fill="hsl(var(--primary) / .18)" />
+            <path d="M186 300c4-65 26-103 67-112 39-9 76 10 91 45l24 67H186Z" fill="hsl(var(--primary) / .32)" />
+            <circle cx="278" cy="111" r="27" fill="hsl(var(--warm) / .9)" />
+            <path d="M235 197c3-35 17-55 43-59 29-4 48 15 52 51" stroke="hsl(var(--foreground) / .72)" strokeWidth="7" strokeLinecap="round"/>
+            <path d="M40 300c6-52 26-84 62-92 38-8 69 10 83 42l17 50H40Z" fill="hsl(var(--intelligence) / .26)" />
+            <circle cx="119" cy="139" r="25" fill="hsl(var(--primary) / .72)" />
+            <path d="M80 207c5-29 18-45 39-48 25-4 42 11 47 38" stroke="hsl(var(--foreground) / .72)" strokeWidth="7" strokeLinecap="round"/>
+            <path d="M154 300c5-43 20-68 48-75 29-7 54 7 65 34l13 41H154Z" fill="hsl(var(--warm) / .35)" />
+            <circle cx="218" cy="176" r="21" fill="hsl(var(--warm) / .78)" />
+            <path d="M190 229c4-23 14-36 29-38 19-3 33 8 37 29" stroke="hsl(var(--foreground) / .68)" strokeWidth="6" strokeLinecap="round"/>
+            <path d="M60 76l8 16 18 3-13 12 3 18-16-9-16 9 3-18-13-12 18-3 8-16Z" fill="hsl(var(--primary) / .72)" />
+            <circle cx="355" cy="174" r="6" fill="hsl(var(--warm))" />
+            <circle cx="55" cy="190" r="4" fill="hsl(var(--primary))" />
+          </svg>
+          <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-background via-background/65 to-transparent" />
+        </div>
 
-        <div className="relative z-20 flex w-full min-w-0 flex-col justify-between gap-8 p-5 text-foreground sm:p-8">
-          {/* Badges d'identité et de contexte, sans état local ou réseau simulé */}
+        <div className="relative z-10 flex w-full min-w-0 flex-col justify-between gap-10 p-5 sm:p-8">
           <div className="flex flex-wrap items-center justify-between gap-2.5">
-            <div className="flex items-center gap-2">
-              {identityLabel && (
-                <span className="rounded-full border border-white/10 bg-background/60 px-3 py-1 text-xs font-medium text-foreground shadow-sm backdrop-blur-md">
-                  {identityLabel}
-                </span>
-              )}
-            </div>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-surface/60 px-3 py-1.5 text-xs font-medium text-foreground shadow-sm backdrop-blur-xl">
+            {identityLabel ? (
+              <span className="rounded-full border border-white/10 bg-background/55 px-3 py-1 text-xs font-medium text-foreground backdrop-blur-xl">
+                {identityLabel}
+              </span>
+            ) : <span />}
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-background/45 px-3 py-1.5 text-xs font-medium text-foreground backdrop-blur-xl">
               <Sparkles className="h-3.5 w-3.5 text-primary" aria-hidden />
               {t("app.tagline")}
             </span>
           </div>
 
-          <div className="max-w-2xl space-y-3">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary/90">
+          <div className="max-w-[34rem] space-y-3">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
               {t("home.hero.eyebrow")}
             </p>
-            <h1
-              id="home-welcome-title"
-              className="text-3xl font-semibold leading-[1.08] tracking-tight text-foreground sm:text-5xl lg:text-6xl"
-            >
+            <h1 id="home-welcome-title" className="text-3xl font-semibold leading-[1.08] tracking-tight text-foreground sm:text-5xl">
               {greeting}
             </h1>
-            <p className="max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+            <p className="max-w-lg text-sm leading-relaxed text-muted-foreground sm:text-base">
               {t("home.subtitle")}
             </p>
           </div>
@@ -222,7 +218,7 @@ export function HomeFoundation() {
           {demoFlashes.map((flash) => (
             <Surface
               key={flash.id}
-              variant="elevated"
+              variant="glass-soft"
               padding="md"
               bordered
               className="flex min-h-32 flex-col justify-between gap-4"
