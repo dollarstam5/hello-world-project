@@ -29,3 +29,4 @@ Cette section rassemble les documents d'architecture technique, les frontières 
 Les nouveaux changements doivent viser les références canoniques et respecter la propriété des données par domaine. Une référence documentaire n'est pas une preuve que le composant décrit est déjà implémenté.
 
 - [Aperçus publics de profil — V1](./public-profile-preview-v1.md) — champs autorisés, consentement, présentation compacte et consultation des profils.
+- [Réconciliation des modules moteurs — lot 1](./engine-modules-reconciliation-lot1-2026-11.md) — Flash, Scan, Radar, entrées publiques, ownership UI et limites de validation.
