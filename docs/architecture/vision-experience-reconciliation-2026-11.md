@@ -68,7 +68,7 @@ La route `/vision` importe directement la page depuis `src/composition/experienc
 - `4390a1971f9cb088d9804d6b53f2b09c2b6c344f` — correction des assertions localisées.
 - `f9523b0b97ebd01f3cc417977b57252aefb40d92` — import i18n canonique de la carte Vision.
 - `2b1b5f03cc19e74664e41c12b8f1c342beee87c5` — import i18n canonique de la page Vision.
-- `4ab18835667ce575a1d15c9e88dd20f0927ae6cb` — couverture des frontières de composition et i18n.
+- `4ab18835667ce575a1d15c9e88dd20f0927ae6cb` — couverture des frontières de composition et i18n.\n- `4efcbb8c32cb630425444dee8f1155f90618c6bd` — nettoyage d’une assertion redondante dans le test.
 
 ## 6. Conclusion
 
