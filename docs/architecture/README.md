@@ -30,3 +30,4 @@ Les nouveaux changements doivent viser les références canoniques et respecter 
 
 - [Aperçus publics de profil — V1](./public-profile-preview-v1.md) — champs autorisés, consentement, présentation compacte et consultation des profils.
 - [Réconciliation des modules moteurs — lot 1](./engine-modules-reconciliation-lot1-2026-11.md) — Flash, Scan, Radar, entrées publiques, ownership UI et limites de validation.
+- [Réconciliation de l’expérience Vision — novembre 2026](./vision-experience-reconciliation-2026-11.md) — comparaison de la composition, cohérence des capacités Flash/Radar, i18n et tests de contrat.
