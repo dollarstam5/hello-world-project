@@ -1224,8 +1224,7 @@ export const messages = {
     "update.subtitle": "Reload to get the latest improvements.",
     "update.action": "Reload now",
     "update.applying": "Applying update…",
-    "update.failed":
-      "The update could not take control. This page stayed open; you can try again.",
+    "update.failed": "The update could not take control. This page stayed open; you can try again.",
     "update.retry": "Try again",
     "update.dismiss": "Later",
     "assistant.error.offline": "This answer is not available offline yet.",
