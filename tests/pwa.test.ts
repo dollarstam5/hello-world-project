@@ -100,6 +100,36 @@ describe("safe service worker activation", () => {
     expect(vi.getTimerCount()).toBe(0);
   });
 
+  it("does not request activation when no current controller exists", async () => {
+    const serviceWorker = new EventTarget() as EventTarget & { controller: ServiceWorker | null };
+    serviceWorker.controller = null;
+    const worker = { postMessage: vi.fn() } as unknown as ServiceWorker;
+
+    await expect(
+      requestServiceWorkerActivation(worker, serviceWorker as unknown as ServiceWorkerContainer),
+    ).resolves.toBe(false);
+    expect(worker.postMessage).not.toHaveBeenCalled();
+  });
+
+  it("does not treat an unrelated controller change as this update activating", async () => {
+    vi.useFakeTimers();
+    const serviceWorker = new EventTarget() as EventTarget & { controller: ServiceWorker | null };
+    serviceWorker.controller = {} as ServiceWorker;
+    const worker = { postMessage: vi.fn() } as unknown as ServiceWorker;
+
+    const activation = requestServiceWorkerActivation(
+      worker,
+      serviceWorker as unknown as ServiceWorkerContainer,
+      3_000,
+    );
+
+    serviceWorker.controller = {} as ServiceWorker;
+    serviceWorker.dispatchEvent(new Event("controllerchange"));
+
+    await expect(activation).resolves.toBe(false);
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
   it("reports a timeout without treating it as successful activation", async () => {
     vi.useFakeTimers();
     const serviceWorker = new EventTarget() as EventTarget & { controller: ServiceWorker | null };
