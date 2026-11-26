@@ -4,8 +4,8 @@ import type {
   FlashDashboardStatusFilter,
 } from "../utils/filterFlashDashboardRecords";
 import { useI18n } from "@/lib/i18n/useI18n";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Input } from "@/shared/ui/input";
+import { Button } from "@/shared/ui/button";
 
 type Props = {
   query: string;
