@@ -1,6 +1,6 @@
 import type { ScanCandidateAssessment } from "@eco/core-contracts";
 import { useI18n } from "@/lib/i18n/useI18n";
-import { PublicProfilePreview } from "@/components/app/PublicProfilePreview";
+import { PublicProfilePreview } from "@/modules/flash";
 
 const LEVELS = ["exact", "close", "alternative", "unverified"] as const;
 
