@@ -1,7 +1,12 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createElement } from "react";
 import { renderToString } from "react-dom/server";
-import { canApplyUpdate, registerServiceWorker, useAppUpdate, useInstallPrompt } from "@/platform/pwa";
+import {
+  canApplyUpdate,
+  registerServiceWorker,
+  useAppUpdate,
+  useInstallPrompt,
+} from "@/platform/pwa";
 import { getManualInstallInstructions } from "@/platform/pwa/install";
 import { requestServiceWorkerActivation } from "@/platform/pwa/update";
 
