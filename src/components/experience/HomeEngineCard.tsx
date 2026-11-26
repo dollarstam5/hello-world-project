@@ -39,7 +39,7 @@ export function HomeEngineCard({
       variant="glass-soft"
       padding="md"
       bordered
-      className="group flex h-full min-h-36 flex-col justify-between gap-4 transition-colors duration-200 motion-reduce:transition-none"
+      className="flex h-full min-h-36 flex-col justify-between gap-4"
     >
       <div className="flex items-start justify-between gap-3">
         <span
@@ -48,7 +48,7 @@ export function HomeEngineCard({
           <Icon className="h-5 w-5" aria-hidden />
         </span>
         <ArrowUpRight
-          className="h-4 w-4 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 motion-reduce:transition-none"
+          className="h-4 w-4 text-muted-foreground"
           aria-hidden
         />
       </div>
