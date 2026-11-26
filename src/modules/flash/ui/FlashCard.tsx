@@ -1,0 +1,58 @@
+import type { ReactNode } from "react";
+import { Zap } from "lucide-react";
+import { SmartCard } from "@/shared/components/SmartCard";
+import { Icon } from "@/shared/components/Icon";
+import { Indicator } from "@/shared/components/Indicator";
+import { useI18n } from "@/platform/internationalization/useI18n";
+import type { PublicProfilePreview as PublicProfilePreviewData } from "@eco/core-contracts";
+import { PublicProfilePreview } from "./PublicProfilePreview";
+
+interface FlashCardProps {
+  title: ReactNode;
+  description?: ReactNode;
+  /** Optional time-to-live label, e.g. "2h restantes". */
+  ttl?: ReactNode;
+  /** Action area — usually a small button or chip row. */
+  action?: ReactNode;
+  onOpen?: () => void;
+  /** Keeps demo content distinct from a real live publication. */
+  origin?: "real" | "demo";
+  authorPreview?: PublicProfilePreviewData | null;
+}
+
+/** Flash-owned presentation for ephemeral publications and their public author preview. */
+export function FlashCard({
+  title,
+  description,
+  ttl,
+  action,
+  onOpen,
+  origin = "real",
+  authorPreview,
+}: FlashCardProps) {
+  const { t } = useI18n();
+  return (
+    <SmartCard
+      interactive={!!onOpen}
+      onClick={onOpen}
+      tone="elevated"
+      eyebrow={
+        <span className="inline-flex items-center gap-1.5">
+          <Icon as={Zap} size="xs" />
+          {origin === "demo" ? t("demo.label") : t("status.live")}
+        </span>
+      }
+      title={title}
+      description={description}
+      trailing={ttl ? <Indicator tone="warning" label={ttl} /> : undefined}
+      footer={
+        authorPreview || action ? (
+          <div className="grid gap-2">
+            {authorPreview ? <PublicProfilePreview profile={authorPreview} origin={origin} /> : null}
+            {action}
+          </div>
+        ) : undefined
+      }
+    />
+  );
+}
