@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, BookOpen, Lightbulb } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Surface } from "@/components/app/Surface";
 import { haptic } from "@/platform/device/haptics";
@@ -12,6 +12,7 @@ type EngineCardProps = {
   example: string;
   exampleLabel: string;
   action: string;
+  exampleAction: string;
   tone: "warm" | "info" | "primary" | "violet";
 };
 
@@ -30,20 +31,16 @@ export function HomeEngineCard({
   example,
   exampleLabel,
   action,
+  exampleAction,
   tone,
 }: EngineCardProps) {
   return (
-    <Link
-      to={to}
-      onClick={() => haptic.tap()}
-      className="native-press group block h-full rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-    >
-      <Surface
+    <Surface
         variant="glass-soft"
         padding="md"
         bordered
         interactive
-        className="flex h-full min-h-36 flex-col justify-between gap-4 transition-all duration-200 group-hover:border-primary/35 group-active:scale-[0.985] motion-reduce:transition-none"
+        className="flex h-full min-h-36 flex-col justify-between gap-4 transition-all duration-200"
       >
         <div className="flex items-start justify-between gap-3">
           <span className={`flex h-11 w-11 items-center justify-center rounded-2xl ring-1 ${toneClasses[tone]}`}>
@@ -63,9 +60,15 @@ export function HomeEngineCard({
             </span>
             <p className="text-xs font-medium leading-relaxed">{example}</p>
           </div>
-          <span className="block pt-0.5 text-xs font-semibold text-primary">{action}</span>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-1 text-xs font-semibold">
+            <Link to={to} hash="guide" onClick={() => haptic.tap()} className="inline-flex min-h-8 items-center gap-1.5 text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              <BookOpen className="h-3.5 w-3.5" aria-hidden />{action}
+            </Link>
+            <Link to={to} hash="example" onClick={() => haptic.tap()} className="inline-flex min-h-8 items-center gap-1.5 text-muted-foreground underline-offset-4 hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              <Lightbulb className="h-3.5 w-3.5" aria-hidden />{exampleAction}
+            </Link>
+          </div>
         </div>
       </Surface>
-    </Link>
   );
 }
