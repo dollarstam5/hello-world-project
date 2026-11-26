@@ -54,7 +54,7 @@ La gravité indique le risque de l'écart, pas une preuve qu'un incident s'est d
 
 | Priorité | Domaine | État initial | Décision de sortie |
 | --- | --- | --- | --- |
-| P0 | CI et référence de qualité | **ÉCART ATTRIBUÉ** — `main` passe Quality avec 0 erreur lint ; la branche échoue avec 56 erreurs Prettier nouvelles | Corriger uniquement les erreurs des fichiers modifiés, puis obtenir un pipeline complet vert |
+| P0 | CI et référence de qualité | **CONTRÔLE CI CLOS POUR LE SHA VALIDÉ** — les erreurs Prettier introduites ont été corrigées ; Quality, Réel Validation et Dependency Review passent sur `d243928` | Réouvrir si un nouveau commit fait échouer un contrôle ; cela ne clôt pas les autres P0 de fiabilité |
 | P0 | Brouillons et navigation | **CODE + ÉCART** — remount du contenu sur changement de pathname ; conservation non prouvée | Démontrer sauvegarde, restauration et navigation sans perte |
 | P0 | Mise à jour Service Worker | **CODE + ÉCART** — rechargement de secours temporisé après 3 s | Démontrer mise à jour sans perte, ou supprimer le rechargement non sûr |
 | P0 | Offline et reprise de sync | **CODE + TEST** — outbox et moteur testés ; intégration bout en bout non prouvée | Démontrer création hors ligne, persistance, reprise, résolution et états réels |
@@ -79,15 +79,16 @@ La gravité indique le risque de l'écart, pas une preuve qu'un incident s'est d
 | --- | --- |
 | ID | **P0-CI-01** |
 | Exigence | Disposer d'une baseline reproductible ; distinguer les défauts de main des régressions introduites par la branche ; ne pas masquer le lint. |
-| Fichiers / composants | `.github/workflows/*`, `package.json`, `eslint.config.*`, `.prettierrc*`, fichiers modifiés de la PR. |
-| main | Commit `55f2408969c7da6367f06f0fc096cb2018807a9e` : workflow Quality [#45670065729](https://github.com/dollarstam5/hello-world-project/actions/runs/45670065729) terminé avec succès. Job `139402604002` ; « Verify foundation and secrets » passe ; lint : **0 erreur, 71 avertissements** ; tests DB, smoke mobile et release check passent. |
-| Branche | Commit `c1922e80228723b4459ea8c716735d2d968a8510` : workflow Quality [#45804569220](https://github.com/dollarstam5/hello-world-project/actions/runs/45804569220) en échec. Job `139856488791` ; « Verify foundation and secrets » échoue pendant lint ; les étapes DB, smoke mobile et release check sont donc ignorées. |
-| Preuve | Les deux runs utilisent le même workflow `.github/workflows/quality.yml` (blob SHA `c32235a2b882456e81e3fe6feb59a6d8c15c61d9`), Bun `1.2.23`, `bun install --frozen-lockfile` et les mêmes scripts. La branche présente **56 erreurs / 71 avertissements** contre **0 erreur / 71 avertissements** sur main. Les 56 erreurs sont toutes `prettier/prettier`, réparties sur six fichiers modifiés par la PR : `HomeEngineCard.tsx` (34), `HomeFoundation.tsx` (11), `FlashExperienceScreen.tsx` (2), `ReelProximityScreen.tsx` (2), `ScanPanel.tsx` (2) et `radar.lazy.tsx` (5). Aucun écart lint n'est observé dans les 71 avertissements comptabilisés sur les deux runs ; le nombre identique ne prouve toutefois pas à lui seul que chaque avertissement est strictement identique. |
+| Fichiers / composants | `.github/workflows/*`, `package.json`, `eslint.config.*`, `.prettierrc*`, fichiers modifiés de la PR et `scripts/check-reproducibility.ts`. |
+| main | Commit `55f2408969c7da6367f06f0fc096cb2018807a9e` : Quality [#45670065729](https://github.com/dollarstam5/hello-world-project/actions/runs/45670065729) réussi. Job `139402604002` ; lint : **0 erreur, 71 avertissements**. |
+| Branche — écart initial | Commit `c1922e80228723b4459ea8c716735d2d968a8510` : Quality [#45804569220](https://github.com/dollarstam5/hello-world-project/actions/runs/45804569220) échoué avec **56 erreurs Prettier / 71 avertissements**. Les 56 erreurs étaient localisées dans six fichiers modifiés. Elles ont été corrigées de manière ciblée, sans désactiver Prettier ni modifier la configuration de lint. |
+| Branche — preuve finale | Commit validé `d243928f234629e588fefc88c699ee73b6b3f340` : Quality [#45819114220](https://github.com/dollarstam5/hello-world-project/actions/runs/45819114220) — **succès**, job `139906441847`, y compris « Verify foundation and secrets », tests RLS, rendu mobile Chromium et « Release check » (qui inclut le contrôle de reproductibilité). Réel Validation [#45819114283](https://github.com/dollarstam5/hello-world-project/actions/runs/45819114283) — **succès**, job `139908035239`, lint ciblé, formatage, tests et smoke tests mobile. Dependency Review [#45819114203](https://github.com/dollarstam5/hello-world-project/actions/runs/45819114203) — **succès**. |
+| Preuve | Les contrôles finaux sont tous terminés avec conclusion `success` sur le même SHA `d243928...`. Le contrôle Quality a exécuté jusqu'au Release check ; aucune exclusion de fichier ni neutralisation de règle n'a été appliquée. |
 | Plateforme | Toutes ; pipeline CI. |
-| Plateforme | Toutes ; pipeline CI. |
-| Gravité | **Bloquante** pour la fusion. |
-| Acceptation | Baseline réalisée : mêmes workflow, version Bun, installation verrouillée et scripts. Résultat : 56 erreurs nouvelles localisées dans six fichiers modifiés ; les 71 avertissements sont également présents en nombre sur main. Après correction ciblée, relancer Quality et vérifier que typecheck, tests, build, budgets et E2E sont effectivement exécutés. |
-| Correction proposée | Corriger uniquement les 56 violations Prettier identifiées dans les six fichiers cités, en conservant le style existant et sans formatage global. Ne pas toucher aux 71 avertissements de base dans cette passe et ne pas désactiver Prettier. |
+| Gravité | **Bloquante pour la fusion — résolue pour le SHA validé**. |
+| Acceptation | **Satisfaite pour `d243928...`** : erreurs Prettier corrigées ; Quality complet, Réel Validation et Dependency Review réussis ; rendu mobile et contrôle de reproductibilité exécutés. Tout nouveau commit doit être validé par les workflows correspondants avant de conserver cet état. |
+| Correction appliquée | Corrections de formatage ciblées dans `HomeEngineCard.tsx`, `HomeFoundation.tsx`, `FlashExperienceScreen.tsx`, `ReelProximityScreen.tsx`, `ScanPanel.tsx`, `radar.lazy.tsx`, puis correction du diagnostic de reproductibilité dans `scripts/check-reproducibility.ts`. Aucune règle de lint n'a été désactivée. |
+
 
 ### P0.2 — Persistance et restauration des brouillons
 
@@ -589,7 +590,7 @@ Les essais ci-dessous complètent les tests unitaires et E2E. Chaque ligne doit 
 
 ## 9. Registre des limites et décisions ouvertes
 
-1. **Baseline CI main :** aucune exécution de workflow comparable n'a été retournée pour le commit main consulté. Il est donc impossible d'attribuer les 56 erreurs lint de la branche exclusivement à la PR. La présence d'erreurs Prettier dans des lignes des fichiers modifiés reste un signal de régression à traiter, mais la part préexistante doit être mesurée.
+1. **Baseline CI :** la baseline main est confirmée par Quality #45670065729 (0 erreur lint, 71 avertissements). Les 56 erreurs Prettier initiales de la branche ont été corrigées dans les fichiers concernés ; les contrôles complets sur `d243928...` sont verts. Cette clôture porte uniquement sur le SHA testé et ne constitue pas une certification sur appareils physiques.
 2. **PWA ≠ application native :** aucune enveloppe native Capacitor ou projet Android/iOS dédié n'a été identifié dans l'arborescence auditée. Les APIs Web et les tests navigateur ne prouvent pas les fonctions natives.
 3. **Installation :** un manifeste, des icônes et un service worker sont des prérequis, pas une preuve d'installation réussie sur un appareil.
 4. **Performance :** les budgets du bundle et les observations Web Vitals en mémoire ne constituent pas une mesure p75 de production.
@@ -607,7 +608,7 @@ Les essais ci-dessous complètent les tests unitaires et E2E. Chaque ligne doit 
 - Performance : [performance-pwa.md](../06-operations/performance-pwa.md)
 - Qualité : [QUALITY.md](../06-operations/QUALITY.md)
 - Matrice navigation existante : [navigation-compliance-matrix.md](./navigation-compliance-matrix.md)
-- CI branche : [Quality run #45800556871](https://github.com/dollarstam5/hello-world-project/actions/runs/45800556871)
+- CI branche — validation finale : [Quality #45819114220](https://github.com/dollarstam5/hello-world-project/actions/runs/45819114220), [Réel Validation #45819114283](https://github.com/dollarstam5/hello-world-project/actions/runs/45819114283), [Dependency Review #45819114203](https://github.com/dollarstam5/hello-world-project/actions/runs/45819114203)
 - PR : [#96](https://github.com/dollarstam5/hello-world-project/pull/96)
 
 ---
