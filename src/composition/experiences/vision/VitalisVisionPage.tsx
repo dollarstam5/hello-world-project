@@ -13,7 +13,7 @@ import {
   Target,
   Zap,
 } from "lucide-react";
-import { useVisionI18n } from "@/lib/i18n/useVisionI18n";
+import { useVisionI18n } from "@/platform/internationalization/useVisionI18n";
 import { VisionEngineArtwork } from "./VisionEngineArtwork";
 
 const engines = [
