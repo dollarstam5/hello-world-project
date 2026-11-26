@@ -1,7 +1,7 @@
 # Flash — expérience d'interface V1
 
 **Statut :** parcours brouillon-first implémenté ; clôture de la phase A en cours de vérification  
-**Domaine :** `src/domains/flash/`  
+**Module :** `src/modules/flash/`  
 **Route :** `/flash`  
 **Référence de travail :** branche `feat/flash-engine-experience-reconciled` ; contrôles à confirmer sur le dernier commit
 
@@ -24,7 +24,7 @@ Flash aide une personne à exprimer rapidement un besoin ou une proposition, à 
 - Dictée vocale si le navigateur expose Web Speech Recognition. Si cette capacité manque ou si la permission est refusée, la saisie texte reste disponible.
 - Le texte est analysé localement par `parseFlashIntent`. L'analyse est déterministe et fondée sur des règles ; elle ne dépend pas d'un service IA distant.
 - Des exemples reconnus incluent notamment la garde d'enfants, le déménagement, le transport et des repères temporels.
-- Le parseur fournit toujours une proposition à partir de trois caractères. Pour un texte ambigu, il peut retomber sur « offre », « autre » et « aujourd'hui ». Ce résultat doit être compris comme une suggestion modifiable, pas comme une certitude. L'interface doit rendre cette distinction suffisamment claire avant clôture de la phase A.
+- Le parseur fournit une proposition à partir de trois caractères. Il expose désormais, pour le type, la catégorie et le moment, un indicateur `matched` qui distingue un élément reconnu d'une valeur de repli. Les valeurs « offre », « autre » et « aujourd'hui » peuvent être des valeurs par défaut ; l'interface les signale comme telles et les laisse modifiables. Un texte non vide peut continuer vers la revue même si le parseur ne reconnaît pas ses éléments ou si le texte est trop court pour être analysé.
 
 ### Étape 2 — Vérifier et enregistrer
 
@@ -36,7 +36,7 @@ La personne peut corriger séparément :
 - l'urgence ;
 - le libellé de zone, lorsqu'il est fourni.
 
-La portée et l'urgence sont actuellement requises pour enregistrer le brouillon. Le texte doit être non vide et un compte connecté est nécessaire. La zone et la géolocalisation sont facultatives pour cette sauvegarde.
+Le texte doit être non vide et un compte connecté est nécessaire. La portée et l'urgence sont facultatives pour enregistrer le brouillon ; la zone et la géolocalisation le sont également.
 
 Le bouton final appelle `createFlash`, qui écrit un enregistrement local avec le statut `draft`. Le message de confirmation indique qu'un brouillon a été enregistré ; il ne dit pas que le Flash est publié. Après succès, l'écran bascule vers « Mes Flashs ».
 
@@ -75,20 +75,18 @@ Les règles de visibilité par publication, l'affichage sélectif des champs du 
 
 La reconnaissance vocale dépend du navigateur et de ses permissions ; elle ne constitue pas une promesse de traitement vocal universel hors ligne.
 
-## Conformité au principe fondamental P0 — écart identifié
+## Conformité au principe fondamental P0 — contrôle du code actuel
 
-Référence : [principe fondamental de traitement des demandes partielles](../../00-foundation/vitalis-core-principles.md).
+Référence : [principes fondamentaux de Vitalis](../../foundation/vitalis-core-principles.md).
 
-L'inspection du parcours actuel montre que `saveFlashDraft` refuse l'enregistrement si `scope` ou `urgency` est absent ; le bouton de sauvegarde applique les mêmes deux conditions. Le texte et les autres propositions sont donc bloqués par deux choix qui doivent être évalués comme compléments facultatifs pour un brouillon.
+Le code actuel de `saveFlashDraft` n'exige ni `scope` ni `urgency` ; ces champs sont transmis uniquement lorsqu'ils ont été renseignés. La zone et la géolocalisation sont également facultatives. Le parcours de brouillon local peut donc avancer avec le texte et le compte autorisé, sans imposer ces compléments.
 
-**Écart P0 à corriger avant de considérer le parcours conforme :** permettre d'enregistrer un brouillon avec le texte exploitable et le compte autorisé, sans imposer une portée ni une urgence. Les valeurs absentes doivent rester explicitement non renseignées et ne pas être inventées. Les exigences de publication distante restent distinctes et pourront demander les informations strictement nécessaires au moment de publier.
-
-Cette correction concerne le parcours de brouillon local ; elle n'active pas la publication distante et ne modifie aucun droit d'accès.
+La revue distingue maintenant les éléments reconnus par le parseur des valeurs proposées par défaut. Le texte d'origine reste conservé et modifiable. Cette correction n'active pas la publication distante et ne modifie aucun droit d'accès.
 
 ## Vérifications restantes avant clôture de la phase A
 
 - [ ] Tests de parcours d'interface : saisie, correction des propositions, validation, sauvegarde et affichage dans « Mes Flashs ».
-- [ ] Cas de texte ambigu : suggestion explicitement modifiable et absence de présentation trompeuse comme certitude.
+- [x] Cas de texte ambigu : les éléments reconnus et les valeurs de repli sont distingués dans la revue ; le texte reste modifiable (tests UI et vérification sur appareil encore à exécuter).
 - [ ] Brouillon sans GPS, sans Geoapify et sans libellé de zone.
 - [ ] Brouillon hors ligne, synchronisation après reconnexion et absence de doublons.
 - [ ] Isolation propriétaire, changement de compte et suppression.
