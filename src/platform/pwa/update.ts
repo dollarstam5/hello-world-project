@@ -12,6 +12,7 @@ export function canApplyUpdate(phase: UpdateSyncPhase, pendingCount: number): bo
 }
 
 let waitingWorker: ServiceWorker | null = null;
+let activationInProgress = false;
 const listeners = new Set<(ready: boolean) => void>();
 
 function announce(worker: ServiceWorker | null) {
@@ -55,6 +56,11 @@ export function requestServiceWorkerActivation(
   timeoutMs = 10_000,
 ): Promise<boolean> {
   return new Promise((resolve) => {
+    if (!serviceWorker.controller) {
+      resolve(false);
+      return;
+    }
+
     let settled = false;
     const finish = (activated: boolean) => {
       if (settled) return;
@@ -64,7 +70,7 @@ export function requestServiceWorkerActivation(
       resolve(activated);
     };
 
-    const onControllerChange = () => finish(true);
+    const onControllerChange = () => finish(serviceWorker.controller === worker);
     serviceWorker.addEventListener("controllerchange", onControllerChange);
     const timeout = window.setTimeout(() => finish(false), timeoutMs);
 
@@ -90,7 +96,8 @@ export function useAppUpdate() {
   }, []);
 
   function apply() {
-    if (!waitingWorker || applying) return;
+    if (!waitingWorker || applying || activationInProgress) return;
+    activationInProgress = true;
     setApplying(true);
     setFailed(false);
 
@@ -103,7 +110,9 @@ export function useAppUpdate() {
         setApplying(false);
         setFailed(true);
       },
-    );
+    ).finally(() => {
+      activationInProgress = false;
+    });
   }
 
   return { ready, applying, failed, apply };
