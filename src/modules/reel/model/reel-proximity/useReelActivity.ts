@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import type { CommunicationRuntime } from "@/lib/communication/runtime";
+import type { CommunicationRuntime } from "@/features/communication";
 import type { ActivityTab } from "@/modules/reel/model/reel-proximity/reel-proximity.types";
 import {
   resetReelActivityProjection,
