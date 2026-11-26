@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createElement } from "react";
 import { renderToString } from "react-dom/server";
-import { registerServiceWorker, useAppUpdate, useInstallPrompt } from "@/platform/pwa";
+import { canApplyUpdate, registerServiceWorker, useAppUpdate, useInstallPrompt } from "@/platform/pwa";
 import { getManualInstallInstructions } from "@/platform/pwa/install";
-import { canApplyUpdate, requestServiceWorkerActivation } from "@/platform/pwa/update";
+import { requestServiceWorkerActivation } from "@/platform/pwa/update";
 
 describe("PWA platform exports", () => {
   it("keeps installation unavailable on the first render, even on a secure Android device", () => {
@@ -43,6 +43,7 @@ describe("PWA platform exports", () => {
     expect(registerServiceWorker).toBeTypeOf("function");
     expect(useInstallPrompt).toBeTypeOf("function");
     expect(useAppUpdate).toBeTypeOf("function");
+    expect(canApplyUpdate).toBeTypeOf("function");
   });
 });
 
