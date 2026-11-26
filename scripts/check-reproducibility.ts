@@ -46,13 +46,7 @@ function resetBuildArtifacts(): void {
   // Each snapshot must start from the same cold build state. The release check
   // has already built once, so clearing only .output leaves warm Vite/Nitro and
   // TanStack artifacts that can change chunk graphs between the two builds.
-  for (const directory of [
-    ".output",
-    ".tanstack",
-    ".vinxi",
-    ".nitro",
-    "node_modules/.nitro",
-  ]) {
+  for (const directory of [".output", ".tanstack", ".vinxi", ".nitro", "node_modules/.nitro"]) {
     rmSync(directory, { recursive: true, force: true });
   }
 
