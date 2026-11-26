@@ -1,6 +1,6 @@
 # Modules — architecture applicative
 
-`src/modules/` regroupe les capacités métier autonomes de l'application. Un module peut contenir ses API, modèles, services, hooks et composants d'interface ; son fichier `index.ts` définit sa surface publique lorsqu'elle est nécessaire.
+`src/modules/` regroupe les capacités métier autonomes de l'application. Un module peut contenir ses API, modèles, services, hooks et composants d'interface ; son fichier `index.ts` définit sa surface publique lorsqu'elle est nécessaire. Les routes et les autres modules utilisent ces entrées publiques plutôt que d'importer les fichiers internes directement.
 
 ## Organisation
 
