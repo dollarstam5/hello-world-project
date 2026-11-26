@@ -1,8 +1,8 @@
 import { Archive, Eye, Pencil, Trash2 } from "lucide-react";
 import type { FlashRecord } from "@eco/core-contracts";
 import { Surface } from "@/shared/components/Surface";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/shared/ui/button";
+import { Textarea } from "@/shared/ui/textarea";
 import { useI18n } from "@/lib/i18n/useI18n";
 import { useFlashDashboardRecordCard } from "../hooks/useFlashDashboardRecordCard";
 import { FlashDashboardDetailDialog } from "./FlashDashboardDetailDialog";
