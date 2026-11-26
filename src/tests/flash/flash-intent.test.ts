@@ -9,6 +9,7 @@ describe("parseFlashIntent", () => {
     expect(intent.kind).toBe("need");
     expect(intent.timeSlot).toBe("tomorrow");
     expect(intent.expiresAt).toBe(NOW + 2 * 24 * 3_600_000);
+    expect(intent.matched).toEqual({ kind: true, category: false, timeSlot: true });
   });
 
   it("understands everyday French requests for childcare and moving help", () => {
@@ -29,6 +30,7 @@ describe("parseFlashIntent", () => {
     const intent = parseFlashIntent("Je propose mes services de plombier", NOW);
     expect(intent.kind).toBe("offer");
     expect(intent.category).toBe("home");
+    expect(intent.matched).toEqual({ kind: true, category: true, timeSlot: false });
   });
 
   it("detects English needs and categories", () => {
@@ -49,6 +51,7 @@ describe("parseFlashIntent", () => {
     expect(intent.category).toBe("other");
     expect(intent.timeSlot).toBe("today");
     expect(intent.expiresAt).toBe(NOW + 24 * 3_600_000);
+    expect(intent.matched).toEqual({ kind: false, category: false, timeSlot: false });
   });
 
   it("is deterministic: same text, same result", () => {
