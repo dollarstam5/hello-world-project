@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RefreshCw, X } from "lucide-react";
 import { canApplyUpdate, useAppUpdate } from "@/platform/pwa";
-import { useSyncStatus } from "@/platform/offline/sync-status";
+import { countPending, requestSyncNow, useSyncStatus, useSyncStatusStore } from "@/platform/offline";
 import { useI18n } from "@/lib/i18n/useI18n";
 
 /** Tells the person a newer version is ready and reloads on demand. */
@@ -9,8 +9,38 @@ export function UpdateBanner() {
   const { t } = useI18n();
   const { ready, applying, failed, apply } = useAppUpdate();
   const sync = useSyncStatus();
-  const safeToApply = canApplyUpdate(sync.phase, sync.pendingCount);
   const [dismissed, setDismissed] = useState(false);
+  const [checking, setChecking] = useState(false);
+  const [freshPendingCount, setFreshPendingCount] = useState<number | null>(null);
+  const [checkFailed, setCheckFailed] = useState(false);
+  const safeToApply = canApplyUpdate(
+    sync.phase,
+    Math.max(sync.pendingCount, freshPendingCount ?? 0),
+  );
+
+  useEffect(() => {
+    if (sync.isSettled) setFreshPendingCount(null);
+  }, [sync.isSettled]);
+
+  async function handleApply() {
+    if (applying || checking || !safeToApply) return;
+    setChecking(true);
+    setCheckFailed(false);
+    try {
+      const pendingCount = await countPending();
+      setFreshPendingCount(pendingCount);
+      const latestSync = useSyncStatusStore.getState();
+      if (!canApplyUpdate(latestSync.phase, pendingCount)) {
+        requestSyncNow();
+        return;
+      }
+      apply();
+    } catch {
+      setCheckFailed(true);
+    } finally {
+      setChecking(false);
+    }
+  }
 
   if (!ready || dismissed) return null;
 
@@ -32,6 +62,11 @@ export function UpdateBanner() {
               {t("update.waitingForSync")}
             </p>
           ) : null}
+          {checkFailed ? (
+            <p role="alert" className="mt-1 text-xs text-destructive">
+              {t("update.checkFailed")}
+            </p>
+          ) : null}
           {failed ? (
             <p role="alert" className="mt-1 text-xs text-destructive">
               {t("update.failed")}
@@ -39,11 +74,11 @@ export function UpdateBanner() {
           ) : null}
           <button
             type="button"
-            onClick={apply}
-            disabled={applying || !safeToApply}
+            onClick={handleApply}
+            disabled={applying || checking || !safeToApply}
             className="mt-2 inline-flex min-h-12 items-center rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
           >
-            {applying ? t("update.applying") : failed ? t("update.retry") : t("update.action")}
+            {checking ? t("update.checking") : applying ? t("update.applying") : failed ? t("update.retry") : t("update.action")}
           </button>
         </div>
         <button
