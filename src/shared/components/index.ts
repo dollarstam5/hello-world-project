@@ -12,6 +12,7 @@ export { FormField } from "./FormField";
 export { StatusBanner } from "./StatusBanner";
 export { SkeletonLine, SkeletonText, SkeletonCard, SkeletonList } from "./Skeletons";
 export { SmartCard } from "./SmartCard";
+export { RadarCard } from "./RadarCard";
 export { AIBubble } from "@/components/app/AIBubble";
 export { FloatingButton } from "./FloatingButton";
 export { SmartTabs, type SmartTab } from "./SmartTabs";
