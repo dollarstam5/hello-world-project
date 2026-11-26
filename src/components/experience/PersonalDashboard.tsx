@@ -84,8 +84,9 @@ export function PersonalDashboard() {
                 className="group block rounded-3xl outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               >
                 <Surface
-                  variant="elevated"
+                  variant="glass-soft"
                   padding="md"
+                  radius="3xl"
                   bordered
                   interactive
                   className="flex h-full min-h-36 items-start gap-3"
@@ -120,7 +121,7 @@ export function PersonalDashboard() {
             <Link
               key={engine}
               to={`/${engine}`}
-              className="min-h-11 rounded-2xl border border-border-soft bg-surface px-3 py-3 text-sm font-medium transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
+              className="min-h-11 rounded-2xl border border-border-soft bg-surface/80 px-3 py-3 text-sm font-medium shadow-sm backdrop-blur-sm transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
             >
               {t(`nav.${engine}`)}
               <span className="mt-1 block text-xs font-normal text-muted-foreground">
