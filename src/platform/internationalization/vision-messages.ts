@@ -29,13 +29,13 @@ export const visionMessages = {
     "vision.engine.stepsTitle": "Comment l’utiliser",
     "vision.engine.flash.title": "Flash — partager une information utile",
     "vision.engine.flash.role":
-      "Flash sert à publier un besoin, une proposition ou une information courte, locale et limitée dans le temps. C’est le point de départ lorsque vous avez quelque chose à signaler aux autres.",
+      "Flash sert à préparer un besoin, une proposition ou une information courte, locale et limitée dans le temps. La création d’un brouillon est disponible ; sa publication ne l’est pas encore dans le parcours actuel.",
     "vision.engine.flash.action":
-      "Créer un Flash, décrire simplement ce que vous cherchez ou proposez, préciser les informations demandées et confirmer la publication.",
+      "Préparer un brouillon Flash : décrivez simplement ce que vous cherchez ou proposez, puis vérifiez les informations avant d’enregistrer le brouillon sur cet appareil.",
     "vision.engine.flash.steps":
-      "Ouvrez Flash, choisissez de découvrir ou de gérer vos publications, puis démarrez une nouvelle publication. Consultez les Flash utiles et gérez les vôtres depuis votre espace.",
+      "Ouvrez Flash pour découvrir les publications disponibles ou préparer un nouveau brouillon. Vous pouvez reprendre et modifier vos brouillons enregistrés sur cet appareil.",
     "vision.engine.flash.boundary":
-      "Un Flash n’est pas une présence en direct ni une recherche continue. Sa visibilité dépend des choix de publication et des règles de diffusion ; elle ne donne pas automatiquement accès au profil complet.",
+      "Un brouillon Flash n’est pas une publication visible par les autres. La diffusion ne commence qu’après une véritable publication, lorsque ce parcours sera disponible ; elle ne donne pas automatiquement accès au profil complet.",
     "vision.engine.scan.title": "Scan — chercher maintenant",
     "vision.engine.scan.role":
       "Scan répond à une recherche ponctuelle : repérer les publications Flash actives et pertinentes dans le périmètre que vous choisissez, selon les sources réellement disponibles.",
@@ -56,13 +56,13 @@ export const visionMessages = {
       "La localisation accordée à un autre moteur ne vaut pas accord pour En direct. Découvrir et être visible sont deux choix distincts. Le mode invité reste temporaire ; il ne donne pas de droits de membre ni d’historique persistant.",
     "vision.engine.radar.title": "Radar — suivre une recherche",
     "vision.engine.radar.role":
-      "Radar est conçu pour conserver une intention de recherche dans le temps et repérer les nouvelles possibilités qui correspondent à vos critères, lorsque les sources et alertes concernées sont raccordées.",
+      "Radar permet de préparer une intention de recherche et d’enregistrer un brouillon privé. Le suivi automatique, les correspondances et les alertes ne sont pas encore actifs.",
     "vision.engine.radar.action":
-      "Décrire ce que vous souhaitez suivre, définir les critères utiles, enregistrer la recherche et gérer son suivi.",
+      "Décrire ce que vous souhaitez trouver, définir les critères utiles et enregistrer un brouillon privé de recherche sur cet appareil.",
     "vision.engine.radar.steps":
-      "Ouvrez Radar, créez ou consultez vos recherches enregistrées, ajustez leurs critères et interrompez leur suivi lorsque vous n’en avez plus besoin.",
+      "Ouvrez Radar, préparez un brouillon de recherche, consultez les brouillons enregistrés et ajustez ou annulez ceux dont vous n’avez plus besoin.",
     "vision.engine.radar.boundary":
-      "Radar n’est pas un scan ponctuel : il suit une intention dans la durée. Aucune correspondance ni alerte ne doit être inventée ; seules les sources réellement actives peuvent alimenter le suivi.",
+      "Radar est destiné à conserver une intention dans la durée, mais la version actuelle enregistre seulement un brouillon privé. Aucun suivi automatique, aucune correspondance et aucune alerte ne sont actifs.",
     "vision.principles.title": "Les principes qui guident l’expérience",
     "vision.principle.trust.title": "La confiance avant la popularité",
     "vision.principle.trust.body":
@@ -79,15 +79,15 @@ export const visionMessages = {
     "vision.end.body":
       "Choisissez le moteur qui correspond à votre besoin du moment. Vous pourrez revenir à cette présentation à tout moment.",
     "vision.deep.flash.why":
-      "Quand vous avez quelque chose d’utile à faire savoir, Flash vous permet de le formuler et de le partager dans une durée et une zone choisies. Cela peut être un besoin ponctuel, un service proposé, une aide recherchée ou une information locale.",
+      "Quand vous avez quelque chose d’utile à faire savoir, Flash vous aide à le formuler et à préparer un brouillon avec la durée et la zone souhaitées. Cela peut être un besoin ponctuel, un service proposé, une aide recherchée ou une information locale.",
     "vision.deep.flash.use":
-      "Décrivez votre besoin ou votre proposition avec vos mots. Précisez la catégorie, le moment concerné et la portée souhaitée. Relisez le récapitulatif, gardez un brouillon si nécessaire, puis publiez lorsque cette action est effectivement disponible.",
+      "Décrivez votre besoin ou votre proposition avec vos mots. Précisez la catégorie, le moment concerné et la portée souhaitée. Relisez le récapitulatif puis enregistrez le brouillon sur cet appareil. La publication n’est pas encore activée dans le parcours actuel.",
     "vision.deep.flash.flow":
-      "1. Choisir ce que vous partagez. 2. Expliquer simplement la situation. 3. Ajouter le moment et la zone utiles. 4. Vérifier puis publier ou conserver le brouillon. 5. Retrouver et gérer vos propres Flash.",
+      "1. Choisir ce que vous souhaitez préparer. 2. Expliquer simplement la situation. 3. Ajouter le moment et la zone utiles. 4. Vérifier puis enregistrer le brouillon sur cet appareil. 5. Le retrouver et le modifier avant toute publication future.",
     "vision.deep.flash.example":
       "Exemples : chercher une personne pour garder des enfants ce week-end, proposer un repas pour une réunion, demander un coup de main pour un déménagement dans deux heures. Chaque exemple affiché dans la démonstration reste clairement marqué « Exemple ».",
     "vision.deep.flash.difference":
-      "Flash est une publication courte qui informe les autres. Il ne suit pas automatiquement votre recherche et ne signale pas votre présence physique.",
+      "Une fois publiée, une fiche Flash informe les autres. Dans le parcours actuel, la création conserve un brouillon local qui n’est pas diffusé ; Flash ne suit pas automatiquement votre recherche et ne signale pas votre présence physique.",
     "vision.deep.scan.why":
       "Scan sert à chercher maintenant. Il interroge les publications Flash actives qui correspondent aux critères et à la zone autorisée, puis présente les résultats réellement disponibles à cet instant.",
     "vision.deep.scan.use":
@@ -109,15 +109,15 @@ export const visionMessages = {
     "vision.deep.reel.difference":
       "En direct n’est ni un fil de publications ni un suivi permanent. Une autorisation donnée à Flash ou Scan ne vaut pas autorisation ici. Le mode invité reste temporaire et ne donne pas les droits d’un membre ni un historique persistant.",
     "vision.deep.radar.why":
-      "Radar est conçu pour garder une intention de recherche dans le temps. Au lieu de relancer la même recherche à chaque visite, vous préparez des critères et choisissez de les suivre pendant la durée prévue.",
+      "Radar est conçu pour préparer une intention de recherche à conserver dans le temps. Dans la version actuelle, les critères sont enregistrés comme brouillon privé ; le suivi automatique n’est pas encore actif.",
     "vision.deep.radar.use":
-      "Décrivez ce que vous souhaitez trouver, indiquez la zone, la portée et la durée proposées, puis enregistrez votre recherche. Vous pourrez la consulter, modifier ses critères ou l’arrêter. Les résultats et alertes n’apparaissent que lorsque les sources correspondantes sont réellement connectées.",
+      "Décrivez ce que vous souhaitez trouver, indiquez la zone, la portée et la durée proposées, puis enregistrez le brouillon privé sur cet appareil. Vous pourrez le consulter, modifier ses critères ou l’annuler. Aucun résultat ni aucune alerte n’est généré par ce brouillon.",
     "vision.deep.radar.flow":
-      "1. Décrire ce que vous voulez suivre. 2. Définir les critères et la zone. 3. Choisir la durée. 4. Enregistrer la veille. 5. Revenir gérer ou arrêter cette recherche. 6. Consulter les correspondances uniquement lorsqu’elles existent réellement.",
+      "1. Décrire ce que vous souhaitez trouver. 2. Définir les critères et la zone. 3. Choisir une durée indicative. 4. Enregistrer un brouillon privé. 5. Le modifier ou l’annuler. Le suivi et les alertes restent à développer.",
     "vision.deep.radar.example":
-      "Exemple : suivre une recherche de garde d’enfants pour les prochains week-ends, ou une opportunité professionnelle dans une zone définie. Une recherche enregistrée ne signifie pas qu’une correspondance a déjà été trouvée.",
+      "Exemple : préparer un brouillon pour une recherche de garde d’enfants les prochains week-ends, ou une opportunité professionnelle dans une zone définie. Ce brouillon ne lance pas encore de suivi et ne signale aucune correspondance.",
     "vision.deep.radar.difference":
-      "Radar suit une intention dans le temps ; Scan effectue une recherche ponctuelle. Tant que la recherche automatique et les alertes ne sont pas raccordées, les critères enregistrés ne doivent pas être présentés comme une veille active.",
+      "Radar conserve actuellement un brouillon privé ; Scan effectue une recherche ponctuelle à partir des sources disponibles. Le suivi automatique et les alertes Radar restent à développer.",
     "vision.deep.status.title": "Ce qui est disponible, ce qui se prépare",
     "vision.deep.status.body":
       "Vitalis évolue moteur par moteur. Certaines actions peuvent déjà être proposées, d’autres restent en préparation ou dépendent d’une source serveur. L’écran doit toujours distinguer une action réellement exécutée, un brouillon conservé et une fonction annoncée mais pas encore active.",
@@ -132,7 +132,7 @@ export const visionMessages = {
     "vision.deep.visual.flashFooter": "Publication courte",
     "vision.deep.visual.scan": "Recherche ponctuelle",
     "vision.deep.visual.live": "Présence volontaire",
-    "vision.deep.visual.radarSearch": "Recherche suivie",
+    "vision.deep.visual.radarSearch": "Brouillon de recherche",
     "vision.deep.visual.radarCriteria": "Critères enregistrés",
     "vision.deep.visual.radarNew": "Nouvelle possibilité",
     "vision.deep.visual.radarSource": "Si une source la signale",
@@ -171,13 +171,13 @@ export const visionMessages = {
     "vision.engine.stepsTitle": "How to use it",
     "vision.engine.flash.title": "Flash — share useful information",
     "vision.engine.flash.role":
-      "Flash lets you publish a short-lived, local need, offer, or piece of information. It is the starting point when you have something to let others know.",
+      "Flash helps you prepare a short-lived, local need, offer, or piece of information. The current flow saves a draft; publication is not yet available.",
     "vision.engine.flash.action":
-      "Create a Flash, briefly describe what you need or offer, provide the requested details, and confirm publication.",
+      "Prepare a Flash draft: briefly describe what you need or offer, review the details, and save the draft on this device.",
     "vision.engine.flash.steps":
-      "Open Flash, choose to discover or manage publications, then start a new one. Browse useful Flash posts and manage your own from your space.",
+      "Open Flash to discover available posts or prepare a new draft. You can revisit and edit drafts saved on this device.",
     "vision.engine.flash.boundary":
-      "A Flash is not a live presence or an ongoing search. Its visibility depends on publication choices and distribution rules; it does not automatically grant access to the full profile.",
+      "A Flash draft is not visible to other people. Distribution starts only after an actual publication, when that flow becomes available; it does not automatically grant access to the full profile.",
     "vision.engine.scan.title": "Scan — search right now",
     "vision.engine.scan.role":
       "Scan answers a one-time search: find active and relevant Flash posts within the area you choose, using sources that are actually available.",
@@ -198,13 +198,13 @@ export const visionMessages = {
       "Location permission granted to another engine does not grant permission to Live. Discovering others and being visible are separate choices. Guest mode is temporary; it does not grant member rights or persistent history.",
     "vision.engine.radar.title": "Radar — keep track of a search",
     "vision.engine.radar.role":
-      "Radar is designed to retain a search intention over time and spot new possibilities matching your criteria when the relevant sources and alerts are connected.",
+      "Radar lets you prepare a search intention and save it as a private draft. Automatic tracking, matches, and alerts are not active yet.",
     "vision.engine.radar.action":
-      "Describe what you want to follow, set useful criteria, save the search, and manage its tracking.",
+      "Describe what you want to find, set useful criteria, and save a private search draft on this device.",
     "vision.engine.radar.steps":
-      "Open Radar, create or review saved searches, adjust their criteria, and stop tracking when you no longer need it.",
+      "Open Radar, prepare a search draft, review saved drafts, and edit or cancel those you no longer need.",
     "vision.engine.radar.boundary":
-      "Radar is not a one-time scan: it follows an intention over time. Matches and alerts must never be fabricated; only genuinely active sources can feed tracking.",
+      "Radar is intended to retain a search intention over time, but the current version only saves a private draft. Automatic tracking, matches, and alerts are not active.",
     "vision.principles.title": "The principles behind the experience",
     "vision.principle.trust.title": "Trust before popularity",
     "vision.principle.trust.body":
@@ -221,15 +221,15 @@ export const visionMessages = {
     "vision.end.body":
       "Choose the engine that matches your current need. You can return to this guide at any time.",
     "vision.deep.flash.why":
-      "When you have something useful to share, Flash helps you put it into words and publish it for a chosen time and area. It can be a one-off need, a service offer, a request for help, or useful local information.",
+      "When you have something useful to share, Flash helps you put it into words and prepare a draft with a chosen time and area. It can be a one-off need, a service offer, a request for help, or useful local information.",
     "vision.deep.flash.use":
-      "Describe your need or offer in your own words. Choose a category, the relevant time, and the intended reach. Review the summary, keep a draft if needed, and publish only when that action is genuinely available.",
+      "Describe your need or offer in your own words. Choose a category, the relevant time, and the intended reach. Review the summary and save the draft on this device. Publication is not yet active in the current flow.",
     "vision.deep.flash.flow":
-      "1. Choose what to share. 2. Explain the situation simply. 3. Add the useful time and area. 4. Review, then publish or keep a draft. 5. Find and manage your own Flash posts.",
+      "1. Choose what you want to prepare. 2. Explain the situation simply. 3. Add the useful time and area. 4. Review and save the draft on this device. 5. Revisit and edit it before any future publication.",
     "vision.deep.flash.example":
       "Examples: find someone to look after children this weekend, offer to prepare food for a gathering, or ask for moving help in two hours. Every demonstration example remains clearly labelled “Example”.",
     "vision.deep.flash.difference":
-      "Flash is a short-lived publication that informs others. It does not automatically track your search or announce your physical presence.",
+      "Once published, a Flash post informs others. The current flow saves a local draft that is not distributed; Flash does not automatically track your search or announce your physical presence.",
     "vision.deep.scan.why":
       "Scan is for searching right now. It checks active Flash publications that match the available criteria and permitted area, then presents the results genuinely available at that moment.",
     "vision.deep.scan.use":
@@ -251,15 +251,15 @@ export const visionMessages = {
     "vision.deep.reel.difference":
       "Live is neither a publication feed nor permanent tracking. Permission granted to Flash or Scan does not grant permission here. Guest mode is temporary and does not provide member rights or persistent history.",
     "vision.deep.radar.why":
-      "Radar is designed to keep a search intention over time. Instead of repeating the same search on every visit, you prepare criteria and choose to follow them for a defined period.",
+      "Radar is designed to prepare a search intention for future use. In the current version, criteria are saved as a private draft; automatic tracking is not active yet.",
     "vision.deep.radar.use":
-      "Describe what you want to find, set the proposed area, reach, and duration, then save your search. You can review it, change its criteria, or stop following it. Results and alerts appear only when the relevant sources are genuinely connected.",
+      "Describe what you want to find, set the proposed area, reach, and duration, then save the private draft on this device. You can review it, change its criteria, or cancel it. This draft does not generate results or alerts.",
     "vision.deep.radar.flow":
-      "1. Describe what you want to follow. 2. Set criteria and area. 3. Choose a duration. 4. Save the watch. 5. Return to manage or stop it. 6. Review matches only when they genuinely exist.",
+      "1. Describe what you want to find. 2. Set criteria and area. 3. Choose an indicative duration. 4. Save a private draft. 5. Edit or cancel it. Automatic tracking and alerts remain future work.",
     "vision.deep.radar.example":
-      "Example: follow a childcare search for upcoming weekends, or a job opportunity in a defined area. A saved search does not mean a match has already been found.",
+      "Example: prepare a draft for childcare on upcoming weekends, or a job opportunity in a defined area. This draft does not start tracking or report matches.",
     "vision.deep.radar.difference":
-      "Radar follows an intention over time; Scan performs a one-off search. Until automatic tracking and alerts are connected, saved criteria must not be presented as an active watch.",
+      "Radar currently saves a private draft; Scan performs a one-off search using available sources. Automatic Radar tracking and alerts remain future work.",
     "vision.deep.status.title": "What is available and what is being prepared",
     "vision.deep.status.body":
       "Vitalis evolves engine by engine. Some actions may already be available, others are being prepared or depend on a server source. The interface must always distinguish an action that actually ran, a saved draft, and a feature that is announced but not yet active.",
@@ -274,7 +274,7 @@ export const visionMessages = {
     "vision.deep.visual.flashFooter": "Short-lived post",
     "vision.deep.visual.scan": "One-time search",
     "vision.deep.visual.live": "Voluntary presence",
-    "vision.deep.visual.radarSearch": "Followed search",
+    "vision.deep.visual.radarSearch": "Saved search draft",
     "vision.deep.visual.radarCriteria": "Saved criteria",
     "vision.deep.visual.radarNew": "New possibility",
     "vision.deep.visual.radarSource": "When a source reports it",
