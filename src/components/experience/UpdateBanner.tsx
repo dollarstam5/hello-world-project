@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { RefreshCw, X } from "lucide-react";
 import { canApplyUpdate, useAppUpdate } from "@/platform/pwa";
 import { countPending, requestSyncNow, useSyncStatus, useSyncStatusStore } from "@/platform/offline";
@@ -14,21 +14,16 @@ export function UpdateBanner() {
   const [freshPendingCount, setFreshPendingCount] = useState<number | null>(null);
   const [freshPendingSyncTimestamp, setFreshPendingSyncTimestamp] = useState<number | null>(null);
   const [checkFailed, setCheckFailed] = useState(false);
+  const freshPendingStillApplies =
+    freshPendingCount !== null &&
+    !(
+      sync.isSettled &&
+      (freshPendingCount === 0 || sync.lastSyncedAt !== freshPendingSyncTimestamp)
+    );
   const safeToApply = canApplyUpdate(
     sync.phase,
-    Math.max(sync.pendingCount, freshPendingCount ?? 0),
+    Math.max(sync.pendingCount, freshPendingStillApplies ? (freshPendingCount ?? 0) : 0),
   );
-
-  useEffect(() => {
-    if (
-      sync.isSettled &&
-      freshPendingCount !== null &&
-      (freshPendingCount === 0 || sync.lastSyncedAt !== freshPendingSyncTimestamp)
-    ) {
-      setFreshPendingCount(null);
-      setFreshPendingSyncTimestamp(null);
-    }
-  }, [freshPendingCount, freshPendingSyncTimestamp, sync.isSettled, sync.lastSyncedAt]);
 
   async function handleApply() {
     if (applying || checking || !safeToApply) return;
@@ -87,7 +82,13 @@ export function UpdateBanner() {
             disabled={applying || checking || !safeToApply}
             className="mt-2 inline-flex min-h-12 items-center rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
           >
-            {checking ? t("update.checking") : applying ? t("update.applying") : failed ? t("update.retry") : t("update.action")}
+            {checking
+              ? t("update.checking")
+              : applying
+                ? t("update.applying")
+                : failed
+                  ? t("update.retry")
+                  : t("update.action")}
           </button>
         </div>
         <button
