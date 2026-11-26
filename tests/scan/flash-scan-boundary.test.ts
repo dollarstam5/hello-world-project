@@ -28,4 +28,15 @@ describe("Flash and Scan engine boundaries", () => {
     expect(scanPreferences).toContain("const SCAN_RADII_KM");
     expect(scanPreferences).toContain("availableRadii: SCAN_RADII_KM");
   });
+  it("supports functional updates from the Scan voice input without losing flow resets", () => {
+    const scanPanel = read("src/modules/scan/ui/ScanPanel.tsx");
+    const scanFlow = read("src/modules/scan/hooks/useScanFlow.ts");
+
+    expect(scanPanel).toContain("setNeedText((current) =>");
+    expect(scanFlow).toContain("(value: SetStateAction<string>)");
+    expect(scanFlow).toContain("typeof value === \"function\" ? value(current) : value");
+    expect(scanFlow).toContain('setStage("need")');
+    expect(scanFlow).toContain("scan.clearResults()");
+  });
+
 });
