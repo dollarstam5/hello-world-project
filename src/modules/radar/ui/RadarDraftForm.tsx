@@ -55,6 +55,9 @@ export function RadarDraftForm({
       <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
         {t("radar.manage.intro")}
       </p>
+      <p className="mb-4 text-xs leading-relaxed text-muted-foreground">
+        {t("radar.manage.defaultsHint")}
+      </p>
       <form onSubmit={onSubmit} className="stack-3">
         <label className="stack-1 text-sm font-medium" htmlFor="radar-query">
           {t("radar.manage.query.label")}
