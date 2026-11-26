@@ -4,7 +4,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@/shared/ui/dialog";
 import { useI18n } from "@/lib/i18n/useI18n";
 import type { useFlashComposer } from "./useFlashComposer";
 import { FlashComposerWriteStep } from "./FlashComposerWriteStep";
