@@ -39,6 +39,12 @@ export interface FlashIntent {
   timeSlot: FlashTimeSlot;
   /** Default lifetime derived from the time slot. */
   expiresAt: number;
+  /** Whether each field was explicitly recognized rather than filled by fallback. */
+  matched: {
+    kind: boolean;
+    category: boolean;
+    timeSlot: boolean;
+  };
 }
 
 const HOUR = 3_600_000;
@@ -89,22 +95,33 @@ const SLOT_PATTERNS: ReadonlyArray<readonly [FlashTimeSlot, RegExp]> = [
  */
 export function parseFlashIntent(text: string, now = Date.now()): FlashIntent {
   const kind: FlashKind = NEED_PATTERN.test(text) ? "need" : "offer";
+  const kindMatched = NEED_PATTERN.test(text) || OFFER_PATTERN.test(text);
 
   let category: FlashCategory = "other";
+  let categoryMatched = false;
   for (const [candidate, pattern] of CATEGORY_PATTERNS) {
     if (pattern.test(text)) {
       category = candidate;
+      categoryMatched = true;
       break;
     }
   }
 
   let timeSlot: FlashTimeSlot = "today";
+  let timeSlotMatched = false;
   for (const [candidate, pattern] of SLOT_PATTERNS) {
     if (pattern.test(text)) {
       timeSlot = candidate;
+      timeSlotMatched = true;
       break;
     }
   }
 
-  return { kind, category, timeSlot, expiresAt: now + SLOT_TTL[timeSlot] };
+  return {
+    kind,
+    category,
+    timeSlot,
+    expiresAt: now + SLOT_TTL[timeSlot],
+    matched: { kind: kindMatched, category: categoryMatched, timeSlot: timeSlotMatched },
+  };
 }
