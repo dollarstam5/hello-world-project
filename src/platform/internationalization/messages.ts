@@ -169,7 +169,7 @@ export const messages = {
     "home.engine.radar.title": "Radar",
     "home.engine.radar.desc":
       "Enregistrez une intention de recherche privée et retrouvez-la dans votre espace, même hors ligne.",
-    "home.engine.radar.example": "Suivre une recherche de garde pour les prochains week-ends.",
+    "home.engine.radar.example": "Préparer un brouillon de recherche de garde pour les prochains week-ends.",
     "home.engine.action": "Voir cet espace",
     "home.menuHint":
       "Les espaces complémentaires et les autres fonctionnalités de Vitalis sont accessibles depuis le menu 2×2 en bas de l’écran.",
@@ -1339,7 +1339,7 @@ export const messages = {
     "home.engine.radar.title": "Radar",
     "home.engine.radar.desc":
       "Save a private search intention and find it in your space, even offline.",
-    "home.engine.radar.example": "Keep track of a search for weekend childcare.",
+    "home.engine.radar.example": "Prepare a private childcare-search draft for the coming weekends.",
     "home.engine.action": "View this space",
     "home.menuHint":
       "Explore additional spaces and other Vitalis features from the 2x2 menu at the bottom of the screen.",
