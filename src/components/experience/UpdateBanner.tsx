@@ -6,7 +6,7 @@ import { useI18n } from "@/lib/i18n/useI18n";
 /** Tells the person a newer version is ready and reloads on demand. */
 export function UpdateBanner() {
   const { t } = useI18n();
-  const { ready, applying, apply } = useAppUpdate();
+  const { ready, applying, failed, apply } = useAppUpdate();
   const [dismissed, setDismissed] = useState(false);
 
   if (!ready || dismissed) return null;
@@ -24,13 +24,14 @@ export function UpdateBanner() {
         <div className="min-w-0 flex-1">
           <p className="text-sm font-medium">{t("update.title")}</p>
           <p className="mt-0.5 text-xs text-muted-foreground">{t("update.subtitle")}</p>
+          {failed ? <p role="alert" className="mt-1 text-xs text-destructive">{t("update.failed")}</p> : null}
           <button
             type="button"
             onClick={apply}
             disabled={applying}
             className="mt-2 inline-flex min-h-12 items-center rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
           >
-            {t("update.action")}
+            {applying ? t("update.applying") : failed ? t("update.retry") : t("update.action")}
           </button>
         </div>
         <button
