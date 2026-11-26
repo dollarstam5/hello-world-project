@@ -1,14 +1,14 @@
 # Radar — état d'implémentation V1
 
-**Statut :** gestion privée des critères enregistrés raccordée à la base locale et à la synchronisation. La recherche automatique, les correspondances et les alertes ne sont pas encore actives.
+**Statut :** gestion privée des critères enregistrés raccordée à la base locale et à la synchronisation. La recherche automatique, les correspondances et les alertes ne sont pas encore actives. Les enregistrements créés depuis l'interface V1 sont des brouillons d'intention, pas des veilles actives.
 
 ## Capacités disponibles dans l'interface
 
-- Enregistrer une veille privée avec une intention, une zone textuelle approximative, un rayon et une durée.
-- Modifier une veille tant qu'elle est au statut brouillon.
-- Annuler une veille après confirmation.
+- Enregistrer une intention de recherche privée sous forme de brouillon, avec un texte, un rayon et une durée ; la zone textuelle est facultative.
+- Modifier un brouillon tant qu'il est au statut `draft`.
+- Annuler un brouillon après confirmation.
 - Conserver les modifications dans la base locale ; elles sont envoyées par le mécanisme de synchronisation habituel lorsqu'il est disponible.
-- Consulter les veilles enregistrées du compte connecté.
+- Consulter les intentions de recherche enregistrées du compte connecté.
 
 Les rayons autorisés sont 1, 3, 5, 10, 25 et 50 km. Une veille dure de 3 à 90 jours. Aucun GPS précis n'est demandé par ce formulaire.
 
@@ -28,7 +28,7 @@ Les rayons autorisés sont 1, 3, 5, 10, 25 et 50 km. Une veille dure de 3 à 90 
 - Aucun traitement planifié ne parcourt encore les Flash, missions ou autres sources pour produire des correspondances.
 - Aucune alerte Radar n'est envoyée.
 - La page ne fabrique ni résultat, ni distance calculée, ni compteur de correspondances.
-- Le statut enregistré décrit le cycle de vie de la veille ; il ne prouve pas qu'une recherche automatique s'exécute en arrière-plan.
+- Le statut enregistré décrit le cycle de vie de l'enregistrement ; un brouillon n'est pas une veille active et un statut `active` ne prouve pas à lui seul qu'une recherche automatique s'exécute en arrière-plan.
 
 ## Suite nécessaire
 
