@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { FLASH_SCOPES, FLASH_URGENCIES } from "@eco/core-contracts";
 import type { FlashCategory, FlashKind, FlashTimeSlot } from "@eco/core-contracts";
 import { Button } from "@/components/ui/button";
-import { formatCommunicationMessage } from "@/lib/communication/format";
+import { formatCommunicationMessage } from "@/features/communication";
 import { useI18n } from "@/lib/i18n/useI18n";
 import type { useFlashComposer } from "./useFlashComposer";
 
@@ -89,6 +89,11 @@ export function FlashComposerReviewStep({ state, user, authLoading }: Props) {
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
         <label className="grid gap-1.5 text-sm font-medium">
           {t("flash.composer.kind")}
+          <span className="text-xs font-normal text-muted-foreground">
+            {state.parsedIntent?.matched.kind
+              ? t("flash.composer.detected")
+              : t("flash.composer.defaultValue")}
+          </span>
           <select
             value={state.kind}
             onChange={(event) => state.setKind(event.target.value as FlashKind)}
@@ -103,6 +108,11 @@ export function FlashComposerReviewStep({ state, user, authLoading }: Props) {
         </label>
         <label className="grid gap-1.5 text-sm font-medium">
           {t("flash.composer.category")}
+          <span className="text-xs font-normal text-muted-foreground">
+            {state.parsedIntent?.matched.category
+              ? t("flash.composer.detected")
+              : t("flash.composer.defaultValue")}
+          </span>
           <select
             value={state.category}
             onChange={(event) => state.setCategory(event.target.value as FlashCategory)}
@@ -117,6 +127,11 @@ export function FlashComposerReviewStep({ state, user, authLoading }: Props) {
         </label>
         <label className="grid gap-1.5 text-sm font-medium">
           {t("flash.composer.when")}
+          <span className="text-xs font-normal text-muted-foreground">
+            {state.parsedIntent?.matched.timeSlot
+              ? t("flash.composer.detected")
+              : t("flash.composer.defaultValue")}
+          </span>
           <select
             value={state.timeSlot}
             onChange={(event) => state.setTimeSlot(event.target.value as FlashTimeSlot)}
