@@ -1,10 +1,9 @@
 /**
- * Component System Foundation — generic, reusable primitives.
+ * Legacy app-component compatibility barrel.
  *
- * These components are domain-agnostic. They MUST NOT import business
- * logic, feature data, or domain-specific strings.
- *
- * Phase 4 — Component System Foundation.
+ * Canonical generic primitives live in src/shared/components. Domain-owned
+ * components exposed here are compatibility facades; new consumers should
+ * import from their owning module or shared component entrypoint.
  */
 
 export { Icon } from "./Icon";
