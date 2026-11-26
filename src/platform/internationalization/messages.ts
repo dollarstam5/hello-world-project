@@ -325,6 +325,8 @@ export const messages = {
 
     "flash.composer.reviewDescription":
       "Vérifiez les informations proposées. Vous pouvez tout ajuster avant d’enregistrer le brouillon.",
+    "flash.composer.detected": "Repéré dans votre message — à confirmer.",
+    "flash.composer.defaultValue": "Proposé par défaut — à vérifier.",
     "flash.composer.yourMessage": "Votre message",
     "flash.composer.editMessage": "Modifier le message",
     "flash.composer.kind": "Type de Flash",
@@ -1489,6 +1491,8 @@ export const messages = {
 
     "flash.composer.reviewDescription":
       "Review the suggested details. You can adjust everything before saving your draft.",
+    "flash.composer.detected": "Detected in your message — please confirm.",
+    "flash.composer.defaultValue": "Suggested by default — please review.",
     "flash.composer.yourMessage": "Your message",
     "flash.composer.editMessage": "Edit message",
     "flash.composer.kind": "Flash type",
