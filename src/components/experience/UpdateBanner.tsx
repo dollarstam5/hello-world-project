@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { RefreshCw, X } from "lucide-react";
-import { useAppUpdate } from "@/platform/pwa";
+import { canApplyUpdate, useAppUpdate } from "@/platform/pwa";
+import { useSyncStatus } from "@/platform/offline/sync-status";
 import { useI18n } from "@/lib/i18n/useI18n";
 
 /** Tells the person a newer version is ready and reloads on demand. */
 export function UpdateBanner() {
   const { t } = useI18n();
   const { ready, applying, failed, apply } = useAppUpdate();
+  const sync = useSyncStatus();
+  const safeToApply = canApplyUpdate(sync.phase, sync.pendingCount);
   const [dismissed, setDismissed] = useState(false);
 
   if (!ready || dismissed) return null;
@@ -24,6 +27,11 @@ export function UpdateBanner() {
         <div className="min-w-0 flex-1">
           <p className="text-sm font-medium">{t("update.title")}</p>
           <p className="mt-0.5 text-xs text-muted-foreground">{t("update.subtitle")}</p>
+          {!safeToApply ? (
+            <p className="mt-1 text-xs text-muted-foreground">
+              {t("update.waitingForSync")}
+            </p>
+          ) : null}
           {failed ? (
             <p role="alert" className="mt-1 text-xs text-destructive">
               {t("update.failed")}
@@ -32,7 +40,7 @@ export function UpdateBanner() {
           <button
             type="button"
             onClick={apply}
-            disabled={applying}
+            disabled={applying || !safeToApply}
             className="mt-2 inline-flex min-h-12 items-center rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
           >
             {applying ? t("update.applying") : failed ? t("update.retry") : t("update.action")}
