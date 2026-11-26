@@ -1,5 +1,5 @@
 import { Plus, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/ui/button";
 import { useI18n } from "@/lib/i18n/useI18n";
 
 type Props = { onCreateFlash: () => void };
