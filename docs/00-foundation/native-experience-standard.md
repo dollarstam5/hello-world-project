@@ -393,6 +393,10 @@ Ce classement est une feuille de route, pas un constat d'implémentation. Chaque
 
 Les recommandations de plateforme évoluent. Revalider les liens et exigences au début de chaque release majeure. Les références officielles ne remplacent pas les essais sur appareils réels.
 
+## Registre de conformité et suivi des preuves
+
+L'état d'implémentation des exigences est suivi dans le [Registre de conformité — expérience native Vitalis](../07-annexes/native-experience-compliance-register.md). Ce registre compare `main` et la branche auditée, associe chaque exigence à ses fichiers, preuves, gravité et tests d'acceptation, et distingue code présent, test automatisé et validation appareil réel. Il doit être mis à jour avec chaque preuve ; il ne remplace pas les documents spécialisés.
+
 ---
 
 **Règle finale :** Vitalis doit se comporter comme une application fiable avant de chercher à en avoir l'apparence. La sensation native est le résultat combiné de la navigation, du toucher, du système, de la continuité, de l'accessibilité, de la performance et de la confiance.
