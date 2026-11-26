@@ -60,9 +60,11 @@ export const messages = {
     "update.title": "Une nouvelle version est prête",
     "update.subtitle": "Rechargez pour profiter des dernières améliorations.",
     "update.action": "Recharger maintenant",
-    "update.waitingForSync": "Synchronisation en cours ou actions en attente : la mise à jour est suspendue pour protéger vos changements locaux.",
+    "update.waitingForSync":
+      "Synchronisation en cours ou actions en attente : la mise à jour est suspendue pour protéger vos changements locaux.",
     "update.checking": "Vérification des actions en attente…",
-    "update.checkFailed": "Impossible de vérifier les actions locales. La mise à jour reste bloquée pour protéger vos changements.",
+    "update.checkFailed":
+      "Impossible de vérifier les actions locales. La mise à jour reste bloquée pour protéger vos changements.",
     "update.applying": "Application de la mise à jour…",
     "update.failed":
       "La mise à jour n’a pas pu prendre le contrôle. Votre page est restée ouverte ; vous pouvez réessayer.",
@@ -1226,9 +1228,11 @@ export const messages = {
     "update.title": "A new version is ready",
     "update.subtitle": "Reload to get the latest improvements.",
     "update.action": "Reload now",
-    "update.waitingForSync": "Sync is running or actions are still pending. The update is paused to protect your local changes.",
+    "update.waitingForSync":
+      "Sync is running or actions are still pending. The update is paused to protect your local changes.",
     "update.checking": "Checking pending actions…",
-    "update.checkFailed": "Pending local actions could not be verified. The update remains blocked to protect your changes.",
+    "update.checkFailed":
+      "Pending local actions could not be verified. The update remains blocked to protect your changes.",
     "update.applying": "Applying update…",
     "update.failed": "The update could not take control. This page stayed open; you can try again.",
     "update.retry": "Try again",
