@@ -81,7 +81,7 @@ export function PersonalDashboard() {
               <Link
                 key={card.to}
                 to={card.to}
-                className="group block rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                className="group block rounded-3xl outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               >
                 <Surface
                   variant="elevated"
@@ -97,7 +97,7 @@ export function PersonalDashboard() {
                     <span className="flex items-center justify-between gap-2">
                       <span className="font-semibold">{t(card.titleKey)}</span>
                       <ArrowUpRight
-                        className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                        className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 motion-reduce:transition-none"
                         aria-hidden
                       />
                     </span>
@@ -120,7 +120,7 @@ export function PersonalDashboard() {
             <Link
               key={engine}
               to={`/${engine}`}
-              className="rounded-xl border border-border-soft bg-surface px-3 py-3 text-sm font-medium transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="min-h-11 rounded-2xl border border-border-soft bg-surface px-3 py-3 text-sm font-medium transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
             >
               {t(`nav.${engine}`)}
               <span className="mt-1 block text-xs font-normal text-muted-foreground">
