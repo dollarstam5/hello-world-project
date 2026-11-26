@@ -59,7 +59,6 @@ describe("platform-specific installation guidance", () => {
   });
 });
 
-
 describe("safe service worker activation", () => {
   afterEach(() => {
     vi.useRealTimers();
