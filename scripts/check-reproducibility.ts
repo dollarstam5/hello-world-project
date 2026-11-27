@@ -18,7 +18,7 @@ function publicBuildSnapshot(): Map<string, string> {
 
   const snapshot = new Map<string, string>();
   for (const path of filesUnder(directory).sort()) {
-    const relativePath = relative(directory, path).split("\\").join("/");
+    const relativePath = relative(directory, path).split("\\\\").join("/");
     const digest = createHash("sha256").update(readFileSync(path)).digest("hex");
     snapshot.set(relativePath, digest);
   }
@@ -37,11 +37,18 @@ function snapshotDigest(snapshot: Map<string, string>): string {
   const hash = createHash("sha256");
   for (const [path, digest] of [...snapshot.entries()].sort(([a], [b]) => a.localeCompare(b))) {
     hash.update(path);
-    hash.update("\0");
+    hash.update("\\0");
     hash.update(digest);
-    hash.update("\0");
+    hash.update("\\0");
   }
   return hash.digest("hex");
+}
+
+function cleanBuildArtifacts(): void {
+  // A previous Vite run can leave optimizer metadata behind even after .output
+  // is removed. Each reproducibility pass must start without that cache.
+  rmSync(".output", { recursive: true, force: true });
+  rmSync("node_modules/.vite", { recursive: true, force: true });
 }
 
 function build(): void {
@@ -51,12 +58,14 @@ function build(): void {
 const routeTreePath = "src/routeTree.gen.ts";
 const routeTreeBefore = fileDigest(routeTreePath);
 
-rmSync(".output", { recursive: true, force: true });
+cleanBuildArtifacts();
+console.log("[reproducibility] first build starts with clean Vite cache");
 build();
 const first = publicBuildSnapshot();
 const routeTreeAfterFirst = fileDigest(routeTreePath);
 
-rmSync(".output", { recursive: true, force: true });
+cleanBuildArtifacts();
+console.log("[reproducibility] second build starts with clean Vite cache");
 build();
 const second = publicBuildSnapshot();
 const routeTreeAfterSecond = fileDigest(routeTreePath);
@@ -79,7 +88,7 @@ if (firstDigest !== secondDigest) {
         const after = second.get(path) ?? "<missing>";
         return `- ${path}: first=${before}, second=${after}`;
       }),
-    ].join("\n"),
+    ].join("\\n"),
   );
 }
 
