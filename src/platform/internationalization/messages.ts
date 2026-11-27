@@ -60,6 +60,15 @@ export const messages = {
     "update.title": "Une nouvelle version est prête",
     "update.subtitle": "Rechargez pour profiter des dernières améliorations.",
     "update.action": "Recharger maintenant",
+    "update.waitingForSync":
+      "Synchronisation en cours ou actions en attente : la mise à jour est suspendue pour protéger vos changements locaux.",
+    "update.checking": "Vérification des actions en attente…",
+    "update.checkFailed":
+      "Impossible de vérifier les actions locales. La mise à jour reste bloquée pour protéger vos changements.",
+    "update.applying": "Application de la mise à jour…",
+    "update.failed":
+      "La mise à jour n’a pas pu prendre le contrôle. Votre page est restée ouverte ; vous pouvez réessayer.",
+    "update.retry": "Réessayer",
     "update.dismiss": "Plus tard",
     "assistant.error.offline": "Cette réponse n'est pas encore disponible hors ligne.",
     "assistant.error.auth": "Connectez-vous pour discuter avec Vita.",
@@ -170,7 +179,8 @@ export const messages = {
     "home.engine.radar.desc":
       "Enregistrez une intention de recherche privée et retrouvez-la dans votre espace, même hors ligne.",
     "home.engine.radar.example": "Suivre une recherche de garde pour les prochains week-ends.",
-    "home.engine.action": "Voir cet espace",
+    "home.engine.action": "Comprendre",
+    "home.engine.exampleAction": "Voir un exemple",
     "home.menuHint":
       "Les espaces complémentaires et les autres fonctionnalités de Vitalis sont accessibles depuis le menu 2×2 en bas de l’écran.",
     "home.journey.guest.title": "Commencez librement",
@@ -1218,6 +1228,14 @@ export const messages = {
     "update.title": "A new version is ready",
     "update.subtitle": "Reload to get the latest improvements.",
     "update.action": "Reload now",
+    "update.waitingForSync":
+      "Sync is running or actions are still pending. The update is paused to protect your local changes.",
+    "update.checking": "Checking pending actions…",
+    "update.checkFailed":
+      "Pending local actions could not be verified. The update remains blocked to protect your changes.",
+    "update.applying": "Applying update…",
+    "update.failed": "The update could not take control. This page stayed open; you can try again.",
+    "update.retry": "Try again",
     "update.dismiss": "Later",
     "assistant.error.offline": "This answer is not available offline yet.",
     "assistant.error.auth": "Sign in to chat with Vita.",
@@ -1321,7 +1339,8 @@ export const messages = {
     "home.engine.radar.desc":
       "Save a private search intention and find it in your space, even offline.",
     "home.engine.radar.example": "Keep track of a search for weekend childcare.",
-    "home.engine.action": "View this space",
+    "home.engine.action": "How it works",
+    "home.engine.exampleAction": "See an example",
     "home.menuHint":
       "Explore additional spaces and other Vitalis features from the 2x2 menu at the bottom of the screen.",
     "home.journey.guest.title": "Start at your own pace",

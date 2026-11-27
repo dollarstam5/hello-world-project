@@ -9,9 +9,9 @@ export function VitalisVisionCard() {
   return (
     <Link
       to="/vision"
-      className="group block rounded-[1.75rem] outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      className="group block rounded-3xl outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
     >
-      <article className="relative isolate overflow-hidden rounded-[1.75rem] border border-primary/20 bg-gradient-to-br from-primary/12 via-card to-card p-5 shadow-sm transition-colors group-hover:border-primary/40 sm:p-7">
+      <article className="relative isolate overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/12 via-card to-card p-5 shadow-sm transition-colors group-hover:border-primary/40 sm:p-7">
         <div className="flex items-start gap-4">
           <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-primary text-primary-foreground shadow-md shadow-primary/15">
             <Compass className="size-6" aria-hidden="true" />
@@ -29,7 +29,7 @@ export function VitalisVisionCard() {
             <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary">
               {t("vision.card.action")}
               <ArrowUpRight
-                className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0 motion-reduce:group-hover:translate-y-0"
                 aria-hidden="true"
               />
             </span>

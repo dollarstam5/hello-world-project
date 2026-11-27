@@ -54,7 +54,7 @@ function isHashedAsset(url) {
 
 function navigationKey(url) {
   const path = url.pathname.replace(/\/+$/, "") || "/";
-  return SHELL_ROUTES.includes(path) ? path : "/";
+  return SHELL_ROUTES.includes(path) ? path : null;
 }
 
 async function trimCache(cache, maximum) {
@@ -81,19 +81,18 @@ self.addEventListener("fetch", (event) => {
         try {
           const preloaded = await event.preloadResponse;
           const response = preloaded || (await fetch(request));
-          if (response && response.ok) {
+          if (response && response.ok && key) {
             const copy = response.clone();
             event.waitUntil(caches.open(SHELL_CACHE).then((cache) => cache.put(key, copy)));
           }
           return response;
         } catch {
           const cache = await caches.open(SHELL_CACHE);
-          return (
-            (await cache.match(key)) ??
-            (await cache.match("/")) ??
-            (await cache.match(OFFLINE_URL)) ??
-            Response.error()
-          );
+          if (key) {
+            const cachedPage = await cache.match(key);
+            if (cachedPage) return cachedPage;
+          }
+          return (await cache.match(OFFLINE_URL)) ?? Response.error();
         }
       })(),
     );

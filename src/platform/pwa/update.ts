@@ -4,7 +4,15 @@
  */
 import { useEffect, useState } from "react";
 
+type UpdateSyncPhase = "idle" | "pulling" | "pushing" | "offline" | "error";
+
+/** An update may proceed only when the sync worker reports a settled outbox. */
+export function canApplyUpdate(phase: UpdateSyncPhase, pendingCount: number): boolean {
+  return phase === "idle" && pendingCount === 0;
+}
+
 let waitingWorker: ServiceWorker | null = null;
+let activationInProgress = false;
 const listeners = new Set<(ready: boolean) => void>();
 
 function announce(worker: ServiceWorker | null) {
@@ -38,9 +46,46 @@ export function watchForUpdates(registration: ServiceWorkerRegistration): void {
   window.addEventListener("pagehide", () => window.clearInterval(interval), { once: true });
 }
 
+/**
+ * Ask the waiting worker to activate and resolve only when it actually takes
+ * control. A timeout is a recoverable failure, never a reason to reload.
+ */
+export function requestServiceWorkerActivation(
+  worker: ServiceWorker,
+  serviceWorker: ServiceWorkerContainer,
+  timeoutMs = 10_000,
+): Promise<boolean> {
+  return new Promise((resolve) => {
+    if (!serviceWorker.controller) {
+      resolve(false);
+      return;
+    }
+
+    let settled = false;
+    const finish = (activated: boolean) => {
+      if (settled) return;
+      settled = true;
+      serviceWorker.removeEventListener("controllerchange", onControllerChange);
+      window.clearTimeout(timeout);
+      resolve(activated);
+    };
+
+    const onControllerChange = () => finish(serviceWorker.controller === worker);
+    serviceWorker.addEventListener("controllerchange", onControllerChange);
+    const timeout = window.setTimeout(() => finish(false), timeoutMs);
+
+    try {
+      worker.postMessage({ type: "SKIP_WAITING" });
+    } catch {
+      finish(false);
+    }
+  });
+}
+
 export function useAppUpdate() {
   const [ready, setReady] = useState(waitingWorker !== null);
   const [applying, setApplying] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     const listener = (value: boolean) => setReady(value);
@@ -51,20 +96,24 @@ export function useAppUpdate() {
   }, []);
 
   function apply() {
-    if (!waitingWorker) return;
+    if (!waitingWorker || applying || activationInProgress) return;
+    activationInProgress = true;
     setApplying(true);
-    let reloaded = false;
-    navigator.serviceWorker.addEventListener("controllerchange", () => {
-      if (reloaded) return;
-      reloaded = true;
-      window.location.reload();
-    });
-    waitingWorker.postMessage({ type: "SKIP_WAITING" });
-    // Safety net if the takeover event never arrives.
-    window.setTimeout(() => {
-      if (!reloaded) window.location.reload();
-    }, 3000);
+    setFailed(false);
+
+    void requestServiceWorkerActivation(waitingWorker, navigator.serviceWorker)
+      .then((activated) => {
+        if (activated) {
+          window.location.reload();
+          return;
+        }
+        setApplying(false);
+        setFailed(true);
+      })
+      .finally(() => {
+        activationInProgress = false;
+      });
   }
 
-  return { ready, applying, apply };
+  return { ready, applying, failed, apply };
 }

@@ -40,7 +40,7 @@ export function ApplicationSettingsPage() {
           <Languages className="h-5 w-5 text-primary" aria-hidden />
           <h2 className="text-base font-semibold">{t("settings.language.title")}</h2>
         </div>
-        <Surface variant="elevated" padding="md" bordered>
+        <Surface variant="glass-soft" padding="md" radius="3xl" bordered>
           <p className="text-sm text-muted-foreground">{t("settings.language.desc")}</p>
           <div className="mt-3 grid grid-cols-2 gap-2">
             {(["fr", "en"] as const).map((value) => (
@@ -119,7 +119,7 @@ export function ApplicationSettingsPage() {
         </Surface>
       </section>
 
-      <Surface variant="sunken" padding="md" bordered>
+      <Surface variant="sunken" padding="md" radius="2xl" bordered>
         <p className="font-medium">{t("settings.more.title")}</p>
         <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
           {t("settings.more.desc")}

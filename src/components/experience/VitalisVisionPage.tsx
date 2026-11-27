@@ -28,7 +28,7 @@ export function VitalisVisionPage() {
 
   return (
     <main className="page-shell space-y-16 pb-12 sm:space-y-24">
-      <header className="relative isolate overflow-hidden rounded-[2rem] border border-primary/15 bg-gradient-to-br from-primary/15 via-card to-card px-6 py-10 sm:px-10 sm:py-14">
+      <header className="relative isolate overflow-hidden rounded-3xl border border-primary/15 bg-gradient-to-br from-primary/15 via-card to-card px-6 py-10 sm:px-10 sm:py-14">
         <div
           aria-hidden="true"
           className="absolute -right-16 -top-24 size-72 rounded-full bg-primary/10 blur-3xl"
@@ -53,7 +53,7 @@ export function VitalisVisionPage() {
           </p>
           <a
             href="#les-moteurs"
-            className="mt-8 inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/15 transition hover:-translate-y-0.5"
+            className="mt-8 inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/15 transition motion-reduce:transition-none hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:hover:translate-y-0"
           >
             {t("vision.deep.discover")}
             <ArrowDown className="size-4" />
@@ -78,7 +78,7 @@ export function VitalisVisionPage() {
         </div>
       </section>
 
-      <section id="les-moteurs" className="space-y-5">
+      <section id="les-moteurs" className="scroll-mt-8 space-y-5">
         <div className="max-w-2xl space-y-3">
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
             {t("vision.engines.title")}
@@ -98,7 +98,7 @@ export function VitalisVisionPage() {
             <a
               key={engine.id}
               href={`#${engine.id}`}
-              className="flex min-h-12 items-center gap-2 rounded-2xl border border-border/70 bg-card px-3 py-2 text-sm font-semibold transition hover:border-primary/40 hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="flex min-h-12 items-center gap-2 rounded-2xl border border-border/70 bg-card px-3 py-2 text-sm font-semibold transition motion-reduce:transition-none hover:border-primary/40 hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <span className="text-xs text-muted-foreground">{engine.number}</span>
               {t(`vision.engine.${engine.id}.title`)}
@@ -141,7 +141,7 @@ export function VitalisVisionPage() {
                 </p>
                 <Link
                   to={engine.route}
-                  className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/15"
+                  className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition motion-reduce:transition-none hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:hover:translate-y-0"
                 >
                   {t("vision.deep.open")} {t(`vision.engine.${engine.id}.title`)}
                   <ArrowRight className="size-4" />
@@ -243,7 +243,7 @@ export function VitalisVisionPage() {
         </p>
         <Link
           to="/"
-          className="mt-6 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-primary px-6 text-sm font-semibold text-primary-foreground transition hover:-translate-y-0.5"
+          className="mt-6 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-primary px-6 text-sm font-semibold text-primary-foreground transition motion-reduce:transition-none hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:hover:translate-y-0"
         >
           {t("vision.end.action")}
           <ArrowRight className="size-4" />

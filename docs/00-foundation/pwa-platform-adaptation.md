@@ -153,3 +153,7 @@ La langue effective doit aussi être appliquée à `document.documentElement.lan
 Implémentation : `src/lib/i18n/useI18n.ts`. Tests : `tests/i18n.test.ts` (ordre des langues préférées, variantes régionales, préférence manuelle et changement de langue).
 
 **Limite actuelle :** les catalogues disponibles sont uniquement FR et EN. Une langue système différente ne déclenche pas une traduction approximative : Vitalis utilise le français par défaut jusqu'à l'ajout d'un catalogue validé.
+
+## Référentiel directeur de l'expérience native
+
+Le [Référentiel de l'expérience native — Vitalis](./native-experience-standard.md) est le point d'entrée transversal pour toute contribution qui vise une sensation d'application native. Il complète ce document sans le remplacer : le présent fichier reste la référence détaillée pour la détection des capacités, l'installation PWA, les permissions et les solutions de repli. Avant toute évolution de navigation, gestes, cycle de vie, intégration système ou comportement mobile, consulter le référentiel directeur et les standards spécialisés qu'il référence.

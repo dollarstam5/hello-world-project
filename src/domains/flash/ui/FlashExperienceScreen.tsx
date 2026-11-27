@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type KeyboardEvent } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Check, Plus, Sparkles, X, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,25 @@ export function FlashExperienceScreen() {
   const [tab, setTab] = useState<FlashTab>("discover");
   const [dashboardUnlocked, setDashboardUnlocked] = useState(false);
   const [success, setSuccess] = useState(false);
+  function handleTabKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
+    const tabs = Array.from(
+      event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('[role="tab"]') ?? [],
+    );
+    const currentIndex = tabs.indexOf(event.currentTarget);
+    if (currentIndex < 0 || tabs.length === 0) return;
+
+    let nextIndex = currentIndex;
+    if (event.key === "ArrowRight") nextIndex = (currentIndex + 1) % tabs.length;
+    else if (event.key === "ArrowLeft") nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+    else if (event.key === "Home") nextIndex = 0;
+    else if (event.key === "End") nextIndex = tabs.length - 1;
+    else return;
+
+    event.preventDefault();
+    tabs[nextIndex].focus();
+    tabs[nextIndex].click();
+  }
+
   const composer = useFlashComposer({
     user,
     locale,
@@ -34,7 +53,7 @@ export function FlashExperienceScreen() {
       className="min-h-[calc(100dvh-5rem)] px-4 pb-8 pt-5 sm:px-6"
       aria-label={t("flash.screen.label")}
     >
-      <header className="mb-6 flex items-center justify-between gap-3">
+      <header id="guide" className="mb-6 flex items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
           <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-primary/12 text-primary">
             <Zap className="size-6" aria-hidden="true" />
@@ -54,7 +73,10 @@ export function FlashExperienceScreen() {
         </Link>
       </header>
 
-      <div className="mb-7 overflow-hidden rounded-[1.75rem] border border-primary/15 bg-gradient-to-br from-primary/12 via-card to-card p-5 shadow-sm sm:p-7">
+      <div
+        id="example"
+        className="mb-7 overflow-hidden rounded-3xl border border-primary/15 bg-gradient-to-br from-primary/12 via-card to-card p-5 shadow-sm sm:p-7"
+      >
         <div className="mx-auto flex max-w-sm flex-col items-center text-center">
           <span className="mb-3 grid size-[4.25rem] place-items-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/20">
             <Zap className="size-8" fill="currentColor" aria-hidden="true" />
@@ -93,7 +115,7 @@ export function FlashExperienceScreen() {
           <span>{formatCommunicationMessage(t, "flash.composer.draftSaved")}</span>
           <button
             type="button"
-            className="ml-auto rounded-full p-1 text-muted-foreground hover:text-foreground"
+            className="ml-auto grid size-11 shrink-0 place-items-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             onClick={() => setSuccess(false)}
             aria-label={t("common.close")}
           >
@@ -109,27 +131,43 @@ export function FlashExperienceScreen() {
       >
         <button
           type="button"
+          id="flash-tab-discover"
           role="tab"
           aria-selected={tab === "discover"}
-          className={`min-h-11 flex-1 rounded-full px-4 text-sm font-semibold transition ${tab === "discover" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+          aria-controls="flash-tabpanel"
+          tabIndex={tab === "discover" ? 0 : -1}
+          className={`min-h-11 flex-1 rounded-full px-4 text-sm font-semibold transition motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${tab === "discover" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
           onClick={() => setTab("discover")}
+          onKeyDown={handleTabKeyDown}
         >
           {t("flash.tabs.discover")}
         </button>
         {dashboardUnlocked ? (
           <button
             type="button"
+            id="flash-tab-mine"
             role="tab"
             aria-selected={tab === "mine"}
-            className={`min-h-11 flex-1 rounded-full px-4 text-sm font-semibold transition ${tab === "mine" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+            aria-controls="flash-tabpanel"
+            tabIndex={tab === "mine" ? 0 : -1}
+            className={`min-h-11 flex-1 rounded-full px-4 text-sm font-semibold transition motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${tab === "mine" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
             onClick={() => setTab("mine")}
+            onKeyDown={handleTabKeyDown}
           >
             {t("flash.tabs.mine")}
           </button>
         ) : null}
       </div>
 
-      <div role="tabpanel" className="min-w-0">
+      <div
+        id="flash-tabpanel"
+        role="tabpanel"
+        aria-labelledby={
+          tab === "mine" && dashboardUnlocked ? "flash-tab-mine" : "flash-tab-discover"
+        }
+        tabIndex={0}
+        className="min-w-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      >
         {tab === "discover" || !dashboardUnlocked ? (
           <div className="stack-3">
             <div className="mb-3 flex items-center justify-between gap-3">

@@ -149,9 +149,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             paddingBottom: hasBottomNavigation ? "calc(9rem + var(--safe-bottom))" : 0,
           }}
         >
-          <div key={pathname} className={reduce ? undefined : "motion-rise-in"}>
-            {children}
-          </div>
+          <div className={reduce ? undefined : "motion-rise-in"}>{children}</div>
         </main>
 
         {hasBottomNavigation && (
