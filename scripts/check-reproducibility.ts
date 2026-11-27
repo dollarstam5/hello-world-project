@@ -48,6 +48,9 @@ function cleanBuildArtifacts(): void {
   // A previous Vite run can leave optimizer metadata behind even after .output
   // is removed. Each reproducibility pass must start without that cache.
   rmSync(".output", { recursive: true, force: true });
+  rmSync(".tanstack", { recursive: true, force: true });
+  rmSync(".vinxi", { recursive: true, force: true });
+  rmSync(".nitro", { recursive: true, force: true });
   rmSync("node_modules/.vite", { recursive: true, force: true });
 }
 
