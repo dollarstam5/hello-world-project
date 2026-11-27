@@ -121,12 +121,12 @@ async function replayReceipt(
 
   // Older receipts may predate the private-coordinate boundary. Sanitize them
   // too, otherwise an idempotent replay could reintroduce legacy coordinates.
-  const data = { ...response.data };
-  delete data.latitude;
-  delete data.longitude;
-  delete data.accuracyMeters;
-  delete data.accuracy_meters;
-  return { ...response, data };
+  const sanitizedResponseData = { ...response.data };
+  delete sanitizedResponseData.latitude;
+  delete sanitizedResponseData.longitude;
+  delete sanitizedResponseData.accuracyMeters;
+  delete sanitizedResponseData.accuracy_meters;
+  return { ...response, data: sanitizedResponseData };
 }
 
 async function storeReceipt(
