@@ -47,10 +47,7 @@ export function HomeEngineCard({
         >
           <Icon className="h-5 w-5" aria-hidden />
         </span>
-        <ArrowUpRight
-          className="h-4 w-4 text-muted-foreground"
-          aria-hidden
-        />
+        <ArrowUpRight className="h-4 w-4 text-muted-foreground" aria-hidden />
       </div>
       <div className="space-y-1.5">
         <h3 className="text-base font-semibold tracking-tight text-foreground">{title}</h3>
