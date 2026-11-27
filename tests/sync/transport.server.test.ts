@@ -239,6 +239,43 @@ describe("runPush transport — Flash lifecycle command", () => {
     expect(db.receipts).toHaveLength(0);
   });
 });
+describe("runPush transport — legacy Flash coordinate receipts", () => {
+  it("sanitizes precise coordinates from a previously stored Flash receipt", async () => {
+    const db = new FakeDatabase();
+    db.receipts.push({
+      mutation_id: mutationId,
+      owner_id: ownerId,
+      logical_table: "flashes",
+      record_id: recordId,
+      response: {
+        table: "flashes",
+        revision: 3,
+        deleted: false,
+        data: {
+          id: recordId,
+          title: "Flash historique",
+          latitude: 4.02,
+          longitude: 9.69,
+          accuracyMeters: 8,
+        },
+      },
+    });
+
+    const result = await runPush(
+      db.client(),
+      request(flashEntry("create", { title: "Flash historique" })),
+      ownerId,
+    );
+
+    expect(result.accepted).toEqual([mutationId]);
+    expect(result.records[0]?.data).toEqual({
+      id: recordId,
+      title: "Flash historique",
+    });
+    expect(db.successfulBusinessWrites).toBe(0);
+  });
+});
+
 describe("runPush transport — Flash creation and convergence", () => {
   it("creates a Flash with server-owned identity and replays without duplicating it", async () => {
     const db = new FakeDatabase();

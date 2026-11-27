@@ -27,7 +27,7 @@ function envelope(table: OutboxEntry["table"], row: Record<string, unknown>): Sy
     table,
     revision: Number(row["revision"] ?? 0),
     deleted: row["deleted_at"] != null,
-    data: toRecord(row),
+    data: toRecord(table, row),
   };
 }
 
@@ -81,7 +81,7 @@ export async function runPull(db: SyncClient, request: PullRequest): Promise<Pul
         table: cursor.table,
         revision,
         deleted: row["deleted_at"] != null,
-        data: toRecord(row),
+        data: toRecord(cursor.table, row),
       });
     }
 
@@ -116,7 +116,17 @@ async function replayReceipt(
   if (receipt.logical_table !== entry.table || receipt.record_id !== entry.recordId) {
     throw new Error("sync_receipt_target_mismatch");
   }
-  return receipt.response;
+  const response = receipt.response;
+  if (!response || response.table !== "flashes") return response;
+
+  // Older receipts may predate the private-coordinate boundary. Sanitize them
+  // too, otherwise an idempotent replay could reintroduce legacy coordinates.
+  const sanitizedResponseData = { ...response.data };
+  delete sanitizedResponseData.latitude;
+  delete sanitizedResponseData.longitude;
+  delete sanitizedResponseData.accuracyMeters;
+  delete sanitizedResponseData.accuracy_meters;
+  return { ...response, data: sanitizedResponseData };
 }
 
 async function storeReceipt(
