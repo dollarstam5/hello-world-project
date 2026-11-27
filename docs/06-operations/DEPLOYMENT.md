@@ -36,15 +36,20 @@ Sans configuration IA, Vita continue de répondre avec sa connaissance locale ho
 
 Dans Supabase Auth, limiter `Site URL` au domaine canonique et autoriser explicitement `/auth/callback` et `/auth/recovery` pour chaque environnement. Ne pas utiliser de joker couvrant un domaine tiers en production.
 
-Appliquer les migrations Supabase dans l’ordre lexical. Les fondations P0 attendent notamment :
+Appliquer **tous les fichiers** de `supabase/migrations/` dans l’ordre lexical de leur nom, sans en omettre ni les réordonner. La chaîne suivie dans ce dépôt contient actuellement 35 migrations. Les premières migrations fondatrices et les jalons de sécurité à repérer sont :
 
-1. `20260912000000_protect_identity_trust_system_fields.sql`
-2. `20260912001000_secure_mission_transitions.sql`
-3. `20260912002000_harden_sync_protocol.sql`
-4. `20261113005000_secure_hybrid_assistant.sql` (quotas IA, journal minimal et cache historique)
-5. `20261117140000_operational_retention.sql` (purge des reçus et métadonnées IA)
+1. `20260826014443_34be03fd-4919-4cb4-9e11-76cf1df6bc73.sql` — tables métier initiales, rôles, profils, identité, médias, Flash, missions, publications, notifications et révisions Sync.
+2. `20260827015340_3d7abfad-99ae-4fb5-9c02-60b6d4bd5103.sql` — privilèges d’exécution des fonctions fondatrices.
+3. `20260827015418_ae5d6640-be69-4fd8-aed5-7f0d6c1426e4.sql` — politiques Storage pour les buckets avatars et médias.
+4. `20260912002000_harden_sync_protocol.sql` — reçus d’idempotence du protocole Sync.
+5. `20261113004000_secure_mission_transitions.sql` — sécurisation des transitions de mission.
+6. `20261113005000_secure_hybrid_assistant.sql` — quotas IA, journal minimal et cache historique.
+7. `20261113007000_protect_identity_trust_fields.sql` — protection des champs système d’identité et de confiance.
+8. `20261117140000_operational_retention.sql` — purge des reçus et métadonnées opérationnelles.
 
-Exécuter les migrations sur une base de préproduction, tester les parcours d’authentification, de mission et de synchronisation, puis promouvoir exactement le même lot en production.
+Cette liste est un repère de lecture, **pas une sélection de migrations à appliquer** : les migrations intermédiaires et ultérieures sont également requises. Les noms ci-dessus doivent correspondre exactement aux fichiers présents dans `supabase/migrations/` sur le commit déployé. Vérifier ce manifeste avant toute exécution.
+
+Exécuter d’abord la chaîne complète sur une base locale jetable avec Supabase CLI, puis sur une préproduction vierge ou réinitialisable. Tester les parcours d’authentification, de mission, de synchronisation, les politiques RLS, Storage et les fonctions RPC. Ne promouvoir en production que le même commit et le même lot validés en préproduction.
 
 ## 4. Vérifications avant publication
 
