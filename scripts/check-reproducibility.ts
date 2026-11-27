@@ -25,6 +25,14 @@ function publicBuildSnapshot(): Map<string, string> {
   return snapshot;
 }
 
+function fileDigest(path: string): string {
+  try {
+    return createHash("sha256").update(readFileSync(path)).digest("hex");
+  } catch {
+    return "<missing>";
+  }
+}
+
 function snapshotDigest(snapshot: Map<string, string>): string {
   const hash = createHash("sha256");
   for (const [path, digest] of [...snapshot.entries()].sort(([a], [b]) => a.localeCompare(b))) {
@@ -40,13 +48,18 @@ function build(): void {
   execFileSync("bun", ["run", "build:check"], { stdio: "inherit" });
 }
 
+const routeTreePath = "src/routeTree.gen.ts";
+const routeTreeBefore = fileDigest(routeTreePath);
+
 rmSync(".output", { recursive: true, force: true });
 build();
 const first = publicBuildSnapshot();
+const routeTreeAfterFirst = fileDigest(routeTreePath);
 
 rmSync(".output", { recursive: true, force: true });
 build();
 const second = publicBuildSnapshot();
+const routeTreeAfterSecond = fileDigest(routeTreePath);
 
 const firstDigest = snapshotDigest(first);
 const secondDigest = snapshotDigest(second);
@@ -59,6 +72,7 @@ if (firstDigest !== secondDigest) {
       "Reproducibility check failed: public build outputs differ.",
       `first=${firstDigest}`,
       `second=${secondDigest}`,
+      `routeTree.gen.ts: before=${routeTreeBefore}, afterFirst=${routeTreeAfterFirst}, afterSecond=${routeTreeAfterSecond}`,
       `changed files (${changed.length}):`,
       ...changed.map((path) => {
         const before = first.get(path) ?? "<missing>";
