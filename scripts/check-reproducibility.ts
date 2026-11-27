@@ -10,17 +10,27 @@ function filesUnder(directory: string): string[] {
   });
 }
 
-function publicBuildDigest(): string {
+function publicBuildSnapshot(): Map<string, string> {
   const directory = ".output/public";
   if (!statSync(directory).isDirectory()) {
     throw new Error("Reproducibility check failed: .output/public is missing.");
   }
 
-  const hash = createHash("sha256");
+  const snapshot = new Map<string, string>();
   for (const path of filesUnder(directory).sort()) {
-    hash.update(relative(directory, path));
+    const relativePath = relative(directory, path).split("\\").join("/");
+    const digest = createHash("sha256").update(readFileSync(path)).digest("hex");
+    snapshot.set(relativePath, digest);
+  }
+  return snapshot;
+}
+
+function snapshotDigest(snapshot: Map<string, string>): string {
+  const hash = createHash("sha256");
+  for (const [path, digest] of [...snapshot.entries()].sort(([a], [b]) => a.localeCompare(b))) {
+    hash.update(path);
     hash.update("\0");
-    hash.update(readFileSync(path));
+    hash.update(digest);
     hash.update("\0");
   }
   return hash.digest("hex");
@@ -32,16 +42,31 @@ function build(): void {
 
 rmSync(".output", { recursive: true, force: true });
 build();
-const first = publicBuildDigest();
+const first = publicBuildSnapshot();
 
 rmSync(".output", { recursive: true, force: true });
 build();
-const second = publicBuildDigest();
+const second = publicBuildSnapshot();
 
-if (first !== second) {
+const firstDigest = snapshotDigest(first);
+const secondDigest = snapshotDigest(second);
+
+if (firstDigest !== secondDigest) {
+  const paths = [...new Set([...first.keys(), ...second.keys()])].sort();
+  const changed = paths.filter((path) => first.get(path) !== second.get(path));
   throw new Error(
-    `Reproducibility check failed: public build digests differ (first=${first}, second=${second}).`,
+    [
+      "Reproducibility check failed: public build outputs differ.",
+      `first=${firstDigest}`,
+      `second=${secondDigest}`,
+      `changed files (${changed.length}):`,
+      ...changed.map((path) => {
+        const before = first.get(path) ?? "<missing>";
+        const after = second.get(path) ?? "<missing>";
+        return `- ${path}: first=${before}, second=${after}`;
+      }),
+    ].join("\n"),
   );
 }
 
-console.log(JSON.stringify({ status: "ok", publicBuildSha256: first }));
+console.log(JSON.stringify({ status: "ok", publicBuildSha256: firstDigest }));
