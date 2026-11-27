@@ -79,14 +79,14 @@ if (firstDigest !== secondDigest) {
   throw new Error(
     [
       "Reproducibility check failed: public build outputs differ.",
-      \`first=\${firstDigest}\`,
-      \`second=\${secondDigest}\`,
-      \`routeTree.gen.ts: before=\${routeTreeBefore}, afterFirst=\${routeTreeAfterFirst}, afterSecond=\${routeTreeAfterSecond}\`,
-      \`changed files (\${changed.length}):\`,
+      `first=${firstDigest}`,
+      `second=${secondDigest}`,
+      `routeTree.gen.ts: before=${routeTreeBefore}, afterFirst=${routeTreeAfterFirst}, afterSecond=${routeTreeAfterSecond}`,
+      `changed files (${changed.length}):`,
       ...changed.map((path) => {
         const before = first.get(path) ?? "<missing>";
         const after = second.get(path) ?? "<missing>";
-        return \`- \${path}: first=\${before}, second=\${after}\`;
+        return `- ${path}: first=${before}, second=${after}`;
       }),
     ].join("\n"),
   );
