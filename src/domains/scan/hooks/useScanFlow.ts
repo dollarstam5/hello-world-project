@@ -29,7 +29,7 @@ export function useScanFlow() {
   );
 
   const updateRadiusKm = useCallback(
-    (radius: typeof preferences.radiusKm) => {
+    (radius: typeof radiusKm) => {
       setRadiusKm(radius);
       setStarted(false);
       clearResults();
@@ -70,15 +70,7 @@ export function useScanFlow() {
         limit: SCAN_LIMIT,
       });
     });
-  }, [
-    stage,
-    needText,
-    busy,
-    locating,
-    locate,
-    execute,
-    radiusKm,
-  ]);
+  }, [stage, needText, busy, locating, locate, execute, radiusKm]);
 
   return {
     rows,
