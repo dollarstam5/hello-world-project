@@ -1,6 +1,6 @@
 BEGIN;
 CREATE EXTENSION IF NOT EXISTS pgtap WITH SCHEMA extensions;
-SELECT plan(10);
+SELECT plan(12);
 
 INSERT INTO auth.users (
   id, aud, role, email, encrypted_password, email_confirmed_at,
@@ -35,6 +35,27 @@ SELECT is(
   (SELECT status FROM public.radars WHERE id = 'c0000000-0000-4000-8000-000000000010'),
   'draft',
   'new Radar remains a draft'
+);
+
+SELECT lives_ok($
+  INSERT INTO public.radars (
+    id, owner_id, title, query, area_label, radius_km, starts_at, expires_at
+  ) VALUES (
+    'c0000000-0000-4000-8000-000000000011',
+    auth.uid(),
+    'Recherche sans zone',
+    'Je cherche une activité sans zone définie',
+    NULL,
+    10,
+    (extract(epoch FROM now()) * 1000)::bigint,
+    (extract(epoch FROM now() + interval '10 days') * 1000)::bigint
+  )
+$, 'owner can create a Radar without a geographic area');
+
+SELECT is(
+  (SELECT area_label FROM public.radars WHERE id = 'c0000000-0000-4000-8000-000000000011'),
+  NULL::text,
+  'unspecified area remains NULL'
 );
 
 SELECT throws_ok(
