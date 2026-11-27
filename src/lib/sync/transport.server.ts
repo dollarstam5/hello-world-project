@@ -27,7 +27,7 @@ function envelope(table: OutboxEntry["table"], row: Record<string, unknown>): Sy
     table,
     revision: Number(row["revision"] ?? 0),
     deleted: row["deleted_at"] != null,
-    data: toRecord(row),
+    data: toRecord(table, row),
   };
 }
 
@@ -81,7 +81,7 @@ export async function runPull(db: SyncClient, request: PullRequest): Promise<Pul
         table: cursor.table,
         revision,
         deleted: row["deleted_at"] != null,
-        data: toRecord(row),
+        data: toRecord(cursor.table, row),
       });
     }
 
