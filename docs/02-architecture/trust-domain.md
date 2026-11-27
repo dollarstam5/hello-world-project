@@ -75,7 +75,7 @@ Les noms d'événements et endpoints des documents API historiques sont des cont
 
 ## 8. État observé dans le dépôt
 
-La migration `src/supabase/migrations/20260912000000_protect_identity_trust_system_fields.sql` borne `profiles.trust_score` entre 0 et 100 et limite `udi.level` à `guest`, `identified`, `verified` et `trusted`. Elle protège également certains champs système contre les modifications directes par les utilisateurs authentifiés.
+La migration `docs/04-database/legacy-sql-artifacts/src-supabase-migrations/20260912000000_protect_identity_trust_system_fields.sql` borne `profiles.trust_score` entre 0 et 100 et limite `udi.level` à `guest`, `identified`, `verified` et `trusted`. Elle protège également certains champs système contre les modifications directes par les utilisateurs authentifiés.
 
 Cette preuve confirme des champs et contraintes, mais pas l'implémentation complète du modèle historique. Avant de déclarer le Trust Engine opérationnel, il faut vérifier séparément :
 

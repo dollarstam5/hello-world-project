@@ -1,6 +1,6 @@
 # TECH-011 — Statut de la chaîne Drizzle
 
-**État :** configuration et artefacts Drizzle présents ; aucun runner d'exécution versionné identifié ; usage historique, manuel ou externe non vérifié.  
+**État :** configuration et artefacts Drizzle présents ; aucun runner d'exécution versionné identifié ; exécution historique confirmée par la table de suivi distante (quatre migrations).  
 **Référence examinée :** `main`, commit `8cb601309fe089d2c742140a95d564d45c50e63c` (après fusion de la PR #70).  
 **Périmètre :** fichiers versionnés, configuration, dépendances, scripts, workflows et références applicatives.  
 **Aucune commande Drizzle n'a été exécutée. Aucun SQL n'a été appliqué.**
@@ -25,13 +25,13 @@ Cette décision clarifie le fonctionnement attendu du dépôt sans prétendre co
 |---|---|
 | `drizzle/schema.ts` | Fichier volontairement vide ; commentaire « auto-generated and intentionally left blank » |
 | `drizzle.config.ts` | Configure PostgreSQL, le schéma vide, le dossier `drizzle/migrations` et `LOVABLE_DB_MIGRATION_URL` |
-| `drizzle/migrations/meta/_journal.json` | Référence trois entrées : Flash/Scan, Radar et reçus Sync |
+| `drizzle/migrations/meta/_journal.json` | Référence quatre entrées : Flash/Scan, Radar, reçus Sync et politique de lecture des avatars |
 | `package.json` | `drizzle-kit` et `drizzle-orm` sont dans `devDependencies`, pas dans `dependencies` |
 | Scripts npm | Aucun script Drizzle déclaré ; aucun `drizzle-kit migrate` ou runner Drizzle explicite |
 | Code applicatif | La recherche des références `drizzle-orm`, `drizzle-kit` et `LOVABLE_DB_MIGRATION_URL` ne révèle aucun import runtime ou appel applicatif ; les occurrences trouvées concernent la configuration, les dépendances et le lockfile |
 | GitHub Actions | Le workflow qualité lance Supabase CLI pour les tests DB ; aucune étape Drizzle n'est déclarée |
 
-Le journal contient des métadonnées de migrations. Ces métadonnées décrivent les fichiers connus de Drizzle ; elles ne démontrent ni qu'un runner a été utilisé, ni qu'une migration a été appliquée sur un environnement.
+Le journal décrit les fichiers connus de Drizzle. La lecture seule du 27 novembre 2026 confirme que les quatre entrées correspondantes figurent aussi dans `drizzle.__drizzle_migrations` sur le projet Lovable relié ; les migrations Drizzle ont donc effectivement été exécutées sur cet environnement.
 
 ## 3. Pourquoi le schéma vide n'est pas à remplir artificiellement
 
@@ -40,7 +40,7 @@ Le schéma TypeScript vide est explicitement intentionnel. Ajouter des tables un
 - les migrations canoniques du dépôt sont gérées par Supabase CLI ;
 - les migrations Drizzle historiques recoupent des objets déjà présents dans d'autres sources ;
 - aucune utilisation runtime de Drizzle n'a été identifiée ;
-- l'état réel des environnements distants n'est pas disponible.
+- l'état des autres environnements distants n'est pas encore disponible.
 
 Une génération depuis ce schéma vide pourrait produire un état incomplet ou des opérations destructrices si elle était utilisée avec un outil de synchronisation de schéma. Il ne faut donc pas essayer de « réparer » le fichier en y recopiant les tables du SQL.
 
@@ -104,3 +104,15 @@ Cette revue confirme la présence de la configuration, du journal et des trois s
 - La chaîne Supabase CLI reste la référence pour les nouveaux changements.
 
 **Conclusion :** la règle de gouvernance du dépôt est claire pour les nouveaux travaux : Supabase CLI est la chaîne de référence et Drizzle reste gelé. L'usage réel passé de Drizzle et l'état des environnements restent non établis. La migration Flash/Scan Drizzle est incompatible avec la frontière de confidentialité de la chaîne Supabase actuelle et ne doit pas être rejouée. La suppression physique des artefacts et toute conclusion sur leur historique restent conditionnées à une vérification en lecture seule des environnements externes.
+
+
+## Addendum — vérification en lecture seule du 27 novembre 2026
+
+Une base associée au projet Lovable « Hello World Project » a été interrogée en lecture seule ; sa correspondance avec le projet Supabase référencé dans `supabase/config.toml` (`ztsvywxbjdlqsbpkbcka`) n'a pas été établie. La table `drizzle.__drizzle_migrations` contient quatre migrations appliquées (25 octobre, 6 novembre et 16 novembre 2026), correspondant aux quatre entrées de `drizzle/migrations/meta/_journal.json`. L'historique `supabase_migrations.schema_migrations` ne contient que trois versions initiales d'août 2026. Le catalogue public montre encore les colonnes `flashes.latitude`, `flashes.longitude` et `flashes.accuracy_meters`, tandis que `public.flash_private_locations` est absente.
+
+**Conséquence :** la chaîne Drizzle a effectivement été exécutée et ne doit pas être supprimée dans ce lot. Elle est gelée pour les nouvelles évolutions, mais doit rester disponible pour audit et réconciliation. Les artefacts historiques déplacés dans `docs/04-database/legacy-sql-artifacts/src-supabase-migrations/` ne sont pas chargés par Supabase CLI ni référencés par les scripts ou le runtime ; ils sont conservés en archive et ne doivent pas être rejoués. La chaîne officielle pour les nouvelles migrations reste `supabase/migrations/`.
+
+Aucune écriture ni migration distante n'a été effectuée. La présence des anciennes colonnes Flash doit être traitée dans un lot de sécurité distinct avant toute suppression de la chaîne Drizzle.
+
+
+> Réserve d'identification de l'environnement : le projet Lovable a l'identifiant `c311707c-07cc-4b42-877f-38612d34eb39`, tandis que `supabase/config.toml` référence le projet Supabase `ztsvywxbjdlqsbpkbcka`. Aucun élément disponible ne confirme que la base consultée est celle de cette référence Supabase. Les observations du catalogue et des journaux sont donc provisoires pour le diagnostic de l'environnement cible.

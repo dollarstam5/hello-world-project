@@ -6,7 +6,7 @@ This page records the SQL-backed baseline and the boundaries of what has actuall
 
 - Supabase project configuration is at `supabase/config.toml`; it does not configure an alternate migration directory.
 - The Supabase CLI migration path declared by the repository is `supabase/migrations/`. It contains the baseline schema and a growing set of later migrations, including the Reel sequence; do not rely on the historical file count in older inventory notes.
-- `src/supabase/migrations/` contains six additional SQL-like artifacts outside that CLI path. One is Markdown-wrapped SQL, not an executable migration file. Their deployment status is unknown.
+- `docs/04-database/legacy-sql-artifacts/src-supabase-migrations/` contains six additional SQL-like artifacts outside that CLI path. One is Markdown-wrapped SQL, not an executable migration file. Their deployment status is unknown.
 - A separate Drizzle configuration and journal exist: `drizzle.config.ts`, `drizzle/schema.ts`, and `drizzle/migrations/`. The journal lists three scripts, but the schema file is empty and the repository scripts reviewed do not establish an active Drizzle migration runner. Treat this as a separate, unverified migration stream, not as an automatic extension of the Supabase CLI chain.
 - The detailed overlap and evidence assessment is maintained in [Migration-chain reconciliation](./migration-chain-reconciliation.md).
 - The database test suite is `supabase/tests/database/rls_core.test.sql`; it uses pgTAP-style assertions and declares a plan of 40 checks.
@@ -50,7 +50,7 @@ A policy does not grant SQL privileges by itself. Conversely, a table grant does
 
 - every column grant is minimal,
 - every possible write or role escalation is blocked,
-- candidate tables in `src/supabase/migrations/` exist,
+- candidate tables in `docs/04-database/legacy-sql-artifacts/src-supabase-migrations/` exist,
 - the live Supabase database matches repository migrations,
 - Storage policies or all privileged functions are correctly deployed.
 
@@ -58,7 +58,7 @@ Run `bun run test:db` in an environment with the Supabase CLI and the project's 
 
 ## Known reconciliation items
 
-1. **Migration location and format:** confirm whether `src/supabase/migrations/` is intended to be a second source, relocate/convert artifacts only with explicit approval, and ensure the actual migration runner applies them in deterministic order.
+1. **Migration location and format:** confirm whether `docs/04-database/legacy-sql-artifacts/src-supabase-migrations/` is intended to be a second source, relocate/convert artifacts only with explicit approval, and ensure the actual migration runner applies them in deterministic order.
 2. **Schema vs TypeScript contracts:** reconcile columns exposed by `PROFILE_FIELD_COLUMNS` and `FLASH_FIELD_COLUMNS` in `src/lib/sync/mapping.ts` with the baseline migration.
 3. **RLS evolution:** the initial policies for UDI, profiles, and missions differ from the later hardening artifacts. Document the effective policy only after the intended migration chain is established.
 4. **Roles and helper functions:** verify grants on `has_role`, `handle_new_user`, and all later `SECURITY DEFINER` functions in the actual deployed schema.

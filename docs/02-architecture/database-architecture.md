@@ -22,9 +22,9 @@ The standard Supabase migration directory is `supabase/migrations/`. It contains
 3. Storage-object policies for the `avatars` and `media` buckets.
 4. The Reel presence, bip and connection foundation in `20261110010000_reel_presence_and_bips.sql`.
 
-The project configuration at `supabase/config.toml` does not configure `src/supabase/migrations/` as an alternate migration directory.
+The project configuration at `supabase/config.toml` does not configure `docs/04-database/legacy-sql-artifacts/src-supabase-migrations/` as an alternate migration directory.
 
-A separate `src/supabase/migrations/` directory still contains later SQL-like artifacts for profile/UDI hardening, mission transitions, sync receipts, assistant quota/cache, a public Flash projection, and Radar. They are not in the standard migration path. In addition, the mission-transition file is a Markdown document containing a fenced SQL block rather than a raw migration script. Their intended application path and deployment status are unresolved.
+A separate `docs/04-database/legacy-sql-artifacts/src-supabase-migrations/` directory still contains later SQL-like artifacts for profile/UDI hardening, mission transitions, sync receipts, assistant quota/cache, a public Flash projection, and Radar. They are not in the standard migration path. In addition, the mission-transition file is a Markdown document containing a fenced SQL block rather than a raw migration script. Their intended application path and deployment status are unresolved.
 
 **Consequence:** the Reel foundation is now authored in the standard migration path, but the source tree alone cannot establish that it has been applied to the hosted database. The new migration and pgTAP test must pass on a disposable/test database before any production-readiness claim. The separate Radar and other candidate artifacts remain unresolved.
 
