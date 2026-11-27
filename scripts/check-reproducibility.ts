@@ -18,7 +18,7 @@ function publicBuildSnapshot(): Map<string, string> {
 
   const snapshot = new Map<string, string>();
   for (const path of filesUnder(directory).sort()) {
-    const relativePath = relative(directory, path).split("\\\\").join("/");
+    const relativePath = relative(directory, path).split("\\").join("/");
     const digest = createHash("sha256").update(readFileSync(path)).digest("hex");
     snapshot.set(relativePath, digest);
   }
@@ -37,9 +37,9 @@ function snapshotDigest(snapshot: Map<string, string>): string {
   const hash = createHash("sha256");
   for (const [path, digest] of [...snapshot.entries()].sort(([a], [b]) => a.localeCompare(b))) {
     hash.update(path);
-    hash.update("\\0");
+    hash.update("\0");
     hash.update(digest);
-    hash.update("\\0");
+    hash.update("\0");
   }
   return hash.digest("hex");
 }
@@ -79,16 +79,16 @@ if (firstDigest !== secondDigest) {
   throw new Error(
     [
       "Reproducibility check failed: public build outputs differ.",
-      `first=${firstDigest}`,
-      `second=${secondDigest}`,
-      `routeTree.gen.ts: before=${routeTreeBefore}, afterFirst=${routeTreeAfterFirst}, afterSecond=${routeTreeAfterSecond}`,
-      `changed files (${changed.length}):`,
+      \`first=\${firstDigest}\`,
+      \`second=\${secondDigest}\`,
+      \`routeTree.gen.ts: before=\${routeTreeBefore}, afterFirst=\${routeTreeAfterFirst}, afterSecond=\${routeTreeAfterSecond}\`,
+      \`changed files (\${changed.length}):\`,
       ...changed.map((path) => {
         const before = first.get(path) ?? "<missing>";
         const after = second.get(path) ?? "<missing>";
-        return `- ${path}: first=${before}, second=${after}`;
+        return \`- \${path}: first=\${before}, second=\${after}\`;
       }),
-    ].join("\\n"),
+    ].join("\n"),
   );
 }
 
