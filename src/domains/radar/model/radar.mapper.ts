@@ -7,7 +7,7 @@ export function mapRadarRow(row: Record<string, unknown>): RadarRecord {
     title: String(row.title),
     query: String(row.query),
     category: row.category === null ? null : (row.category as RadarRecord["category"]),
-    areaLabel: String(row.area_label),
+    areaLabel: row.area_label === null ? null : String(row.area_label),
     radiusKm: Number(row.radius_km) as RadarRecord["radiusKm"],
     startsAt: Number(row.starts_at),
     expiresAt: Number(row.expires_at),
