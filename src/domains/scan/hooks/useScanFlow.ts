@@ -11,7 +11,7 @@ export function useScanFlow() {
   const scan = useScan();
   const location = useScanLocation();
   const preferences = useScanPreferences();
-  const { clearResults, execute, busy, failed, rows, history, clearHistory } = scan;
+  const { clearResults, execute, busy, failed, rows, assessments, history, clearHistory } = scan;
   const { locate, locating, locationError, unsupported } = location;
   const { radiusKm, setRadiusKm, availableRadii } = preferences;
   const [started, setStarted] = useState(false);
@@ -32,7 +32,7 @@ export function useScanFlow() {
     (radius: typeof preferences.radiusKm) => {
       setRadiusKm(radius);
       setStarted(false);
-      scan.clearResults();
+      clearResults();
     },
     [setRadiusKm, clearResults],
   );
@@ -82,7 +82,7 @@ export function useScanFlow() {
 
   return {
     rows,
-    assessments: scan.assessments,
+    assessments,
     busy,
     history,
     clearHistory,
