@@ -1,6 +1,6 @@
 # TECH-001 — Rapport de réconciliation des chaînes de migration
 
-**État de la revue :** inventaire du dépôt effectué ; réconciliation de la base distante non vérifiable à ce stade.  
+**État de la revue :** inventaire du dépôt effectué ; base Lovable reliée partiellement vérifiée en lecture seule le 27 novembre 2026 ; les autres environnements restent à vérifier.  
 **Référence examinée :** branche `main`, après fusion de la PR #70, commit `8cb601309fe089d2c742140a95d564d45c50e63c`.  
 **Périmètre :** configuration, fichiers versionnés, journal Drizzle, scripts de projet et code consommateur. Aucun SQL n'a été exécuté.
 
@@ -10,7 +10,7 @@ Le dépôt contient trois ensembles de migrations distincts :
 
 1. **Supabase CLI :** `supabase/migrations/`, seul dossier de migration explicitement configuré par `supabase/config.toml`.
 2. **Artefacts hors chemin CLI :** `docs/04-database/legacy-sql-artifacts/src-supabase-migrations/`, six fichiers supplémentaires dont un document Markdown avec SQL clôturé.
-3. **Drizzle :** `drizzle/migrations/`, trois scripts enregistrés dans `drizzle/migrations/meta/_journal.json`, avec une configuration séparée dans `drizzle.config.ts`.
+3. **Drizzle :** `drizzle/migrations/`, quatre scripts enregistrés dans `drizzle/migrations/meta/_journal.json`, avec une configuration séparée dans `drizzle.config.ts`.
 
 La décision sûre à ce stade est de conserver le chemin Supabase comme référence de migration pour le CLI, sans considérer que les deux autres ensembles sont automatiquement appliqués ou abandonnés. Il est impossible de déterminer depuis Git seul si l'un ou l'autre a été exécuté manuellement ou par un pipeline externe.
 
@@ -34,7 +34,7 @@ Les six artefacts repérés sont :
 | `20260912001000_secure_mission_transitions.sql` | Transitions Mission | Fichier Markdown contenant un bloc SQL ; non exécutable tel quel par le CLI |
 | `20260912002000_harden_sync_protocol.sql` | Reçus d'idempotence Sync | Crée notamment `sync_mutation_receipts` |
 | `20260912003000_secure_hybrid_assistant.sql` | Quotas et cache Assistant | Crée `ai_requests`, `ai_cache`, `ai_cache_hits` et des RPC |
-| `20260912004000_flash_public_projection.sql` | Projection publique Flash | Colonnes et fonctions de projection/recherche Flash |
+| `20260912009000_secure_public_flash_feed.sql` | Projection publique Flash | Colonnes et fonctions de projection/recherche Flash |
 | `20260912010000_secure_radar_lifecycle.sql` | Cycle de vie Radar | Crée `radars`, politiques et fonction `command_radar` |
 
 Le fichier Mission contient un chemin de migration proposé dans son propre texte, mais cela ne constitue pas une preuve qu'il a été intégré ou exécuté.
@@ -43,14 +43,14 @@ Le fichier Mission contient un chemin de migration proposé dans son propre text
 
 - `drizzle.config.ts` définit PostgreSQL, un schéma `./drizzle/schema.ts`, une sortie `./drizzle/migrations` et la variable `LOVABLE_DB_MIGRATION_URL`.
 - `drizzle/schema.ts` est vide et porte un commentaire indiquant qu'il est volontairement vide.
-- Le journal Drizzle référence trois entrées : `0000_flash_scan_public_functions`, `0001_create_radars_table`, `0002_create_sync_mutation_receipts`.
+- Le journal Drizzle référence quatre entrées : `0000_flash_scan_public_functions`, `0001_create_radars_table`, `0002_create_sync_mutation_receipts` et `0003_migration` (politique de lecture des avatars).
 - Les scripts projet examinés ne déclarent pas de commande `drizzle-kit migrate` ou de runner Drizzle. Cela ne permet pas d'exclure une exécution manuelle ou externe.
 
 ## 3. Chevauchements et risques de double application
 
 | Objet | Définitions repérées | Risque à lever |
 |---|---|---|
-| `radars` / `command_radar` | `supabase/migrations/20261113000000_radar_lifecycle.sql`, `docs/04-database/legacy-sql-artifacts/src-supabase-migrations/20260912010000_secure_radar_lifecycle.sql` et Drizzle `0001_create_radars_table.sql` | La copie `src/supabase` est identique octet pour octet à la migration canonique Supabase (même blob Git `b637685d4044fbad3df11f21e076b40eb65f61fa`). La version Drizzle reprend les mêmes objets, mais n'est pas identique : elle ne comporte pas `BEGIN`/`COMMIT` et place l'activation RLS après les GRANT, alors que la migration Supabase active RLS avant les GRANT. Ne pas supprimer ni rejouer la version Drizzle avant vérification de son historique d'exécution externe. |
+| `radars` / `command_radar` | `supabase/migrations/20261113000000_radar_lifecycle.sql`, `docs/04-database/legacy-sql-artifacts/src-supabase-migrations/20260912010000_secure_radar_lifecycle.sql` et Drizzle `0001_create_radars_table.sql` | Le contenu SQL archivé est identique au texte de la migration canonique Supabase ; les objets Git diffèrent, ce qui préserve la trace de l'artefact historique. La version Drizzle reprend les mêmes objets, mais n'est pas identique : elle ne comporte pas `BEGIN`/`COMMIT` et place l'activation RLS après les GRANT, alors que la migration Supabase active RLS avant les GRANT. Ne pas supprimer ni rejouer la version Drizzle avant vérification de son historique d'exécution externe. |
 | `sync_mutation_receipts` | Drizzle `0002_create_sync_mutation_receipts.sql` et artefact `docs/04-database/legacy-sql-artifacts/src-supabase-migrations/20260912002000_harden_sync_protocol.sql` | Deux définitions d'une table consommée par `src/lib/sync/transport.server.ts` ; vérifier contraintes, droits et politiques |
 | Projection Flash/Scan | Drizzle `0000_flash_scan_public_functions.sql`, migrations Supabase `20261113002000_flash_schema_columns.sql` et `20261113003000_flash_public_rpcs.sql` | Divergence confirmée : Drizzle ajoute les coordonnées précises à `public.flashes` et les lit/écrit directement ; Supabase les isole dans `flash_private_locations`, utilisée par les RPC. Le pull Sync fait `.select("*")` sur les tables synchronisées. Ne pas rejouer la migration Drizzle ; voir TECH-011. |
 | Champs profil/UDI et transitions Mission | Artefacts SQL sous `docs/04-database/legacy-sql-artifacts/src-supabase-migrations/` | Les migrations standard initiales et les artefacts ultérieurs expriment des états de sécurité différents ; leur ordre d'application est déterminant |
