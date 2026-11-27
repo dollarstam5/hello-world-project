@@ -101,18 +101,18 @@ export function useAppUpdate() {
     setApplying(true);
     setFailed(false);
 
-    void requestServiceWorkerActivation(waitingWorker, navigator.serviceWorker).then(
-      (activated) => {
+    void requestServiceWorkerActivation(waitingWorker, navigator.serviceWorker)
+      .then((activated) => {
         if (activated) {
           window.location.reload();
           return;
         }
         setApplying(false);
         setFailed(true);
-      },
-    ).finally(() => {
-      activationInProgress = false;
-    });
+      })
+      .finally(() => {
+        activationInProgress = false;
+      });
   }
 
   return { ready, applying, failed, apply };
