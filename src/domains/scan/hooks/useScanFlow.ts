@@ -11,6 +11,9 @@ export function useScanFlow() {
   const scan = useScan();
   const location = useScanLocation();
   const preferences = useScanPreferences();
+  const { clearResults, execute, busy, failed, rows, history, clearHistory } = scan;
+  const { locate, locating, locationError, unsupported } = location;
+  const { radiusKm, setRadiusKm, availableRadii } = preferences;
   const [started, setStarted] = useState(false);
   const [needText, setNeedText] = useState("");
   const [stage, setStage] = useState<ScanPreparationStage>("need");
@@ -20,18 +23,18 @@ export function useScanFlow() {
       setNeedText((current) => (typeof value === "function" ? value(current) : value));
       setStage("need");
       setStarted(false);
-      scan.clearResults();
+      clearResults();
     },
-    [scan.clearResults],
+    [clearResults],
   );
 
   const updateRadiusKm = useCallback(
     (radius: typeof preferences.radiusKm) => {
-      preferences.setRadiusKm(radius);
+      setRadiusKm(radius);
       setStarted(false);
       scan.clearResults();
     },
-    [preferences.setRadiusKm, scan.clearResults],
+    [setRadiusKm, clearResults],
   );
 
   const confirmNeed = useCallback(() => {
@@ -46,49 +49,49 @@ export function useScanFlow() {
 
   const status = getScanStatus({
     started,
-    locating: location.locating,
-    busy: scan.busy,
-    failed: scan.failed,
-    unsupported: location.unsupported,
-    locationError: location.locationError,
-    resultCount: scan.rows.length,
+    locating,
+    busy,
+    failed,
+    unsupported,
+    locationError,
+    resultCount: rows.length,
   });
 
   const start = useCallback(() => {
-    if (stage !== "final" || !needText.trim() || scan.busy || location.locating) return;
+    if (stage !== "final" || !needText.trim() || busy || locating) return;
     setStarted(true);
-    void location.locate().then((coordinates) => {
+    void locate().then((coordinates) => {
       if (!coordinates) return;
-      void scan.execute({
+      void execute({
         text: needText.trim(),
         category: null,
         ...coordinates,
-        radiusKm: preferences.radiusKm,
+        radiusKm,
         limit: SCAN_LIMIT,
       });
     });
   }, [
     stage,
     needText,
-    scan.busy,
-    location.locating,
-    location.locate,
-    scan.execute,
-    preferences.radiusKm,
+    busy,
+    locating,
+    locate,
+    execute,
+    radiusKm,
   ]);
 
   return {
-    rows: scan.rows,
+    rows,
     assessments: scan.assessments,
-    busy: scan.busy,
-    history: scan.history,
-    clearHistory: scan.clearHistory,
-    locating: location.locating,
-    locationError: location.locationError,
-    unsupported: location.unsupported,
-    radiusKm: preferences.radiusKm,
+    busy,
+    history,
+    clearHistory,
+    locating,
+    locationError,
+    unsupported,
+    radiusKm,
     setRadiusKm: updateRadiusKm,
-    availableRadii: preferences.availableRadii,
+    availableRadii,
     needText,
     setNeedText: updateNeedText,
     stage,
