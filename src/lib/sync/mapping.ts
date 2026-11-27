@@ -97,10 +97,19 @@ export function toRow(table: SyncedTable, patch: Record<string, unknown>): Recor
 }
 
 /** snake_case row coming from the backend -> camelCase record for the client. */
-export function toRecord(row: Record<string, unknown>): Record<string, JsonValue> {
+export function toRecord(
+  table: SyncedTable,
+  row: Record<string, unknown>,
+): Record<string, JsonValue> {
   const record: Record<string, JsonValue> = {};
   for (const [key, value] of Object.entries(row)) {
     if (key === "server_updated_at") continue;
+    if (
+      table === "flashes" &&
+      (key === "latitude" || key === "longitude" || key === "accuracy_meters")
+    ) {
+      continue;
+    }
     record[toCamelCase(key)] = value as JsonValue;
   }
   return record;
