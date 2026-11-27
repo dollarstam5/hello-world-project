@@ -44,6 +44,13 @@ function snapshotDigest(snapshot: Map<string, string>): string {
   return hash.digest("hex");
 }
 
+function cleanBuildArtifacts(): void {
+  // A previous Vite run can leave optimizer metadata behind even after .output
+  // is removed. Each reproducibility pass must start without that cache.
+  rmSync(".output", { recursive: true, force: true });
+  rmSync("node_modules/.vite", { recursive: true, force: true });
+}
+
 function build(): void {
   execFileSync("bun", ["run", "build:check"], { stdio: "inherit" });
 }
@@ -51,12 +58,14 @@ function build(): void {
 const routeTreePath = "src/routeTree.gen.ts";
 const routeTreeBefore = fileDigest(routeTreePath);
 
-rmSync(".output", { recursive: true, force: true });
+cleanBuildArtifacts();
+console.log("[reproducibility] first build starts with clean Vite cache");
 build();
 const first = publicBuildSnapshot();
 const routeTreeAfterFirst = fileDigest(routeTreePath);
 
-rmSync(".output", { recursive: true, force: true });
+cleanBuildArtifacts();
+console.log("[reproducibility] second build starts with clean Vite cache");
 build();
 const second = publicBuildSnapshot();
 const routeTreeAfterSecond = fileDigest(routeTreePath);
