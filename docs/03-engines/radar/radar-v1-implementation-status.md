@@ -19,7 +19,7 @@ Les rayons autorisés sont 1, 3, 5, 10, 25 et 50 km. Une veille dure de 3 à 90 
 - Stockage local IndexedDB : table `radars` de `packages/core-db/src/schema.ts`.
 - Dépôt offline-first : `packages/core-db/src/radar-repository.ts`.
 - Synchronisation : `radars` figure dans `SYNCED_TABLES`; les transitions de statut passent par la fonction PostgreSQL `command_radar`.
-- Sécurité : table privée, RLS propriétaire et fonction de commande dans `src/supabase/migrations/20260912010000_secure_radar_lifecycle.sql`.
+- Sécurité : table privée, RLS propriétaire et fonction de commande dans `docs/04-database/legacy-sql-artifacts/src-supabase-migrations/20260912010000_secure_radar_lifecycle.sql`.
 - Tests existants : contrat, cycle de vie et RLS ; le mapping des commandes de synchronisation est couvert par `src/tests/radar/radar-command.test.ts`.
 
 ## Limites explicites

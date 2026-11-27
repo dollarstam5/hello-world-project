@@ -42,7 +42,7 @@ Les endpoints `/me`, `/me/identity` et les vues évoquées dans la documentation
 
 ## 4. État observé dans le dépôt
 
-La migration `src/supabase/migrations/20260912000000_protect_identity_trust_system_fields.sql` montre que la table `public.udi` possède au minimum un champ `level` avec les valeurs `guest`, `identified`, `verified` et `trusted`, et que les utilisateurs authentifiés ont un accès de lecture soumis à la politique RLS définie. La table `profiles` possède un champ `trust_score` distinct, borné entre 0 et 100.
+La migration `docs/04-database/legacy-sql-artifacts/src-supabase-migrations/20260912000000_protect_identity_trust_system_fields.sql` montre que la table `public.udi` possède au minimum un champ `level` avec les valeurs `guest`, `identified`, `verified` et `trusted`, et que les utilisateurs authentifiés ont un accès de lecture soumis à la politique RLS définie. La table `profiles` possède un champ `trust_score` distinct, borné entre 0 et 100.
 
 Ces faits montrent que les données actuelles ne sont pas encore équivalentes au modèle documentaire complet de l'UDI. Il faut examiner le schéma complet, les repositories, les contrats API, les règles de synchronisation et les composants avant d'affirmer que les vues ou modules sont disponibles.
 

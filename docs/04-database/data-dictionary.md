@@ -1,6 +1,6 @@
 # Data dictionary
 
-This page describes the **repository-backed PostgreSQL schema**, not an assumed production database snapshot. The executable baseline is the SQL in `supabase/migrations/`; later files under `src/supabase/migrations/` are inventoried separately because that is not the standard Supabase CLI migration directory configured by this repository.
+This page describes the **repository-backed PostgreSQL schema**, not an assumed production database snapshot. The executable baseline is the SQL in `supabase/migrations/`; later files under `docs/04-database/legacy-sql-artifacts/src-supabase-migrations/` are inventoried separately because that is not the standard Supabase CLI migration directory configured by this repository.
 
 ## Domain table inventory
 
@@ -43,7 +43,7 @@ Exceptions matter: `user_roles.created_at` is `TIMESTAMPTZ`, and `ai_requests` /
 
 ## Later schema proposals / candidate migrations
 
-The repository contains additional SQL-like artifacts under `src/supabase/migrations/` for:
+The repository contains additional SQL-like artifacts under `docs/04-database/legacy-sql-artifacts/src-supabase-migrations/` for:
 
 - `sync_mutation_receipts` (offline mutation idempotency),
 - `ai_requests`, `ai_cache`, `ai_cache_hits` (assistant quotas and reviewed cache),

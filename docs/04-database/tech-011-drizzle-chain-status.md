@@ -104,3 +104,12 @@ Cette revue confirme la présence de la configuration, du journal et des trois s
 - La chaîne Supabase CLI reste la référence pour les nouveaux changements.
 
 **Conclusion :** la règle de gouvernance du dépôt est claire pour les nouveaux travaux : Supabase CLI est la chaîne de référence et Drizzle reste gelé. L'usage réel passé de Drizzle et l'état des environnements restent non établis. La migration Flash/Scan Drizzle est incompatible avec la frontière de confidentialité de la chaîne Supabase actuelle et ne doit pas être rejouée. La suppression physique des artefacts et toute conclusion sur leur historique restent conditionnées à une vérification en lecture seule des environnements externes.
+
+
+## Addendum — vérification en lecture seule du 27 novembre 2026
+
+La base Supabase reliée au projet Lovable a été interrogée en lecture seule. La table `drizzle.__drizzle_migrations` contient quatre migrations appliquées (25 octobre, 6 novembre et 16 novembre 2026), correspondant aux quatre entrées de `drizzle/migrations/meta/_journal.json`. L'historique `supabase_migrations.schema_migrations` ne contient que trois versions initiales d'août 2026. Le catalogue public montre encore les colonnes `flashes.latitude`, `flashes.longitude` et `flashes.accuracy_meters`, tandis que `public.flash_private_locations` est absente.
+
+**Conséquence :** la chaîne Drizzle a effectivement été exécutée et ne doit pas être supprimée dans ce lot. Elle est gelée pour les nouvelles évolutions, mais doit rester disponible pour audit et réconciliation. Les artefacts historiques déplacés dans `docs/04-database/legacy-sql-artifacts/src-supabase-migrations/` ne sont pas chargés par Supabase CLI ni référencés par les scripts ou le runtime ; ils sont conservés en archive et ne doivent pas être rejoués. La chaîne officielle pour les nouvelles migrations reste `supabase/migrations/`.
+
+Aucune écriture ni migration distante n'a été effectuée. La présence des anciennes colonnes Flash doit être traitée dans un lot de sécurité distinct avant toute suppression de la chaîne Drizzle.
