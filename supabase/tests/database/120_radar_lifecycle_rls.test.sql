@@ -37,7 +37,7 @@ SELECT is(
   'new Radar remains a draft'
 );
 
-SELECT lives_ok($
+SELECT lives_ok($insert$
   INSERT INTO public.radars (
     id, owner_id, title, query, area_label, radius_km, starts_at, expires_at
   ) VALUES (
@@ -50,7 +50,7 @@ SELECT lives_ok($
     (extract(epoch FROM now()) * 1000)::bigint,
     (extract(epoch FROM now() + interval '10 days') * 1000)::bigint
   )
-$, 'owner can create a Radar without a geographic area');
+$insert$, 'owner can create a Radar without a geographic area');
 
 SELECT is(
   (SELECT area_label FROM public.radars WHERE id = 'c0000000-0000-4000-8000-000000000011'),
