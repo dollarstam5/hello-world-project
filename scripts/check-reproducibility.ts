@@ -53,6 +53,8 @@ function cleanBuildArtifacts(): void {
   rmSync(".vinxi", { recursive: true, force: true });
   rmSync(".nitro", { recursive: true, force: true });
   rmSync("node_modules/.vite", { recursive: true, force: true });
+  // Nitro stores its Vite SSR build workspace inside node_modules, not only at the repo root.
+  rmSync("node_modules/.nitro", { recursive: true, force: true });
 }
 
 function build(): void {
