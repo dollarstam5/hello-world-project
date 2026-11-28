@@ -166,7 +166,8 @@ try {
             ready: document.readyState === "complete" && !!document.querySelector(${JSON.stringify(route.selector)}),
             locale: localStorage.getItem("eco.locale")
           })`);
-          if (state?.ready) {
+          const feedReady = route.path !== "/flash" || await evaluate("!!document.querySelector('[data-flash-feed-hydrated=true]')");
+          if (state?.ready && feedReady) {
             ready = true;
             break;
           }
@@ -203,6 +204,20 @@ try {
             await new Promise(resolve => setTimeout(resolve, 100));
           }
         })()`);
+
+        // Follow hydration/router restoration with actual touch gestures,
+        // rather than relying only on a scripted scrollTop assignment.
+        for (let gesture = 0; gesture < 3; gesture++) {
+          await send("Input.synthesizeScrollGesture", {
+            x: Math.floor(width / 2),
+            y: Math.floor(height * 0.65),
+            yDistance: -Math.max(height * 3, 2400),
+            speed: 1200,
+            gestureSourceType: "touch",
+          });
+          const atBottom = await evaluate("(() => { const s = document.scrollingElement; return s.scrollHeight - s.clientHeight - s.scrollTop <= 2; })()");
+          if (atBottom) break;
+        }
 
         const measurement = await evaluate(`(() => {
           const main = document.querySelector("main");
