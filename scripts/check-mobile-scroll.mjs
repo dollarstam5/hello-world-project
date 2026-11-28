@@ -180,7 +180,8 @@ try {
 
         await evaluate(`(async () => {
           await document.fonts.ready;
-          window.scrollTo(0, document.documentElement.scrollHeight);
+          document.documentElement.style.scrollBehavior = "auto";
+          window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "instant" });
           await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
         })()`);
 
