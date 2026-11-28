@@ -166,7 +166,9 @@ try {
             ready: document.readyState === "complete" && !!document.querySelector(${JSON.stringify(route.selector)}),
             locale: localStorage.getItem("eco.locale")
           })`);
-          const feedReady = route.path !== "/flash" || await evaluate("!!document.querySelector('[data-flash-feed-hydrated=true]')");
+          const feedReady =
+            route.path !== "/flash" ||
+            (await evaluate("!!document.querySelector('[data-flash-feed-hydrated=true]')"));
           if (state?.ready && feedReady) {
             ready = true;
             break;
@@ -195,14 +197,10 @@ try {
             previousHeight = currentHeight;
           }
 
-          // Re-apply the bottom position after layout frames so late content
-          // cannot leave the measurement halfway down the document.
-          for (let attempt = 0; attempt < 5; attempt++) {
-            scroller.scrollTop = scroller.scrollHeight;
-            await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-            if (scroller.scrollHeight - scroller.clientHeight - scroller.scrollTop <= 2) break;
-            await new Promise(resolve => setTimeout(resolve, 100));
-          }
+          // Begin at the top so the following touch gestures prove that a
+          // person can scroll through the full feed to the document bottom.
+          scroller.scrollTop = 0;
+          await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
         })()`);
 
         // Follow hydration/router restoration with actual touch gestures,
@@ -215,7 +213,9 @@ try {
             speed: 1200,
             gestureSourceType: "touch",
           });
-          const atBottom = await evaluate("(() => { const s = document.scrollingElement; return s.scrollHeight - s.clientHeight - s.scrollTop <= 2; })()");
+          const atBottom = await evaluate(
+            "(() => { const s = document.scrollingElement; return s.scrollHeight - s.clientHeight - s.scrollTop <= 2; })()",
+          );
           if (atBottom) break;
         }
 
