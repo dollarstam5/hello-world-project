@@ -19,7 +19,7 @@ export function FlashFeed() {
   }
 
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)] gap-3">
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-3" data-flash-feed-hydrated={hydrated ? "true" : "false"}>
       {needsLocation ? (
         <div className="grid gap-3 rounded-2xl border border-border bg-card p-4">
           <p className="text-sm leading-relaxed text-muted-foreground">
