@@ -166,7 +166,8 @@ try {
             ready: document.readyState === "complete" && !!document.querySelector(${JSON.stringify(route.selector)}),
             locale: localStorage.getItem("eco.locale")
           })`);
-          if (state?.ready) {
+          const feedReady = route.path !== "/flash" || await evaluate("!!document.querySelector('[data-flash-feed-hydrated=true]')");
+          if (state?.ready && feedReady) {
             ready = true;
             break;
           }
@@ -180,9 +181,43 @@ try {
 
         await evaluate(`(async () => {
           await document.fonts.ready;
-          window.scrollTo(0, document.documentElement.scrollHeight);
-          await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+          const scroller = document.scrollingElement;
+          scroller.style.scrollBehavior = "auto";
+
+          // Flash can finish hydrating cards after the route's first paint.
+          // Wait for document height to settle before calculating the bottom.
+          let previousHeight = -1;
+          let stableFrames = 0;
+          for (let attempt = 0; attempt < 20 && stableFrames < 3; attempt++) {
+            await new Promise(resolve => setTimeout(resolve, 200));
+            const currentHeight = scroller.scrollHeight;
+            stableFrames = currentHeight === previousHeight ? stableFrames + 1 : 0;
+            previousHeight = currentHeight;
+          }
+
+          // Re-apply the bottom position after layout frames so late content
+          // cannot leave the measurement halfway down the document.
+          for (let attempt = 0; attempt < 5; attempt++) {
+            scroller.scrollTop = scroller.scrollHeight;
+            await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+            if (scroller.scrollHeight - scroller.clientHeight - scroller.scrollTop <= 2) break;
+            await new Promise(resolve => setTimeout(resolve, 100));
+          }
         })()`);
+
+        // Follow hydration/router restoration with actual touch gestures,
+        // rather than relying only on a scripted scrollTop assignment.
+        for (let gesture = 0; gesture < 3; gesture++) {
+          await send("Input.synthesizeScrollGesture", {
+            x: Math.floor(width / 2),
+            y: Math.floor(height * 0.65),
+            yDistance: -Math.max(height * 3, 2400),
+            speed: 1200,
+            gestureSourceType: "touch",
+          });
+          const atBottom = await evaluate("(() => { const s = document.scrollingElement; return s.scrollHeight - s.clientHeight - s.scrollTop <= 2; })()");
+          if (atBottom) break;
+        }
 
         const measurement = await evaluate(`(() => {
           const main = document.querySelector("main");

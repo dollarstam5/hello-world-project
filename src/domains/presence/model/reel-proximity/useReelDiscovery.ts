@@ -120,7 +120,7 @@ export function useReelDiscovery({
       window.removeEventListener("online", handleOnline);
       window.removeEventListener("offline", handleOffline);
     };
-  }, [discoveryAccess]);
+  }, [discoveryAccess, discoveryRequestId, setIsOnline, setIsRefreshingDiscovery]);
   useEffect(() => {
     if (isPageVisible && discoveryAccess === "granted") void discoveryRunner.current?.(true);
   }, [isPageVisible, discoveryAccess]);
