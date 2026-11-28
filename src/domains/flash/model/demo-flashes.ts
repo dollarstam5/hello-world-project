@@ -77,6 +77,34 @@ export function createDemoFlashes(now = Date.now()): DemoFlash[] {
   });
 }
 
+export interface FlashDemoVisibility {
+  loading: boolean;
+  localDataReady: boolean;
+  hasRemoteResults: boolean;
+  feedFailed: boolean;
+  isOffline: boolean;
+  hasLocation: boolean;
+}
+
+/**
+ * Keep first-time discovery useful before location is shared.
+ * Examples remain explicitly labelled and never stand in for real publications.
+ */
+export function shouldShowFlashDemo({
+  loading,
+  localDataReady,
+  hasRemoteResults,
+  feedFailed,
+  isOffline,
+  hasLocation,
+}: FlashDemoVisibility): boolean {
+  return (
+    !loading &&
+    localDataReady &&
+    (hasRemoteResults || feedFailed || isOffline || !hasLocation)
+  );
+}
+
 /** Real items always come first; local examples only fill the missing slots. */
 export function selectFlashFeedItems(
   realRows: PublicFlash[],
