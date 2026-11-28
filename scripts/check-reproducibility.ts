@@ -104,9 +104,9 @@ function snapshotDigest(snapshot: Map<string, string>): string {
   const hash = createHash("sha256");
   for (const [path, digest] of [...snapshot.entries()].sort(([a], [b]) => a.localeCompare(b))) {
     hash.update(path);
-    hash.update("\\0");
+    hash.update("\0");
     hash.update(digest);
-    hash.update("\\0");
+    hash.update("\0");
   }
   return hash.digest("hex");
 }
@@ -204,7 +204,7 @@ if (mismatches.length > 0) {
       "Reproducibility check failed: clean public build outputs differ.",
       `routeTree.gen.ts: before=${routeTreeBefore}, afterBuilds=${routeTreeAfter.join(",")}`,
       ...mismatches,
-    ].join("\\n"),
+    ].join("\n"),
   );
 }
 
