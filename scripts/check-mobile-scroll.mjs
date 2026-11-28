@@ -181,8 +181,27 @@ try {
         await evaluate(`(async () => {
           await document.fonts.ready;
           const scroller = document.scrollingElement;
-          scroller.scrollTop = scroller.scrollHeight;
-          await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+          scroller.style.scrollBehavior = "auto";
+
+          // Flash can finish hydrating cards after the route's first paint.
+          // Wait for document height to settle before calculating the bottom.
+          let previousHeight = -1;
+          let stableFrames = 0;
+          for (let attempt = 0; attempt < 20 && stableFrames < 3; attempt++) {
+            await new Promise(resolve => setTimeout(resolve, 200));
+            const currentHeight = scroller.scrollHeight;
+            stableFrames = currentHeight === previousHeight ? stableFrames + 1 : 0;
+            previousHeight = currentHeight;
+          }
+
+          // Re-apply the bottom position after layout frames so late content
+          // cannot leave the measurement halfway down the document.
+          for (let attempt = 0; attempt < 5; attempt++) {
+            scroller.scrollTop = scroller.scrollHeight;
+            await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+            if (scroller.scrollHeight - scroller.clientHeight - scroller.scrollTop <= 2) break;
+            await new Promise(resolve => setTimeout(resolve, 100));
+          }
         })()`);
 
         const measurement = await evaluate(`(() => {
