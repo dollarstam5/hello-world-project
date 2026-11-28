@@ -5,6 +5,22 @@ import { execFileSync } from "node:child_process";
 
 const BUILD_REPETITIONS = 4;
 
+type ManifestEntry = {
+  file?: string;
+  src?: string;
+  isEntry?: boolean;
+  imports?: string[];
+  dynamicImports?: string[];
+  css?: string[];
+  assets?: string[];
+};
+
+type ManifestSnapshot = {
+  files: string[];
+  graph: Map<string, string>;
+  summaries: string[];
+};
+
 function filesUnder(directory: string): string[] {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
     const path = join(directory, entry.name);
@@ -20,11 +36,60 @@ function publicBuildSnapshot(): Map<string, string> {
 
   const snapshot = new Map<string, string>();
   for (const path of filesUnder(directory).sort()) {
-    const relativePath = relative(directory, path).split("\\").join("/");
+    const relativePath = relative(directory, path).split("\\\\").join("/");
     const digest = createHash("sha256").update(readFileSync(path)).digest("hex");
     snapshot.set(relativePath, digest);
   }
   return snapshot;
+}
+
+function manifestSnapshot(): ManifestSnapshot {
+  const outputDirectory = ".output";
+  const graph = new Map<string, string>();
+  const summaries: string[] = [];
+  const manifests = filesUnder(outputDirectory)
+    .filter((path) => path.endsWith("manifest.json"))
+    .sort();
+
+  for (const path of manifests) {
+    let parsed: Record<string, ManifestEntry>;
+    try {
+      parsed = JSON.parse(readFileSync(path, "utf8")) as Record<string, ManifestEntry>;
+    } catch {
+      continue;
+    }
+
+    const keys = Object.keys(parsed).sort();
+    let edgeCount = 0;
+    for (const key of keys) {
+      const entry = parsed[key] ?? {};
+      const imports = [...(entry.imports ?? [])].sort();
+      const dynamicImports = [...(entry.dynamicImports ?? [])].sort();
+      edgeCount += imports.length + dynamicImports.length;
+      graph.set(
+        `${relative(outputDirectory, path)}::${key}`,
+        JSON.stringify({
+          file: entry.file ?? null,
+          src: entry.src ?? null,
+          isEntry: entry.isEntry ?? false,
+          imports,
+          dynamicImports,
+          css: [...(entry.css ?? [])].sort(),
+          assets: [...(entry.assets ?? [])].sort(),
+        }),
+      );
+    }
+    summaries.push(
+      JSON.stringify({
+        manifest: relative(outputDirectory, path),
+        entries: keys.length,
+        staticAndDynamicEdges: edgeCount,
+        entryPoints: keys.filter((key) => parsed[key]?.isEntry).length,
+      }),
+    );
+  }
+
+  return { files: manifests.map((path) => relative(outputDirectory, path)), graph, summaries };
 }
 
 function fileDigest(path: string): string {
@@ -53,6 +118,7 @@ function cleanBuildArtifacts(): void {
   rmSync(".vinxi", { recursive: true, force: true });
   rmSync(".nitro", { recursive: true, force: true });
   rmSync("node_modules/.vite", { recursive: true, force: true });
+  rmSync("node_modules/.nitro", { recursive: true, force: true });
 }
 
 function build(): void {
@@ -64,6 +130,7 @@ const routeTreeBefore = fileDigest(routeTreePath);
 const snapshots: Map<string, string>[] = [];
 const digests: string[] = [];
 const routeTreeAfter: string[] = [];
+const manifests: ManifestSnapshot[] = [];
 
 for (let repetition = 1; repetition <= BUILD_REPETITIONS; repetition += 1) {
   cleanBuildArtifacts();
@@ -74,14 +141,19 @@ for (let repetition = 1; repetition <= BUILD_REPETITIONS; repetition += 1) {
 
   const snapshot = publicBuildSnapshot();
   const digest = snapshotDigest(snapshot);
+  const manifest = manifestSnapshot();
   snapshots.push(snapshot);
   digests.push(digest);
+  manifests.push(manifest);
   routeTreeAfter.push(fileDigest(routeTreePath));
   console.log(
     JSON.stringify({
       repetition,
       publicBuildSha256: digest,
       routeTreeSha256: routeTreeAfter[repetition - 1],
+      manifestFiles: manifest.files,
+      manifests: manifest.summaries,
+      moduleGraphNodes: manifest.graph.size,
     }),
   );
 }
@@ -104,6 +176,25 @@ for (let index = 1; index < snapshots.length; index += 1) {
         `- ${path}: build 1=${baseline.get(path) ?? "<missing>"}, build ${index + 1}=${current.get(path) ?? "<missing>"}`,
       );
     }
+
+    const firstGraph = manifests[0].graph;
+    const currentGraph = manifests[index].graph;
+    const graphKeys = [...new Set([...firstGraph.keys(), ...currentGraph.keys()])].sort();
+    const graphChanges = graphKeys.filter((key) => firstGraph.get(key) !== currentGraph.get(key));
+    mismatches.push(
+      `module graph build 1 vs build ${index + 1}: ${graphChanges.length} changed manifest entries`,
+    );
+    for (const key of graphChanges.slice(0, 100)) {
+      mismatches.push(
+        `- graph ${key}: build 1=${firstGraph.get(key) ?? "<missing>"}, build ${index + 1}=${currentGraph.get(key) ?? "<missing>"}`,
+      );
+    }
+    if (graphChanges.length > 100) {
+      mismatches.push(`- ${graphChanges.length - 100} additional graph changes omitted`);
+    }
+    mismatches.push(
+      `manifest paths build 1=${JSON.stringify(manifests[0].files)}, build ${index + 1}=${JSON.stringify(manifests[index].files)}`,
+    );
   }
 }
 
@@ -123,5 +214,10 @@ console.log(
     repetitions: BUILD_REPETITIONS,
     publicBuildSha256: baselineDigest,
     routeTreeStable: routeTreeAfter.every((digest) => digest === routeTreeBefore),
+    moduleGraphStable: manifests.every(
+      (manifest) =>
+        JSON.stringify([...manifest.graph.entries()].sort()) ===
+        JSON.stringify([...manifests[0].graph.entries()].sort()),
+    ),
   }),
 );
