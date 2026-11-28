@@ -95,11 +95,7 @@ export function shouldShowFlashDemo({
   isOffline,
   hasLocation,
 }: FlashDemoVisibility): boolean {
-  return (
-    !loading &&
-    localDataReady &&
-    (hasRemoteResults || feedFailed || isOffline || !hasLocation)
-  );
+  return !loading && localDataReady && (hasRemoteResults || feedFailed || isOffline || !hasLocation);
 }
 
 /** Real items always come first; local examples only fill the missing slots. */
