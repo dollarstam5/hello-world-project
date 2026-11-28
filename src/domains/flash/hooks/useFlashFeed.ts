@@ -6,7 +6,7 @@ import { defaultLocale, messages } from "@/lib/i18n/messages";
 import { useI18nStore } from "@/lib/i18n/useI18n";
 import { useLiveFlashes } from "../data";
 import { nearbyFlashFeed } from "../api/flash.functions";
-import { selectFlashFeedItems } from "../model/demo-flashes";
+import { selectFlashFeedItems, shouldShowFlashDemo } from "../model/demo-flashes";
 
 export type FlashFeedSource = "remote" | "offline";
 
@@ -150,8 +150,14 @@ export function useFlashFeed() {
     return [...pendingLocal, ...remoteRows];
   }, [coordinates, isOffline, remoteRows, offlineRows]);
 
-  const canShowDemo =
-    !loading && localRows !== undefined && (remoteRows !== null || feedFailed || isOffline);
+  const canShowDemo = shouldShowFlashDemo({
+    loading,
+    localDataReady: localRows !== undefined,
+    hasRemoteResults: remoteRows !== null,
+    feedFailed,
+    isOffline,
+    hasLocation: coordinates !== null,
+  });
   const presentedRows = useMemo(() => selectFlashFeedItems(rows, canShowDemo), [rows, canShowDemo]);
 
   return {
