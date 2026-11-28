@@ -209,7 +209,7 @@ try {
           await send("Input.synthesizeScrollGesture", {
             x: Math.floor(width / 2),
             y: Math.floor(height * 0.65),
-            yDistance: Math.max(height * 3, 2400),
+            yDistance: -Math.max(height * 3, 2400),
             speed: 1200,
             gestureSourceType: "touch",
           });
